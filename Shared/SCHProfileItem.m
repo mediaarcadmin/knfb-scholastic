@@ -14,7 +14,7 @@
 
 #import "SCHContentProfileItem.h"
 #import "SCHContentMetadataItem.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "SCHBookManager.h"
 #import "USAdditions.h"
 #import "SCHLibreAccessConstants.h"
@@ -22,7 +22,6 @@
 #import "SCHPrivateAnnotations.h"
 #import "SCHBookAnnotations.h"
 #import "SCHAnnotationsContentItem.h"
-#import "SCHOrderItem.h"
 #import "SCHLastPage.h"
 #import "SCHBookIdentifier.h"
 #import "SCHBookStatistics.h"
@@ -71,7 +70,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 @synthesize age;
 
-// we are prefetching the ContentProfileItem.UserContentItem and returning non-faulted objects
+// we are prefetching the ContentProfileItem.SCHBooksAssignment and returning non-faulted objects
 - (NSSet *)ContentProfileItem
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -81,7 +80,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];
     [fetchRequest setReturnsObjectsAsFaults:NO];
-    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"UserContentItem"]];
+    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"SCHBooksAssignment"]];
     
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
                                                                error:&error];
@@ -162,7 +161,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     NSMutableArray *ret = [NSMutableArray arrayWithCapacity:[contentProfileItem count]];
                            
     for(SCHContentProfileItem *item in contentProfileItem) {
-        SCHBookIdentifier *bookIdentifier = item.UserContentItem.bookIdentifier;
+        SCHBookIdentifier *bookIdentifier = item.booksAssignment.bookIdentifier;
         if (bookIdentifier != nil) {
             [ret addObject:bookIdentifier];
         }
@@ -188,9 +187,9 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
         NSMutableArray *books = [NSMutableArray array];
         
         for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
-            NSSet *contentMetadataItems = contentProfileItem.UserContentItem.ContentMetadataItem;
+            NSSet *contentMetadataItems = contentProfileItem.booksAssignment.ContentMetadataItem;
             if ([contentMetadataItems count] > 0) {
-                for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
+                for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.booksAssignment.ContentMetadataItem) {
                     SCHBookIdentifier *identifier = [contentMetadataItem bookIdentifier];
                     if (identifier != nil) {
                         [books addObject:identifier];
@@ -234,7 +233,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     NSMutableArray *bookObjects = [NSMutableArray array];
     
     for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
-        for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
+        for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.booksAssignment.ContentMetadataItem) {
             [bookObjects addObject:contentMetadataItem];
         }
     }
@@ -430,31 +429,29 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 - (SCHReadingStatsContentItem *)makeReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier
 {
     SCHReadingStatsContentItem *ret = nil;
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
     NSError *error = nil;
-    NSEntityDescription *entityDescription = [NSEntityDescription 
-                                              entityForName:kSCHUserContentItem
-                                              inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel
-                                    fetchRequestFromTemplateWithName:kSCHUserContentItemFetchWithContentIdentifier
-                                    substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                           bookIdentifier.isbn, kSCHUserContentItemCONTENT_IDENTIFIER,
-                                                           bookIdentifier.DRMQualifier, kSCHUserContentItemDRM_QUALIFIER,
-                                                           nil]];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
+                                        inManagedObjectContext:self.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@",
+                                bookIdentifier.isbn, bookIdentifier.DRMQualifier]];
+    
     [fetchRequest setFetchLimit:1];
     
-    NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-    if (userContentItems == nil) {
+    NSArray *booksAssignments = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (booksAssignments == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
     
-    if ([userContentItems count] > 0) {
-        SCHUserContentItem *userContentItem = [userContentItems objectAtIndex:0];
+    if ([booksAssignments count] > 0) {
+        SCHBooksAssignment *booksAssignment = [booksAssignments objectAtIndex:0];
         ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHReadingStatsContentItem 
                                             inManagedObjectContext:self.managedObjectContext];
-        ret.ContentIdentifier = userContentItem.ContentIdentifier;
-        ret.ContentIdentifierType = userContentItem.ContentIdentifierType;
-        ret.DRMQualifier = userContentItem.DRMQualifier;
-        ret.Format = userContentItem.Format;
+        ret.ContentIdentifier = booksAssignment.ContentIdentifier;
+        ret.ContentIdentifierType = booksAssignment.ContentIdentifierType;
+        ret.DRMQualifier = booksAssignment.DRMQualifier;
+        ret.Format = booksAssignment.format;
     }
     
     return(ret);

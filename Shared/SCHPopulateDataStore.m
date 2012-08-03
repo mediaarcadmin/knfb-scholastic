@@ -43,7 +43,7 @@
                                  coverURL:(NSString *)coverURL
                                contentURL:(NSString *)contentURL
                                  enhanced:(BOOL)enhanced;
-- (NSDictionary *)userContentItemWith:(NSString *)contentIdentifier 
+- (NSDictionary *)booksAssignmentWith:(NSString *)contentIdentifier
                           drmQualifer:(SCHDRMQualifiers)drmQualifer
                            profileIDs:(NSArray *)profileIDs;
 - (NSArray *)listXPSFilesFrom:(NSString *)directory;
@@ -203,7 +203,7 @@
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs
 {
     if (book != nil && profileIDs != nil && [profileIDs count] > 0) {
-        [self.contentSyncComponent addUserContentItemFromMainThread:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
+        [self.contentSyncComponent addBooksAssignmentFromMainThread:[self booksAssignmentWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
                                                                                   drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
                                                                                    profileIDs:profileIDs]];
         
@@ -215,15 +215,15 @@
 {
     if ([entries count] && [profileIDs count]) {
         
-        NSMutableArray *userContentItems =     [NSMutableArray arrayWithCapacity:[entries count] * [profileIDs count]];
+        NSMutableArray *booksAssignments     = [NSMutableArray arrayWithCapacity:[entries count] * [profileIDs count]];
         NSMutableArray *contentMetadataItems = [NSMutableArray arrayWithCapacity:[entries count]];
         NSMutableArray *profileItems         = [NSMutableArray arrayWithCapacity:[entries count]];
 
         for (NSDictionary *entry in entries) {
             for (NSNumber *profileID in profileIDs) {
-                [userContentItems addObject:[self userContentItemWith:[entry objectForKey:@"Isbn13"]
-                                                          drmQualifer:kSCHDRMQualifiersNone
-                                                           profileIDs:profileIDs]];
+                [booksAssignments addObject:[self booksAssignmentWith:[entry objectForKey:@"Isbn13"]
+                                                         drmQualifer:kSCHDRMQualifiersNone
+                                                          profileIDs:profileIDs]];
             }
             
             [contentMetadataItems addObject:[self contentMetaDataItemWith:[entry objectForKey:@"Isbn13"]
@@ -247,7 +247,7 @@
         }
 
         [self.profileSyncComponent syncProfilesFromMainThread:profileItems];
-        [self.contentSyncComponent syncUserContentItemsFromMainThread:userContentItems];
+        [self.contentSyncComponent syncBooksAssignmentsFromMainThread:booksAssignments];
         [self.bookshelfSyncComponent syncContentMetadataItemsFromMainThread:contentMetadataItems];        
     }
 }
@@ -474,7 +474,7 @@
     return(ret);    
 }
 
-- (NSDictionary *)userContentItemWith:(NSString *)contentIdentifier
+- (NSDictionary *)booksAssignmentWith:(NSString *)contentIdentifier
                           drmQualifer:(SCHDRMQualifiers)drmQualifer
                            profileIDs:(NSArray *)profileIDs
 {
@@ -507,7 +507,6 @@
     [ret setObject:@"XPS" forKey:kSCHLibreAccessWebServiceFormat];
     [ret setObject:version forKey:kSCHLibreAccessWebServiceVersion];    
     [ret setObject:profileList forKey:kSCHLibreAccessWebServiceProfileList];
-    [ret setObject:orderList forKey:kSCHLibreAccessWebServiceOrderList]; 
     [ret setObject:version forKey:kSCHLibreAccessWebServiceLastVersion];    
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceFreeBook];        
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];
@@ -574,7 +573,7 @@
                                                     contentURL:nil
                                                       enhanced:[xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile]];
             
-            [self.contentSyncComponent addUserContentItemFromMainThread:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
+            [self.contentSyncComponent addBooksAssignmentFromMainThread:[self booksAssignmentWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
                                                                                       drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
                                                                                        profileIDs:profileIDs]];
             SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItemFromMainThread:book];

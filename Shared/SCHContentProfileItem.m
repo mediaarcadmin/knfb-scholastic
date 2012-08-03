@@ -8,7 +8,6 @@
 
 #import "SCHContentProfileItem.h"
 
-#import "SCHUserContentItem.h"
 #import "SCHAnnotationsContentItem.h"
 #import "SCHReadingStatsContentItem.h"
 #import "SCHBookIdentifier.h"
@@ -20,8 +19,8 @@ NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
 
 @dynamic ProfileID;
 @dynamic LastPageLocation;
-@dynamic UserContentItem;
 @dynamic AppContentProfileItem;
+@dynamic booksAssignment;
 @dynamic Rating;
 
 - (void)deleteAnnotationsForBook:(SCHBookIdentifier *)bookIdentifier

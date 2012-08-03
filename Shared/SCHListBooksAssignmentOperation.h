@@ -8,13 +8,13 @@
 
 #import "SCHSyncComponentOperation.h"
 
-@class SCHUserContentItem;
+@class SCHBooksAssignment;
 
 @interface SCHListBooksAssignmentOperation : SCHSyncComponentOperation
 
-- (void)syncUserContentItems:(NSArray *)userContentList
+- (void)syncBooksAssignments:(NSArray *)booksAssignmentList
         managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
-- (SCHUserContentItem *)addUserContentItem:(NSDictionary *)webUserContentItem
+- (SCHBooksAssignment *)addBooksAssignment:(NSDictionary *)webBooksAssignment
                       managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end

@@ -11,7 +11,7 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHContentMetadataItem.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "SCHBookIdentifier.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHListContentMetadataOperation.h"
@@ -28,7 +28,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 
 - (BOOL)updateContentMetadataItems;
-- (NSArray *)localUserContentItems;
+- (NSArray *)localBooksAssignments;
 
 @end
 
@@ -176,12 +176,13 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 	NSMutableArray *results = [NSMutableArray array];
 
-    // only update books we don't already have unless there is a Version change
-    [[self localUserContentItems] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    // only update books we don't already have unless there is a version change
+    [[self localBooksAssignments] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        SCHBooksAssignment *booksAssignment = obj;
         NSSet *contentMetadataItems = (NSSet *)[obj ContentMetadataItem];
         
         if ([contentMetadataItems count] < 1 || 
-            [[[contentMetadataItems anyObject] Version] integerValue] != [[obj Version] integerValue]) {
+            [[[contentMetadataItems anyObject] Version] integerValue] != [booksAssignment.version integerValue]) {
             [results addObject:obj];
         }
     }];
@@ -244,14 +245,14 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	return(ret);	
 }
 
-- (NSArray *)localUserContentItems
+- (NSArray *)localBooksAssignments
 {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSError *error = nil;
 	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment inManagedObjectContext:self.managedObjectContext]];
     // we only want books that are on a bookshelf
-	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileList.@count > 0"]];    
+	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"profileList.@count > 0"]];    
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObjects:
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],

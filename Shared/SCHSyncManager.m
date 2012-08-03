@@ -53,7 +53,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)updateAnnotationSync;
 - (void)addAllProfilesToAnnotationSync;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
-- (NSDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
+- (NSDictionary *)annotationContentItemFromBooksAssignment:(SCHBooksAssignment *)booksAssignment
                                                 forProfile:(NSNumber *)profileID;
 - (void)postSettingsSyncCompletedSyncs;
 - (BOOL)readingStatsActive;
@@ -548,8 +548,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	NSMutableArray *ret = [NSMutableArray array];
 	
 	for (SCHContentProfileItem *contentProfileItem in profileItem.ContentProfileItem) {
-        if (contentProfileItem.UserContentItem) {
-            NSDictionary *annotationContentItem = [self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem forProfile:profileItem.ID];
+        if (contentProfileItem.booksAssignment) {
+            NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:contentProfileItem.booksAssignment forProfile:profileItem.ID];
             if (annotationContentItem != nil) {
                 [ret addObject:annotationContentItem];
             }
@@ -559,12 +559,12 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	return ret;
 }
 
-- (NSDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem                                                        
+- (NSDictionary *)annotationContentItemFromBooksAssignment:(SCHBooksAssignment *)booksAssignment
                                                 forProfile:(NSNumber *)profileID;
 {	
 	NSMutableDictionary *ret = nil;
     
-    if (userContentItem != nil && profileID != nil) {
+    if (booksAssignment != nil && profileID != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSError *error = nil;
         
@@ -580,14 +580,14 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         
         if ([profiles count] > 0) {
             SCHAppContentProfileItem *appContentProfileItem = [[profiles objectAtIndex:0] appContentProfileItemForBookIdentifier:
-                                                               [userContentItem bookIdentifier]];        
+                                                               [booksAssignment bookIdentifier]];        
             
-            id contentIdentifier = [userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-            id contentIdentifierType = [userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifierType];
-            id DRMQualifier = [userContentItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
-            id format = [userContentItem valueForKey:kSCHLibreAccessWebServiceFormat];
-            id version = [userContentItem valueForKey:kSCHLibreAccessWebServiceVersion];
-            id averageRating = [userContentItem valueForKey:kSCHLibreAccessWebServiceAverageRating];
+            id contentIdentifier = [booksAssignment valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+            id contentIdentifierType = [booksAssignment valueForKey:kSCHLibreAccessWebServiceContentIdentifierType];
+            id DRMQualifier = [booksAssignment valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
+            id format = [booksAssignment valueForKey:kSCHLibreAccessWebServiceFormat];
+            id version = [booksAssignment valueForKey:kSCHLibreAccessWebServiceVersion];
+            id averageRating = [booksAssignment valueForKey:kSCHLibreAccessWebServiceAverageRating];
             
             if (appContentProfileItem != nil && 
                 contentIdentifier != nil && contentIdentifier != [NSNull null] && 
@@ -627,7 +627,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	return ret;
 }
 
-- (void)openDocumentSync:(SCHUserContentItem *)userContentItem 
+- (void)openDocumentSync:(SCHBooksAssignment *)booksAssignment
           forProfile:(NSNumber *)profileID
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
@@ -635,8 +635,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     if ([self shouldSync] == YES) {	
         NSLog(@"Scheduling Open Document");
         
-        if (userContentItem != nil && profileID != nil) {
-            NSDictionary *annotationContentItem = [self annotationContentItemFromUserContentItem:userContentItem forProfile:profileID];
+        if (booksAssignment != nil && profileID != nil) {
+            NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment forProfile:profileID];
             if (annotationContentItem != nil) {
                 [self.annotationSyncComponent addProfile:profileID 
                                                withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];	
@@ -653,7 +653,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     }
 }
 
-- (void)closeDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID
+- (void)closeDocumentSync:(SCHBooksAssignment *)booksAssignment forProfile:(NSNumber *)profileID
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
@@ -667,8 +667,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     if ([self shouldSync] == YES) {	
         NSLog(@"Scheduling Close Document");
         
-        if (userContentItem != nil && profileID != nil) {
-            NSDictionary *annotationContentItem = [self annotationContentItemFromUserContentItem:userContentItem forProfile:profileID];
+        if (booksAssignment != nil && profileID != nil) {
+            NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment forProfile:profileID];
             if (annotationContentItem != nil) {
                 [self.annotationSyncComponent addProfile:profileID 
                                                withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];	

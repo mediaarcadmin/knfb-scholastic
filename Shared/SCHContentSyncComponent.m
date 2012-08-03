@@ -11,8 +11,7 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHLibreAccessWebService.h"
-#import "SCHUserContentItem.h"
-#import "SCHOrderItem.h"
+#import "SCHBooksAssignment.h"
 #import "SCHContentProfileItem.h"
 #import "SCHListBooksAssignmentOperation.h"
 #import "SCHAnnotationsContentItem.h"
@@ -30,7 +29,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 
-- (BOOL)updateUserContentItems;
+- (BOOL)updateBooksAssignments;
 
 @end
 
@@ -64,7 +63,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	if (self.isSynchronizing == NO) {
         [self beginBackgroundTask];
 		
-		ret = [self updateUserContentItems];
+		ret = [self updateBooksAssignments];
         if (ret == NO) {
             [self endBackgroundTask];
         }         
@@ -89,8 +88,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 {
 	NSError *error = nil;
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHUserContentItem error:&error priorToDeletionBlock:nil] ||
-		![self.managedObjectContext BITemptyEntity:kSCHOrderItem error:&error priorToDeletionBlock:nil] ||
+	if (![self.managedObjectContext BITemptyEntity:kSCHBooksAssignment error:&error priorToDeletionBlock:nil] ||
 		![self.managedObjectContext BITemptyEntity:kSCHContentProfileItem error:&error priorToDeletionBlock:nil] ||
         ![self.managedObjectContext BITemptyEntity:kSCHAnnotationsContentItem error:&error priorToDeletionBlock:nil] ||
         ![self.managedObjectContext BITemptyEntity:kSCHReadingStatsContentItem error:&error priorToDeletionBlock:nil]) {
@@ -149,16 +147,16 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                notificationUserInfo:nil];
 }
 
-- (BOOL)updateUserContentItems
+- (BOOL)updateBooksAssignments
 {		
 	BOOL ret = YES;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSError *error = nil;
     
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment inManagedObjectContext:self.managedObjectContext]];
 	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
 					   [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
-	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ANY ProfileList.State IN %@", changedStates]];
+	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ANY profileList.State IN %@", changedStates]];
 	
 	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (results == nil) {
@@ -211,24 +209,24 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 	return(ret);	
 }
 
-- (void)syncUserContentItemsFromMainThread:(NSArray *)userContentList
+- (void)syncBooksAssignmentsFromMainThread:(NSArray *)booksAssignmentList
 {
-    if (userContentList != nil) {
-        SCHListBooksAssignmentOperation *operation = [[[SCHListBooksAssignmentOperation alloc] initWithSyncComponent:self 
-                                                                                                                          result:nil
-                                                                                                                        userInfo:nil] autorelease];
-        [operation syncUserContentItems:userContentList managedObjectContext:self.managedObjectContext];
+    if (booksAssignmentList != nil) {
+        SCHListBooksAssignmentOperation *operation = [[[SCHListBooksAssignmentOperation alloc] initWithSyncComponent:self
+                                                                                                              result:nil
+                                                                                                            userInfo:nil] autorelease];
+        [operation syncBooksAssignments:booksAssignmentList managedObjectContext:self.managedObjectContext];
     }
 }
 
-- (void)addUserContentItemFromMainThread:(NSDictionary *)webUserContentItem
+- (void)addBooksAssignmentFromMainThread:(NSDictionary *)webBooksAssignment
 {
-    if (webUserContentItem != nil) {
-        SCHListBooksAssignmentOperation *operation = [[[SCHListBooksAssignmentOperation alloc] initWithSyncComponent:self 
-                                                                                                                          result:nil
-                                                                                                                        userInfo:nil] autorelease];
+    if (webBooksAssignment != nil) {
+        SCHListBooksAssignmentOperation *operation = [[[SCHListBooksAssignmentOperation alloc] initWithSyncComponent:self
+                                                                                                              result:nil
+                                                                                                            userInfo:nil] autorelease];
         
-        [operation addUserContentItem:webUserContentItem managedObjectContext:self.managedObjectContext];
+        [operation addBooksAssignment:webBooksAssignment managedObjectContext:self.managedObjectContext];
     }
 }
 

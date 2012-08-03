@@ -388,8 +388,6 @@
 		52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
 		52298A8A12F0EF5600BBBCE6 /* SCHLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */; };
 		52298A8B12F0EF5600BBBCE6 /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
-		52298A8C12F0EF5600BBBCE6 /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
-		52298A8D12F0EF5600BBBCE6 /* SCHOrderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */; };
 		52298A8E12F0EF5600BBBCE6 /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
 		52298A8F12F0EF5600BBBCE6 /* SCHContentProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */; };
 		52298A9012F0EF5600BBBCE6 /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
@@ -1087,10 +1085,8 @@
 		52488AE71407990500DA9AFA /* SCHLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */; };
 		52488AE81407990500DA9AFA /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
 		52488AE91407990500DA9AFA /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
-		52488AEA1407990500DA9AFA /* SCHOrderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */; };
 		52488AEB1407990500DA9AFA /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */; };
 		52488AEC1407990500DA9AFA /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
-		52488AED1407990500DA9AFA /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
 		52488AEE1407990500DA9AFA /* SCHSettingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHSettingItem.m */; };
 		52488AEF1407990500DA9AFA /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
 		52488AF01407990500DA9AFA /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
@@ -1471,6 +1467,11 @@
 		52943AE514FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
 		52943AE614FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
 		52943AE814FFD0E8002991EB /* SCHWishListSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */; };
+		5295F5B115CAB35000F547C8 /* SCHBooksAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5295F5B015CAB35000F547C8 /* SCHBooksAssignment.m */; };
+		5295F5B215CAB35000F547C8 /* SCHBooksAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5295F5B015CAB35000F547C8 /* SCHBooksAssignment.m */; };
+		5295F5B315CAB35000F547C8 /* SCHBooksAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5295F5B015CAB35000F547C8 /* SCHBooksAssignment.m */; };
+		5295F5B415CAB35000F547C8 /* SCHBooksAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5295F5B015CAB35000F547C8 /* SCHBooksAssignment.m */; };
+		5295F5B515CAB35000F547C8 /* SCHBooksAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5295F5B015CAB35000F547C8 /* SCHBooksAssignment.m */; };
 		529645A315775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
 		529645A415775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
 		529645A515775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
@@ -2092,8 +2093,6 @@
 		A3D3F36A14CDDF31004A56A5 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
 		A3D3F36B14CDDF31004A56A5 /* SCHLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */; };
 		A3D3F36C14CDDF31004A56A5 /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
-		A3D3F36D14CDDF31004A56A5 /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
-		A3D3F36E14CDDF31004A56A5 /* SCHOrderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */; };
 		A3D3F36F14CDDF31004A56A5 /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
 		A3D3F37014CDDF31004A56A5 /* SCHContentProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */; };
 		A3D3F37114CDDF31004A56A5 /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
@@ -2881,7 +2880,7 @@
 		C96C182815C7FEFB002EBEBB /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
 		C96C182915C7FEFB002EBEBB /* SCHSaveProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */; };
 		C96C182A15C7FF19002EBEBB /* SCHListProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C8159093380006F0B1 /* SCHListProfileContentAnnotationsOperation.m */; };
-		C96C182B15C7FF19002EBEBB /* SCHListUserContentForRatingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C57E115912959005AC7B3 /* SCHListUserContentForRatingsOperation.m */; };
+		C96C182B15C7FF19002EBEBB /* SCHListBooksAssignmentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C57E115912959005AC7B3 /* SCHListBooksAssignmentOperation.m */; };
 		C96C182C15C7FF19002EBEBB /* SCHListContentMetadataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 525C583D159528AF005AC7B3 /* SCHListContentMetadataOperation.m */; };
 		C96C182D15C7FF19002EBEBB /* SCHSaveUserProfilesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F29B158B1F10006040D7 /* SCHSaveUserProfilesOperation.m */; };
 		C96C182E15C7FF19002EBEBB /* SCHGetUserProfilesResponseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F295158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.m */; };
@@ -2912,7 +2911,6 @@
 		C96C184715C7FF46002EBEBB /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
 		C96C184815C7FF46002EBEBB /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
 		C96C184915C7FF46002EBEBB /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
-		C96C184A15C7FF46002EBEBB /* SCHOrderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */; };
 		C96C184B15C7FF46002EBEBB /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
 		C96C184C15C7FF46002EBEBB /* SCHProfileItemSortObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D541541BA2000C36AD5 /* SCHProfileItemSortObject.m */; };
 		C96C184D15C7FF46002EBEBB /* SCHReadingStatsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */; };
@@ -2922,7 +2920,6 @@
 		C96C185115C7FF46002EBEBB /* SCHRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52566874150F698800570623 /* SCHRecommendationItem.m */; };
 		C96C185215C7FF53002EBEBB /* SCHRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHRecommendationProfile.m */; };
 		C96C185315C7FF53002EBEBB /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
-		C96C185415C7FF53002EBEBB /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
 		C96C185515C7FF53002EBEBB /* SCHWishListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323715011CA10069C72E /* SCHWishListItem.m */; };
 		C96C185615C7FF53002EBEBB /* SCHWishListProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323015011C2E0069C72E /* SCHWishListProfile.m */; };
 		C96C185715C7FF53002EBEBB /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
@@ -3842,8 +3839,6 @@
 		C9D7026B14ED50B100C10006 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
 		C9D7026C14ED50B100C10006 /* SCHLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */; };
 		C9D7026D14ED50B100C10006 /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
-		C9D7026E14ED50B100C10006 /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
-		C9D7026F14ED50B100C10006 /* SCHOrderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */; };
 		C9D7027014ED50B100C10006 /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
 		C9D7027114ED50B100C10006 /* SCHContentProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */; };
 		C9D7027214ED50B100C10006 /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
@@ -5217,10 +5212,6 @@
 		52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLastPage.m; path = Shared/SCHLastPage.m; sourceTree = "<group>"; };
 		52298A6512F0EF5600BBBCE6 /* SCHLocationText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationText.h; path = Shared/SCHLocationText.h; sourceTree = "<group>"; };
 		52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocationText.m; path = Shared/SCHLocationText.m; sourceTree = "<group>"; };
-		52298A6712F0EF5600BBBCE6 /* SCHUserContentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserContentItem.h; path = Shared/SCHUserContentItem.h; sourceTree = "<group>"; };
-		52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUserContentItem.m; path = Shared/SCHUserContentItem.m; sourceTree = "<group>"; };
-		52298A6912F0EF5600BBBCE6 /* SCHOrderItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHOrderItem.h; path = Shared/SCHOrderItem.h; sourceTree = "<group>"; };
-		52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHOrderItem.m; path = Shared/SCHOrderItem.m; sourceTree = "<group>"; };
 		52298A6B12F0EF5600BBBCE6 /* SCHWordIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWordIndex.h; path = Shared/SCHWordIndex.h; sourceTree = "<group>"; };
 		52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWordIndex.m; path = Shared/SCHWordIndex.m; sourceTree = "<group>"; };
 		52298A6D12F0EF5600BBBCE6 /* SCHContentProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHContentProfileItem.h; path = Shared/SCHContentProfileItem.h; sourceTree = "<group>"; };
@@ -5387,6 +5378,8 @@
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = Shared/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
 		52943AE314FFD0E8002991EB /* SCHWishListSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWishListSyncComponent.h; path = Shared/SCHWishListSyncComponent.h; sourceTree = "<group>"; };
 		52943AE414FFD0E8002991EB /* SCHWishListSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListSyncComponent.m; path = Shared/SCHWishListSyncComponent.m; sourceTree = "<group>"; };
+		5295F5AF15CAB35000F547C8 /* SCHBooksAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBooksAssignment.h; path = Shared/SCHBooksAssignment.h; sourceTree = "<group>"; };
+		5295F5B015CAB35000F547C8 /* SCHBooksAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBooksAssignment.m; path = Shared/SCHBooksAssignment.m; sourceTree = "<group>"; };
 		529645A115775FBA006F01D9 /* NSString+EmailValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+EmailValidation.h"; path = "Shared/NSString+EmailValidation.h"; sourceTree = "<group>"; };
 		529645A215775FBA006F01D9 /* NSString+EmailValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+EmailValidation.m"; path = "Shared/NSString+EmailValidation.m"; sourceTree = "<group>"; };
 		5296F99713FE7B4F009532F3 /* 9780545287012_r1.HalloweenParade.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545287012_r1.HalloweenParade.jpg; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.jpg"; sourceTree = "<group>"; };
@@ -7923,6 +7916,8 @@
 				52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */,
 				52AD966512F9B1B40099FB88 /* SCHAnnotationsItem.h */,
 				52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */,
+				5295F5AF15CAB35000F547C8 /* SCHBooksAssignment.h */,
+				5295F5B015CAB35000F547C8 /* SCHBooksAssignment.m */,
 				52298A7112F0EF5600BBBCE6 /* SCHBookmark.h */,
 				52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */,
 				52298A7312F0EF5600BBBCE6 /* SCHContentItem.h */,
@@ -7951,8 +7946,6 @@
 				52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */,
 				52298A5D12F0EF5600BBBCE6 /* SCHNote.h */,
 				52298A5E12F0EF5600BBBCE6 /* SCHNote.m */,
-				52298A6912F0EF5600BBBCE6 /* SCHOrderItem.h */,
-				52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */,
 				5200EFEA12F6CFE400BAC355 /* SCHPrivateAnnotations.h */,
 				5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */,
 				52298A7D12F0EF5600BBBCE6 /* SCHProfileItem.h */,
@@ -7973,8 +7966,6 @@
 				5256687A150F699800570623 /* SCHRecommendationProfile.m */,
 				52298A6F12F0EF5600BBBCE6 /* SCHSyncEntity.h */,
 				52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */,
-				52298A6712F0EF5600BBBCE6 /* SCHUserContentItem.h */,
-				52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */,
 				52298A5F12F0EF5600BBBCE6 /* SCHSettingItem.h */,
 				52298A6012F0EF5600BBBCE6 /* SCHSettingItem.m */,
 				52EA323615011CA10069C72E /* SCHWishListItem.h */,
@@ -12800,8 +12791,6 @@
 				52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */,
 				52298A8A12F0EF5600BBBCE6 /* SCHLastPage.m in Sources */,
 				52298A8B12F0EF5600BBBCE6 /* SCHLocationText.m in Sources */,
-				52298A8C12F0EF5600BBBCE6 /* SCHUserContentItem.m in Sources */,
-				52298A8D12F0EF5600BBBCE6 /* SCHOrderItem.m in Sources */,
 				52298A8E12F0EF5600BBBCE6 /* SCHWordIndex.m in Sources */,
 				52298A8F12F0EF5600BBBCE6 /* SCHContentProfileItem.m in Sources */,
 				52298A9012F0EF5600BBBCE6 /* SCHSyncEntity.m in Sources */,
@@ -13147,6 +13136,7 @@
 				52EB1F8515B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
 				C9F229AC15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229E915B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
+				5295F5B115CAB35000F547C8 /* SCHBooksAssignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13444,7 +13434,7 @@
 				C96C182815C7FEFB002EBEBB /* SCHSyncComponentOperation.m in Sources */,
 				C96C182915C7FEFB002EBEBB /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
 				C96C182A15C7FF19002EBEBB /* SCHListProfileContentAnnotationsOperation.m in Sources */,
-				C96C182B15C7FF19002EBEBB /* SCHListUserContentForRatingsOperation.m in Sources */,
+				C96C182B15C7FF19002EBEBB /* SCHListBooksAssignmentOperation.m in Sources */,
 				C96C182C15C7FF19002EBEBB /* SCHListContentMetadataOperation.m in Sources */,
 				C96C182D15C7FF19002EBEBB /* SCHSaveUserProfilesOperation.m in Sources */,
 				C96C182E15C7FF19002EBEBB /* SCHGetUserProfilesResponseOperation.m in Sources */,
@@ -13475,7 +13465,6 @@
 				C96C184715C7FF46002EBEBB /* SCHLocationGraphics.m in Sources */,
 				C96C184815C7FF46002EBEBB /* SCHLocationText.m in Sources */,
 				C96C184915C7FF46002EBEBB /* SCHNote.m in Sources */,
-				C96C184A15C7FF46002EBEBB /* SCHOrderItem.m in Sources */,
 				C96C184B15C7FF46002EBEBB /* SCHPrivateAnnotations.m in Sources */,
 				C96C184C15C7FF46002EBEBB /* SCHProfileItemSortObject.m in Sources */,
 				C96C184D15C7FF46002EBEBB /* SCHReadingStatsContentItem.m in Sources */,
@@ -13485,7 +13474,6 @@
 				C96C185115C7FF46002EBEBB /* SCHRecommendationItem.m in Sources */,
 				C96C185215C7FF53002EBEBB /* SCHRecommendationProfile.m in Sources */,
 				C96C185315C7FF53002EBEBB /* SCHSyncEntity.m in Sources */,
-				C96C185415C7FF53002EBEBB /* SCHUserContentItem.m in Sources */,
 				C96C185515C7FF53002EBEBB /* SCHWishListItem.m in Sources */,
 				C96C185615C7FF53002EBEBB /* SCHWishListProfile.m in Sources */,
 				C96C185715C7FF53002EBEBB /* SCHWordIndex.m in Sources */,
@@ -13547,6 +13535,7 @@
 				C96C18AC15C80EA9002EBEBB /* levenshtein_distance.c in Sources */,
 				C96C199615C961A0002EBEBB /* SCHAppModelTests.m in Sources */,
 				C96C199915C980CF002EBEBB /* LambdaAlert.m in Sources */,
+				5295F5B315CAB35000F547C8 /* SCHBooksAssignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13593,10 +13582,8 @@
 				52488AE71407990500DA9AFA /* SCHLastPage.m in Sources */,
 				52488AE81407990500DA9AFA /* SCHLocationText.m in Sources */,
 				52488AE91407990500DA9AFA /* SCHLocationGraphics.m in Sources */,
-				52488AEA1407990500DA9AFA /* SCHOrderItem.m in Sources */,
 				52488AEB1407990500DA9AFA /* SCHProfileItem.m in Sources */,
 				52488AEC1407990500DA9AFA /* SCHSyncEntity.m in Sources */,
-				52488AED1407990500DA9AFA /* SCHUserContentItem.m in Sources */,
 				52488AEE1407990500DA9AFA /* SCHSettingItem.m in Sources */,
 				52488AEF1407990500DA9AFA /* SCHWordIndex.m in Sources */,
 				52488AF01407990500DA9AFA /* SCHPrivateAnnotations.m in Sources */,
@@ -13935,6 +13922,7 @@
 				52EB1F8615B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
 				C9F229AD15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229EA15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
+				5295F5B215CAB35000F547C8 /* SCHBooksAssignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13976,8 +13964,6 @@
 				A3D3F36A14CDDF31004A56A5 /* SCHContentMetadataItem.m in Sources */,
 				A3D3F36B14CDDF31004A56A5 /* SCHLastPage.m in Sources */,
 				A3D3F36C14CDDF31004A56A5 /* SCHLocationText.m in Sources */,
-				A3D3F36D14CDDF31004A56A5 /* SCHUserContentItem.m in Sources */,
-				A3D3F36E14CDDF31004A56A5 /* SCHOrderItem.m in Sources */,
 				A3D3F36F14CDDF31004A56A5 /* SCHWordIndex.m in Sources */,
 				A3D3F37014CDDF31004A56A5 /* SCHContentProfileItem.m in Sources */,
 				A3D3F37114CDDF31004A56A5 /* SCHSyncEntity.m in Sources */,
@@ -14323,6 +14309,7 @@
 				52EB1F8715B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
 				C9F229AF15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229EC15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
+				5295F5B415CAB35000F547C8 /* SCHBooksAssignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14364,8 +14351,6 @@
 				C9D7026B14ED50B100C10006 /* SCHContentMetadataItem.m in Sources */,
 				C9D7026C14ED50B100C10006 /* SCHLastPage.m in Sources */,
 				C9D7026D14ED50B100C10006 /* SCHLocationText.m in Sources */,
-				C9D7026E14ED50B100C10006 /* SCHUserContentItem.m in Sources */,
-				C9D7026F14ED50B100C10006 /* SCHOrderItem.m in Sources */,
 				C9D7027014ED50B100C10006 /* SCHWordIndex.m in Sources */,
 				C9D7027114ED50B100C10006 /* SCHContentProfileItem.m in Sources */,
 				C9D7027214ED50B100C10006 /* SCHSyncEntity.m in Sources */,
@@ -14711,6 +14696,7 @@
 				52EB1F8815B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
 				C9F229ED15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
 				C99BAB6F15BEB4CF00B18436 /* SCHAppModel.m in Sources */,
+				5295F5B515CAB35000F547C8 /* SCHBooksAssignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -42,7 +42,7 @@
 #import "SCHAppContentProfileItem.h"
 #import "SCHUserDefaults.h"
 #import "SCHContentProfileItem.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "SCHReadingStoryInteractionButton.h"
 #import "SCHProfileSyncComponent.h"
 #import "NSDate+ServerDate.h"
@@ -465,7 +465,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.shouldShowPageNumbers = book.shouldShowPageNumbers;
         self.forceOpenToCover = [NSNumber numberWithBool:book.alwaysOpenToCover];
         
-        [[SCHSyncManager sharedSyncManager] openDocumentSync:book.ContentMetadataItem.UserContentItem 
+        [[SCHSyncManager sharedSyncManager] openDocumentSync:book.ContentMetadataItem.booksAssignment
                                               forProfile:profile.ID];
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -931,7 +931,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         [self save];
         
-        [[SCHSyncManager sharedSyncManager] closeDocumentSync:book.ContentMetadataItem.UserContentItem 
+        [[SCHSyncManager sharedSyncManager] closeDocumentSync:book.ContentMetadataItem.booksAssignment
                                                forProfile:self.profile.ID];
     }    
 }
@@ -2179,7 +2179,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
         SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
         if (appContentProfileItem != nil) {
-            newHighlight.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.Version integerValue]];
+            newHighlight.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.booksAssignment.version integerValue]];
         }
         [self save];
     }
@@ -2899,7 +2899,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
         if (appContentProfileItem != nil) {
-            scratchNote.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.UserContentItem.Version integerValue]];
+            scratchNote.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.booksAssignment.version integerValue]];
         }
         
         SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
