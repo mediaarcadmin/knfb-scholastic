@@ -268,19 +268,22 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         [aHostView addSubview:self.containerView];
     }
 
-    if ([self shouldShowAudioButtonForViewAtIndex:self.currentScreenIndex]) {
-        if (!self.readAloudButton) {
-            UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
-            self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            self.readAloudButton.autoresizingMask = 0;
-            self.readAloudButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
-            [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
-            [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
-            [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        }
+    if (!self.readAloudButton) {
+        UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
+        self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.readAloudButton.autoresizingMask = 0;
+        self.readAloudButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
+        [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
+        [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
+        [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+
+    BOOL shouldShowAudioButton = [self shouldShowAudioButtonForViewAtIndex:self.currentScreenIndex];
+
+    if (shouldShowAudioButton) {
+        self.readAloudButton.hidden = NO;
     } else {
-        [self.readAloudButton removeFromSuperview];
-        self.readAloudButton = nil;
+        self.readAloudButton.hidden = YES;
     }
     
     if ([self shouldShowCloseButtonForViewAtIndex:self.currentScreenIndex]) {
