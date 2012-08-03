@@ -251,7 +251,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     [fetchRequest setEntity:entity];
     entity = nil;
     
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"word == %@", baseWord];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"word ==[cd] %@", baseWord];
     
     [fetchRequest setPredicate:pred];
     pred = nil;
