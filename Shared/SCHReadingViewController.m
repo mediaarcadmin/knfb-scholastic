@@ -1093,7 +1093,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         SCHLastPage *lastPage = [self.bookAnnotations lastPage];
         
         // We don't actually want to persist a generated last page as the current page
-        NSInteger currentPage = MIN(currentBookPoint.layoutPage, [self.readingView pageCount]);
+        NSUInteger pageCount = [self.readingView pageCount];
+        NSUInteger currentPage = MIN(currentBookPoint.layoutPage, pageCount);
         lastPage.LastPageLocation = [NSNumber numberWithInteger:currentPage];
         
         // Progress should not be exactly 0 once a book is opened so always set a min of 0.001f and a max of 1.0f
