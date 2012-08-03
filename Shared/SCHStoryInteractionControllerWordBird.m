@@ -95,19 +95,62 @@ enum {
     [self setUserInteractionsEnabled:YES];
 }
 
+- (BOOL)shouldShowAudioButtonForViewAtIndex:(NSInteger)screenIndex
+{
+    return screenIndex == 0 && !completed;
+}
+
+// special handling of sound in this SI
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
 {
     return screenIndex == 0 && !completed;
 }
 
+- (void)tappedAudioButton:(id)sender withViewAtIndex:(NSInteger)screenIndex
+{
+    NSString *path = nil;
+    
+    switch (screenIndex) {
+        case 0:
+            if (completed) {
+                path = [(SCHStoryInteractionWordBird *)self.storyInteraction audioPathForNiceFlying];
+            } else {
+                path = [(SCHStoryInteractionWordBird *)self.storyInteraction audioPathForQuestion];
+            }
+            break;
+        case 1:
+            break;
+        default:
+            break;
+    }
+    
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        if (path) {
+            [self enqueueAudioWithPath:path
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:^{
+                    self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
+                    
+                }
+                  synchronizedEndBlock:^{
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  }
+             ];
+        }
+    }];
+}
+
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     if (screenIndex == 0) {
+
         if (completed) {
             [self.introLabel setTextAlignment:UITextAlignmentCenter];
             [self.introLabel setText:@"Nice Flying!"];
             [self.playButton setTitle:@"Play Again" forState:UIControlStateNormal];
         }
+        
         [self.playButton setEnabled:YES];
 
     } else if (screenIndex == 1) {
