@@ -86,6 +86,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         createHighlightFromSelection = YES;
         
         self.opaque = YES;
+        self.backgroundColor = [UIColor blackColor];
         self.multipleTouchEnabled = YES;
         self.userInteractionEnabled = YES;
 
@@ -658,8 +659,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 }
 
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index {}
-
-- (void)refreshPageTurningViewImmediately:(BOOL)immediately {}
 
 - (void)dismissSelector
 {
