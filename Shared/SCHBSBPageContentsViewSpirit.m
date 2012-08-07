@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
+#if !BRANCHING_STORIES_DISABLED
 #import "SCHBSBPageContentsViewSpirit.h"
 #import "SCHBSBEucBook.h"
 #import "SCHBSBTreeNode.h"
@@ -389,3 +390,4 @@
 }
 
 @end
+#endif

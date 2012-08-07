@@ -5,7 +5,7 @@
 //  Created by Matt Farrugia on 09/05/2012.
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
-
+#if !BRANCHING_STORIES_DISABLED
 #import "SCHBSBEucBook.h"
 #import "SCHBSBConstants.h"
 #import "SCHBookPackageProvider.h"
@@ -298,3 +298,4 @@
 }
                                        
 @end
+#endif

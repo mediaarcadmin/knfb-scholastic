@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
+#if !BRANCHING_STORIES_DISABLED
 #import <libEucalyptus/EucBook.h>
 #import "SCHEucBookmarkPointTranslation.h"
 
@@ -21,3 +22,4 @@
 - (NSUInteger)sourceCount;
 
 @end
+#endif

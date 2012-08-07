@@ -13,7 +13,9 @@
 #import "SCHTextFlow.h"
 #import "SCHFlowEucBook.h"
 #import "SCHEPubBook.h"
+#if !BRANCHING_STORIES_DISABLED
 #import "SCHBSBEucBook.h"
+#endif
 #import "SCHXPSProvider.h"
 #import "SCHBSBProvider.h"
 #import "SCHTextFlowParagraphSource.h"
@@ -380,7 +382,9 @@ static int checkoutCountEucBook = 0;
             id <SCHBookPackageProvider> provider = [self checkOutBookPackageProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext];
             
             if ([provider isKindOfClass:[SCHBSBProvider class]]) {
+#if !BRANCHING_STORIES_DISABLED
                 eucBook = [[SCHBSBEucBook alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];;
+#endif
             } else {
                 BOOL hasEPub = [(SCHXPSProvider *)provider containsEmbeddedEPub];
                 
