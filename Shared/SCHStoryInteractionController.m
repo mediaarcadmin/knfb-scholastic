@@ -268,19 +268,22 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         [aHostView addSubview:self.containerView];
     }
 
-    if (questionAudioPath) {
-        if (!self.readAloudButton) {
-            UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
-            self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            self.readAloudButton.autoresizingMask = 0;
-            self.readAloudButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
-            [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
-            [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
-            [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        }
+    if (!self.readAloudButton) {
+        UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
+        self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.readAloudButton.autoresizingMask = 0;
+        self.readAloudButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
+        [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
+        [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
+        [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+
+    BOOL shouldShowAudioButton = [self shouldShowAudioButtonForViewAtIndex:self.currentScreenIndex];
+
+    if (shouldShowAudioButton) {
+        self.readAloudButton.hidden = NO;
     } else {
-        [self.readAloudButton removeFromSuperview];
-        self.readAloudButton = nil;
+        self.readAloudButton.hidden = YES;
     }
     
     if ([self shouldShowCloseButtonForViewAtIndex:self.currentScreenIndex]) {
@@ -725,13 +728,18 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    if (![self.audioPlayer isPlaying]) { 
+    [self tappedAudioButton:sender withViewAtIndex:self.currentScreenIndex];
+}
+
+- (void)tappedAudioButton:(id)sender withViewAtIndex:(NSInteger)screenIndex
+{
+    if (![self.audioPlayer isPlaying]) {
         NSString *path = [self audioPathForQuestion];
         if (path != nil) {
             [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:nil];
-            [self enqueueAudioWithPath:path 
-                            fromBundle:NO 
-                            startDelay:0 
+            [self enqueueAudioWithPath:path
+                            fromBundle:NO
+                            startDelay:0
                 synchronizedStartBlock:^{
                     self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
                     
@@ -740,8 +748,8 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
                       self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                   }
              ];
-
-        }   
+            
+        }
     }
 }
 
@@ -857,6 +865,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
 {
     return YES;
+}
+
+- (BOOL)shouldShowAudioButtonForViewAtIndex:(NSInteger)screenIndex
+{
+    return ([self audioPathForQuestion] != nil);
 }
 
 - (NSString *)audioPathForQuestion

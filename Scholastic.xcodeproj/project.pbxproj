@@ -5517,6 +5517,10 @@
 		52EA323715011CA10069C72E /* SCHWishListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListItem.m; path = Shared/SCHWishListItem.m; sourceTree = "<group>"; };
 		52EB1F8315B976F0007E60D3 /* SCHAccountVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAccountVerifier.h; path = Shared/SCHAccountVerifier.h; sourceTree = "<group>"; };
 		52EB1F8415B976F0007E60D3 /* SCHAccountVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAccountVerifier.m; path = Shared/SCHAccountVerifier.m; sourceTree = "<group>"; };
+		52EE0ED415CBC086004F7616 /* LibreAccessService_UAT.wsdl */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LibreAccessService_UAT.wsdl; sourceTree = "<group>"; };
+		52EE0ED515CBC086004F7616 /* SchWS_Authenticate_QA.wsdl */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SchWS_Authenticate_QA.wsdl; sourceTree = "<group>"; };
+		52EE0ED615CBC086004F7616 /* SchWS_GetUserInfo_QA.wsdl */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SchWS_GetUserInfo_QA.wsdl; sourceTree = "<group>"; };
+		52EE0ED715CBC086004F7616 /* SchWS_WishListService_QA.wsdl */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SchWS_WishListService_QA.wsdl; sourceTree = "<group>"; };
 		52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLoginPasswordViewController.h; path = iPhone/SCHLoginPasswordViewController.h; sourceTree = "<group>"; };
 		52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLoginPasswordViewController.m; path = iPhone/SCHLoginPasswordViewController.m; sourceTree = "<group>"; };
 		52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController~iphone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "SCHLoginViewController~iphone.xib"; sourceTree = "<group>"; };
@@ -8179,6 +8183,7 @@
 		5293868D12DF3A3300045B44 /* WSDL2ObjC */ = {
 			isa = PBXGroup;
 			children = (
+				52EE0ED315CBC069004F7616 /* WSDL */,
 				5293868E12DF3A3300045B44 /* AuthenticateSvc.h */,
 				5293868F12DF3A3300045B44 /* AuthenticateSvc.m */,
 				521B7AD61521D1ED00DC0739 /* AuthenticateSvc+Binding.h */,
@@ -8422,6 +8427,17 @@
 				C923B14612F6AFE10054426F /* Bookshelves */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		52EE0ED315CBC069004F7616 /* WSDL */ = {
+			isa = PBXGroup;
+			children = (
+				52EE0ED415CBC086004F7616 /* LibreAccessService_UAT.wsdl */,
+				52EE0ED515CBC086004F7616 /* SchWS_Authenticate_QA.wsdl */,
+				52EE0ED615CBC086004F7616 /* SchWS_GetUserInfo_QA.wsdl */,
+				52EE0ED715CBC086004F7616 /* SchWS_WishListService_QA.wsdl */,
+			);
+			name = WSDL;
 			sourceTree = "<group>";
 		};
 		52EF579412EDBE6E00E374F7 /* security */ = {

@@ -145,7 +145,7 @@ enum {
     [self layoutTiles];
 }
 
-- (IBAction)playAudioButtonTapped:(id)sender
+- (void)tappedAudioButton:(id)sender withViewAtIndex:(NSInteger)screenIndex
 {
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         NSString *path = nil;

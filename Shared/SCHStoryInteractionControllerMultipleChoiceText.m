@@ -186,7 +186,7 @@
     }
 }
 
-- (void)playAudioButtonTapped:(id)sender
+- (void)tappedAudioButton:(id)sender withViewAtIndex:(NSInteger)screenIndex
 {
     if (![self playingAudio] && self.controllerState != SCHStoryInteractionControllerStateInteractionFinishedSuccessfully) { 
         self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
