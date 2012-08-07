@@ -115,7 +115,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange;
 - (void)deleteHighlightWithSelection:(EucSelectorRange *)selectorRange;
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index;
-- (void)refreshPageTurningViewImmediately:(BOOL)immediately;
 
 - (void)attachSelector;
 - (void)detachSelector;

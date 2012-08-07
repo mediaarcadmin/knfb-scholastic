@@ -583,19 +583,6 @@ static void sortedHighlightRangePredicateInit() {
     [self.eucBookView refreshHighlights];
 }
 
-- (void)refreshPageTurningViewImmediately:(BOOL)immediately
-{
-    if (immediately) {
-        // [self.eucBookView.pageTurningView drawView];
-        [CATransaction begin];
-        [self.eucBookView.pageTurningView setNeedsDisplay];
-        [CATransaction flush];
-        [CATransaction commit];
-    } else {
-        [self.eucBookView.pageTurningView setNeedsDisplay];
-    }
-}
-
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange
 {
     if (nil == selectorRange) return nil;
