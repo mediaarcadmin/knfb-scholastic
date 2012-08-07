@@ -2646,6 +2646,7 @@
 		C958DE7815D1146D00E93C09 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C958DE7515D1143D00E93C09 /* libresolv.dylib */; };
 		C958DE7915D1148A00E93C09 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C958DE7515D1143D00E93C09 /* libresolv.dylib */; };
 		C958DE7A15D1149500E93C09 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C958DE7515D1143D00E93C09 /* libresolv.dylib */; };
+		C958DEE215D1302E00E93C09 /* SCHBSBProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C63155A7F6600C7041F /* SCHBSBProvider.m */; };
 		C959076C1497D08000E024AF /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = C959076B1497D08000E024AF /* NSString+URLEncoding.m */; };
 		C959076D1497D08000E024AF /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = C959076B1497D08000E024AF /* NSString+URLEncoding.m */; };
 		C95C7CC1135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */; };
@@ -13665,6 +13666,7 @@
 				C96C18AC15C80EA9002EBEBB /* levenshtein_distance.c in Sources */,
 				C96C199615C961A0002EBEBB /* SCHAppModelTests.m in Sources */,
 				C96C199915C980CF002EBEBB /* LambdaAlert.m in Sources */,
+				C958DEE215D1302E00E93C09 /* SCHBSBProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
