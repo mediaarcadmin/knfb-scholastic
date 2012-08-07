@@ -60,7 +60,7 @@
         return;
     }
 	
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:bookIdentifier];
+	SCHXPSProvider *xpsProvider = (SCHXPSProvider *)[[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:bookIdentifier];
     
     if (!xpsProvider) {
 		return;
@@ -91,7 +91,7 @@
 	/* we can release our copy */
 	[response release];
 	
-	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:bookIdentifier];
+	[[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:bookIdentifier];
 	
 }
 

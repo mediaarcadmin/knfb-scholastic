@@ -6,12 +6,12 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHEPubBookmarkPointTranslation.h"
+#import "SCHEucBookmarkPointTranslation.h"
 #import <libEucalyptus/EucEPubBook.h>
 
 @class SCHBookIdentifier;
 
-@interface SCHEPubBook : EucEPubBook <SCHEPubBookmarkPointTranslation> {}
+@interface SCHEPubBook : EucEPubBook <SCHEucBookmarkPointTranslation> {}
 
 @property (nonatomic, retain, readonly) SCHBookIdentifier *identifier;
 

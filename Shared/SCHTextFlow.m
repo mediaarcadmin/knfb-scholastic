@@ -36,7 +36,7 @@
     if((self = [super initWithBookID:nil])) {
         self.identifier = newIdentifier;
         self.managedObjectContext = moc;
-        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:newIdentifier inManagedObjectContext:moc] retain];
+        xpsProvider = [(SCHXPSProvider *)[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:newIdentifier inManagedObjectContext:moc] retain];
     }
     
     return self;
@@ -46,7 +46,7 @@
 {
     
     if (xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
         [xpsProvider release], xpsProvider = nil;
     }
     

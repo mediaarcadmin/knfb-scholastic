@@ -48,7 +48,6 @@ typedef enum {
 
 @synthesize outcomeCounts;
 @synthesize outcomeTitleLabel;
-@synthesize outcomeTextLabel;
 
 - (void)dealloc
 {
@@ -60,7 +59,6 @@ typedef enum {
     [outcomeCounts release], outcomeCounts = nil;    
     
     [outcomeTitleLabel release], outcomeTitleLabel = nil;
-    [outcomeTextLabel release], outcomeTextLabel = nil;
     
     [buttonContainerView release];
     [super dealloc];
@@ -121,13 +119,11 @@ typedef enum {
 
 - (void)setupOutcomeView
 {
-    NSArray *splitResult = [[self calculatedResult] componentsSeparatedByString:@". "];
-    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self setupTitle];        
     }
-    self.outcomeTextLabel.text = ([splitResult count] > 0 ? [NSString stringWithFormat:@"%@.", [splitResult objectAtIndex:0]] : @"");
-    self.outcomeTitleLabel.text = ([splitResult count] > 1 ? [splitResult objectAtIndex:1] : @"");
+    
+    self.outcomeTitleLabel.text = [self calculatedResult];
 }
 
 - (void)setupQuestion

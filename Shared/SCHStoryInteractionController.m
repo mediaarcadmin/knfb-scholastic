@@ -227,7 +227,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     if (self.containerView == nil) {
         [self enqueueAudioWithPath:[storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];        
 
-        self.xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.bookIdentifier];
+        self.xpsProvider = (SCHXPSProvider *)[[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.bookIdentifier];
         
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
@@ -268,19 +268,22 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         [aHostView addSubview:self.containerView];
     }
 
-    if ([self shouldShowAudioButtonForViewAtIndex:self.currentScreenIndex]) {
-        if (!self.readAloudButton) {
-            UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
-            self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            self.readAloudButton.autoresizingMask = 0;
-            self.readAloudButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
-            [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
-            [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
-            [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        }
+    if (!self.readAloudButton) {
+        UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
+        self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.readAloudButton.autoresizingMask = 0;
+        self.readAloudButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
+        [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
+        [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
+        [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+
+    BOOL shouldShowAudioButton = [self shouldShowAudioButtonForViewAtIndex:self.currentScreenIndex];
+
+    if (shouldShowAudioButton) {
+        self.readAloudButton.hidden = NO;
     } else {
-        [self.readAloudButton removeFromSuperview];
-        self.readAloudButton = nil;
+        self.readAloudButton.hidden = YES;
     }
     
     if ([self shouldShowCloseButtonForViewAtIndex:self.currentScreenIndex]) {
@@ -684,7 +687,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         
         [self cancelQueuedAudio];
         
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.bookIdentifier];
         
         // report success so that the reading view can keep track of it properly
         if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:willDismissWithSuccess:)]) {

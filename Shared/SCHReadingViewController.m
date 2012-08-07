@@ -90,8 +90,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, assign) NSRange currentPageIndices;
 @property (nonatomic, assign) CGFloat currentBookProgress;
 
-// XPS book data provider
-@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
+// Book data provider
+@property (nonatomic, retain) id<SCHBookPackageProvider> bookPackageProvider;
 
 // temporary flag to prevent nav bar from being positioned behind the status bar on rotation
 @property (nonatomic, assign) BOOL currentlyRotating;
@@ -207,7 +207,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize currentPageIndex;
 @synthesize currentPageIndices;
 @synthesize currentBookProgress;
-@synthesize xpsProvider;
+@synthesize bookPackageProvider;
 @synthesize currentlyRotating;
 @synthesize currentlyScrubbing;
 @synthesize currentFontSizeIndex;
@@ -280,11 +280,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self releaseViewObjects];
     
-    if (xpsProvider && self.bookIdentifier) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
+    if (bookPackageProvider && self.bookIdentifier) {
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.bookIdentifier];
     }
     
-    [xpsProvider release], xpsProvider = nil;
+    [bookPackageProvider release], bookPackageProvider = nil;
     
     [managedObjectContext release], managedObjectContext = nil;
     [bookIdentifier release], bookIdentifier = nil;
@@ -376,10 +376,10 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         case kSCHReadingViewMissingParametersError:
             description = NSLocalizedString(@"An unexpected error occured (missing parameters). Please try again.", @"Missing paramaters error message from ReadingViewController");
             break;
-        case kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError:
+        case kSCHReadingViewBookPackageCheckoutFailedForUnspecifiedReasonError:
             description = NSLocalizedString(@"An unexpected error occured (XPS checkout failed). Please try again.", @"XPS Checkout failed due to unspecified error message from ReadingViewController");
             break;
-        case kSCHReadingViewXPSCheckoutFailedDueToInsufficientDiskSpaceError:
+        case kSCHReadingViewBookPackageCheckoutFailedDueToInsufficientDiskSpaceError:
             description = NSLocalizedString(@"You do not have enough storage on your device to complete this function. Please clear some space and then try again.", @"XPS Checkout failed due to insufficient space error message from ReadingViewController");
             break;
         case kSCHReadingViewDecryptionUnavailableError:
@@ -426,24 +426,20 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         }
         
         bookIdentifier = [aIdentifier retain];
-        NSError *xpsError;
+        NSError *packageError;
         
-        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc error:&xpsError] retain];
+        bookPackageProvider = [[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc error:&packageError] retain];
 
-        if (!xpsProvider) {
-            if ([xpsError code] == kKNFBXPSProviderNotEnoughDiskSpaceError) {
-                return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedDueToInsufficientDiskSpaceError error:error];
+        if (!bookPackageProvider || ([bookPackageProvider isValid] == NO)) {
+            if ([packageError code] == kKNFBXPSProviderNotEnoughDiskSpaceError) {
+                return [self initFailureWithErrorCode:kSCHReadingViewBookPackageCheckoutFailedDueToInsufficientDiskSpaceError error:error];
             } else {
-                return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError error:error];
+                return [self initFailureWithErrorCode:kSCHReadingViewBookPackageCheckoutFailedForUnspecifiedReasonError error:error];
             }
         }
-        
-        if ([xpsProvider pageCount] == 0) {
-            return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError error:error];
-        }
-        
-        if ([xpsProvider isEncrypted]) {
-            if (![xpsProvider decryptionIsAvailable]) {
+                
+        if ([bookPackageProvider isEncrypted]) {
+            if (![bookPackageProvider decryptionIsAvailable]) {
                 return [self initFailureWithErrorCode:kSCHReadingViewDecryptionUnavailableError error:error];
             }
         }
@@ -529,7 +525,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (SCHBookStoryInteractions *)bookStoryInteractions
 {
     if (bookStoryInteractions == nil) {
-        bookStoryInteractions = [[SCHBookStoryInteractions alloc] initWithXPSProvider:self.xpsProvider
+        bookStoryInteractions = [[SCHBookStoryInteractions alloc] initWithXPSProvider:(SCHXPSProvider *)self.bookPackageProvider
                                                                        oddPagesOnLeft:YES
                                                                              delegate:self];
         
@@ -599,7 +595,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.paperType = SCHReadingViewPaperTypeWhite;
     } else {
         
-        
+        if (1) {
+            self.layoutType = SCHReadingViewLayoutTypeFlow;
+        } else {
         // Default layout type
         NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
         if (savedLayoutType) {
@@ -610,6 +608,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             } else {
                 self.layoutType = SCHReadingViewLayoutTypeFixed;
             }
+        }
         }
         
         // Default font size index
@@ -975,7 +974,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)willTerminateNotification:(NSNotification *)notification
 {
     [self updateBookState];
-    [self.xpsProvider reportReadingIfRequired];
+    [self.bookPackageProvider reportReadingIfRequired];
 }
 
 - (void)willEnterForegroundNotification:(NSNotification *)notification
@@ -1005,7 +1004,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
             [alert show];
             [alert release];
-            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
+            [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.bookIdentifier];
             self.bookIdentifier = nil;
             if (self.modalViewController != nil) {
                 [self.modalViewController dismissModalViewControllerAnimated:NO];
@@ -1112,7 +1111,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         SCHLastPage *lastPage = [self.bookAnnotations lastPage];
         
         // We don't actually want to persist a generated last page as the current page
-        NSInteger currentPage = MIN(currentBookPoint.layoutPage, [self.readingView pageCount]);
+        NSUInteger pageCount = [self.readingView pageCount];
+        NSUInteger currentPage = MIN(currentBookPoint.layoutPage, pageCount);
         lastPage.LastPageLocation = [NSNumber numberWithInteger:currentPage];
         
         // Progress should not be exactly 0 once a book is opened so always set a min of 0.001f and a max of 1.0f
@@ -1192,7 +1192,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [self toolbarButtonPressed];
     
     [self updateBookState];
-    [self.xpsProvider reportReadingIfRequired];
+    [self.bookPackageProvider reportReadingIfRequired];
     [self.audioBookPlayer cleanAudio];
     
 	[self.navigationController popViewControllerAnimated:YES];
@@ -1254,7 +1254,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         if(audioBookReferences != nil && [audioBookReferences count] > 0) {        
             self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
-            self.audioBookPlayer.xpsProvider = self.xpsProvider;
+            self.audioBookPlayer.xpsProvider = (SCHXPSProvider *)self.bookPackageProvider;
             BOOL success = [self.audioBookPlayer prepareAudio:audioBookReferences error:&error 
                                                  wordBlockOld:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
                                                      //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
@@ -1750,7 +1750,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
     self.storyInteractionController.bookIdentifier= self.bookIdentifier;
     self.storyInteractionController.delegate = self;
-    self.storyInteractionController.xpsProvider = self.xpsProvider;
+    self.storyInteractionController.xpsProvider = (SCHXPSProvider *)self.bookPackageProvider;
     
     NSRange pageIndices = [self storyInteractionPageIndices];
     if (pageIndices.length == 2) {
@@ -2585,7 +2585,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     if ((self.layoutType == SCHReadingViewLayoutTypeFixed) &&
         (showRecommendationsLabel == NO)) {
         
-            UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
+            UIImage *scrubImage = [self.bookPackageProvider thumbnailForPage:self.currentPageIndex + 1];
             self.scrubberThumbImage.image = scrubImage;
     } else {
         self.scrubberThumbImage.image = nil;

@@ -452,7 +452,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
 {
     [self.pageTurningView setPageTexture:image isDark:isDark];
-    [self.pageTurningView setNeedsDraw];
 }
 
 - (void)zoomOutToCurrentPage
@@ -840,22 +839,11 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 - (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange
 {
     [super addHighlightWithSelection:selectorRange];
-    [self refreshPageTurningViewImmediately:YES];
 }
 
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index
 {
     [self.pageTurningView refreshHighlightsForPageAtIndex:index];
-    [self.pageTurningView setNeedsDraw]; 
-}
-
-- (void)refreshPageTurningViewImmediately:(BOOL)immediately
-{
-    if (immediately) {
-        [self.pageTurningView drawView];
-    } else {
-        [self.pageTurningView setNeedsDraw];
-    }
 }
 
 - (NSArray *)highlightRangesForCurrentPage {

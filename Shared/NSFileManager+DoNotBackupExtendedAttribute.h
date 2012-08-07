@@ -10,6 +10,6 @@
 
 @interface NSFileManager (DoNotBackupExtendedAttribute)
 
-+ (BOOL)BITsetSkipBackupAttributeToItemAtFilePath:(NSString *)filePath;
+- (BOOL)BITsetSkipBackupAttributeToItemAtFilePath:(NSString *)filePath;
 
 @end

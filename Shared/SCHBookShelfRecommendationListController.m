@@ -115,11 +115,12 @@
             self.bottomSegment.hidden = YES;
         }
         
+        self.mainTableView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
     } else {
         self.title = NSLocalizedString(@"Top Rated eBooks", @"Top Rated eBooks");
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(close:)] autorelease];
+        self.mainTableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
     }
-
 }
 
 - (void)viewDidUnload
@@ -137,6 +138,12 @@
     }
 
     [super viewWillDisappear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.mainTableView flashScrollIndicators];
+    [super viewWillAppear:animated];
 }
 
 #pragma mark - View Actions

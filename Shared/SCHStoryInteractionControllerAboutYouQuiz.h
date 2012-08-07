@@ -24,7 +24,6 @@
 
 @property (retain, nonatomic) IBOutlet UIView *buttonContainerView;
 @property (nonatomic, retain) IBOutlet UILabel *outcomeTitleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *outcomeTextLabel;
 
 - (IBAction)startButtonTapped:(id)sender;
 - (IBAction)questionButtonTouched:(UIButton *)sender;

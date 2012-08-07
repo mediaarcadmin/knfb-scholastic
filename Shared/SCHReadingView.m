@@ -56,7 +56,7 @@
 - (void) dealloc
 {
     if (xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
         [xpsProvider release], xpsProvider = nil;
     }
     
@@ -86,10 +86,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         createHighlightFromSelection = YES;
         
         self.opaque = YES;
+        self.backgroundColor = [UIColor blackColor];
         self.multipleTouchEnabled = YES;
         self.userInteractionEnabled = YES;
 
-        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier 
+        xpsProvider = [(SCHXPSProvider *)[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:self.identifier 
                                                                          inManagedObjectContext:managedObjectContext] retain];
         textFlow    = [[[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:self.identifier 
                                                                       inManagedObjectContext:managedObjectContext] retain];
@@ -658,8 +659,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 }
 
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index {}
-
-- (void)refreshPageTurningViewImmediately:(BOOL)immediately {}
 
 - (void)dismissSelector
 {

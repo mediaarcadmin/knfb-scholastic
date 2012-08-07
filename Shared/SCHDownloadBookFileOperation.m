@@ -91,7 +91,7 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
         __block BOOL bookFileURLIsValid = NO;
         
         [self performWithBook:^(SCHAppBook *book) {
-            self.realLocalPath = [book xpsPath];
+            self.realLocalPath = [book bookPackagePath];
             bookFileURL = [[book BookFileURL] copy];
             bookFileURLIsFileURL = [book bookFileURLIsBundleURL];
             bookFileURLIsValid = [book bookFileURLIsValid];
