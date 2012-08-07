@@ -125,6 +125,7 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
     __block SCHWordTiming *lastTriggered = nil;
     __block NSUInteger pageTurnAtTime = NSUIntegerMax;
     __block NSUInteger pageTurnToLayoutPage = 1;
+    __block BOOL performInitialPageCheck = YES;
     
     if (setAudioBookReferences != nil && [setAudioBookReferences count] > 0) {
         // Audiobook Reference
@@ -161,10 +162,11 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
                             case NSOrderedAscending:
                                 // fast forward
                                 for (NSUInteger i = currentPosition + 1; i < [self.wordTimings count]; i++) {
-                                    wordTiming = [self.wordTimings objectAtIndex:i];
-                                    NSComparisonResult result = [wordTiming compareTime:currentPlayTime];
+                                    SCHWordTiming *nextWordTiming = [self.wordTimings objectAtIndex:i];
+                                    NSComparisonResult result = [nextWordTiming compareTime:currentPlayTime];
                                     if (result == NSOrderedSame) {
                                         currentPosition = i;
+                                        wordTiming = nextWordTiming;
                                         break;
                                     } else if (result == NSOrderedDescending) {
                                         break;
@@ -190,10 +192,11 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
                                 // rewind
                                 if (currentPosition > 0) {
                                     for (NSInteger i = currentPosition - 1; i >= 0; i--) {
-                                        wordTiming = [self.wordTimings objectAtIndex:i];
-                                        NSComparisonResult result = [wordTiming compareTime:currentPlayTime];                                    
+                                        SCHWordTiming *nextWordTiming = [self.wordTimings objectAtIndex:i];
+                                        NSComparisonResult result = [nextWordTiming compareTime:currentPlayTime];                                    
                                         if (result == NSOrderedSame) {
                                             currentPosition = i;
+                                            wordTiming = nextWordTiming;
                                             break;
                                         } else if (result == NSOrderedAscending) {
                                             break;
@@ -215,8 +218,24 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
                                             break;
                                         }
                                 }
-                                break;                                
-                        }  
+                                break;
+                        }
+
+                        // on initial statup check if we are playing ahead of
+                        // the current word and trigger a page turn if the next
+                        // word is on a different page
+                        if (performInitialPageCheck == YES) {
+                            performInitialPageCheck = NO;
+                                                        
+                            if (currentPlayTime > wordTiming.endTime &&
+                                currentPosition + 1 < [self.wordTimings count]) {
+                                SCHWordTiming *nextWordTiming = [self.wordTimings objectAtIndex:currentPosition + 1];
+                                if (wordTiming.pageIndex != nextWordTiming.pageIndex) {
+                                    pageTurnAtTime = wordTiming.endTime;
+                                    pageTurnToLayoutPage = nextWordTiming.pageIndex + 1;
+                                }
+                            }
+                        }
                         
                         if ((pageTurnAtTime != NSUIntegerMax) && (currentPlayTime >= pageTurnAtTime)) {
                             //NSLog(@"executing page turn for time %d at currentPlayTime %d", pageTurnAtTime, currentPlayTime);

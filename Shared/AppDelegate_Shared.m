@@ -293,7 +293,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 				  createApplicationSupportDirError, [createApplicationSupportDirError userInfo]);
 			return NO;
 		} else {
-            if ([NSFileManager BITsetSkipBackupAttributeToItemAtFilePath:applicationSupportPath] == NO) {
+            if ([[NSFileManager defaultManager] BITsetSkipBackupAttributeToItemAtFilePath:applicationSupportPath] == NO) {
                 NSLog(@"Application Support directory did not set Do Not Backup Extended Attribute.");                
             }
             return YES;
