@@ -25,8 +25,8 @@ extern NSString * const kSCHReadingViewErrorDomain;
 typedef enum 
 {
 	kSCHReadingViewMissingParametersError = 0,
-	kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError,
-    kSCHReadingViewXPSCheckoutFailedDueToInsufficientDiskSpaceError,
+	kSCHReadingViewBookPackageCheckoutFailedForUnspecifiedReasonError,
+    kSCHReadingViewBookPackageCheckoutFailedDueToInsufficientDiskSpaceError,
 	kSCHReadingViewDecryptionUnavailableError,
     kSCHReadingViewUnspecifiedError
 } SCHReadingViewError;

@@ -376,10 +376,10 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         case kSCHReadingViewMissingParametersError:
             description = NSLocalizedString(@"An unexpected error occured (missing parameters). Please try again.", @"Missing paramaters error message from ReadingViewController");
             break;
-        case kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError:
+        case kSCHReadingViewBookPackageCheckoutFailedForUnspecifiedReasonError:
             description = NSLocalizedString(@"An unexpected error occured (XPS checkout failed). Please try again.", @"XPS Checkout failed due to unspecified error message from ReadingViewController");
             break;
-        case kSCHReadingViewXPSCheckoutFailedDueToInsufficientDiskSpaceError:
+        case kSCHReadingViewBookPackageCheckoutFailedDueToInsufficientDiskSpaceError:
             description = NSLocalizedString(@"You do not have enough storage on your device to complete this function. Please clear some space and then try again.", @"XPS Checkout failed due to insufficient space error message from ReadingViewController");
             break;
         case kSCHReadingViewDecryptionUnavailableError:
@@ -426,22 +426,18 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         }
         
         bookIdentifier = [aIdentifier retain];
-        NSError *xpsError;
+        NSError *packageError;
         
-        bookPackageProvider = [[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc error:&xpsError] retain];
+        bookPackageProvider = [[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc error:&packageError] retain];
 
         if (!bookPackageProvider || ([bookPackageProvider isValid] == NO)) {
-            if ([xpsError code] == kKNFBXPSProviderNotEnoughDiskSpaceError) {
-                return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedDueToInsufficientDiskSpaceError error:error];
+            if ([packageError code] == kKNFBXPSProviderNotEnoughDiskSpaceError) {
+                return [self initFailureWithErrorCode:kSCHReadingViewBookPackageCheckoutFailedDueToInsufficientDiskSpaceError error:error];
             } else {
-                return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError error:error];
+                return [self initFailureWithErrorCode:kSCHReadingViewBookPackageCheckoutFailedForUnspecifiedReasonError error:error];
             }
         }
-        
-        if ([bookPackageProvider isKindOfClass:[SCHXPSProvider class]] && [(SCHXPSProvider *)bookPackageProvider pageCount] == 0) {
-            return [self initFailureWithErrorCode:kSCHReadingViewXPSCheckoutFailedForUnspecifiedReasonError error:error];
-        }
-        
+                
         if ([bookPackageProvider isEncrypted]) {
             if (![bookPackageProvider decryptionIsAvailable]) {
                 return [self initFailureWithErrorCode:kSCHReadingViewDecryptionUnavailableError error:error];
