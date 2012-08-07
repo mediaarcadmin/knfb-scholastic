@@ -32,6 +32,7 @@ NSString * const kSCHDictionaryOlderReader = @"OD";
 // SCHDictionaryEntry object for a word
 - (SCHDictionaryEntry *)entryForWord:(NSString *)dictionaryWord category:(NSString *)category;
 - (SCHDictionaryWordForm *)wordFormForBaseWord:(NSString *)baseWord category:(NSString *)category;
+- (NSString *)trimmedWordForDictionary:(NSString *)originalWord;
 
 @end
 
@@ -176,13 +177,9 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     }
     
     // remove whitespace and punctuation characters
-    NSString *trimmedWord = [dictionaryWord stringByTrimmingCharactersInSet:
-                             [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    trimmedWord = [trimmedWord stringByTrimmingCharactersInSet:
-                   [NSCharacterSet punctuationCharacterSet]];
+    NSString *trimmedWord = [self trimmedWordForDictionary:dictionaryWord];
     trimmedWord = [trimmedWord lowercaseString];
-    
-    
+
     // fetch the word form from core data
     SCHDictionaryWordForm *wordForm = [self wordFormForBaseWord:trimmedWord category:category];
     
@@ -305,10 +302,8 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     
     NSString *errorString = @"<html><head></head><body><div class=\"entry OD\"><span class=\"hw\">replacewordhere</span><table class=\"OD\"><tr><td><span class=\"sense\"><span class=\"def\"><span class=\"deftext\">This word is not in the dictionary.</span></span></span></td></tr></table></div></body></html>";
     
-    NSString *trimmedWord = [dictionaryWord stringByTrimmingCharactersInSet:
-                             [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    trimmedWord = [trimmedWord stringByTrimmingCharactersInSet:
-                   [NSCharacterSet punctuationCharacterSet]];
+    // remove whitespace and punctuation characters
+    NSString *trimmedWord = [self trimmedWordForDictionary:dictionaryWord];
     
     errorString = [errorString stringByReplacingOccurrencesOfString:@"replacewordhere" withString:trimmedWord];
     
@@ -501,13 +496,10 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     */
     
     // remove whitespace and punctuation characters
-    NSString *trimmedWord = [dictionaryWord stringByTrimmingCharactersInSet:
-                             [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    trimmedWord = [trimmedWord stringByTrimmingCharactersInSet:
-                   [NSCharacterSet punctuationCharacterSet]];
+    NSString *trimmedWord = [self trimmedWordForDictionary:dictionaryWord];
     trimmedWord = [trimmedWord lowercaseString];
 
-    NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3", 
+    NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3",
                          [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], trimmedWord];
     
     SCHDictionaryWordForm *rootWord = [[SCHDictionaryAccessManager sharedAccessManager] wordFormForBaseWord:trimmedWord category:category];
@@ -614,6 +606,25 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     }
 
     return YES;
+}
+
+- (NSString *)trimmedWordForDictionary:(NSString *)originalWord
+{
+    NSString *trimmedWord = [originalWord stringByTrimmingCharactersInSet:
+                             [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    trimmedWord = [trimmedWord stringByTrimmingCharactersInSet:
+                   [NSCharacterSet punctuationCharacterSet]];
+    
+    // Ticket 1846: replace bad quotes and dashes
+    NSCharacterSet *dashSet = [NSCharacterSet characterSetWithCharactersInString:
+                               [NSString stringWithUTF8String:"\u2010\u2011\u2012\u2013\u2014\u2015\u2212"]];
+    NSCharacterSet *singleQuoteSet = [NSCharacterSet characterSetWithCharactersInString:
+                                      [NSString stringWithUTF8String:"'\u2018\u2019\u201b'"]];
+    
+    trimmedWord = [[trimmedWord componentsSeparatedByCharactersInSet:singleQuoteSet] componentsJoinedByString:@"'"];
+    trimmedWord = [[trimmedWord componentsSeparatedByCharactersInSet:dashSet] componentsJoinedByString:@"-"];
+
+    return trimmedWord;
 }
 
 @end
