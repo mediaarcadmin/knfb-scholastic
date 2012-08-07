@@ -1029,7 +1029,7 @@
 				
 					id newChild = [elementClass deserializeNode:cur];
 				
-					if(nilProperty == NO && newChild != nil) [self.itemList addObject:newChild];
+					if(newChild != nil) [self.itemList addObject:newChild];
 				}
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "profile")) {
@@ -1743,7 +1743,7 @@
 				
 					id newChild = [elementClass deserializeNode:cur];
 				
-					if(nilProperty == NO && newChild != nil) [self.itemStatusList addObject:newChild];
+					if(newChild != nil) [self.itemStatusList addObject:newChild];
 				}
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "profileError")) {
@@ -2043,7 +2043,7 @@
 				
 					id newChild = [elementClass deserializeNode:cur];
 				
-					if(nilProperty == NO && newChild != nil) [self.profileStatusList addObject:newChild];
+					if(newChild != nil) [self.profileStatusList addObject:newChild];
 				}
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "spsID")) {
@@ -2319,7 +2319,7 @@
 				
 					id newChild = [elementClass deserializeNode:cur];
 				
-					if(nilProperty == NO && newChild != nil) [self.profileItemList addObject:newChild];
+					if(newChild != nil) [self.profileItemList addObject:newChild];
 				}
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "spsID")) {

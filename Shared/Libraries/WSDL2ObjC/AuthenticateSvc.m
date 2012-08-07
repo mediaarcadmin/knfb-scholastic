@@ -793,7 +793,7 @@ static AuthenticateSoap11Binding_envelope *AuthenticateSoap11BindingSharedEnvelo
 		
 		for(NSString *key in bodyKeys) {
 			id body = [bodyElements objectForKey:key];
-			xmlAddChild(bodyNode, [body xmlNodeForDoc:doc elementName:key elementNSPrefix:nil]);
+			xmlAddChild(bodyNode, [body xmlNodeForDoc:doc elementName:key elementNSPrefix:[body nsPrefix]]);
 		}
 	}
 	
