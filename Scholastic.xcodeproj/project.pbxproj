@@ -2641,6 +2641,11 @@
 		C949B3AA13963B5F00525C6A /* LineLoupeMask.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A113963B5F00525C6A /* LineLoupeMask.png */; };
 		C949B3AC13963B5F00525C6A /* LineLoupeLow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A213963B5F00525C6A /* LineLoupeLow@2x.png */; };
 		C949B3AE13963B5F00525C6A /* LineLoupeLow.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A313963B5F00525C6A /* LineLoupeLow.png */; };
+		C958DE7615D1143D00E93C09 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C958DE7515D1143D00E93C09 /* libresolv.dylib */; };
+		C958DE7715D1146300E93C09 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C958DE7515D1143D00E93C09 /* libresolv.dylib */; };
+		C958DE7815D1146D00E93C09 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C958DE7515D1143D00E93C09 /* libresolv.dylib */; };
+		C958DE7915D1148A00E93C09 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C958DE7515D1143D00E93C09 /* libresolv.dylib */; };
+		C958DE7A15D1149500E93C09 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C958DE7515D1143D00E93C09 /* libresolv.dylib */; };
 		C959076C1497D08000E024AF /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = C959076B1497D08000E024AF /* NSString+URLEncoding.m */; };
 		C959076D1497D08000E024AF /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = C959076B1497D08000E024AF /* NSString+URLEncoding.m */; };
 		C95C7CC1135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */; };
@@ -5957,6 +5962,7 @@
 		C949B3A113963B5F00525C6A /* LineLoupeMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LineLoupeMask.png; sourceTree = "<group>"; };
 		C949B3A213963B5F00525C6A /* LineLoupeLow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LineLoupeLow@2x.png"; sourceTree = "<group>"; };
 		C949B3A313963B5F00525C6A /* LineLoupeLow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LineLoupeLow.png; sourceTree = "<group>"; };
+		C958DE7515D1143D00E93C09 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		C959076A1497D08000E024AF /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+URLEncoding.h"; path = "Shared/NSString+URLEncoding.h"; sourceTree = "<group>"; };
 		C959076B1497D08000E024AF /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+URLEncoding.m"; path = "Shared/NSString+URLEncoding.m"; sourceTree = "<group>"; };
 		C95C7CBF135C3C8A00472AF6 /* SCHBookShelfGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfGridView.h; path = iPhone/SCHBookShelfGridView.h; sourceTree = "<group>"; };
@@ -6644,6 +6650,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C958DE7615D1143D00E93C09 /* libresolv.dylib in Frameworks */,
 				C98BDF191549897B00E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F778150F66160093BB90 /* CoreVideo.framework in Frameworks */,
 				7D95F773150F66030093BB90 /* libots.a in Frameworks */,
@@ -6688,6 +6695,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C958DE7815D1146D00E93C09 /* libresolv.dylib in Frameworks */,
 				C96C199215C95CBB002EBEBB /* libOCMock.a in Frameworks */,
 				C96C188D15C80C40002EBEBB /* CoreVideo.framework in Frameworks */,
 				C96C188C15C80C38002EBEBB /* CoreMedia.framework in Frameworks */,
@@ -6732,6 +6740,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C958DE7715D1146300E93C09 /* libresolv.dylib in Frameworks */,
 				C98BDF1A1549898500E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F77A150F66260093BB90 /* libots.a in Frameworks */,
 				7D95F779150F66220093BB90 /* CoreVideo.framework in Frameworks */,
@@ -6776,6 +6785,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C958DE7915D1148A00E93C09 /* libresolv.dylib in Frameworks */,
 				C98BDF1B1549898E00E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F77C150F66380093BB90 /* CoreVideo.framework in Frameworks */,
 				7D95F77B150F66320093BB90 /* libots.a in Frameworks */,
@@ -6820,6 +6830,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C958DE7A15D1149500E93C09 /* libresolv.dylib in Frameworks */,
 				C98BDF1C1549899500E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F77E150F66440093BB90 /* CoreVideo.framework in Frameworks */,
 				7D95F77D150F663D0093BB90 /* libots.a in Frameworks */,
@@ -7854,6 +7865,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				C958DE7515D1143D00E93C09 /* libresolv.dylib */,
 				2860E386111B897F00E27156 /* iPhone */,
 				29B97317FDCFA39411CA2CEA /* iPad */,
 				28EEBF621118D79A00187D67 /* Shared */,
