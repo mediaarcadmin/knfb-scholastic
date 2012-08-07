@@ -44,13 +44,13 @@
     id<SCHBookPackageProvider> provider = [[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.identifier];
     
     if (provider) {
-        if ([self useDRM]) {
+        if ([[self useDRM] boolValue]) {
             [provider resetDrmDecrypter];
         }
     
         [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
     
-        if ([self useDRM]) {
+        if ([[self useDRM] boolValue]) {
             if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
                 self.licenseAcquisitionSession = [[[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.identifier] autorelease];
                 [self.licenseAcquisitionSession setDelegate:self];            
