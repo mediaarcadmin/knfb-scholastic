@@ -19,7 +19,7 @@
 
 @interface SCHEPubBook ()
 
-@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
+@property (nonatomic, retain) id <SCHBookPackageProvider> provider;
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, assign) BOOL fakeCover;
@@ -30,14 +30,14 @@
 
 @synthesize identifier;
 @synthesize managedObjectContext;
-@synthesize xpsProvider;
+@synthesize provider;
 @synthesize fakeCover;
 
 - (void)dealloc
 {
-    if (xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:identifier];
-        [xpsProvider release], xpsProvider = nil;
+    if (provider) {
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:identifier];
+        [provider release], provider = nil;
     }
     
     [identifier release], identifier = nil;
@@ -53,11 +53,11 @@
     identifier = nil;
     
     if (book) {
-        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:newIdentifier inManagedObjectContext:moc] retain];
+        provider = [[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:newIdentifier inManagedObjectContext:moc] retain];
         
-        if (xpsProvider) {
+        if (provider) {
             
-            EucEPubBookReference *bookReference = [[EucEPubBookReference alloc] initWithDataProvider:xpsProvider];
+            EucEPubBookReference *bookReference = [[EucEPubBookReference alloc] initWithDataProvider:provider];
             NSString *aCacheDirectoryPath = [book libEucalyptusCache];
             if (aCacheDirectoryPath) {
                 if ((self = [super initWithBookReference:bookReference cacheDirectoryPath:aCacheDirectoryPath])) {

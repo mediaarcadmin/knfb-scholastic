@@ -16,6 +16,8 @@
 - (void)updateBookWithSuccess;
 - (void)updateBookWithFailure;
 
+@property (nonatomic, retain) NSNumber *useDRM;
+
 @end
 
 #pragma mark -
@@ -23,12 +25,14 @@
 @implementation SCHLicenseAcquisitionOperation
 
 @synthesize licenseAcquisitionSession;
+@synthesize useDRM;
 
 #pragma mark - Object Lifecycle
 
 - (void)dealloc 
 {
 	[licenseAcquisitionSession release], licenseAcquisitionSession = nil;
+    [useDRM release], useDRM = nil;
 	[super dealloc];
 }
 
@@ -37,19 +41,16 @@
 - (void)beginOperation
 { 
     
-    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
+    id<SCHBookPackageProvider> provider = [[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.identifier];
     
-    if (xpsProvider) {
-    
-        BOOL useDRM = [xpsProvider isEncrypted];
-    
-        if (useDRM) {
-            [xpsProvider resetDrmDecrypter];
+    if (provider) {
+        if ([[self useDRM] boolValue]) {
+            [provider resetDrmDecrypter];
         }
     
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
     
-        if (useDRM) {
+        if ([[self useDRM] boolValue]) {
             if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
                 self.licenseAcquisitionSession = [[[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.identifier] autorelease];
                 [self.licenseAcquisitionSession setDelegate:self];            
@@ -110,6 +111,25 @@
     } else {
         [self updateBookWithFailure];
     }
+}
+
+#pragma mark - Accessor methods
+
+- (NSNumber *)useDRM
+{
+    if (useDRM == nil) {
+        SCHXPSProvider *xpsProvider = (SCHXPSProvider *)[[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.identifier];
+        
+        useDRM = [[NSNumber numberWithBool:[xpsProvider isEncrypted]] retain];
+        
+        if ([useDRM boolValue]) {
+            [xpsProvider resetDrmDecrypter];
+        }
+        
+        [[SCHBookManager sharedBookManager] checkInBookPackageProviderForBookIdentifier:self.identifier];
+    }
+    
+    return useDRM;
 }
 
 #pragma mark - Book Updates

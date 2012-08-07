@@ -11,15 +11,15 @@
 
 #import "SCHProcessingManager.h"
 
-@class SCHXPSProvider;
 @class SCHTextFlow;
-@class EucEPubBook;
 @class SCHAppBook;
 @class SCHSmartZoomBlockSource;
 @class SCHBookIdentifier;
 
 @protocol KNFBParagraphSource;
-@protocol SCHEPubBookmarkPointTranslation;
+@protocol SCHEucBookmarkPointTranslation;
+@protocol EucBook;
+@protocol SCHBookPackageProvider;
 
 @interface SCHBookManager : NSObject 
 {
@@ -35,11 +35,11 @@
 - (void)clearBookIdentifierCache;
 - (NSArray *)allBookIdentifiersInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
-- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
-- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError **)error;
-- (void)checkInXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
+- (id <SCHBookPackageProvider>)checkOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id <SCHBookPackageProvider>)checkOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError **)error;
+- (void)checkInBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
 
-- (EucEPubBook<SCHEPubBookmarkPointTranslation> *)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id<EucBook, SCHEucBookmarkPointTranslation>)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 - (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
@@ -50,8 +50,8 @@
 
 // these are like the normal checkout method but synchronously jump to the main thread to do core data access
 - (id<KNFBParagraphSource>)threadSafeCheckOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier;
-- (SCHXPSProvider *)threadSafeCheckOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
-- (EucEPubBook<SCHEPubBookmarkPointTranslation> *)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
+- (id <SCHBookPackageProvider>)threadSafeCheckOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
+- (id<EucBook, SCHEucBookmarkPointTranslation>)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 
 + (BOOL)checkAppCompatibilityForFeature:(NSString *)key version:(float)version;

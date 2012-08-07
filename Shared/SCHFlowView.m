@@ -26,7 +26,7 @@
 
 @interface SCHFlowView ()
 
-@property (nonatomic, retain) EucEPubBook<SCHEPubBookmarkPointTranslation> *eucBook;
+@property (nonatomic, retain) id<EucBook, SCHEucBookmarkPointTranslation> eucBook;
 @property (nonatomic, retain) id<KNFBParagraphSource> paragraphSource;
 @property (nonatomic, retain) EucBookView *eucBookView;
 
@@ -63,6 +63,7 @@
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
         eucBookView.allowsTapTurn = NO;
+        eucBookView.twoUpLandscape = YES;
         [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
         
         if (self.openingPoint) {
@@ -112,7 +113,10 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
-        paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
+        
+        if ([eucBook isKindOfClass:[EucEPubBook class]]) {
+            paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
+        }
         
         openingPoint = [point retain];
     }
