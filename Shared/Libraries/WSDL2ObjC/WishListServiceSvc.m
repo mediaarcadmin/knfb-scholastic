@@ -312,7 +312,7 @@
 				
 					id newChild = [elementClass deserializeNode:cur];
 				
-					if(nilProperty == NO && newChild != nil) [self.profileItemList addObject:newChild];
+					if(newChild != nil) [self.profileItemList addObject:newChild];
 				}
 			}
 		}
@@ -849,7 +849,7 @@
 				
 					id newChild = [elementClass deserializeNode:cur];
 				
-					if(nilProperty == NO && newChild != nil) [self.profileItemList addObject:newChild];
+					if(newChild != nil) [self.profileItemList addObject:newChild];
 				}
 			}
 		}
@@ -1377,7 +1377,7 @@
 				
 					id newChild = [elementClass deserializeNode:cur];
 				
-					if(nilProperty == NO && newChild != nil) [self.profileIdList addObject:newChild];
+					if(newChild != nil) [self.profileIdList addObject:newChild];
 				}
 			}
 		}
@@ -1914,7 +1914,7 @@
 				
 					id newChild = [elementClass deserializeNode:cur];
 				
-					if(nilProperty == NO && newChild != nil) [self.profileIdList addObject:newChild];
+					if(newChild != nil) [self.profileIdList addObject:newChild];
 				}
 			}
 		}
@@ -2934,7 +2934,7 @@ static WishListServiceSoap11Binding_envelope *WishListServiceSoap11BindingShared
 		
 		for(NSString *key in bodyKeys) {
 			id body = [bodyElements objectForKey:key];
-			xmlAddChild(bodyNode, [body xmlNodeForDoc:doc elementName:key elementNSPrefix:nil]);
+			xmlAddChild(bodyNode, [body xmlNodeForDoc:doc elementName:key elementNSPrefix:[body nsPrefix]]);
 		}
 	}
 	

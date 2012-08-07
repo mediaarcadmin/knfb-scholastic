@@ -1384,7 +1384,7 @@ static GetUserInfoSoap11Binding_envelope *GetUserInfoSoap11BindingSharedEnvelope
 		
 		for(NSString *key in bodyKeys) {
 			id body = [bodyElements objectForKey:key];
-			xmlAddChild(bodyNode, [body xmlNodeForDoc:doc elementName:key elementNSPrefix:nil]);
+			xmlAddChild(bodyNode, [body xmlNodeForDoc:doc elementName:key elementNSPrefix:[body nsPrefix]]);
 		}
 	}
 	
