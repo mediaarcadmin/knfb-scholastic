@@ -15,13 +15,12 @@
 
 @implementation NSFileManager (DoNotBackupExtendedAttribute)
 
-+ (BOOL)BITsetSkipBackupAttributeToItemAtFilePath:(NSString *)filePath
+- (BOOL)BITsetSkipBackupAttributeToItemAtFilePath:(NSString *)filePath
 {
     BOOL ret = NO;
-    NSFileManager *threadSafeFileManager = [[[NSFileManager alloc] init] autorelease];    
 
     if ([[filePath stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
-        [threadSafeFileManager fileExistsAtPath:filePath] == YES) {
+        [self fileExistsAtPath:filePath] == YES) {
         if([[UIDevice currentDevice] compareSystemVersion:@"5.1"] >= NSOrderedSame) {
             ret = [self BITaddSkipBackupAttributeToItemAtURL:[NSURL fileURLWithPath:filePath]];
         } else {
@@ -33,7 +32,7 @@
 }
 
 // only use with iOS 5.1 or above
-+ (BOOL)BITaddSkipBackupAttributeToItemAtURL:(NSURL *)URL
+- (BOOL)BITaddSkipBackupAttributeToItemAtURL:(NSURL *)URL
 {
     NSError *error = nil;
     BOOL success = [URL setResourceValue:[NSNumber numberWithBool:YES]
@@ -47,7 +46,7 @@
 }
 
 // Setting this on iOS < 5.0 has no effect 
-+ (BOOL)BITaddSkipBackupAttributeToItemAtFilePath:(NSString *)filePath
+- (BOOL)BITaddSkipBackupAttributeToItemAtFilePath:(NSString *)filePath
 {
     BOOL ret = NO;    
     const char *filePathAsChar = [filePath fileSystemRepresentation];
