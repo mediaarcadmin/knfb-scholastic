@@ -35,6 +35,14 @@
 
 - (void)updateBookWithFailure
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+    
+    [self setProcessingState:SCHBookProcessingStateError];
+    [self setIsProcessing:NO];
+    
     [self endOperation];
 }
 
