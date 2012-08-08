@@ -691,7 +691,6 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)postSettingsSyncCompletedSyncs
 {
     [self readingStatsSync];
-    [self recommendationSync];
 }
 
 - (BOOL)readingStatsActive
