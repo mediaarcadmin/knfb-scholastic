@@ -97,8 +97,6 @@ typedef enum
 @synthesize gridView;
 @synthesize themePickerContainer;
 @synthesize customNavigationBar;
-@synthesize listToggleView;
-@synthesize gridViewToggleView;
 @synthesize books;
 @synthesize profileItem;
 @synthesize moveToValue;
@@ -128,11 +126,10 @@ typedef enum
     [customNavigationBar release], customNavigationBar = nil;
         
     [menuButton release], menuButton = nil;
-    [backButton release], backButton = nil;    
+    [backButton release], backButton = nil;
+    
     [listTableView release], listTableView = nil;
-    [listToggleView release], listToggleView = nil;
     [listTableCellNib release], listTableCellNib = nil;
-    [gridViewToggleView release], gridViewToggleView = nil;
     [backgroundView release], backgroundView = nil;
     [loadingView release], loadingView = nil;
     
@@ -306,47 +303,6 @@ typedef enum
     
     [self.listTableView setSeparatorColor:[UIColor clearColor]];
 
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-//
-//        CGRect listFrame = self.listTableView.tableHeaderView.frame;
-//        CGRect gridFrame = self.gridViewToggleView.frame;
-//
-//        listFrame.size.width = self.view.frame.size.width;
-//        gridFrame.size.width = self.view.frame.size.width;
-//
-//        // this is the height of the top toggle view for both iPad and iPhone
-//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//            listFrame.size.height = 66;
-//            gridFrame.size.height = 66;
-//        } else {
-//            listFrame.size.height = 44;
-//            gridFrame.size.height = 44;
-//        }
-//        self.listTableView.tableHeaderView.frame = listFrame;
-//        self.gridViewToggleView.frame = gridFrame;
-//    
-//        self.gridView.toggleView = self.gridViewToggleView;
-//    }
-    
-
-        CGRect listFrame = self.listTableView.tableHeaderView.frame;
-        CGRect gridFrame = self.gridViewToggleView.frame;
-
-        listFrame.size.width = self.view.frame.size.width;
-        gridFrame.size.width = self.view.frame.size.width;
-
-        // this is the height of the top toggle view for both iPad and iPhone
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            listFrame.size.height = 0;
-            gridFrame.size.height = 7;
-        } else {
-            listFrame.size.height = 0;
-            gridFrame.size.height = 7;
-        }
-        self.listTableView.tableHeaderView.frame = listFrame;
-        self.gridViewToggleView.frame = gridFrame;
-
-    
     self.currentlyLoadingIndex = -1;
 
     if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
@@ -516,8 +472,7 @@ typedef enum
     [self.backgroundView setImage:[[SCHThemeManager sharedThemeManager] imageForBackground:UIInterfaceOrientationPortrait]]; // Note we re-use portrait
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
-    self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 
-     
+    
     CGFloat inset = 56;
 
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
