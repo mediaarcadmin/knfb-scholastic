@@ -250,7 +250,6 @@
 										<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 											<int key="IBUIKeyboardType">7</int>
 											<int key="IBUIReturnKeyType">1</int>
-											<bool key="IBUISecureTextEntry">YES</bool>
 											<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										</object>
 										<object class="NSCustomResource" key="IBUIBackground" id="602404852">
@@ -380,7 +379,6 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="550636432"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MSAwAA</bytes>
