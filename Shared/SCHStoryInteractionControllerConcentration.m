@@ -20,6 +20,12 @@ enum {
     kCornerRadius = 8,
 };
 
+struct SCHStoryInteractionControllerConcentrationGridDimensions {
+    NSInteger rows;
+    NSInteger columns;
+};
+typedef struct SCHStoryInteractionControllerConcentrationGridDimensions SCHStoryInteractionControllerConcentrationGridDimensions;
+
 @interface SCHStoryInteractionControllerConcentration ()
 
 @property (nonatomic, assign) NSInteger numberOfPairs;
@@ -215,19 +221,13 @@ enum {
     self.flipContainer.layer.sublayerTransform = sublayerTransform;
 
     // lay out the pieces
-    NSInteger cols = MIN(6, (self.numberOfPairs*2)/3);
-    NSInteger rows = (self.numberOfPairs*2)/cols;
-    NSAssert(rows*cols == self.numberOfPairs*2, @"invalid factorisation of numberOfPairs");
-    CGFloat maxTileWidth = floorf((CGRectGetWidth(self.flipContainer.bounds)-(cols+1)*kTileGap-cols*2*kBorderWidth) / cols);
-    CGFloat maxTileHeight = floorf((CGRectGetHeight(self.flipContainer.bounds)-(rows+1)*kTileGap-rows*2*kBorderWidth) / rows);
-    CGFloat maxTileSize = MIN(maxTileWidth, maxTileHeight);
-    
+    SCHStoryInteractionControllerConcentrationGridDimensions gridDimensions = [self gridDimensions];
+
     UIImage *tileBackImage = [self tileBackground];
-    CGSize tileSize = CGSizeMake(MIN(maxTileSize, tileBackImage.size.width)+kBorderWidth*2,
-                                 MIN(maxTileSize, tileBackImage.size.height)+kBorderWidth*2);
-    
-    CGSize layoutSize = CGSizeMake(tileSize.width*cols + kTileGap*(cols-1),
-                                   tileSize.height*rows + kTileGap*(rows-1));
+    CGSize tileSize = [self tileSize];
+
+    CGSize layoutSize = CGSizeMake(tileSize.width*gridDimensions.columns + kTileGap*(gridDimensions.columns-1),
+                                   tileSize.height*gridDimensions.rows + kTileGap*(gridDimensions.rows-1));
     CGSize containerSize = self.flipContainer.bounds.size;
     CGFloat left = (containerSize.width-layoutSize.width)/2;
     CGFloat top = (containerSize.height-layoutSize.height)/2;
@@ -239,9 +239,9 @@ enum {
     }
     NSArray *shuffledIndices = [indices shuffled];
     
-    for (NSInteger row = 0; row < rows; ++row) {
-        for (NSInteger col = 0; col < cols; ++col) {
-            NSInteger index = [[shuffledIndices objectAtIndex:row*cols+col] integerValue];
+    for (NSInteger row = 0; row < gridDimensions.rows; ++row) {
+        for (NSInteger col = 0; col < gridDimensions.columns; ++col) {
+            NSInteger index = [[shuffledIndices objectAtIndex:row*gridDimensions.columns+col] integerValue];
             UIImage *image;
             if (index & 1) {
                 image = [self imageAtPath:[concentration imagePathForSecondOfPairAtIndex:index/2]];
@@ -279,6 +279,30 @@ enum {
     self.firstFlippedTile = nil;
 }
 
+- (SCHStoryInteractionControllerConcentrationGridDimensions)gridDimensions
+{
+    SCHStoryInteractionControllerConcentrationGridDimensions ret;
+
+    ret.columns = MIN(6, (self.numberOfPairs*2)/3);
+    ret.rows = (self.numberOfPairs*2)/ret.columns;
+    NSAssert(ret.rows*ret.columns == self.numberOfPairs*2, @"invalid factorisation of numberOfPairs");
+
+    return ret;
+}
+
+- (CGSize)tileSize
+{
+    SCHStoryInteractionControllerConcentrationGridDimensions gridDimensions = [self gridDimensions];
+    CGFloat maxTileWidth = floorf((CGRectGetWidth(self.flipContainer.bounds)-(gridDimensions.columns+1)*kTileGap-gridDimensions.columns*2*kBorderWidth) / gridDimensions.columns);
+    CGFloat maxTileHeight = floorf((CGRectGetHeight(self.flipContainer.bounds)-(gridDimensions.rows+1)*kTileGap-gridDimensions.rows*2*kBorderWidth) / gridDimensions.rows);
+    CGFloat maxTileSize = MIN(maxTileWidth, maxTileHeight);
+    UIImage *tileBackImage = [self tileBackground];
+    CGSize tileSize = CGSizeMake(MIN(maxTileSize, tileBackImage.size.width)+kBorderWidth*2,
+                                 MIN(maxTileSize, tileBackImage.size.height)+kBorderWidth*2);
+
+    return tileSize;
+}
+
 - (void)layoutTiles
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || [self.flipContainer.subviews count] == 0) {
@@ -314,7 +338,7 @@ enum {
         }
     }
 
-    CGSize tileSize = [[self.flipContainer.subviews objectAtIndex:0] bounds].size;
+    CGSize tileSize = [self tileSize];
     CGSize layoutSize = CGSizeMake(tileSize.width*cols + kTileGap*(cols-1),
                                    tileSize.height*rows + kTileGap*(rows-1));
     CGSize containerSize = self.flipContainer.bounds.size;
@@ -325,6 +349,7 @@ enum {
     NSInteger col = 0;
     NSInteger columnOffset = 0;
     for (UIView *tile in self.flipContainer.subviews) {
+        tile.bounds = (CGRect){ CGPointZero, tileSize };
         tile.center = CGPointMake(floorf(left+(tileSize.width+kTileGap)*(col+columnOffset)+tileSize.width/2),
                                   floorf(top+(tileSize.height+kTileGap)*row+tileSize.height/2));
         if (++col == tilesPerRow[row]) {

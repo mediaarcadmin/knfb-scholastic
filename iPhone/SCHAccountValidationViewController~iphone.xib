@@ -154,7 +154,7 @@
 									<object class="IBUIButton" id="1022055281">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{80, 254}, {160, 48}}</string>
+										<string key="NSFrame">{{80, 342}, {160, 48}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="288453423"/>
@@ -195,7 +195,7 @@
 									<object class="IBUILabel" id="155635484">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 123}, {280, 30}}</string>
+										<string key="NSFrame">{{20, 123}, {280, 68}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="225886651"/>
@@ -204,7 +204,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Enter the password for %@:</string>
+										<string key="IBUIText">Enter your Scholastic account e-mail address and password.</string>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
@@ -212,7 +212,7 @@
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">1</int>
 										<float key="IBUIMinimumFontSize">10</float>
-										<int key="IBUINumberOfLines">0</int>
+										<int key="IBUINumberOfLines">4</int>
 										<int key="IBUITextAlignment">1</int>
 										<object class="IBUIFontDescription" key="IBUIFontDescription">
 											<string key="name">ArialMT</string>
@@ -229,8 +229,8 @@
 									</object>
 									<object class="IBUITextField" id="225886651">
 										<reference key="NSNextResponder" ref="627749786"/>
-										<int key="NSvFlags">-2147483355</int>
-										<string key="NSFrame">{{46, 164}, {228, 51}}</string>
+										<int key="NSvFlags">293</int>
+										<string key="NSFrame">{{46, 199}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="688531652"/>
@@ -250,7 +250,6 @@
 										<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 											<int key="IBUIKeyboardType">7</int>
 											<int key="IBUIReturnKeyType">1</int>
-											<bool key="IBUISecureTextEntry">YES</bool>
 											<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										</object>
 										<object class="NSCustomResource" key="IBUIBackground" id="602404852">
@@ -273,7 +272,7 @@
 									<object class="IBUIActivityIndicatorView" id="288453423">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">-2147483355</int>
-										<string key="NSFrame">{{248, 268}, {20, 20}}</string>
+										<string key="NSFrame">{{248, 356}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="655061707"/>
@@ -284,7 +283,7 @@
 									<object class="IBUILabel" id="209816431">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{65, 223}, {190, 21}}</string>
+										<string key="NSFrame">{{65, 311}, {190, 21}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="1022055281"/>
@@ -317,7 +316,7 @@
 									<object class="IBUITextField" id="688531652">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{46, 164}, {228, 51}}</string>
+										<string key="NSFrame">{{46, 252}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="209816431"/>
@@ -673,8 +672,8 @@
 							<reference ref="1022055281"/>
 							<reference ref="288453423"/>
 							<reference ref="209816431"/>
-							<reference ref="225886651"/>
 							<reference ref="195593508"/>
+							<reference ref="225886651"/>
 						</object>
 						<reference key="parent" ref="550636432"/>
 					</object>
