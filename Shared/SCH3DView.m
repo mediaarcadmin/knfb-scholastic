@@ -15,4 +15,12 @@
     return [CATransformLayer class];
 }
 
+// make sure the subviews are the same size as the view
+- (void)layoutSubviews
+{
+    for (CALayer *sublayer in [self.layer sublayers]){
+        sublayer.frame = (CGRect){ CGPointZero, self.bounds.size };
+    }
+}
+
 @end
