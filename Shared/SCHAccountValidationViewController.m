@@ -27,9 +27,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @property (nonatomic, retain) SCHAccountValidation *accountValidation;
 @property (nonatomic, retain) SCHAccountVerifier *accountVerifier;
 @property (nonatomic, retain) UITextField *activeTextField;
-@property (nonatomic, assign) BOOL requestUserNameAndPassword;
+//@property (nonatomic, assign) BOOL requestUserNameAndPassword;
 
-- (void)activateUsernameAndPassword;
+//- (void)activateUsernameAndPassword;
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 - (void)makeVisibleTextField:(UITextField *)textField;
 - (void)showAppVersionOutdatedAlert;
@@ -50,7 +50,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize activeTextField;
 @synthesize validatedControllerShouldHideCloseButton;
 @synthesize titleLabel;
-@synthesize requestUserNameAndPassword;
+//@synthesize requestUserNameAndPassword;
 
 - (void)releaseViewObjects
 {
@@ -90,6 +90,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     self.usernameField.leftViewMode = UITextFieldViewModeAlways;
     self.usernameField.leftView = fillerView;
     [fillerView release];
+    self.usernameField.text = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];                                     
     
     fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 8)];
     cellBGImage = [[UIImage imageNamed:@"button-field-red"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
@@ -97,9 +98,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
     self.passwordField.leftView = fillerView;
     [fillerView release];
-
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
-    self.promptLabel.text = [NSString stringWithFormat:self.promptLabel.text, username];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
                 
@@ -150,50 +148,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [super back:nil];
 }
 
-- (void)activateUsernameAndPassword
-{
-    if (self.requestUserNameAndPassword == NO) {
-        CGRect rect = CGRectZero;
-        CGFloat delta = 0.0;
-        
-        self.requestUserNameAndPassword = YES;
-        
-        // show the hidden username field
-        self.usernameField.text = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];                                     
-        self.usernameField.hidden = NO;
-        
-        // change the prompt allowing for additional textual space
-        self.promptLabel.text = NSLocalizedString(@"The E-mail Address or password does not match our records. Please enter your updated E-mail Address and Password.", nil);        
-        delta = 38.0;    
-        rect = self.promptLabel.frame;
-        rect.origin.y -= delta;
-        rect.size.height += delta;    
-        self.promptLabel.frame = rect;
-        
-        // move the rest of the UI to show the username field
-        [UIView animateWithDuration:0.25 animations:^{
-            CGRect rect = CGRectZero;
-            CGFloat delta = CGRectGetHeight(self.passwordField.frame) + 8;
-            
-            rect = self.passwordField.frame;
-            rect.origin.y += delta;
-            self.passwordField.frame = rect;
-            
-            rect = self.messageLabel.frame;
-            rect.origin.y += delta;
-            self.messageLabel.frame = rect;
-            
-            rect = self.validateButton.frame;
-            rect.origin.y += delta;
-            self.validateButton.frame = rect;
-            
-            rect = self.spinner.frame;
-            rect.origin.y += delta;
-            self.spinner.frame = rect;                             
-        }];
-    }
-}
-
 #pragma mark - Accessor methods
 
 - (SCHAccountValidation *)accountValidation
@@ -221,22 +175,20 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else {
-        if (self.requestUserNameAndPassword == YES &&
-            [[usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+        if ([[usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Incorrect E-mail Address", @"error alert title")
                                   message:NSLocalizedString(@"Please enter a valid e-mail address.", @"error alert title")];
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
             [alert show];
             [alert release];                
-        } else if (self.requestUserNameAndPassword == YES &&
-                   [usernameField.text isValidEmailAddress] == NO) {
+        } else if ([usernameField.text isValidEmailAddress] == NO) {
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Incorrect E-mail Address", @"error alert title")
                                   message:NSLocalizedString(@"E-mail address is not valid. Please try again.", @"error alert title")];
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
             [alert show];
-            [alert release];                
+            [alert release];
         } else if ([[passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Incorrect Password", @"error alert title")
@@ -259,29 +211,17 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             
             dispatch_block_t afterEditingEnds = ^{
                 __block SCHAccountValidationViewController *weakSelf = self;
-                NSString *username = nil;
+                NSString *username = weakSelf.usernameField.text;
                 
-                if (self.requestUserNameAndPassword == YES) {
-                    // user entered 
-                    username = weakSelf.usernameField.text;
-                } else {
-                    // stored username
-                    username = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-                }
-                
-                if ([self.accountValidation validateWithUserName:username 
-                                                        withPassword:passwordField.text 
-                                                  updatePassword:(self.requestUserNameAndPassword == YES ? NO : YES) 
+                if ([self.accountValidation validateWithUserName:username
+                                                    withPassword:passwordField.text
+                                                  updatePassword:NO
                                                        validateBlock:^(NSString *pToken, NSError *error) {
                     if (error != nil) {
                         weakSelf.passwordField.text = @"";
                         
-                        // we need to offer the user the ability to change the username
-                        if (weakSelf.requestUserNameAndPassword == NO) {
-                            [weakSelf activateUsernameAndPassword];
-                        }
+                        self.promptLabel.text = NSLocalizedString(@"The e-mail address or password you entered does not match your account. Please try again.", nil);
                     } else {
-                        if (self.requestUserNameAndPassword == YES) {
                             // check this username isnt for a different user
                             [self.accountVerifier verifyAccount:pToken 
                                            accountVerifiedBlock:^(BOOL usernameIsValid, NSError *error) {
@@ -318,20 +258,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                     weakSelf.passwordField.text = @"";
                                 }
                             }];                                                            
-                        } else {
-                            weakSelf.passwordField.text = @"";                            
-                            id<SCHModalPresenterDelegate> targetDelegate = nil;
-                            if (weakSelf.profileSetupDelegate) {
-                                targetDelegate = weakSelf.profileSetupDelegate;
-                            } else if (weakSelf.settingsDelegate) {
-                                targetDelegate = weakSelf.settingsDelegate;
-                            }
-                            
-                            [targetDelegate presentWebParentToolsModallyWithToken:pToken 
-                                                                            title:weakSelf.title 
-                                                                       modalStyle:UIModalPresentationFullScreen 
-                                                            shouldHideCloseButton:weakSelf.validatedControllerShouldHideCloseButton];
-                        }
                     }
                     
                     [weakSelf.spinner stopAnimating];
