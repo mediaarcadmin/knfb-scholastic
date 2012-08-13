@@ -1477,6 +1477,11 @@
 		529645A615775FBA006F01D9 /* NSString+EmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529645A215775FBA006F01D9 /* NSString+EmailValidation.m */; };
 		5297B44913A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */; };
 		5297B44C13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */; };
+		5297B74715D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B74615D9333D00E13B11 /* SCHHotSpotCoordinates.m */; };
+		5297B74815D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B74615D9333D00E13B11 /* SCHHotSpotCoordinates.m */; };
+		5297B74915D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B74615D9333D00E13B11 /* SCHHotSpotCoordinates.m */; };
+		5297B74A15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B74615D9333D00E13B11 /* SCHHotSpotCoordinates.m */; };
+		5297B74B15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B74615D9333D00E13B11 /* SCHHotSpotCoordinates.m */; };
 		52985F7213C48D32009AD121 /* SCHBookStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52985F7113C48D32009AD121 /* SCHBookStatistics.m */; };
 		52A36A5F15B0521D00162753 /* SCHScholasticResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A36A5E15B0521D00162753 /* SCHScholasticResponseParser.m */; };
 		52A36A6015B0521D00162753 /* SCHScholasticResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A36A5E15B0521D00162753 /* SCHScholasticResponseParser.m */; };
@@ -5452,6 +5457,8 @@
 		5297B44713A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.h; sourceTree = "<group>"; };
 		5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m; sourceTree = "<group>"; };
 		5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib; sourceTree = "<group>"; };
+		5297B74515D9333D00E13B11 /* SCHHotSpotCoordinates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHHotSpotCoordinates.h; sourceTree = "<group>"; };
+		5297B74615D9333D00E13B11 /* SCHHotSpotCoordinates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHHotSpotCoordinates.m; sourceTree = "<group>"; };
 		52985F7013C48D32009AD121 /* SCHBookStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookStatistics.h; path = Shared/SCHBookStatistics.h; sourceTree = "<group>"; };
 		52985F7113C48D32009AD121 /* SCHBookStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookStatistics.m; path = Shared/SCHBookStatistics.m; sourceTree = "<group>"; };
 		52A36A5D15B0521B00162753 /* SCHScholasticResponseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHScholasticResponseParser.h; path = Shared/SCHScholasticResponseParser.h; sourceTree = "<group>"; };
@@ -7370,6 +7377,8 @@
 				280D6A1713B1D6180032085D /* SCHStarView.m */,
 				2807DF2B13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib */,
 				28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */,
+				5297B74515D9333D00E13B11 /* SCHHotSpotCoordinates.h */,
+				5297B74615D9333D00E13B11 /* SCHHotSpotCoordinates.m */,
 			);
 			name = "Touch The Screen";
 			sourceTree = "<group>";
@@ -13296,6 +13305,7 @@
 				C97DCA5615D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
 				C97DCA5D15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6415D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
+				5297B74715D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13700,6 +13710,7 @@
 				C97DCA5815D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
 				C97DCA5F15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6615D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
+				5297B74915D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14098,6 +14109,7 @@
 				C97DCA5715D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
 				C97DCA5E15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6515D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
+				5297B74815D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14496,6 +14508,7 @@
 				C97DCA5915D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
 				C97DCA6015D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6715D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
+				5297B74A15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14894,6 +14907,7 @@
 				C97DCA5A15D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
 				C97DCA6115D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6815D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
+				5297B74B15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

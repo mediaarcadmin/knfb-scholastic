@@ -12,9 +12,8 @@
 @interface SCHStoryInteractionHotSpotQuestion : SCHStoryInteractionQuestion {}
 
 @property (nonatomic, retain) NSString *prompt;
-@property (nonatomic, assign) CGRect hotSpotRect;
+@property (nonatomic, assign) NSMutableArray *hotSpots;
 @property (nonatomic, assign) CGSize originalBookSize;
-@property (nonatomic, assign) CGPathRef path;
 @property (nonatomic, assign) BOOL answered;
 
 // XPSProvider-relative path for question audio

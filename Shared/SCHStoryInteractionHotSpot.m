@@ -8,14 +8,15 @@
 
 #import "SCHStoryInteractionHotSpot.h"
 
+#import "SCHHotSpotCoordinates.h"
+
 #pragma mark - SCHStoryInteractionHotSpotQuestion
 
 @implementation SCHStoryInteractionHotSpotQuestion
 
 @synthesize prompt;
-@synthesize hotSpotRect;
+@synthesize hotSpots;
 @synthesize originalBookSize;
-@synthesize path;
 @synthesize answered;
 
 - (id)init
@@ -23,6 +24,7 @@
     self = [super init];
     
     if (self) {
+        hotSpots = [[NSMutableArray alloc] init];
         answered = NO;
     }
     
@@ -32,27 +34,20 @@
 - (void)dealloc
 {
     [prompt release];
-    if (path) {
-        CGPathRelease(path);
-    }
+    [hotSpots release], hotSpots = nil;
     [super dealloc];
-}
-
-- (void)setPath:(CGPathRef)newPath
-{
-    if (newPath != path) {
-        if (path) {
-            CGPathRelease(path);
-        }
-        path = CGPathRetain(newPath);
-    }
 }
 
 - (enum SCHStoryInteractionQuestionPageAssociation)pageAssociationForPageSize:(CGSize)pageSize
 {
     CGRect leftPageRect = (CGRect){ CGPointZero, pageSize };
     CGRect rightPageRect = CGRectMake(pageSize.width, 0, pageSize.width, pageSize.height);
-    
+
+    // Assume all hotspots appear on the same page: use first one
+    CGRect hotSpotRect = CGRectZero;
+    if ([self.hotSpots count] > 0) {
+        hotSpotRect = [[self.hotSpots objectAtIndex:0] rect];
+    }
     CGRect leftPageIntersection = CGRectIntersection(leftPageRect, hotSpotRect);
     CGRect rightPageIntersection = CGRectIntersection(rightPageRect, hotSpotRect);
     CGFloat leftPageIntersectionArea = CGRectGetWidth(leftPageIntersection)*CGRectGetHeight(leftPageIntersection);
