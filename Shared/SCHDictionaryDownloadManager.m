@@ -224,6 +224,25 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 												   object:nil];	
                 
 		[sharedManager.wifiReach startNotifier];
+        
+        // initialise the value of wifiAvailable without triggering dictionary state check
+        NetworkStatus netStatus = [sharedManager.wifiReach currentReachabilityStatus];
+        
+        switch (netStatus)
+        {
+            case NotReachable:
+            case ReachableViaWWAN:
+            {
+                sharedManager.wifiAvailable = NO;
+                break;
+            }
+            case ReachableViaWiFi:
+            {
+                sharedManager.wifiAvailable = YES;
+                break;
+            }
+        }
+        
 	});
 	
 	return sharedManager;
