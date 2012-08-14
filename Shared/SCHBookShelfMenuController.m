@@ -219,7 +219,7 @@
                 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                     cell.textLabel.text = NSLocalizedString(@"More eBooks", @"More eBooks");
                 } else {
-                    cell.textLabel.text = NSLocalizedString(@"Kids' Top Rated eBooks", @"Kids' Top Rated eBooks");
+                    cell.textLabel.text = NSLocalizedString(@"Kids' Top-Rated eBooks", @"Kids' Top-Rated eBooks");
                 }
                 break;
             }

@@ -117,7 +117,7 @@
         
         self.mainTableView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
     } else {
-        self.title = NSLocalizedString(@"Top Rated eBooks", @"Top Rated eBooks");
+        self.title = NSLocalizedString(@"Top-Rated eBooks", @"Top-Rated eBooks");
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(close:)] autorelease];
         self.mainTableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
     }
@@ -343,7 +343,7 @@
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
             cell.backgroundColor = [UIColor colorWithRed:0.863 green:0.875 blue:0.902 alpha:1.0];
             UILabel *label = [[UILabel alloc] initWithFrame:cell.contentView.frame];
-            label.text = NSLocalizedString(@"No Top Rated eBooks.", @"No Top Rated eBooks.");
+            label.text = NSLocalizedString(@"No Top-Rated eBooks.", @"No Top-Rated eBooks.");
             label.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
             label.textColor = [UIColor colorWithRed:0.004 green:0.192 blue:0.373 alpha:1.0];
             label.textAlignment = UITextAlignmentCenter;
