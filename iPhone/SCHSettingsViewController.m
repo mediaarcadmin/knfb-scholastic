@@ -49,6 +49,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (BOOL)connectionIsReachableViaWiFi;
 - (void)showAppVersionOutdatedAlert;
 - (void)showNoInternetConnectionAlert;
+- (void)showWifiRequiredAlert;
 - (void)showAlertForSyncFailure;
 
 @end
@@ -453,6 +454,16 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [alert release];
 }
 
+- (void)showWifiRequiredAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"No Wi-Fi Connection", @"")
+                          message:NSLocalizedString(@"Downloading the dictionary requires a Wi-Fi connection. Please connect to Wi-Fi and then try again.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];
+}
+
 - (IBAction)manageBooks:(id)sender
 {
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
@@ -524,17 +535,22 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
         [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
     } else {
-        SCHDownloadDictionaryFromSettingsViewController *downloadController = [[SCHDownloadDictionaryFromSettingsViewController alloc] initWithNibName:nil bundle:nil];
+        if ([[SCHDictionaryDownloadManager sharedDownloadManager] wifiAvailable]) {
         
-        __block SCHSettingsViewController *weakSelf = self;
-        
-        downloadController.completion = ^{
-            [weakSelf back:nil];
-        };
-        
+            SCHDownloadDictionaryFromSettingsViewController *downloadController = [[SCHDownloadDictionaryFromSettingsViewController alloc] initWithNibName:nil bundle:nil];
+            
+            __block SCHSettingsViewController *weakSelf = self;
+            
+            downloadController.completion = ^{
+                [weakSelf back:nil];
+            };
 
-        [self.navigationController pushViewController:downloadController animated:YES];
-        [downloadController release];
+            [self.navigationController pushViewController:downloadController animated:YES];
+            [downloadController release];
+            
+        } else {
+            [self showWifiRequiredAlert];
+        }
     }
 }
 
