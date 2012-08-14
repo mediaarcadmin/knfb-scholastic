@@ -111,8 +111,8 @@
     
     if (reachable == NO) {
         LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"No WiFi Connection", @"")
-                              message:NSLocalizedString(@"The dictionary will only download over a WiFi connection. When you are connected to WiFi, the download will begin.", @"")];
+                              initWithTitle:NSLocalizedString(@"No Wi-Fi Connection", @"")
+                              message:NSLocalizedString(@"Downloading the dictionary requires a Wi-Fi connection. Please connect to Wi-Fi and then try again.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:afterDownload];
         [alert show];
         [alert release];   
