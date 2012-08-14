@@ -283,7 +283,7 @@
         case SCHDictionaryProcessingStateNeedsUnzip:
         {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(processingPercentageUpdate:) name:kSCHDictionaryProcessingPercentageUpdate object:nil];
-            self.bottomLabel.text = NSLocalizedString(@"The dictionary will be ready soon. Please wait.", nil);
+            self.bottomLabel.text = NSLocalizedString(@"The Storia dictionary is currently installing. You can wait for it to finish, or look up your word later.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.progress = 0.9;
             self.progressBar.hidden = NO;
@@ -292,7 +292,7 @@
         case SCHDictionaryProcessingStateNeedsParse:
         {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(processingPercentageUpdate:) name:kSCHDictionaryProcessingPercentageUpdate object:nil];
-            self.bottomLabel.text = NSLocalizedString(@"The dictionary will be ready soon. Please wait.", nil);
+            self.bottomLabel.text = NSLocalizedString(@"The Storia dictionary is currently installing. You can wait for it to finish, or look up your word later.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.progress = 0.95;
             self.progressBar.hidden = NO;
