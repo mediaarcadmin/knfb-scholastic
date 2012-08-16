@@ -25,7 +25,6 @@ extern NSString * const SCHAnnotationSyncComponentProfileIDs;
 - (BOOL)haveProfiles;
 - (BOOL)nextProfile;
 
-- (BOOL)annotationIDIsValid:(NSNumber *)annotationID;
 - (BOOL)requestListProfileContentAnnotationsForProfileID:(NSNumber *)profileID;
 - (void)syncProfileContentAnnotationsCompleted:(NSNumber *)profileID 
                                    usingMethod:(NSString *)method

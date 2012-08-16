@@ -428,7 +428,7 @@
 		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-        if (webItemID == nil || [(SCHAnnotationSyncComponent *)self.syncComponent annotationIDIsValid:webItemID] == NO) {
+        if (webItemID == nil || [SCHAnnotation isValidAnnotationID:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;            
@@ -506,7 +506,7 @@
 	SCHHighlight *ret = nil;
 	id annotationID = [self makeNullNil:[highlight valueForKey:kSCHLibreAccessWebServiceID]];
     
-	if (highlight != nil && [(SCHAnnotationSyncComponent *)self.syncComponent annotationIDIsValid:annotationID] == YES) {
+	if (highlight != nil && [SCHAnnotation isValidAnnotationID:annotationID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHHighlight 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
 		
@@ -611,7 +611,7 @@
 		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-        if (webItemID == nil || [(SCHAnnotationSyncComponent *)self.syncComponent annotationIDIsValid:webItemID] == NO) {
+        if (webItemID == nil || [SCHAnnotation isValidAnnotationID:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;            
@@ -689,7 +689,7 @@
 	SCHNote *ret = nil;
 	id annotationID = [self makeNullNil:[note valueForKey:kSCHLibreAccessWebServiceID]];
     
-	if (note != nil && [(SCHAnnotationSyncComponent *)self.syncComponent annotationIDIsValid:annotationID] == YES) {
+	if (note != nil && [SCHAnnotation isValidAnnotationID:annotationID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
 		
@@ -765,7 +765,7 @@
 		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
-        if (webItemID == nil || [(SCHAnnotationSyncComponent *)self.syncComponent annotationIDIsValid:webItemID] == NO) {
+        if (webItemID == nil || [SCHAnnotation isValidAnnotationID:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;
@@ -843,7 +843,7 @@
 	SCHBookmark *ret = nil;
 	id annotationID = [self makeNullNil:[bookmark valueForKey:kSCHLibreAccessWebServiceID]];
     
-	if (bookmark != nil && [(SCHAnnotationSyncComponent *)self.syncComponent annotationIDIsValid:annotationID] == YES) {
+	if (bookmark != nil && [SCHAnnotation isValidAnnotationID:annotationID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHBookmark 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
 		

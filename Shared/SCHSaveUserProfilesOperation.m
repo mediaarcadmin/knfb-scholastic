@@ -78,12 +78,12 @@
                         case kSCHSaveActionsCreate:
                         {
                             NSNumber *profileID = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceID]];
-                            if (profileID != nil) {
+                            if ([SCHProfileItem isValidProfileID:profileID] == YES) {
                                 [profileManagedObject setValue:profileID forKey:kSCHLibreAccessWebServiceID];
                             } else {
                                 // if the server didnt give us an ID then we remove the profile
                                 [self deleteProfile:profileManagedObject];
-                            }                                                    
+                            }
                         }
                             break;
                         case kSCHSaveActionsRemove:                            

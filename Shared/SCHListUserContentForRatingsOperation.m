@@ -47,14 +47,12 @@
         localOrderList:(NSSet *)localOrderList
             insertInto:(SCHUserContentItem *)userContentItem
   managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
-- (BOOL)orderIDIsValid:(NSNumber *)orderID;
 - (void)syncOrderItem:(NSDictionary *)webOrderItem 
         withOrderItem:(SCHOrderItem *)localOrderItem;
 - (void)syncContentProfileItems:(NSArray *)webContentProfileList 
         localContentProfileList:(NSSet *)localContentProfileList
                      insertInto:(SCHUserContentItem *)userContentItem
            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
-- (BOOL)profileIDIsValid:(NSNumber *)profileID;
 - (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem 
         withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem;
 - (void)deleteUnusedContentMetadataItemsWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
@@ -381,7 +379,7 @@
 	SCHOrderItem *ret = nil;
     id orderID = [self makeNullNil:[orderItem valueForKey:kSCHLibreAccessWebServiceOrderID]];
     
-	if (orderItem != nil && [self orderIDIsValid:orderID] == YES) {	
+	if (orderItem != nil && [SCHOrderItem isValidOrderID:orderID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHOrderItem 
                                             inManagedObjectContext:aManagedObjectContext];			
 		
@@ -400,7 +398,7 @@
     NSError *error = nil;
     id profileID = [self makeNullNil:[contentProfileItem valueForKey:kSCHLibreAccessWebServiceProfileID]];
     
-	if (contentProfileItem != nil && bookIdentifier != nil && [self profileIDIsValid:profileID] == YES) {		
+	if (contentProfileItem != nil && bookIdentifier != nil && [SCHProfileItem isValidProfileID:profileID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem 
                                             inManagedObjectContext:aManagedObjectContext];			
 		
@@ -517,7 +515,7 @@
 		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceOrderID]];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceOrderID];
 		
-        if (webItemID == nil || [self orderIDIsValid:webItemID] == NO) {
+        if (webItemID == nil || [SCHOrderItem isValidOrderID:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;            
@@ -558,11 +556,6 @@
             [userContentItem addOrderListObject:newOrderItem];
         }
 	}
-}
-
-- (BOOL)orderIDIsValid:(NSNumber *)orderID
-{
-    return [orderID integerValue] > 0;
 }
 
 - (void)syncOrderItem:(NSDictionary *)webOrderItem withOrderItem:(SCHOrderItem *)localOrderItem
@@ -612,7 +605,7 @@
 		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceProfileID]];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceProfileID];
 		
-        if (webItemID == nil || [self profileIDIsValid:webItemID] == NO) {
+        if (webItemID == nil || [SCHProfileItem isValidProfileID:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;            
@@ -694,11 +687,6 @@
             [userContentItem addProfileListObject:item];
         }
 	}
-}
-
-- (BOOL)profileIDIsValid:(NSNumber *)profileID
-{
-    return [profileID integerValue] > 0;
 }
 
 - (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem

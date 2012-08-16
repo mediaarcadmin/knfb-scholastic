@@ -13,6 +13,7 @@
 #import "BITAPIError.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHSyncEntity.h"
+#import "SCHAnnotation.h"
 
 @interface SCHSaveProfileContentAnnotationsOperation ()
 
@@ -115,7 +116,7 @@
                         case kSCHSaveActionsCreate:
                         {
                             NSNumber *annotationID = [self makeNullNil:[annotation objectForKey:kSCHLibreAccessWebServiceID]];
-                            if ([annotationSyncComponent annotationIDIsValid:annotationID] == YES) {
+                            if ([SCHAnnotation isValidAnnotationID:annotationID] == YES) {
                                 updatedID = YES;
                                 [annotationManagedObject setValue:annotationID forKey:kSCHLibreAccessWebServiceID];
                             }                                                   

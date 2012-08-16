@@ -17,6 +17,8 @@
 @property (nonatomic, retain) NSNumber * ID;
 @property (nonatomic, retain) NSNumber * Version;
 
++ (BOOL)isValidAnnotationID:(NSNumber *)annotationID;
+
 @end
 
 
