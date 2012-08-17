@@ -104,6 +104,7 @@
             [button setSelected:NO];
             [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:10] forState:UIControlStateNormal];        
             [button setBackgroundImage:highlight forState:UIControlStateSelected];
+            [button setBackgroundImage:highlight forState:UIControlStateDisabled];
             [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
             if (answerIndex == [self currentQuestion].correctAnswer) {
                 [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
@@ -208,6 +209,9 @@
 {
     self.simultaneousTapCount++;
     if (self.simultaneousTapCount == 1) {
+        // ensure the button doesnt quickly show the normal state followed by the
+        // answer state - disable the control till after kMinimumDistinguishedAnswerDelay
+        sender.enabled = NO;
         [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
     }
 }
@@ -223,6 +227,7 @@
 
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         NSUInteger chosenAnswer = sender.tag - 1;
+        sender.enabled = YES;
         if (chosenAnswer >= [[self currentQuestion].answers count]) {
             return;
         }
