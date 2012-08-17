@@ -568,10 +568,15 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             contents.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
             title.frame = UIEdgeInsetsInsetRect((CGRect){CGPointZero, titleFrame.size}, titleInsets);
             title.transform = CGAffineTransformMakeRotation(M_PI);
+            
             close.center = CGPointMake(background.center.x-backgroundWidth/2+closePosition.x+CGRectGetWidth(close.bounds)/2,
-                                       background.center.y-backgroundHeight/2+closePosition.y+CGRectGetHeight(close.bounds)/2);
+                                       background.frame.size.height - title.center.y - 2);
+
             readAloud.center = CGPointMake(background.center.x+backgroundWidth/2+readAloudPosition.x-CGRectGetWidth(readAloud.bounds)/2,
-                                           background.center.y-backgroundHeight/2+readAloudPosition.y+CGRectGetHeight(readAloud.bounds)/2);
+                                           background.frame.size.height - title.center.y - 2);
+            
+            close.frame = CGRectIntegral(close.frame);
+            readAloud.frame = CGRectIntegral(readAloud.frame);
             break;
         }
     }
