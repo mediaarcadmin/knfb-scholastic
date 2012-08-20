@@ -19,6 +19,9 @@ extern NSString * const kSCHRecommendationProfile;
 @property (nonatomic, retain) NSNumber * age;
 @property (nonatomic, retain) NSDate * fetchDate;
 @property (nonatomic, retain) NSSet *recommendationItems;
+
++ (BOOL)isValidProfileID:(NSNumber *)profileID;
+
 @end
 
 @interface SCHRecommendationProfile (CoreDataGeneratedAccessors)
