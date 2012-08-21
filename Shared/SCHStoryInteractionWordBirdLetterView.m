@@ -16,10 +16,10 @@
     
     SCHStoryInteractionWordBirdLetterView *letter = [super buttonWithType:UIButtonTypeCustom];
     [letter setBackgroundColor:[UIColor clearColor]];
-    [letter setBackgroundImage:[UIImage imageNamed:@"storyinteraction-lettertile"] forState:UIControlStateNormal];
+    [letter setBackgroundImage:[[UIImage imageNamed:@"storyinteraction-lettertile"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
     [letter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [letter.titleLabel setTextAlignment:UITextAlignmentCenter];
-    [letter.titleLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:iPad?30:25]];
+    [letter.titleLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:iPad?30:22]];
     [letter.titleLabel setAdjustsFontSizeToFitWidth:NO];
     return letter;
 }
@@ -37,17 +37,17 @@
 
 - (void)setCorrectHighlight
 {
-    [self setBackgroundImage:[UIImage imageNamed:@"storyinteraction-lettertile-green"] forState:UIControlStateNormal];
+    [self setBackgroundImage:[[UIImage imageNamed:@"storyinteraction-lettertile-green"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
 }
 
 - (void)setIncorrectHighlight
 {
-    [self setBackgroundImage:[UIImage imageNamed:@"storyinteraction-lettertile-red"] forState:UIControlStateNormal];
+    [self setBackgroundImage:[[UIImage imageNamed:@"storyinteraction-lettertile-red"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
 }
 
 - (void)removeHighlight
 {
-    [self setBackgroundImage:[UIImage imageNamed:@"storyinteraction-lettertile"] forState:UIControlStateNormal];
+    [self setBackgroundImage:[[UIImage imageNamed:@"storyinteraction-lettertile"] stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
 }
 
 @end

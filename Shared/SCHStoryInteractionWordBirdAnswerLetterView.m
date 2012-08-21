@@ -60,4 +60,14 @@
     CGContextDrawPath(context, kCGPathStroke);
 }
 
+// To provide a consistent space between the line and text we change the text
+// drawing rect to the same height as the text and move it to the bottom
+- (void)drawTextInRect:(CGRect)rect
+{
+    rect.origin.y = rect.size.height - [self.font lineHeight];
+    rect.size.height = [self.font lineHeight];
+
+    [super drawTextInRect:rect];
+}
+
 @end

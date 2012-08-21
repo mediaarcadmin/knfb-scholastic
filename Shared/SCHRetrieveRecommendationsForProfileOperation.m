@@ -18,7 +18,6 @@
 
 - (void)syncRecommendationProfiles:(NSArray *)webRecommendationProfiles;
 - (NSArray *)localRecommendationProfiles;
-- (BOOL)recommendationProfileIDIsValid:(NSNumber *)recommendationProfileID;
 - (void)syncRecommendationProfile:(NSDictionary *)webRecommendationProfile 
         withRecommendationProfile:(SCHRecommendationProfile *)localRecommendationProfile
                          syncDate:(NSDate *)syncDate;
@@ -95,7 +94,7 @@
         id webItemID =  [self makeNullNil:[webItem valueForKey:kSCHRecommendationWebServiceAge]];
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceAge];
 		
-        if (webItemID == nil || [self recommendationProfileIDIsValid:webItemID] == NO) {
+        if (webItemID == nil || [SCHRecommendationProfile isValidProfileID:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;
@@ -154,11 +153,6 @@
 	return(ret);
 }
 
-- (BOOL)recommendationProfileIDIsValid:(NSNumber *)recommendationProfileID
-{
-    return [recommendationProfileID integerValue] > 0;
-}
-
 - (void)syncRecommendationProfile:(NSDictionary *)webRecommendationProfile 
         withRecommendationProfile:(SCHRecommendationProfile *)localRecommendationProfile
                          syncDate:(NSDate *)syncDate
@@ -180,7 +174,7 @@
 	SCHRecommendationProfile *ret = nil;
 	id recommendationProfileID =  [self makeNullNil:[webRecommendationProfile valueForKey:kSCHRecommendationWebServiceAge]];
     
-	if (webRecommendationProfile != nil && [self recommendationProfileIDIsValid:recommendationProfileID] == YES) {
+	if (webRecommendationProfile != nil && [SCHRecommendationProfile isValidProfileID:recommendationProfileID] == YES) {
         ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationProfile 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];			
         

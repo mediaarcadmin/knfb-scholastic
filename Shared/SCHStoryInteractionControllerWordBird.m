@@ -228,7 +228,7 @@ enum {
 
 - (void)layoutLetterViews
 {
-    CGFloat size = (CGRectGetWidth(self.lettersContainer.bounds)-kTileLetterGap)/9 - kTileLetterGap;
+    CGFloat size = floorf((CGRectGetWidth(self.lettersContainer.bounds)-kTileLetterGap)/9 - kTileLetterGap);
     CGFloat leftInset = (CGRectGetWidth(self.lettersContainer.bounds)-(size+kTileLetterGap)*9+kTileLetterGap)/2;
     CGFloat left = leftInset+size/2; // top row offset by half a tile
     CGFloat top = (CGRectGetHeight(self.lettersContainer.bounds)-size*3-kTileLetterGap*2) / 2;

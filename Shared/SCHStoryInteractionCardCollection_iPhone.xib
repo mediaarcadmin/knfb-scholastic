@@ -2,21 +2,21 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">11D50</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
-		<string key="IBDocument.AppKitVersion">1138.32</string>
-		<string key="IBDocument.HIToolboxVersion">568.00</string>
+		<string key="IBDocument.SystemVersion">12A269</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2549</string>
+		<string key="IBDocument.AppKitVersion">1187</string>
+		<string key="IBDocument.HIToolboxVersion">624.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1181</string>
+			<string key="NS.object.0">1498</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<string>IBProxyObject</string>
 			<string>IBUIButton</string>
 			<string>IBUIImageView</string>
-			<string>IBUIView</string>
 			<string>IBUIScrollView</string>
-			<string>IBProxyObject</string>
+			<string>IBUIView</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -85,7 +85,7 @@
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<object class="IBUIView" id="564116841">
 										<reference key="NSNextResponder" ref="848351409"/>
-										<int key="NSvFlags">301</int>
+										<int key="NSvFlags">274</int>
 										<string key="NSFrame">{{5, 0}, {300, 410}}</string>
 										<reference key="NSSuperview" ref="848351409"/>
 										<reference key="NSWindow"/>
@@ -133,7 +133,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIImageView" id="558518547">
 								<reference key="NSNextResponder" ref="116995753"/>
-								<int key="NSvFlags">301</int>
+								<int key="NSvFlags">319</int>
 								<string key="NSFrameSize">{93, 143}</string>
 								<reference key="NSSuperview" ref="116995753"/>
 								<reference key="NSWindow"/>
@@ -146,7 +146,7 @@
 							</object>
 							<object class="IBUIImageView" id="842298037">
 								<reference key="NSNextResponder" ref="116995753"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">269</int>
 								<string key="NSFrame">{{26, 127}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="116995753"/>
 								<reference key="NSWindow"/>
@@ -171,12 +171,12 @@
 					</object>
 					<object class="IBUIView" id="228156491">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">293</int>
+						<int key="NSvFlags">292</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIImageView" id="940052026">
 								<reference key="NSNextResponder" ref="228156491"/>
-								<int key="NSvFlags">301</int>
+								<int key="NSvFlags">319</int>
 								<string key="NSFrameSize">{93, 143}</string>
 								<reference key="NSSuperview" ref="228156491"/>
 								<reference key="NSWindow"/>
@@ -189,7 +189,7 @@
 							</object>
 							<object class="IBUIImageView" id="349014258">
 								<reference key="NSNextResponder" ref="228156491"/>
-								<int key="NSvFlags">293</int>
+								<int key="NSvFlags">269</int>
 								<string key="NSFrame">{{26, 127}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="228156491"/>
 								<reference key="NSWindow"/>
@@ -211,12 +211,12 @@
 					</object>
 					<object class="IBUIView" id="888141851">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">289</int>
+						<int key="NSvFlags">292</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIImageView" id="94818552">
 								<reference key="NSNextResponder" ref="888141851"/>
-								<int key="NSvFlags">301</int>
+								<int key="NSvFlags">319</int>
 								<string key="NSFrameSize">{93, 143}</string>
 								<reference key="NSSuperview" ref="888141851"/>
 								<reference key="NSWindow"/>
@@ -229,7 +229,7 @@
 							</object>
 							<object class="IBUIImageView" id="507645399">
 								<reference key="NSNextResponder" ref="888141851"/>
-								<int key="NSvFlags">289</int>
+								<int key="NSvFlags">269</int>
 								<string key="NSFrame">{{26, 127}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="888141851"/>
 								<reference key="NSWindow"/>
@@ -251,12 +251,12 @@
 					</object>
 					<object class="IBUIView" id="959354315">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">268</int>
+						<int key="NSvFlags">292</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIImageView" id="776780788">
 								<reference key="NSNextResponder" ref="959354315"/>
-								<int key="NSvFlags">301</int>
+								<int key="NSvFlags">319</int>
 								<string key="NSFrameSize">{93, 143}</string>
 								<reference key="NSSuperview" ref="959354315"/>
 								<reference key="NSWindow"/>
@@ -269,7 +269,7 @@
 							</object>
 							<object class="IBUIImageView" id="907676917">
 								<reference key="NSNextResponder" ref="959354315"/>
-								<int key="NSvFlags">268</int>
+								<int key="NSvFlags">269</int>
 								<string key="NSFrame">{{26, 127}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="959354315"/>
 								<reference key="NSWindow"/>
@@ -291,12 +291,12 @@
 					</object>
 					<object class="IBUIView" id="146218548">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">269</int>
+						<int key="NSvFlags">292</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIImageView" id="716017071">
 								<reference key="NSNextResponder" ref="146218548"/>
-								<int key="NSvFlags">301</int>
+								<int key="NSvFlags">319</int>
 								<string key="NSFrameSize">{93, 143}</string>
 								<reference key="NSSuperview" ref="146218548"/>
 								<reference key="NSWindow"/>
@@ -309,7 +309,7 @@
 							</object>
 							<object class="IBUIImageView" id="350731089">
 								<reference key="NSNextResponder" ref="146218548"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">269</int>
 								<string key="NSFrame">{{26, 127}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="146218548"/>
 								<reference key="NSWindow"/>
@@ -331,12 +331,12 @@
 					</object>
 					<object class="IBUIView" id="1037682467">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">265</int>
+						<int key="NSvFlags">292</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIImageView" id="566424249">
 								<reference key="NSNextResponder" ref="1037682467"/>
-								<int key="NSvFlags">301</int>
+								<int key="NSvFlags">319</int>
 								<string key="NSFrameSize">{93, 143}</string>
 								<reference key="NSSuperview" ref="1037682467"/>
 								<reference key="NSWindow"/>
@@ -349,7 +349,7 @@
 							</object>
 							<object class="IBUIImageView" id="626415343">
 								<reference key="NSNextResponder" ref="1037682467"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">269</int>
 								<string key="NSFrame">{{26, 127}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="1037682467"/>
 								<reference key="NSWindow"/>
@@ -462,7 +462,7 @@
 					</object>
 					<object class="IBUIButton" id="1048898741">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">300</int>
 						<string key="NSFrame">{{0, 184}, {25, 42}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
@@ -1070,17 +1070,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SCHStoryInteractionController</string>
 					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">playAudioButtonTapped:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">playAudioButtonTapped:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">playAudioButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SCHStoryInteractionController.h</string>
@@ -1254,6 +1243,6 @@
 				<string>{65, 65}</string>
 			</object>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">1181</string>
+		<string key="IBCocoaTouchPluginVersion">1498</string>
 	</data>
 </archive>

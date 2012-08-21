@@ -18,4 +18,9 @@ NSString * const kSCHRecommendationProfile = @"SCHRecommendationProfile";
 @dynamic fetchDate;
 @dynamic recommendationItems;
 
++ (BOOL)isValidProfileID:(NSNumber *)profileID
+{
+    return [profileID integerValue] > 0;
+}
+
 @end
