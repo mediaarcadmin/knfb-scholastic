@@ -3169,6 +3169,26 @@
 		C97DCA6615D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */; };
 		C97DCA6715D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */; };
 		C97DCA6815D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */; };
+		C97DCBAF15E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
+		C97DCBB015E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
+		C97DCBB115E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
+		C97DCBB215E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
+		C97DCBB315E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
+		C97DCBB615E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
+		C97DCBB715E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
+		C97DCBB815E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
+		C97DCBB915E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
+		C97DCBBA15E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
+		C97DCBBD15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
+		C97DCBBE15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
+		C97DCBBF15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
+		C97DCBC015E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
+		C97DCBC115E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
+		C97DCBC415E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */; };
+		C97DCBC515E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */; };
+		C97DCBC615E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */; };
+		C97DCBC715E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */; };
+		C97DCBC815E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */; };
 		C97F7F9314078A91002BB9FB /* reading-si~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F8D14078A91002BB9FB /* reading-si~iphone.png */; };
 		C97F7F9514078A91002BB9FB /* reading-si@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F8E14078A91002BB9FB /* reading-si@2x~iphone.png */; };
 		C97F7F9714078A91002BB9FB /* reading-sample~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F8F14078A91002BB9FB /* reading-sample~iphone.png */; };
@@ -6097,6 +6117,14 @@
 		C97DCA5C15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedRadioElement.m; path = Shared/SCHBSBReplacedRadioElement.m; sourceTree = "<group>"; };
 		C97DCA6215D5591B003B2DF3 /* SCHBSBReplacedElementWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementWebView.h; path = Shared/SCHBSBReplacedElementWebView.h; sourceTree = "<group>"; };
 		C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementWebView.m; path = Shared/SCHBSBReplacedElementWebView.m; sourceTree = "<group>"; };
+		C97DCBAD15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedDropdownElement.h; path = Shared/SCHBSBReplacedDropdownElement.h; sourceTree = "<group>"; };
+		C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedDropdownElement.m; path = Shared/SCHBSBReplacedDropdownElement.m; sourceTree = "<group>"; };
+		C97DCBB415E3B57A003B2DF3 /* SCHBSBReplacedNavigateElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedNavigateElement.h; path = Shared/SCHBSBReplacedNavigateElement.h; sourceTree = "<group>"; };
+		C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedNavigateElement.m; path = Shared/SCHBSBReplacedNavigateElement.m; sourceTree = "<group>"; };
+		C97DCBBB15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementTextField.h; path = Shared/SCHBSBReplacedElementTextField.h; sourceTree = "<group>"; };
+		C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementTextField.m; path = Shared/SCHBSBReplacedElementTextField.m; sourceTree = "<group>"; };
+		C97DCBC215E3CECC003B2DF3 /* SCHBSBReplacedTextElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedTextElement.h; path = Shared/SCHBSBReplacedTextElement.h; sourceTree = "<group>"; };
+		C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedTextElement.m; path = Shared/SCHBSBReplacedTextElement.m; sourceTree = "<group>"; };
 		C97F7F8D14078A91002BB9FB /* reading-si~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-si~iphone.png"; path = "Resources/UIAssets/reading-si~iphone.png"; sourceTree = "<group>"; };
 		C97F7F8E14078A91002BB9FB /* reading-si@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-si@2x~iphone.png"; path = "Resources/UIAssets/reading-si@2x~iphone.png"; sourceTree = "<group>"; };
 		C97F7F8F14078A91002BB9FB /* reading-sample~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-sample~iphone.png"; path = "Resources/UIAssets/reading-sample~iphone.png"; sourceTree = "<group>"; };
@@ -9334,12 +9362,20 @@
 				C9C33CF4155C05D300C7041F /* SCHBSBTree.m */,
 				C9C33CED155C059500C7041F /* SCHBSBTreeNode.h */,
 				C9C33CEE155C059600C7041F /* SCHBSBTreeNode.m */,
-				C97DCA6215D5591B003B2DF3 /* SCHBSBReplacedElementWebView.h */,
-				C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */,
+				C97DCBB415E3B57A003B2DF3 /* SCHBSBReplacedNavigateElement.h */,
+				C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */,
+				C97DCBAD15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.h */,
+				C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */,
 				C97DCA5B15D55490003B2DF3 /* SCHBSBReplacedRadioElement.h */,
 				C97DCA5C15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m */,
+				C97DCBC215E3CECC003B2DF3 /* SCHBSBReplacedTextElement.h */,
+				C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */,
 				C97DCA5415D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.h */,
 				C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m */,
+				C97DCA6215D5591B003B2DF3 /* SCHBSBReplacedElementWebView.h */,
+				C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */,
+				C97DCBBB15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.h */,
+				C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */,
 			);
 			name = "Branching Stories";
 			sourceTree = "<group>";
@@ -13306,6 +13342,10 @@
 				C97DCA5D15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6415D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74715D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
+				C97DCBAF15E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
+				C97DCBB615E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBBD15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
+				C97DCBC415E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13711,6 +13751,10 @@
 				C97DCA5F15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6615D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74915D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
+				C97DCBB115E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
+				C97DCBB815E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBBF15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
+				C97DCBC615E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14110,6 +14154,10 @@
 				C97DCA5E15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6515D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74815D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
+				C97DCBB015E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
+				C97DCBB715E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBBE15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
+				C97DCBC515E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14509,6 +14557,10 @@
 				C97DCA6015D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6715D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74A15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
+				C97DCBB215E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
+				C97DCBB915E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBC015E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
+				C97DCBC715E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14908,6 +14960,10 @@
 				C97DCA6115D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6815D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74B15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
+				C97DCBB315E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
+				C97DCBBA15E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBC115E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
+				C97DCBC815E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

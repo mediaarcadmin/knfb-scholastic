@@ -15,6 +15,7 @@
     if ((self = [super initWithFrame:frame])) {
         if ([self respondsToSelector:@selector(scrollView)]) {
             UIScrollView *aScrollView = [self scrollView];
+            [aScrollView setCanCancelContentTouches:NO];
             [aScrollView setBounces:NO];
             [aScrollView setScrollEnabled:NO];
         }

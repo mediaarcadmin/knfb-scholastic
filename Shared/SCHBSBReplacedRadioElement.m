@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain) NSArray *keys;
 @property (nonatomic, retain) NSArray *values;
+@property (nonatomic, retain) NSString *binding;
 @property (nonatomic, retain) UIView *radioView;
 
 @end
@@ -22,21 +23,24 @@
 
 @synthesize keys;
 @synthesize values;
+@synthesize binding;
 @synthesize radioView;
 
 - (void)dealloc
 {
     [keys release], keys = nil;
     [values release], values = nil;
+    [binding release], binding = nil;
     [radioView release], radioView = nil;
     [super dealloc];
 }
 
-- (id)initWithPointSize:(CGFloat)point keys:(NSArray *)keyArray values:(NSArray *)valueArray
+- (id)initWithPointSize:(CGFloat)point keys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)radioBinding
 {
     if (self = [super initWithPointSize:point]) {
         keys = [keyArray copy];
         values = [valueArray copy];
+        binding = [radioBinding copy];
     }
     
     return self;
@@ -44,7 +48,8 @@
 
 - (CGSize)intrinsicSize
 {
-    return self.radioView.bounds.size;
+    NSUInteger elementCount = MIN([self.keys count], [self.values count]);
+    return CGSizeMake(100, 10 + self.pointSize * 2 * elementCount);
 }
 
 - (THCGViewSpiritElement *)newViewSpiritElement
@@ -59,9 +64,12 @@
 - (UIView *)radioView
 {
     if (!radioView) {
-        SCHBSBReplacedElementWebView *webview = [[SCHBSBReplacedElementWebView alloc] initWithFrame:CGRectMake(0, 0, 300, 180)];
+        CGRect radioFrame = CGRectZero;
+        radioFrame.size = self.intrinsicSize;
         
-        NSMutableString *htmlString = [NSMutableString stringWithString:@"<body><form>"];
+        SCHBSBReplacedElementWebView *webview = [[SCHBSBReplacedElementWebView alloc] initWithFrame:radioFrame];
+        
+        NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<head><style type='text/css'>* {-webkit-touch-callout: none;-webkit-user-select: none; font-size='%fpx'}</style></head><body><form>", self.pointSize];
         NSUInteger elementCount = MIN([self.keys count], [self.values count]);
         NSString *dataBinding = @"foo";
         

@@ -10,16 +10,6 @@
 #import <libEucalyptus/THRoundRects.h>
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
 
-@interface SCHBSBTextField : UITextField
-
-@end
-
-@interface SCHBSBReplacedElementPlaceholder()
-
-@property (nonatomic, assign) CGFloat pointSize;
-
-@end
-
 @implementation SCHBSBReplacedElementPlaceholder
 
 @synthesize pointSize;
@@ -53,25 +43,6 @@
     CGContextDrawPath(context, kCGPathFillStroke);
     
     CGContextRestoreGState(context);
-}
-
-- (THCGViewSpiritElement *)newViewSpiritElement
-{
-    SCHBSBTextField *aTextField = [[[SCHBSBTextField alloc] init] autorelease];
-    aTextField.borderStyle = UITextBorderStyleRoundedRect;
-    if(aTextField) {
-        return [[EucUIViewViewSpiritElement alloc] initWithView:aTextField];
-    }
-    return nil;
-}
-
-@end
-
-@implementation SCHBSBTextField
-
-- (BOOL)eucPageTurningViewShouldRenderPresentationLayer
-{
-    return NO;
 }
 
 @end
