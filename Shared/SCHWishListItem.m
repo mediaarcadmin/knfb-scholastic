@@ -114,4 +114,9 @@ NSString * const kSCHWishListObjectID = @"objectID";
     return wishListDict;
 }
 
++ (BOOL)isValidItemID:(NSString *)itemID
+{
+    return [[itemID stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0;
+}
+
 @end

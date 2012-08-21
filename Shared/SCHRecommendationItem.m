@@ -59,4 +59,9 @@ NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
     return [self product_code];
 }
 
++ (BOOL)isValidItemID:(NSString *)itemID
+{
+    return [[itemID stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0;
+}
+
 @end

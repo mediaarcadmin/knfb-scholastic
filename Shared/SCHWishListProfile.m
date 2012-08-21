@@ -21,4 +21,9 @@ NSString * const kSCHWishListProfile = @"SCHWishListProfile";
     return self.LastModified;
 }
 
++ (BOOL)isValidProfileID:(NSNumber *)profileID
+{
+    return [profileID integerValue] > 0;
+}
+
 @end
