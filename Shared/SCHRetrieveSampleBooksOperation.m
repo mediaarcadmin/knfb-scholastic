@@ -19,7 +19,6 @@
 #import "SCHUserContentItem.h"
 #import "BITAPIError.h" 
 #import "SCHContentMetadataItem.h"
-#import "SCHAppRecommendationItem.h"
 #import "SCHBookIdentifier.h"
 #import "SCHProfileSyncComponent.h"
 #import "SCHRetrieveRecommendationsForBooksOperation.h"

@@ -8,7 +8,6 @@
 
 #import "SCHRecommendationThumbnailOperation.h"
 #import "UIImage+ScholasticAdditions.h"
-#import "SCHAppRecommendationItem.h"
 
 @implementation SCHRecommendationThumbnailOperation
 

@@ -199,7 +199,7 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
     // we allow the recommendation to be show, even if there was a problem getting the cover URLs, the cover or generating the thumbnails
     switch ([self processingState]) {
         case kSCHAppRecommendationProcessingStateUnspecifiedError:               
-        case kSCHAppRecommendationProcessingStateCheckValidity:  
+        case kSCHAppRecommendationProcessingStateWaitingOnUserAction:  
         case kSCHAppRecommendationProcessingStateInvalidRecommendation:
             isReady = NO;
             break;
@@ -217,6 +217,14 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
     
     return isReady;
 }
+
+- (void)processUserAction
+{
+    if ([self processingState] == kSCHAppRecommendationProcessingStateWaitingOnUserAction) {
+        [self setProcessingState:kSCHAppRecommendationProcessingStateNoMetadata];
+    }
+}
+
 
 // when there are no wishlist or recommendation items the appRecommendationItem
 // gets deleted as well as the on disk files
