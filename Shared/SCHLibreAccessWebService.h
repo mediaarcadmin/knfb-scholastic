@@ -28,7 +28,8 @@
 - (BOOL)listUserContent;
 - (BOOL)listFavoriteTypes;
 - (BOOL)listTopFavorites:(NSArray *)favorites withCount:(NSUInteger)count;
-- (BOOL)listContentMetadata:(NSArray *)bookISBNs 
+- (BOOL)listTopRatings:(NSArray *)ratings withCount:(NSUInteger)count;
+- (BOOL)listContentMetadata:(NSArray *)bookISBNs
                 includeURLs:(BOOL)includeURLs
                coverURLOnly:(BOOL)coverURLOnly;
 - (BOOL)listUserSettings;

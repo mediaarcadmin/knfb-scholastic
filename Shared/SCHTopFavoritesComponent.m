@@ -63,15 +63,15 @@ static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young A
 	[favoriteItem setObject:[NSNumber numberWithTopFavoritesType:kSCHTopFavoritesTypeseReaderCategoryClass] forKey:kSCHLibreAccessWebServiceTopFavoritesType];
 
     if (ageInYears < 7) {
-        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryPictureBooks forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];        
+        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryPictureBooks forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];
     }
     else if (ageInYears < 9) {
-        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryLevelReader forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];        
+        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryLevelReader forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];
     }
     else if (ageInYears < 12) {
-        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryChapterBooks forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];        
+        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryChapterBooks forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];
     } else {
-        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryYoungAdults forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];        
+        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryYoungAdults forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];
     }
 	
 	if ([self.libreAccessWebService listTopFavorites:[NSArray arrayWithObject:favoriteItem] withCount:kSCHTopFavoritesComponentTopCount] == NO) {
@@ -79,12 +79,46 @@ static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young A
             if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
                 [self.delegate authenticationDidSucceed];
             }
-        } failureBlock:nil];			
+        } failureBlock:nil];
 		ret = NO;
 	}
 	
 	return(ret);
 }
+
+//- (BOOL)topRatings
+//{
+//	BOOL ret = YES;
+//    
+//	NSLog(@"Requesting top ratings books.");
+//	
+//	NSMutableDictionary *favoriteItem1 = [NSMutableDictionary dictionary];
+//	[favoriteItem1 setObject:[NSNumber numberWithTopFavoritesType:kSCHTopRatingsTypeseReaderCategoryClass] forKey:kSCHLibreAccessWebServiceTopRatingsType];
+//    [favoriteItem1 setObject:kSCHTopFavoritesComponentCategoryPictureBooks forKey:kSCHLibreAccessWebServiceTopRatingsTypeValue];
+//    
+//    NSMutableDictionary *favoriteItem2 = [NSMutableDictionary dictionary];
+//    [favoriteItem2 setObject:[NSNumber numberWithTopFavoritesType:kSCHTopRatingsTypeseReaderCategoryClass] forKey:kSCHLibreAccessWebServiceTopRatingsType];
+//    [favoriteItem2 setObject:kSCHTopFavoritesComponentCategoryLevelReader forKey:kSCHLibreAccessWebServiceTopRatingsTypeValue];
+//    
+//    NSMutableDictionary *favoriteItem3 = [NSMutableDictionary dictionary];
+//    [favoriteItem3 setObject:[NSNumber numberWithTopFavoritesType:kSCHTopRatingsTypeseReaderCategoryClass] forKey:kSCHLibreAccessWebServiceTopRatingsType];
+//    [favoriteItem3 setObject:kSCHTopFavoritesComponentCategoryChapterBooks forKey:kSCHLibreAccessWebServiceTopRatingsTypeValue];
+//    
+//    NSMutableDictionary *favoriteItem4 = [NSMutableDictionary dictionary];
+//    [favoriteItem4 setObject:[NSNumber numberWithTopFavoritesType:kSCHTopRatingsTypeseReaderCategoryClass] forKey:kSCHLibreAccessWebServiceTopRatingsType];
+//    [favoriteItem4 setObject:kSCHTopFavoritesComponentCategoryYoungAdults forKey:kSCHLibreAccessWebServiceTopRatingsTypeValue];
+//
+//	if ([self.libreAccessWebService listTopRatings:[NSArray arrayWithObjects:favoriteItem1, favoriteItem2, favoriteItem3, favoriteItem4, nil] withCount:kSCHTopFavoritesComponentTopCount] == NO) {
+//		[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+//            if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+//                [self.delegate authenticationDidSucceed];
+//            }
+//        } failureBlock:nil];
+//		ret = NO;
+//	}
+//	
+//	return(ret);
+//}
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
       userInfo:(NSDictionary *)userInfo

@@ -15,5 +15,6 @@
 }
 
 - (BOOL)topFavoritesForAge:(NSUInteger)ageInYears;
+//- (BOOL)topRatings;
 
 @end
