@@ -51,6 +51,7 @@
 #import "SCHAppStateManager.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHCoreDataHelper.h"
+#import "Reachability.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -2510,45 +2511,63 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
     } else {
         // show the recommendations container
+        NSArray *recommendationDictionaries = [self recommendationsDictionaries];
         SCHRecommendationContainerView *recommendationsContainer = [[[self.recommendationsContainerNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
-        [recommendationsContainer setFrame:self.readingView.bounds];
-        
         UIView *container = recommendationsContainer.container;
-        CGFloat count = MIN([[self recommendationsDictionaries] count], 4);
-        CGFloat rowHeight = floorf((container.frame.size.height)/4);
-        
-        
-        for (int i = 0; i < count; i++) {
-            NSDictionary *recommendationDictionary = [[self recommendationsDictionaries] objectAtIndex:i];
-            
-            SCHRecommendationListView *listView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
-            listView.frame = CGRectMake(0, rowHeight * i, container.frame.size.width, rowHeight);
-            listView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-            
-            listView.showsBottomRule = NO;
-            listView.showOnBackCover = YES;
-            listView.delegate = self;
-            listView.showsWishListButton = [[SCHAppStateManager sharedAppStateManager] shouldShowWishList];
-            
-            [listView updateWithRecommendationItem:recommendationDictionary];
-            
-            NSString *ISBN = [recommendationDictionary objectForKey:kSCHAppRecommendationISBN];
-            
-            NSUInteger index = [self.modifiedWishListDictionaries
-                                indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-                                    return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
-                                }];
-            
-            if (index != NSNotFound) {
-                [listView setIsOnWishList:YES];
-            } else {
-                [listView setIsOnWishList:NO];
+        [recommendationsContainer setFrame:self.readingView.bounds];
+
+        if ([recommendationDictionaries count] == 0) {
+            CGFloat count = MIN([recommendationsDictionaries count], 4);
+            CGFloat rowHeight = floorf((container.frame.size.height)/4);
+
+            for (int i = 0; i < count; i++) {
+                NSDictionary *recommendationDictionary = [recommendationDictionaries objectAtIndex:i];
+
+                SCHRecommendationListView *listView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+                listView.frame = CGRectMake(0, rowHeight * i, container.frame.size.width, rowHeight);
+                listView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+
+                listView.showsBottomRule = NO;
+                listView.showOnBackCover = YES;
+                listView.delegate = self;
+                listView.showsWishListButton = [[SCHAppStateManager sharedAppStateManager] shouldShowWishList];
+
+                [listView updateWithRecommendationItem:recommendationDictionary];
+
+                NSString *ISBN = [recommendationDictionary objectForKey:kSCHAppRecommendationISBN];
+
+                NSUInteger index = [self.modifiedWishListDictionaries
+                                    indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+                                        return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationISBN] isEqualToString:ISBN];
+                                    }];
+
+                if (index != NSNotFound) {
+                    [listView setIsOnWishList:YES];
+                } else {
+                    [listView setIsOnWishList:NO];
+                }
+
+                [container addSubview:listView];
+                [listView release];
             }
+        } else {
+            UIFont *labelFont = [UIFont fontWithName:@"Arial-BoldMT" size:26.0f];
+            CGRect labelFrame = CGRectMake(0, 0, CGRectGetWidth(container.frame), labelFont.lineHeight);
+            UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
+
+            label.text = NSLocalizedString(@"Getting recommendations for this book.", nil);
+            label.font = labelFont;
+            label.adjustsFontSizeToFitWidth = YES;
+            label.minimumFontSize = 4.0;
+            label.textColor = [UIColor colorWithRed:0.004 green:0.192 blue:0.373 alpha:1.0];
+            label.textAlignment = UITextAlignmentCenter;
+            label.backgroundColor = [UIColor clearColor];
+            label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             
-            [container addSubview:listView];
-            [listView release];
-        }    
-        
+            [container addSubview:label];
+            [label release], label = nil;
+        }
+
         return [recommendationsContainer autorelease];
     }
 }
@@ -3431,9 +3450,19 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (BOOL)shouldShowBookRecommendationsForReadingView:(SCHReadingView *)aReadingView
 {
-    return  ([aReadingView isKindOfClass:[SCHLayoutView class]] && 
-             [self recommendationsActive] == YES &&
-             ([[self recommendationsDictionaries] count] > 0));
+    BOOL ret = NO;
+    
+    if ([aReadingView isKindOfClass:[SCHLayoutView class]] &&
+        [self recommendationsActive] == YES) {
+
+        if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
+            ret = YES;
+        } else {
+            ret = ([[self recommendationsDictionaries] count] > 0);
+        }
+    }
+    
+    return ret;
 }
 
 - (BOOL)recommendationsActive
