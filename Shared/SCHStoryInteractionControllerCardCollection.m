@@ -26,6 +26,7 @@ enum {
 @property (nonatomic, retain) CALayer *cardLayer;
 @property (nonatomic, retain) NSArray *scrollSublayers;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
+@property (nonatomic, assign) NSInteger currentCardIndex;
 
 - (void)zoomToCardLayerFromView:(UIView *)view;
 - (void)showCardButtons;
@@ -111,15 +112,6 @@ enum {
     [scrollTap release];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return YES;
-    } else {
-        return UIInterfaceOrientationIsPortrait(interfaceOrientation);
-    }
-}
-
 - (void)storyInteractionDisableUserInteraction
 {
     for (UIView *v in self.cardViews) {
@@ -131,6 +123,127 @@ enum {
 {
     for (UIView *v in self.cardViews) {
         [v setUserInteractionEnabled:YES];
+    }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        
+        // cards list
+        [self layoutCardsForPhoneOrientation:toInterfaceOrientation];
+        
+        // card scroll view
+        if (!self.cardScrollView.hidden) {
+            
+            [UIView animateWithDuration:0.1
+                                  delay:0
+                                options:UIViewAnimationOptionCurveEaseInOut
+                             animations:^{
+                                 self.cardScrollView.alpha = 0;
+                             }
+                             completion:nil];
+        }
+        
+        // zoomed in scroll view
+        if (!self.zoomScrollView.hidden) {
+            
+            [UIView animateWithDuration:0.1
+                                  delay:0
+                                options:UIViewAnimationOptionCurveEaseInOut
+                             animations:^{
+                                 self.zoomScrollView.alpha = 0;
+                             }
+                             completion:^(BOOL finished) {
+                                 self.zoomScrollView.hidden = YES;
+                                 self.zoomScrollView.alpha = 1;
+                             }];
+            
+            [self.zoomScrollView setZoomScale:1.0f animated:YES];
+        }
+    }
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        // deal with the card scroll view
+        if (!self.cardScrollView.hidden) {
+            // resize the card layer with the current scroll view size
+            
+            SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
+            UIImage *backImage = [self imageAtPath:[cardCollection imagePathForCardBackAtIndex:self.currentCardIndex]];
+            
+            CGFloat verticalSpace = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 30 : 40;
+            CGFloat height = CGRectGetHeight(self.contentsView.bounds) - verticalSpace;
+            CGFloat width = height * CGRectGetWidth(self.selectedCardView.bounds) / CGRectGetHeight(self.selectedCardView.bounds);
+            
+            self.cardLayer = [self cardLayerWithFront:self.selectedCardView.image back:backImage size:CGSizeMake(width, height)];
+            self.cardLayer.position = [self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView];
+            
+            [self showCardsInScrollViewAtIndex:self.currentCardIndex];
+            if (self.zoomScrollView.hidden) {
+                [self showCardButtons];
+            }
+            
+            [UIView animateWithDuration:0.25
+                                  delay:0
+                                options:UIViewAnimationOptionCurveEaseInOut
+                             animations:^{
+                                 self.cardScrollView.alpha = 1;
+                             }
+                             completion:nil];
+        }
+    }
+}
+
+- (void)layoutCardsForPhoneOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
+            // 3 x 2 layout
+            CGFloat width  = 93;
+            CGFloat height = 167;
+            CGFloat currentY = 20;
+            CGFloat currentX = 5;
+            
+            for (UIView *view in self.cardViews) {
+                CGRect frame = CGRectMake(currentX, currentY, width, height);
+                view.frame = frame;
+                currentX += 104;
+                
+                if (currentX > 213) {
+                    currentX = 5;
+                    currentY += 204;
+                }
+            }
+            
+        } else {
+            // 6 x 1 layout
+            CGFloat width  = 70;
+            CGFloat height = 125;
+            CGFloat currentY = 63; 
+            CGFloat currentX = 5;
+            
+            for (UIView *view in self.cardViews) {
+                CGRect frame = CGRectMake(currentX, currentY, width, height);
+                view.frame = frame;
+                currentX += 78;
+            }
+        }
+        if (!self.cardScrollView.hidden) {
+            NSArray *sublayers = [self.scrollContentView.layer.sublayers copy];
+            for (CALayer *layer in sublayers) {
+                [layer removeFromSuperlayer];
+            }
+            
+            [sublayers release];
+        }
+
     }
 }
 
@@ -243,6 +356,8 @@ enum {
 
 - (void)zoomToCardLayerFromView:(UIView *)cardView
 {
+    self.currentCardIndex = cardView.tag;
+    
     SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
     UIImage *backImage = [self imageAtPath:[cardCollection imagePathForCardBackAtIndex:cardView.tag]];
 
@@ -498,8 +613,11 @@ enum {
     CGFloat width = CGRectGetWidth(self.cardScrollView.bounds);
     NSInteger cardIndex = (self.cardScrollView.contentOffset.x + width/2) / width;
     cardIndex = MAX(0, MIN([self.scrollSublayers count]-1, cardIndex));
+    self.currentCardIndex = cardIndex;
     self.cardLayer = [self.scrollSublayers objectAtIndex:cardIndex];
     self.selectedCardView = (UIImageView *)[[self.cardViews objectAtIndex:cardIndex] viewWithTag:kCardImageViewTag];
+    
+    [self showCardButtons];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -556,20 +674,35 @@ enum {
     [self.perspectiveView setHidden:YES];
     [self.zoomScrollView setHidden:NO];
     [self.zoomScrollView setZoomScale:1.0f animated:NO];
-    [self.zoomScrollView setZoomScale:2.0f animated:YES];
+    
+    // calculate the zoom scale
+    CGFloat zoomScale = 2;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        zoomScale = 3.45;
+    }
+    
+    [self.zoomScrollView setZoomScale:zoomScale animated:YES];
     [self hideCardButtonsAnimated:YES];
     [self showZoomOutButton];
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
 {
+    
+    CGFloat zoomOutThreshold = 1.5f;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        zoomOutThreshold = 3.45f;
+    }
+
     if (scrollView == self.zoomScrollView) {
         if (scale <= 1.0f) {
             [self.zoomScrollView setHidden:YES];
             [self.perspectiveView setHidden:NO];
             [self showCardButtons];
         }
-        else if (scale < 1.5f) {
+        else if (scale < zoomOutThreshold) {
             [self.zoomScrollView setZoomScale:1.0f animated:YES];
         }
     }

@@ -17,9 +17,17 @@
 #import "SCHBSBManifest.h"
 #import "SCHBSBNode.h"
 #import "SCHBSBTree.h"
+#import "SCHBSBTreeNode.h"
+#import "SCHBSBReplacedElementPlaceholder.h"
+#import "SCHBSBReplacedRadioElement.h"
+#import "SCHBSBReplacedDropdownElement.h"
+#import "SCHBSBReplacedNavigateElement.h"
+#import "SCHBSBReplacedTextElement.h"
 #import <libEucalyptus/EucPageLayoutController.h>
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
+#import <libEucalyptus/EucCSSIntermediateDocumentNode.h>
 #import <libEucalyptus/THEmbeddedResourceManager.h>
+#import <libEucalyptus/THNSURLAdditions.h>
 
 @interface SCHBSBEucBook() <EucCSSIntermediateDocumentDataProvider>
 
@@ -296,6 +304,71 @@
 {
     return [[self userAgentCSSDatasForDocumentTree:[document documentTree]] valueForKey:@"thDataURL"];
 }
+
+- (id<EucCSSReplacedElement>)eucCSSIntermediateDocument:(EucCSSIntermediateDocument *)document
+                                 replacedElementForNode:(EucCSSIntermediateDocumentNode *)node
+{
+
+    SCHBSBReplacedElementPlaceholder *replacedElement = nil;
+    id<EucCSSDocumentTreeNode> treeNode = [(EucCSSIntermediateDocumentNode *)node documentTreeNode];
+    if(treeNode) {
+        NSString *dataType = [treeNode attributeWithName:@"data-type"];
+        if ([dataType isEqualToString:@"text"]) {
+            NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
+            replacedElement = [[[SCHBSBReplacedTextElement alloc] initWithPointSize:10 binding:dataBinding] autorelease];
+        } else if ([dataType isEqualToString:@"radio"]) {
+            NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
+            
+            SCHBSBTreeNode *childNode = treeNode.firstChild;
+            NSMutableArray *keys = [NSMutableArray array];
+            NSMutableArray *values = [NSMutableArray array];
+            
+            while (childNode != nil) {
+                NSString *dataKey = [childNode attributeWithName:@"data-key"];
+                NSString *dataValue = [childNode attributeWithName:@"data-value"];
+                
+                if (dataKey && dataValue) {
+                    [keys addObject:dataKey];
+                    [values addObject:dataValue];
+                }
+                
+                childNode = childNode.nextSibling;
+            }
+
+            replacedElement = [[[SCHBSBReplacedRadioElement alloc] initWithPointSize:10 keys:keys values:values binding:dataBinding] autorelease];
+        } else if ([dataType isEqualToString:@"dropdown"]) {
+            NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
+            
+            SCHBSBTreeNode *childNode = treeNode.firstChild;
+            NSMutableArray *keys = [NSMutableArray array];
+            NSMutableArray *values = [NSMutableArray array];
+            
+            while (childNode != nil) {
+                NSString *dataKey = [childNode attributeWithName:@"data-key"];
+                NSString *dataValue = [childNode attributeWithName:@"data-value"];
+                
+                if (dataKey && dataValue) {
+                    [keys addObject:dataKey];
+                    [values addObject:dataValue];
+                }
+                
+                childNode = childNode.nextSibling;
+            }
+            
+            replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithPointSize:20 keys:keys values:values binding:dataBinding] autorelease];
+        } else if ([dataType isEqualToString:@"navigate"]) {
+            
+            NSString *dataValue = [treeNode attributeWithName:@"data-value"];
+            NSString *dataGoto = [treeNode attributeWithName:@"data-goto"];
+            
+            replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataValue action:dataGoto] autorelease];
+        }
+            
+    }
+    
+    return replacedElement;
+}
                                        
 @end
+
 #endif

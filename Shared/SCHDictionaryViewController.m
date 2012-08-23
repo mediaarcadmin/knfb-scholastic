@@ -283,7 +283,7 @@
         case SCHDictionaryProcessingStateNeedsUnzip:
         {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(processingPercentageUpdate:) name:kSCHDictionaryProcessingPercentageUpdate object:nil];
-            self.bottomLabel.text = NSLocalizedString(@"The dictionary will be ready soon. Please wait.", nil);
+            self.bottomLabel.text = NSLocalizedString(@"The Storia dictionary is currently installing. You can wait for it to finish, or look up your word later.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.progress = 0.9;
             self.progressBar.hidden = NO;
@@ -292,7 +292,7 @@
         case SCHDictionaryProcessingStateNeedsParse:
         {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(processingPercentageUpdate:) name:kSCHDictionaryProcessingPercentageUpdate object:nil];
-            self.bottomLabel.text = NSLocalizedString(@"The dictionary will be ready soon. Please wait.", nil);
+            self.bottomLabel.text = NSLocalizedString(@"The Storia dictionary is currently installing. You can wait for it to finish, or look up your word later.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.progress = 0.95;
             self.progressBar.hidden = NO;
@@ -308,7 +308,7 @@
                     self.bottomLabel.text =NSLocalizedString( @"You have not yet downloaded the Storia dictionary. To download the dictionary, go to the Parent Tools menu.", nil);
                 }
             } else {
-                self.bottomLabel.text = NSLocalizedString(@"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.", nil);
+                self.bottomLabel.text = NSLocalizedString(@"The Storia dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.", nil);
             }
 
             [self.activityIndicator startAnimating];
@@ -317,7 +317,7 @@
         }
         case SCHDictionaryProcessingStateNeedsDownload:
         {
-            self.bottomLabel.text = NSLocalizedString(@"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.", nil);
+            self.bottomLabel.text = NSLocalizedString(@"The Storia dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.", nil);
             [self.activityIndicator stopAnimating];
             self.progressBar.hidden = NO;
             self.progressBar.progress = [SCHDictionaryDownloadManager sharedDownloadManager].currentDictionaryDownloadPercentage;

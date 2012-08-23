@@ -19,4 +19,9 @@ NSString * const kSCHOrderItem = @"SCHOrderItem";
 @dynamic OrderDate;
 @dynamic UserContentItem;
 
++ (BOOL)isValidOrderID:(NSNumber *)orderID
+{
+    return [orderID integerValue] > 0;
+}
+
 @end

@@ -35,4 +35,6 @@ extern NSString * const kSCHWishListObjectID;
 - (void)assignAppRecommendationItem;
 - (NSDictionary *)dictionary;
 
++ (BOOL)isValidItemID:(NSString *)itemID;
+
 @end

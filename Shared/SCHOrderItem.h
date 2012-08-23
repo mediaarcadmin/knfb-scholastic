@@ -21,6 +21,8 @@ extern NSString * const kSCHOrderItem;
 @property (nonatomic, retain) NSDate * OrderDate;
 @property (nonatomic, retain) SCHUserContentItem * UserContentItem;
 
++ (BOOL)isValidOrderID:(NSNumber *)orderID;
+
 @end
 
 

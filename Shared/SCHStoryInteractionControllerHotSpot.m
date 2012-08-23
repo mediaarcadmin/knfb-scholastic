@@ -10,6 +10,7 @@
 #import "SCHStoryInteractionHotSpot.h"
 #import "SCHStoryInteractionControllerDelegate.h"
 #import "SCHStarView.h"
+#import "SCHHotSpotCoordinates.h"
 
 #define kNumberOfStars 20
 #define debug_show_answer_path_and_hotspot_rect 0
@@ -68,9 +69,18 @@
     if (self.pageAssociation == SCHStoryInteractionQuestionOnRightPage) {
         frameInPageCoords.origin.x += [self.delegate sizeOfPageAtIndex:self.storyInteraction.documentPageNumber].width;
     }
-    
-    CGRect hotspotRect = [self currentQuestion].hotSpotRect;
-    if (CGRectIntersectsRect(hotspotRect, frameInPageCoords)) {
+
+    // Use bottom if all hot spots intersect, otherwise default to the top
+    BOOL allHotSpotsIntersect = NO;
+    for (SCHHotSpotCoordinates *hotSpotCoordinates in [self currentQuestion].hotSpots) {
+        if ([hotSpotCoordinates intersectsRect:frameInPageCoords]) {
+            allHotSpotsIntersect = YES;
+        } else {
+            allHotSpotsIntersect = NO;
+            break;
+        }
+    }
+    if (allHotSpotsIntersect == YES) {
         return SCHStoryInteractionTitleOverlaysContentsAtBottom;
     } else {
         return SCHStoryInteractionTitleOverlaysContentsAtTop;
@@ -222,14 +232,15 @@
     NSLog(@"pointInView:%@ pointInPage:%@ hotSpot:%@",
           NSStringFromCGPoint(pointInView),
           NSStringFromCGPoint(pointInPage),
-          NSStringFromCGRect([self currentQuestion].hotSpotRect));
+          [self currentQuestion].hotSpots);
     
     SCHStoryInteractionHotSpotQuestion *question = [self currentQuestion];
-    BOOL correct;
-    if (question.path != NULL) {
-        correct = CGPathContainsPoint(question.path, NULL, pointInPage, NO);
-    } else {
-        correct = CGRectContainsPoint(question.hotSpotRect, pointInPage);
+    BOOL correct = NO;
+    for (SCHHotSpotCoordinates *hotSpotCoordinates in question.hotSpots) {
+        correct = [hotSpotCoordinates containsPoint:pointInPage];
+        if (correct == YES) {
+            break;
+        }
     }
     
     if (correct) {

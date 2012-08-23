@@ -76,6 +76,8 @@ typedef enum {
 - (void)deleteAnnotations;
 - (void)deleteStatistics;
 
++ (BOOL)isValidProfileID:(NSNumber *)profileID;
+
 @end
 
 @interface SCHProfileItem (CoreDataGeneratedAccessors)

@@ -34,4 +34,6 @@ extern NSString * const kSCHRecommendationItem;
 - (NSString *)isbn;
 - (void)assignAppRecommendationItem;
 
++ (BOOL)isValidItemID:(NSString *)itemID;
+
 @end

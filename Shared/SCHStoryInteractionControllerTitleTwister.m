@@ -12,6 +12,7 @@
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "NSArray+ViewSorting.h"
 #import "SCHUnqueuedAudioPlayer.h"
+#import "SCHStoryInteractionControllerDelegate.h"
 
 #define kLetterGap 2
 
@@ -43,6 +44,10 @@
 - (BOOL)buildTargetIsFull;
 
 - (void)updateAnswerTableHeadings;
+
+- (void)loadCachedWordsFromDisk;
+- (void)saveCachedWordsToDisk;
+- (void)clearCachedWordsFromDisk;
 
 @end
 
@@ -114,6 +119,7 @@
     [self clearBuiltWord];
     [self setupDraggableTilesForTitleTwister:titleTwister];
     [self setupAnswersForTitleTwister:titleTwister];
+    [self loadCachedWordsFromDisk];
     [self updateAnswerTableHeadings];
     
     for (UITableView *tableView in self.answerTables) {
@@ -559,6 +565,80 @@
     }
 }
 
+#pragma mark - Loading and Saving Words
+
+- (void)loadCachedWordsFromDisk
+{
+    if (!self.delegate) {
+        return;
+    }
+    
+    NSString *cacheDir = [self.delegate storyInteractionCacheDirectory];
+    NSString *fullPath = [NSString stringWithFormat:@"%@/Twister-%d.plist", cacheDir, self.storyInteraction.documentPageNumber];
+    
+    NSDictionary *loadedDictionary = [NSDictionary dictionaryWithContentsOfFile:fullPath];
+    
+    if (loadedDictionary) {
+        NSMutableDictionary *convertedDictionary = [NSMutableDictionary dictionary];
+        
+        for (NSString *key in loadedDictionary) {
+            NSNumber *convertedKey = [NSNumber numberWithInt:[key intValue]];
+            [convertedDictionary setObject:[loadedDictionary objectForKey:key]
+                                  forKey:convertedKey];
+        }
+
+        self.answersByLength = [NSDictionary dictionaryWithDictionary:convertedDictionary];
+    }
+}
+
+- (void)saveCachedWordsToDisk
+{
+    if (!self.delegate) {
+        return;
+    }
+    
+    NSString *cacheDir = [self.delegate storyInteractionCacheDirectory];
+    NSString *fullPath = [NSString stringWithFormat:@"%@/Twister-%d.plist", cacheDir, self.storyInteraction.documentPageNumber];
+    
+    NSMutableDictionary *savableDictionary = [NSMutableDictionary dictionary];
+    
+    for (NSNumber *key in self.answersByLength) {
+        NSString *convertedKey = [key stringValue];
+        [savableDictionary setObject:[self.answersByLength objectForKey:key]
+                              forKey:convertedKey];
+    }
+
+    BOOL success = [savableDictionary writeToFile:fullPath atomically:YES];
+    
+    if (success) {
+        NSLog(@"Wrote words to plist %@", fullPath);
+    } else {
+        NSLog(@"Error writing to plist %@", fullPath);
+    }
+}
+
+- (void)clearCachedWordsFromDisk
+{
+    if (!self.delegate) {
+        return;
+    }
+    
+    NSString *cacheDir = [self.delegate storyInteractionCacheDirectory];
+    NSString *fullPath = [NSString stringWithFormat:@"%@/Twister-%d.plist", cacheDir, self.storyInteraction.documentPageNumber];
+
+    NSFileManager *localFileManager = [[[NSFileManager alloc] init] autorelease];
+    
+    NSError *error = nil;
+    
+    [localFileManager removeItemAtPath:fullPath error:&error];
+    
+    if (error) {
+        NSLog(@"Error deleting cached SI image: %@", [error localizedDescription]);
+    }
+
+}
+
+
 #pragma mark - Table View Data Source
 
 - (NSArray *)answersForTable:(UITableView *)tableView
@@ -596,6 +676,12 @@
     
     cell.textLabel.text = [[self answersForTable:tableView] objectAtIndex:indexPath.row];
     return cell;
+}
+
+- (void)closeButtonTapped:(id)sender
+{
+    [self saveCachedWordsToDisk];
+    [super closeButtonTapped:sender];
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions

@@ -21,7 +21,6 @@
 @interface SCHGetUserProfilesResponseOperation ()
 
 - (NSArray *)localProfilesUsingManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
-- (BOOL)profileIDIsValid:(NSNumber *)profileID;
 - (void)syncProfile:(NSDictionary *)webProfile 
         withProfile:(SCHProfileItem *)localProfile;
 
@@ -99,11 +98,11 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 			} 
 			break;			
 		}
-        
+
 		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
         
-        if (webItemID == nil || [self profileIDIsValid:webItemID] == NO) {
+        if (webItemID == nil || [SCHProfileItem isValidProfileID:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;            
@@ -186,18 +185,13 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 	return(ret);
 }
 
-- (BOOL)profileIDIsValid:(NSNumber *)profileID
-{
-    return [profileID integerValue] > 0;
-}
-
 - (SCHProfileItem *)addProfile:(NSDictionary *)webProfile
           managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
     SCHProfileItem *newProfileItem = nil;
     id profileID = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceID]];
     
-    if (webProfile != nil && [self profileIDIsValid:profileID] == YES) {
+    if (webProfile != nil && [SCHProfileItem isValidProfileID:profileID] == YES) {
         newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem 
                                                        inManagedObjectContext:aManagedObjectContext];
         

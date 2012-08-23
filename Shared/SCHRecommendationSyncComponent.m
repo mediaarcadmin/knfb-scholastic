@@ -42,7 +42,6 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 - (BOOL)retrieveProfiles:(NSArray *)profiles;
 - (NSMutableArray *)removeBatchItemsFrom:(NSMutableArray *)items;
 - (NSMutableArray *)localFilteredProfiles;
-- (BOOL)recommendationItemIDIsValid:(NSString *)recommendationItemID;
 - (SCHRecommendationItem *)recommendationItem:(NSDictionary *)webRecommendationItem 
                          managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (void)syncRecommendationItem:(NSDictionary *)webRecommendationItem 
@@ -484,7 +483,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHRecommendationWebServiceProductCode]];
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceProductCode];
 		
-        if (webItemID == nil || [self recommendationItemIDIsValid:webItemID] == NO) {
+        if (webItemID == nil || [SCHRecommendationItem isValidItemID:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;
@@ -528,18 +527,13 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	[self saveWithManagedObjectContext:aManagedObjectContext];    
 }
 
-- (BOOL)recommendationItemIDIsValid:(NSString *)recommendationItemID
-{
-    return [[recommendationItemID stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0;
-}
-
 - (SCHRecommendationItem *)recommendationItem:(NSDictionary *)webRecommendationItem 
                          managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
 	SCHRecommendationItem *ret = nil;
 	id recommendationItemID = [self makeNullNil:[webRecommendationItem valueForKey:kSCHRecommendationWebServiceProductCode]];
     
-	if (webRecommendationItem != nil && [self recommendationItemIDIsValid:recommendationItemID] == YES) {	
+	if (webRecommendationItem != nil && [SCHRecommendationItem isValidItemID:recommendationItemID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationItem 
                                             inManagedObjectContext:aManagedObjectContext];			
         

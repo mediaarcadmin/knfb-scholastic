@@ -244,11 +244,6 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     }
 }
 
-- (BOOL)annotationIDIsValid:(NSNumber *)annotationID
-{
-    return [annotationID integerValue] > 0;
-}
-
 - (void)method:(NSString *)method didFailWithError:(NSError *)error 
    requestInfo:(NSDictionary *)requestInfo 
         result:(NSDictionary *)result

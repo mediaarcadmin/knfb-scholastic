@@ -18,14 +18,12 @@
 
 - (NSArray *)localWishListProfiles;
 - (void)syncWishListProfiles:(NSArray *)webWishListProfiles;
-- (BOOL)wishListProfileIDIsValid:(NSNumber *)wishListProfileID;
 - (SCHWishListProfile *)wishListProfile:(NSDictionary *)wishListProfile;
 - (void)syncWishListProfile:(NSDictionary *)webWishListProfile 
         withWishListProfile:(SCHWishListProfile *)localWishListProfile;
 - (void)syncWishListItems:(NSArray *)webWishListItems
         withWishListItems:(NSSet *)localWishListItems
                insertInto:(SCHWishListProfile *)wishListProfile;
-- (BOOL)wishListItemIDIsValid:(NSString *)wishListItemID;
 - (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem;
 - (void)syncWishListItem:(NSDictionary *)webWishListItem 
         withWishListItem:(SCHWishListItem *)localWishListItem;
@@ -122,7 +120,7 @@
         id webItemID =  [self makeNullNil:[webProfile valueForKey:kSCHWishListWebServiceProfileID]];
 		id localItemID = [localItem valueForKey:kSCHWishListWebServiceProfileID];
 		
-        if (webItemID == nil || [self wishListProfileIDIsValid:webItemID] == NO) {
+        if (webItemID == nil || [SCHWishListProfile isValidProfileID:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;
@@ -166,11 +164,6 @@
 	[self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];    
 }
 
-- (BOOL)wishListProfileIDIsValid:(NSNumber *)wishListProfileID
-{
-    return [wishListProfileID integerValue] > 0;
-}
-
 - (SCHWishListProfile *)wishListProfile:(NSDictionary *)wishListProfile
 {
 	SCHWishListProfile *ret = nil;
@@ -179,7 +172,7 @@
         id webProfile = [self makeNullNil:[wishListProfile valueForKey:kSCHWishListWebServiceProfile]];
         id wishListProfileID = [self makeNullNil:[webProfile valueForKey:kSCHWishListWebServiceProfileID]];
         
-        if (webProfile != nil && [self wishListProfileIDIsValid:wishListProfileID] == YES) {            
+        if (webProfile != nil && [SCHWishListProfile isValidProfileID:wishListProfileID] == YES) {            
             ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListProfile 
                                                 inManagedObjectContext:self.backgroundThreadManagedObjectContext];			
             
@@ -257,7 +250,7 @@
 		id webItemID =  [self makeNullNil:[webItem valueForKey:kSCHWishListWebServiceISBN]];
 		id localItemID = [localItem valueForKey:kSCHWishListWebServiceISBN];
 		
-        if (webItemID == nil || [self wishListItemIDIsValid:webItemID] == NO) {
+        if (webItemID == nil || [SCHWishListItem isValidItemID:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;
@@ -318,17 +311,12 @@
 	[self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];    
 }
 
-- (BOOL)wishListItemIDIsValid:(NSString *)wishListItemID
-{
-    return [[wishListItemID stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0;
-}
-
 - (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem
 {
 	SCHWishListItem *ret = nil;
 	id wishListItemID = [self makeNullNil:[wishListItem valueForKey:kSCHWishListWebServiceISBN]];
     
-	if (wishListItem != nil && [self wishListItemIDIsValid:wishListItemID] == YES) {	
+	if (wishListItem != nil && [SCHWishListItem isValidItemID:wishListItemID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListItem 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];			
         

@@ -22,6 +22,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 @interface SCHStoryInteractionControllerVideo ()
 
 @property (nonatomic, retain) MPMoviePlayerController *moviePlayer;
+@property (nonatomic) BOOL hasPlayedVideo;
 
 - (void)pause;
 - (void)play;
@@ -33,6 +34,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 @synthesize movieContainerView;
 @synthesize playButton;
 @synthesize moviePlayer;
+@synthesize hasPlayedVideo;
 
 - (void)dealloc
 {
@@ -46,7 +48,8 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
-{    
+{
+    self.hasPlayedVideo = NO;
     [self setTitle:[(SCHStoryInteractionVideo *)self.storyInteraction videoTranscript]];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -142,7 +145,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
                 break;
             case MPMoviePlaybackStatePlaying:
                 // Always mark as complete if the user plays the video
-                self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+                self.hasPlayedVideo = YES;
                 self.playButton.play = YES;
                 break;            
             case MPMoviePlaybackStateInterrupted:
@@ -169,6 +172,10 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 
 - (void)closeButtonTapped:(id)sender
 {
+    if (self.hasPlayedVideo) {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    }
+    
     self.playButton.actionBlock = nil;
     [self.moviePlayer stop];
     [super closeButtonTapped:sender];    

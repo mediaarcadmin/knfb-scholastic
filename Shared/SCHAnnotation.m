@@ -14,4 +14,9 @@
 @dynamic ID;
 @dynamic Version;
 
++ (BOOL)isValidAnnotationID:(NSNumber *)annotationID
+{
+    return [annotationID integerValue] > 0;
+}
+
 @end

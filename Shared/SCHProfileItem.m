@@ -567,4 +567,9 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
 }
 
++ (BOOL)isValidProfileID:(NSNumber *)profileID
+{
+    return [profileID integerValue] > 0;
+}
+
 @end

@@ -83,12 +83,14 @@
                                  constrainedToSize:CGSizeMake(width, CGRectGetHeight(label.bounds))
                                      lineBreakMode:label.lineBreakMode];
             label.center = CGPointMake(label.center.x, floorf(y+size.height/2));
+            label.frame = CGRectIntegral(label.frame);
             y += size.height + gap;
         }
         
         y += buttonOffset;
         
         self.removeDictionaryButton.center = CGPointMake(self.removeDictionaryButton.center.x, floorf(y+CGRectGetHeight(self.removeDictionaryButton.bounds)/2));
+        self.removeDictionaryButton.frame = CGRectIntegral(self.removeDictionaryButton.frame);
     }
 }
 

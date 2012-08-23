@@ -60,6 +60,9 @@
     });
 }
 
+// apply profile changes by checking the server response
+// confirmed deletions are deleted, confirmed creation ID's are applied
+// any issues such as missing ID will be resolved by the next list profiles
 - (void)applyProfileSaves:(NSArray *)profilesArray
 {
     NSManagedObjectID *managedObjectID = nil;
@@ -77,22 +80,28 @@
                         case kSCHSaveActionsCreate:
                         {
                             NSNumber *profileID = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceID]];
-                            if (profileID != nil) {
+                            if ([SCHProfileItem isValidProfileID:profileID] == YES) {
                                 [profileManagedObject setValue:profileID forKey:kSCHLibreAccessWebServiceID];
-                            } else {
-                                // if the server didnt give us an ID then we remove the profile
-                                [profileManagedObject deleteAnnotations];
-                                [profileManagedObject deleteStatistics];                                                                                
-                                [self.backgroundThreadManagedObjectContext deleteObject:profileManagedObject];
-                            }                                                    
+                            }
                         }
                             break;
                         case kSCHSaveActionsRemove:                            
                         {
-                            [SCHProfileSyncComponent removeWishListForProfile:profileManagedObject 
+                            NSNumber *profileID = [[profileManagedObject.ID copy] autorelease];
+                            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSArray arrayWithObject:profileID]
+                                                                            forKey:SCHProfileSyncComponentDeletedProfileIDs];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                if (self.isCancelled == NO) {
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentWillDeleteNotification
+                                                                                        object:self
+                                                                                      userInfo:userInfo];
+                                }
+                            });
+                            
+                            [SCHProfileSyncComponent removeWishListForProfile:profileManagedObject
                                                          managedObjectContext:self.backgroundThreadManagedObjectContext];
                             [profileManagedObject deleteAnnotations];
-                            [profileManagedObject deleteStatistics];                                                
+                            [profileManagedObject deleteStatistics];
                             [self.backgroundThreadManagedObjectContext deleteObject:profileManagedObject];
                         }
                             break;
@@ -101,13 +110,6 @@
                             //nop
                             break;
                     }
-                } else {
-                    // if the server wasnt happy then we remove the profile
-                    [SCHProfileSyncComponent removeWishListForProfile:profileManagedObject 
-                                                 managedObjectContext:self.backgroundThreadManagedObjectContext];                    
-                    [profileManagedObject deleteAnnotations];
-                    [profileManagedObject deleteStatistics];                    
-                    [self.backgroundThreadManagedObjectContext deleteObject:profileManagedObject];
                 }
                 
                 // We've attempted to save changes, reset to unmodified and now 
@@ -116,14 +118,13 @@
                     [profileManagedObject setValue:[NSNumber numberWithStatus:kSCHStatusUnmodified] 
                                             forKey:SCHSyncEntityState];
                 }
+                [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
             }
             if ([profileSyncComponent.savedProfiles count] > 0) {
                 [profileSyncComponent.savedProfiles removeObjectAtIndex:0];
             }
         }
-        [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
     }
 }
-
 
 @end

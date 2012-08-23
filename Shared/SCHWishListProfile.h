@@ -20,6 +20,8 @@ extern NSString * const kSCHWishListProfile;
 
 @property (nonatomic, readonly) NSDate * Timestamp;
 
++ (BOOL)isValidProfileID:(NSNumber *)profileID;
+
 @end
 
 @interface SCHWishListProfile (CoreDataGeneratedAccessors)
