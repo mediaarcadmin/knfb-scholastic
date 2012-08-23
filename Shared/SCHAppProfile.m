@@ -19,6 +19,7 @@
 #import "SCHWishListConstants.h"
 #import "SCHUserContentItem.h"
 #import "NSNumber+ObjectTypes.h"
+#import "SCHRecommendationManager.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -92,7 +93,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     NSArray *ret = nil;
     NSSet *allItems = [[self recommendationProfile] recommendationItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.isReady = %d", YES];
-    NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations] 
+    NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations]
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
 
     NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
@@ -110,8 +111,19 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     }
     
     ret = [NSArray arrayWithArray:objectArray];
-    
+
+    [self processUserAction:allItems];
+
     return ret;
+}
+
+- (void)processUserAction:(NSSet *)recommendations
+{
+    for (SCHRecommendationItem *item in recommendations) {
+        [item.appRecommendationItem processUserAction];
+    }
+
+    [self save];
 }
 
 - (SCHWishListProfile *)wishListProfile

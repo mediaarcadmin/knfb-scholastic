@@ -218,11 +218,19 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
     return isReady;
 }
 
-- (void)processUserAction
+- (BOOL)processUserAction
 {
+    BOOL ret = NO;
+
     if ([self processingState] == kSCHAppRecommendationProcessingStateWaitingOnUserAction) {
         [self setProcessingState:kSCHAppRecommendationProcessingStateNoMetadata];
+
+        [[SCHRecommendationManager sharedManager] checkStateForRecommendation:self];
+
+        ret = YES;
     }
+
+    return ret;
 }
 
 
