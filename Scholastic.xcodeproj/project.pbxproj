@@ -3169,6 +3169,26 @@
 		C97DCA6615D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */; };
 		C97DCA6715D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */; };
 		C97DCA6815D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */; };
+		C97DCBAF15E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
+		C97DCBB015E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
+		C97DCBB115E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
+		C97DCBB215E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
+		C97DCBB315E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
+		C97DCBB615E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
+		C97DCBB715E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
+		C97DCBB815E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
+		C97DCBB915E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
+		C97DCBBA15E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
+		C97DCBBD15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
+		C97DCBBE15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
+		C97DCBBF15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
+		C97DCBC015E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
+		C97DCBC115E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
+		C97DCBC415E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */; };
+		C97DCBC515E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */; };
+		C97DCBC615E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */; };
+		C97DCBC715E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */; };
+		C97DCBC815E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */; };
 		C97F7F9314078A91002BB9FB /* reading-si~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F8D14078A91002BB9FB /* reading-si~iphone.png */; };
 		C97F7F9514078A91002BB9FB /* reading-si@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F8E14078A91002BB9FB /* reading-si@2x~iphone.png */; };
 		C97F7F9714078A91002BB9FB /* reading-sample~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F7F8F14078A91002BB9FB /* reading-sample~iphone.png */; };
@@ -4355,6 +4375,64 @@
 		F83701B213BC73BE009B280D /* BookShelfModeGridInactive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AD13BC73BE009B280D /* BookShelfModeGridInactive~iphone.png */; };
 		F83701B413BC73BE009B280D /* BookShelfModeListActive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AE13BC73BE009B280D /* BookShelfModeListActive~iphone.png */; };
 		F83701B613BC73BE009B280D /* BookShelfModeListInactive~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F83701AF13BC73BE009B280D /* BookShelfModeListInactive~iphone.png */; };
+		F839EB0615C7DAE7000F452E /* AstroBlastWithQuiz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0215C7DAE7000F452E /* AstroBlastWithQuiz.jpg */; };
+		F839EB0715C7DAE7000F452E /* AstroBlastWithQuiz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0215C7DAE7000F452E /* AstroBlastWithQuiz.jpg */; };
+		F839EB0815C7DAE7000F452E /* AstroBlastWithQuiz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0215C7DAE7000F452E /* AstroBlastWithQuiz.jpg */; };
+		F839EB0915C7DAE7000F452E /* AstroBlastWithQuiz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0215C7DAE7000F452E /* AstroBlastWithQuiz.jpg */; };
+		F839EB0A15C7DAE7000F452E /* AstroBlastWithQuiz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0215C7DAE7000F452E /* AstroBlastWithQuiz.jpg */; };
+		F839EB0B15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0315C7DAE7000F452E /* AstroBlastWithQuiz.xps */; };
+		F839EB0C15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0315C7DAE7000F452E /* AstroBlastWithQuiz.xps */; };
+		F839EB0D15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0315C7DAE7000F452E /* AstroBlastWithQuiz.xps */; };
+		F839EB0E15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0315C7DAE7000F452E /* AstroBlastWithQuiz.xps */; };
+		F839EB0F15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0315C7DAE7000F452E /* AstroBlastWithQuiz.xps */; };
+		F839EB1015C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg */; };
+		F839EB1115C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg */; };
+		F839EB1215C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg */; };
+		F839EB1315C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg */; };
+		F839EB1415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg */; };
+		F839EB1515C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0515C7DAE7000F452E /* GoosebumpsWithQuiz.xps */; };
+		F839EB1615C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0515C7DAE7000F452E /* GoosebumpsWithQuiz.xps */; };
+		F839EB1715C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0515C7DAE7000F452E /* GoosebumpsWithQuiz.xps */; };
+		F839EB1815C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0515C7DAE7000F452E /* GoosebumpsWithQuiz.xps */; };
+		F839EB1915C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */ = {isa = PBXBuildFile; fileRef = F839EB0515C7DAE7000F452E /* GoosebumpsWithQuiz.xps */; };
+		F839EB2015C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */; };
+		F839EB2115C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */; };
+		F839EB2215C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */; };
+		F839EB2315C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */; };
+		F839EB2415C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */; };
+		F839EB2515C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */; };
+		F839EB2615C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */; };
+		F839EB2715C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */; };
+		F839EB2815C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */; };
+		F839EB2915C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */; };
+		F839EB2A15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */; };
+		F839EB2B15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */; };
+		F839EB2C15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */; };
+		F839EB2D15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */; };
+		F839EB2E15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */; };
+		F839EB2F15C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */; };
+		F839EB3015C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */; };
+		F839EB3115C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */; };
+		F839EB3215C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */; };
+		F839EB3315C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */; };
+		F839EB3415C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */; };
+		F839EB3515C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */; };
+		F839EB3615C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */; };
+		F839EB3715C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */; };
+		F839EB3815C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */; };
+		F839EB3915C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
+		F839EB3A15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
+		F839EB3B15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
+		F839EB3C15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
+		F839EB3D15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
+		F844DF3C15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
+		F844DF3D15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
+		F844DF3E15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
+		F844DF3F15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
+		F844DF4015C7D681001D075F /* icon-readingquiz@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3B15C7D681001D075F /* icon-readingquiz@2x.png */; };
+		F844DF4115C7D681001D075F /* icon-readingquiz@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3B15C7D681001D075F /* icon-readingquiz@2x.png */; };
+		F844DF4215C7D681001D075F /* icon-readingquiz@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3B15C7D681001D075F /* icon-readingquiz@2x.png */; };
+		F844DF4315C7D681001D075F /* icon-readingquiz@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3B15C7D681001D075F /* icon-readingquiz@2x.png */; };
 		F848F40B152B4F9C00048074 /* BookShelfListRatingBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F848F40A152B4F9C00048074 /* BookShelfListRatingBackground.png */; };
 		F848F40C152B4F9C00048074 /* BookShelfListRatingBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F848F40A152B4F9C00048074 /* BookShelfListRatingBackground.png */; };
 		F848F40D152B4F9C00048074 /* BookShelfListRatingBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F848F40A152B4F9C00048074 /* BookShelfListRatingBackground.png */; };
@@ -4477,6 +4555,26 @@
 		F878D6B81344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
 		F87B6E2E1398ED65005CC0FA /* SCHBookShelfSortTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortTableView.m */; };
 		F87B6E301398ED65005CC0FA /* SCHBookShelfSortTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortTableView.xib */; };
+		F87FE00A15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */; };
+		F87FE00B15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */; };
+		F87FE00C15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */; };
+		F87FE00D15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */; };
+		F87FE00E15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */; };
+		F87FE01015BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */; };
+		F87FE01115BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */; };
+		F87FE01215BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */; };
+		F87FE01315BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */; };
+		F87FE01415BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */; };
+		F87FE01715BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */; };
+		F87FE01815BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */; };
+		F87FE01915BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */; };
+		F87FE01A15BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */; };
+		F87FE01C15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib */; };
+		F87FE01D15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib */; };
+		F87FE01E15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib */; };
+		F87FE02015BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib */; };
+		F87FE02115BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib */; };
+		F87FE02215BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib */; };
 		F87FFBD8152C59CB00A0282E /* storiaStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */; };
 		F87FFBD9152C59CB00A0282E /* storiaStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */; };
 		F87FFBDA152C59CB00A0282E /* storiaStarEmpty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */; };
@@ -4535,6 +4633,26 @@
 		F89304DC152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89304DA152C719A00C0398A /* SCHBookShelfWishListController.xib */; };
 		F89304DD152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89304DA152C719A00C0398A /* SCHBookShelfWishListController.xib */; };
 		F89304DE152C719A00C0398A /* SCHBookShelfWishListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89304DA152C719A00C0398A /* SCHBookShelfWishListController.xib */; };
+		F8A23CA115C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9C15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png */; };
+		F8A23CA215C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9C15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png */; };
+		F8A23CA315C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9C15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png */; };
+		F8A23CA415C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9C15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png */; };
+		F8A23CA515C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9D15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png */; };
+		F8A23CA615C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9D15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png */; };
+		F8A23CA715C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9D15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png */; };
+		F8A23CA815C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9D15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png */; };
+		F8A23CA915C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9E15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png */; };
+		F8A23CAA15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9E15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png */; };
+		F8A23CAB15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9E15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png */; };
+		F8A23CAC15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9E15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png */; };
+		F8A23CAD15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9F15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png */; };
+		F8A23CAE15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9F15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png */; };
+		F8A23CAF15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9F15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png */; };
+		F8A23CB015C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23C9F15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png */; };
+		F8A23CB115C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23CA015C15D7B00F5F6A1 /* icon-readingquiz-younger~ipad.png */; };
+		F8A23CB215C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23CA015C15D7B00F5F6A1 /* icon-readingquiz-younger~ipad.png */; };
+		F8A23CB315C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23CA015C15D7B00F5F6A1 /* icon-readingquiz-younger~ipad.png */; };
+		F8A23CB415C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A23CA015C15D7B00F5F6A1 /* icon-readingquiz-younger~ipad.png */; };
 		F8A3FAAB1529B39F0002AFD2 /* storiaBlueStarHalfFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A3FAA81529B39F0002AFD2 /* storiaBlueStarHalfFull.png */; };
 		F8A3FAAC1529B39F0002AFD2 /* storiaBlueStarHalfFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A3FAA81529B39F0002AFD2 /* storiaBlueStarHalfFull.png */; };
 		F8A3FAAD1529B39F0002AFD2 /* storiaBlueStarHalfFull.png in Resources */ = {isa = PBXBuildFile; fileRef = F8A3FAA81529B39F0002AFD2 /* storiaBlueStarHalfFull.png */; };
@@ -4674,6 +4792,22 @@
 		F8F726961524875F00250724 /* BookShelfListWhiteGradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */; };
 		F8F726971524875F00250724 /* BookShelfListWhiteGradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */; };
 		F8FAF2F313F12F20009C7E9F /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
+		F8FDF01715C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */; };
+		F8FDF01815C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */; };
+		F8FDF01915C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */; };
+		F8FDF01A15C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */; };
+		F8FDF01E15C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */; };
+		F8FDF01F15C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */; };
+		F8FDF02015C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */; };
+		F8FDF02115C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */; };
+		F8FDF02215C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */; };
+		F8FDF02315C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */; };
+		F8FDF02415C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */; };
+		F8FDF02515C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */; };
+		F8FDF02815C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */; };
+		F8FDF02915C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */; };
+		F8FDF02A15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */; };
+		F8FDF02B15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */; };
 		F8FF8D81139513B000CD7B73 /* OldDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */; };
 		F8FF8D83139513B000CD7B73 /* YoungDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */; };
 /* End PBXBuildFile section */
@@ -6097,6 +6231,14 @@
 		C97DCA5C15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedRadioElement.m; path = Shared/SCHBSBReplacedRadioElement.m; sourceTree = "<group>"; };
 		C97DCA6215D5591B003B2DF3 /* SCHBSBReplacedElementWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementWebView.h; path = Shared/SCHBSBReplacedElementWebView.h; sourceTree = "<group>"; };
 		C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementWebView.m; path = Shared/SCHBSBReplacedElementWebView.m; sourceTree = "<group>"; };
+		C97DCBAD15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedDropdownElement.h; path = Shared/SCHBSBReplacedDropdownElement.h; sourceTree = "<group>"; };
+		C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedDropdownElement.m; path = Shared/SCHBSBReplacedDropdownElement.m; sourceTree = "<group>"; };
+		C97DCBB415E3B57A003B2DF3 /* SCHBSBReplacedNavigateElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedNavigateElement.h; path = Shared/SCHBSBReplacedNavigateElement.h; sourceTree = "<group>"; };
+		C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedNavigateElement.m; path = Shared/SCHBSBReplacedNavigateElement.m; sourceTree = "<group>"; };
+		C97DCBBB15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementTextField.h; path = Shared/SCHBSBReplacedElementTextField.h; sourceTree = "<group>"; };
+		C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementTextField.m; path = Shared/SCHBSBReplacedElementTextField.m; sourceTree = "<group>"; };
+		C97DCBC215E3CECC003B2DF3 /* SCHBSBReplacedTextElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedTextElement.h; path = Shared/SCHBSBReplacedTextElement.h; sourceTree = "<group>"; };
+		C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedTextElement.m; path = Shared/SCHBSBReplacedTextElement.m; sourceTree = "<group>"; };
 		C97F7F8D14078A91002BB9FB /* reading-si~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-si~iphone.png"; path = "Resources/UIAssets/reading-si~iphone.png"; sourceTree = "<group>"; };
 		C97F7F8E14078A91002BB9FB /* reading-si@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-si@2x~iphone.png"; path = "Resources/UIAssets/reading-si@2x~iphone.png"; sourceTree = "<group>"; };
 		C97F7F8F14078A91002BB9FB /* reading-sample~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-sample~iphone.png"; path = "Resources/UIAssets/reading-sample~iphone.png"; sourceTree = "<group>"; };
@@ -6446,6 +6588,18 @@
 		F83701AD13BC73BE009B280D /* BookShelfModeGridInactive~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeGridInactive~iphone.png"; path = "Resources/BookShelfModeGridInactive~iphone.png"; sourceTree = "<group>"; };
 		F83701AE13BC73BE009B280D /* BookShelfModeListActive~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeListActive~iphone.png"; path = "Resources/BookShelfModeListActive~iphone.png"; sourceTree = "<group>"; };
 		F83701AF13BC73BE009B280D /* BookShelfModeListInactive~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeListInactive~iphone.png"; path = "Resources/BookShelfModeListInactive~iphone.png"; sourceTree = "<group>"; };
+		F839EB0215C7DAE7000F452E /* AstroBlastWithQuiz.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = AstroBlastWithQuiz.jpg; path = "Shared/Debug Books/AstroBlastWithQuiz.jpg"; sourceTree = "<group>"; };
+		F839EB0315C7DAE7000F452E /* AstroBlastWithQuiz.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = AstroBlastWithQuiz.xps; path = "Shared/Debug Books/AstroBlastWithQuiz.xps"; sourceTree = "<group>"; };
+		F839EB0415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = GoosebumpsWithQuiz.jpg; path = "Shared/Debug Books/GoosebumpsWithQuiz.jpg"; sourceTree = "<group>"; };
+		F839EB0515C7DAE7000F452E /* GoosebumpsWithQuiz.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = GoosebumpsWithQuiz.xps; path = "Shared/Debug Books/GoosebumpsWithQuiz.xps"; sourceTree = "<group>"; };
+		F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-filled@2x~iphone.png"; sourceTree = "<group>"; };
+		F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-filled~ipad.png"; sourceTree = "<group>"; };
+		F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-filled~iphone.png"; sourceTree = "<group>"; };
+		F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-unfilled@2x~iphone.png"; sourceTree = "<group>"; };
+		F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-unfilled~ipad.png"; sourceTree = "<group>"; };
+		F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-unfilled~iphone.png"; sourceTree = "<group>"; };
+		F844DF3A15C7D681001D075F /* icon-readingquiz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz.png"; path = "Resources/icon-readingquiz.png"; sourceTree = "<group>"; };
+		F844DF3B15C7D681001D075F /* icon-readingquiz@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz@2x.png"; path = "Resources/icon-readingquiz@2x.png"; sourceTree = "<group>"; };
 		F848F40A152B4F9C00048074 /* BookShelfListRatingBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfListRatingBackground.png; path = Resources/BookShelfListRatingBackground.png; sourceTree = "<group>"; };
 		F848F40F152B50A400048074 /* storiaStarEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaStarEmpty.png; path = Resources/storiaStarEmpty.png; sourceTree = "<group>"; };
 		F848F410152B50A400048074 /* storiaStarFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaStarFull.png; path = Resources/storiaStarFull.png; sourceTree = "<group>"; };
@@ -6542,6 +6696,13 @@
 		F87B6E2B1398ED65005CC0FA /* SCHBookShelfSortTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfSortTableView.h; path = Shared/SCHBookShelfSortTableView.h; sourceTree = "<group>"; };
 		F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfSortTableView.m; path = Shared/SCHBookShelfSortTableView.m; sourceTree = "<group>"; };
 		F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfSortTableView.xib; path = Shared/SCHBookShelfSortTableView.xib; sourceTree = "<group>"; };
+		F87FE00815BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionReadingChallenge.h; sourceTree = "<group>"; };
+		F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionReadingChallenge.m; sourceTree = "<group>"; };
+		F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionReadingChallenge1.xml; sourceTree = "<group>"; };
+		F87FE01515BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerReadingChallenge.h; sourceTree = "<group>"; };
+		F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerReadingChallenge.m; sourceTree = "<group>"; };
+		F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHStoryInteractionReadingChallenge_iPhone.xib; path = iPhone/SCHStoryInteractionReadingChallenge_iPhone.xib; sourceTree = SOURCE_ROOT; };
+		F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHStoryInteractionReadingChallenge_iPad.xib; path = iPad/SCHStoryInteractionReadingChallenge_iPad.xib; sourceTree = SOURCE_ROOT; };
 		F87FFBD7152C59CB00A0282E /* storiaStarEmpty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarEmpty@2x.png"; path = "Resources/storiaStarEmpty@2x.png"; sourceTree = "<group>"; };
 		F87FFBDC152C5AB600A0282E /* storiaStarFull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarFull@2x.png"; path = "Resources/storiaStarFull@2x.png"; sourceTree = "<group>"; };
 		F87FFBDD152C5AB600A0282E /* storiaStarHalfFull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarHalfFull@2x.png"; path = "Resources/storiaStarHalfFull@2x.png"; sourceTree = "<group>"; };
@@ -6569,6 +6730,11 @@
 		F89140BF1511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHBookShelfRecommendationListController~ipad.xib"; path = "Shared/SCHBookShelfRecommendationListController~ipad.xib"; sourceTree = "<group>"; };
 		F89304D5152C6A4F00C0398A /* SCHRecommendationListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHRecommendationListView.xib; path = Resources/SCHRecommendationListView.xib; sourceTree = "<group>"; };
 		F89304DA152C719A00C0398A /* SCHBookShelfWishListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfWishListController.xib; path = Shared/SCHBookShelfWishListController.xib; sourceTree = "<group>"; };
+		F8A23C9C15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz-younger-landscape@2x~iphone.png"; path = "Resources/icon-readingquiz-younger-landscape@2x~iphone.png"; sourceTree = "<group>"; };
+		F8A23C9D15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz-younger-landscape~iphone.png"; path = "Resources/icon-readingquiz-younger-landscape~iphone.png"; sourceTree = "<group>"; };
+		F8A23C9E15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz-younger-portrait@2x~iphone.png"; path = "Resources/icon-readingquiz-younger-portrait@2x~iphone.png"; sourceTree = "<group>"; };
+		F8A23C9F15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz-younger-portrait~iphone.png"; path = "Resources/icon-readingquiz-younger-portrait~iphone.png"; sourceTree = "<group>"; };
+		F8A23CA015C15D7B00F5F6A1 /* icon-readingquiz-younger~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz-younger~ipad.png"; path = "Resources/icon-readingquiz-younger~ipad.png"; sourceTree = "<group>"; };
 		F8A3FAA81529B39F0002AFD2 /* storiaBlueStarHalfFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaBlueStarHalfFull.png; path = Resources/storiaBlueStarHalfFull.png; sourceTree = "<group>"; };
 		F8A3FAA91529B39F0002AFD2 /* storiaBlueStarEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaBlueStarEmpty.png; path = Resources/storiaBlueStarEmpty.png; sourceTree = "<group>"; };
 		F8A3FAAA1529B39F0002AFD2 /* storiaBlueStarFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaBlueStarFull.png; path = Resources/storiaBlueStarFull.png; sourceTree = "<group>"; };
@@ -6674,6 +6840,12 @@
 		F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfListWhiteGradientBackground.png; path = Resources/BookShelfListWhiteGradientBackground.png; sourceTree = "<group>"; };
 		F8FAF2F113F12F20009C7E9F /* SCHAppStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppStateManager.h; path = Shared/SCHAppStateManager.h; sourceTree = "<group>"; };
 		F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppStateManager.m; path = Shared/SCHAppStateManager.m; sourceTree = "<group>"; };
+		F8FDF01515C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionReadingChallengeResultView.h; sourceTree = "<group>"; };
+		F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionReadingChallengeResultView.m; sourceTree = "<group>"; };
+		F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ReadingQuizAnswerCross.png; path = Resources/ReadingQuizAnswerCross.png; sourceTree = SOURCE_ROOT; };
+		F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ReadingQuizAnswerTick.png; path = Resources/ReadingQuizAnswerTick.png; sourceTree = SOURCE_ROOT; };
+		F8FDF02615C2EDC500F0F929 /* SCHStoryInteractionGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionGradientView.h; sourceTree = "<group>"; };
+		F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionGradientView.m; sourceTree = "<group>"; };
 		F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "OldDictionary-additions.css"; path = "Resources/OldDictionary-additions.css"; sourceTree = "<group>"; };
 		F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "YoungDictionary-additions.css"; path = "Resources/YoungDictionary-additions.css"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -7215,6 +7387,7 @@
 				28A60F5D1397708C0090853E /* Multiple Choice */,
 				2802476A139F7F6B00B73703 /* Pop Quiz */,
 				28D81EE413E840E100A2B25F /* Picture Starter */,
+				F87FE00715BE93390051C6E8 /* Reading Challenge */,
 				28BFE9C3139F81AC00415075 /* Scratch and See */,
 				28BFE9C4139F81BF00415075 /* Sequencing */,
 				28BFE9C5139F81CC00415075 /* Starting Letter */,
@@ -7272,6 +7445,7 @@
 				2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */,
 				28A60EF013966DC20090853E /* StoryInteractionMultipleChoicePicture1.xml */,
 				2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */,
+				F87FE00F15BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml */,
 				2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */,
 				28A60EF7139672930090853E /* StoryInteractionSequencing1.xml */,
 				28A60EE4139647410090853E /* StoryInteractionStartingLetter1.xml */,
@@ -7355,6 +7529,7 @@
 				28C9BC52154851EF006F4B13 /* Concentration */,
 				28766C021548543D001D72B6 /* Jigsaw */,
 				28C9BC4F154851B3006F4B13 /* Picture Starter */,
+				F8FDF01B15C2D66400F0F929 /* Reading Quiz */,
 				284D4CF61548537100982636 /* Scratch and See */,
 				28C9BC591548530C006F4B13 /* Sequencing */,
 				28766BFF154853DF001D72B6 /* Touch The Page */,
@@ -7716,6 +7891,12 @@
 			children = (
 				F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */,
 				F8DB746313A0DCC3006E8D06 /* progressbar-fill.png */,
+				F839EB1A15C813F4000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png */,
+				F839EB1B15C813F4000F452E /* storyinteraction-younger-progress-filled~ipad.png */,
+				F839EB1C15C813F5000F452E /* storyinteraction-younger-progress-filled~iphone.png */,
+				F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */,
+				F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */,
+				F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */,
 				C9AC85FA13AE7E6C000ECDAE /* storyinteraction-progress-unfilled~iphone.png */,
 				C9AC85FB13AE7E76000ECDAE /* storyinteraction-progress-unfilled@2x~iphone.png */,
 				C9AC85FC13AE7E80000ECDAE /* storyinteraction-progress-unfilled~ipad.png */,
@@ -8748,6 +8929,13 @@
 				C9613DDC1405359A00AE1F8C /* icon-audio-younger-small@2x.png */,
 				C9279739140FA4AC0091B8B5 /* icon-audio-younger-small-landscape.png */,
 				C927973A140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png */,
+				F8A23C9C15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png */,
+				F8A23C9D15C15D7B00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png */,
+				F8A23C9E15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png */,
+				F8A23C9F15C15D7B00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png */,
+				F8A23CA015C15D7B00F5F6A1 /* icon-readingquiz-younger~ipad.png */,
+				F844DF3A15C7D681001D075F /* icon-readingquiz.png */,
+				F844DF3B15C7D681001D075F /* icon-readingquiz@2x.png */,
 			);
 			name = "Reading View Toolbar Icons";
 			sourceTree = "<group>";
@@ -9334,12 +9522,20 @@
 				C9C33CF4155C05D300C7041F /* SCHBSBTree.m */,
 				C9C33CED155C059500C7041F /* SCHBSBTreeNode.h */,
 				C9C33CEE155C059600C7041F /* SCHBSBTreeNode.m */,
-				C97DCA6215D5591B003B2DF3 /* SCHBSBReplacedElementWebView.h */,
-				C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */,
+				C97DCBB415E3B57A003B2DF3 /* SCHBSBReplacedNavigateElement.h */,
+				C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */,
+				C97DCBAD15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.h */,
+				C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */,
 				C97DCA5B15D55490003B2DF3 /* SCHBSBReplacedRadioElement.h */,
 				C97DCA5C15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m */,
+				C97DCBC215E3CECC003B2DF3 /* SCHBSBReplacedTextElement.h */,
+				C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */,
 				C97DCA5415D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.h */,
 				C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m */,
+				C97DCA6215D5591B003B2DF3 /* SCHBSBReplacedElementWebView.h */,
+				C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */,
+				C97DCBBB15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.h */,
+				C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */,
 			);
 			name = "Branching Stories";
 			sourceTree = "<group>";
@@ -9639,6 +9835,10 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
+				F839EB0215C7DAE7000F452E /* AstroBlastWithQuiz.jpg */,
+				F839EB0315C7DAE7000F452E /* AstroBlastWithQuiz.xps */,
+				F839EB0415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg */,
+				F839EB0515C7DAE7000F452E /* GoosebumpsWithQuiz.xps */,
 				C984D3F21559CC39001E3016 /* 9780545232166.1397.embeddedepub.jpg */,
 				C984D3F61559CE28001E3016 /* BranchingSample.jpg */,
 				C984D3F71559CE28001E3016 /* BranchingSample.bsb */,
@@ -9798,6 +9998,23 @@
 			);
 			name = Sounds;
 			path = Resources/Sounds;
+			sourceTree = "<group>";
+		};
+		F87FE00715BE93390051C6E8 /* Reading Challenge */ = {
+			isa = PBXGroup;
+			children = (
+				F87FE00815BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.h */,
+				F87FE00915BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m */,
+				F87FE01515BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.h */,
+				F87FE01615BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m */,
+				F87FE01B15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib */,
+				F87FE01F15BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib */,
+				F8FDF01515C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.h */,
+				F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */,
+				F8FDF02615C2EDC500F0F929 /* SCHStoryInteractionGradientView.h */,
+				F8FDF02715C2EDC500F0F929 /* SCHStoryInteractionGradientView.m */,
+			);
+			name = "Reading Challenge";
 			sourceTree = "<group>";
 		};
 		F8844BF1137D6416003D3014 /* Profile View Controller */ = {
@@ -10021,6 +10238,15 @@
 				F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */,
 			);
 			name = Notes;
+			sourceTree = "<group>";
+		};
+		F8FDF01B15C2D66400F0F929 /* Reading Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */,
+				F8FDF01D15C2D69100F0F929 /* ReadingQuizAnswerTick.png */,
+			);
+			name = "Reading Quiz";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -11036,6 +11262,28 @@
 				C96C4DA51557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
 				A3E96F74159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.jpg in Resources */,
 				A3E96F78159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.xps in Resources */,
+				F87FE01015BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */,
+				F87FE01C15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */,
+				F87FE02015BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */,
+				F8A23CA115C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */,
+				F8A23CA515C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */,
+				F8A23CA915C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
+				F8A23CAD15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */,
+				F8A23CB115C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */,
+				F8FDF01E15C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */,
+				F8FDF02215C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */,
+				F844DF3C15C7D681001D075F /* icon-readingquiz.png in Resources */,
+				F844DF4015C7D681001D075F /* icon-readingquiz@2x.png in Resources */,
+				F839EB0615C7DAE7000F452E /* AstroBlastWithQuiz.jpg in Resources */,
+				F839EB0B15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */,
+				F839EB1015C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */,
+				F839EB1515C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */,
+				F839EB2015C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */,
+				F839EB2515C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */,
+				F839EB2A15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */,
+				F839EB2F15C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
+				F839EB3415C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
+				F839EB3915C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11070,6 +11318,17 @@
 				2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */,
 				C9367BE314731A8B0033A2EB /* SCHParentalToolsWebViewController_iPad.xib in Resources */,
 				C98BDF2015498A5300E265B8 /* SCHEPUB3Overrides.css in Resources */,
+				F87FE01215BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */,
+				F839EB0815C7DAE7000F452E /* AstroBlastWithQuiz.jpg in Resources */,
+				F839EB0D15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */,
+				F839EB1215C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */,
+				F839EB1715C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */,
+				F839EB2215C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */,
+				F839EB2715C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */,
+				F839EB2C15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */,
+				F839EB3115C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
+				F839EB3615C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
+				F839EB3B15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11800,6 +12059,28 @@
 				C984D3F91559CE28001E3016 /* BranchingSample.bsb in Resources */,
 				A382C4131593639B00FDE3E3 /* 9780545324328.1103.MixedUpAlphabet.xps in Resources */,
 				A382C414159363B200FDE3E3 /* 9780545324328.1103.MixedUpAlphabet.jpg in Resources */,
+				F87FE01115BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */,
+				F87FE01D15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */,
+				F87FE02115BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */,
+				F8A23CA215C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */,
+				F8A23CA615C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */,
+				F8A23CAA15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
+				F8A23CAE15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */,
+				F8A23CB215C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */,
+				F8FDF01F15C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */,
+				F8FDF02315C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */,
+				F844DF3D15C7D681001D075F /* icon-readingquiz.png in Resources */,
+				F844DF4115C7D681001D075F /* icon-readingquiz@2x.png in Resources */,
+				F839EB0715C7DAE7000F452E /* AstroBlastWithQuiz.jpg in Resources */,
+				F839EB0C15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */,
+				F839EB1115C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */,
+				F839EB1615C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */,
+				F839EB2115C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */,
+				F839EB2615C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */,
+				F839EB2B15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */,
+				F839EB3015C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
+				F839EB3515C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
+				F839EB3A15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12337,6 +12618,27 @@
 				C96C4DA71557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
 				A3E96F76159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.jpg in Resources */,
 				A3E96F7A159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.xps in Resources */,
+				F87FE01315BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */,
+				F87FE02215BE99740051C6E8 /* SCHStoryInteractionReadingChallenge_iPad.xib in Resources */,
+				F8A23CA315C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */,
+				F8A23CA715C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */,
+				F8A23CAB15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
+				F8A23CAF15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */,
+				F8A23CB315C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */,
+				F8FDF02015C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */,
+				F8FDF02415C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */,
+				F844DF3E15C7D681001D075F /* icon-readingquiz.png in Resources */,
+				F844DF4215C7D681001D075F /* icon-readingquiz@2x.png in Resources */,
+				F839EB0915C7DAE7000F452E /* AstroBlastWithQuiz.jpg in Resources */,
+				F839EB0E15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */,
+				F839EB1315C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */,
+				F839EB1815C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */,
+				F839EB2315C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */,
+				F839EB2815C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */,
+				F839EB2D15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */,
+				F839EB3215C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
+				F839EB3715C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
+				F839EB3C15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12874,6 +13176,27 @@
 				C96C4DA81557D62C00B47E56 /* storia-settings-logo@2x~ipad.png in Resources */,
 				A3E96F77159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.jpg in Resources */,
 				A3E96F7B159254C40069F1B9 /* 9780545443326_enr_v2.ToothTrouble.xps in Resources */,
+				F87FE01415BE956D0051C6E8 /* StoryInteractionReadingChallenge1.xml in Resources */,
+				F87FE01E15BE994C0051C6E8 /* SCHStoryInteractionReadingChallenge_iPhone.xib in Resources */,
+				F8A23CA415C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape@2x~iphone.png in Resources */,
+				F8A23CA815C15D7C00F5F6A1 /* icon-readingquiz-younger-landscape~iphone.png in Resources */,
+				F8A23CAC15C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait@2x~iphone.png in Resources */,
+				F8A23CB015C15D7C00F5F6A1 /* icon-readingquiz-younger-portrait~iphone.png in Resources */,
+				F8A23CB415C15D7C00F5F6A1 /* icon-readingquiz-younger~ipad.png in Resources */,
+				F8FDF02115C2D69100F0F929 /* ReadingQuizAnswerCross.png in Resources */,
+				F8FDF02515C2D69100F0F929 /* ReadingQuizAnswerTick.png in Resources */,
+				F844DF3F15C7D681001D075F /* icon-readingquiz.png in Resources */,
+				F844DF4315C7D681001D075F /* icon-readingquiz@2x.png in Resources */,
+				F839EB0A15C7DAE7000F452E /* AstroBlastWithQuiz.jpg in Resources */,
+				F839EB0F15C7DAE7000F452E /* AstroBlastWithQuiz.xps in Resources */,
+				F839EB1415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg in Resources */,
+				F839EB1915C7DAE7000F452E /* GoosebumpsWithQuiz.xps in Resources */,
+				F839EB2415C813F7000F452E /* storyinteraction-younger-progress-filled@2x~iphone.png in Resources */,
+				F839EB2915C813F7000F452E /* storyinteraction-younger-progress-filled~ipad.png in Resources */,
+				F839EB2E15C813F7000F452E /* storyinteraction-younger-progress-filled~iphone.png in Resources */,
+				F839EB3315C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
+				F839EB3815C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
+				F839EB3D15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13299,13 +13622,21 @@
 				524321321598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A5F15B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6A15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
+				F87FE00A15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */,
+				F87FE01715BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */,
 				52EB1F8515B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
+				F8FDF01715C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */,
+				F8FDF02815C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229AC15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229E915B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
 				C97DCA5615D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
 				C97DCA5D15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6415D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74715D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
+				C97DCBAF15E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
+				C97DCBB615E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBBD15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
+				C97DCBC415E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13376,6 +13707,7 @@
 				52A36A6715B068D300162753 /* SCHScholasticResponseParserTests.m in Sources */,
 				52A36A6C15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
 				52A36A7115B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m in Sources */,
+				F87FE00C15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */,
 				52CEC19215C148FD004C749A /* SCHBookIdentifierTests.m in Sources */,
 				52CEC19315C14C6E004C749A /* SCHBookIdentifier.m in Sources */,
 				52CEC19415C14C97004C749A /* NSNumber+ObjectTypes.m in Sources */,
@@ -13711,6 +14043,10 @@
 				C97DCA5F15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6615D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74915D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
+				C97DCBB115E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
+				C97DCBB815E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBBF15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
+				C97DCBC615E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14103,13 +14439,21 @@
 				524321331598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A6015B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6B15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
+				F87FE00B15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */,
+				F87FE01815BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */,
 				52EB1F8615B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
+				F8FDF01815C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */,
+				F8FDF02915C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229AD15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229EA15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
 				C97DCA5715D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
 				C97DCA5E15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6515D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74815D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
+				C97DCBB015E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
+				C97DCBB715E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBBE15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
+				C97DCBC515E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14502,13 +14846,21 @@
 				524321341598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A6215B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6D15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
+				F87FE00D15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */,
+				F87FE01915BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */,
 				52EB1F8715B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
+				F8FDF01915C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */,
+				F8FDF02A15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229AF15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229EC15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
 				C97DCA5915D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
 				C97DCA6015D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6715D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74A15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
+				C97DCBB215E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
+				C97DCBB915E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBC015E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
+				C97DCBC715E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14901,13 +15253,21 @@
 				524321351598912400CCB8F1 /* SCHGetWishListItemsOperation.m in Sources */,
 				52A36A6315B0521D00162753 /* SCHScholasticResponseParser.m in Sources */,
 				52A36A6E15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */,
+				F87FE00E15BE93E50051C6E8 /* SCHStoryInteractionReadingChallenge.m in Sources */,
+				F87FE01A15BE98D50051C6E8 /* SCHStoryInteractionControllerReadingChallenge.m in Sources */,
 				52EB1F8815B976F0007E60D3 /* SCHAccountVerifier.m in Sources */,
+				F8FDF01A15C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */,
+				F8FDF02B15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229ED15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
 				C99BAB6F15BEB4CF00B18436 /* SCHAppModel.m in Sources */,
 				C97DCA5A15D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
 				C97DCA6115D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6815D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74B15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
+				C97DCBB315E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
+				C97DCBBA15E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBC115E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
+				C97DCBC815E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

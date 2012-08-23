@@ -509,6 +509,64 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 
 @end
 
+#pragma mark - ReadingChallenge
+
+@implementation SCHStoryInteractionReadingChallengeQuestion (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "QuestionPrompt") == 0) {
+        self.prompt = extractXmlAttribute(attributes, "Transcript");
+    } else if (strcmp(name, "Answer") == 0) {
+        if ([[extractXmlAttribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
+            self.correctAnswer = [parser.answers count];
+        }
+        NSString *transcript = extractXmlAttribute(attributes, "Transcript");
+        if (transcript != nil) {
+            [parser.answers addObject:transcript];
+        }
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+- (void)endElement:(const XML_Char *)name parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Question") == 0) {
+        [parser endQuestion];
+    } else {
+        [super endElement:name parser:parser];
+    }
+}
+
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    self.answers = [NSArray arrayWithArray:parser.answers];
+    [super parseComplete:parser];
+}
+
+
+@end
+
+@implementation SCHStoryInteractionReadingChallenge (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name,"Question") == 0) {
+        [parser beginQuestion:[SCHStoryInteractionReadingChallengeQuestion class]];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    self.questions = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
+}
+
+@end
+
 
 #pragma mark - ScratchAndSee
 

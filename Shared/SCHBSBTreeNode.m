@@ -29,13 +29,4 @@
     return NO;
 }
 
-- (NSString *)inlineStyle
-{
-    if ([self isUIKitNode]) {
-        return @"width: 300px; height: 60px;";
-    }
-    
-    return [super inlineStyle];
-}
-
 @end

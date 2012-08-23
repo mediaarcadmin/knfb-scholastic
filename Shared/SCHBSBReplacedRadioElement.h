@@ -10,6 +10,6 @@
 
 @interface SCHBSBReplacedRadioElement : SCHBSBReplacedElementPlaceholder
 
-- (id)initWithPointSize:(CGFloat)point keys:(NSArray *)keyArray values:(NSArray *)valueArray;
+- (id)initWithPointSize:(CGFloat)point keys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)binding;
 
 @end

@@ -24,6 +24,9 @@
 @property (nonatomic, retain, readonly) UIBarButtonItem *pictureStarterItem;
 @property (nonatomic, retain, readonly) UIButton *pictureStarterItemButton;
 
+@property (nonatomic, retain, readonly) UIBarButtonItem *readingQuizItem;
+@property (nonatomic, retain, readonly) UIButton *readingQuizItemButton;
+
 @property (nonatomic, retain, readonly) UIBarButtonItem *audioItem;
 @property (nonatomic, retain, readonly) UIButton *audioItemButton;
 
@@ -38,6 +41,7 @@
 - (UIBarButtonItem *)titleItemForOrientation:(UIInterfaceOrientation)orientation;
 - (UIBarButtonItem *)backItemForOrientation:(UIInterfaceOrientation)orientation;
 - (UIBarButtonItem *)pictureStarterItemForOrientation:(UIInterfaceOrientation)orientation;
+- (UIBarButtonItem *)readingQuizItemForOrientation:(UIInterfaceOrientation)orientation;
 - (UIBarButtonItem *)audioItemForOrientation:(UIInterfaceOrientation)orientation;
 - (UIBarButtonItem *)helpItemForOrientation:(UIInterfaceOrientation)orientation;
 - (UIBarButtonItem *)flexibleItem;
@@ -45,6 +49,7 @@
 
 - (IBAction)backItemAction:(id)selector;
 - (IBAction)pictureStarterItemAction:(id)selector;
+- (IBAction)readingQuizItemAction:(id)selector;
 - (IBAction)audioItemAction:(id)selector;
 - (IBAction)helpItemAction:(id)selector;
 
@@ -71,6 +76,8 @@
 @synthesize backItemButton;
 @synthesize pictureStarterItem;
 @synthesize pictureStarterItemButton;
+@synthesize readingQuizItem;
+@synthesize readingQuizItemButton;
 @synthesize audioItem;
 @synthesize audioItemButton;
 @synthesize helpItem;
@@ -92,6 +99,9 @@
     [pictureStarterItem release], pictureStarterItem = nil;
     [pictureStarterItemButton release], pictureStarterItemButton = nil;
 
+    [readingQuizItem release], readingQuizItem = nil;
+    [readingQuizItemButton release], readingQuizItemButton = nil;
+    
     [audioItem release], audioItem = nil;
     [audioItemButton release], audioItemButton = nil;
 
@@ -161,6 +171,7 @@
     
     [self.backItemButton sizeToFit];
     [self.pictureStarterItemButton sizeToFit];
+    [self.readingQuizItemButton sizeToFit];
     [self.audioItemButton sizeToFit];
     [self.helpItemButton sizeToFit];
 }
@@ -249,6 +260,8 @@
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPad:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
             [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger.png"] forState:UIControlStateNormal];
             break;
         case kSCHReadingViewNavigationToolbarStyleOlderPhone:
@@ -260,6 +273,8 @@
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
                 [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-portrait.png"] forState:UIControlStateNormal];
             } else {
@@ -281,9 +296,11 @@
     
     switch (self.style) {
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
             [pictureStarterItemButton setImage:[UIImage imageNamed:@"icon-picturestarter-younger.png"] forState:UIControlStateNormal];
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
                 [pictureStarterItemButton setImage:[UIImage imageNamed:@"icon-picturestarter-younger-portrait.png"] forState:UIControlStateNormal];
             } else {
@@ -297,6 +314,34 @@
     return pictureStarterItem;
 }
 
+- (UIBarButtonItem *)readingQuizItemForOrientation:(UIInterfaceOrientation)orientation
+{
+    if (!readingQuizItem) {
+        readingQuizItemButton = [[UIButton alloc] init];
+        [readingQuizItemButton addTarget:self action:@selector(readingQuizItemAction:) forControlEvents:UIControlEventTouchUpInside];
+        readingQuizItem = [[UIBarButtonItem alloc] initWithCustomView:readingQuizItemButton];        
+    }
+    
+    switch (self.style) {
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
+            [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger.png"] forState:UIControlStateNormal];
+            break;
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
+            if (UIInterfaceOrientationIsPortrait(orientation)) {
+                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-portrait.png"] forState:UIControlStateNormal];
+            } else {
+                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-landscape.png"] forState:UIControlStateNormal];
+            }
+            break;
+        default:
+            break;
+    }
+    
+    return readingQuizItem;
+}
+
 - (UIBarButtonItem *)audioItemForOrientation:(UIInterfaceOrientation)orientation
 {
     if (!audioItem) {
@@ -308,10 +353,14 @@
     switch (self.style) {
         case kSCHReadingViewNavigationToolbarStyleYoungerPad:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
             [audioItemButton setImage:[UIImage imageNamed:@"icon-audio-younger.png"] forState:UIControlStateNormal];
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
                 [audioItemButton setImage:[UIImage imageNamed:@"icon-audio-younger-portrait.png"] forState:UIControlStateNormal];
             } else {
@@ -339,6 +388,8 @@
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPad:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
             [helpItemButton setImage:[UIImage imageNamed:@"icon-help-younger.png"] forState:UIControlStateNormal];
             break;
         case kSCHReadingViewNavigationToolbarStyleOlderPhone:
@@ -349,7 +400,9 @@
             }
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
                 [helpItemButton setImage:[UIImage imageNamed:@"icon-help-younger-portrait.png"] forState:UIControlStateNormal];
             } else {
@@ -399,10 +452,16 @@
             break;
         }
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
         {
             [items addObject:[self backItemForOrientation:orientation]];
             [items addObject:[self flexibleItem]];
-            [items addObject:[self pictureStarterItemForOrientation:orientation]];
+            
+            if (self.style == kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone) {
+                [items addObject:[self readingQuizItemForOrientation:orientation]];
+            } else {
+                [items addObject:[self pictureStarterItemForOrientation:orientation]];
+            }
             
             if (!self.audioItemHidden) {
                 [items addObject:[self flexibleItem]];
@@ -416,6 +475,27 @@
             
             break;
         }
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
+        {
+            [items addObject:[self backItemForOrientation:orientation]];
+            [items addObject:[self flexibleItem]];
+            [items addObject:[self pictureStarterItemForOrientation:orientation]];
+            [items addObject:[self flexibleItem]];
+            [items addObject:[self readingQuizItemForOrientation:orientation]];
+            
+            if (!self.audioItemHidden) {
+                [items addObject:[self flexibleItem]];
+                [items addObject:[self audioItemForOrientation:orientation]];
+            }
+            
+            if (!self.helpItemHidden) {
+                [items addObject:[self flexibleItem]];
+                [items addObject:[self helpItemForOrientation:orientation]];
+            }
+            
+            break;
+        }
+
         case kSCHReadingViewNavigationToolbarStyleYoungerPad:
         {
             [items addObject:[self backItemForOrientation:orientation]];
@@ -442,6 +522,7 @@
 
             break;
         }
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
         {
             [items addObject:[self backItemForOrientation:orientation]];
@@ -463,13 +544,49 @@
                 [items addObject:[self fixedItemOfWidth:9]];
             }
             
-            [items addObject:[self pictureStarterItemForOrientation:orientation]];
+            if (self.style == kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad) {
+                [items addObject:[self readingQuizItemForOrientation:orientation]];
+            } else {
+                [items addObject:[self pictureStarterItemForOrientation:orientation]];
+            }
             
             if (!self.helpItemHidden) {
                 [items addObject:[self fixedItemOfWidth:12]];
                 [items addObject:[self helpItemForOrientation:orientation]];
             }
              
+            break;
+        }
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
+        {
+            [items addObject:[self backItemForOrientation:orientation]];
+            
+            if (self.audioItemHidden) {
+                [items addObject:[self fixedItemOfWidth:116]];
+            } else {
+                [items addObject:[self fixedItemOfWidth:124]];
+            }
+            
+            [items addObject:[self flexibleItem]];
+            [items addObject:[self titleItemForOrientation:orientation]];
+            [items addObject:[self flexibleItem]];
+            
+            if (self.audioItemHidden) {
+                [items addObject:[self fixedItemOfWidth:61]];
+            } else {
+                [items addObject:[self audioItemForOrientation:orientation]];
+                [items addObject:[self fixedItemOfWidth:9]];
+            }
+            
+            [items addObject:[self readingQuizItemForOrientation:orientation]];
+            [items addObject:[self fixedItemOfWidth:12]];
+            [items addObject:[self pictureStarterItemForOrientation:orientation]];
+            
+            if (!self.helpItemHidden) {
+                [items addObject:[self fixedItemOfWidth:12]];
+                [items addObject:[self helpItemForOrientation:orientation]];
+            }
+            
             break;
         }
         case kSCHReadingViewNavigationToolbarStyleOlderPhone:
@@ -502,6 +619,13 @@
 {
     if ([self.delegate respondsToSelector:@selector(backAction:)]) {
         [self.delegate backAction:sender];
+    }
+}
+
+- (IBAction)readingQuizItemAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(readingQuizAction:)]) {
+        [self.delegate readingQuizAction:sender];
     }
 }
 
@@ -570,6 +694,8 @@
         switch (aStyle) {
             case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+            case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
                 size = CGSizeMake(320, 60);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPhone:
@@ -577,6 +703,8 @@
                 break;
             case kSCHReadingViewNavigationToolbarStyleYoungerPad:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+            case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
                 size = CGSizeMake(768, 60);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPad:
@@ -587,6 +715,8 @@
         switch (aStyle) {
             case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+            case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
                 size = CGSizeMake(480, 44);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPhone:
@@ -594,6 +724,8 @@
                 break;
             case kSCHReadingViewNavigationToolbarStyleYoungerPad:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:    
+            case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+            case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
                 size = CGSizeMake(1024, 60);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPad:

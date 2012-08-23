@@ -647,19 +647,33 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     if ([[self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionPictureStarter class]] count]) {
         pictureStarter = YES;
     }
-        
+    
+    BOOL readingChallenge = NO;
+    
+    if ([[self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionReadingChallenge class]] count]) {
+        readingChallenge = YES;
+    }
+    
     SCHReadingViewNavigationToolbarStyle style = 0;
     
     if (self.youngerMode) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            if (pictureStarter) {
+            if (pictureStarter && readingChallenge) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone;
+            } else if (pictureStarter) {
                 style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone;
+            } else if (readingChallenge) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone;
             } else {
                 style = kSCHReadingViewNavigationToolbarStyleYoungerPhone;
             }
         } else {
-            if (pictureStarter) {
-                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad; 
+            if (pictureStarter && readingChallenge) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad;
+            } else if (pictureStarter) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad;
+            } else if (readingChallenge) {
+                style = kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad;
             } else {
                 style = kSCHReadingViewNavigationToolbarStyleYoungerPad; 
             }
@@ -740,10 +754,15 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
 #if FLOW_VIEW_DISABLED
     // if flow view is disabled, then remove the options button
-    if ([toolbarArray count] >= 9) {
-        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
+    if ([toolbarArray count] >= 11) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(8, 2)]];
     }
 #endif
+    
+    // Reading Quiz
+    if (!readingChallenge && [toolbarArray count] >= 9) {
+        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(6, 2)]];
+    }
     
     BOOL alreadyRemovedHighlights = NO;
     
@@ -1205,6 +1224,19 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [self presentStoryInteraction:[storyInteractions lastObject]];
 }
 
+- (IBAction)readingQuizAction:(UIButton *)sender 
+{
+    [self toolbarButtonPressed];
+    
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionReadingChallenge class]];
+    if ([storyInteractions count] < 1) {
+        NSLog(@"No Reading Quiz found - button should be disabled");
+        return;
+    }
+    
+    [self presentStoryInteraction:[storyInteractions lastObject]];
+}
+
 - (IBAction)audioAction:(id)sender
 {
     NSLog(@"Audio Play action");
@@ -1403,6 +1435,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     [self pauseAudioPlayback];
 }
+
 
 - (IBAction)settingsAction:(UIButton *)sender
 {
@@ -2302,6 +2335,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.currentBookProgress = -1;
         self.currentPageIndices = NSMakeRange(NSNotFound, 0);
         
+        if (([self generatedPageCountForReadingView:self.readingView] - 1) == self.currentPageIndex) {
+            // FIXME: add in hook for reading quiz
+            NSLog(@"We're on the last page!");
+        }
+        
         [self readingViewHasMoved];
     }
 }
@@ -2337,6 +2375,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     self.currentBookProgress = -1;
     self.currentPageIndices = pageIndicesRange;
     
+    if (NSLocationInRange([self generatedPageCountForReadingView:self.readingView] - 1, self.currentPageIndices)) {
+        // FIXME: add in hook for reading quiz
+        NSLog(@"We're on the last page!");
+    }
+
     [self readingViewHasMoved];
 }
 
@@ -2352,6 +2395,12 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     self.currentBookProgress = progress;
     self.currentPageIndices = NSMakeRange(NSNotFound, 0);
     
+    if (self.currentBookProgress == 1) {
+        
+        // FIXME: add in hook for reading quiz
+        NSLog(@"We're on the last page!");
+    }
+
     [self readingViewHasMoved];
 }
 

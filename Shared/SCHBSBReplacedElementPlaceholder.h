@@ -10,6 +10,8 @@
 
 @interface SCHBSBReplacedElementPlaceholder : NSObject <EucCSSReplacedElement>
 
+@property (nonatomic, assign) CGFloat pointSize;
+
 - (id)initWithPointSize:(CGFloat)point;
 
 @end
