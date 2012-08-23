@@ -24,7 +24,7 @@
 #import "SCHBSBReplacedNavigateElement.h"
 #import "SCHBSBReplacedTextElement.h"
 #import <libEucalyptus/EucPageLayoutController.h>
-#import <libEucalyptus/EucCSSIntermediateDocument.h>
+#import <libEucalyptus/EucCSSHTMLIntermediateDocument.h>
 #import <libEucalyptus/EucCSSIntermediateDocumentNode.h>
 #import <libEucalyptus/THEmbeddedResourceManager.h>
 #import <libEucalyptus/THNSURLAdditions.h>
@@ -102,10 +102,10 @@
     return self;
 }
 
-- (EucCSSIntermediateDocument *)intermediateDocumentForIndexPoint:(EucBookPageIndexPoint *)indexPoint 
+- (EucCSSIntermediateDocument *)intermediateDocumentForIndexPoint:(EucBookPageIndexPoint *)indexPoint
                                                       pageOptions:(NSDictionary *)pageOptions
 {
-    EucCSSIntermediateDocument *doc = nil;
+    EucCSSHTMLIntermediateDocument *doc = nil;
     SCHBSBNode *node = [self.decisionNodes objectAtIndex:indexPoint.source];
     
     if (node.uri) {
@@ -113,12 +113,12 @@
         
         if ([xmlData length]) {
             NSURL *docURL = [NSURL URLWithString:[[NSString stringWithFormat:@"bsb://%@", self.identifier] stringByAppendingPathComponent:node.uri]];
-        
+            
             id <EucCSSDocumentTree> docTree = [[[SCHBSBTree alloc] initWithData:xmlData] autorelease];
-            doc = [[EucCSSIntermediateDocument alloc] initWithDocumentTree:docTree 
-                                                                forURL:docURL 
-                                                           pageOptions:pageOptions 
-                                                            dataSource:self];
+            doc = [[EucCSSHTMLIntermediateDocument alloc] initWithDocumentTree:docTree
+                                                                        forURL:docURL
+                                                                   pageOptions:pageOptions
+                                                                    dataSource:self];
         } else {
             NSLog(@"Warning: No data at path: %@", node.uri);
         }
