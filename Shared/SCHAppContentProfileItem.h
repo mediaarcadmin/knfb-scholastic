@@ -30,9 +30,12 @@ extern NSString * const kSCHAppContentProfileItemOrder;
 @property (nonatomic, retain) NSDate * LastBookmarkAnnotationSync;
 @property (nonatomic, retain) NSDate * LastHighlightAnnotationSync;
 @property (nonatomic, retain) NSDate * LastNoteAnnotationSync;
+@property (nonatomic, retain) NSDate * lastOpenedDate;
 @property (nonatomic, retain) SCHProfileItem * ProfileItem;
 @property (nonatomic, retain) SCHContentProfileItem * ContentProfileItem;
 
 @property (nonatomic, readonly) SCHBookIdentifier *bookIdentifier;
+
+- (void)openedBook;
 
 @end

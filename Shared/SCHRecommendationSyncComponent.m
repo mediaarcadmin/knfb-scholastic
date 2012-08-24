@@ -411,32 +411,36 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         // only return those items that require updating
         ret = [NSMutableArray arrayWithCapacity:[results count]];
         for (SCHUserContentItem *item in results) {
-            NSSet *contentMetadataItems = [item ContentMetadataItem];            
-            SCHRecommendationISBN *isbn = nil;
-            if ([contentMetadataItems count] > 0) {
-                // it's a book to book relationship so only 1 book in the set
-                SCHContentMetadataItem *contentMetadataItem = [contentMetadataItems anyObject];
-                isbn = [contentMetadataItem.AppBook recommendationISBN];
-            }
-            NSDate *nextUpdate = [isbn.fetchDate dateByAddingTimeInterval:kSCHRecommendationSyncComponentBookSyncDelayTimeInterval];
+            NSDate *earlierOpenedDate = [item earlierOpenedDate];
             
-            if (isbn == nil || 
-                nextUpdate == nil ||
-                [[NSDate date] earlierDate:nextUpdate] == nextUpdate) {
-                if (asISBN == YES) {
-                    NSString *isbn = [self makeNullNil:[item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-                    if (isbn != nil && [ret containsObject:isbn] == NO) {
-                        [ret addObject:isbn];
-                    }
-                } else {
-                    [ret addObject:item];                    
+            if (earlierOpenedDate != nil) {
+                NSSet *contentMetadataItems = [item ContentMetadataItem];
+                SCHRecommendationISBN *recommendationISBN = nil;
+                if ([contentMetadataItems count] > 0) {
+                    // it's a book to book relationship so only 1 book in the set
+                    SCHContentMetadataItem *contentMetadataItem = [contentMetadataItems anyObject];
+                    recommendationISBN = [contentMetadataItem.AppBook recommendationISBN];
                 }
+
+                NSDate *nextUpdate = [recommendationISBN.fetchDate dateByAddingTimeInterval:kSCHRecommendationSyncComponentBookSyncDelayTimeInterval];
+
+                if (nextUpdate == nil ||
+                    ([earlierOpenedDate laterDate:recommendationISBN.fetchDate] == earlierOpenedDate &&
+                     [[NSDate date] earlierDate:nextUpdate] == nextUpdate)) {
+                        if (asISBN == YES) {
+                            NSString *isbn = [self makeNullNil:[item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+                            if (isbn != nil && [ret containsObject:isbn] == NO) {
+                                [ret addObject:isbn];
+                            }
+                        } else {
+                            [ret addObject:item];
+                        }
+                    }
             }
-        }                    
+        }
     }
 	[fetchRequest release], fetchRequest = nil;
     
-
 	return(ret);
 }
 

@@ -457,6 +457,10 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         managedObjectContext = [moc retain];
         
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIdentifier inManagedObjectContext:self.managedObjectContext];       
+
+        SCHAppContentProfileItem *appContentProfileItem = [aProfile appContentProfileItemForBookIdentifier:aIdentifier];
+        [appContentProfileItem openedBook];
+        [self save];
         
         self.shouldShowChapters = book.shouldShowChapters;
         self.shouldShowPageNumbers = book.shouldShowPageNumbers;

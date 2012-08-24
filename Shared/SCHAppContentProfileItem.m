@@ -30,6 +30,7 @@ NSString * const kSCHAppContentProfileItemOrder = @"Order";
 @dynamic LastBookmarkAnnotationSync;
 @dynamic LastHighlightAnnotationSync;
 @dynamic LastNoteAnnotationSync;
+@dynamic lastOpenedDate;
 
 @dynamic ProfileItem;
 @dynamic ContentProfileItem;
@@ -75,6 +76,11 @@ NSString * const kSCHAppContentProfileItemOrder = @"Order";
     }
     
     return ret;    
+}
+
+- (void)openedBook
+{
+    self.lastOpenedDate = [NSDate date];
 }
 
 @end

@@ -12,6 +12,7 @@
 #import "SCHOrderItem.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHBookIdentifier.h"
+#import "SCHAppContentProfileItem.h"
 
 // Constants
 NSString * const kSCHUserContentItem = @"SCHUserContentItem";
@@ -65,6 +66,22 @@ NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 - (NSSet *)AssignedProfileList
 {
 	return(self.ProfileList);
+}
+
+- (NSDate *)earlierOpenedDate
+{
+    NSDate *ret = nil;
+
+    for (SCHContentProfileItem *item in self.ProfileList) {
+        NSDate *lastOpenedDate = item.AppContentProfileItem.lastOpenedDate;
+        if (lastOpenedDate != nil &&
+            (ret == nil ||
+            [ret earlierDate:lastOpenedDate] == lastOpenedDate)) {
+            ret = lastOpenedDate;
+        }
+    }
+
+    return ret;
 }
 
 #pragma SCHISBNItem protocol methods

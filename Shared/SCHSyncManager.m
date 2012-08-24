@@ -641,6 +641,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                 [self.annotationSyncComponent addProfile:profileID 
                                                withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];	
                 [self addToQueue:self.annotationSyncComponent];
+
+                [self addToQueue:self.recommendationSyncComponent];
                 
                 [self kickQueue];
             }
