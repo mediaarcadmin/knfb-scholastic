@@ -10,6 +10,8 @@
 #import "SCHAppRecommendationItem.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UILabel+ScholasticAdditions.h"
+#import "SCHRecommendationURLRequestOperation.h"
+#import "SCHRecommendationThumbnailOperation.h"
 
 #define RIGHT_ELEMENTS_PADDING 5.0
 #define TOP_BOTTOM_PADDING 18.0
@@ -49,6 +51,13 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHRecommendationThumbnailOperationDidUpdateNotification
+                                                  object:nil];
+
     delegate = nil;
     [recommendationBackgroundColor release], recommendationBackgroundColor = nil;
     [ISBN release], ISBN = nil;
@@ -319,6 +328,32 @@
 //    NSLog(@"rating label frame: %@", NSStringFromCGRect(self.ratingLabel.frame));
 //    NSLog(@"rating frame: %@", NSStringFromCGRect(self.rateView.frame));
 //    NSLog(@"cover frame: %@", NSStringFromCGRect(self.coverImageView.frame));
+}
+
+#pragma mark - RecommendationManager update notifications
+
+- (void)acceptUpdatesFromRecommendationManager
+{
+    // watch for new new info or book covers becoming available from the recommendation manager
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(recommendationDidUpdate:)
+                                                 name:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(recommendationDidUpdate:)
+                                                 name:SCHRecommendationThumbnailOperationDidUpdateNotification
+                                               object:nil];
+}
+
+- (void)recommendationDidUpdate:(NSNotification *)notification
+{
+    NSDictionary *recommendationItemDictionary = notification.userInfo;
+    NSString *recommendationISBN = [recommendationItemDictionary objectForKey:kSCHAppRecommendationISBN];
+
+    if (recommendationISBN != nil && [self.ISBN isEqualToString:recommendationISBN] == YES) {
+        [self updateWithRecommendationItem:recommendationItemDictionary];
+    }
 }
 
 @end

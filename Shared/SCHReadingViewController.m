@@ -2516,7 +2516,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         UIView *container = recommendationsContainer.container;
         [recommendationsContainer setFrame:self.readingView.bounds];
 
-        if ([recommendationDictionaries count] == 0) {
+        if ([recommendationDictionaries count] > 0) {
             CGFloat count = MIN([recommendationsDictionaries count], 4);
             CGFloat rowHeight = floorf((container.frame.size.height)/4);
 
@@ -2533,6 +2533,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                 listView.showsWishListButton = [[SCHAppStateManager sharedAppStateManager] shouldShowWishList];
 
                 [listView updateWithRecommendationItem:recommendationDictionary];
+                [listView acceptUpdatesFromRecommendationManager];
 
                 NSString *ISBN = [recommendationDictionary objectForKey:kSCHAppRecommendationISBN];
 

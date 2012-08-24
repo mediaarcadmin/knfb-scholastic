@@ -35,10 +35,11 @@
 @property (retain, nonatomic) IBOutlet UIView *leftView;
 @property (retain, nonatomic) IBOutlet UIImageView *ruleImageView;
 
-
 - (void)updateWithRecommendationItem:(NSDictionary *)item;
 - (void)updateWithWishListItem:(NSDictionary *)item;
 - (IBAction)toggledOnWishListButton:(UIButton *)wishListButton;
+
+- (void)acceptUpdatesFromRecommendationManager;
 
 @end
 
