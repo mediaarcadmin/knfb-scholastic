@@ -4694,6 +4694,26 @@
 		F8B55E40134B530C0028534A /* SCHDictionaryEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E3F134B530C0028534A /* SCHDictionaryEntry.m */; };
 		F8B55E45134B57A20028534A /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E44134B57A20028534A /* ZipArchive.mm */; };
 		F8BEE8B01334FD44008B40DA /* SCHAppBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */; };
+		F8C097BA15EB91630056D0D0 /* gen_introductionnotready.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B515EB91630056D0D0 /* gen_introductionnotready.mp3 */; };
+		F8C097BB15EB91630056D0D0 /* gen_introductionnotready.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B515EB91630056D0D0 /* gen_introductionnotready.mp3 */; };
+		F8C097BC15EB91630056D0D0 /* gen_introductionnotready.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B515EB91630056D0D0 /* gen_introductionnotready.mp3 */; };
+		F8C097BD15EB91630056D0D0 /* gen_introductionnotready.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B515EB91630056D0D0 /* gen_introductionnotready.mp3 */; };
+		F8C097BE15EB91630056D0D0 /* gen_introductionready.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B615EB91630056D0D0 /* gen_introductionready.mp3 */; };
+		F8C097BF15EB91630056D0D0 /* gen_introductionready.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B615EB91630056D0D0 /* gen_introductionready.mp3 */; };
+		F8C097C015EB91630056D0D0 /* gen_introductionready.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B615EB91630056D0D0 /* gen_introductionready.mp3 */; };
+		F8C097C115EB91630056D0D0 /* gen_introductionready.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B615EB91630056D0D0 /* gen_introductionready.mp3 */; };
+		F8C097C215EB91630056D0D0 /* gen_scoreresponsehigh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B715EB91630056D0D0 /* gen_scoreresponsehigh.mp3 */; };
+		F8C097C315EB91630056D0D0 /* gen_scoreresponsehigh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B715EB91630056D0D0 /* gen_scoreresponsehigh.mp3 */; };
+		F8C097C415EB91630056D0D0 /* gen_scoreresponsehigh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B715EB91630056D0D0 /* gen_scoreresponsehigh.mp3 */; };
+		F8C097C515EB91630056D0D0 /* gen_scoreresponsehigh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B715EB91630056D0D0 /* gen_scoreresponsehigh.mp3 */; };
+		F8C097C615EB91630056D0D0 /* gen_scoreresponselow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B815EB91630056D0D0 /* gen_scoreresponselow.mp3 */; };
+		F8C097C715EB91630056D0D0 /* gen_scoreresponselow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B815EB91630056D0D0 /* gen_scoreresponselow.mp3 */; };
+		F8C097C815EB91630056D0D0 /* gen_scoreresponselow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B815EB91630056D0D0 /* gen_scoreresponselow.mp3 */; };
+		F8C097C915EB91630056D0D0 /* gen_scoreresponselow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B815EB91630056D0D0 /* gen_scoreresponselow.mp3 */; };
+		F8C097CA15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B915EB91630056D0D0 /* gen_scoreresponsemedium.mp3 */; };
+		F8C097CB15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B915EB91630056D0D0 /* gen_scoreresponsemedium.mp3 */; };
+		F8C097CC15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B915EB91630056D0D0 /* gen_scoreresponsemedium.mp3 */; };
+		F8C097CD15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B915EB91630056D0D0 /* gen_scoreresponsemedium.mp3 */; };
 		F8C4C3FE1332594A0057420E /* SCHDictionaryDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3FA1332594A0057420E /* SCHDictionaryDownloadManager.m */; };
 		F8C4C40A133259750057420E /* SCHProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C408133259750057420E /* SCHProcessingManager.m */; };
 		F8C4C40E133259810057420E /* SCHBookShelfGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C40C133259810057420E /* SCHBookShelfGridViewCell.m */; };
@@ -6757,6 +6777,11 @@
 		F8B55E44134B57A20028534A /* ZipArchive.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZipArchive.mm; path = Shared/Libraries/ZipArchive/ZipArchive.mm; sourceTree = "<group>"; };
 		F8BEE8AD1334FD44008B40DA /* SCHAppBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppBook.h; path = Shared/SCHAppBook.h; sourceTree = "<group>"; };
 		F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppBook.m; path = Shared/SCHAppBook.m; sourceTree = "<group>"; };
+		F8C097B515EB91630056D0D0 /* gen_introductionnotready.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gen_introductionnotready.mp3; sourceTree = "<group>"; };
+		F8C097B615EB91630056D0D0 /* gen_introductionready.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gen_introductionready.mp3; sourceTree = "<group>"; };
+		F8C097B715EB91630056D0D0 /* gen_scoreresponsehigh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gen_scoreresponsehigh.mp3; sourceTree = "<group>"; };
+		F8C097B815EB91630056D0D0 /* gen_scoreresponselow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gen_scoreresponselow.mp3; sourceTree = "<group>"; };
+		F8C097B915EB91630056D0D0 /* gen_scoreresponsemedium.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gen_scoreresponsemedium.mp3; sourceTree = "<group>"; };
 		F8C4C3F91332594A0057420E /* SCHDictionaryDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryDownloadManager.h; path = Shared/SCHDictionaryDownloadManager.h; sourceTree = "<group>"; };
 		F8C4C3FA1332594A0057420E /* SCHDictionaryDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryDownloadManager.m; path = Shared/SCHDictionaryDownloadManager.m; sourceTree = "<group>"; };
 		F8C4C407133259750057420E /* SCHProcessingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProcessingManager.h; path = Shared/SCHProcessingManager.h; sourceTree = "<group>"; };
@@ -9967,6 +9992,11 @@
 		F86DEC0813A21F2600053999 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				F8C097B515EB91630056D0D0 /* gen_introductionnotready.mp3 */,
+				F8C097B615EB91630056D0D0 /* gen_introductionready.mp3 */,
+				F8C097B715EB91630056D0D0 /* gen_scoreresponsehigh.mp3 */,
+				F8C097B815EB91630056D0D0 /* gen_scoreresponselow.mp3 */,
+				F8C097B915EB91630056D0D0 /* gen_scoreresponsemedium.mp3 */,
 				F86DEC0913A21F2600053999 /* sfx_breakpuzzle.mp3 */,
 				F86DEC0A13A21F2600053999 /* sfx_ca.mp3 */,
 				F86DEC0B13A21F2600053999 /* sfx_ca_o.mp3 */,
@@ -11284,6 +11314,11 @@
 				F839EB2F15C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
 				F839EB3415C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
 				F839EB3915C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
+				F8C097BA15EB91630056D0D0 /* gen_introductionnotready.mp3 in Resources */,
+				F8C097BE15EB91630056D0D0 /* gen_introductionready.mp3 in Resources */,
+				F8C097C215EB91630056D0D0 /* gen_scoreresponsehigh.mp3 in Resources */,
+				F8C097C615EB91630056D0D0 /* gen_scoreresponselow.mp3 in Resources */,
+				F8C097CA15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12081,6 +12116,11 @@
 				F839EB3015C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
 				F839EB3515C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
 				F839EB3A15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
+				F8C097BB15EB91630056D0D0 /* gen_introductionnotready.mp3 in Resources */,
+				F8C097BF15EB91630056D0D0 /* gen_introductionready.mp3 in Resources */,
+				F8C097C315EB91630056D0D0 /* gen_scoreresponsehigh.mp3 in Resources */,
+				F8C097C715EB91630056D0D0 /* gen_scoreresponselow.mp3 in Resources */,
+				F8C097CB15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12639,6 +12679,11 @@
 				F839EB3215C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
 				F839EB3715C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
 				F839EB3C15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
+				F8C097BC15EB91630056D0D0 /* gen_introductionnotready.mp3 in Resources */,
+				F8C097C015EB91630056D0D0 /* gen_introductionready.mp3 in Resources */,
+				F8C097C415EB91630056D0D0 /* gen_scoreresponsehigh.mp3 in Resources */,
+				F8C097C815EB91630056D0D0 /* gen_scoreresponselow.mp3 in Resources */,
+				F8C097CC15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13197,6 +13242,11 @@
 				F839EB3315C813F7000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png in Resources */,
 				F839EB3815C813F7000F452E /* storyinteraction-younger-progress-unfilled~ipad.png in Resources */,
 				F839EB3D15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */,
+				F8C097BD15EB91630056D0D0 /* gen_introductionnotready.mp3 in Resources */,
+				F8C097C115EB91630056D0D0 /* gen_introductionready.mp3 in Resources */,
+				F8C097C515EB91630056D0D0 /* gen_scoreresponsehigh.mp3 in Resources */,
+				F8C097C915EB91630056D0D0 /* gen_scoreresponselow.mp3 in Resources */,
+				F8C097CD15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

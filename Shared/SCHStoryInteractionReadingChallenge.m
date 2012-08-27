@@ -41,32 +41,27 @@
 
 - (NSString *)audioPathForNotCompletedBook
 {
-    NSString *filename = [NSString stringWithFormat:@"gen_introductionnotready.mp3"];
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+    return @"gen_introductionnotready.mp3";
 }
 
 - (NSString *)audioPathForIntroduction
 {
-    NSString *filename = [NSString stringWithFormat:@"gen_introductionready.mp3"];
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+    return @"gen_introductionready.mp3";
 }
 
 - (NSString *)audioPathForAllCorrect
 {
-    NSString *filename = [NSString stringWithFormat:@"gen_scoreresponsehigh.mp3"];
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+    return @"gen_scoreresponsehigh.mp3";
 }
 
 - (NSString *)audioPathForMoreThanFiftyPercent
 {
-    NSString *filename = [NSString stringWithFormat:@"gen_scoreresponsemedium.mp3"];
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+    return @"gen_scoreresponsemedium.mp3";
 }
 
 - (NSString *)audioPathForLessThanFiftyPercent
 {
-    NSString *filename = [NSString stringWithFormat:@"gen_scoreresponselow.mp3"];
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+    return @"gen_scoreresponselow.mp3";
 }
 
 - (void)dealloc

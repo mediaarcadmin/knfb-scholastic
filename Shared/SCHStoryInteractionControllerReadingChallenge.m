@@ -136,10 +136,10 @@
             case 0:
                 if (self.completedReadthrough) {
                     [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForIntroduction]
-                                    fromBundle:NO];
+                                    fromBundle:YES];
                 } else {
                     [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForNotCompletedBook]
-                                    fromBundle:NO];
+                                    fromBundle:YES];
                 }
                 break;
             case 1:
@@ -151,7 +151,7 @@
             default:
                 NSLog(@"Warning: unknown view index.");
                 [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForNotCompletedBook]
-                                fromBundle:NO];
+                                fromBundle:YES];
                 break;
         }
     }];
@@ -168,7 +168,7 @@
     
     if (self.completedReadthrough) {
         [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForIntroduction]
-                        fromBundle:NO];
+                        fromBundle:YES];
         
         self.bestScoreLabel.text = [NSString stringWithFormat:@"Best Score: %d/%d", bestScore, [[(SCHStoryInteractionReadingChallenge *)self.storyInteraction questions] count]];
         [self.introActionButton setTitle:@"Start" forState:UIControlStateNormal];
@@ -179,7 +179,7 @@
         }
     } else {
         [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForNotCompletedBook]
-                        fromBundle:NO];
+                        fromBundle:YES];
         self.introTitleLabel.text = @"Finish reading this book before trying this reading challenge.";
         [self.introActionButton setTitle:@"OK" forState:UIControlStateNormal];
         self.introSubtitleLabel.hidden = YES;
@@ -274,19 +274,19 @@
         // 50% or less
         if (!self.storyInteraction.olderStoryInteraction) {
             [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForLessThanFiftyPercent]
-                            fromBundle:NO];
+                            fromBundle:YES];
         }
     } else if (score < ceil((float)maxScore)) {
         // less than 100%
         if (!self.storyInteraction.olderStoryInteraction) {
             [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForMoreThanFiftyPercent]
-                            fromBundle:NO];
+                            fromBundle:YES];
         }
     } else {
         // 100%
         if (!self.storyInteraction.olderStoryInteraction) {
             [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForAllCorrect]
-                            fromBundle:NO];
+                            fromBundle:YES];
         }
     }
 }
