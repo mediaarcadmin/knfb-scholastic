@@ -3415,6 +3415,8 @@
 		C9C3FABC14B85F4400757038 /* SCHStoriaWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C3FAB914B85F4200757038 /* SCHStoriaWelcomeViewController.m */; };
 		C9C3FABD14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */; };
 		C9C3FABE14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */; };
+		C9C5DEE515EB9FB30020BA9E /* BSB_Big.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9C5DEE315EB9FB30020BA9E /* BSB_Big.jpg */; };
+		C9C5DEE815EB9FED0020BA9E /* BSB_Big.bsb in Resources */ = {isa = PBXBuildFile; fileRef = C9C5DEE715EB9FED0020BA9E /* BSB_Big.bsb */; };
 		C9C9096B1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */; };
 		C9C9096C1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */; };
 		C9D37724156A52A700900844 /* SCHISBNItemObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D37723156A52A600900844 /* SCHISBNItemObject.m */; };
@@ -6462,6 +6464,8 @@
 		C9C3FAB814B85F4100757038 /* SCHStoriaWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHStoriaWelcomeViewController.h; path = Shared/SCHStoriaWelcomeViewController.h; sourceTree = "<group>"; };
 		C9C3FAB914B85F4200757038 /* SCHStoriaWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHStoriaWelcomeViewController.m; path = Shared/SCHStoriaWelcomeViewController.m; sourceTree = "<group>"; };
 		C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHStoriaWelcomeViewController~ipad.xib"; path = "Shared/SCHStoriaWelcomeViewController~ipad.xib"; sourceTree = "<group>"; };
+		C9C5DEE315EB9FB30020BA9E /* BSB_Big.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = BSB_Big.jpg; path = "Shared/Debug Books/BSB_Big.jpg"; sourceTree = "<group>"; };
+		C9C5DEE715EB9FED0020BA9E /* BSB_Big.bsb */ = {isa = PBXFileReference; lastKnownFileType = file; name = BSB_Big.bsb; path = "Shared/Debug Books/BSB_Big.bsb"; sourceTree = "<group>"; };
 		C9C909691455A06B00548DDE /* SCHSampleBooksImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSampleBooksImporter.h; path = Shared/SCHSampleBooksImporter.h; sourceTree = "<group>"; };
 		C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSampleBooksImporter.m; path = Shared/SCHSampleBooksImporter.m; sourceTree = "<group>"; };
 		C9D37722156A52A600900844 /* SCHISBNItemObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHISBNItemObject.h; path = Shared/SCHISBNItemObject.h; sourceTree = "<group>"; };
@@ -9860,6 +9864,8 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
+				C9C5DEE315EB9FB30020BA9E /* BSB_Big.jpg */,
+				C9C5DEE715EB9FED0020BA9E /* BSB_Big.bsb */,
 				F839EB0215C7DAE7000F452E /* AstroBlastWithQuiz.jpg */,
 				F839EB0315C7DAE7000F452E /* AstroBlastWithQuiz.xps */,
 				F839EB0415C7DAE7000F452E /* GoosebumpsWithQuiz.jpg */,
@@ -12121,6 +12127,8 @@
 				F8C097C315EB91630056D0D0 /* gen_scoreresponsehigh.mp3 in Resources */,
 				F8C097C715EB91630056D0D0 /* gen_scoreresponselow.mp3 in Resources */,
 				F8C097CB15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */,
+				C9C5DEE515EB9FB30020BA9E /* BSB_Big.jpg in Resources */,
+				C9C5DEE815EB9FED0020BA9E /* BSB_Big.bsb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
