@@ -2335,9 +2335,19 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.currentBookProgress = -1;
         self.currentPageIndices = NSMakeRange(NSNotFound, 0);
         
-        if (([self generatedPageCountForReadingView:self.readingView] - 1) == self.currentPageIndex) {
-            // FIXME: add in hook for reading quiz
-            NSLog(@"We're on the last page!");
+        // check to see if we've read this far before - if not, update furthest page read
+        SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
+        
+        // We don't actually want to persist a generated last page as the current page
+        NSUInteger pageCount = [self.readingView pageCount];
+        NSUInteger currentPage = MIN(currentBookPoint.layoutPage, pageCount);
+        
+        SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+        NSUInteger furthestPageRead = [appContentProfileItem.pageRead unsignedIntegerValue];
+        
+        if (furthestPageRead < currentPage) {
+            furthestPageRead = currentPage;
+            appContentProfileItem.PageRead = [NSNumber numberWithUnsignedInteger:furthestPageRead];
         }
         
         [self readingViewHasMoved];
@@ -2375,9 +2385,19 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     self.currentBookProgress = -1;
     self.currentPageIndices = pageIndicesRange;
     
-    if (NSLocationInRange([self generatedPageCountForReadingView:self.readingView] - 1, self.currentPageIndices)) {
-        // FIXME: add in hook for reading quiz
-        NSLog(@"We're on the last page!");
+    // check to see if we've read this far before - if not, update furthest page read
+    SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
+    
+    // We don't actually want to persist a generated last page as the current page
+    NSUInteger pageCount = [self.readingView pageCount];
+    NSUInteger currentPage = MIN(currentBookPoint.layoutPage, pageCount);
+    
+    SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+    NSUInteger furthestPageRead = [appContentProfileItem.pageRead unsignedIntegerValue];
+    
+    if (furthestPageRead < currentPage) {
+        furthestPageRead = currentPage;
+        appContentProfileItem.PageRead = [NSNumber numberWithUnsignedInteger:furthestPageRead];
     }
 
     [self readingViewHasMoved];
@@ -2389,18 +2409,14 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     // between a user initiated page turn and a scrubber or book launch because we have no concept of page ordinality
     // We could in theory translate the previous and current page prgress into an index and try to differentiate large jumps
     // but it doesn't seem worthwhile for an unreliable result
+    //
+    // We also don't update the furthest page read here, for the same reasons.
     
     //NSLog(@"hasMovedToProgressPositionInBook %f", progress);
     self.currentPageIndex = NSUIntegerMax;
     self.currentBookProgress = progress;
     self.currentPageIndices = NSMakeRange(NSNotFound, 0);
     
-    if (self.currentBookProgress == 1) {
-        
-        // FIXME: add in hook for reading quiz
-        NSLog(@"We're on the last page!");
-    }
-
     [self readingViewHasMoved];
 }
 
@@ -3218,6 +3234,20 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     } else {
         return nil;
     }
+}
+
+- (BOOL)bookHasBeenReadThroughCompletely
+{
+    NSUInteger pageCount = [self.readingView pageCount];
+    
+    SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+    NSUInteger furthestPageRead = [appContentProfileItem.pageRead unsignedIntegerValue];
+    
+    if (furthestPageRead >= pageCount) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark - SCHBookStoryInteractionsDelegate
