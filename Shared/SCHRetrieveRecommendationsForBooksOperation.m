@@ -17,6 +17,10 @@
 #import "SCHBookIdentifier.h"
 #import "SCHProfileSyncComponent.h"
 
+// Constants
+NSString * const SCHRetrieveRecommendationsForBooksOperationCreateOrUpdateBooksNotification = @"SCHRetrieveRecommendationsForBooksOperationCreateOrUpdateBooksNotification";
+NSString * const SCHRetrieveRecommendationsForBooksOperationBookIdentifiers = @"SCHRetrieveRecommendationsForBooksOperationBookIdentifiers";
+
 @interface SCHRetrieveRecommendationsForBooksOperation ()
 
 - (NSArray *)localRecommendationISBNsWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
@@ -73,7 +77,8 @@
 {
     NSDate *syncDate = [NSDate date];
 	NSMutableArray *creationPool = [NSMutableArray array];
-	
+	NSMutableArray *booksCreatedOrUpdated = [NSMutableArray array];
+
 	webRecommendationISBNs = [webRecommendationISBNs sortedArrayUsingDescriptors:
                               [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationWebServiceISBN ascending:YES]]];		
 	NSArray *localRecommendationISBNsArray = [self localRecommendationISBNsWithManagedObjectContext:aManagedObjectContext];
@@ -112,11 +117,13 @@
                           withRecommendationISBN:localItem 
                                         syncDate:syncDate
                             managedObjectContext:aManagedObjectContext];
+                    [booksCreatedOrUpdated addObject:webBookIdentifier];
                     webItem = nil;
                     localItem = nil;
                     break;
                 case NSOrderedAscending:
                     [creationPool addObject:webItem];
+                    [booksCreatedOrUpdated addObject:webBookIdentifier];                    
                     webItem = nil;
                     break;
                 case NSOrderedDescending:
@@ -141,7 +148,19 @@
             managedObjectContext:aManagedObjectContext];
 	}
     
-	[self saveWithManagedObjectContext:aManagedObjectContext];    
+	[self saveWithManagedObjectContext:aManagedObjectContext];
+
+    if ([booksCreatedOrUpdated count] > 0) {
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:booksCreatedOrUpdated forKey:SCHRetrieveRecommendationsForBooksOperationBookIdentifiers];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.isCancelled == NO) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHRetrieveRecommendationsForBooksOperationCreateOrUpdateBooksNotification
+                                                                    object:nil
+                                                                  userInfo:userInfo];
+            }
+        });
+    }
 }
 
 - (NSArray *)localRecommendationISBNsWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext

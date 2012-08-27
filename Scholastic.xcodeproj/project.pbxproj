@@ -5648,7 +5648,7 @@
 		52CEC19115C148FD004C749A /* SCHBookIdentifierTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookIdentifierTests.m; sourceTree = "<group>"; };
 		52CEC19615C166A3004C749A /* NSNumber+ObjectTypesTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+ObjectTypesTests.h"; sourceTree = "<group>"; };
 		52CEC19715C166A3004C749A /* NSNumber+ObjectTypesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ObjectTypesTests.m"; sourceTree = "<group>"; };
-		52D0385815E78745001912E1 /* Scholastic 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Scholastic 4.xcdatamodel"; sourceTree = "<group>"; };
+		52D0385815E78745001912E1 /* Scholastic 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Scholastic 4.xcdatamodel"; sourceTree = "<group>"; };
 		52D0CD0E14A3306C0031D547 /* SCHProfileViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewCellDelegate.h; path = Shared/SCHProfileViewCellDelegate.h; sourceTree = "<group>"; };
 		52D343E2152481FF0066E73E /* SCHRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRating.h; path = Shared/SCHRating.h; sourceTree = "<group>"; };
 		52D343E3152481FF0066E73E /* SCHRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRating.m; path = Shared/SCHRating.m; sourceTree = "<group>"; };
