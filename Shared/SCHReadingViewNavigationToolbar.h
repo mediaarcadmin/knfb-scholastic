@@ -49,6 +49,7 @@ typedef enum
 
 - (void)setTitle:(NSString *)title;
 - (void)setAudioItemActive:(BOOL)active;
+- (void)setReadingQuizItemActive:(BOOL)active;
 - (void)setOrientation:(UIInterfaceOrientation)orientation;
 
 @end

@@ -10,6 +10,7 @@
 #import "SCHStoryInteractionReadingChallenge.h"
 #import "SCHStoryInteractionProgressView.h"
 #import "SCHStretchableImageButton.h"
+#import "SCHStoryInteractionControllerDelegate.h"
 
 @interface SCHStoryInteractionControllerReadingChallenge ()
 
@@ -161,9 +162,9 @@
 - (void)setupStartView
 {
     // FIXME: in here, grab the best score from the sync
-    // FIXME: in here, grab the completion status from the sync
 //    self.bestScore = syncscore;
-    self.completedReadthrough = YES;
+
+    self.completedReadthrough = [self.delegate bookHasBeenReadThroughCompletely];
     
     if (self.completedReadthrough) {
         [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForIntroduction]

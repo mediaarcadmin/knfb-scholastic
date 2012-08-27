@@ -201,6 +201,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize readingView;
 @synthesize navigationToolbar;
 @synthesize youngerMode;
+@synthesize readingQuizButton;
 @synthesize toolbarsVisible;
 @synthesize suppressToolbarToggle;
 @synthesize initialFadeTimer;
@@ -315,6 +316,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     // logic that this view controller uses while it is potentially off-screen (e.g. when a story interaction is being shown)
     [readingView release], readingView = nil;
     
+    [readingQuizButton release];
     [super dealloc];
 }
 
@@ -327,6 +329,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [notesView release], notesView = nil;
     [notesCountView release], notesCountView = nil;
     [notesButton release], notesButton = nil;
+    [readingQuizButton release], readingQuizButton = nil;
     [storyInteractionsListButton release], storyInteractionsListButton = nil;
 
     [scrubberToolbar release], scrubberToolbar = nil;
@@ -705,6 +708,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [aNavigationToolbar release];
  
     [self.view addSubview:self.navigationToolbar];
+    
+    BOOL bookReadThroughCompletely = [self bookHasBeenReadThroughCompletely];
+    [self.navigationToolbar setReadingQuizItemActive:bookReadThroughCompletely];
     
     // Set non-rotation specific graphics
     [self.bottomShadow setImage:[UIImage imageNamed:@"reading-view-bottom-shadow.png"]];
@@ -2298,6 +2304,15 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     // check for story interactions
     [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
+    
+    BOOL bookReadThroughCompletely = [self bookHasBeenReadThroughCompletely];
+    [self.navigationToolbar setReadingQuizItemActive:bookReadThroughCompletely];
+    
+    if (bookReadThroughCompletely) {
+        self.readingQuizButton.alpha = 1;
+    } else {
+        self.readingQuizButton.alpha = 0.5;
+    }
     
     BOOL changingFromOptionsView = (self.optionsView.superview || self.popover);
     
