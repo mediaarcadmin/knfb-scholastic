@@ -127,6 +127,15 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     [super didTurnIntoFault];
 }
 
+- (NSNumber *)FixedLayoutPermitted
+{
+    if ([self bookPackageType] == kSCHAppBookPackageTypeBSB) {
+        return [NSNumber numberWithBool:NO];
+    }
+    
+    return [NSNumber numberWithBool:YES];
+}
+
 #pragma mark - Convenience Methods
 
 - (NSString *)ContentIdentifier
