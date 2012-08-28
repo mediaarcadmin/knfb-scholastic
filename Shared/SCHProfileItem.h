@@ -54,6 +54,7 @@ typedef enum {
 @property (nonatomic, retain) NSNumber * BookshelfStyle;
 @property (nonatomic, retain) NSString * LastName;
 @property (nonatomic, retain) NSNumber * recommendationsOn;
+@property (nonatomic, retain) NSNumber * allowReadThrough;
 @property (nonatomic, retain) SCHAppProfile * AppProfile;
 @property (nonatomic, retain) NSSet * AppContentProfileItem;
 

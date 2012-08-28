@@ -66,6 +66,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 @dynamic BookshelfStyle;
 @dynamic LastName;
 @dynamic recommendationsOn;
+@dynamic allowReadThrough;
 @dynamic AppProfile;
 @dynamic AppContentProfileItem;
 

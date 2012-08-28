@@ -25,6 +25,7 @@ extern NSString * const kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed;
 
 // Parameter Constants
 extern NSString * const kSCHLibreAccessWebServiceAction;
+extern NSString * const kSCHLibreAccessWebServiceAllowReadthrough;
 extern NSString * const kSCHLibreAccessWebServiceAnnotationStatusContentList;
 extern NSString * const kSCHLibreAccessWebServiceAnnotationStatusList;
 extern NSString * const kSCHLibreAccessWebServiceAnnotationsContentItem;

@@ -27,6 +27,7 @@ NSString * const kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed = @"Save
 
 // Parameter Constants
 NSString * const kSCHLibreAccessWebServiceAction = @"Action";
+NSString * const kSCHLibreAccessWebServiceAllowReadthrough = @"AllowReadthrough";
 NSString * const kSCHLibreAccessWebServiceAnnotationStatusContentList = @"AnnotationStatusContentList";
 NSString * const kSCHLibreAccessWebServiceAnnotationStatusList = @"AnnotationStatusList";
 NSString * const kSCHLibreAccessWebServiceAnnotationsContentItem = @"AnnotationsContentItem";

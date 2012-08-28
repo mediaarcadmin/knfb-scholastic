@@ -690,17 +690,17 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     }
     
     // if the book has no audio, hide the audio button
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-    BOOL audioButtonHidden = ![[book HasAudio] boolValue];
+    BOOL allowReadthrough = [self shouldAllowReadthrough];
     
     // if the help isn't yet downloaded, hide the help button
-    BOOL helpButtonHidden = ![[SCHHelpManager sharedHelpManager] haveHelpVideosDownloaded];
+    BOOL showHelpButton = [[SCHHelpManager sharedHelpManager] haveHelpVideosDownloaded];
     
     SCHReadingViewNavigationToolbar *aNavigationToolbar = [[SCHReadingViewNavigationToolbar alloc] initWithStyle:style 
-                                                                                                           audio:!audioButtonHidden 
-                                                                                                            help:!helpButtonHidden
+                                                                                                 showAudioButton:allowReadthrough
+                                                                                                  showHelpButton:showHelpButton
                                                                                                      orientation:self.interfaceOrientation];
     
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
     [aNavigationToolbar setTitle:book.Title];
     [aNavigationToolbar setDelegate:self];
     
@@ -3470,6 +3470,36 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     if (self.firstTimePlayForHelpController) {
         self.firstTimePlayForHelpController = NO;
     }
+}
+
+#pragma mark - Book Audio Readthrough Check
+
+- (BOOL)shouldAllowReadthrough
+{
+    BOOL ret = NO;
+    
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
+    BOOL bookHasAudio = [[book HasAudio] boolValue];
+
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
+        ret = bookHasAudio;
+    } else {
+        
+        NSNumber *allowReadthrough = [self.profile allowReadThrough];
+        
+        // if the value is not set, then default to YES
+        if (allowReadthrough == nil) {
+            ret = bookHasAudio;
+        } else {
+            if (![allowReadthrough boolValue]) {
+                ret = NO;
+            } else {
+                ret = bookHasAudio;
+            }
+        }
+    }
+    
+    return ret;
 }
 
 #pragma mark - Book Recommendations
