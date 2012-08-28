@@ -1,0 +1,20 @@
+﻿<node id="LeftBehind">
+	<body>
+		<p>You step back on the platform and the door slides open again.</p>
+
+		<p>“Go on, [$FriendName$],” you say. “This is your chance.”</p>
+
+		<p>He looks at you wonderingly. “Thank you, [$Name$],” he says, “I’ll never forget this.” And then he dashes out the door and into the light. As soon as he’s gone, the lights in the room turn off again and the door slides shut. You step on and off the platform, but it doesn’t seem to work any more.</p>
+
+		<p>You can’t see anything in the black, so with your hand out in front of you, you feel your way to the corner and sit down. <span data-if="Supply == 'pbandj'">You take the peanut butter and jelly sandwich out of your pocket and start to munch. It’s delicious. You enjoy every bite.</span></p>
+
+		<p>Now you’re feeling a little sleepy, so you decide to take a nap. You figure you could be here for a while – until someone else comes along and decides to be as generous with you as you were with [$FriendName$]. You hope you remember your name that long.</p>
+
+		<center>
+			<img src="the_end.png" />	
+			<br />
+			<div data-type="reset" />
+		</center>
+	
+	</body>
+</node>

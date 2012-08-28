@@ -60,6 +60,11 @@ NSString * const SCHBSBManifestFile = @"/manifest.xml";
     return NO;
 }
 
+- (BOOL)containsFixedRepresentation
+{
+    return NO;
+}
+
 - (void)resetDrmDecrypter
 {
     // noop

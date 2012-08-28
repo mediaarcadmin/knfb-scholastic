@@ -470,7 +470,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         // If Flow View is disabled, always use fixed view
         self.forceLayoutType = SCHReadingViewLayoutTypeFixed;
 #else
-        if (![[book FixedLayoutPermitted] boolValue]) {
+        if (![bookPackageProvider containsFixedRepresentation]) {
             self.forceLayoutType = SCHReadingViewLayoutTypeFlow;
         }
 #endif
@@ -766,7 +766,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 #if FLOW_VIEW_DISABLED
     showOptions = NO;
 #else
-    if (![[book FixedLayoutPermitted] boolValue]) {
+    if (![self.bookPackageProvider containsFixedRepresentation]) {
         showOptions = NO;
     }
 #endif

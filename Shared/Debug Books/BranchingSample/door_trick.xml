@@ -1,0 +1,28 @@
+﻿<node id="DoorTrick">
+	<body>
+	<p>“Well,” you say, “how about [$FriendName$]?”</p>
+
+	<p>“[$FriendName$],” he says, “yeah I like the sound of that. I think I’m a [$FriendName$].”</p>
+
+	<p>“OK then. How long have you been here, [$FriendName$]?”</p>
+
+	<p>“As long as I can remember,” he says. “I don’t know what I’m doing here, but I know I need to get out. Can you help me?”</p>
+
+	<p>“I don’t know. I’ll try.” You look around the room. There are two doors, the one you entered through and another one. But neither one opens when you approach.</p>
+
+	<p>Then you notice something else: In the middle of the room is a slightly raised platform. Cautiously, you step onto it and it clicks down beneath your weight. Immediately, the far door slides open. Outside you see – sunlight! It looks like the door opens onto a clearing in a forest. You walk toward the door, but the moment you step off the platform, the door slides shut again.</p>
+
+	<p>You realize your dilemma: the only way to open the door is to stand on the platform, but if you’re standing on the platform, there’s no way to get through the door. It’s a perfect trap.</p>
+
+	<p>Except… there are two of you. If you stand on the platform, [$FriendName$] can escape through the open door. And if [$FriendName$] stands on the platform, you can escape.</p>
+
+	<p style="font-weight: bold">What do you do?</p>
+	
+	<div data-type="navigate" data-value="Tell [$FriendName$] to stand on the platform so you can leave." data-goto="EscapeAlone"></div>
+	<br/>
+	<div data-type="navigate" data-value="Stand on the platform and tell [$FriendName$] to leave." data-goto="LeftBehind"></div>
+	<br/>
+	<div data-if="Supply == 'sandbag'" data-type="navigate" data-value="Put the bag of sand on the platform." data-goto="EscapeTogether"></div>
+	<br />
+	</body>
+</node>

@@ -123,10 +123,6 @@ typedef enum {
 @property (nonatomic, retain) NSNumber * downloadFailedCount;
 @property (nonatomic, retain) NSNumber *suppressFollowAlongHighlights;
 
-// Calculated on the fly based on book package type
-@property (nonatomic, readonly) NSNumber * FixedLayoutPermitted;
-
-
 // convenience variables from the SCHContentMetadataItem
 @property (nonatomic, readonly) NSString * ContentIdentifier;
 @property (nonatomic, readonly) NSString * Author;
