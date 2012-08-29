@@ -6484,6 +6484,7 @@
 		C9C5DF5B15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSEmbeddedBSBProvider.m; path = ../Shared/SCHXPSEmbeddedBSBProvider.m; sourceTree = "<group>"; };
 		C9C5DF6115ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSEmbeddedEPubProvider.h; path = Shared/SCHXPSEmbeddedEPubProvider.h; sourceTree = SOURCE_ROOT; };
 		C9C5DF6215ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSEmbeddedEPubProvider.m; path = Shared/SCHXPSEmbeddedEPubProvider.m; sourceTree = SOURCE_ROOT; };
+		C9C5DF6915EE0D3A0020BA9E /* SCHBSBContentsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBContentsProvider.h; path = Shared/SCHBSBContentsProvider.h; sourceTree = "<group>"; };
 		C9C909691455A06B00548DDE /* SCHSampleBooksImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSampleBooksImporter.h; path = Shared/SCHSampleBooksImporter.h; sourceTree = "<group>"; };
 		C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSampleBooksImporter.m; path = Shared/SCHSampleBooksImporter.m; sourceTree = "<group>"; };
 		C9D37722156A52A600900844 /* SCHISBNItemObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHISBNItemObject.h; path = Shared/SCHISBNItemObject.h; sourceTree = "<group>"; };
@@ -9557,6 +9558,7 @@
 		C9C33C61155A7F3E00C7041F /* Branching Stories */ = {
 			isa = PBXGroup;
 			children = (
+				C9C5DF6915EE0D3A0020BA9E /* SCHBSBContentsProvider.h */,
 				C9C33C68155A903D00C7041F /* SCHBSBEucBook.h */,
 				C9C33C69155A903D00C7041F /* SCHBSBEucBook.m */,
 				C9C33C94155BC8C300C7041F /* SCHBSBManifest.h */,

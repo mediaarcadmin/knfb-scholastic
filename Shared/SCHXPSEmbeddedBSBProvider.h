@@ -7,7 +7,8 @@
 //
 
 #import "SCHXPSProvider.h"
+#import "SCHBSBContentsProvider.h"
 
-@interface SCHXPSEmbeddedBSBProvider : SCHXPSProvider
+@interface SCHXPSEmbeddedBSBProvider : SCHXPSProvider <SCHBSBContentsProvider>
 
 @end

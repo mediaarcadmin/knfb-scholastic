@@ -9,6 +9,7 @@
 #import "SCHBSBEucBook.h"
 #import "SCHBSBConstants.h"
 #import "SCHBookPackageProvider.h"
+#import "SCHBSBContentsProvider.h"
 #import "SCHBookIdentifier.h"
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
@@ -31,7 +32,7 @@
 
 @interface SCHBSBEucBook() <EucCSSIntermediateDocumentDataProvider>
 
-@property (nonatomic, retain) id <SCHBookPackageProvider> provider;
+@property (nonatomic, retain) id <SCHBookPackageProvider, SCHBSBContentsProvider> provider;
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) SCHBSBManifest *manifest;
@@ -71,7 +72,7 @@
         SCHAppBook *book = [bookManager bookWithIdentifier:newIdentifier inManagedObjectContext:moc];
         
         if (book) {
-            provider = [[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:newIdentifier inManagedObjectContext:moc] retain];
+            provider = (id<SCHBookPackageProvider, SCHBSBContentsProvider>)[[[SCHBookManager sharedBookManager] checkOutBookPackageProviderForBookIdentifier:newIdentifier inManagedObjectContext:moc] retain];
             
             if (provider) {
                 cacheDirectoryPath = [[book libEucalyptusCache] retain];
@@ -83,9 +84,7 @@
         }
         
         if (identifier) {
-            NSData *packageData = [self.provider dataForComponentAtPath:SCHBSBManifestFile];
-            manifest = [[SCHBSBManifest alloc] initWithXMLData:packageData];
-            
+            manifest = [[provider manifest] retain];            
             decisionNodes = [[NSMutableArray alloc] init];
             
             // TEMP
@@ -109,7 +108,7 @@
     SCHBSBNode *node = [self.decisionNodes objectAtIndex:indexPoint.source];
     
     if (node.uri) {
-        NSData *xmlData = [self.provider dataForComponentAtPath:node.uri];
+        NSData *xmlData = [self.provider dataForBSBComponentAtPath:node.uri];
         
         if ([xmlData length]) {
             NSURL *docURL = [NSURL URLWithString:[[NSString stringWithFormat:@"bsb://%@", self.identifier] stringByAppendingPathComponent:node.uri]];
@@ -274,7 +273,7 @@
 {
     NSString *componentPath = [url relativeString];
     
-    return [self.provider dataForComponentAtPath:componentPath];
+    return [self.provider dataForBSBComponentAtPath:componentPath];
 }
 
 - (NSURL *)externalURLForURL:(NSURL *)url

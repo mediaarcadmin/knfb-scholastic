@@ -7,12 +7,44 @@
 //
 
 #import "SCHXPSEmbeddedBSBProvider.h"
+#import "SCHBSBManifest.h"
+
+@interface SCHXPSEmbeddedBSBProvider()
+
+@property (nonatomic, retain) SCHBSBManifest *manifest;
+
+@end
 
 @implementation SCHXPSEmbeddedBSBProvider
+
+@synthesize manifest;
+
+- (void)dealloc
+{
+    [manifest release], manifest = nil;
+    [super dealloc];
+}
 
 - (BOOL)containsFixedRepresentation
 {
     return NO;
+}
+
+#pragma mark - SCHBSBContentsProvider
+
+- (SCHBSBManifest *)manifest
+{
+    if (!manifest) {
+        NSData *manifestData = [self dataForComponentAtPath:@"/Documents/1/Other/KNFB/Branching/manifest.xml"];
+        manifest = [[SCHBSBManifest alloc] initWithXMLData:manifestData];
+    }
+    
+    return manifest;
+}
+
+- (NSData *)dataForBSBComponentAtPath:(NSString *)path
+{
+    return [self dataForComponentAtPath:[@"/Documents/1/Other/KNFB/Branching/" stringByAppendingPathComponent:path]];
 }
 
 @end
