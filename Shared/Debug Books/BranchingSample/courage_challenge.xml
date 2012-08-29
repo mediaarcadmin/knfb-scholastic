@@ -1,0 +1,65 @@
+﻿<node id="CourageChallenge">
+	<body>
+		<p>
+		You walk towards the COURAGE door and it slides open to reveal a dark room beyond. Once again, you step through. The door slides shut behind you and the lights snap on.
+		</p>
+	
+		<p data-if="GreatestFear == 'snakes'">
+			<p>The sight before you makes your stomach sink. The room is full of snakes! There are snakes of all sizes and colors, stretched across the floor and coiled in corners. There must be hundreds of them and all of their beady eyes are staring right at you.
+			</p>
+
+			<p>This room is longer and narrower than the others you have seen. The only door is at the far end. The only way to get there is through the snakes.
+			</p>
+
+			<p>You try to remember everything you know about snakes. They don’t eat people, right? They’ll only attack you if they’re startled or feel threatened. So if you move slowly and calmly, you should be fine.
+			</p>
+			
+			<p>You start to walk, planning each step. A long purple snake darts to your left. Your heart leaps, but you keep your cool. Slowly, calmly, you tell yourself. About halfway to the far door, a giant python is stretched across the width of the room. He doesn’t even twitch as you step over his body. Keep breathing, you tell yourself, keep control.
+			</p>
+
+			<p>You’re almost there now. Just a few more snakes between you and the door.  A snake to your right rattles its tail. You ignore it and keep moving. Now you’re at the door. It slides open and you step through. You’ve never been so happy to go through a door in your life.
+			</p>
+		</p>
+
+		<p data-if="GreatestFear == 'clowns'">
+			<p>The sight before you makes your stomach sink. The room is full of clowns! There are clowns of all sizes and colors. There must be hundreds of them and all of their beady eyes are staring right at you.
+			</p>
+
+			<p>This room is longer and narrower than the others you have seen. The only door is at the far end. The only way to get there is through the clowns.
+			</p>
+
+			<p>You try to remember everything you know about clowns. They don’t eat people, right? They’ll only attack you if they’re startled or feel threatened. So if you move slowly and calmly, you should be fine.
+			</p>
+			
+			<p>You start to walk, planning each step. A long white-faced clown darts to your left. Your heart leaps, but you keep your cool. Slowly, calmly, you tell yourself. About halfway to the far door, a big, fat clown is standing in the middle of the room. He doesn’t even twitch as you slide past his body. Keep breathing, you tell yourself, keep control.
+			</p>
+
+			<p>You’re almost there now. Just a few more clowns between you and the door.  A clown to your blows on a noisemaker sending confetti everywhere. You ignore her and keep moving. Now you’re at the door. It slides open and you step through. You’ve never been so happy to go through a door in your life.
+			</p>
+		</p>
+		
+		<p data-if="GreatestFear == 'heights'">
+			<p>The sight before you makes your stomach sink. A narrow wooden plank cross the length of the room over a a very deep pit.  You can barely make out the bottom, but you think you hear splashing.
+			</p>
+
+			<p>This room is longer and narrower than the others you have seen. The only door is at the far end. The only way to get there is over the plank.
+			</p>
+
+			<p>You try to remember everything you know about keeping your balance. If you keep your arms out and take it slowly you should fine, right?  But don't look down!
+			</p>
+			
+			<p>You start to walk, planning each step. The wooden board creaks ominously.  You sway and start losing your balance.  You flail your arms about and catch yourself.  You take another tenuous step forward.
+			</p>
+
+			<p>You’re almost there now. Just a few more feet between you and the door.  A wind picks up.  You don't really care how there's wind in the room or what could be making it.  You ignore it and concentrate on putting one foot in front of the other.  Finally, you’re at the door.  It slides open and you step through. You’ve never been so happy to go through a door in your life.
+			</p>
+		</p>
+		
+		<p>You find yourself in a hallway, walls and ceiling the same white as the rooms. The door slides shut behind you. There’s nowhere to go but forward.
+		</p>	
+		
+		<br/>
+	
+		<div data-type="navigate" data-value="Walk down the hall." data-goto="AllYours"></div>
+	</body>
+</node>

@@ -3414,6 +3414,18 @@
 		C9C3FABE14B85F4400757038 /* SCHStoriaWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */; };
 		C9C5DEE515EB9FB30020BA9E /* BSB_Big.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9C5DEE315EB9FB30020BA9E /* BSB_Big.jpg */; };
 		C9C5DEE815EB9FED0020BA9E /* BSB_Big.bsb in Resources */ = {isa = PBXBuildFile; fileRef = C9C5DEE715EB9FED0020BA9E /* BSB_Big.bsb */; };
+		C9C5DF5815ECFCE20020BA9E /* BranchingStoryXPSSample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9C5DF5615ECFCE10020BA9E /* BranchingStoryXPSSample.jpg */; };
+		C9C5DF5915ECFCE20020BA9E /* BranchingStoryXPSSample.xps in Resources */ = {isa = PBXBuildFile; fileRef = C9C5DF5715ECFCE20020BA9E /* BranchingStoryXPSSample.xps */; };
+		C9C5DF5C15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C5DF5B15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m */; };
+		C9C5DF5D15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C5DF5B15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m */; };
+		C9C5DF5E15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C5DF5B15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m */; };
+		C9C5DF5F15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C5DF5B15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m */; };
+		C9C5DF6015ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C5DF5B15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m */; };
+		C9C5DF6315ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C5DF6215ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m */; };
+		C9C5DF6415ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C5DF6215ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m */; };
+		C9C5DF6515ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C5DF6215ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m */; };
+		C9C5DF6615ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C5DF6215ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m */; };
+		C9C5DF6715ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C5DF6215ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m */; };
 		C9C9096B1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */; };
 		C9C9096C1455A06B00548DDE /* SCHSampleBooksImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */; };
 		C9D37724156A52A700900844 /* SCHISBNItemObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D37723156A52A600900844 /* SCHISBNItemObject.m */; };
@@ -6466,6 +6478,12 @@
 		C9C3FABA14B85F4300757038 /* SCHStoriaWelcomeViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHStoriaWelcomeViewController~ipad.xib"; path = "Shared/SCHStoriaWelcomeViewController~ipad.xib"; sourceTree = "<group>"; };
 		C9C5DEE315EB9FB30020BA9E /* BSB_Big.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = BSB_Big.jpg; path = "Shared/Debug Books/BSB_Big.jpg"; sourceTree = "<group>"; };
 		C9C5DEE715EB9FED0020BA9E /* BSB_Big.bsb */ = {isa = PBXFileReference; lastKnownFileType = file; name = BSB_Big.bsb; path = "Shared/Debug Books/BSB_Big.bsb"; sourceTree = "<group>"; };
+		C9C5DF5615ECFCE10020BA9E /* BranchingStoryXPSSample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = BranchingStoryXPSSample.jpg; path = "Shared/Debug Books/BranchingStoryXPSSample.jpg"; sourceTree = "<group>"; };
+		C9C5DF5715ECFCE20020BA9E /* BranchingStoryXPSSample.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = BranchingStoryXPSSample.xps; path = "Shared/Debug Books/BranchingStoryXPSSample.xps"; sourceTree = "<group>"; };
+		C9C5DF5A15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSEmbeddedBSBProvider.h; path = ../Shared/SCHXPSEmbeddedBSBProvider.h; sourceTree = "<group>"; };
+		C9C5DF5B15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSEmbeddedBSBProvider.m; path = ../Shared/SCHXPSEmbeddedBSBProvider.m; sourceTree = "<group>"; };
+		C9C5DF6115ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSEmbeddedEPubProvider.h; path = Shared/SCHXPSEmbeddedEPubProvider.h; sourceTree = SOURCE_ROOT; };
+		C9C5DF6215ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSEmbeddedEPubProvider.m; path = Shared/SCHXPSEmbeddedEPubProvider.m; sourceTree = SOURCE_ROOT; };
 		C9C909691455A06B00548DDE /* SCHSampleBooksImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSampleBooksImporter.h; path = Shared/SCHSampleBooksImporter.h; sourceTree = "<group>"; };
 		C9C9096A1455A06B00548DDE /* SCHSampleBooksImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSampleBooksImporter.m; path = Shared/SCHSampleBooksImporter.m; sourceTree = "<group>"; };
 		C9D37722156A52A600900844 /* SCHISBNItemObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHISBNItemObject.h; path = Shared/SCHISBNItemObject.h; sourceTree = "<group>"; };
@@ -9864,6 +9882,8 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
+				C9C5DF5615ECFCE10020BA9E /* BranchingStoryXPSSample.jpg */,
+				C9C5DF5715ECFCE20020BA9E /* BranchingStoryXPSSample.xps */,
 				C9C5DEE315EB9FB30020BA9E /* BSB_Big.jpg */,
 				C9C5DEE715EB9FED0020BA9E /* BSB_Big.bsb */,
 				F839EB0215C7DAE7000F452E /* AstroBlastWithQuiz.jpg */,
@@ -9907,6 +9927,10 @@
 				C9C33C63155A7F6600C7041F /* SCHBSBProvider.m */,
 				C9EFB28C134F782800ADF905 /* SCHXPSProvider.h */,
 				C9EFB28D134F782A00ADF905 /* SCHXPSProvider.m */,
+				C9C5DF5A15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.h */,
+				C9C5DF5B15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m */,
+				C9C5DF6115ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.h */,
+				C9C5DF6215ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m */,
 				C9EFB291134F795800ADF905 /* SCHXPSURLProtocol.h */,
 				C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */,
 			);
@@ -12129,6 +12153,8 @@
 				F8C097CB15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */,
 				C9C5DEE515EB9FB30020BA9E /* BSB_Big.jpg in Resources */,
 				C9C5DEE815EB9FED0020BA9E /* BSB_Big.bsb in Resources */,
+				C9C5DF5815ECFCE20020BA9E /* BranchingStoryXPSSample.jpg in Resources */,
+				C9C5DF5915ECFCE20020BA9E /* BranchingStoryXPSSample.xps in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13695,6 +13721,8 @@
 				C97DCBBD15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC415E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 				F8FB038F15EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
+				C9C5DF5C15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */,
+				C9C5DF6315ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14105,6 +14133,8 @@
 				C97DCBBF15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC615E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 				F8FB039115EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
+				C9C5DF5E15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */,
+				C9C5DF6515ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14512,6 +14542,8 @@
 				C97DCBBE15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC515E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 				F8FB039015EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
+				C9C5DF5D15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */,
+				C9C5DF6415ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14919,6 +14951,8 @@
 				C97DCBC015E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC715E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 				F8FB039215EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
+				C9C5DF5F15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */,
+				C9C5DF6615ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15326,6 +15360,8 @@
 				C97DCBC115E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC815E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 				F8FB039315EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
+				C9C5DF6015ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */,
+				C9C5DF6715ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

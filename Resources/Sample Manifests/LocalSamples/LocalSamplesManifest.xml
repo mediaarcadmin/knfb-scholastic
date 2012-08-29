@@ -125,4 +125,13 @@
         <Version>1</Version>
         <IsEnhanced>false</IsEnhanced>
 	</Book>
+    <Book>
+		<Isbn13>1234567890125</Isbn13>
+		<Title>Branching Stories Test 3</Title>
+		<Author>by Testy McTesterson</Author>
+		<CoverUrl>BranchingStoryXPSSample.jpg</CoverUrl>
+		<DownloadUrl>BranchingStoryXPSSample.xps</DownloadUrl>
+        <Version>1</Version>
+        <IsEnhanced>false</IsEnhanced>
+	</Book>
 </SampleManifest>

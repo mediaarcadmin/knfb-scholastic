@@ -1,0 +1,19 @@
+﻿<node id="EscapeTogether">
+	<body>
+		<p>Then you remember: You are carrying a sandbag! You wonder if it’s heavy enough to hold down the platform. You place it on the platform and it clicks. The door slides open.</p>
+
+		<p>“[$FriendName$],” you say, “let’s get out of here.”</p>
+
+		<p>His face breaks into a smile and he dashes towards the door. You step out after him, and the two of you find yourself in a forest clearing. The door slides shut behind you. When you turn around, you see a solid rock face – you can’t even tell where the door used to be.</p>
+
+		<p>“I don’t know how I can ever thank you, [$Name$],” [$FriendName$] says. “One thing, though. I don’t think my name is actually [$FriendName$]. I think it’s Bob.”</p>
+
+		<p>“Bob,” you say. “Let’s go home.”</p>
+
+		<center>
+			<img src="the_end.png" />	
+			<br />
+			<div data-type="reset" />
+		</center>
+	</body>
+</node>
