@@ -11,6 +11,7 @@
 #import "SCHProfileItem.h"
 #import "SCHRecommendationItem.h"
 #import "SCHRecommendationProfile.h"
+#import "SCHRecommendationTopRating.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHWishListItem.h"
 #import "SCHWishListProfile.h"
@@ -62,6 +63,28 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     
     [fetchRequest release], fetchRequest = nil;        
     
+    return ret;
+}
+
+- (SCHRecommendationTopRating *)recommendationTopRating
+{
+    SCHRecommendationTopRating *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationTopRating
+                                        inManagedObjectContext:self.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"categoryClass = %@", self.ProfileItem.categoryClass]];
+
+    NSError *error = nil;
+    NSArray *topRatings = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (topRatings == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else if ([topRatings count] > 0) {
+        ret = [topRatings objectAtIndex:0];
+    }
+
+    [fetchRequest release], fetchRequest = nil;
+
     return ret;
 }
 

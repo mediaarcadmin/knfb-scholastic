@@ -28,6 +28,7 @@ NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
 @dynamic appRecommendationItem;
 @dynamic recommendationISBN;
 @dynamic recommendationProfile;
+@dynamic recommendationTopRating;
 
 - (void)assignAppRecommendationItem
 {

@@ -11,6 +11,7 @@
 
 @class SCHProfileItem;
 @class SCHRecommendationProfile;
+@class SCHRecommendationTopRating;
 @class SCHWishListProfile;
 
 // Constants
@@ -30,6 +31,7 @@ extern NSString * const kSCHAppProfile;
 @property (nonatomic, retain) NSNumber *ShowListView;
 
 - (SCHRecommendationProfile *)recommendationProfile;
+- (SCHRecommendationTopRating *)recommendationTopRating;
 - (NSArray *)recommendationDictionaries;
 - (SCHWishListProfile *)wishListProfile;
 - (NSArray *)wishListItemDictionaries;
