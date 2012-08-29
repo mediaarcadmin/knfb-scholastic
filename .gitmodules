@@ -16,8 +16,8 @@
 [submodule "Shared/Libraries/Submodules/bitoperation"]
 	path = Shared/Libraries/Submodules/bitoperation
 	url = git@codebasehq.com:bitwink/scholastic/bitoperation.git
-[submodule "Shared/Libraries/TTTAttributedLabel"]
-	path = Shared/Libraries/TTTAttributedLabel
+[submodule "Shared/Libraries/Submodules/TTTAttributedLabel"]
+	path = Shared/Libraries/Submodules/TTTAttributedLabel
 	url = git://github.com/mattt/TTTAttributedLabel.git
 [submodule "Shared/Libraries/Submodules/ocmock"]
 	path = Shared/Libraries/Submodules/ocmock

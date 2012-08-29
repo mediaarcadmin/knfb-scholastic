@@ -1265,7 +1265,6 @@
 		52488B991407990500DA9AFA /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD4F113AF635F00F28637 /* SCHGeometry.m */; };
 		52488B9A1407990500DA9AFA /* SCHStoryInteractionControllerHotSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = 2894E7FF13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m */; };
 		52488B9B1407990500DA9AFA /* SCHStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280D6A1713B1D6180032085D /* SCHStarView.m */; };
-		52488B9C1407990500DA9AFA /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; };
 		52488B9D1407990500DA9AFA /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
 		52488B9E1407990500DA9AFA /* SCHBookIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 284EF24313BC4CDF00F9BD5A /* SCHBookIdentifier.m */; };
 		52488B9F1407990500DA9AFA /* SCHReadingStatsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */; };
@@ -2280,7 +2279,6 @@
 		A3D3F42114CDDF31004A56A5 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD4F113AF635F00F28637 /* SCHGeometry.m */; };
 		A3D3F42214CDDF31004A56A5 /* SCHStoryInteractionControllerHotSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = 2894E7FF13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m */; };
 		A3D3F42314CDDF31004A56A5 /* SCHStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280D6A1713B1D6180032085D /* SCHStarView.m */; };
-		A3D3F42414CDDF31004A56A5 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; };
 		A3D3F42514CDDF31004A56A5 /* SCHReadingStatsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */; };
 		A3D3F42614CDDF31004A56A5 /* SCHReadingStatsDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */; };
 		A3D3F42714CDDF31004A56A5 /* SCHReadingStatsEntryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */; };
@@ -2985,7 +2983,6 @@
 		C96C188515C80556002EBEBB /* BITSyncProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386FC12DF3ED800045B44 /* BITSyncProcess.m */; };
 		C96C188615C80556002EBEBB /* BITAPIProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870112DF3EDF00045B44 /* BITAPIProxy.m */; };
 		C96C188715C80556002EBEBB /* BITSOAPProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870512DF3EDF00045B44 /* BITSOAPProxy.m */; };
-		C96C188815C80556002EBEBB /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; };
 		C96C188915C80556002EBEBB /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E44134B57A20028534A /* ZipArchive.mm */; };
 		C96C188B15C80556002EBEBB /* LambdaSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD313D048D000C7760D /* LambdaSheet.m */; };
 		C96C188C15C80C38002EBEBB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
@@ -4117,7 +4114,6 @@
 		C9D7032214ED50B100C10006 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD4F113AF635F00F28637 /* SCHGeometry.m */; };
 		C9D7032314ED50B100C10006 /* SCHStoryInteractionControllerHotSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = 2894E7FF13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m */; };
 		C9D7032414ED50B100C10006 /* SCHStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280D6A1713B1D6180032085D /* SCHStarView.m */; };
-		C9D7032514ED50B100C10006 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; };
 		C9D7032614ED50B100C10006 /* SCHReadingStatsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */; };
 		C9D7032714ED50B100C10006 /* SCHReadingStatsDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */; };
 		C9D7032814ED50B100C10006 /* SCHReadingStatsEntryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */; };
@@ -4784,7 +4780,6 @@
 		F8DC5681138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
 		F8DCE5C413EC415F00100B6A /* SCHCoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DCE5C313EC415F00100B6A /* SCHCoreDataHelper.m */; };
 		F8E2D3C113B9C7D0001E207B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E2D3BF13B9C7AC001E207B /* CoreText.framework */; };
-		F8E2D3D113B9CB8A001E207B /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; settings = {COMPILER_FLAGS = "-Wno-switch"; }; };
 		F8EB725A13FBD81F00FE2410 /* BookSITab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBC13F9289A000B67A4 /* BookSITab~ipad.png */; };
 		F8EB725C13FBD82700FE2410 /* BookSISampleTab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */; };
 		F8EB725E13FBD82E00FE2410 /* BookShelfErrorIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */; };
@@ -4826,6 +4821,11 @@
 		F8F726961524875F00250724 /* BookShelfListWhiteGradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */; };
 		F8F726971524875F00250724 /* BookShelfListWhiteGradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */; };
 		F8FAF2F313F12F20009C7E9F /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
+		F8FB038F15EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FB038E15EE1B9F001DADFF /* TTTAttributedLabel.m */; };
+		F8FB039015EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FB038E15EE1B9F001DADFF /* TTTAttributedLabel.m */; };
+		F8FB039115EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FB038E15EE1B9F001DADFF /* TTTAttributedLabel.m */; };
+		F8FB039215EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FB038E15EE1B9F001DADFF /* TTTAttributedLabel.m */; };
+		F8FB039315EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FB038E15EE1B9F001DADFF /* TTTAttributedLabel.m */; };
 		F8FDF01715C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */; };
 		F8FDF01815C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */; };
 		F8FDF01915C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */; };
@@ -6861,8 +6861,6 @@
 		F8DCE5C213EC415F00100B6A /* SCHCoreDataHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCoreDataHelper.h; path = Shared/SCHCoreDataHelper.h; sourceTree = "<group>"; };
 		F8DCE5C313EC415F00100B6A /* SCHCoreDataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCoreDataHelper.m; path = Shared/SCHCoreDataHelper.m; sourceTree = "<group>"; };
 		F8E2D3BF13B9C7AC001E207B /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		F8E2D3CF13B9CB8A001E207B /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTTAttributedLabel.h; path = Shared/Libraries/TTTAttributedLabel/TTTAttributedLabel.h; sourceTree = "<group>"; };
-		F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTTAttributedLabel.m; path = Shared/Libraries/TTTAttributedLabel/TTTAttributedLabel.m; sourceTree = "<group>"; };
 		F8EB728E13FD504900FE2410 /* OptionsCustomButtonActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsCustomButtonActive.png; path = Resources/UIAssets/OptionsCustomButtonActive.png; sourceTree = "<group>"; };
 		F8EB728F13FD504900FE2410 /* OptionsCustomButtonActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsCustomButtonActive@2x.png"; path = "Resources/UIAssets/OptionsCustomButtonActive@2x.png"; sourceTree = "<group>"; };
 		F8EB729013FD504900FE2410 /* OptionsCustomButtonInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsCustomButtonInactive.png; path = Resources/UIAssets/OptionsCustomButtonInactive.png; sourceTree = "<group>"; };
@@ -6888,6 +6886,8 @@
 		F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfListWhiteGradientBackground.png; path = Resources/BookShelfListWhiteGradientBackground.png; sourceTree = "<group>"; };
 		F8FAF2F113F12F20009C7E9F /* SCHAppStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppStateManager.h; path = Shared/SCHAppStateManager.h; sourceTree = "<group>"; };
 		F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppStateManager.m; path = Shared/SCHAppStateManager.m; sourceTree = "<group>"; };
+		F8FB038D15EE1B9F001DADFF /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTTAttributedLabel.h; path = Shared/Libraries/Submodules/TTTAttributedLabel/TTTAttributedLabel.h; sourceTree = "<group>"; };
+		F8FB038E15EE1B9F001DADFF /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTTAttributedLabel.m; path = Shared/Libraries/Submodules/TTTAttributedLabel/TTTAttributedLabel.m; sourceTree = "<group>"; };
 		F8FDF01515C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionReadingChallengeResultView.h; sourceTree = "<group>"; };
 		F8FDF01615C2CC4F00F0F929 /* SCHStoryInteractionReadingChallengeResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionReadingChallengeResultView.m; sourceTree = "<group>"; };
 		F8FDF01C15C2D69100F0F929 /* ReadingQuizAnswerCross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ReadingQuizAnswerCross.png; path = Resources/ReadingQuizAnswerCross.png; sourceTree = SOURCE_ROOT; };
@@ -8421,7 +8421,6 @@
 				529386F912DF3ED800045B44 /* SyncEngine */,
 				529386FE12DF3EDF00045B44 /* WebAPI */,
 				52EF579412EDBE6E00E374F7 /* security */,
-				F8E2D3CE13B9CB55001E207B /* TTTAttributedLabel */,
 				C9E89A481369B87A00E7ED53 /* LevenshteinDistance */,
 				F8B55E42134B577A0028534A /* ZipArchive */,
 				C9B59BCF13D048D000C7760D /* LambdaAlert */,
@@ -9612,6 +9611,7 @@
 		C9CEF2F11339F77200FB5BE0 /* Submodules */ = {
 			isa = PBXGroup;
 			children = (
+				F8E2D3CE13B9CB55001E207B /* TTTAttributedLabel */,
 				C9B08A751344D34F001963D0 /* libKNFBReader */,
 				C96C198315C95C7E002EBEBB /* OCMock.xcodeproj */,
 				C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */,
@@ -10287,8 +10287,8 @@
 		F8E2D3CE13B9CB55001E207B /* TTTAttributedLabel */ = {
 			isa = PBXGroup;
 			children = (
-				F8E2D3CF13B9CB8A001E207B /* TTTAttributedLabel.h */,
-				F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */,
+				F8FB038D15EE1B9F001DADFF /* TTTAttributedLabel.h */,
+				F8FB038E15EE1B9F001DADFF /* TTTAttributedLabel.m */,
 			);
 			name = TTTAttributedLabel;
 			sourceTree = "<group>";
@@ -13540,7 +13540,6 @@
 				28FFD4F213AF635F00F28637 /* SCHGeometry.m in Sources */,
 				2894E80013B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m in Sources */,
 				280D6A1813B1D6180032085D /* SCHStarView.m in Sources */,
-				F8E2D3D113B9CB8A001E207B /* TTTAttributedLabel.m in Sources */,
 				5248E10C13C4858900FA2CDC /* SCHReadingStatsContentItem.m in Sources */,
 				5248E11013C4858900FA2CDC /* SCHReadingStatsDetailItem.m in Sources */,
 				5248E11413C4858900FA2CDC /* SCHReadingStatsEntryItem.m in Sources */,
@@ -13723,6 +13722,7 @@
 				C97DCBB615E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
 				C97DCBBD15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC415E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
+				F8FB038F15EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
 				C9C5DF5C15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */,
 				C9C5DF6315ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */,
 			);
@@ -14103,7 +14103,6 @@
 				C96C188515C80556002EBEBB /* BITSyncProcess.m in Sources */,
 				C96C188615C80556002EBEBB /* BITAPIProxy.m in Sources */,
 				C96C188715C80556002EBEBB /* BITSOAPProxy.m in Sources */,
-				C96C188815C80556002EBEBB /* TTTAttributedLabel.m in Sources */,
 				C96C188915C80556002EBEBB /* ZipArchive.mm in Sources */,
 				C96C188B15C80556002EBEBB /* LambdaSheet.m in Sources */,
 				C96C189915C80CB6002EBEBB /* AuthenticateSvc.m in Sources */,
@@ -14135,6 +14134,7 @@
 				C97DCBB815E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
 				C97DCBBF15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC615E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
+				F8FB039115EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
 				C9C5DF5E15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */,
 				C9C5DF6515ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */,
 			);
@@ -14361,7 +14361,6 @@
 				52488B991407990500DA9AFA /* SCHGeometry.m in Sources */,
 				52488B9A1407990500DA9AFA /* SCHStoryInteractionControllerHotSpot.m in Sources */,
 				52488B9B1407990500DA9AFA /* SCHStarView.m in Sources */,
-				52488B9C1407990500DA9AFA /* TTTAttributedLabel.m in Sources */,
 				52488B9D1407990500DA9AFA /* SCHCoreDataOperation.m in Sources */,
 				52488B9E1407990500DA9AFA /* SCHBookIdentifier.m in Sources */,
 				52488B9F1407990500DA9AFA /* SCHReadingStatsContentItem.m in Sources */,
@@ -14544,6 +14543,7 @@
 				C97DCBB715E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
 				C97DCBBE15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC515E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
+				F8FB039015EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
 				C9C5DF5D15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */,
 				C9C5DF6415ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */,
 			);
@@ -14770,7 +14770,6 @@
 				A3D3F42114CDDF31004A56A5 /* SCHGeometry.m in Sources */,
 				A3D3F42214CDDF31004A56A5 /* SCHStoryInteractionControllerHotSpot.m in Sources */,
 				A3D3F42314CDDF31004A56A5 /* SCHStarView.m in Sources */,
-				A3D3F42414CDDF31004A56A5 /* TTTAttributedLabel.m in Sources */,
 				A3D3F42514CDDF31004A56A5 /* SCHReadingStatsContentItem.m in Sources */,
 				A3D3F42614CDDF31004A56A5 /* SCHReadingStatsDetailItem.m in Sources */,
 				A3D3F42714CDDF31004A56A5 /* SCHReadingStatsEntryItem.m in Sources */,
@@ -14953,6 +14952,7 @@
 				C97DCBB915E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
 				C97DCBC015E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC715E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
+				F8FB039215EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
 				C9C5DF5F15ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */,
 				C9C5DF6615ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */,
 			);
@@ -15179,7 +15179,6 @@
 				C9D7032214ED50B100C10006 /* SCHGeometry.m in Sources */,
 				C9D7032314ED50B100C10006 /* SCHStoryInteractionControllerHotSpot.m in Sources */,
 				C9D7032414ED50B100C10006 /* SCHStarView.m in Sources */,
-				C9D7032514ED50B100C10006 /* TTTAttributedLabel.m in Sources */,
 				C9D7032614ED50B100C10006 /* SCHReadingStatsContentItem.m in Sources */,
 				C9D7032714ED50B100C10006 /* SCHReadingStatsDetailItem.m in Sources */,
 				C9D7032814ED50B100C10006 /* SCHReadingStatsEntryItem.m in Sources */,
@@ -15362,6 +15361,7 @@
 				C97DCBBA15E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
 				C97DCBC115E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC815E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
+				F8FB039315EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
 				C9C5DF6015ED15CA0020BA9E /* SCHXPSEmbeddedBSBProvider.m in Sources */,
 				C9C5DF6715ED161B0020BA9E /* SCHXPSEmbeddedEPubProvider.m in Sources */,
 			);

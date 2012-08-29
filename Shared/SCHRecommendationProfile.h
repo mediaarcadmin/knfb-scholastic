@@ -20,7 +20,7 @@ extern NSString * const kSCHRecommendationProfile;
 @property (nonatomic, retain) NSDate * fetchDate;
 @property (nonatomic, retain) NSSet *recommendationItems;
 
-+ (BOOL)isValidProfileID:(NSNumber *)profileID;
++ (BOOL)isValidAge:(NSNumber *)age;
 
 @end
 
