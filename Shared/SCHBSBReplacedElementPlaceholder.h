@@ -7,10 +7,12 @@
 //
 
 #import <libEucalyptus/EucCSSReplacedElement.h>
+#import "SCHBSBReplacedElementDelegate.h"
 
 @interface SCHBSBReplacedElementPlaceholder : NSObject <EucCSSReplacedElement>
 
 @property (nonatomic, assign) CGFloat pointSize;
+@property (nonatomic, assign) id <SCHBSBReplacedElementDelegate> delegate;
 
 - (id)initWithPointSize:(CGFloat)point;
 

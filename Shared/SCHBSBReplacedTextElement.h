@@ -10,6 +10,6 @@
 
 @interface SCHBSBReplacedTextElement : SCHBSBReplacedElementPlaceholder
 
-- (id)initWithPointSize:(CGFloat)point binding:(NSString *)binding;
+- (id)initWithPointSize:(CGFloat)point binding:(NSString *)textBinding value:(NSString *)value;
 
 @end

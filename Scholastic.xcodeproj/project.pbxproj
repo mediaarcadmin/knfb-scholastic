@@ -6499,6 +6499,7 @@
 		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlow.m; path = Shared/SCHTextFlow.m; sourceTree = "<group>"; };
 		C9D703AC14ED50B100C10006 /* Storia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9E73AC515EF8A6D00DC7C11 /* SCHBSBProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBProperty.m; path = Shared/SCHBSBProperty.m; sourceTree = "<group>"; };
+		C9E73ACB15EFAB9500DC7C11 /* SCHBSBReplacedElementDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementDelegate.h; path = Shared/SCHBSBReplacedElementDelegate.h; sourceTree = "<group>"; };
 		C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = levenshtein_distance.c; sourceTree = "<group>"; };
 		C9E89A4A1369B87A00E7ED53 /* levenshtein_distance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = levenshtein_distance.h; sourceTree = "<group>"; };
 		C9EB498E152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHRecommendationListView-ReadingViewContainer.xib"; path = "Shared/SCHRecommendationListView-ReadingViewContainer.xib"; sourceTree = "<group>"; };
@@ -9587,6 +9588,7 @@
 				C97DCA5C15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m */,
 				C97DCBC215E3CECC003B2DF3 /* SCHBSBReplacedTextElement.h */,
 				C97DCBC315E3CECD003B2DF3 /* SCHBSBReplacedTextElement.m */,
+				C9E73ACB15EFAB9500DC7C11 /* SCHBSBReplacedElementDelegate.h */,
 				C97DCA5415D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.h */,
 				C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m */,
 				C97DCA6215D5591B003B2DF3 /* SCHBSBReplacedElementWebView.h */,

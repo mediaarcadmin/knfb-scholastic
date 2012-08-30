@@ -24,6 +24,11 @@
 {
     if ([[self attributeWithName:@"data-type"] length]) {
         return YES;
+    } else if ([[self name] isEqualToString:@"input"]) {
+        return YES;
+        
+    } else if ([[self name] isEqualToString:@"select"]) {
+        return YES;
     }
     
     return NO;

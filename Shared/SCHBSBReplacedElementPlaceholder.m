@@ -13,6 +13,13 @@
 @implementation SCHBSBReplacedElementPlaceholder
 
 @synthesize pointSize;
+@synthesize delegate;
+
+- (void)dealloc
+{
+    delegate = nil;
+    [super dealloc];
+}
 
 - (id)initWithPointSize:(CGFloat)point;
 {
