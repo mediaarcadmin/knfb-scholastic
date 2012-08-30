@@ -17,6 +17,7 @@
 #import "SCHBSBPageContentsViewSpirit.h"
 #import "SCHBSBManifest.h"
 #import "SCHBSBNode.h"
+#import "SCHBSBProperty.h"
 #import "SCHBSBTree.h"
 #import "SCHBSBTreeNode.h"
 #import "SCHBSBReplacedElementPlaceholder.h"
@@ -37,6 +38,7 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) SCHBSBManifest *manifest;
 @property (nonatomic, retain) NSMutableArray *decisionNodes;
+@property (nonatomic, retain) NSMutableArray *decisionProperties;
 
 @end
 
@@ -48,6 +50,7 @@
 @synthesize cacheDirectoryPath;
 @synthesize manifest;
 @synthesize decisionNodes;
+@synthesize decisionProperties;
 
 - (void)dealloc
 {
@@ -60,6 +63,8 @@
     [managedObjectContext release], managedObjectContext = nil;
     [cacheDirectoryPath release], cacheDirectoryPath = nil;
     [manifest release], manifest = nil;
+    [decisionNodes release], decisionNodes = nil;
+    [decisionProperties release], decisionProperties = nil;
      
     [super dealloc];
 }
@@ -86,13 +91,23 @@
         if (identifier) {
             manifest = [[provider manifest] retain];            
             decisionNodes = [[NSMutableArray alloc] init];
+            decisionProperties = [[NSMutableArray alloc] init];
             
-            // TEMP
-            for (SCHBSBNode *node in manifest.nodes) {
-                [decisionNodes addObject:node];
+            
+            if ([manifest.nodes count]) {
+                [decisionNodes addObject:[manifest.nodes objectAtIndex:0]];
+            
+                for (SCHBSBProperty *property in manifest.properties) {
+                    [decisionProperties addObject:property];
+                }
+            } else {
+                [identifier release];
+                identifier = nil;
             }
             
-        } else {
+        }
+        
+        if (identifier == nil) {
             [self release];
             self = nil;
         }
