@@ -74,7 +74,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.isCancelled == NO) {
-                [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceListUserContentForRatings 
+                [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceListUserContent 
                                                        result:self.result 
                                                      userInfo:self.userInfo 
                                              notificationName:SCHContentSyncComponentDidCompleteNotification 
@@ -89,7 +89,7 @@
                                                      code:kBITAPIExceptionError 
                                                  userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                                       forKey:NSLocalizedDescriptionKey]];
-                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceListUserContentForRatings 
+                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceListUserContent 
                                                         error:error 
                                                   requestInfo:nil 
                                                        result:self.result 

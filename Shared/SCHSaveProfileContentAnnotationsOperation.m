@@ -49,7 +49,7 @@
                                                  userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                                       forKey:NSLocalizedDescriptionKey]];
                 
-                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings 
+                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceSaveProfileContentAnnotations 
                                                         error:error 
                                                   requestInfo:nil 
                                                        result:self.result 

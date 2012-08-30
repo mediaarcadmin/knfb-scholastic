@@ -7,21 +7,21 @@
 //
 
 // Method Constants
-extern NSString * const kSCHLibreAccessWebServiceTokenExchange;
 extern NSString * const kSCHLibreAccessWebServiceAuthenticateDevice;
-extern NSString * const kSCHLibreAccessWebServiceRenewToken;
 extern NSString * const kSCHLibreAccessWebServiceGetUserProfiles;
-extern NSString * const kSCHLibreAccessWebServiceSaveUserProfiles;
-extern NSString * const kSCHLibreAccessWebServiceListUserContentForRatings;
-extern NSString * const kSCHLibreAccessWebServiceListFavoriteTypes;
-extern NSString * const kSCHLibreAccessWebServiceListTopFavorites;
 extern NSString * const kSCHLibreAccessWebServiceListContentMetadata;
+extern NSString * const kSCHLibreAccessWebServiceListFavoriteTypes;
+extern NSString * const kSCHLibreAccessWebServiceListProfileContentAnnotations;
+extern NSString * const kSCHLibreAccessWebServiceListTopFavorites;
+extern NSString * const kSCHLibreAccessWebServiceListUserContent;
 extern NSString * const kSCHLibreAccessWebServiceListUserSettings;
-extern NSString * const kSCHLibreAccessWebServiceSaveUserSettings;
-extern NSString * const kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings;
-extern NSString * const kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings;
+extern NSString * const kSCHLibreAccessWebServiceRenewToken;
 extern NSString * const kSCHLibreAccessWebServiceSaveContentProfileAssignment;
+extern NSString * const kSCHLibreAccessWebServiceSaveProfileContentAnnotations;
 extern NSString * const kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed;
+extern NSString * const kSCHLibreAccessWebServiceSaveUserProfiles;
+extern NSString * const kSCHLibreAccessWebServiceSaveUserSettings;
+extern NSString * const kSCHLibreAccessWebServiceTokenExchange;
 
 // Parameter Constants
 extern NSString * const kSCHLibreAccessWebServiceAction;

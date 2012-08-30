@@ -9,21 +9,21 @@
 #import "SCHLibreAccessConstants.h"
 
 // Method Constants
-NSString * const kSCHLibreAccessWebServiceTokenExchange = @"TokenExchange";
 NSString * const kSCHLibreAccessWebServiceAuthenticateDevice = @"AuthenticateDevice";
-NSString * const kSCHLibreAccessWebServiceRenewToken = @"RenewToken";
 NSString * const kSCHLibreAccessWebServiceGetUserProfiles = @"GetUserProfiles";
-NSString * const kSCHLibreAccessWebServiceSaveUserProfiles = @"SaveUserProfiles";
-NSString * const kSCHLibreAccessWebServiceListUserContentForRatings = @"ListUserContentForRatings";
-NSString * const kSCHLibreAccessWebServiceListFavoriteTypes = @"ListFavoriteTypes";
-NSString * const kSCHLibreAccessWebServiceListTopFavorites = @"ListTopFavorites";
 NSString * const kSCHLibreAccessWebServiceListContentMetadata = @"ListContentMetadata";
+NSString * const kSCHLibreAccessWebServiceListFavoriteTypes = @"ListFavoriteTypes";
+NSString * const kSCHLibreAccessWebServiceListProfileContentAnnotations = @"ListProfileContentAnnotations";
+NSString * const kSCHLibreAccessWebServiceListTopFavorites = @"ListTopFavorites";
+NSString * const kSCHLibreAccessWebServiceListUserContent = @"ListUserContent";
 NSString * const kSCHLibreAccessWebServiceListUserSettings = @"ListUserSettings";
-NSString * const kSCHLibreAccessWebServiceSaveUserSettings = @"SaveUserSettings";
-NSString * const kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings = @"ListProfileContentAnnotationsForRatings";
-NSString * const kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings = @"SaveProfileContentAnnotationsForRatings";
+NSString * const kSCHLibreAccessWebServiceRenewToken = @"RenewToken";
 NSString * const kSCHLibreAccessWebServiceSaveContentProfileAssignment = @"SaveContentProfileAssignment";
+NSString * const kSCHLibreAccessWebServiceSaveProfileContentAnnotations = @"SaveProfileContentAnnotations";
 NSString * const kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed = @"SaveReadingStatisticsDetailed";
+NSString * const kSCHLibreAccessWebServiceSaveUserProfiles = @"SaveUserProfiles";
+NSString * const kSCHLibreAccessWebServiceSaveUserSettings = @"SaveUserSettings";
+NSString * const kSCHLibreAccessWebServiceTokenExchange = @"TokenExchange";
 
 // Parameter Constants
 NSString * const kSCHLibreAccessWebServiceAction = @"Action";

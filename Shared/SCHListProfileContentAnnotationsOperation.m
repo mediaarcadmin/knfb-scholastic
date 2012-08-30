@@ -109,7 +109,7 @@
             syncDate = [NSDate serverDate];
         }
         
-        [self syncProfileContentAnnotations:[self.result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings] 
+        [self syncProfileContentAnnotations:[self.result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations] 
                                canSyncNotes:canSyncNotes
                               canSyncRating:canSyncRating
                                    syncDate:syncDate];	            
@@ -117,7 +117,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.isCancelled == NO) {
                 [(SCHAnnotationSyncComponent *)self.syncComponent syncProfileContentAnnotationsCompleted:self.profileID 
-                                                 usingMethod:kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings
+                                                 usingMethod:kSCHLibreAccessWebServiceListProfileContentAnnotations
                                                     userInfo:self.userInfo];
             }
         });                
@@ -132,7 +132,7 @@
                                                  userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                                       forKey:NSLocalizedDescriptionKey]];
                 
-                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings 
+                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceSaveProfileContentAnnotations 
                                                         error:error 
                                                   requestInfo:nil 
                                                        result:self.result 

@@ -126,7 +126,7 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
                            notificationName:SCHContentSyncComponentDidCompleteNotification 
                        notificationUserInfo:nil];
         }
-    } else if([method compare:kSCHLibreAccessWebServiceListUserContentForRatings] == NSOrderedSame) {
+    } else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
         SCHListUserContentForRatingsOperation *operation = [[[SCHListUserContentForRatingsOperation alloc] initWithSyncComponent:self
                                                                                                                           result:result
                                                                                                                         userInfo:userInfo] autorelease];

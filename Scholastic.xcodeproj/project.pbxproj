@@ -323,6 +323,10 @@
 		520D28CC14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
 		520D28CD14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
 		520D28CE14F4E2F9005AAF4F /* SCHWishListWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */; };
+		520DF6FC15EE64C800C4452F /* tns1.m in Sources */ = {isa = PBXBuildFile; fileRef = 520DF6FB15EE64C800C4452F /* tns1.m */; };
+		520DF6FD15EE64C800C4452F /* tns1.m in Sources */ = {isa = PBXBuildFile; fileRef = 520DF6FB15EE64C800C4452F /* tns1.m */; };
+		520DF6FE15EE64C800C4452F /* tns1.m in Sources */ = {isa = PBXBuildFile; fileRef = 520DF6FB15EE64C800C4452F /* tns1.m */; };
+		520DF6FF15EE64C800C4452F /* tns1.m in Sources */ = {isa = PBXBuildFile; fileRef = 520DF6FB15EE64C800C4452F /* tns1.m */; };
 		520E14C5158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
 		520E14C6158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
 		520E14C7158F883C003773E3 /* SCHListUserSettingsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */; };
@@ -1101,7 +1105,6 @@
 		52488AF51407990500DA9AFA /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
 		52488AF61407990500DA9AFA /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		52488AF71407990500DA9AFA /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
-		52488AF81407990500DA9AFA /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		52488AF91407990500DA9AFA /* SCHAnnotationSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */; };
 		52488AFA1407990500DA9AFA /* SCHContentSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */; };
 		52488AFB1407990500DA9AFA /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
@@ -1412,7 +1415,6 @@
 		525E82D713938548006A6775 /* SCHAudioInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D613938548006A6775 /* SCHAudioInfo.m */; };
 		5264FAC713A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */; };
 		5264FAC913A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264FAC613A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib */; };
-		5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		526760AC144C85AF00F3FE56 /* SCHAccountValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 526760AB144C85AF00F3FE56 /* SCHAccountValidation.m */; };
 		526760AD144C85AF00F3FE56 /* SCHAccountValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 526760AB144C85AF00F3FE56 /* SCHAccountValidation.m */; };
@@ -2120,7 +2122,6 @@
 		A3D3F38114CDDF31004A56A5 /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
 		A3D3F38214CDDF31004A56A5 /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
 		A3D3F38314CDDF31004A56A5 /* SCHSettingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */; };
-		A3D3F38414CDDF31004A56A5 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		A3D3F38514CDDF31004A56A5 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		A3D3F38614CDDF31004A56A5 /* SCHTopPicksBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */; };
 		A3D3F38714CDDF31004A56A5 /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
@@ -2887,7 +2888,6 @@
 		C96C182315C7FEC1002EBEBB /* SCHRecommendationConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668E4150FAAA100570623 /* SCHRecommendationConstants.m */; };
 		C96C182415C7FEC1002EBEBB /* SCHRecommendationProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668EA1511DEBF00570623 /* SCHRecommendationProcessor.m */; };
 		C96C182515C7FEC1002EBEBB /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
-		C96C182615C7FEC1002EBEBB /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		C96C182715C7FEFB002EBEBB /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		C96C182815C7FEFB002EBEBB /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
 		C96C182915C7FEFB002EBEBB /* SCHSaveProfileContentAnnotationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 522543C21590930F0006F0B1 /* SCHSaveProfileContentAnnotationsOperation.m */; };
@@ -3943,7 +3943,6 @@
 		C9D7028214ED50B100C10006 /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
 		C9D7028314ED50B100C10006 /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
 		C9D7028414ED50B100C10006 /* SCHSettingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */; };
-		C9D7028514ED50B100C10006 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		C9D7028614ED50B100C10006 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		C9D7028714ED50B100C10006 /* SCHTopPicksBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */; };
 		C9D7028814ED50B100C10006 /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
@@ -5380,6 +5379,8 @@
 		520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceText_iPad.xib; sourceTree = "<group>"; };
 		520D28CA14F4E2F9005AAF4F /* SCHWishListWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWishListWebService.h; path = Shared/SCHWishListWebService.h; sourceTree = "<group>"; };
 		520D28CB14F4E2F9005AAF4F /* SCHWishListWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWishListWebService.m; path = Shared/SCHWishListWebService.m; sourceTree = "<group>"; };
+		520DF6FA15EE64C800C4452F /* tns1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tns1.h; sourceTree = "<group>"; };
+		520DF6FB15EE64C800C4452F /* tns1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tns1.m; sourceTree = "<group>"; };
 		520E14C3158F883B003773E3 /* SCHListUserSettingsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHListUserSettingsOperation.h; sourceTree = "<group>"; };
 		520E14C4158F883C003773E3 /* SCHListUserSettingsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHListUserSettingsOperation.m; sourceTree = "<group>"; };
 		520E14C9158FDE61003773E3 /* SCHSaveReadingStatisticsDetailedOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSaveReadingStatisticsDetailedOperation.h; path = Shared/SCHSaveReadingStatisticsDetailedOperation.h; sourceTree = "<group>"; };
@@ -5525,8 +5526,6 @@
 		5264FAC413A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfTopTenPopoverTableView.h; path = Shared/SCHBookShelfTopTenPopoverTableView.h; sourceTree = "<group>"; };
 		5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfTopTenPopoverTableView.m; path = Shared/SCHBookShelfTopTenPopoverTableView.m; sourceTree = "<group>"; };
 		5264FAC613A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTopTenPopoverTableView.xib; path = Shared/SCHBookShelfTopTenPopoverTableView.xib; sourceTree = "<group>"; };
-		5266D34A13007A1C004E3AC6 /* SCHTopFavoritesComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTopFavoritesComponent.h; path = Shared/SCHTopFavoritesComponent.h; sourceTree = "<group>"; };
-		5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTopFavoritesComponent.m; path = Shared/SCHTopFavoritesComponent.m; sourceTree = "<group>"; };
 		5266D38213007D15004E3AC6 /* SCHComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponent.h; path = Shared/SCHComponent.h; sourceTree = "<group>"; };
 		5266D38313007D15004E3AC6 /* SCHComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHComponent.m; path = Shared/SCHComponent.m; sourceTree = "<group>"; };
 		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
@@ -8433,6 +8432,8 @@
 				52C62CF514F3A25700F261DA /* ax25.m */,
 				52EF508512E739E900E374F7 /* LibreAccessServiceSvc.h */,
 				52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */,
+				520DF6FA15EE64C800C4452F /* tns1.h */,
+				520DF6FB15EE64C800C4452F /* tns1.m */,
 				521B7ADC1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.h */,
 				521B7ADD1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.m */,
 				523B2E6C14F403E300413883 /* ax21.h */,
@@ -8524,8 +8525,6 @@
 				5266D38313007D15004E3AC6 /* SCHComponent.m */,
 				52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */,
 				5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */,
-				5266D34A13007A1C004E3AC6 /* SCHTopFavoritesComponent.h */,
-				5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */,
 				52AD9B2612FC207A0099FB88 /* Sync */,
 			);
 			name = "Web Services";
@@ -13344,7 +13343,6 @@
 				52AD9D72130000570099FB88 /* SCHProfileSyncComponent.m in Sources */,
 				52AD9D73130000570099FB88 /* SCHReadingStatsSyncComponent.m in Sources */,
 				52AD9D74130000570099FB88 /* SCHSettingsSyncComponent.m in Sources */,
-				5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */,
 				5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */,
 				52E334F61303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */,
 				5233E03313154EEA0088F18C /* SCHDeviceInfo.m in Sources */,
@@ -13687,6 +13685,7 @@
 				C97DCBB615E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
 				C97DCBBD15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC415E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
+				520DF6FC15EE64C800C4452F /* tns1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13980,7 +13979,6 @@
 				C96C182315C7FEC1002EBEBB /* SCHRecommendationConstants.m in Sources */,
 				C96C182415C7FEC1002EBEBB /* SCHRecommendationProcessor.m in Sources */,
 				C96C182515C7FEC1002EBEBB /* SCHComponent.m in Sources */,
-				C96C182615C7FEC1002EBEBB /* SCHTopFavoritesComponent.m in Sources */,
 				C96C182715C7FEFB002EBEBB /* SCHSyncComponent.m in Sources */,
 				C96C182815C7FEFB002EBEBB /* SCHSyncComponentOperation.m in Sources */,
 				C96C182915C7FEFB002EBEBB /* SCHSaveProfileContentAnnotationsOperation.m in Sources */,
@@ -14157,7 +14155,6 @@
 				52488AF51407990500DA9AFA /* SCHSyncManager.m in Sources */,
 				52488AF61407990500DA9AFA /* SCHSyncComponent.m in Sources */,
 				52488AF71407990500DA9AFA /* SCHComponent.m in Sources */,
-				52488AF81407990500DA9AFA /* SCHTopFavoritesComponent.m in Sources */,
 				52488AF91407990500DA9AFA /* SCHAnnotationSyncComponent.m in Sources */,
 				52488AFA1407990500DA9AFA /* SCHContentSyncComponent.m in Sources */,
 				52488AFB1407990500DA9AFA /* SCHProfileSyncComponent.m in Sources */,
@@ -14504,6 +14501,7 @@
 				C97DCBB715E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
 				C97DCBBE15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC515E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
+				520DF6FD15EE64C800C4452F /* tns1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14568,7 +14566,6 @@
 				A3D3F38114CDDF31004A56A5 /* SCHProfileSyncComponent.m in Sources */,
 				A3D3F38214CDDF31004A56A5 /* SCHReadingStatsSyncComponent.m in Sources */,
 				A3D3F38314CDDF31004A56A5 /* SCHSettingsSyncComponent.m in Sources */,
-				A3D3F38414CDDF31004A56A5 /* SCHTopFavoritesComponent.m in Sources */,
 				A3D3F38514CDDF31004A56A5 /* SCHComponent.m in Sources */,
 				A3D3F38614CDDF31004A56A5 /* SCHTopPicksBookShelfViewController.m in Sources */,
 				A3D3F38714CDDF31004A56A5 /* SCHDeviceInfo.m in Sources */,
@@ -14911,6 +14908,7 @@
 				C97DCBB915E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
 				C97DCBC015E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC715E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
+				520DF6FE15EE64C800C4452F /* tns1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14975,7 +14973,6 @@
 				C9D7028214ED50B100C10006 /* SCHProfileSyncComponent.m in Sources */,
 				C9D7028314ED50B100C10006 /* SCHReadingStatsSyncComponent.m in Sources */,
 				C9D7028414ED50B100C10006 /* SCHSettingsSyncComponent.m in Sources */,
-				C9D7028514ED50B100C10006 /* SCHTopFavoritesComponent.m in Sources */,
 				C9D7028614ED50B100C10006 /* SCHComponent.m in Sources */,
 				C9D7028714ED50B100C10006 /* SCHTopPicksBookShelfViewController.m in Sources */,
 				C9D7028814ED50B100C10006 /* SCHDeviceInfo.m in Sources */,
@@ -15318,6 +15315,7 @@
 				C97DCBBA15E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
 				C97DCBC115E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC815E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
+				520DF6FF15EE64C800C4452F /* tns1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,6 @@
 
 @interface LibreAccessServiceSvc (Binding)
 
-+ (LibreAccessServiceSoap11Binding *)SCHLibreAccessServiceSoap11Binding;
++ (LibreAccessBinding *)SCHLibreAccessBinding;
 
 @end

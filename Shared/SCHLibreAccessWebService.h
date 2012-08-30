@@ -14,7 +14,7 @@
 #import "BITObjectMapperProtocol.h"
 #import "SCHLibreAccessConstants.h"
 
-@interface SCHLibreAccessWebService : BITSOAPProxy <LibreAccessServiceSoap11BindingResponseDelegate, BITObjectMapperProtocol> 
+@interface SCHLibreAccessWebService : BITSOAPProxy <LibreAccessBindingResponseDelegate, BITObjectMapperProtocol> 
 {
 }
 
@@ -27,7 +27,6 @@
 - (BOOL)saveUserProfiles:(NSArray *)userProfiles;
 - (BOOL)listUserContent;
 - (BOOL)listFavoriteTypes;
-- (BOOL)listTopFavorites:(NSArray *)favorites withCount:(NSUInteger)count;
 - (BOOL)listContentMetadata:(NSArray *)bookISBNs 
                 includeURLs:(BOOL)includeURLs
                coverURLOnly:(BOOL)coverURLOnly;

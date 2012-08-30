@@ -75,7 +75,7 @@
 
 // Libre Digital server EndPoint
 #define LIBREDIGITAL_SERVER_ENDPOINT_DEVINT @"http://laesb.devint.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"
-#define LIBREDIGITAL_SERVER_ENDPOINT_UAT @"http://laesb.uat.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"
+#define LIBREDIGITAL_SERVER_ENDPOINT_UAT @"http://webservices.libredigital.com/libreaccess/soap/"
 #define LIBREDIGITAL_SERVER_ENDPOINT_PRODUCTION @"http://laesb.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"
 
 // Wishlist Server EndPoint
