@@ -629,16 +629,17 @@ static void sortedHighlightRangePredicateInit() {
 
 - (void)bookWillShrink:(SCHBSBEucBook *)book
 {
-    
+    [self.eucBookView bookWillShrink];
 }
 
 - (void)book:(SCHBSBEucBook *)book hasShrunkToIndexPoint:(EucBookPageIndexPoint *)indexPoint
 {
-    
+    [self.eucBookView bookHasShrunkToIndexPoint:indexPoint];
 }
 
 - (void)book:(SCHBSBEucBook *)book hasGrownToIndexPoint:(EucBookPageIndexPoint *)indexPoint;
 {
+    [self.eucBookView bookHasGrown];
     [self jumpToPageAtIndexPoint:indexPoint animated:YES withCompletionHandler:nil];
 }
 

@@ -12,7 +12,7 @@
 @interface SCHBSBReplacedNavigateElement()
 
 @property (nonatomic, retain) NSString *label;
-@property (nonatomic, retain) NSString *action;
+@property (nonatomic, retain) NSString *targetNode;
 @property (nonatomic, retain) UIView *navigateView;
 @property (nonatomic, assign) CGFloat fontSize;
 
@@ -21,23 +21,23 @@
 @implementation SCHBSBReplacedNavigateElement
 
 @synthesize label;
-@synthesize action;
+@synthesize targetNode;
 @synthesize navigateView;
 @synthesize fontSize;
 
 - (void)dealloc
 {
     [label release], label = nil;
-    [action release], action = nil;
+    [targetNode release], targetNode = nil;
     [navigateView release], navigateView = nil;
     [super dealloc];
 }
 
-- (id)initWithPointSize:(CGFloat)point label:(NSArray *)navigateLabel action:(NSString *)navigateAction;
+- (id)initWithPointSize:(CGFloat)point label:(NSString *)navigateLabel targetNode:(NSString *)navigateTarget;
 {
     if (self = [super initWithPointSize:point]) {
         label = [navigateLabel copy];
-        action = [navigateAction copy];
+        targetNode = [navigateTarget copy];
     }
     
     return self;
@@ -96,7 +96,7 @@
 
 - (void)navigateToNode:(id)sender
 {
-    [self.delegate navigateToNode:self.action];
+    [self.delegate navigateToNode:self.targetNode fromNode:self.nodeId];
 }
 
 @end

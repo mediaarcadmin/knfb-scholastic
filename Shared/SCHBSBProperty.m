@@ -12,23 +12,19 @@
 
 @synthesize name;
 @synthesize value;
+@synthesize node;
 
 - (void)dealloc
 {
     [name release], name = nil;
     [value release], value = nil;
+    [node release], node = nil;
     [super dealloc];
-}
-
-- (void)clear
-{
-    self.name = nil;
-    self.value = nil;
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<SCHBSBProperty: %p> { %@ : %@ }", self, self.name, self.value];
+    return [NSString stringWithFormat:@"<SCHBSBProperty: %p> { %@ : %@ : %@ }", self, self.name, self.value, self.node];
 }
 
 @end

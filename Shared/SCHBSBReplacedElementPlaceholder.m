@@ -14,10 +14,12 @@
 
 @synthesize pointSize;
 @synthesize delegate;
+@synthesize nodeId;
 
 - (void)dealloc
 {
     delegate = nil;
+    [nodeId release], nodeId = nil;
     [super dealloc];
 }
 

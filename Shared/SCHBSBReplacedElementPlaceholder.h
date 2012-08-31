@@ -13,6 +13,7 @@
 
 @property (nonatomic, assign) CGFloat pointSize;
 @property (nonatomic, assign) id <SCHBSBReplacedElementDelegate> delegate;
+@property (nonatomic, copy) NSString *nodeId;
 
 - (id)initWithPointSize:(CGFloat)point;
 

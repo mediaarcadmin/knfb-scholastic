@@ -10,6 +10,6 @@
 
 @interface SCHBSBReplacedNavigateElement : SCHBSBReplacedElementPlaceholder
 
-- (id)initWithPointSize:(CGFloat)point label:(NSString *)label action:(NSString *)action;
+- (id)initWithPointSize:(CGFloat)point label:(NSString *)navigateLabel targetNode:(NSString *)navigateTarget;
 
 @end

@@ -44,6 +44,8 @@
 
 - (SCHBSBProperty *)propertyWithName:(NSString *)name;
 - (SCHBSBNode *)nodeWithName:(NSString *)name;
+- (SCHBSBNode *)nodeWithUri:(NSString *)uri;
+- (BOOL)validatePropertiesForNode:(SCHBSBNode *)node;
 
 @end
 
@@ -343,7 +345,6 @@
                 if (dataBinding) {
                     SCHBSBProperty *property = [self propertyWithName:dataBinding];
                     replacedElement = [[[SCHBSBReplacedTextElement alloc] initWithPointSize:10 binding:dataBinding value:property.value] autorelease];
-                    replacedElement.delegate = self;
                 }
             } else if ([inputType isEqualToString:@"radio"]) {
                 
@@ -383,7 +384,6 @@
                     
                     SCHBSBProperty *property = [self propertyWithName:dataBinding];
                     replacedElement = [[[SCHBSBReplacedRadioElement alloc] initWithPointSize:10 keys:keys values:values binding:dataBinding value:property.value] autorelease];
-                    replacedElement.delegate = self;
                 }
             }
         } else if ([nodeName isEqualToString:@"select"]) {
@@ -413,7 +413,6 @@
             
             SCHBSBProperty *property = [self propertyWithName:dataBinding];
             replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithPointSize:20 keys:keys values:values binding:dataBinding value:property.value] autorelease];
-            replacedElement.delegate = self;
         } else if ([nodeName isEqualToString:@"a"]) {
             NSString *target = [treeNode attributeWithName:@"href"];
             
@@ -423,8 +422,7 @@
             NSString *dataString = [docNode text];
                     
             if (target && [dataString length]) {
-                replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataString action:target] autorelease];
-                replacedElement.delegate = self;
+                replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataString targetNode:target] autorelease];
             }
         }
         
@@ -437,7 +435,6 @@
             if (dataBinding) {
                 SCHBSBProperty *property = [self propertyWithName:dataBinding];
                 replacedElement = [[[SCHBSBReplacedTextElement alloc] initWithPointSize:10 binding:dataBinding value:property.value] autorelease];
-                replacedElement.delegate = self;
             }
         } else if ([dataType isEqualToString:@"radio"]) {
             NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
@@ -460,7 +457,6 @@
 
             SCHBSBProperty *property = [self propertyWithName:dataBinding];
             replacedElement = [[[SCHBSBReplacedRadioElement alloc] initWithPointSize:10 keys:keys values:values binding:dataBinding value:property.value] autorelease];
-            replacedElement.delegate = self;
         } else if ([dataType isEqualToString:@"dropdown"]) {
             NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
             
@@ -482,16 +478,20 @@
             
             SCHBSBProperty *property = [self propertyWithName:dataBinding];
             replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithPointSize:20 keys:keys values:values binding:dataBinding value:property.value] autorelease];
-            replacedElement.delegate = self;
         } else if ([dataType isEqualToString:@"navigate"]) {
             
             NSString *dataValue = [treeNode attributeWithName:@"data-value"];
             NSString *dataGoto = [treeNode attributeWithName:@"data-goto"];
             
-            replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataValue action:dataGoto] autorelease];
-            replacedElement.delegate = self;
+            replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataValue targetNode:dataGoto] autorelease];
         }
 #endif
+    }
+    
+    if (replacedElement) {
+        NSString *nodeUri = [[[document url] absoluteString] lastPathComponent];
+        replacedElement.nodeId = [[self nodeWithUri:nodeUri] nodeId];
+        replacedElement.delegate = self;
     }
     
     return replacedElement;
@@ -511,6 +511,8 @@
     if (!ret) {
         ret = [[SCHBSBProperty alloc] init];
         ret.name = name;
+        // We always assume a new property is being created on the most recently added decision node
+        ret.node = [[self.decisionNodes lastObject] nodeId];
         [self.decisionProperties addObject:ret];
         [ret release];
     }
@@ -532,6 +534,42 @@
     return ret;
 }
 
+- (SCHBSBNode *)nodeWithUri:(NSString *)uri
+{
+    SCHBSBNode *ret = nil;
+    
+    for (SCHBSBNode *node in self.manifest.nodes) {
+        if ([uri isEqualToString:node.uri]) {
+            ret = node;
+            break;
+        }
+    }
+    
+    return ret;
+}
+
+- (BOOL)validatePropertiesForNode:(SCHBSBNode *)node
+{
+    NSString *nodeName = [node nodeId];
+    NSIndexSet *missingIndices = [self.decisionProperties indexesOfObjectsPassingTest:^BOOL(SCHBSBProperty *property, NSUInteger idx, BOOL *stop){
+        if ([[property node] isEqualToString:nodeName] && ([property value] == nil)) {
+            return YES;
+        } else {
+            return NO;
+        }                    
+    }];
+    
+    if ([missingIndices count] == 0) {
+        return YES;
+    } else {
+        NSString *missingProps = [[[self.decisionProperties objectsAtIndexes:missingIndices] valueForKey:@"name"] componentsJoinedByString:@", "];
+        NSString *message = [NSString stringWithFormat:@"Please tell us about the following, before you continue: %@.", missingProps];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+        return NO;
+    }
+}
 
 #pragma mark - SCHBSBReplacedElementDelegate
 
@@ -541,15 +579,18 @@
     property.value = value;
 }
 
-- (void)navigateToNode:(NSString *)name
+- (void)navigateToNode:(NSString *)toNodeName fromNode:(NSString *)fromNodeName;
 {
-    SCHBSBNode *node = [self nodeWithName:name];
+    SCHBSBNode *toNode = [self nodeWithName:toNodeName];
+    SCHBSBNode *fromNode = [self nodeWithName:fromNodeName];
     
-    if (node) {
-        [self.decisionNodes addObject:node];
-        EucBookPageIndexPoint *nodePoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
-        nodePoint.source = [self.decisionNodes count] - 1;
-        [self.delegate book:self hasGrownToIndexPoint:nodePoint];
+    if (toNode && fromNode) {
+        if ([self validatePropertiesForNode:fromNode]) {
+            [self.decisionNodes addObject:toNode];
+            EucBookPageIndexPoint *nodePoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
+            nodePoint.source = [self.decisionNodes count] - 1;
+            [self.delegate book:self hasGrownToIndexPoint:nodePoint];
+        }
     }
 }
                                        

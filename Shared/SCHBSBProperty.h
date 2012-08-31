@@ -12,7 +12,6 @@
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *value;
-
-- (void)clear;
+@property (nonatomic, copy) NSString *node;
 
 @end
