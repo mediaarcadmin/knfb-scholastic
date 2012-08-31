@@ -12,9 +12,10 @@
 
 @interface SCHBSBReplacedRadioElement()
 
-@property (nonatomic, retain) NSArray *keys;
-@property (nonatomic, retain) NSArray *values;
-@property (nonatomic, retain) NSString *binding;
+@property (nonatomic, copy) NSArray *keys;
+@property (nonatomic, copy) NSArray *values;
+@property (nonatomic, copy) NSString *binding;
+@property (nonatomic, copy) NSString *value;
 @property (nonatomic, retain) UIView *radioView;
 
 @end
@@ -24,6 +25,7 @@
 @synthesize keys;
 @synthesize values;
 @synthesize binding;
+@synthesize value;
 @synthesize radioView;
 
 - (void)dealloc
@@ -31,16 +33,18 @@
     [keys release], keys = nil;
     [values release], values = nil;
     [binding release], binding = nil;
+    [value release], value = nil;
     [radioView release], radioView = nil;
     [super dealloc];
 }
 
-- (id)initWithPointSize:(CGFloat)point keys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)radioBinding
+- (id)initWithPointSize:(CGFloat)point keys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)radioBinding value:(NSString *)aValue
 {
     if (self = [super initWithPointSize:point]) {
         keys = [keyArray copy];
         values = [valueArray copy];
         binding = [radioBinding copy];
+        value = [aValue copy];
     }
     
     return self;
@@ -74,7 +78,8 @@
         NSString *dataBinding = @"foo";
         
         for (int i = 0; i < elementCount; i++) {
-            [htmlString appendFormat:@"<input type='radio' name='%@' value='%@' /> %@<br />", dataBinding, [self.values objectAtIndex:i], [self.keys objectAtIndex:i]];
+            BOOL selected = [self.value isEqualToString:[self.values objectAtIndex:i]];
+            [htmlString appendFormat:@"<input type='radio' onclick='window.location = \"js-bridge:selectionDidChange:\" + this.options[this.selectedIndex].value' name='%@' value='%@' %@/> %@<br />", dataBinding, [self.values objectAtIndex:i], selected ? @" selected='selected'" : @"", [self.keys objectAtIndex:i]];
         }
         
         [htmlString appendString:@"</form></body>"];
@@ -86,5 +91,14 @@
     
     return radioView;
 }
+
+#pragma mark - jsBridgeTarget Methods
+
+- (void)selectionDidChange:(NSString *)selection
+{
+    NSLog(@"Radio changed: %@", selection);
+    [self.delegate binding:self.binding didUpdateValue:selection];
+}
+
 
 @end

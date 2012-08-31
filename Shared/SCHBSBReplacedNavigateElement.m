@@ -89,4 +89,9 @@
     return navigateView;
 }
 
+- (void)renderInRect:(CGRect)rect inContext:(CGContextRef)context
+{
+    // noop
+}
+
 @end

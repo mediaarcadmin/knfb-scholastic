@@ -308,7 +308,7 @@
 
 - (NSArray *)userCSSDatasForDocumentTree:(id<EucCSSDocumentTree>)documentTree
 {
-    NSString *nodeBlockOverride = @"node { display: block }";
+    NSString *nodeBlockOverride = @"node { display: block; } p { background-color:0xff0000; page-break-inside: avoid; } select { display: block; page-break-before: avoid; }";
     
 	return [NSArray arrayWithObjects:[THEmbeddedResourceManager embeddedResourceWithName:@"EPubOverrides.css"],
             [nodeBlockOverride dataUsingEncoding:NSUTF8StringEncoding], nil];
@@ -380,7 +380,9 @@
                         radioNode = radioNode.nextSibling;
                     }
                     
-                    replacedElement = [[[SCHBSBReplacedRadioElement alloc] initWithPointSize:10 keys:keys values:values binding:dataBinding] autorelease];
+                    SCHBSBProperty *property = [self propertyWithName:dataBinding];
+                    replacedElement = [[[SCHBSBReplacedRadioElement alloc] initWithPointSize:10 keys:keys values:values binding:dataBinding value:property.value] autorelease];
+                    replacedElement.delegate = self;
                 }
             }
         } else if ([nodeName isEqualToString:@"select"]) {
@@ -393,19 +395,24 @@
             while (childNode != nil) {
                 if ([[childNode name] isEqualToString:@"option"]) {
                     
-                    NSString *dataKey = [childNode attributeWithName:@"value"];                    
-                    NSString *dataString = dataKey;
+                    NSString *dataValue = [childNode attributeWithName:@"value"];
+                    SCHBSBTreeNode *textNode = [childNode firstChild];
+                    EucCSSIntermediateDocumentNode *docNode = [document nodeForKey:[EucCSSIntermediateDocument keyForDocumentTreeNodeKey:textNode.key]];
+                    
+                    NSString *dataString = [docNode text];
                                       
-                    if (dataKey && [dataString length]) {
-                        [keys addObject:dataKey];
-                        [values addObject:dataString];
+                    if (dataValue && [dataString length]) {
+                        [keys addObject:dataString];
+                        [values addObject:dataValue];
                     }
                 }
                 
                 childNode = childNode.nextSibling;
             }
             
-            replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithPointSize:20 keys:keys values:values binding:dataBinding] autorelease];
+            SCHBSBProperty *property = [self propertyWithName:dataBinding];
+            replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithPointSize:20 keys:keys values:values binding:dataBinding value:property.value] autorelease];
+            replacedElement.delegate = self;
         }
         
         
@@ -417,6 +424,7 @@
             if (dataBinding) {
                 SCHBSBProperty *property = [self propertyWithName:dataBinding];
                 replacedElement = [[[SCHBSBReplacedTextElement alloc] initWithPointSize:10 binding:dataBinding value:property.value] autorelease];
+                replacedElement.delegate = self;
             }
         } else if ([dataType isEqualToString:@"radio"]) {
             NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
@@ -437,7 +445,9 @@
                 childNode = childNode.nextSibling;
             }
 
-            replacedElement = [[[SCHBSBReplacedRadioElement alloc] initWithPointSize:10 keys:keys values:values binding:dataBinding] autorelease];
+            SCHBSBProperty *property = [self propertyWithName:dataBinding];
+            replacedElement = [[[SCHBSBReplacedRadioElement alloc] initWithPointSize:10 keys:keys values:values binding:dataBinding value:property.value] autorelease];
+            replacedElement.delegate = self;
         } else if ([dataType isEqualToString:@"dropdown"]) {
             NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
             
@@ -457,7 +467,9 @@
                 childNode = childNode.nextSibling;
             }
             
-            replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithPointSize:20 keys:keys values:values binding:dataBinding] autorelease];
+            SCHBSBProperty *property = [self propertyWithName:dataBinding];
+            replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithPointSize:20 keys:keys values:values binding:dataBinding value:property.value] autorelease];
+            replacedElement.delegate = self;
         } else if ([dataType isEqualToString:@"navigate"]) {
             
             NSString *dataValue = [treeNode attributeWithName:@"data-value"];
