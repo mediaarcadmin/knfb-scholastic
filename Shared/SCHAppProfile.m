@@ -27,6 +27,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 
 @interface SCHAppProfile ()
 
+- (NSSet *)recommendationItems;
 - (NSArray *)purchasedBooks;
 - (id)makeNullNil:(id)object;
 - (void)save;
@@ -88,6 +89,15 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     return ret;
 }
 
+- (NSSet *)recommendationItems
+{
+#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    return [[self recommendationTopRating] recommendationItems];
+#else
+    return [[self recommendationProfile] recommendationItems];
+#endif
+}
+
 // returns an array of isbns
 - (NSArray *)purchasedBooks
 {
@@ -114,7 +124,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 - (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
-    NSSet *allItems = [[self recommendationProfile] recommendationItems];
+    NSSet *allItems = [self recommendationItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.isReady = %d", YES];
     NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations]
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
