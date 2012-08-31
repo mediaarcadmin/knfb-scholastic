@@ -37,6 +37,10 @@
 
 - (void)main
 {
+#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    NSAssert(YES, @"Something is very wrong we are not using Top Ratings for profile recommendations");
+#endif
+
     @try {
         NSArray *topRatings = [self makeNullNil:[self.result objectForKey:kSCHLibreAccessWebServiceTopRatingsList]];
         if ([topRatings count] > 0) {

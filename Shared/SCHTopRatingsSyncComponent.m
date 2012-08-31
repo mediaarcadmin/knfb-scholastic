@@ -61,6 +61,10 @@ static NSTimeInterval const kSCHTopRatingsSyncComponentSyncDelayTimeInterval = 8
 
 - (BOOL)synchronize
 {
+#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    NSAssert(YES, @"Something is very wrong we are not using Top Ratings for profile recommendations");
+#endif
+
 	BOOL ret = YES;
 
 	if (self.isSynchronizing == NO) {
