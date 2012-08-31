@@ -18,14 +18,13 @@
 #import "SCHBSBManifest.h"
 #import "SCHBSBNode.h"
 #import "SCHBSBProperty.h"
-#import "SCHBSBTree.h"
-#import "SCHBSBTreeNode.h"
 #import "SCHBSBReplacedElementPlaceholder.h"
 #import "SCHBSBReplacedElementDelegate.h"
 #import "SCHBSBReplacedRadioElement.h"
 #import "SCHBSBReplacedDropdownElement.h"
 #import "SCHBSBReplacedNavigateElement.h"
 #import "SCHBSBReplacedTextElement.h"
+#import <libEucalyptus/EucCSSXHTMLTree.h>
 #import <libEucalyptus/EucPageLayoutController.h>
 #import <libEucalyptus/EucCSSHTMLIntermediateDocument.h>
 #import <libEucalyptus/EucCSSIntermediateDocumentNode.h>
@@ -135,7 +134,7 @@
         if ([xmlData length]) {
             NSURL *docURL = [NSURL URLWithString:[[NSString stringWithFormat:@"bsb://%@", self.identifier] stringByAppendingPathComponent:node.uri]];
             
-            id <EucCSSDocumentTree> docTree = [[[SCHBSBTree alloc] initWithData:xmlData] autorelease];
+            id <EucCSSDocumentTree> docTree = [[[EucCSSXHTMLTree alloc] initWithData:xmlData] autorelease];
             doc = [[EucCSSHTMLIntermediateDocument alloc] initWithDocumentTree:docTree
                                                                         forURL:docURL
                                                                    pageOptions:pageOptions
@@ -348,8 +347,8 @@
                 }
             } else if ([inputType isEqualToString:@"radio"]) {
                 
-                SCHBSBTreeNode *radioNode    = treeNode;
-                SCHBSBTreeNode *previousNode = treeNode.previousSibling;
+                id<EucCSSDocumentTreeNode> radioNode    = treeNode;
+                id<EucCSSDocumentTreeNode> previousNode = treeNode.previousSibling;
                 NSString *dataBinding        = [radioNode attributeWithName:@"name"];
                 NSString *previousBinding    = nil;
                 
@@ -390,7 +389,7 @@
         } else if ([nodeName isEqualToString:@"select"]) {
             NSString *dataBinding = [treeNode attributeWithName:@"name"];
             
-            SCHBSBTreeNode *childNode = treeNode.firstChild;
+            id<EucCSSDocumentTreeNode> childNode = treeNode.firstChild;
             NSMutableArray *keys = [NSMutableArray array];
             NSMutableArray *values = [NSMutableArray array];
             
@@ -398,7 +397,7 @@
                 if ([[childNode name] isEqualToString:@"option"]) {
                     
                     NSString *dataValue = [childNode attributeWithName:@"value"];
-                    SCHBSBTreeNode *textNode = [childNode firstChild];
+                    id<EucCSSDocumentTreeNode> textNode = [childNode firstChild];
                     EucCSSIntermediateDocumentNode *docNode = [document nodeForKey:[EucCSSIntermediateDocument keyForDocumentTreeNodeKey:textNode.key]];
                     
                     NSString *dataString = [docNode text];
@@ -418,7 +417,7 @@
         } else if ([nodeName isEqualToString:@"a"]) {
             NSString *target = [treeNode attributeWithName:@"href"];
             
-            SCHBSBTreeNode *textNode = [treeNode firstChild];
+            id<EucCSSDocumentTreeNode> textNode = [treeNode firstChild];
             EucCSSIntermediateDocumentNode *docNode = [document nodeForKey:[EucCSSIntermediateDocument keyForDocumentTreeNodeKey:textNode.key]];
                     
             NSString *dataString = [docNode text];
@@ -443,7 +442,7 @@
         } else if ([dataType isEqualToString:@"radio"]) {
             NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
             
-            SCHBSBTreeNode *childNode = treeNode.firstChild;
+            id<EucCSSDocumentTreeNode> childNode = treeNode.firstChild;
             NSMutableArray *keys = [NSMutableArray array];
             NSMutableArray *values = [NSMutableArray array];
             
@@ -465,7 +464,7 @@
         } else if ([dataType isEqualToString:@"dropdown"]) {
             NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
             
-            SCHBSBTreeNode *childNode = treeNode.firstChild;
+            id<EucCSSDocumentTreeNode> childNode = treeNode.firstChild;
             NSMutableArray *keys = [NSMutableArray array];
             NSMutableArray *values = [NSMutableArray array];
             

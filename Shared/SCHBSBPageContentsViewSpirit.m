@@ -9,7 +9,6 @@
 #if !BRANCHING_STORIES_DISABLED
 #import "SCHBSBPageContentsViewSpirit.h"
 #import "SCHBSBEucBook.h"
-#import "SCHBSBTreeNode.h"
 #import <libEucalyptus/EucCSSDPI.h>
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucCSSXHTMLTree.h>
