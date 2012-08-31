@@ -128,21 +128,24 @@
                                                       pageOptions:(NSDictionary *)pageOptions
 {
     EucCSSHTMLIntermediateDocument *doc = nil;
-    SCHBSBNode *node = [self.decisionNodes objectAtIndex:indexPoint.source];
+    
+    if (indexPoint.source < self.sourceCount) {
+        SCHBSBNode *node = [self.decisionNodes objectAtIndex:indexPoint.source];
 
-    if (node.uri) {
-        NSData *xmlData = [self.provider dataForBSBComponentAtPath:node.uri];
-        
-        if ([xmlData length]) {
-            NSURL *docURL = [NSURL URLWithString:[[NSString stringWithFormat:@"bsb://%@", self.identifier] stringByAppendingPathComponent:node.uri]];
+        if (node.uri) {
+            NSData *xmlData = [self.provider dataForBSBComponentAtPath:node.uri];
             
-            id <EucCSSDocumentTree> docTree = [[[EucCSSXHTMLTree alloc] initWithData:xmlData] autorelease];
-            doc = [[EucCSSHTMLIntermediateDocument alloc] initWithDocumentTree:docTree
-                                                                        forURL:docURL
-                                                                   pageOptions:pageOptions
-                                                                    dataSource:self];
-        } else {
-            NSLog(@"Warning: No data at path: %@", node.uri);
+            if ([xmlData length]) {
+                NSURL *docURL = [NSURL URLWithString:[[NSString stringWithFormat:@"bsb://%@", self.identifier] stringByAppendingPathComponent:node.uri]];
+                
+                id <EucCSSDocumentTree> docTree = [[[EucCSSXHTMLTree alloc] initWithData:xmlData] autorelease];
+                doc = [[EucCSSHTMLIntermediateDocument alloc] initWithDocumentTree:docTree
+                                                                            forURL:docURL
+                                                                       pageOptions:pageOptions
+                                                                        dataSource:self];
+            } else {
+                NSLog(@"Warning: No data at path: %@", node.uri);
+            }
         }
     }
     
