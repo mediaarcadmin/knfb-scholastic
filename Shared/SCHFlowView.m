@@ -13,6 +13,7 @@
 #import "SCHBookRange.h"
 #import "KNFBParagraphSource.h"
 #import "SCHEPubBook.h"
+#import "SCHBSBEucBook.h"
 #import <libEucalyptus/EucBookView.h>
 #import <libEucalyptus/EucEPubBook.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
@@ -24,7 +25,7 @@
 #import <libEucalyptus/THPair.h>
 #import <libEucalyptus/EucOTFIndex.h>
 
-@interface SCHFlowView ()
+@interface SCHFlowView () <SCHBSBEucBookDelegate>
 
 @property (nonatomic, retain) id<EucBook, SCHEucBookmarkPointTranslation> eucBook;
 @property (nonatomic, retain) id<KNFBParagraphSource> paragraphSource;
@@ -103,7 +104,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
            delegate:(id<SCHReadingViewDelegate>)delegate
               point:(SCHBookPoint *)point
 {
-    self = [super initWithFrame:frame 
+    self = [super initWithFrame:frame
                  bookIdentifier:bookIdentifier 
            managedObjectContext:managedObjectContext
                        delegate:delegate
@@ -116,6 +117,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         
         if ([eucBook isKindOfClass:[EucEPubBook class]]) {
             paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
+        } else if ([eucBook isKindOfClass:[SCHBSBEucBook class]]) {
+            [(SCHBSBEucBook *)eucBook setDelegate:self];
         }
         
         openingPoint = [point retain];
@@ -620,6 +623,23 @@ static void sortedHighlightRangePredicateInit() {
 - (BOOL)eucSelector:(EucSelector *)selector shouldReceiveTouch:(UITouch *)touch
 {
     return [self.eucBookView eucSelector:selector shouldReceiveTouch:touch];
+}
+
+#pragma mark - SCHBSBEucBookDelegate
+
+- (void)bookWillShrink:(SCHBSBEucBook *)book
+{
+    
+}
+
+- (void)book:(SCHBSBEucBook *)book hasShrunkToIndexPoint:(EucBookPageIndexPoint *)indexPoint
+{
+    
+}
+
+- (void)book:(SCHBSBEucBook *)book hasGrownToIndexPoint:(EucBookPageIndexPoint *)indexPoint;
+{
+    [self jumpToPageAtIndexPoint:indexPoint animated:YES withCompletionHandler:nil];
 }
 
 @end

@@ -10,5 +10,6 @@
 
 @required
 - (void)binding:(NSString *)binding didUpdateValue:(NSString *)value;
+- (void)navigateToNode:(NSString *)node;
 
 @end

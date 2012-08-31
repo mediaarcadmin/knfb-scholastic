@@ -29,6 +29,8 @@
         
     } else if ([[self name] isEqualToString:@"select"]) {
         return YES;
+    } else if ([[self name] isEqualToString:@"a"]) {
+        return YES;
     }
     
     return NO;

@@ -44,6 +44,7 @@
 @property (nonatomic, retain) NSMutableArray *decisionProperties;
 
 - (SCHBSBProperty *)propertyWithName:(NSString *)name;
+- (SCHBSBNode *)nodeWithName:(NSString *)name;
 
 @end
 
@@ -56,6 +57,7 @@
 @synthesize manifest;
 @synthesize decisionNodes;
 @synthesize decisionProperties;
+@synthesize delegate;
 
 - (void)dealloc
 {
@@ -70,6 +72,7 @@
     [manifest release], manifest = nil;
     [decisionNodes release], decisionNodes = nil;
     [decisionProperties release], decisionProperties = nil;
+    delegate = nil;
      
     [super dealloc];
 }
@@ -125,7 +128,7 @@
 {
     EucCSSHTMLIntermediateDocument *doc = nil;
     SCHBSBNode *node = [self.decisionNodes objectAtIndex:indexPoint.source];
-    
+
     if (node.uri) {
         NSData *xmlData = [self.provider dataForBSBComponentAtPath:node.uri];
         
@@ -412,6 +415,18 @@
             SCHBSBProperty *property = [self propertyWithName:dataBinding];
             replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithPointSize:20 keys:keys values:values binding:dataBinding value:property.value] autorelease];
             replacedElement.delegate = self;
+        } else if ([nodeName isEqualToString:@"a"]) {
+            NSString *target = [treeNode attributeWithName:@"href"];
+            
+            SCHBSBTreeNode *textNode = [treeNode firstChild];
+            EucCSSIntermediateDocumentNode *docNode = [document nodeForKey:[EucCSSIntermediateDocument keyForDocumentTreeNodeKey:textNode.key]];
+                    
+            NSString *dataString = [docNode text];
+                    
+            if (target && [dataString length]) {
+                replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataString action:target] autorelease];
+                replacedElement.delegate = self;
+            }
         }
         
         
@@ -475,6 +490,7 @@
             NSString *dataGoto = [treeNode attributeWithName:@"data-goto"];
             
             replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataValue action:dataGoto] autorelease];
+            replacedElement.delegate = self;
         }
 #endif
     }
@@ -503,12 +519,39 @@
     return ret;
 }
 
+- (SCHBSBNode *)nodeWithName:(NSString *)name
+{
+    SCHBSBNode *ret = nil;
+    
+    for (SCHBSBNode *node in self.manifest.nodes) {
+        if ([name isEqualToString:node.nodeId]) {
+            ret = node;
+            break;
+        }
+    }
+    
+    return ret;
+}
+
+
 #pragma mark - SCHBSBReplacedElementDelegate
 
 - (void)binding:(NSString *)binding didUpdateValue:(NSString *)value
 {
     SCHBSBProperty *property = [self propertyWithName:binding];
     property.value = value;
+}
+
+- (void)navigateToNode:(NSString *)name
+{
+    SCHBSBNode *node = [self nodeWithName:name];
+    
+    if (node) {
+        [self.decisionNodes addObject:node];
+        EucBookPageIndexPoint *nodePoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
+        nodePoint.source = [self.decisionNodes count] - 1;
+        [self.delegate book:self hasGrownToIndexPoint:nodePoint];
+    }
 }
                                        
 @end

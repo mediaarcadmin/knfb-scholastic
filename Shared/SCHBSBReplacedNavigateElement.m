@@ -81,7 +81,7 @@
         [button setTitleEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [button setTitle:self.label forState:UIControlStateNormal];
-        [button addTarget:nil action:NSSelectorFromString(self.action) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(navigateToNode:) forControlEvents:UIControlEventTouchUpInside];
         
         navigateView = button;
     }
@@ -92,6 +92,11 @@
 - (void)renderInRect:(CGRect)rect inContext:(CGContextRef)context
 {
     // noop
+}
+
+- (void)navigateToNode:(id)sender
+{
+    [self.delegate navigateToNode:self.action];
 }
 
 @end

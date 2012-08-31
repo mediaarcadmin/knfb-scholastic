@@ -6500,6 +6500,7 @@
 		C9D703AC14ED50B100C10006 /* Storia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9E73AC515EF8A6D00DC7C11 /* SCHBSBProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBProperty.m; path = Shared/SCHBSBProperty.m; sourceTree = "<group>"; };
 		C9E73ACB15EFAB9500DC7C11 /* SCHBSBReplacedElementDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementDelegate.h; path = Shared/SCHBSBReplacedElementDelegate.h; sourceTree = "<group>"; };
+		C9E73ACC15F0D41600DC7C11 /* SCHBSBEucBookDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBEucBookDelegate.h; path = Shared/SCHBSBEucBookDelegate.h; sourceTree = "<group>"; };
 		C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = levenshtein_distance.c; sourceTree = "<group>"; };
 		C9E89A4A1369B87A00E7ED53 /* levenshtein_distance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = levenshtein_distance.h; sourceTree = "<group>"; };
 		C9EB498E152EDA9800DA227A /* SCHRecommendationListView-ReadingViewContainer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHRecommendationListView-ReadingViewContainer.xib"; path = "Shared/SCHRecommendationListView-ReadingViewContainer.xib"; sourceTree = "<group>"; };
@@ -9566,6 +9567,7 @@
 			isa = PBXGroup;
 			children = (
 				C9C5DF6915EE0D3A0020BA9E /* SCHBSBContentsProvider.h */,
+				C9E73ACC15F0D41600DC7C11 /* SCHBSBEucBookDelegate.h */,
 				C9C33C68155A903D00C7041F /* SCHBSBEucBook.h */,
 				C9C33C69155A903D00C7041F /* SCHBSBEucBook.m */,
 				C9C33C94155BC8C300C7041F /* SCHBSBManifest.h */,
