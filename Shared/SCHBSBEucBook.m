@@ -327,6 +327,42 @@
     return [[self userAgentCSSDatasForDocumentTree:[document documentTree]] valueForKey:@"thDataURL"];
 }
 
+- (NSString *)eucCSSIntermediateDocument:(EucCSSIntermediateDocument *)document
+                 replacedTextForTextNode:(EucCSSIntermediateDocumentNode *)node
+{
+    NSString *text = [node treeNodeText];
+    NSMutableString *replacementText = [NSMutableString stringWithCapacity:[text length]];
+    NSScanner *propertyScanner = [NSScanner scannerWithString:text];
+    [propertyScanner setCharactersToBeSkipped:nil];
+    
+    while ([propertyScanner isAtEnd] == NO) {
+        
+        NSString *priorString = nil;
+        NSString *propertyString = nil;
+        [propertyScanner scanUpToString:@"[$" intoString:&priorString];
+        [propertyScanner scanString:@"[$" intoString:nil];
+        [propertyScanner scanUpToString:@"$]" intoString:&propertyString];
+        [propertyScanner scanString:@"$]" intoString:nil];
+        
+        if (priorString) {
+            [replacementText appendString:priorString];
+        }
+        
+        if (propertyString) {
+            SCHBSBProperty *property = [self propertyWithName:propertyString];
+            if (property.value) {
+                [replacementText appendString:property.value];
+            }
+        }
+    }
+    
+//    if (![text isEqualToString:replacementText]) {
+//        NSLog(@"text: %@\nreplacement: %@", text, replacementText);
+//    }
+    
+    return replacementText;
+}
+
 - (id<EucCSSReplacedElement>)eucCSSIntermediateDocument:(EucCSSIntermediateDocument *)document
                                  replacedElementForNode:(EucCSSIntermediateDocumentNode *)node
 {
