@@ -10,7 +10,7 @@
 
 #import "SCHRecommendationTopRating.h"
 #import "SCHTopRatingsSyncComponent.h"
-#import "SCHRecommendationSyncComponent.h"
+#import "SCHRecommendationItem.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHLibreAccessConstants.h"
 #import "BITAPIError.h"
@@ -24,6 +24,12 @@
                            syncDate:(NSDate *)syncDate;
 - (SCHRecommendationTopRating *)recommendationTopRating:(NSDictionary *)webRecommendationTopRating
                                                syncDate:(NSDate *)syncDate;
+- (void)syncRecommendationItems:(NSArray *)webRecommendationItems
+        withRecommendationItems:(NSSet *)localRecommendationItems
+                     insertInto:(id)recommendation;
+- (SCHRecommendationItem *)recommendationItem:(NSDictionary *)webRecommendationItem;
+- (void)syncRecommendationItem:(NSDictionary *)webRecommendationItem
+        withRecommendationItem:(SCHRecommendationItem *)localRecommendationItem;
 
 @end
 
@@ -42,7 +48,7 @@
                 [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceListTopRatings
                                                        result:self.result
                                                      userInfo:self.userInfo
-                                             notificationName:SCHRecommendationSyncComponentDidCompleteNotification
+                                             notificationName:SCHTopRatingsSyncComponentDidCompleteNotification
                                          notificationUserInfo:nil];
             }
         });
@@ -165,11 +171,9 @@
         localRecommendationTopRating.categoryClass = [self makeNullNil:[webRecommendationTopRating objectForKey:kSCHLibreAccessWebServiceTopRatingsTypeValue]];
         localRecommendationTopRating.fetchDate = syncDate;
 
-        SCHRecommendationSyncComponent *recommendationSyncComponent = [[[SCHRecommendationSyncComponent alloc] init] autorelease];
-        [recommendationSyncComponent syncRecommendationItems:[self makeNullNil:[webRecommendationTopRating objectForKey:kSCHRecommendationWebServiceItems]]
-                                     withRecommendationItems:localRecommendationTopRating.recommendationItems
-                                                  insertInto:webRecommendationTopRating
-                                        managedObjectContext:self.backgroundThreadManagedObjectContext];
+        [self syncRecommendationItems:[self makeNullNil:[webRecommendationTopRating objectForKey:kSCHLibreAccessWebServiceTopRatingsContentItems]]
+              withRecommendationItems:localRecommendationTopRating.recommendationItems
+                           insertInto:localRecommendationTopRating];
     }
 }
 
@@ -186,14 +190,126 @@
         ret.categoryClass = topRatingCategoryClass;
         ret.fetchDate = syncDate;
 
-        SCHRecommendationSyncComponent *recommendationSyncComponent = [[[SCHRecommendationSyncComponent alloc] init] autorelease];
-        [recommendationSyncComponent syncRecommendationItems:[self makeNullNil:[webRecommendationTopRating objectForKey:kSCHLibreAccessWebServiceTopRatingsContentItems]]
-                                     withRecommendationItems:ret.recommendationItems
-                                                  insertInto:ret
-                                        managedObjectContext:self.backgroundThreadManagedObjectContext];
+        [self syncRecommendationItems:[self makeNullNil:[webRecommendationTopRating objectForKey:kSCHLibreAccessWebServiceTopRatingsContentItems]]
+              withRecommendationItems:ret.recommendationItems
+                           insertInto:ret];
     }
 
 	return ret;
+}
+
+#pragma - Syncing methods
+
+- (void)syncRecommendationItems:(NSArray *)webRecommendationItems
+        withRecommendationItems:(NSSet *)localRecommendationItems
+                     insertInto:(id)recommendation
+{
+	NSMutableArray *deletePool = [NSMutableArray array];
+	NSMutableArray *creationPool = [NSMutableArray array];
+
+	webRecommendationItems = [webRecommendationItems sortedArrayUsingDescriptors:
+                              [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier
+                                                                                     ascending:YES]]];
+	NSArray *localRecommendationItemsArray = [localRecommendationItems sortedArrayUsingDescriptors:
+                                              [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationWebServiceProductCode
+                                                                                                     ascending:YES]]];
+
+	NSEnumerator *webEnumerator = [webRecommendationItems objectEnumerator];
+	NSEnumerator *localEnumerator = [localRecommendationItemsArray objectEnumerator];
+
+	NSDictionary *webItem = [webEnumerator nextObject];
+	SCHRecommendationItem *localItem = [localEnumerator nextObject];
+
+	while (webItem != nil || localItem != nil) {
+        if (webItem == nil) {
+			while (localItem != nil) {
+				[deletePool addObject:localItem];
+				localItem = [localEnumerator nextObject];
+			}
+			break;
+		}
+
+		if (localItem == nil) {
+			while (webItem != nil) {
+                [creationPool addObject:webItem];
+				webItem = [webEnumerator nextObject];
+			}
+			break;
+		}
+
+		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceProductCode];
+
+        if (webItemID == nil || [SCHRecommendationItem isValidItemID:webItemID] == NO) {
+            webItem = nil;
+        } else if (localItemID == nil) {
+            localItem = nil;
+        } else {
+            switch ([webItemID compare:localItemID]) {
+                case NSOrderedSame:
+                    [self syncRecommendationItem:webItem
+                          withRecommendationItem:localItem];
+                    webItem = nil;
+                    localItem = nil;
+                    break;
+                case NSOrderedAscending:
+                    [creationPool addObject:webItem];
+                    webItem = nil;
+                    break;
+                case NSOrderedDescending:
+                    [deletePool addObject:localItem];
+                    localItem = nil;
+                    break;
+            }
+        }
+
+		if (webItem == nil) {
+			webItem = [webEnumerator nextObject];
+		}
+		if (localItem == nil) {
+			localItem = [localEnumerator nextObject];
+		}
+	}
+
+    for (SCHRecommendationItem *recommendationItem in deletePool) {
+        [self.backgroundThreadManagedObjectContext deleteObject:recommendationItem];
+    }
+
+    for (NSDictionary *webItem in creationPool) {
+        SCHRecommendationItem *recommendationItem = [self recommendationItem:webItem];
+        if (recommendationItem != nil) {
+            [recommendation addRecommendationItemsObject:recommendationItem];
+        }
+    }
+
+	[self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
+}
+
+- (SCHRecommendationItem *)recommendationItem:(NSDictionary *)webRecommendationItem
+{
+	SCHRecommendationItem *ret = nil;
+	id recommendationItemID = [self makeNullNil:[webRecommendationItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+
+	if (webRecommendationItem != nil && [SCHRecommendationItem isValidItemID:recommendationItemID] == YES) {
+		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationItem
+                                            inManagedObjectContext:self.backgroundThreadManagedObjectContext];
+
+        ret.product_code = recommendationItemID;
+        ret.order = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]];
+
+        [ret assignAppRecommendationItem];
+	}
+
+	return ret;
+}
+
+- (void)syncRecommendationItem:(NSDictionary *)webRecommendationItem
+        withRecommendationItem:(SCHRecommendationItem *)localRecommendationItem
+{
+    if (webRecommendationItem != nil) {
+        localRecommendationItem.product_code = [self makeNullNil:[webRecommendationItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+        localRecommendationItem.order = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]];
+    }
 }
 
 @end

@@ -16,6 +16,7 @@
 #import "SCHAppStateManager.h"
 #import "NSDate+ServerDate.h"
 #import "LibreAccessServiceSvc+Binding.h"
+#import "SCHRecommendationConstants.h"
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
 static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"statusmessage";
@@ -63,7 +64,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesResponseItem *)anObject;
 - (NSDictionary *)objectFromTopFavoritesContentItem:(LibreAccessServiceSvc_TopFavoritesContentItem *)anObject;
 - (NSDictionary *)objectFromTopRatingsItem:(LibreAccessServiceSvc_TopRatingsResponseItem *)anObject;
-- (NSDictionary *)objectFromTopRatingsContentItem:(LibreAccessServiceSvc_TopRatingsContentItem *)anObject;
+- (NSMutableDictionary *)objectFromTopRatingsContentItem:(LibreAccessServiceSvc_TopRatingsContentItem *)anObject;
 - (NSDictionary *)objectFromAnnotationStatusForRatingsItem:(LibreAccessServiceSvc_AnnotationStatusForRatingsItem *)anObject;
 - (NSDictionary *)objectFromStatusHolder:(LibreAccessServiceSvc_StatusHolder *)anObject;
 - (NSDictionary *)objectFromAnnotationStatusContentForRatingsItem:(LibreAccessServiceSvc_AnnotationStatusContentForRatingsItem *)anObject;
@@ -1325,9 +1326,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
-- (NSDictionary *)objectFromTopRatingsContentItem:(LibreAccessServiceSvc_TopRatingsContentItem *)anObject
+- (NSMutableDictionary *)objectFromTopRatingsContentItem:(LibreAccessServiceSvc_TopRatingsContentItem *)anObject
 {
-	NSDictionary *ret = nil;
+	NSMutableDictionary *ret = nil;
 	
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
@@ -1538,8 +1539,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 					[ret addObject:[self objectFromTopRatingsItem:item]];
 				}
 			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_TopRatingsContentItem class]] == YES) {
+                NSInteger order = 0;
 				for (id item in anObject) {
-					[ret addObject:[self objectFromTopRatingsContentItem:item]];
+                    NSMutableDictionary *object = [self objectFromTopRatingsContentItem:item];
+                    [object setObject:[NSNumber numberWithInteger:order] forKey:kSCHRecommendationWebServiceOrder];
+                    order++;
+					[ret addObject:object];
 				}                
 			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationStatusForRatingsItem class]] == YES) {
 				for (id item in anObject) {

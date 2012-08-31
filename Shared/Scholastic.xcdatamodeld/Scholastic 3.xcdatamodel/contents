@@ -804,6 +804,7 @@
         <memberEntity name="SCHRecommendationProfile"/>
         <memberEntity name="SCHAppRecommendationItem"/>
         <memberEntity name="SCHRating"/>
+        <memberEntity name="SCHRecommendationTopRating"/>
     </configuration>
     <elements>
         <element name="SCHAnnotation" positionX="0" positionY="0" width="128" height="90"/>
