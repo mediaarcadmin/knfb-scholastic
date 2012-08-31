@@ -311,7 +311,7 @@
 
 - (NSArray *)userCSSDatasForDocumentTree:(id<EucCSSDocumentTree>)documentTree
 {
-    NSString *nodeBlockOverride = @"node { display: block; } p { background-color:#ff0000; page-break-inside: avoid; } select { display: block; page-break-before: avoid; }";
+    NSString *nodeBlockOverride = @"node { display: block; } select { display: block; page-break-before: avoid; }";
     
 	return [NSArray arrayWithObjects:[THEmbeddedResourceManager embeddedResourceWithName:@"EPubOverrides.css"],
             [nodeBlockOverride dataUsingEncoding:NSUTF8StringEncoding], nil];
