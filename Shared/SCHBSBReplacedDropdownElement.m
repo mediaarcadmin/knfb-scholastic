@@ -86,7 +86,11 @@
         
         [htmlString appendString:@"</select></form></body>"];
         
-        [webview synchronouslyLoadHTMLString:htmlString baseURL:nil];
+        [webview loadHTMLString:htmlString baseURL:nil];
+        UIGraphicsBeginImageContext(CGSizeMake(1, 1));
+        CGContextRef ctx = UIGraphicsGetCurrentContext();
+        [[webview layer] renderInContext:ctx];
+        UIGraphicsEndImageContext();
         
         dropdownView = webview;
     }

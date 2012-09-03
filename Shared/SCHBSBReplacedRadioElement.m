@@ -85,7 +85,7 @@
         
         [htmlString appendString:@"</form></body>"];
         
-        [webview synchronouslyLoadHTMLString:htmlString baseURL:nil];
+        [webview loadHTMLString:htmlString baseURL:nil];
         
         radioView = webview;
     }
