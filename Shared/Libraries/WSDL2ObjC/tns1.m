@@ -4295,6 +4295,15 @@ NSString * tns1_TopFavoritesTypes_stringFromEnum(tns1_TopFavoritesTypes enumValu
 		EreaderCategories = [[NSMutableArray alloc] init];
 		Enhanced = 0;
 		ThumbnailURL = 0;
+		ReadingLevel = 0;
+		AppealsToLow = 0;
+		AppealsToHigh = 0;
+		GuidedReadingLevel = 0;
+		EBookLexileLevel = 0;
+		Misc2 = 0;
+		Misc3 = 0;
+		Misc4 = 0;
+		Misc5 = 0;
 	}
 	
 	return self;
@@ -4315,6 +4324,15 @@ NSString * tns1_TopFavoritesTypes_stringFromEnum(tns1_TopFavoritesTypes enumValu
 	if(EreaderCategories != nil) [EreaderCategories release];
 	if(Enhanced != nil) [Enhanced release];
 	if(ThumbnailURL != nil) [ThumbnailURL release];
+	if(ReadingLevel != nil) [ReadingLevel release];
+	if(AppealsToLow != nil) [AppealsToLow release];
+	if(AppealsToHigh != nil) [AppealsToHigh release];
+	if(GuidedReadingLevel != nil) [GuidedReadingLevel release];
+	if(EBookLexileLevel != nil) [EBookLexileLevel release];
+	if(Misc2 != nil) [Misc2 release];
+	if(Misc3 != nil) [Misc3 release];
+	if(Misc4 != nil) [Misc4 release];
+	if(Misc5 != nil) [Misc5 release];
 	
 	[super dealloc];
 }
@@ -4398,6 +4416,33 @@ NSString * tns1_TopFavoritesTypes_stringFromEnum(tns1_TopFavoritesTypes enumValu
 	if(self.ThumbnailURL != 0) {
 		xmlAddChild(node, [self.ThumbnailURL xmlNodeForDoc:node->doc elementName:@"ThumbnailURL" elementNSPrefix:nil]);
 	}
+	if(self.ReadingLevel != 0) {
+		xmlAddChild(node, [self.ReadingLevel xmlNodeForDoc:node->doc elementName:@"ReadingLevel" elementNSPrefix:nil]);
+	}
+	if(self.AppealsToLow != 0) {
+		xmlAddChild(node, [self.AppealsToLow xmlNodeForDoc:node->doc elementName:@"AppealsToLow" elementNSPrefix:nil]);
+	}
+	if(self.AppealsToHigh != 0) {
+		xmlAddChild(node, [self.AppealsToHigh xmlNodeForDoc:node->doc elementName:@"AppealsToHigh" elementNSPrefix:nil]);
+	}
+	if(self.GuidedReadingLevel != 0) {
+		xmlAddChild(node, [self.GuidedReadingLevel xmlNodeForDoc:node->doc elementName:@"GuidedReadingLevel" elementNSPrefix:nil]);
+	}
+	if(self.EBookLexileLevel != 0) {
+		xmlAddChild(node, [self.EBookLexileLevel xmlNodeForDoc:node->doc elementName:@"EBookLexileLevel" elementNSPrefix:nil]);
+	}
+	if(self.Misc2 != 0) {
+		xmlAddChild(node, [self.Misc2 xmlNodeForDoc:node->doc elementName:@"Misc2" elementNSPrefix:nil]);
+	}
+	if(self.Misc3 != 0) {
+		xmlAddChild(node, [self.Misc3 xmlNodeForDoc:node->doc elementName:@"Misc3" elementNSPrefix:nil]);
+	}
+	if(self.Misc4 != 0) {
+		xmlAddChild(node, [self.Misc4 xmlNodeForDoc:node->doc elementName:@"Misc4" elementNSPrefix:nil]);
+	}
+	if(self.Misc5 != 0) {
+		xmlAddChild(node, [self.Misc5 xmlNodeForDoc:node->doc elementName:@"Misc5" elementNSPrefix:nil]);
+	}
 }
 /* elements */
 @synthesize ContentIdentifier;
@@ -4420,6 +4465,15 @@ NSString * tns1_TopFavoritesTypes_stringFromEnum(tns1_TopFavoritesTypes enumValu
 }
 @synthesize Enhanced;
 @synthesize ThumbnailURL;
+@synthesize ReadingLevel;
+@synthesize AppealsToLow;
+@synthesize AppealsToHigh;
+@synthesize GuidedReadingLevel;
+@synthesize EBookLexileLevel;
+@synthesize Misc2;
+@synthesize Misc3;
+@synthesize Misc4;
+@synthesize Misc5;
 /* attributes */
 - (NSDictionary *)attributes
 {
@@ -5049,6 +5103,384 @@ NSString * tns1_TopFavoritesTypes_stringFromEnum(tns1_TopFavoritesTypes enumValu
                     id newChild = [elementClass deserializeNode:cur];
 				
                     self.ThumbnailURL = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "ReadingLevel")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.ReadingLevel = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "AppealsToLow")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.AppealsToLow = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "AppealsToHigh")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.AppealsToHigh = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "GuidedReadingLevel")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.GuidedReadingLevel = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "EBookLexileLevel")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.EBookLexileLevel = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "Misc2")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.Misc2 = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "Misc3")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.Misc3 = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "Misc4")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.Misc4 = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "Misc5")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [NSString class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.Misc5 = newChild;
                 }
 			}
 		}

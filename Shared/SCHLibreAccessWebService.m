@@ -15,7 +15,6 @@
 #import "UIColor+Extensions.h"
 #import "SCHAppStateManager.h"
 #import "NSDate+ServerDate.h"
-#import "LibreAccessServiceSvc+Binding.h"
 #import "tns1.h"
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
@@ -29,11 +28,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 @interface SCHLibreAccessWebService ()
 
-@property (nonatomic, retain) LibreAccessBinding *binding;
+@property (nonatomic, retain) LibreAccessServiceSoap11Binding *binding;
 
 - (NSError *)errorFromStatusMessage:(tns1_StatusHolder *)statusMessage;
 - (NSString *)methodNameFromObject:(id)anObject;
-- (NSDictionary *)requestInfoFromOperation:(LibreAccessBindingOperation *)operation;
+- (NSDictionary *)requestInfoFromOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
 
 - (NSDictionary *)objectFromTokenExchange:(tns1_TokenExchangeResponse *)anObject;
 - (NSDictionary *)objectFromAuthenticateDevice:(tns1_AuthenticateDeviceResponse *)anObject;
@@ -113,7 +112,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	self = [super init];
 	if (self != nil) {
-		binding = [[LibreAccessServiceSvc SCHLibreAccessBinding] retain];
+		binding = [[LibreAccessServiceSvc SCHLibreAccessServiceSoap11Binding] retain];
 		binding.logXMLInOut = NO;
 	}
 	
@@ -130,7 +129,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 - (void)clear
 {
-    self.binding = [LibreAccessServiceSvc SCHLibreAccessBinding];
+    self.binding = [LibreAccessServiceSvc SCHLibreAccessServiceSoap11Binding];
     binding.logXMLInOut = NO;		
 }
 
@@ -475,7 +474,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 #pragma mark - LibreAccessBindingResponse Delegate methods
 
-- (void)operation:(LibreAccessBindingOperation *)operation completedWithResponse:(LibreAccessBindingResponse *)response
+- (void)operation:(LibreAccessServiceSoap11BindingOperation *)operation completedWithResponse:(LibreAccessServiceSoap11BindingResponse *)response
 {	
 	[[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
 	
@@ -559,59 +558,59 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	if (anObject != nil) {
 		if([anObject isKindOfClass:[tns1_TokenExchange class]] == YES ||
 		   [anObject isKindOfClass:[tns1_TokenExchangeResponse class]] == YES ||		   
-		   [anObject isKindOfClass:[LibreAccessBinding_TokenExchange class]] == YES) {
+		   [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_TokenExchange class]] == YES) {
 			ret = kSCHLibreAccessWebServiceTokenExchange;	
 		} else if([anObject isKindOfClass:[tns1_AuthenticateDeviceRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_AuthenticateDeviceResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_AuthenticateDevice class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_AuthenticateDevice class]] == YES) {
 			ret = kSCHLibreAccessWebServiceAuthenticateDevice;	
 		} else if([anObject isKindOfClass:[tns1_RenewTokenRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_RenewTokenResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_RenewToken class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_RenewToken class]] == YES) {
 			ret = kSCHLibreAccessWebServiceRenewToken;	
 		} else if([anObject isKindOfClass:[tns1_GetUserProfilesRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_GetUserProfilesResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_GetUserProfiles class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_GetUserProfiles class]] == YES) {
 			ret = kSCHLibreAccessWebServiceGetUserProfiles;	
 		} else if([anObject isKindOfClass:[tns1_ListUserContent class]] == YES ||
 				  [anObject isKindOfClass:[tns1_ListUserContentResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_ListUserContent class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListUserContent class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListUserContent;
 		} else if([anObject isKindOfClass:[tns1_ListContentMetadata class]] == YES ||
 				  [anObject isKindOfClass:[tns1_ListContentMetadataResponse class]] == YES ||
-				  [anObject isKindOfClass:[tns1_ListContentMetadata class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListContentMetadata class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListContentMetadata;				
 		} else if([anObject isKindOfClass:[tns1_SaveUserProfilesRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_SaveUserProfilesResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_SaveUserProfiles class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveUserProfiles class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveUserProfiles;				
 		} else if([anObject isKindOfClass:[tns1_ListUserSettingsRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_ListUserSettingsResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_ListUserSettings class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListUserSettings class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListUserSettings;				
 		} else if([anObject isKindOfClass:[tns1_SaveUserSettingsRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_SaveUserSettingsResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_SaveUserSettings class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveUserSettings class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveUserSettings;				
 		} else if([anObject isKindOfClass:[tns1_ListProfileContentAnnotationsRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_ListProfileContentAnnotationsResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_ListProfileContentAnnotations class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListProfileContentAnnotations class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListProfileContentAnnotations;				
 		} else if([anObject isKindOfClass:[tns1_SaveProfileContentAnnotationsRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_SaveProfileContentAnnotationsResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_SaveProfileContentAnnotations class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveProfileContentAnnotations class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveProfileContentAnnotations;
 		} else if([anObject isKindOfClass:[tns1_SaveContentProfileAssignmentRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_SaveContentProfileAssignmentResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_SaveContentProfileAssignment class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessService_Soap11Binding_SaveContentProfileAssignment class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveContentProfileAssignment;
 		} else if([anObject isKindOfClass:[tns1_SaveReadingStatisticsDetailedRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_SaveReadingStatisticsDetailedResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_SaveReadingStatisticsDetailed class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveReadingStatisticsDetailed class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed;
 		} else if([anObject isKindOfClass:[tns1_ListFavoriteTypesRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_ListFavoriteTypesResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessBinding_ListFavoriteTypes class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListFavoriteTypes class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListFavoriteTypes;
 		}
 	}
@@ -619,11 +618,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
-- (NSDictionary *)requestInfoFromOperation:(LibreAccessBindingOperation *)operation
+- (NSDictionary *)requestInfoFromOperation:(LibreAccessServiceSoap11BindingOperation *)operation
 {
     NSDictionary * ret = nil;
     
-    if ([operation isKindOfClass:[LibreAccessBinding_ListContentMetadata class]] == YES) {
+    if ([operation isKindOfClass:[LibreAccessServiceSoap11Binding_ListContentMetadata class]] == YES) {
         id body = [(id)operation body];
         
         NSMutableArray *isbnItems = [NSMutableArray array];

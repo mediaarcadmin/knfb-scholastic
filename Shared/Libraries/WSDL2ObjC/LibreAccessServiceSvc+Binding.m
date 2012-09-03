@@ -10,10 +10,10 @@
 
 @implementation LibreAccessServiceSvc (Binding)
 
-+ (LibreAccessBinding *)SCHLibreAccessBinding
++ (LibreAccessServiceSoap11Binding *)SCHLibreAccessServiceSoap11Binding
 {
-    NSLog(@"LibreAccess using: %@", LIBREDIGITAL_SERVER_ENDPOINT);
-    return [[[LibreAccessBinding alloc] initWithAddress:LIBREDIGITAL_SERVER_ENDPOINT] autorelease];
+    NSLog(@"LibreAccessServiceSoap using: %@", LIBREDIGITAL_SERVER_ENDPOINT);
+    return [[[LibreAccessServiceSoap11Binding alloc] initWithAddress:LIBREDIGITAL_SERVER_ENDPOINT] autorelease];
 }
 
 @end
