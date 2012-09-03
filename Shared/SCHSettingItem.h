@@ -15,6 +15,7 @@ extern NSString * const kSCHSettingItemSTORE_READ_STAT;
 extern NSString * const kSCHSettingItemDISABLE_AUTOASSIGN;
 extern NSString * const kSCHSettingItemRECOMMENDATIONS_ON;
 extern NSString * const kSCHSettingItemSCREEN_NAME;
+extern NSString * const kSCHSettingItemNOTIFICATIONS_ON;
 
 @interface SCHSettingItem :  NSManagedObject  
 {
