@@ -47,7 +47,7 @@ static NSUInteger const kSCHProfileItemLevelReaderMaximumAge = 9;
 static NSUInteger const kSCHProfileItemChapterBooksMaximumAge = 12;
 
 static NSString * const kSCHProfileItemCategoryPictureBooks = @"Picture books";
-static NSString * const kSCHProfileItemCategoryLevelReader = @"Level reader";
+static NSString * const kSCHProfileItemCategoryLevelReader = @"Level readers";
 static NSString * const kSCHProfileItemCategoryChapterBooks = @"Chapter books";
 static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
 
