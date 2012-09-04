@@ -96,6 +96,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsDetailItem:(tns1_ReadingStatsDetailItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsContentItem:(tns1_ReadingStatsContentItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsEntryItem:(tns1_ReadingStatsEntryItem *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoQuizTrialsItem:(tns1_QuizTrialsItem *)intoObject;
 
 - (id)makeNullNil:(id)object;
 
@@ -1985,7 +1986,21 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		for (NSString *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDictionaryLookupsList]]) {
 			[intoObject.DictionaryLookupsList addDictionaryLookupsItem:item];
 		}
-	}	
+		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceQuizResults]]) {
+			tns1_QuizTrialsItem *quizTrialsItem = [[tns1_QuizTrialsItem alloc] init];
+			[self fromObject:item intoQuizTrialsItem:quizTrialsItem];
+			[intoObject.quizResults addQuizTrialsItem:quizTrialsItem];
+			[quizTrialsItem release], quizTrialsItem = nil;
+		}
+	}
+}
+
+- (void)fromObject:(NSDictionary *)object intoQuizTrialsItem:(tns1_QuizTrialsItem *)intoObject
+{
+	if (object != nil && intoObject != nil) {
+		intoObject.quizScore = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceQuizScore]];
+		intoObject.quizTotal = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceQuizTotal]];
+	}
 }
 
 - (id)makeNullNil:(id)object
