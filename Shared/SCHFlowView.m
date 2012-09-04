@@ -67,14 +67,15 @@
         eucBookView.twoUpLandscape = YES;
         [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
         
-        if ([self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
-            [(SCHBSBEucBook *)self.eucBook resetBookToStart:NO];
-        } else if (self.openingPoint) {
-            [self jumpToBookPoint:self.openingPoint animated:NO];
-            self.openingPoint = nil;
+        if (self.openingPoint) {
+            if (![self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
+                [self jumpToBookPoint:self.openingPoint animated:NO];
+                self.openingPoint = nil;
+            }
         }
         
-        [self addSubview:eucBookView];          
+        [self addSubview:eucBookView];
+        
     }
 }
 
@@ -190,6 +191,14 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         // eucBookView which sets the page count
         [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
         [self.eucBookView addObserver:self forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
+        
+        if (self.openingPoint) {
+            if ([self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
+                // Reset needs to be here as page layout controller isn't instantiated earlier and that does the shrinking
+                [(SCHBSBEucBook *)self.eucBook resetBookToStart:NO];
+            }
+            self.openingPoint = nil;
+        }
 
         [self attachSelector];
     }
