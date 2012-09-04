@@ -67,7 +67,9 @@
         eucBookView.twoUpLandscape = YES;
         [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
         
-        if (self.openingPoint) {
+        if ([self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
+            [(SCHBSBEucBook *)self.eucBook resetBookToStart:NO];
+        } else if (self.openingPoint) {
             [self jumpToBookPoint:self.openingPoint animated:NO];
             self.openingPoint = nil;
         }
