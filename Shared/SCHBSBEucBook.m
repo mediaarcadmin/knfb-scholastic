@@ -20,6 +20,7 @@
 #import "SCHBSBProperty.h"
 #import "SCHBSBReplacedElementPlaceholder.h"
 #import "SCHBSBReplacedElementDelegate.h"
+#import "SCHBSBReplacedHiddenElement.h"
 #import "SCHBSBReplacedRadioElement.h"
 #import "SCHBSBReplacedDropdownElement.h"
 #import "SCHBSBReplacedNavigateElement.h"
@@ -46,7 +47,10 @@
 - (SCHBSBNode *)nodeWithName:(NSString *)name;
 - (SCHBSBNode *)nodeWithUri:(NSString *)uri;
 - (BOOL)validatePropertiesForNode:(SCHBSBNode *)node;
-
+- (id<EucCSSReplacedElement>)eucCSSIntermediateDocument:(EucCSSIntermediateDocument *)document
+                      replacedConditionalElementForNode:(EucCSSIntermediateDocumentNode *)node;
+- (id<EucCSSReplacedElement>)eucCSSIntermediateDocument:(EucCSSIntermediateDocument *)document
+                   replacedNonConditionalElementForNode:(EucCSSIntermediateDocumentNode *)node;
 @end
 
 @implementation SCHBSBEucBook
@@ -138,11 +142,55 @@
             if ([xmlData length]) {
                 NSURL *docURL = [NSURL URLWithString:[[NSString stringWithFormat:@"bsb://%@", self.identifier] stringByAppendingPathComponent:node.uri]];
                 
-                id <EucCSSDocumentTree> docTree = [[[EucCSSXHTMLTree alloc] initWithData:xmlData] autorelease];
+                EucCSSXHTMLTree *docTree = [[[EucCSSXHTMLTree alloc] initWithData:xmlData] autorelease];
                 doc = [[EucCSSHTMLIntermediateDocument alloc] initWithDocumentTree:docTree
                                                                             forURL:docURL
                                                                        pageOptions:pageOptions
                                                                         dataSource:self];
+                
+                EucCSSIntermediateDocumentNode *rootNode = [doc rootNode];
+                id<EucCSSDocumentTreeNode> htmlNode = [rootNode documentTreeNode];
+                id<EucCSSDocumentTreeNode> propertiesNode = [htmlNode firstChild];
+                
+                while (propertiesNode != nil) {
+                    if ([[propertiesNode name] isEqualToString:@"properties"]) {
+                        id<EucCSSDocumentTreeNode> propertyNode = [propertiesNode firstChild];
+                        while (propertyNode != nil) {
+                            NSString *propertyName = [propertyNode name];
+                            if ([propertyName isEqualToString:@"property"]) {
+                                NSMutableArray *values = [NSMutableArray array];
+                                id<EucCSSDocumentTreeNode> valueNode = [propertyNode firstChild];
+                                while (valueNode != nil) {
+                                    NSString *valueName = [valueNode name];
+                                    if ([valueName isEqualToString:@"value"]) {
+                                        NSString *chance = [valueNode attributeWithName:@"chance"];
+                                        NSString *value = [valueNode attributeWithName:@"value"];
+                                        
+                                        if (chance && value) {
+                                            // FIXME: This is just equal chance at the moment
+                                            [values addObject:value];
+                                        }
+                                    }
+                                    valueNode = valueNode.nextSibling;
+                                }
+                                
+                                NSUInteger randomIndex = rand()%[values count];
+                                if ([values count] > randomIndex) {
+                                    NSString *decision = [values objectAtIndex:randomIndex];
+                                    NSString *name = [propertyNode attributeWithName:@"name"];
+                                    if (name && decision) {
+                                        SCHBSBProperty *property = [self propertyWithName:name];
+                                        property.value = decision;
+                                    }
+                                }
+                            }
+                            
+                            propertyNode = propertyNode.nextSibling;
+                        }
+                    }
+                    propertiesNode = propertiesNode.nextSibling;
+                }
+                    
             } else {
                 NSLog(@"Warning: No data at path: %@", node.uri);
             }
@@ -370,6 +418,25 @@
                                  replacedElementForNode:(EucCSSIntermediateDocumentNode *)node
 {
 
+    id<EucCSSDocumentTreeNode> treeNode = [(EucCSSIntermediateDocumentNode *)node documentTreeNode];
+    if(treeNode) {
+        
+        NSString *conditionalAttribute = [treeNode attributeWithName:@"visible-if"];
+        
+        if (conditionalAttribute) {
+            return [self eucCSSIntermediateDocument:document replacedConditionalElementForNode:node];
+        } else {
+            return [self eucCSSIntermediateDocument:document replacedNonConditionalElementForNode:node];
+        }
+    }
+    
+    return nil;
+}
+
+- (id<EucCSSReplacedElement>)eucCSSIntermediateDocument:(EucCSSIntermediateDocument *)document
+                   replacedNonConditionalElementForNode:(EucCSSIntermediateDocumentNode *)node
+{
+    
     SCHBSBReplacedElementPlaceholder *replacedElement = nil;
     id<EucCSSDocumentTreeNode> treeNode = [(EucCSSIntermediateDocumentNode *)node documentTreeNode];
     if(treeNode) {
@@ -410,8 +477,8 @@
                     NSMutableArray *values = [NSMutableArray array];
                 
                     while (radioNode != nil) {
-                        NSString *dataKey = [radioNode attributeWithName:@"value"];
-                        NSString *dataValue = [radioNode attributeWithName:@"text"];
+                        NSString *dataKey = [radioNode attributeWithName:@"text"];
+                        NSString *dataValue = [radioNode attributeWithName:@"value"];
                     
                         if (dataKey && dataValue) {
                             [keys addObject:dataKey];
@@ -534,6 +601,71 @@
     }
     
     return replacedElement;
+}
+
+- (id<EucCSSReplacedElement>)eucCSSIntermediateDocument:(EucCSSIntermediateDocument *)document
+                      replacedConditionalElementForNode:(EucCSSIntermediateDocumentNode *)node
+{
+    
+    BOOL visible = NO;
+    
+    id<EucCSSDocumentTreeNode> treeNode = [(EucCSSIntermediateDocumentNode *)node documentTreeNode];
+    if(treeNode) {
+        
+        NSString *conditionalAttribute = [treeNode attributeWithName:@"visible-if"];
+        
+        if (conditionalAttribute) {
+            NSScanner *conditionalScanner = [NSScanner scannerWithString:conditionalAttribute];
+            [conditionalScanner setCharactersToBeSkipped:nil];
+            
+            NSString *propertyString = nil;
+            NSString *conditionalString = nil;
+            NSString *valueString = nil;
+            
+            while ([conditionalScanner isAtEnd] == NO) {
+                
+                [conditionalScanner scanCharactersFromSet:[NSCharacterSet whitespaceCharacterSet] intoString:nil];
+                [conditionalScanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceCharacterSet] intoString:&propertyString];
+                [conditionalScanner scanCharactersFromSet:[NSCharacterSet whitespaceCharacterSet] intoString:nil];
+                [conditionalScanner scanUpToCharactersFromSet:[NSCharacterSet whitespaceCharacterSet] intoString:&conditionalString];
+                [conditionalScanner scanCharactersFromSet:[NSCharacterSet whitespaceCharacterSet] intoString:nil];
+                [conditionalScanner scanString:@"'" intoString:nil];
+                [conditionalScanner scanUpToString:@"'" intoString:&valueString];
+                [conditionalScanner scanString:@"'" intoString:nil];
+            }
+            
+            if ([propertyString length] &&
+                [conditionalString length] &&
+                [valueString length]) {
+                
+                SCHBSBProperty *property = [self propertyWithName:propertyString];
+                if ([property value]) {
+                    if ([conditionalString isEqualToString:@"=="] || [conditionalString isEqualToString:@"="]) {
+                        if ([property.value caseInsensitiveCompare:valueString] == NSOrderedSame) {
+                            visible = YES;
+                        }
+                    } else if ([conditionalString isEqualToString:@"!="]) {
+                        if (![property.value caseInsensitiveCompare:valueString] != NSOrderedSame) {
+                            visible = YES;
+                        }
+                    }
+                }
+                
+            }
+            
+        }
+    }
+
+    id<EucCSSReplacedElement> replacedElement = nil;
+    
+    if (!visible) {
+        replacedElement = [[[SCHBSBReplacedHiddenElement alloc] init] autorelease];
+    } else {
+        replacedElement = [self eucCSSIntermediateDocument:document replacedNonConditionalElementForNode:node];
+    }
+    
+    return replacedElement;
+    
 }
 
 - (SCHBSBProperty *)propertyWithName:(NSString *)name
