@@ -1,4 +1,4 @@
-// Version 1.7.4.0
+// No version information in WSDL
 
 #import "xsd.h"
 #import <libxml/xmlstring.h>

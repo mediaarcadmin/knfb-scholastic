@@ -54,6 +54,7 @@
 
 #define RECOMMENDATION_SERVER_ENDPOINT RECOMMENDATION_SERVER_ENDPOINT_PRODUCTION
 #define LIBREDIGITAL_SERVER_ENDPOINT LIBREDIGITAL_SERVER_ENDPOINT_UAT
+#define ACTIVITY_LOG_SERVER_ENDPOINT ACTIVITY_LOG_SERVER_ENDPOINT_UAT
 #define DRM_RIGHTSMANAGER_SERVER DRM_RIGHTSMANAGER_SERVER_UAT
 #define WEB_PARENT_TOOLS_SERVER_PAD WEB_PARENT_TOOLS_SERVER_PAD_UAT
 #define WEB_PARENT_TOOLS_SERVER_PHONE WEB_PARENT_TOOLS_SERVER_PHONE_UAT
@@ -77,6 +78,11 @@
 #define LIBREDIGITAL_SERVER_ENDPOINT_DEVINT @"http://laesb.devint.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"
 #define LIBREDIGITAL_SERVER_ENDPOINT_UAT @"http://webservices.libredigital.com/libreaccess/soap/"
 #define LIBREDIGITAL_SERVER_ENDPOINT_PRODUCTION @"http://laesb.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"
+
+// Activity Log server EndPoint
+#define ACTIVITY_LOG_SERVER_ENDPOINT_DEVINT @"http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogOld.LibreAccessActivityLogOldHttpSoap11Endpoint"
+#define ACTIVITY_LOG_SERVER_ENDPOINT_UAT @"http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogOld.LibreAccessActivityLogOldHttpSoap11Endpoint"
+#define ACTIVITY_LOG_SERVER_ENDPOINT_PRODUCTION @"http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogOld.LibreAccessActivityLogOldHttpSoap11Endpoint"
 
 // Wishlist Server EndPoint
 #define WISHLIST_SERVER_ENDPOINT_QA @"https://esvcsqa.scholastic.com/SchWS/services/SPS/WishListService.WishListServiceHttpsSoap11Endpoint/"
