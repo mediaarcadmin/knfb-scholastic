@@ -41,6 +41,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromUserContentItem:(tns1_UserContentItem *)anObject;
 - (NSDictionary *)objectFromContentProfileItem:(tns1_ContentProfileItem *)anObject;
 - (NSDictionary *)objectFromOrderItem:(tns1_OrderItem *)anObject;
+- (NSDictionary *)objectFromCorpInfo:(tns1_CorpInfo *)anObject;
+- (NSDictionary *)objectFromOrderSourceInfo:(tns1_OrderSourceInfo *)anObject;
 - (NSDictionary *)objectFromContentMetadataItem:(tns1_ContentMetadataItem *)anObject;
 - (NSDictionary *)objectFromProfileStatusItem:(tns1_ProfileStatusItem *)anObject;
 - (NSDictionary *)objectFromSettingItem:(tns1_SettingItem *)anObject;
@@ -719,9 +721,13 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
         [objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];
+        [objects setObject:[self objectFromTranslate:anObject.userType] forKey:kSCHLibreAccessWebServiceUserType];
 		[objects setObject:[self objectFromTranslate:anObject.deviceIsDeregistered] forKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];
-				
-		ret = objects;				
+		[objects setObject:[self objectFromTranslate:anObject.isNewUser] forKey:kSCHLibreAccessWebServiceIsNewUser];
+        [objects setObject:[self objectFromTranslate:anObject.isCoppa] forKey:kSCHLibreAccessWebServiceIsCoppa];
+        [objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
+
+		ret = objects;
 	}
 	
 	return(ret);
@@ -738,7 +744,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
 		[objects setObject:[self objectFromTranslate:anObject.deviceIsDeregistered] forKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];
 		[objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];        
-
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
+        
 		ret = objects;				
 	}
 	
@@ -755,6 +762,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
 		[objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];        
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
         
 		ret = objects;				
 	}
@@ -779,17 +787,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.userkey] forKey:kSCHLibreAccessWebServiceUserKey];		
 		[objects setObject:[NSNumber numberWithProfileType:(SCHProfileTypes)anObject.type] forKey:kSCHLibreAccessWebServiceType];		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];		
-		[objects setObject:[NSNumber numberWithBookshelfStyle:(SCHBookshelfStyles)anObject.BookshelfStyle] forKey:kSCHLibreAccessWebServiceBookshelfStyle];		
-        
-        // FIXME: need to add "allows readthrough" from the drop 83 WSDL
-//		[objects setObject:[self objectFromTranslate:anObject.allowsReadthrough] forKey:kSCHLibreAccessWebServiceAllowReadthrough];
-		
-        [objects setObject:[self objectFromTranslate:anObject.recommendationsOn] forKey:kSCHLibreAccessWebServiceRecommendationsOn];
+		[objects setObject:[NSNumber numberWithBookshelfStyle:(SCHBookshelfStyles)anObject.BookshelfStyle] forKey:kSCHLibreAccessWebServiceBookshelfStyle];
 		[objects setObject:[self objectFromTranslate:anObject.LastModified] forKey:kSCHLibreAccessWebServiceLastModified];
 		[objects setObject:[self objectFromTranslate:anObject.LastScreenNameModified] forKey:kSCHLibreAccessWebServiceLastScreenNameModified];		
 		[objects setObject:[self objectFromTranslate:anObject.LastPasswordModified] forKey:kSCHLibreAccessWebServiceLastPasswordModified];		
 		[objects setObject:[self objectFromTranslate:anObject.storyInteractionEnabled] forKey:kSCHLibreAccessWebServiceStoryInteractionEnabled];		
-		
+        [objects setObject:[self objectFromTranslate:anObject.recommendationsOn] forKey:kSCHLibreAccessWebServiceRecommendationsOn];
+		[objects setObject:[self objectFromTranslate:anObject.allowReadThrough] forKey:kSCHLibreAccessWebServiceAllowReadThrough];
+
 		ret = objects;					
 	}
 	
@@ -807,15 +812,18 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];		
 		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.DRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];		
 		[objects setObject:[self objectFromTranslate:anObject.Format] forKey:kSCHLibreAccessWebServiceFormat];		
-		[objects setObject:[self objectFromTranslate:anObject.Version] forKey:kSCHLibreAccessWebServiceVersion];		
+		[objects setObject:[self objectFromTranslate:anObject.Version] forKey:kSCHLibreAccessWebServiceVersion];
+		[objects setObject:[self objectFromTranslate:anObject.AverageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
+		[objects setObject:[self objectFromTranslate:anObject.numVotes] forKey:kSCHLibreAccessWebServiceNumVotes];
 		[objects setObject:[self objectFromTranslate:[[anObject ContentProfileForRatingsList] contentProfileItem]] forKey:kSCHLibreAccessWebServiceProfileList];
 		[objects setObject:[self objectFromTranslate:[[anObject OrderList] OrderItem]] forKey:kSCHLibreAccessWebServiceOrderList];		
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];		
 		[objects setObject:[self objectFromTranslate:anObject.DefaultAssignment] forKey:kSCHLibreAccessWebServiceDefaultAssignment];		
 		[objects setObject:[self objectFromTranslate:anObject.FreeBook] forKey:kSCHLibreAccessWebServiceFreeBook];		        
-		[objects setObject:[self objectFromTranslate:anObject.LastVersion] forKey:kSCHLibreAccessWebServiceLastVersion];		
-		[objects setObject:[self objectFromTranslate:anObject.AverageRating] forKey:kSCHLibreAccessWebServiceAverageRating];		
-		
+		[objects setObject:[self objectFromTranslate:anObject.LastVersion] forKey:kSCHLibreAccessWebServiceLastVersion];
+		[objects setObject:[self objectFromTranslate:anObject.Quantity] forKey:kSCHLibreAccessWebServiceQuantity];
+		[objects setObject:[self objectFromTranslate:anObject.QuantityInit] forKey:kSCHLibreAccessWebServiceQuantityInit];
+        
         ret = objects;					
 	}
 	
@@ -830,9 +838,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.profileID] forKey:kSCHLibreAccessWebServiceProfileID];
+		[objects setObject:[self objectFromTranslate:anObject.rating] forKey:kSCHLibreAccessWebServiceRating];
 		[objects setObject:[self objectFromTranslate:anObject.lastPageLocation] forKey:kSCHLibreAccessWebServiceLastPageLocation];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
-		[objects setObject:[self objectFromTranslate:anObject.rating] forKey:kSCHLibreAccessWebServiceRating];
 		
 		ret = objects;					
 	}
@@ -846,13 +854,61 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
+		[objects setObject:[self objectFromTranslate:anObject.corpInfo] forKey:kSCHLibreAccessWebServiceCorpInfo];
+		[objects setObject:[self objectFromTranslate:anObject.orderSourceInfo] forKey:kSCHLibreAccessWebServiceOrderSourceInfo];
+		[objects setObject:[self objectFromTranslate:anObject.orderIdSourceField] forKey:kSCHLibreAccessWebServiceOrderIdSourceField];
 		[objects setObject:[self objectFromTranslate:anObject.orderId] forKey:kSCHLibreAccessWebServiceOrderID];
 		[objects setObject:[self objectFromTranslate:anObject.orderDate] forKey:kSCHLibreAccessWebServiceOrderDate];
-		
+        [objects setObject:[self objectFromTranslate:anObject.contentGroup] forKey:kSCHLibreAccessWebServiceContentGroup];
+        [objects setObject:[self objectFromTranslate:anObject.childId] forKey:kSCHLibreAccessWebServiceChildId];
+        [objects setObject:[self objectFromTranslate:anObject.teacherId] forKey:kSCHLibreAccessWebServiceTeacherId];
+        [objects setObject:[self objectFromTranslate:anObject.refId3] forKey:kSCHLibreAccessWebServiceRefId3];
+        [objects setObject:[self objectFromTranslate:anObject.refId4] forKey:kSCHLibreAccessWebServiceRefId4];
+        [objects setObject:[self objectFromTranslate:anObject.refId5] forKey:kSCHLibreAccessWebServiceRefId5];
+        [objects setObject:[self objectFromTranslate:anObject.transactionDate] forKey:kSCHLibreAccessWebServiceTransactionDate];
+        [objects setObject:[self objectFromTranslate:anObject.UCN] forKey:kSCHLibreAccessWebServiceUCN];
+		[objects setObject:[self objectFromTranslate:anObject.quantity] forKey:kSCHLibreAccessWebServiceQuantity];
+		[objects setObject:[self objectFromTranslate:anObject.quantityInit] forKey:kSCHLibreAccessWebServiceQuantityInit];
+
 		ret = objects;					
 	}
 	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromCorpInfo:(tns1_CorpInfo *)anObject
+{
+	NSDictionary *ret = nil;
+
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+
+		[objects setObject:[self objectFromTranslate:anObject.transactionIdSourceField] forKey:kSCHLibreAccessWebServiceTransactionIdSourceField];
+		[objects setObject:[self objectFromTranslate:anObject.transactionId] forKey:kSCHLibreAccessWebServiceTransactionId];
+
+		ret = objects;
+	}
+
+	return(ret);
+}
+
+- (NSDictionary *)objectFromOrderSourceInfo:(tns1_OrderSourceInfo *)anObject
+{
+	NSDictionary *ret = nil;
+
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+
+		[objects setObject:[self objectFromTranslate:anObject.srcSystem] forKey:kSCHLibreAccessWebServiceSrcSystem];
+		[objects setObject:[self objectFromTranslate:anObject.srcFile] forKey:kSCHLibreAccessWebServiceSrcFile];
+		[objects setObject:[self objectFromTranslate:anObject.srcKey] forKey:kSCHLibreAccessWebServiceSrcKey];
+		[objects setObject:[self objectFromTranslate:anObject.srcUserId] forKey:kSCHLibreAccessWebServiceSrcUserId];
+		[objects setObject:[self objectFromTranslate:anObject.srcHost] forKey:kSCHLibreAccessWebServiceSrcHost];
+
+		ret = objects;
+	}
+    
 	return(ret);
 }
 
@@ -1014,6 +1070,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.rating] forKey:kSCHLibreAccessWebServiceRating];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
 		[objects setObject:[self objectFromTranslate:anObject.averageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
+		[objects setObject:[self objectFromTranslate:anObject.numVotes] forKey:kSCHLibreAccessWebServiceNumVotes];
         
 		ret = objects;					
 	}
@@ -1253,9 +1310,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.contentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
+		[objects setObject:[self objectFromTranslate:anObject.AverageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
+		[objects setObject:[self objectFromTranslate:anObject.numVotes] forKey:kSCHLibreAccessWebServiceNumVotes];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];        
 		[objects setObject:[self objectFromTranslate:anObject.PrivateAnnotationsStatus] forKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus];
-		[objects setObject:[self objectFromTranslate:anObject.AverageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
 		
 		ret = objects;					
 	}
@@ -1266,8 +1324,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSMutableDictionary *)objectFromPrivateAnnotationsStatus:(tns1_PrivateAnnotationsStatus *)anObject
 {
 	NSMutableDictionary *ret = nil;
-	
-	if (anObject != nil) {
+
+    if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:[anObject.HighlightsStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceHighlightsStatusList];
@@ -1311,6 +1369,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         [objects setObject:[self objectFromTranslate:anObject.Format] forKey:kSCHLibreAccessWebServiceFormat];
 		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.IdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
 		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.Qualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
         
 		ret = objects;					
 	}
@@ -1486,6 +1545,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         ret = [self objectFromLastPage:anObject];
     } else if ([anObject isKindOfClass:[tns1_Rating class]] == YES) {
         ret = [self objectFromRating:anObject];
+    } else if ([anObject isKindOfClass:[tns1_CorpInfo class]] == YES) {
+        ret = [self objectFromCorpInfo:anObject];
+    } else if ([anObject isKindOfClass:[tns1_OrderSourceInfo class]] == YES) {
+        ret = [self objectFromOrderSourceInfo:anObject];
 	} else {
 		ret = anObject;
 	}
@@ -1580,6 +1643,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         }
 		intoObject.BookshelfStyle = (tns1_BookshelfStyle)[[object valueForKey:kSCHLibreAccessWebServiceBookshelfStyle] bookshelfStyleValue];
 		intoObject.storyInteractionEnabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
+		intoObject.recommendationsOn = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStoryRecommendationsOn]];
+		intoObject.allowReadThrough = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAllowReadThrough]];
 	}
 }
 
@@ -1592,6 +1657,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         intoObject.Format = @"XPS";
 		intoObject.IdentifierType = (tns1_ContentIdentifierTypes)[[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
 		intoObject.Qualifier = (tns1_drmqualifiers)[[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
+		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];
 	}
 }
 
@@ -1915,7 +1981,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
             intoObject.rating = [NSNumber numberWithInteger:0];
         }
 		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];						
-        intoObject.averageRating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAverageRating]]; 
+        intoObject.averageRating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAverageRating]];
+        intoObject.numVotes = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNumVotes]];
 	}	
 }
 
