@@ -24,6 +24,7 @@
 #import "SCHBSBReplacedRadioElement.h"
 #import "SCHBSBReplacedDropdownElement.h"
 #import "SCHBSBReplacedNavigateElement.h"
+#import "SCHBSBReplacedNavigateImageElement.h"
 #import "SCHBSBReplacedTextElement.h"
 #import <libEucalyptus/EucCSSXHTMLTree.h>
 #import <libEucalyptus/EucPageLayoutController.h>
@@ -362,7 +363,7 @@
 
 - (NSArray *)userCSSDatasForDocumentTree:(id<EucCSSDocumentTree>)documentTree
 {
-    NSString *nodeBlockOverride = @"node { display: block; } select { display: block; page-break-before: avoid; }";
+    NSString *nodeBlockOverride = @"node { display: block; } select { display: block; page-break-before: avoid; } *[visible-if=\"Gender = 'boy'\"] { display: none }";
     
 	return [NSArray arrayWithObjects:[THEmbeddedResourceManager embeddedResourceWithName:@"EPubOverrides.css"],
             [nodeBlockOverride dataUsingEncoding:NSUTF8StringEncoding], nil];
@@ -418,6 +419,7 @@
                                  replacedElementForNode:(EucCSSIntermediateDocumentNode *)node
 {
 
+    //return [self eucCSSIntermediateDocument:document replacedNonConditionalElementForNode:node];
     id<EucCSSDocumentTreeNode> treeNode = [(EucCSSIntermediateDocumentNode *)node documentTreeNode];
     if(treeNode) {
         
@@ -522,16 +524,29 @@
         } else if ([nodeName isEqualToString:@"a"]) {
             NSString *target = [treeNode attributeWithName:@"href"];
             
-            id<EucCSSDocumentTreeNode> textNode = [treeNode firstChild];
-            EucCSSIntermediateDocumentNode *docNode = [document nodeForKey:[EucCSSIntermediateDocument keyForDocumentTreeNodeKey:textNode.key]];
+            id<EucCSSDocumentTreeNode> childNode = [treeNode firstChild];
+            NSString *childName  = [childNode name];
+            
+            if ([childName isEqualToString:@"img"] && target) {
+                NSString *src = [childNode attributeWithName:@"src"];
+                if (src) {
+                    NSData *imageData = [self.provider dataForBSBComponentAtPath:src];
+                    UIImage *image = [UIImage imageWithData:imageData];
+                    if (image) {
+                        replacedElement = [[[SCHBSBReplacedNavigateImageElement alloc] initWithImage:image targetNode:target] autorelease];
+                    }
+                }
+            } else {
+            
+                EucCSSIntermediateDocumentNode *docNode = [document nodeForKey:[EucCSSIntermediateDocument keyForDocumentTreeNodeKey:childNode.key]];
                     
-            NSString *dataString = [docNode text];
+                NSString *dataString = [docNode text];
                     
-            if (target && [dataString length]) {
-                replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataString targetNode:target] autorelease];
+                if (target && [dataString length]) {
+                    replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataString targetNode:target] autorelease];
+                }
             }
         }
-        
         
         
 #if SUPPORT_LEGACY_BSB_NODES
