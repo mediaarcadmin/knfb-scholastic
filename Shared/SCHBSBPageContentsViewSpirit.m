@@ -145,7 +145,7 @@
         } else {
             EucCSSLayoutPoint nextPageStartLayoutPoint = pageCSSViewSpirit.nextPageStartPoint;
             
-            nextPageStartPoint = [[EucBookPageIndexPoint alloc] init];
+            nextPageStartPoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
             nextPageStartPoint.source = point.source;
             nextPageStartPoint.block = nextPageStartLayoutPoint.nodeKey;
             nextPageStartPoint.word = nextPageStartLayoutPoint.word;
@@ -212,6 +212,7 @@
             if(!ret) {
                 EucBookPageIndexPointRange *pageRange = [[EucBookPageIndexPointRange alloc] initWithStartPoint:point endPoint:nextPageStartPoint];
                 ret = [NSArray arrayWithObject:pageRange];
+                [pageRange release];
             }
         }
     }

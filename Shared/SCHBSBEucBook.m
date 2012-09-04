@@ -257,7 +257,7 @@
     EucBookPageIndexPoint *indexPoint = [[EucBookPageIndexPoint alloc] init];
     indexPoint.source = source;
     
-    return indexPoint;
+    return [indexPoint autorelease];
 }
 
 - (EucBookPageIndexPoint *)offTheEndIndexPoint
