@@ -10,10 +10,9 @@
 
 #import "BITSOAPProxy.h"
 
-#import "LibreAccessServiceSvc.h"
+#import "LibreAccessServiceSvc+Binding.h"
 #import "BITObjectMapperProtocol.h"
 #import "SCHLibreAccessConstants.h"
-#import "LibreAccessServiceSvc+Binding.h"
 
 @interface SCHLibreAccessWebService : BITSOAPProxy <LibreAccessServiceSoap11BindingResponseDelegate, BITObjectMapperProtocol>
 {
