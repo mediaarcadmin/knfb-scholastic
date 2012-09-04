@@ -865,6 +865,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		[objects setObject:[self objectFromTranslate:anObject.ContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
 		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+		[objects setObject:[self objectFromTranslate:anObject.AverageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
+		[objects setObject:[self objectFromTranslate:anObject.numVotes] forKey:kSCHLibreAccessWebServiceNumVotes];
 		[objects setObject:[self objectFromTranslate:anObject.Title] forKey:kSCHLibreAccessWebServiceTitle];
 		[objects setObject:[self objectFromTranslate:anObject.Author] forKey:kSCHLibreAccessWebServiceAuthor];
 		[objects setObject:[self objectFromTranslate:anObject.Description] forKey:kSCHLibreAccessWebServiceDescription];
@@ -876,8 +878,17 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.ContentURL] forKey:kSCHLibreAccessWebServiceContentURL];
 		[objects setObject:[self objectFromTranslate:anObject.EreaderCategories] forKey:kSCHLibreAccessWebServiceeReaderCategories];
 		[objects setObject:[self objectFromTranslate:anObject.Enhanced] forKey:kSCHLibreAccessWebServiceEnhanced];
-		[objects setObject:[self objectFromTranslate:anObject.AverageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
-				
+        [objects setObject:[self objectFromTranslate:anObject.ThumbnailURL] forKey:kSCHLibreAccessWebServiceThumbnailURL];
+        [objects setObject:[self objectFromTranslate:anObject.ReadingLevel] forKey:kSCHLibreAccessWebServiceReadingLevel];
+        [objects setObject:[self objectFromTranslate:anObject.AppealsToLow] forKey:kSCHLibreAccessWebServiceAppealsToLow];
+        [objects setObject:[self objectFromTranslate:anObject.AppealsToHigh] forKey:kSCHLibreAccessWebServiceAppealsToHigh];
+        [objects setObject:[self objectFromTranslate:anObject.GuidedReadingLevel] forKey:kSCHLibreAccessWebServiceGuidedReadingLevel];
+        [objects setObject:[self objectFromTranslate:anObject.EBookLexileLevel] forKey:kSCHLibreAccessWebServiceEBookLexileLevel];
+        [objects setObject:[self objectFromTranslate:anObject.Misc2] forKey:kSCHLibreAccessWebServiceMisc2];
+        [objects setObject:[self objectFromTranslate:anObject.Misc3] forKey:kSCHLibreAccessWebServiceMisc3];
+        [objects setObject:[self objectFromTranslate:anObject.Misc4] forKey:kSCHLibreAccessWebServiceMisc4];
+        [objects setObject:[self objectFromTranslate:anObject.Misc5] forKey:kSCHLibreAccessWebServiceMisc5];
+
 		ret = objects;					
 	}
 	
