@@ -108,7 +108,10 @@
             decisionProperties = [[NSMutableArray alloc] init];
             
             if ([manifest.nodes count]) {
-                [self resetBookToStart:YES];
+                [self.decisionNodes addObject:[self.manifest.nodes objectAtIndex:0]];
+                for (SCHBSBProperty *property in manifest.properties) {
+                    [self.decisionProperties addObject:property];
+                }
             } else {
                 [identifier release];
                 identifier = nil;
@@ -123,29 +126,6 @@
     }
     
     return self;
-}
-
-- (void)resetBookToStart:(BOOL)clearProperties
-{
-    [self.delegate bookWillShrink:self];
-    
-    [self.decisionNodes removeAllObjects];
-    
-    if ([manifest.nodes count]) {
-        [self.decisionNodes addObject:[self.manifest.nodes objectAtIndex:0]];
-    }
-    
-    if (clearProperties) {
-        [self.decisionProperties removeAllObjects];
-        
-        for (SCHBSBProperty *property in manifest.properties) {
-            [self.decisionProperties addObject:property];
-        }
-    }
-    
-    EucBookPageIndexPoint *nodePoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
-    nodePoint.source = [self.decisionNodes count] - 1;
-    [self.delegate book:self hasShrunkToIndexPoint:nodePoint];
 }
 
 - (EucCSSIntermediateDocument *)intermediateDocumentForIndexPoint:(EucBookPageIndexPoint *)indexPoint

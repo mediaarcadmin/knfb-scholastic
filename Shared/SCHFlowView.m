@@ -195,7 +195,9 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         if (self.openingPoint) {
             if ([self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
                 // Reset needs to be here as page layout controller isn't instantiated earlier and that does the shrinking
-                [(SCHBSBEucBook *)self.eucBook resetBookToStart:NO];
+                [self.eucBookView bookWillShrink];
+                EucBookPageIndexPoint *startPoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
+                [self.eucBookView bookHasShrunkToIndexPoint:startPoint];
             }
             self.openingPoint = nil;
         }
