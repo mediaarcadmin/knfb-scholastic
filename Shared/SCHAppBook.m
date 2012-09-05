@@ -15,7 +15,7 @@
 #import "SCHAppRecommendationItem.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHRecommendationISBN.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "NSNumber+ObjectTypes.h"
 
 // Constants
@@ -177,9 +177,9 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 - (NSNumber *)AverageRating
 {
     NSNumber *averageRating = nil;
-    SCHUserContentItem *userContentItem = self.ContentMetadataItem.UserContentItem;
+    SCHBooksAssignment *booksAssignment = self.ContentMetadataItem.booksAssignment;
     
-    averageRating = userContentItem.AverageRating;
+    averageRating = booksAssignment.averageRating;
     if (averageRating == nil) {
         averageRating = [NSNumber numberWithInteger:0];
     }
@@ -429,7 +429,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     NSArray *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"DRMQualifier != %@", 
                                 [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersSample]]];

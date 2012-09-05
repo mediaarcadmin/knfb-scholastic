@@ -38,11 +38,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromAuthenticateDevice:(tns1_AuthenticateDeviceResponse *)anObject;
 - (NSDictionary *)objectFromRenewToken:(tns1_RenewTokenResponse *)anObject;
 - (NSDictionary *)objectFromProfileItem:(tns1_ProfileItem *)anObject;
-- (NSDictionary *)objectFromUserContentItem:(tns1_UserContentItem *)anObject;
+- (NSDictionary *)objectFromBooksAssignment:(tns1_BooksAssignment *)anObject;
 - (NSDictionary *)objectFromContentProfileItem:(tns1_ContentProfileItem *)anObject;
-- (NSDictionary *)objectFromOrderItem:(tns1_OrderItem *)anObject;
-- (NSDictionary *)objectFromCorpInfo:(tns1_CorpInfo *)anObject;
-- (NSDictionary *)objectFromOrderSourceInfo:(tns1_OrderSourceInfo *)anObject;
 - (NSDictionary *)objectFromContentMetadataItem:(tns1_ContentMetadataItem *)anObject;
 - (NSDictionary *)objectFromProfileStatusItem:(tns1_ProfileStatusItem *)anObject;
 - (NSDictionary *)objectFromSettingItem:(tns1_SettingItem *)anObject;
@@ -228,16 +225,17 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);		
 }
 
-- (BOOL)listUserContent
+// we previously used listUserContent 
+- (BOOL)listBooksAssignment
 {
 	BOOL ret = NO;
 	
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
-		tns1_ListUserContent *request = [tns1_ListUserContent new];
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
+		tns1_ListBooksAssignmentRequest *request = [tns1_ListBooksAssignmentRequest new];
 		
-		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
+		request.authToken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 		
-		[self.binding ListUserContentAsyncUsingBody:request delegate:self]; 
+		[self.binding ListBooksAssignmentAsyncUsingBody:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
@@ -575,10 +573,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				  [anObject isKindOfClass:[tns1_GetUserProfilesResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_GetUserProfiles class]] == YES) {
 			ret = kSCHLibreAccessWebServiceGetUserProfiles;	
-		} else if([anObject isKindOfClass:[tns1_ListUserContent class]] == YES ||
-				  [anObject isKindOfClass:[tns1_ListUserContentResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListUserContent class]] == YES) {
-			ret = kSCHLibreAccessWebServiceListUserContent;
+		} else if([anObject isKindOfClass:[tns1_ListBooksAssignmentRequest class]] == YES ||
+				  [anObject isKindOfClass:[tns1_ListBooksAssignmentResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListBooksAssignment class]] == YES) {
+			ret = kSCHLibreAccessWebServiceListBooksAssignment;
 		} else if([anObject isKindOfClass:[tns1_ListContentMetadata class]] == YES ||
 				  [anObject isKindOfClass:[tns1_ListContentMetadataResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListContentMetadata class]] == YES) {
@@ -655,8 +653,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = [self objectFromRenewToken:anObject];
 		} else if ([anObject isKindOfClass:[tns1_GetUserProfilesResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ProfileList] ProfileItem]] forKey:kSCHLibreAccessWebServiceProfileList];
-		} else if ([anObject isKindOfClass:[tns1_ListUserContentResponse class]] == YES) {
-			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject userContentList] userContentItem]] forKey:kSCHLibreAccessWebServiceUserContentList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListBooksAssignment class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject booksAssignmentList] booksAssignment]] forKey:kSCHLibreAccessWebServiceUserContentList];
 		} else if ([anObject isKindOfClass:[tns1_ListContentMetadataResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ContentMetadataList] ContentMetadataItem]] forKey:kSCHLibreAccessWebServiceContentMetadataList];
 		} else if ([anObject isKindOfClass:[tns1_SaveUserProfilesResponse class]] == YES) {
@@ -801,7 +799,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
-- (NSDictionary *)objectFromUserContentItem:(tns1_UserContentItem *)anObject
+- (NSDictionary *)objectFromBooksAssignment:(tns1_BooksAssignment *)anObject
 {
 	NSDictionary *ret = nil;
 	
@@ -812,18 +810,17 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];		
 		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.DRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];		
 		[objects setObject:[self objectFromTranslate:anObject.Format] forKey:kSCHLibreAccessWebServiceFormat];		
-		[objects setObject:[self objectFromTranslate:anObject.Version] forKey:kSCHLibreAccessWebServiceVersion];
-		[objects setObject:[self objectFromTranslate:anObject.AverageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
-		[objects setObject:[self objectFromTranslate:anObject.numVotes] forKey:kSCHLibreAccessWebServiceNumVotes];
-		[objects setObject:[self objectFromTranslate:[[anObject ContentProfileForRatingsList] contentProfileItem]] forKey:kSCHLibreAccessWebServiceProfileList];
-		[objects setObject:[self objectFromTranslate:[[anObject OrderList] OrderItem]] forKey:kSCHLibreAccessWebServiceOrderList];		
-		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];		
-		[objects setObject:[self objectFromTranslate:anObject.DefaultAssignment] forKey:kSCHLibreAccessWebServiceDefaultAssignment];		
-		[objects setObject:[self objectFromTranslate:anObject.FreeBook] forKey:kSCHLibreAccessWebServiceFreeBook];		        
-		[objects setObject:[self objectFromTranslate:anObject.LastVersion] forKey:kSCHLibreAccessWebServiceLastVersion];
-		[objects setObject:[self objectFromTranslate:anObject.Quantity] forKey:kSCHLibreAccessWebServiceQuantity];
-		[objects setObject:[self objectFromTranslate:anObject.QuantityInit] forKey:kSCHLibreAccessWebServiceQuantityInit];
-        
+		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
+        [objects setObject:[self objectFromTranslate:anObject.averageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
+        [objects setObject:[self objectFromTranslate:anObject.numVotes] forKey:kSCHLibreAccessWebServiceNumVotes];
+		[objects setObject:[self objectFromTranslate:anObject.lastOrderDate] forKey:kSCHLibreAccessWebServiceLastOrderDate];
+		[objects setObject:[self objectFromTranslate:anObject.defaultAssignment] forKey:kSCHLibreAccessWebServiceDefaultAssignment];
+        [objects setObject:[self objectFromTranslate:anObject.freeBook] forKey:kSCHLibreAccessWebServiceFreeBook];
+		[objects setObject:[self objectFromTranslate:anObject.lastVersion] forKey:kSCHLibreAccessWebServiceLastVersion];
+		[objects setObject:[self objectFromTranslate:anObject.quantity] forKey:kSCHLibreAccessWebServiceQuantity];
+		[objects setObject:[self objectFromTranslate:anObject.quantityInit] forKey:kSCHLibreAccessWebServiceQuantityInit];
+		[objects setObject:[self objectFromTranslate:[[anObject contentProfileList] contentProfileItem]] forKey:kSCHLibreAccessWebServiceProfileList];
+
         ret = objects;					
 	}
 	
@@ -845,70 +842,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		ret = objects;					
 	}
 	
-	return(ret);
-}
-
-- (NSDictionary *)objectFromOrderItem:(tns1_OrderItem *)anObject
-{
-	NSDictionary *ret = nil;
-	
-	if (anObject != nil) {
-		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-
-		[objects setObject:[self objectFromTranslate:anObject.corpInfo] forKey:kSCHLibreAccessWebServiceCorpInfo];
-		[objects setObject:[self objectFromTranslate:anObject.orderSourceInfo] forKey:kSCHLibreAccessWebServiceOrderSourceInfo];
-		[objects setObject:[self objectFromTranslate:anObject.orderIdSourceField] forKey:kSCHLibreAccessWebServiceOrderIdSourceField];
-		[objects setObject:[self objectFromTranslate:anObject.orderId] forKey:kSCHLibreAccessWebServiceOrderID];
-		[objects setObject:[self objectFromTranslate:anObject.orderDate] forKey:kSCHLibreAccessWebServiceOrderDate];
-        [objects setObject:[self objectFromTranslate:anObject.contentGroup] forKey:kSCHLibreAccessWebServiceContentGroup];
-        [objects setObject:[self objectFromTranslate:anObject.childId] forKey:kSCHLibreAccessWebServiceChildId];
-        [objects setObject:[self objectFromTranslate:anObject.teacherId] forKey:kSCHLibreAccessWebServiceTeacherId];
-        [objects setObject:[self objectFromTranslate:anObject.refId3] forKey:kSCHLibreAccessWebServiceRefId3];
-        [objects setObject:[self objectFromTranslate:anObject.refId4] forKey:kSCHLibreAccessWebServiceRefId4];
-        [objects setObject:[self objectFromTranslate:anObject.refId5] forKey:kSCHLibreAccessWebServiceRefId5];
-        [objects setObject:[self objectFromTranslate:anObject.transactionDate] forKey:kSCHLibreAccessWebServiceTransactionDate];
-        [objects setObject:[self objectFromTranslate:anObject.UCN] forKey:kSCHLibreAccessWebServiceUCN];
-		[objects setObject:[self objectFromTranslate:anObject.quantity] forKey:kSCHLibreAccessWebServiceQuantity];
-		[objects setObject:[self objectFromTranslate:anObject.quantityInit] forKey:kSCHLibreAccessWebServiceQuantityInit];
-
-		ret = objects;					
-	}
-	
-	return(ret);
-}
-
-- (NSDictionary *)objectFromCorpInfo:(tns1_CorpInfo *)anObject
-{
-	NSDictionary *ret = nil;
-
-	if (anObject != nil) {
-		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-
-		[objects setObject:[self objectFromTranslate:anObject.transactionIdSourceField] forKey:kSCHLibreAccessWebServiceTransactionIdSourceField];
-		[objects setObject:[self objectFromTranslate:anObject.transactionId] forKey:kSCHLibreAccessWebServiceTransactionId];
-
-		ret = objects;
-	}
-
-	return(ret);
-}
-
-- (NSDictionary *)objectFromOrderSourceInfo:(tns1_OrderSourceInfo *)anObject
-{
-	NSDictionary *ret = nil;
-
-	if (anObject != nil) {
-		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-
-		[objects setObject:[self objectFromTranslate:anObject.srcSystem] forKey:kSCHLibreAccessWebServiceSrcSystem];
-		[objects setObject:[self objectFromTranslate:anObject.srcFile] forKey:kSCHLibreAccessWebServiceSrcFile];
-		[objects setObject:[self objectFromTranslate:anObject.srcKey] forKey:kSCHLibreAccessWebServiceSrcKey];
-		[objects setObject:[self objectFromTranslate:anObject.srcUserId] forKey:kSCHLibreAccessWebServiceSrcUserId];
-		[objects setObject:[self objectFromTranslate:anObject.srcHost] forKey:kSCHLibreAccessWebServiceSrcHost];
-
-		ret = objects;
-	}
-    
 	return(ret);
 }
 
@@ -1393,17 +1326,13 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				for (id item in anObject) {
 					[ret addObject:[self objectFromProfileItem:item]];					
 				}
-			} else if ([firstItem isKindOfClass:[tns1_UserContentItem class]] == YES) {
+			} else if ([firstItem isKindOfClass:[tns1_BooksAssignment class]] == YES) {
 				for (id item in anObject) {				
-					[ret addObject:[self objectFromUserContentItem:item]];					
+					[ret addObject:[self objectFromBooksAssignment:item]];
 				}
 			} else if ([firstItem isKindOfClass:[tns1_ContentProfileItem class]] == YES) {
 				for (id item in anObject) {
 					[ret addObject:[self objectFromContentProfileItem:item]];
-				}
-			} else if ([firstItem isKindOfClass:[tns1_OrderItem class]] == YES) {
-				for (id item in anObject) {
-					[ret addObject:[self objectFromOrderItem:item]];									
 				}
 			} else if ([firstItem isKindOfClass:[tns1_ContentMetadataItem class]] == YES) {
 				for (id item in anObject) {
@@ -1545,10 +1474,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         ret = [self objectFromLastPage:anObject];
     } else if ([anObject isKindOfClass:[tns1_Rating class]] == YES) {
         ret = [self objectFromRating:anObject];
-    } else if ([anObject isKindOfClass:[tns1_CorpInfo class]] == YES) {
-        ret = [self objectFromCorpInfo:anObject];
-    } else if ([anObject isKindOfClass:[tns1_OrderSourceInfo class]] == YES) {
-        ret = [self objectFromOrderSourceInfo:anObject];
 	} else {
 		ret = anObject;
 	}

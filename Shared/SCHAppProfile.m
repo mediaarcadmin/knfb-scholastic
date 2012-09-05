@@ -17,7 +17,7 @@
 #import "SCHAppRecommendationItem.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHWishListConstants.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "NSNumber+ObjectTypes.h"
 
 // Constants
@@ -70,7 +70,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     NSArray *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"DRMQualifier IN %@", 
                                 [NSNumber arrayOfPurchasedDRMQualifiers]]];

@@ -43,7 +43,7 @@
                                  coverURL:(NSString *)coverURL
                                contentURL:(NSString *)contentURL
                                  enhanced:(BOOL)enhanced;
-- (NSDictionary *)userContentItemWith:(NSString *)contentIdentifier 
+- (NSDictionary *)booksAssignmentWith:(NSString *)contentIdentifier
                           drmQualifer:(SCHDRMQualifiers)drmQualifer
                                format:(NSString *)format
                            profileIDs:(NSArray *)profileIDs;
@@ -204,7 +204,7 @@
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs
 {
     if (book != nil && profileIDs != nil && [profileIDs count] > 0) {
-        [self.contentSyncComponent addUserContentItemFromMainThread:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
+        [self.contentSyncComponent addBooksAssignmentFromMainThread:[self booksAssignmentWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
                                                                                   drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
 																					   format:[book objectForKey:kSCHLibreAccessWebServiceFormat]
                                                                                    profileIDs:profileIDs]];
@@ -217,13 +217,13 @@
 {
     if ([entries count] && [profileIDs count]) {
         
-        NSMutableArray *userContentItems =     [NSMutableArray arrayWithCapacity:[entries count] * [profileIDs count]];
+        NSMutableArray *booksAssignments     = [NSMutableArray arrayWithCapacity:[entries count] * [profileIDs count]];
         NSMutableArray *contentMetadataItems = [NSMutableArray arrayWithCapacity:[entries count]];
         NSMutableArray *profileItems         = [NSMutableArray arrayWithCapacity:[entries count]];
 
         for (NSDictionary *entry in entries) {
             for (NSNumber *profileID in profileIDs) {
-                [userContentItems addObject:[self userContentItemWith:[entry objectForKey:@"Isbn13"]
+                [booksAssignments addObject:[self booksAssignmentWith:[entry objectForKey:@"Isbn13"]
                                                           drmQualifer:kSCHDRMQualifiersNone
                                                                format:[[entry objectForKey:@"DownloadUrl"] pathExtension]
                                                            profileIDs:profileIDs]];
@@ -250,7 +250,7 @@
         }
 
         [self.profileSyncComponent syncProfilesFromMainThread:profileItems];
-        [self.contentSyncComponent syncUserContentItemsFromMainThread:userContentItems];
+        [self.contentSyncComponent syncBooksAssignmentsFromMainThread:booksAssignments];
         [self.bookshelfSyncComponent syncContentMetadataItemsFromMainThread:contentMetadataItems];        
     }
 }
@@ -477,7 +477,7 @@
     return(ret);    
 }
 
-- (NSDictionary *)userContentItemWith:(NSString *)contentIdentifier
+- (NSDictionary *)booksAssignmentWith:(NSString *)contentIdentifier
                           drmQualifer:(SCHDRMQualifiers)drmQualifer
                                format:(NSString *)format
                            profileIDs:(NSArray *)profileIDs
@@ -489,8 +489,6 @@
     NSString *version = @"1";
     
     NSMutableArray *profileList = [NSMutableArray arrayWithCapacity:[profileIDs count]];
-    NSMutableArray *orderList = [NSMutableArray arrayWithCapacity:[profileIDs count]];    
-    NSInteger orderID = 1;
     for (NSNumber *profileID in profileIDs) {
         NSMutableDictionary *profileItem = [NSMutableDictionary dictionary];
         [profileItem setObject:profileID forKey:kSCHLibreAccessWebServiceProfileID];        
@@ -498,11 +496,6 @@
         [profileItem setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];        
         [profileItem setObject:[NSNumber numberWithInt:0] forKey:kSCHLibreAccessWebServiceRating];        
         [profileList addObject:profileItem];
-        
-        NSMutableDictionary *orderItem = [NSMutableDictionary dictionary];
-        [orderItem setObject:[NSString stringWithFormat:@"%x", orderID++] forKey:kSCHLibreAccessWebServiceOrderID];        
-        [orderItem setObject:[dateNow dateByAddingTimeInterval:orderID * 60] forKey:kSCHLibreAccessWebServiceOrderDate];                
-        [orderList addObject:orderItem];
     }
     
     [ret setObject:(contentIdentifier == nil ? (id)[NSNull null] : contentIdentifier) forKey:kSCHLibreAccessWebServiceContentIdentifier];
@@ -511,7 +504,6 @@
     [ret setObject:(format == nil ? @"XPS" : [format uppercaseString]) forKey:kSCHLibreAccessWebServiceFormat];
     [ret setObject:version forKey:kSCHLibreAccessWebServiceVersion];    
     [ret setObject:profileList forKey:kSCHLibreAccessWebServiceProfileList];
-    [ret setObject:orderList forKey:kSCHLibreAccessWebServiceOrderList]; 
     [ret setObject:version forKey:kSCHLibreAccessWebServiceLastVersion];    
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceFreeBook];        
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];
@@ -578,7 +570,7 @@
                                                     contentURL:nil
                                                       enhanced:[xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile]];
             
-            [self.contentSyncComponent addUserContentItemFromMainThread:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
+            [self.contentSyncComponent addBooksAssignmentFromMainThread:[self booksAssignmentWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
                                                                                       drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
 																						   format:[book objectForKey:kSCHLibreAccessWebServiceFormat]
                                                                                        profileIDs:profileIDs]];

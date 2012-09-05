@@ -1,5 +1,5 @@
 //
-//  SCHListUserContentForRatingsOperation.h
+//  SCHListBooksAssignmentOperation.h
 //  Scholastic
 //
 //  Created by John Eddie on 19/06/2012.
@@ -8,13 +8,13 @@
 
 #import "SCHSyncComponentOperation.h"
 
-@class SCHUserContentItem;
+@class SCHBooksAssignment;
 
-@interface SCHListUserContentForRatingsOperation : SCHSyncComponentOperation
+@interface SCHListBooksAssignmentOperation : SCHSyncComponentOperation
 
-- (void)syncUserContentItems:(NSArray *)userContentList
+- (void)syncBooksAssignments:(NSArray *)booksAssignmentList
         managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
-- (SCHUserContentItem *)addUserContentItem:(NSDictionary *)webUserContentItem
+- (SCHBooksAssignment *)addBooksAssignment:(NSDictionary *)webBooksAssignment
                       managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end

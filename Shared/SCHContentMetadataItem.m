@@ -10,7 +10,7 @@
 #import "SCHAppBook.h"
 #import "SCHeReaderCategories.h"
 #import "SCHAnnotationsContentItem.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
 #import "SCHProcessingManager.h"
@@ -78,14 +78,14 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
     return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
 }
 
-- (SCHUserContentItem *)UserContentItem
+- (SCHBooksAssignment *)booksAssignment
 {
-    SCHUserContentItem *ret = nil;
+    SCHBooksAssignment *ret = nil;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSError *error = nil;
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", 
                                 self.ContentIdentifier, self.DRMQualifier]];
@@ -103,7 +103,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         ret = [result objectAtIndex:0];
     }
 
-    return(ret);
+    return ret;
 }
 
 - (NSComparisonResult)titleCompare:(SCHContentMetadataItem *)contentMetadataItem

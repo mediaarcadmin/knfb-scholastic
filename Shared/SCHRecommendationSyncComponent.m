@@ -17,7 +17,7 @@
 #import "SCHLibreAccessConstants.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHRecommendationItem.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHRetrieveRecommendationsForProfileOperation.h"
@@ -392,13 +392,13 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     NSMutableArray *ret = nil;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
                                         inManagedObjectContext:aManagedObjectContext]];	
     // we only want books that are on a bookshelf
     if (drmQualifier == nil) {
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileList.@count > 0"]];    
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"profileList.@count > 0"]];
     } else {
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileList.@count > 0 AND DRMQualifier = %@", drmQualifier]];            
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"profileList.@count > 0 AND DRMQualifier = %@", drmQualifier]];            
     }
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
@@ -410,7 +410,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     } else {
         // only return those items that require updating
         ret = [NSMutableArray arrayWithCapacity:[results count]];
-        for (SCHUserContentItem *item in results) {
+        for (SCHBooksAssignment *item in results) {
             NSSet *contentMetadataItems = [item ContentMetadataItem];            
             SCHRecommendationISBN *isbn = nil;
             if ([contentMetadataItems count] > 0) {

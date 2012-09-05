@@ -13,7 +13,7 @@
 @class SCHAppBook;
 @class SCHeReaderCategories;
 @class SCHBookIdentifier;
-@class SCHUserContentItem;
+@class SCHBooksAssignment;
 
 // Constants
 extern NSString * const kSCHContentMetadataItem;
@@ -39,7 +39,7 @@ extern NSString * const kSCHContentMetadataItem;
 @property (nonatomic, retain) NSNumber * AverageRating;
 
 @property (nonatomic, readonly) NSSet *AnnotationsContentItem;
-@property (nonatomic, readonly) SCHUserContentItem *UserContentItem;
+@property (nonatomic, readonly) SCHBooksAssignment *booksAssignment;
 
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID;
 - (void)deleteAllFiles;
