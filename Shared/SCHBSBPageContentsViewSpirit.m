@@ -195,7 +195,8 @@
             [midPoint release];
         } else {
             if(!nextPageStartPoint) {
-                if(pointPlacement == EucBookIndexPointPlacementRightPage) {
+                if(pointPlacement == EucBookIndexPointPlacementRightPage ||
+                   pointPlacement == EucBookIndexPointPlacementUnspecified) {
                     nextPageStartPoint = book.offTheEndIndexPoint;
                 } else {
                     // If this is a left-hand page at the end of a book,
