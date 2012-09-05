@@ -368,7 +368,7 @@
 
 - (NSArray *)userCSSDatasForDocumentTree:(id<EucCSSDocumentTree>)documentTree
 {
-    NSString *nodeBlockOverride = @"node { display: block; } select { display: block; page-break-before: avoid; } *[visible-if=\"Gender = 'boy'\"] { display: none }";
+    NSString *nodeBlockOverride = @"node { display: block; } select { display: block; page-break-before: avoid; } input { page-break-before: avoid; page-break-inside: avoid; } *[visible-if=\"Gender = 'boy'\"] { display: none }";
     
 	return [NSArray arrayWithObjects:[THEmbeddedResourceManager embeddedResourceWithName:@"EPubOverrides.css"],
             [nodeBlockOverride dataUsingEncoding:NSUTF8StringEncoding], nil];

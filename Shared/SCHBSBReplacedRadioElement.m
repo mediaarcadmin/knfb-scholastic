@@ -80,13 +80,13 @@
         SCHBSBReplacedElementWebView *webview = [[SCHBSBReplacedElementWebView alloc] initWithFrame:radioFrame];
         webview.jsBridgeTarget = self;
         
-        NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<head><style type='text/css'>* {-webkit-touch-callout: none;-webkit-user-select: none; font-size='%fpx'}</style></head><body><form>", self.pointSize];
+        NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<head><style type='text/css'>* {-webkit-touch-callout: none;-webkit-user-select: none; font-family: 'Times New Roman';}</style></head><body><form>"];
         NSUInteger elementCount = MIN([self.keys count], [self.values count]);
         NSString *dataBinding = @"foo";
         
         for (int i = 0; i < elementCount; i++) {
             BOOL selected = [self.value isEqualToString:[self.values objectAtIndex:i]];
-            [htmlString appendFormat:@"<input type='radio' onchange='window.location = \"js-bridge:selectionDidChange:%@\"' name='%@' value='%@' %@/> %@<br />", [self.values objectAtIndex:i], dataBinding, [self.values objectAtIndex:i], selected ? @" selected='selected'" : @"", [self.keys objectAtIndex:i]];
+            [htmlString appendFormat:@"<input type='radio' onchange='window.location = \"js-bridge:selectionDidChange:%@\"' name='%@' value='%@' %@/> %@<br />", [self.values objectAtIndex:i], dataBinding, [self.values objectAtIndex:i], selected ? @" selected='true'" : @"", [self.keys objectAtIndex:i]];
         }
         
         [htmlString appendString:@"</form></body>"];

@@ -81,7 +81,7 @@
 
         NSString *dataBinding = @"foo";
 
-        NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<head><style type='text/css'>* {-webkit-touch-callout: none;-webkit-user-select: none; font-size='%fpx'}</style></head><body><form><select name='%@' onchange='window.location = \"js-bridge:selectionDidChange:\" + this.options[this.selectedIndex].value'><option value=''>Choose One</option><br />", self.pointSize, dataBinding];
+        NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<head><style type='text/css'>* {-webkit-touch-callout: none;-webkit-user-select: none; font-family: 'Times New Roman';}</style></head><body><form><select name='%@' onchange='window.location = \"js-bridge:selectionDidChange:\" + this.options[this.selectedIndex].value'><option value=''>Choose One</option><br />", dataBinding];
         NSUInteger elementCount = MIN([self.keys count], [self.values count]);
         
         for (int i = 0; i < elementCount; i++) {
