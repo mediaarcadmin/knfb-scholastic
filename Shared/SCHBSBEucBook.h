@@ -23,6 +23,7 @@
 - (EucCSSIntermediateDocument *)intermediateDocumentForIndexPoint:(EucBookPageIndexPoint *)indexPoint 
                                                       pageOptions:(NSDictionary *)pageOptions;
 - (NSUInteger)sourceCount;
+- (BOOL)shouldAllowTurnBackFromIndexPoint:(EucBookPageIndexPoint *)indexPoint;
 
 @end
 #endif

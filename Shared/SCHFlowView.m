@@ -368,6 +368,19 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return YES;
 }
 
+- (BOOL)bookView:(EucBookView *)bookView shouldAllowTurnInDirection:(EucBookViewTurnDirection)direction
+{
+    BOOL ret = YES;
+
+    if ([self.eucBook isKindOfClass:[SCHBSBEucBook class]] &&
+        (direction == EucBookViewTurnDirectionShowPageToLeft)) {
+        
+        ret = [(SCHBSBEucBook *)self.eucBook shouldAllowTurnBackFromIndexPoint:bookView.currentPageIndexPoint];
+    }
+    
+    return ret;
+}
+
 - (void)bookViewPageTurnWillBegin:(EucBookView *)bookView
 {
     [self.delegate readingViewWillBeginTurning:self];

@@ -764,6 +764,17 @@
     }
 }
 
+- (BOOL)shouldAllowTurnBackFromIndexPoint:(EucBookPageIndexPoint *)indexPoint
+{
+    if ((indexPoint.source == 0) &&
+        (indexPoint.block == 0) &&
+        (indexPoint.word == 0)) {
+        return YES;
+    } else {
+        return NO;
+    }    
+}
+
 #pragma mark - SCHBSBReplacedElementDelegate
 
 - (void)binding:(NSString *)binding didUpdateValue:(NSString *)value
