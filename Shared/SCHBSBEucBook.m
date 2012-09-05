@@ -107,11 +107,12 @@
             decisionNodes = [[NSMutableArray alloc] init];
             decisionProperties = [[NSMutableArray alloc] init];
             
+            for (SCHBSBProperty *property in manifest.properties) {
+                [decisionProperties addObject:property];
+            }
+            
             if ([manifest.nodes count]) {
-                [self.decisionNodes addObject:[self.manifest.nodes objectAtIndex:0]];
-                for (SCHBSBProperty *property in manifest.properties) {
-                    [self.decisionProperties addObject:property];
-                }
+                [decisionNodes addObject:[self.manifest.nodes objectAtIndex:0]];
             } else {
                 [identifier release];
                 identifier = nil;

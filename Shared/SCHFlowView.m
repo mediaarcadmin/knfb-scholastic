@@ -70,8 +70,8 @@
         if (self.openingPoint) {
             if (![self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
                 [self jumpToBookPoint:self.openingPoint animated:NO];
-                self.openingPoint = nil;
             }
+            self.openingPoint = nil;
         }
         
         [self addSubview:eucBookView];
@@ -192,14 +192,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
         [self.eucBookView addObserver:self forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
         
-        if (self.openingPoint) {
-            if ([self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
-                // Reset needs to be here as page layout controller isn't instantiated earlier and that does the shrinking
-                [self.eucBookView bookWillShrink];
-                EucBookPageIndexPoint *startPoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
-                [self.eucBookView bookHasShrunkToIndexPoint:startPoint];
-            }
-            self.openingPoint = nil;
+        if ([self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
+            // Reset needs to be here as page layout controller isn't instantiated earlier and that does the shrinking
+            [self.eucBookView bookWillShrink];
+            EucBookPageIndexPoint *startPoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
+            [self.eucBookView bookHasShrunkToIndexPoint:startPoint];
         }
 
         [self attachSelector];
