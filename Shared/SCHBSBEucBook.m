@@ -766,13 +766,22 @@
 
 - (BOOL)shouldAllowTurnBackFromIndexPoint:(EucBookPageIndexPoint *)indexPoint
 {
+    BOOL ret = YES;
+    
     if ((indexPoint.source == 0) &&
         (indexPoint.block == 0) &&
         (indexPoint.word == 0)) {
-        return YES;
+        ret = YES;
     } else {
-        return NO;
-    }    
+        EucBookPageIndexPoint *nodePoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
+        nodePoint.source = [self.decisionNodes count] - 1;
+    
+        if ([indexPoint compare:nodePoint] != NSOrderedDescending) {
+            ret = NO;
+        }
+    }
+    
+    return ret;
 }
 
 #pragma mark - SCHBSBReplacedElementDelegate
