@@ -276,7 +276,7 @@
     EucBookPageIndexPoint *indexPoint = [[EucBookPageIndexPoint alloc] init];
     indexPoint.source = source;
     
-    return indexPoint;
+    return [indexPoint autorelease];
 }
 
 - (EucBookPageIndexPoint *)offTheEndIndexPoint
@@ -295,6 +295,11 @@
     for (int i = 0; i < self.sourceCount; i++) {
         EucBookPageIndexPoint *nodePoint = [[EucBookPageIndexPoint alloc] init];
         nodePoint.source = i;
+        if(i != 0) {
+            // Nodes after the first one should always start on the left hand
+            // side.
+            nodePoint.placement = EucBookIndexPointPlacementLeftPage;
+        }
         [allNodes addObject:nodePoint];
         [nodePoint release];
     }
