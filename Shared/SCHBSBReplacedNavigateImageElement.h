@@ -10,6 +10,6 @@
 
 @interface SCHBSBReplacedNavigateImageElement : SCHBSBReplacedElementPlaceholder
 
-- (id)initWithImage:(UIImage *)image targetNode:(NSString *)navigateTarget;
+- (id)initWithImage:(UIImage *)image targetNode:(NSString *)navigateTarget binding:(NSString *)binding value:(NSString *)aValue;
 
 @end

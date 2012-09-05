@@ -11,8 +11,10 @@
 
 @interface SCHBSBReplacedNavigateElement()
 
-@property (nonatomic, retain) NSString *label;
-@property (nonatomic, retain) NSString *targetNode;
+@property (nonatomic, copy) NSString *label;
+@property (nonatomic, copy) NSString *targetNode;
+@property (nonatomic, copy) NSString *binding;
+@property (nonatomic, copy) NSString *value;
 @property (nonatomic, retain) UIView *navigateView;
 @property (nonatomic, assign) CGFloat fontSize;
 
@@ -22,6 +24,8 @@
 
 @synthesize label;
 @synthesize targetNode;
+@synthesize binding;
+@synthesize value;
 @synthesize navigateView;
 @synthesize fontSize;
 
@@ -29,15 +33,19 @@
 {
     [label release], label = nil;
     [targetNode release], targetNode = nil;
+    [binding release], binding = nil;
+    [value release], value = nil;
     [navigateView release], navigateView = nil;
     [super dealloc];
 }
 
-- (id)initWithPointSize:(CGFloat)point label:(NSString *)navigateLabel targetNode:(NSString *)navigateTarget;
+- (id)initWithPointSize:(CGFloat)point label:(NSString *)navigateLabel targetNode:(NSString *)navigateTarget binding:(NSString *)aBinding value:(NSString *)aValue;
 {
     if (self = [super initWithPointSize:point]) {
         label = [navigateLabel copy];
         targetNode = [navigateTarget copy];
+        binding = [aBinding copy];
+        value = [aValue copy];
     }
     
     return self;
@@ -96,6 +104,10 @@
 
 - (void)navigateToNode:(id)sender
 {
+    if (self.binding && self.value) {
+        [self.delegate binding:self.binding didUpdateValue:self.value];
+    }
+    
     [self.delegate navigateToNode:self.targetNode fromNode:self.nodeId];
 }
 

@@ -542,6 +542,8 @@
             replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithPointSize:20 keys:keys values:values binding:dataBinding value:property.value] autorelease];
         } else if ([nodeName isEqualToString:@"a"]) {
             NSString *target = [treeNode attributeWithName:@"href"];
+            NSString *propertyName = [treeNode attributeWithName:@"name"];
+            NSString *propertyValue = [treeNode attributeWithName:@"value"];
             
             id<EucCSSDocumentTreeNode> childNode = [treeNode firstChild];
             NSString *childName  = [childNode name];
@@ -552,7 +554,7 @@
                     NSData *imageData = [self.provider dataForBSBComponentAtPath:src];
                     UIImage *image = [UIImage imageWithData:imageData];
                     if (image) {
-                        replacedElement = [[[SCHBSBReplacedNavigateImageElement alloc] initWithImage:image targetNode:target] autorelease];
+                        replacedElement = [[[SCHBSBReplacedNavigateImageElement alloc] initWithImage:image targetNode:target binding:propertyName value:propertyValue] autorelease];
                     }
                 }
             } else {
@@ -562,7 +564,7 @@
                 NSString *dataString = [docNode text];
                     
                 if (target && [dataString length]) {
-                    replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataString targetNode:target] autorelease];
+                    replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataString targetNode:target binding:propertyName value:propertyValue] autorelease];
                 }
             }
         }
@@ -623,7 +625,7 @@
             NSString *dataValue = [treeNode attributeWithName:@"data-value"];
             NSString *dataGoto = [treeNode attributeWithName:@"data-goto"];
             
-            replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataValue targetNode:dataGoto] autorelease];
+            replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataValue targetNode:dataGoto binding:nil value:nil] autorelease];
         }
 #endif
     }
