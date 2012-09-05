@@ -9,6 +9,7 @@
 #if !BRANCHING_STORIES_DISABLED
 #import "SCHBSBPageContentsViewSpirit.h"
 #import "SCHBSBEucBook.h"
+#import "SCHBSBReplacedElement.h"
 #import <libEucalyptus/EucCSSDPI.h>
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucCSSXHTMLTree.h>
@@ -243,6 +244,24 @@
 - (NSString *)accessibilityLabelForElementWithIdentifier:(id)elementId ofBlockWithIdentifier:(id)blockId
 {
     return [self.pageCSSViewSpirit accessibilityLabelForElementWithIdentifier:elementId ofBlockWithIdentifier:blockId];
+}
+
+- (THCGViewSpiritElement *)eucCSSRenderPageViewSpirit:(EucCSSRenderPageViewSpirit *)pageViewSpirit
+                    overlayElementForDocumentTreeNode:(EucCSSIntermediateDocumentNode *)documentTreeNode
+{
+    id<EucCSSReplacedElement> replacedElement = [documentTreeNode replacedElement];
+
+    if (replacedElement && [replacedElement isKindOfClass:[SCHBSBReplacedElement class]]) {
+        //CGFloat scaleFactor = [pageViewSpirit scaleFactor];
+        //CGFloat pointSize = [documentTreeNode textPointSizeWithScaleFactor:scaleFactor];
+        //pointSize = pointSize;
+        //THStringRenderer *renderer = [documentTreeNode stringRenderer];
+        //renderer = renderer;
+        [(SCHBSBReplacedElement *)replacedElement setPointSize:self.pointSize];
+        return [replacedElement newViewSpiritElement];
+    }
+    
+    return nil;
 }
 
 @end

@@ -9,6 +9,7 @@
 #import "SCHBSBReplacedRadioElement.h"
 #import "SCHBSBReplacedElementWebView.h"
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
+#import <libEucalyptus/EucCSSDPI.h>
 
 @interface SCHBSBReplacedRadioElement()
 
@@ -38,9 +39,9 @@
     [super dealloc];
 }
 
-- (id)initWithPointSize:(CGFloat)point keys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)radioBinding value:(NSString *)aValue
+- (id)initWithKeys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)radioBinding value:(NSString *)aValue
 {
-    if (self = [super initWithPointSize:point]) {
+    if (self = [super init]) {
         keys = [keyArray copy];
         values = [valueArray copy];
         binding = [radioBinding copy];
@@ -52,8 +53,13 @@
 
 - (CGSize)intrinsicSize
 {
+    CGFloat adjustedSize;
+    
+    CGSize textSize = [@"PLACEHOLDER" sizeWithFont:[UIFont fontWithName:@"Times New Roman" size:EucCSSPixelsMediumFontSize] minFontSize:6 actualFontSize:&adjustedSize forWidth:100 lineBreakMode:UILineBreakModeWordWrap];
+    
     NSUInteger elementCount = MIN([self.keys count], [self.values count]);
-    return CGSizeMake(100, 10 + self.pointSize * 2 * elementCount);
+
+    return CGSizeMake(100, 10 + textSize.height * elementCount);
 }
 
 - (THCGViewSpiritElement *)newViewSpiritElement

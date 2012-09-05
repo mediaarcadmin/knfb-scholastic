@@ -18,7 +18,7 @@
 #import "SCHBSBManifest.h"
 #import "SCHBSBNode.h"
 #import "SCHBSBProperty.h"
-#import "SCHBSBReplacedElementPlaceholder.h"
+#import "SCHBSBReplacedElement.h"
 #import "SCHBSBReplacedElementDelegate.h"
 #import "SCHBSBReplacedHiddenElement.h"
 #import "SCHBSBReplacedRadioElement.h"
@@ -444,7 +444,7 @@
                    replacedNonConditionalElementForNode:(EucCSSIntermediateDocumentNode *)node
 {
     
-    SCHBSBReplacedElementPlaceholder *replacedElement = nil;
+    SCHBSBReplacedElement *replacedElement = nil;
     id<EucCSSDocumentTreeNode> treeNode = [(EucCSSIntermediateDocumentNode *)node documentTreeNode];
     if(treeNode) {
         
@@ -457,7 +457,7 @@
                 
                 if (dataBinding) {
                     SCHBSBProperty *property = [self propertyWithName:dataBinding];
-                    replacedElement = [[[SCHBSBReplacedTextElement alloc] initWithPointSize:10 binding:dataBinding value:property.value] autorelease];
+                    replacedElement = [[[SCHBSBReplacedTextElement alloc] initWithBinding:dataBinding value:property.value] autorelease];
                 }
             } else if ([inputType isEqualToString:@"radio"]) {
                 
@@ -496,7 +496,7 @@
                     }
                     
                     SCHBSBProperty *property = [self propertyWithName:dataBinding];
-                    replacedElement = [[[SCHBSBReplacedRadioElement alloc] initWithPointSize:10 keys:keys values:values binding:dataBinding value:property.value] autorelease];
+                    replacedElement = [[[SCHBSBReplacedRadioElement alloc] initWithKeys:keys values:values binding:dataBinding value:property.value] autorelease];
                 }
             }
         } else if ([nodeName isEqualToString:@"select"]) {
@@ -525,7 +525,7 @@
             }
             
             SCHBSBProperty *property = [self propertyWithName:dataBinding];
-            replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithPointSize:20 keys:keys values:values binding:dataBinding value:property.value] autorelease];
+            replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithKeys:keys values:values binding:dataBinding value:property.value] autorelease];
         } else if ([nodeName isEqualToString:@"a"]) {
             NSString *target = [treeNode attributeWithName:@"href"];
             NSString *propertyName = [treeNode attributeWithName:@"name"];
@@ -550,7 +550,7 @@
                 NSString *dataString = [docNode text];
                     
                 if (target && [dataString length]) {
-                    replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataString targetNode:target binding:propertyName value:propertyValue] autorelease];
+                    replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithLabel:dataString targetNode:target binding:propertyName value:propertyValue] autorelease];
                 }
             }
         }
@@ -562,7 +562,7 @@
             NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
             if (dataBinding) {
                 SCHBSBProperty *property = [self propertyWithName:dataBinding];
-                replacedElement = [[[SCHBSBReplacedTextElement alloc] initWithPointSize:10 binding:dataBinding value:property.value] autorelease];
+                replacedElement = [[[SCHBSBReplacedTextElement alloc] initWithBinding:dataBinding value:property.value] autorelease];
             }
         } else if ([dataType isEqualToString:@"radio"]) {
             NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
@@ -584,7 +584,7 @@
             }
 
             SCHBSBProperty *property = [self propertyWithName:dataBinding];
-            replacedElement = [[[SCHBSBReplacedRadioElement alloc] initWithPointSize:10 keys:keys values:values binding:dataBinding value:property.value] autorelease];
+            replacedElement = [[[SCHBSBReplacedRadioElement alloc] initWithKeys:keys values:values binding:dataBinding value:property.value] autorelease];
         } else if ([dataType isEqualToString:@"dropdown"]) {
             NSString *dataBinding = [treeNode attributeWithName:@"data-binding"];
             
@@ -605,13 +605,13 @@
             }
             
             SCHBSBProperty *property = [self propertyWithName:dataBinding];
-            replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithPointSize:20 keys:keys values:values binding:dataBinding value:property.value] autorelease];
+            replacedElement = [[[SCHBSBReplacedDropdownElement alloc] initWithKeys:keys values:values binding:dataBinding value:property.value] autorelease];
         } else if ([dataType isEqualToString:@"navigate"]) {
             
             NSString *dataValue = [treeNode attributeWithName:@"data-value"];
             NSString *dataGoto = [treeNode attributeWithName:@"data-goto"];
             
-            replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithPointSize:20 label:dataValue targetNode:dataGoto binding:nil value:nil] autorelease];
+            replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithLabel:dataValue targetNode:dataGoto binding:nil value:nil] autorelease];
         }
 #endif
     }
@@ -745,7 +745,7 @@
 {
     NSString *nodeName = [node nodeId];
     NSIndexSet *missingIndices = [self.decisionProperties indexesOfObjectsPassingTest:^BOOL(SCHBSBProperty *property, NSUInteger idx, BOOL *stop){
-        if ([[property node] isEqualToString:nodeName] && ([property value] == nil)) {
+        if ([[property node] isEqualToString:nodeName] && ([[property value] length] == 0)) {
             return YES;
         } else {
             return NO;

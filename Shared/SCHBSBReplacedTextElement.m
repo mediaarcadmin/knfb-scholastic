@@ -9,6 +9,7 @@
 #import "SCHBSBReplacedTextElement.h"
 #import "SCHBSBReplacedElementTextField.h"
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
+#import <libEucalyptus/EucCSSDPI.h>
 
 @interface SCHBSBReplacedTextElement() <UITextFieldDelegate>
 
@@ -32,9 +33,9 @@
     [super dealloc];
 }
 
-- (id)initWithPointSize:(CGFloat)point binding:(NSString *)textBinding value:(NSString *)aValue
+- (id)initWithBinding:(NSString *)textBinding value:(NSString *)aValue
 {
-    if (self = [super initWithPointSize:point]) {
+    if (self = [super init]) {
         binding = [textBinding copy];
         value = [aValue copy];
     }
@@ -44,7 +45,13 @@
 
 - (CGSize)intrinsicSize
 {
-    return CGSizeMake(160, 10 + self.pointSize * 2);
+    CGFloat adjustedSize;
+    
+    CGSize textSize = [@"PLACEHOLDER TEXT STRING" sizeWithFont:[UIFont fontWithName:@"Times New Roman" size:EucCSSPixelsMediumFontSize] minFontSize:6 actualFontSize:&adjustedSize forWidth:160 lineBreakMode:UILineBreakModeWordWrap];
+    
+    textSize.height += 10;
+
+    return textSize;
 }
 
 - (THCGViewSpiritElement *)newViewSpiritElement
@@ -67,7 +74,10 @@
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textField.returnKeyType = UIReturnKeyDone;
         textField.delegate = self;
+        textField.adjustsFontSizeToFitWidth = YES;
+        textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         textField.text = self.value;
+        textField.font = [UIFont fontWithName:@"Times New Roman" size:self.pointSize];
         
         [textField addTarget:textField action:@selector(endEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
         textView = textField;

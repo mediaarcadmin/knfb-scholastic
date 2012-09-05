@@ -6,11 +6,11 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHBSBReplacedElementPlaceholder.h"
+#import "SCHBSBReplacedElement.h"
 #import <libEucalyptus/THRoundRects.h>
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
 
-@implementation SCHBSBReplacedElementPlaceholder
+@implementation SCHBSBReplacedElement
 
 @synthesize pointSize;
 @synthesize delegate;
@@ -23,17 +23,9 @@
     [super dealloc];
 }
 
-- (id)initWithPointSize:(CGFloat)point;
-{
-    if(self = [super init]) {
-        pointSize = point;
-    }
-    return self;
-}
-
 - (CGSize)intrinsicSize
 {
-    return CGSizeMake(self.pointSize, self.pointSize); // Subclasses should override with something more sensisble
+    return CGSizeZero; // Subclasses should override with something more sensisble
 }
 
 - (void)renderInRect:(CGRect)rect inContext:(CGContextRef)context

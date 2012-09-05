@@ -3151,11 +3151,11 @@
 		C97BC56B1500D09C0076D0FC /* ax21.m in Sources */ = {isa = PBXBuildFile; fileRef = 523B2E6D14F403E300413883 /* ax21.m */; };
 		C97BC56C1500D0A40076D0FC /* ax25.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CF514F3A25700F261DA /* ax25.m */; };
 		C97D6DA313696D7B0017974B /* SCHBookPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C97D6DA213696D7B0017974B /* SCHBookPoint.m */; };
-		C97DCA5615D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m */; };
-		C97DCA5715D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m */; };
-		C97DCA5815D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m */; };
-		C97DCA5915D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m */; };
-		C97DCA5A15D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m */; };
+		C97DCA5615D55015003B2DF3 /* SCHBSBReplacedElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElement.m */; };
+		C97DCA5715D55015003B2DF3 /* SCHBSBReplacedElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElement.m */; };
+		C97DCA5815D55015003B2DF3 /* SCHBSBReplacedElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElement.m */; };
+		C97DCA5915D55015003B2DF3 /* SCHBSBReplacedElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElement.m */; };
+		C97DCA5A15D55015003B2DF3 /* SCHBSBReplacedElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElement.m */; };
 		C97DCA5D15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5C15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m */; };
 		C97DCA5E15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5C15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m */; };
 		C97DCA5F15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCA5C15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m */; };
@@ -6266,8 +6266,8 @@
 		C979D889138C2D9100581F7F /* SCHGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHGradientView.m; path = Shared/SCHGradientView.m; sourceTree = "<group>"; };
 		C97D6DA113696D7B0017974B /* SCHBookPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookPoint.h; path = Shared/SCHBookPoint.h; sourceTree = "<group>"; };
 		C97D6DA213696D7B0017974B /* SCHBookPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookPoint.m; path = Shared/SCHBookPoint.m; sourceTree = "<group>"; };
-		C97DCA5415D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementPlaceholder.h; path = Shared/SCHBSBReplacedElementPlaceholder.h; sourceTree = "<group>"; };
-		C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementPlaceholder.m; path = Shared/SCHBSBReplacedElementPlaceholder.m; sourceTree = "<group>"; };
+		C97DCA5415D55015003B2DF3 /* SCHBSBReplacedElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElement.h; path = Shared/SCHBSBReplacedElement.h; sourceTree = "<group>"; };
+		C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElement.m; path = Shared/SCHBSBReplacedElement.m; sourceTree = "<group>"; };
 		C97DCA5B15D55490003B2DF3 /* SCHBSBReplacedRadioElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedRadioElement.h; path = Shared/SCHBSBReplacedRadioElement.h; sourceTree = "<group>"; };
 		C97DCA5C15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedRadioElement.m; path = Shared/SCHBSBReplacedRadioElement.m; sourceTree = "<group>"; };
 		C97DCA6215D5591B003B2DF3 /* SCHBSBReplacedElementWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementWebView.h; path = Shared/SCHBSBReplacedElementWebView.h; sourceTree = "<group>"; };
@@ -9593,8 +9593,8 @@
 				C9E73ACB15EFAB9500DC7C11 /* SCHBSBReplacedElementDelegate.h */,
 				C9E73ACD15F4D9E600DC7C11 /* SCHBSBReplacedHiddenElement.h */,
 				C9E73ACE15F4D9E700DC7C11 /* SCHBSBReplacedHiddenElement.m */,
-				C97DCA5415D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.h */,
-				C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m */,
+				C97DCA5415D55015003B2DF3 /* SCHBSBReplacedElement.h */,
+				C97DCA5515D55015003B2DF3 /* SCHBSBReplacedElement.m */,
 				C97DCA6215D5591B003B2DF3 /* SCHBSBReplacedElementWebView.h */,
 				C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */,
 				C97DCBBB15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.h */,
@@ -13727,7 +13727,7 @@
 				F8FDF02815C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229AC15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229E915B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
-				C97DCA5615D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
+				C97DCA5615D55015003B2DF3 /* SCHBSBReplacedElement.m in Sources */,
 				C97DCA5D15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6415D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74715D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
@@ -14142,7 +14142,7 @@
 				C96C199615C961A0002EBEBB /* SCHAppModelTests.m in Sources */,
 				C96C199915C980CF002EBEBB /* LambdaAlert.m in Sources */,
 				C958DEE215D1302E00E93C09 /* SCHBSBProvider.m in Sources */,
-				C97DCA5815D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
+				C97DCA5815D55015003B2DF3 /* SCHBSBReplacedElement.m in Sources */,
 				C97DCA5F15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6615D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74915D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
@@ -14552,7 +14552,7 @@
 				F8FDF02915C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229AD15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229EA15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
-				C97DCA5715D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
+				C97DCA5715D55015003B2DF3 /* SCHBSBReplacedElement.m in Sources */,
 				C97DCA5E15D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6515D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74815D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
@@ -14962,7 +14962,7 @@
 				F8FDF02A15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229AF15B82EDD009939D1 /* SCHAppModel.m in Sources */,
 				C9F229EC15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
-				C97DCA5915D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
+				C97DCA5915D55015003B2DF3 /* SCHBSBReplacedElement.m in Sources */,
 				C97DCA6015D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6715D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74A15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
@@ -15372,7 +15372,7 @@
 				F8FDF02B15C2EDC500F0F929 /* SCHStoryInteractionGradientView.m in Sources */,
 				C9F229ED15B9B37E009939D1 /* SCHPhoneAppController.m in Sources */,
 				C99BAB6F15BEB4CF00B18436 /* SCHAppModel.m in Sources */,
-				C97DCA5A15D55015003B2DF3 /* SCHBSBReplacedElementPlaceholder.m in Sources */,
+				C97DCA5A15D55015003B2DF3 /* SCHBSBReplacedElement.m in Sources */,
 				C97DCA6115D55490003B2DF3 /* SCHBSBReplacedRadioElement.m in Sources */,
 				C97DCA6815D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74B15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,

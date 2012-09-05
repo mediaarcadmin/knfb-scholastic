@@ -8,6 +8,7 @@
 
 #import "SCHBSBReplacedNavigateElement.h"
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
+#import <libEucalyptus/EucCSSDPI.h>
 
 @interface SCHBSBReplacedNavigateElement()
 
@@ -39,9 +40,9 @@
     [super dealloc];
 }
 
-- (id)initWithPointSize:(CGFloat)point label:(NSString *)navigateLabel targetNode:(NSString *)navigateTarget binding:(NSString *)aBinding value:(NSString *)aValue;
+- (id)initWithLabel:(NSString *)navigateLabel targetNode:(NSString *)navigateTarget binding:(NSString *)aBinding value:(NSString *)aValue;
 {
-    if (self = [super initWithPointSize:point]) {
+    if (self = [super init]) {
         label = [navigateLabel copy];
         targetNode = [navigateTarget copy];
         binding = [aBinding copy];
@@ -55,7 +56,7 @@
 {
     CGFloat adjustedSize;
     
-    CGSize textSize = [self.label sizeWithFont:[UIFont fontWithName:@"Times New Roman" size:self.pointSize] minFontSize:6 actualFontSize:&adjustedSize forWidth:160 lineBreakMode:UILineBreakModeWordWrap];
+    CGSize textSize = [self.label sizeWithFont:[UIFont fontWithName:@"Times New Roman" size:EucCSSPixelsMediumFontSize] minFontSize:6 actualFontSize:&adjustedSize forWidth:160 lineBreakMode:UILineBreakModeWordWrap];
     
     textSize.width += 20;
     textSize.height += 20;

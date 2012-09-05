@@ -8,6 +8,7 @@
 
 #import "SCHBSBReplacedNavigateImageElement.h"
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
+#import <libEucalyptus/EucCSSDPI.h>
 
 @interface SCHBSBReplacedNavigateImageElement()
 
@@ -39,7 +40,7 @@
 
 - (id)initWithImage:(UIImage *)navigateImage targetNode:(NSString *)navigateTarget binding:(NSString *)aBinding value:(NSString *)aValue
 {
-    if (self = [super initWithPointSize:10]) {
+    if (self = [super init]) {
         image = [navigateImage retain];
         targetNode = [navigateTarget copy];
         binding = [aBinding copy];

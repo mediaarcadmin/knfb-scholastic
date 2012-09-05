@@ -9,6 +9,7 @@
 #import "SCHBSBReplacedDropdownElement.h"
 #import "SCHBSBReplacedElementWebView.h"
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
+#import <libEucalyptus/EucCSSDPI.h>
 
 @interface SCHBSBReplacedDropdownElement() <UIWebViewDelegate>
 
@@ -38,9 +39,9 @@
     [super dealloc];
 }
 
-- (id)initWithPointSize:(CGFloat)point keys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)dropdownBinding value:(NSString *)aValue
+- (id)initWithKeys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)dropdownBinding value:(NSString *)aValue
 {
-    if (self = [super initWithPointSize:point]) {
+    if (self = [super init]) {
         keys = [keyArray copy];
         values = [valueArray copy];
         binding = [dropdownBinding copy];
@@ -52,7 +53,11 @@
 
 - (CGSize)intrinsicSize
 {
-    return CGSizeMake(100, self.pointSize * 1.8);
+    CGFloat adjustedSize;
+    
+    CGSize textSize = [@"PLACEHOLDER" sizeWithFont:[UIFont fontWithName:@"Times New Roman" size:EucCSSPixelsMediumFontSize] minFontSize:6 actualFontSize:&adjustedSize forWidth:100 lineBreakMode:UILineBreakModeWordWrap];
+    
+    return CGSizeMake(100, 10 + textSize.height);
 }
 
 - (THCGViewSpiritElement *)newViewSpiritElement

@@ -6,10 +6,10 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHBSBReplacedElementPlaceholder.h"
+#import "SCHBSBReplacedElement.h"
 
-@interface SCHBSBReplacedNavigateElement : SCHBSBReplacedElementPlaceholder
+@interface SCHBSBReplacedNavigateElement : SCHBSBReplacedElement
 
-- (id)initWithPointSize:(CGFloat)point label:(NSString *)navigateLabel targetNode:(NSString *)navigateTarget binding:(NSString *)aBinding value:(NSString *)aValue;
+- (id)initWithLabel:(NSString *)navigateLabel targetNode:(NSString *)navigateTarget binding:(NSString *)aBinding value:(NSString *)aValue;
 
 @end
