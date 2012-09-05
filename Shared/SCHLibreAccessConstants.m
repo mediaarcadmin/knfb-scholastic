@@ -8,6 +8,10 @@
 
 #import "SCHLibreAccessConstants.h"
 
+// These strings MUST map exactly to the core data entity names.
+// Xcode now enforces the first letter to be lower case, however historically
+// all the entity names began with an upper case
+
 // Method Constants
 NSString * const kSCHLibreAccessWebServiceAuthenticateDevice = @"AuthenticateDevice";
 NSString * const kSCHLibreAccessWebServiceGetUserProfiles = @"GetUserProfiles";
