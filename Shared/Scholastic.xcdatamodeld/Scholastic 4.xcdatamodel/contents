@@ -52,7 +52,6 @@
         <attribute name="BookFileURL" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="bookThumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="downloadFailedCount" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="DRMVersion" optional="YES" attributeType="String">
             <userInfo/>
@@ -797,7 +796,7 @@
         <element name="SCHAppRecommendationItem" positionX="160" positionY="192" width="128" height="180"/>
         <element name="SCHAppState" positionX="0" positionY="0" width="128" height="180"/>
         <element name="SCHBookmark" positionX="292" positionY="653" width="128" height="105"/>
-        <element name="SCHBooksAssignment" positionX="160" positionY="192" width="128" height="210"/>
+        <element name="SCHBooksAssignment" positionX="160" positionY="192" width="128" height="195"/>
         <element name="SCHContentItem" positionX="772" positionY="531" width="128" height="90"/>
         <element name="SCHContentMetadataItem" positionX="990" positionY="586" width="128" height="270"/>
         <element name="SCHContentProfileItem" positionX="806" positionY="1147" width="128" height="120"/>
