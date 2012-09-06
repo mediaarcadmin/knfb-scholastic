@@ -19,6 +19,7 @@ extern NSString * const kSCHRating;
 
 @property (nonatomic, retain) NSNumber * rating;
 @property (nonatomic, retain) NSNumber * averageRating;
+@property (nonatomic, retain) NSNumber * numVotes;
 @property (nonatomic, retain) SCHPrivateAnnotations *PrivateAnnotations;
 
 - (void)setInitialValues;

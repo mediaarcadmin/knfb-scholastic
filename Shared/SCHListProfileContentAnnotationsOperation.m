@@ -919,6 +919,7 @@
     if (webRating != nil) {
         localRating.averageRating = [self makeNullNil:[webRating objectForKey:kSCHLibreAccessWebServiceAverageRating]];
         localRating.rating = [self makeNullNil:[webRating objectForKey:kSCHLibreAccessWebServiceRating]];
+        localRating.numVotes = [self makeNullNil:[webRating objectForKey:kSCHLibreAccessWebServiceNumVotes]];
         
         localRating.LastModified = [self makeNullNil:[webRating objectForKey:kSCHLibreAccessWebServiceLastModified]];
         localRating.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				    
@@ -933,6 +934,7 @@
 	if (rating != nil) {				
 		ret.averageRating = [self makeNullNil:[rating objectForKey:kSCHLibreAccessWebServiceAverageRating]];
 		ret.rating = [self makeNullNil:[rating objectForKey:kSCHLibreAccessWebServiceRating]];
+        ret.numVotes = [self makeNullNil:[rating objectForKey:kSCHLibreAccessWebServiceNumVotes]];
         
 		ret.LastModified = [self makeNullNil:[rating objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];        
