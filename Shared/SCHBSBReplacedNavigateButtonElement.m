@@ -6,11 +6,12 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHBSBReplacedNavigateElement.h"
+#import "SCHBSBReplacedNavigateButtonElement.h"
+#import "SCHBSBReplacedElementNavigateButton.h"
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
 #import <libEucalyptus/EucCSSDPI.h>
 
-@interface SCHBSBReplacedNavigateElement()
+@interface SCHBSBReplacedNavigateButtonElement()
 
 @property (nonatomic, copy) NSString *label;
 @property (nonatomic, copy) NSString *targetNode;
@@ -18,10 +19,11 @@
 @property (nonatomic, copy) NSString *value;
 @property (nonatomic, retain) UIView *navigateView;
 @property (nonatomic, assign) CGFloat fontSize;
+@property (nonatomic, retain) UIImage *image;
 
 @end
 
-@implementation SCHBSBReplacedNavigateElement
+@implementation SCHBSBReplacedNavigateButtonElement
 
 @synthesize label;
 @synthesize targetNode;
@@ -29,6 +31,7 @@
 @synthesize value;
 @synthesize navigateView;
 @synthesize fontSize;
+@synthesize image;
 
 - (void)dealloc
 {
@@ -37,6 +40,8 @@
     [binding release], binding = nil;
     [value release], value = nil;
     [navigateView release], navigateView = nil;
+    [image release], image = nil;
+    
     [super dealloc];
 }
 
@@ -58,8 +63,10 @@
     
     CGSize textSize = [self.label sizeWithFont:[UIFont fontWithName:@"Times New Roman" size:EucCSSPixelsMediumFontSize] minFontSize:6 actualFontSize:&adjustedSize forWidth:160 lineBreakMode:UILineBreakModeWordWrap];
     
-    textSize.width += 20;
-    textSize.height += 20;
+    textSize.width += 6 + self.image.size.width;
+    textSize.height += 6;
+    
+    textSize.height = MAX(textSize.height, self.image.size.width);
     
     return textSize;
 }
@@ -73,26 +80,48 @@
     return nil;
 }
 
+- (UIImage *)image
+{
+    if (!image) {
+        image = [[UIImage imageNamed:@"button-go"] retain];
+    }
+    
+    return image;
+}
+
 - (UIView *)navigateView
 {
     if (!navigateView) {
         CGRect frame = CGRectZero;
         frame.size = self.intrinsicSize;
         
-        UIButton *button = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-        button.frame = frame;
-        [button.titleLabel setFont:[UIFont fontWithName:@"Times New Roman" size:self.pointSize]];
-        [button.titleLabel setAdjustsFontSizeToFitWidth:YES];
-        [button.titleLabel setMinimumFontSize:6];
-        [button.titleLabel setNumberOfLines:0];
-        [button.titleLabel setLineBreakMode:UILineBreakModeWordWrap];
-        [button.titleLabel setTextAlignment:UITextAlignmentCenter];
-        [button setTitleEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
-        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [button setTitle:self.label forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(navigateToNode:) forControlEvents:UIControlEventTouchUpInside];
+        UIView *container = [[UIView alloc] initWithFrame:frame];
+        container.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        container.autoresizesSubviews = YES;
         
-        navigateView = button;
+        CGRect buttonFrame = CGRectMake(frame.size.width - frame.size.height, 0, frame.size.height, frame.size.height);
+        CGRect labelFrame =  CGRectMake(0, 0, frame.size.width - frame.size.height, frame.size.height);
+        
+        SCHBSBReplacedElementNavigateButton *button = [[[SCHBSBReplacedElementNavigateButton alloc] initWithFrame:buttonFrame] autorelease];
+        [button addTarget:self action:@selector(navigateToNode:) forControlEvents:UIControlEventTouchUpInside];
+        [button setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin];
+
+        [container addSubview:button];
+        
+        UILabel *buttonLabel = [[[UILabel alloc] initWithFrame:labelFrame] autorelease];
+        [buttonLabel setFont:[UIFont fontWithName:@"Times New Roman" size:self.pointSize]];
+        [buttonLabel setAdjustsFontSizeToFitWidth:YES];
+        [buttonLabel setMinimumFontSize:6];
+        [buttonLabel setNumberOfLines:0];
+        [buttonLabel setLineBreakMode:UILineBreakModeWordWrap];
+        [buttonLabel setTextAlignment:UITextAlignmentLeft];
+        [buttonLabel setTextColor:[UIColor blackColor]];
+        [buttonLabel setText:self.label];
+        [buttonLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin];
+        
+        [container addSubview:buttonLabel];
+        
+        navigateView = container;
     }
     
     return navigateView;

@@ -3171,11 +3171,11 @@
 		C97DCBB115E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
 		C97DCBB215E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
 		C97DCBB315E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */; };
-		C97DCBB615E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
-		C97DCBB715E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
-		C97DCBB815E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
-		C97DCBB915E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
-		C97DCBBA15E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */; };
+		C97DCBB615E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m */; };
+		C97DCBB715E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m */; };
+		C97DCBB815E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m */; };
+		C97DCBB915E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m */; };
+		C97DCBBA15E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m */; };
 		C97DCBBD15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
 		C97DCBBE15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
 		C97DCBBF15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */; };
@@ -3239,6 +3239,16 @@
 		C9A1F34815F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F34515F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m */; };
 		C9A1F34915F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F34515F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m */; };
 		C9A1F34A15F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F34515F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m */; };
+		C9A1F41715F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41615F89190000705C4 /* SCHBSBReplacedElementNavigateButton.m */; };
+		C9A1F41815F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41615F89190000705C4 /* SCHBSBReplacedElementNavigateButton.m */; };
+		C9A1F41915F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41615F89190000705C4 /* SCHBSBReplacedElementNavigateButton.m */; };
+		C9A1F41A15F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41615F89190000705C4 /* SCHBSBReplacedElementNavigateButton.m */; };
+		C9A1F41B15F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41615F89190000705C4 /* SCHBSBReplacedElementNavigateButton.m */; };
+		C9A1F41E15F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */; };
+		C9A1F41F15F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */; };
+		C9A1F42015F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */; };
+		C9A1F42115F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */; };
+		C9A1F42215F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */; };
 		C9A6B3FB148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
 		C9A6B3FC148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
 		C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
@@ -6274,8 +6284,8 @@
 		C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementWebView.m; path = Shared/SCHBSBReplacedElementWebView.m; sourceTree = "<group>"; };
 		C97DCBAD15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedDropdownElement.h; path = Shared/SCHBSBReplacedDropdownElement.h; sourceTree = "<group>"; };
 		C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedDropdownElement.m; path = Shared/SCHBSBReplacedDropdownElement.m; sourceTree = "<group>"; };
-		C97DCBB415E3B57A003B2DF3 /* SCHBSBReplacedNavigateElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedNavigateElement.h; path = Shared/SCHBSBReplacedNavigateElement.h; sourceTree = "<group>"; };
-		C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedNavigateElement.m; path = Shared/SCHBSBReplacedNavigateElement.m; sourceTree = "<group>"; };
+		C97DCBB415E3B57A003B2DF3 /* SCHBSBReplacedNavigateButtonElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedNavigateButtonElement.h; path = Shared/SCHBSBReplacedNavigateButtonElement.h; sourceTree = "<group>"; };
+		C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedNavigateButtonElement.m; path = Shared/SCHBSBReplacedNavigateButtonElement.m; sourceTree = "<group>"; };
 		C97DCBBB15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementTextField.h; path = Shared/SCHBSBReplacedElementTextField.h; sourceTree = "<group>"; };
 		C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementTextField.m; path = Shared/SCHBSBReplacedElementTextField.m; sourceTree = "<group>"; };
 		C97DCBC215E3CECC003B2DF3 /* SCHBSBReplacedTextElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedTextElement.h; path = Shared/SCHBSBReplacedTextElement.h; sourceTree = "<group>"; };
@@ -6320,6 +6330,10 @@
 		C9A1129613608319007FD763 /* button-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-blue@2x.png"; path = "Resources/UIAssets/button-blue@2x.png"; sourceTree = "<group>"; };
 		C9A1F34415F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedNavigateImageElement.h; path = Shared/SCHBSBReplacedNavigateImageElement.h; sourceTree = "<group>"; };
 		C9A1F34515F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedNavigateImageElement.m; path = Shared/SCHBSBReplacedNavigateImageElement.m; sourceTree = "<group>"; };
+		C9A1F41515F8918D000705C4 /* SCHBSBReplacedElementNavigateButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementNavigateButton.h; path = Shared/SCHBSBReplacedElementNavigateButton.h; sourceTree = "<group>"; };
+		C9A1F41615F89190000705C4 /* SCHBSBReplacedElementNavigateButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementNavigateButton.m; path = Shared/SCHBSBReplacedElementNavigateButton.m; sourceTree = "<group>"; };
+		C9A1F41C15F8B618000705C4 /* SCHBSBReplacedElementRadioControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementRadioControl.h; path = Shared/SCHBSBReplacedElementRadioControl.h; sourceTree = "<group>"; };
+		C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementRadioControl.m; path = Shared/SCHBSBReplacedElementRadioControl.m; sourceTree = "<group>"; };
 		C9A6B3F9148B7F0900B31277 /* SCHHelpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpManager.h; path = Shared/SCHHelpManager.h; sourceTree = "<group>"; };
 		C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpManager.m; path = Shared/SCHHelpManager.m; sourceTree = "<group>"; };
 		C9A6B3FE148B853C00B31277 /* SCHAppHelpState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppHelpState.h; path = Shared/SCHAppHelpState.h; sourceTree = "<group>"; };
@@ -9582,8 +9596,8 @@
 				C9C33C84155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m */,
 				C9A1F34415F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.h */,
 				C9A1F34515F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m */,
-				C97DCBB415E3B57A003B2DF3 /* SCHBSBReplacedNavigateElement.h */,
-				C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m */,
+				C97DCBB415E3B57A003B2DF3 /* SCHBSBReplacedNavigateButtonElement.h */,
+				C97DCBB515E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m */,
 				C97DCBAD15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.h */,
 				C97DCBAE15E27AB7003B2DF3 /* SCHBSBReplacedDropdownElement.m */,
 				C97DCA5B15D55490003B2DF3 /* SCHBSBReplacedRadioElement.h */,
@@ -9599,6 +9613,10 @@
 				C97DCA6315D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m */,
 				C97DCBBB15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.h */,
 				C97DCBBC15E3CE68003B2DF3 /* SCHBSBReplacedElementTextField.m */,
+				C9A1F41515F8918D000705C4 /* SCHBSBReplacedElementNavigateButton.h */,
+				C9A1F41615F89190000705C4 /* SCHBSBReplacedElementNavigateButton.m */,
+				C9A1F41C15F8B618000705C4 /* SCHBSBReplacedElementRadioControl.h */,
+				C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */,
 			);
 			name = "Branching Stories";
 			sourceTree = "<group>";
@@ -13732,7 +13750,7 @@
 				C97DCA6415D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74715D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
 				C97DCBAF15E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
-				C97DCBB615E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBB615E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m in Sources */,
 				C97DCBBD15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC415E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 				F8FB038F15EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
@@ -13741,6 +13759,8 @@
 				C9E73AC615EF8A6D00DC7C11 /* SCHBSBProperty.m in Sources */,
 				C9E73ACF15F4D9EE00DC7C11 /* SCHBSBReplacedHiddenElement.m in Sources */,
 				C9A1F34615F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */,
+				C9A1F41715F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
+				C9A1F41E15F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14147,7 +14167,7 @@
 				C97DCA6615D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74915D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
 				C97DCBB115E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
-				C97DCBB815E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBB815E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m in Sources */,
 				C97DCBBF15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC615E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 				F8FB039115EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
@@ -14156,6 +14176,8 @@
 				C9E73AC815EF8A6D00DC7C11 /* SCHBSBProperty.m in Sources */,
 				C9E73AD115F4D9EE00DC7C11 /* SCHBSBReplacedHiddenElement.m in Sources */,
 				C9A1F34815F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */,
+				C9A1F41915F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
+				C9A1F42015F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14557,7 +14579,7 @@
 				C97DCA6515D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74815D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
 				C97DCBB015E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
-				C97DCBB715E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBB715E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m in Sources */,
 				C97DCBBE15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC515E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 				F8FB039015EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
@@ -14566,6 +14588,8 @@
 				C9E73AC715EF8A6D00DC7C11 /* SCHBSBProperty.m in Sources */,
 				C9E73AD015F4D9EE00DC7C11 /* SCHBSBReplacedHiddenElement.m in Sources */,
 				C9A1F34715F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */,
+				C9A1F41815F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
+				C9A1F41F15F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14967,7 +14991,7 @@
 				C97DCA6715D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74A15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
 				C97DCBB215E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
-				C97DCBB915E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBB915E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m in Sources */,
 				C97DCBC015E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC715E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 				F8FB039215EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
@@ -14976,6 +15000,8 @@
 				C9E73AC915EF8A6D00DC7C11 /* SCHBSBProperty.m in Sources */,
 				C9E73AD215F4D9EE00DC7C11 /* SCHBSBReplacedHiddenElement.m in Sources */,
 				C9A1F34915F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */,
+				C9A1F41A15F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
+				C9A1F42115F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15377,7 +15403,7 @@
 				C97DCA6815D5591B003B2DF3 /* SCHBSBReplacedElementWebView.m in Sources */,
 				5297B74B15D9333D00E13B11 /* SCHHotSpotCoordinates.m in Sources */,
 				C97DCBB315E27AB8003B2DF3 /* SCHBSBReplacedDropdownElement.m in Sources */,
-				C97DCBBA15E3B57B003B2DF3 /* SCHBSBReplacedNavigateElement.m in Sources */,
+				C97DCBBA15E3B57B003B2DF3 /* SCHBSBReplacedNavigateButtonElement.m in Sources */,
 				C97DCBC115E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC815E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 				F8FB039315EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */,
@@ -15386,6 +15412,8 @@
 				C9E73ACA15EF8A6D00DC7C11 /* SCHBSBProperty.m in Sources */,
 				C9E73AD315F4D9EE00DC7C11 /* SCHBSBReplacedHiddenElement.m in Sources */,
 				C9A1F34A15F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */,
+				C9A1F41B15F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
+				C9A1F42215F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

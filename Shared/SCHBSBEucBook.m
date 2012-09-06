@@ -23,7 +23,7 @@
 #import "SCHBSBReplacedHiddenElement.h"
 #import "SCHBSBReplacedRadioElement.h"
 #import "SCHBSBReplacedDropdownElement.h"
-#import "SCHBSBReplacedNavigateElement.h"
+#import "SCHBSBReplacedNavigateButtonElement.h"
 #import "SCHBSBReplacedNavigateImageElement.h"
 #import "SCHBSBReplacedTextElement.h"
 #import <libEucalyptus/EucCSSXHTMLTree.h>
@@ -550,7 +550,7 @@
                 NSString *dataString = [docNode text];
                     
                 if (target && [dataString length]) {
-                    replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithLabel:dataString targetNode:target binding:propertyName value:propertyValue] autorelease];
+                    replacedElement = [[[SCHBSBReplacedNavigateButtonElement alloc] initWithLabel:dataString targetNode:target binding:propertyName value:propertyValue] autorelease];
                 }
             }
         }
@@ -611,7 +611,7 @@
             NSString *dataValue = [treeNode attributeWithName:@"data-value"];
             NSString *dataGoto = [treeNode attributeWithName:@"data-goto"];
             
-            replacedElement = [[[SCHBSBReplacedNavigateElement alloc] initWithLabel:dataValue targetNode:dataGoto binding:nil value:nil] autorelease];
+            replacedElement = [[[SCHBSBReplacedNavigateButtonElement alloc] initWithLabel:dataValue targetNode:dataGoto binding:nil value:nil] autorelease];
         }
 #endif
     }

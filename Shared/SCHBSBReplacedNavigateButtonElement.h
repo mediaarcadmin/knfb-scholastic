@@ -8,7 +8,7 @@
 
 #import "SCHBSBReplacedElement.h"
 
-@interface SCHBSBReplacedNavigateElement : SCHBSBReplacedElement
+@interface SCHBSBReplacedNavigateButtonElement : SCHBSBReplacedElement
 
 - (id)initWithLabel:(NSString *)navigateLabel targetNode:(NSString *)navigateTarget binding:(NSString *)aBinding value:(NSString *)aValue;
 
