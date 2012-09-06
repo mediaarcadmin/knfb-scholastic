@@ -283,7 +283,9 @@
         newContentMetadataItem.DRMQualifier = webBookIdentifier.DRMQualifier;
         newContentMetadataItem.ContentIdentifierType = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
         newContentMetadataItem.ContentIdentifier = webBookIdentifier.isbn;
-        
+
+        newContentMetadataItem.AverageRating = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+        newContentMetadataItem.numVotes = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceNumVotes]];
         newContentMetadataItem.Author = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAuthor]];
         newContentMetadataItem.Version = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceVersion]];
         newContentMetadataItem.Enhanced = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEnhanced]];
@@ -293,9 +295,18 @@
         newContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
         newContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
         newContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
-        newContentMetadataItem.AverageRating = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
-        
-        newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook 
+        newContentMetadataItem.thumbnailURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceThumbnailURL]];
+        newContentMetadataItem.readingLevel = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceReadingLevel]];
+        newContentMetadataItem.appealsToLow = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAppealsToLow]];
+        newContentMetadataItem.appealsToHigh = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAppealsToHigh]];
+        newContentMetadataItem.guidedReadingLevel = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceGuidedReadingLevel]];
+        newContentMetadataItem.eBookLexileLevel = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEBookLexileLevel]];
+        newContentMetadataItem.misc2 = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc2]];
+        newContentMetadataItem.misc3 = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc3]];
+        newContentMetadataItem.misc4 = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc4]];
+        newContentMetadataItem.misc5 = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc5]];
+
+        newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook
                                                                        inManagedObjectContext:aManagedObjectContext];
     }
     [webBookIdentifier release], webBookIdentifier = nil;
@@ -310,7 +321,9 @@
         localContentMetadataItem.DRMQualifier = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
         localContentMetadataItem.ContentIdentifierType = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
         localContentMetadataItem.ContentIdentifier = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-        
+
+        localContentMetadataItem.AverageRating = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+        localContentMetadataItem.numVotes = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceNumVotes]];
         localContentMetadataItem.Author = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAuthor]];
         localContentMetadataItem.Version = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceVersion]];
         localContentMetadataItem.Enhanced = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEnhanced]];
@@ -326,7 +339,20 @@
         localContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
         localContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
         localContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
-        localContentMetadataItem.AverageRating = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+        NSString *thumbnailURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceThumbnailURL]];
+        if (thumbnailURL != nil) {
+            localContentMetadataItem.thumbnailURL = contentURL;
+        }
+        localContentMetadataItem.readingLevel = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceReadingLevel]];
+        localContentMetadataItem.appealsToLow = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAppealsToLow]];
+        localContentMetadataItem.appealsToHigh = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAppealsToHigh]];
+        localContentMetadataItem.guidedReadingLevel = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceGuidedReadingLevel]];
+        localContentMetadataItem.eBookLexileLevel = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEBookLexileLevel]];
+        localContentMetadataItem.misc2 = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc2]];
+        localContentMetadataItem.misc3 = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc3]];
+        localContentMetadataItem.misc4 = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc4]];
+        localContentMetadataItem.misc5 = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc5]];
+
     }
 }
 

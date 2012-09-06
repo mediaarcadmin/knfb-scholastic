@@ -42,21 +42,33 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 
 @implementation SCHContentMetadataItem
 
+@dynamic appealsToHigh;
+@dynamic appealsToLow;
 @dynamic Author;
-@dynamic Description;
-@dynamic Version;
+@dynamic AverageRating;
 @dynamic ContentURL;
 @dynamic CoverURL;
+@dynamic Description;
+@dynamic eBookLexileLevel;
 @dynamic Enhanced;
-@dynamic Title;
-@dynamic FileSize;
-@dynamic PageNumber;
 @dynamic FileName;
-@dynamic AppBook;
-@dynamic eReaderCategories;
+@dynamic FileSize;
 @dynamic FormatAuthorString;
 @dynamic formatTitleString;
-@dynamic AverageRating;
+@dynamic guidedReadingLevel;
+@dynamic misc2;
+@dynamic misc3;
+@dynamic misc4;
+@dynamic misc5;
+@dynamic numVotes;
+@dynamic PageNumber;
+@dynamic readingLevel;
+@dynamic thumbnailURL;
+@dynamic Title;
+@dynamic Version;
+
+@dynamic AppBook;
+@dynamic eReaderCategories;
 
 - (NSSet *)AnnotationsContentItem
 {

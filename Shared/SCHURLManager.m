@@ -10,7 +10,6 @@
 
 #import "SCHAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
-#import "SCHContentMetadataItem.h"
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHAppBook.h"
