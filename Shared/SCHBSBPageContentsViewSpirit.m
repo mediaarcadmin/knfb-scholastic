@@ -16,6 +16,7 @@
 #import <libEucalyptus/EucCSSRenderPageViewSpirit.h>
 #import <libEucalyptus/EucBookPageIndexPointRange.h>
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
+#import <libEucalyptus/THStringRenderer.h>
 
 @interface SCHBSBPageContentsViewSpirit() <EucCSSRenderPageViewSpiritDelegate>
 
@@ -253,12 +254,15 @@
     id<EucCSSReplacedElement> replacedElement = [documentNode replacedElement];
 
     if (replacedElement && [replacedElement isKindOfClass:[SCHBSBReplacedElement class]]) {
-        //CGFloat scaleFactor = [pageViewSpirit scaleFactor];
-        //CGFloat pointSize = [documentTreeNode textPointSizeWithScaleFactor:scaleFactor];
-        //pointSize = pointSize;
-        //THStringRenderer *renderer = [documentTreeNode stringRenderer];
-        //renderer = renderer;
-        [(SCHBSBReplacedElement *)replacedElement setPointSize:self.pointSize];
+        CGFloat scaleFactor = self.pointSize / EucCSSPixelsMediumFontSize;
+        CGFloat cssPointSize = [documentNode textPointSizeWithScaleFactor:scaleFactor];
+        
+        THStringRenderer *renderer = [documentNode stringRenderer];
+        NSString *fontPostscriptName = [renderer fontPostscriptName];
+        UIFont *font = [UIFont fontWithName:fontPostscriptName size:cssPointSize];
+        
+        [(SCHBSBReplacedElement *)replacedElement setFont:font];
+        [(SCHBSBReplacedElement *)replacedElement setPointSize:cssPointSize];
         THCGViewSpiritElement *viewSpiritElement = [[replacedElement newViewSpiritElement] autorelease];
         
         if (viewSpiritElement) {

@@ -12,6 +12,7 @@
 @interface SCHBSBReplacedElement : NSObject <EucCSSReplacedElement>
 
 @property (nonatomic, assign) CGFloat pointSize;
+@property (nonatomic, retain) UIFont *font;
 @property (nonatomic, assign) id <SCHBSBReplacedElementDelegate> delegate;
 @property (nonatomic, copy) NSString *nodeId;
 

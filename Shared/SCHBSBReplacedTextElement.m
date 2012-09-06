@@ -77,7 +77,8 @@
         textField.adjustsFontSizeToFitWidth = YES;
         textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         textField.text = self.value;
-        textField.font = [UIFont fontWithName:@"Times New Roman" size:self.pointSize];
+        textField.font = self.font;
+        //textField.font = [UIFont fontWithName:@"Times New Roman" size:self.pointSize];
         
         [textField addTarget:textField action:@selector(endEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
         textView = textField;

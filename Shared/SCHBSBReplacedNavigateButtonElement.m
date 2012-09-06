@@ -109,7 +109,8 @@
         [container addSubview:button];
         
         UILabel *buttonLabel = [[[UILabel alloc] initWithFrame:labelFrame] autorelease];
-        [buttonLabel setFont:[UIFont fontWithName:@"Times New Roman" size:self.pointSize]];
+        [buttonLabel setFont:self.font];
+        //[buttonLabel setFont:[UIFont fontWithName:@"Times New Roman" size:self.pointSize]];
         [buttonLabel setAdjustsFontSizeToFitWidth:YES];
         [buttonLabel setMinimumFontSize:6];
         [buttonLabel setNumberOfLines:0];

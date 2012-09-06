@@ -15,6 +15,7 @@
 @synthesize pointSize;
 @synthesize delegate;
 @synthesize nodeId;
+@synthesize font;
 
 - (void)dealloc
 {
@@ -26,6 +27,15 @@
 - (CGSize)intrinsicSize
 {
     return CGSizeZero; // Subclasses should override with something more sensisble
+}
+
+- (UIFont *)font
+{
+    if (font) {
+        return font;
+    }
+    
+    return [UIFont systemFontOfSize:17];
 }
 
 - (void)renderInRect:(CGRect)rect inContext:(CGContextRef)context
