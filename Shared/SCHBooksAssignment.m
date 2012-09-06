@@ -25,6 +25,7 @@ NSString * const kSCHBooksAssignment = @"SCHBooksAssignment";
 @dynamic quantity;
 @dynamic quantityInit;
 @dynamic version;
+@dynamic numVotes;
 @dynamic profileList;
 
 - (NSSet *)ContentMetadataItem

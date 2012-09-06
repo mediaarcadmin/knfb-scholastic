@@ -260,6 +260,7 @@
         newBooksAssignment.lastVersion = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceLastVersion]];
         newBooksAssignment.freeBook = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceFreeBook]];
         newBooksAssignment.averageRating = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+        newBooksAssignment.numVotes = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceNumVotes]];
         newBooksAssignment.quantity = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceQuantity]];
         newBooksAssignment.quantityInit = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceQuantityInit]];
         
@@ -432,6 +433,7 @@
         localBooksAssignment.lastVersion = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceLastVersion]];
         localBooksAssignment.freeBook = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceFreeBook]];
         localBooksAssignment.averageRating = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceAverageRating]];
+        localBooksAssignment.numVotes = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceNumVotes]];
         localBooksAssignment.quantity = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceQuantity]];
         localBooksAssignment.quantityInit = [self makeNullNil:[webBooksAssignment objectForKey:kSCHLibreAccessWebServiceQuantityInit]];
         

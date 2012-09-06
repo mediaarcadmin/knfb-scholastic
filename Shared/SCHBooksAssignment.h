@@ -31,6 +31,7 @@ extern NSString * const kSCHBooksAssignment;
 @property (nonatomic, retain) NSNumber * quantity;
 @property (nonatomic, retain) NSNumber * quantityInit;
 @property (nonatomic, retain) NSNumber * version;
+@property (nonatomic, retain) NSNumber * numVotes;
 @property (nonatomic, retain) NSSet *profileList;
 
 @property (nonatomic, readonly) NSSet *ContentMetadataItem;
