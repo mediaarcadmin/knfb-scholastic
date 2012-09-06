@@ -11,6 +11,7 @@
 #import "SCHAppBook.h"
 #import "BITNetworkActivityManager.h"
 #import "NSFileManager+Extensions.h"
+#import "SCHBooksAssignment.h"
 
 #pragma mark - Class Extension
 
@@ -430,12 +431,12 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
             [self performWithBookAndSave:^(SCHAppBook *book) {
                 
                 int contentMetadataVersion = [[[book ContentMetadataItem] Version] intValue];
-                int userContentVersion = [[[[book ContentMetadataItem] booksAssignment] Version] intValue];
+                int userContentVersion = [[[[book ContentMetadataItem] booksAssignment] version] intValue];
                 
                 if (contentMetadataVersion > userContentVersion) {
                     book.OnDiskVersion = [[book ContentMetadataItem] Version];
                 } else {
-                    book.OnDiskVersion = [[[book ContentMetadataItem] booksAssignment] Version];
+                    book.OnDiskVersion = [[[[book ContentMetadataItem] booksAssignment] version] stringValue];
                 }
                 book.XPSExists = [NSNumber numberWithBool:YES];
             }];

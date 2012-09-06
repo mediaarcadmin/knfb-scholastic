@@ -2217,7 +2217,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
         SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
         if (appContentProfileItem != nil) {
-            newHighlight.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.booksAssignment.version integerValue]];
+            newHighlight.Version = appContentProfileItem.ContentProfileItem.booksAssignment.version;
         }
         [self save];
     }
@@ -2978,7 +2978,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         SCHAppContentProfileItem *appContentProfileItem = [profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
         if (appContentProfileItem != nil) {
-            scratchNote.Version = [NSNumber numberWithInteger:[appContentProfileItem.ContentProfileItem.booksAssignment.version integerValue]];
+            scratchNote.Version = appContentProfileItem.ContentProfileItem.booksAssignment.version;
         }
         
         SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
