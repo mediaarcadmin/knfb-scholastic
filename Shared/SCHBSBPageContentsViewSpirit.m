@@ -248,9 +248,9 @@
 }
 
 - (THCGViewSpiritElement *)eucCSSRenderPageViewSpirit:(EucCSSRenderPageViewSpirit *)pageViewSpirit
-                    overlayElementForDocumentTreeNode:(EucCSSIntermediateDocumentNode *)documentTreeNode
+                   overlayElementsForDocumentNode:(EucCSSIntermediateDocumentNode *)documentNode
 {
-    id<EucCSSReplacedElement> replacedElement = [documentTreeNode replacedElement];
+    id<EucCSSReplacedElement> replacedElement = [documentNode replacedElement];
 
     if (replacedElement && [replacedElement isKindOfClass:[SCHBSBReplacedElement class]]) {
         //CGFloat scaleFactor = [pageViewSpirit scaleFactor];
@@ -259,7 +259,11 @@
         //THStringRenderer *renderer = [documentTreeNode stringRenderer];
         //renderer = renderer;
         [(SCHBSBReplacedElement *)replacedElement setPointSize:self.pointSize];
-        return [replacedElement newViewSpiritElement];
+        THCGViewSpiritElement *viewSpiritElement = [[replacedElement newViewSpiritElement] autorelease];
+        
+        if (viewSpiritElement) {
+            return [NSArray arrayWithObject:viewSpiritElement];
+        }
     }
     
     return nil;
