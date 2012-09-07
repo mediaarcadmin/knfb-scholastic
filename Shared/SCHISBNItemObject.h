@@ -14,5 +14,6 @@
 @property (nonatomic, retain) NSNumber *ContentIdentifierType;
 @property (nonatomic, copy)   NSString *ContentIdentifier;
 @property (nonatomic, assign) BOOL coverURLOnly;
+@property (nonatomic, retain) NSNumber *Version;
 
 @end

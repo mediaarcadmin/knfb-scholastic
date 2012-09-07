@@ -41,6 +41,7 @@
     [self didChangeValueForKey:@"isExecuting"];
     
     __block BOOL validContentMetadataURLs = NO;
+    __block NSInteger version = 0;
     
     // sync call to find out if we have valid contentMetadata URLs
     [self performWithBook:^(SCHAppBook *book) {
@@ -50,7 +51,8 @@
     if (validContentMetadataURLs) {
         [self performWithBookAndSave:^(SCHAppBook *book) {
             [book setValue:book.ContentMetadataItem.CoverURL forKey:kSCHAppBookCoverURL];
-            [book setValue:book.ContentMetadataItem.ContentURL forKey:kSCHAppBookFileURL];                    
+            [book setValue:book.ContentMetadataItem.ContentURL forKey:kSCHAppBookFileURL];
+            version = [book.ContentMetadataItem.Version integerValue];
         }];
         [self setProcessingState:SCHBookProcessingStateNoCoverImage];
         [self setIsProcessing:NO];                
@@ -60,7 +62,8 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlCleared:) name:kSCHURLManagerCleared object:nil];
         
-        [[SCHURLManager sharedURLManager] requestURLForBook:self.identifier];
+        [[SCHURLManager sharedURLManager] requestURLForBook:self.identifier
+                                                    version:[NSNumber numberWithInteger:version]];
     }
 }
 
