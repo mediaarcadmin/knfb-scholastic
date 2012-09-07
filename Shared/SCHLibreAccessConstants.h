@@ -174,7 +174,6 @@ extern NSString * const kSCHLibreAccessWebServiceTransactionId;
 extern NSString * const kSCHLibreAccessWebServiceTransactionIdSourceField;
 extern NSString * const kSCHLibreAccessWebServiceType;
 extern NSString * const kSCHLibreAccessWebServiceUCN;
-extern NSString * const kSCHLibreAccessWebServiceUserContentList;
 extern NSString * const kSCHLibreAccessWebServiceUserKey;
 extern NSString * const kSCHLibreAccessWebServiceUserSettingsList;
 extern NSString * const kSCHLibreAccessWebServiceUserSettingsStatusList;

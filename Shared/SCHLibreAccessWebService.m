@@ -653,8 +653,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = [self objectFromRenewToken:anObject];
 		} else if ([anObject isKindOfClass:[tns1_GetUserProfilesResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ProfileList] ProfileItem]] forKey:kSCHLibreAccessWebServiceProfileList];
-		} else if ([anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListBooksAssignment class]] == YES) {
-			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject booksAssignmentList] booksAssignment]] forKey:kSCHLibreAccessWebServiceUserContentList];
+		} else if ([anObject isKindOfClass:[tns1_ListBooksAssignmentResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject booksAssignmentList] booksAssignment]] forKey:kSCHLibreAccessWebServiceBooksAssignmentList];
 		} else if ([anObject isKindOfClass:[tns1_ListContentMetadataResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ContentMetadataList] ContentMetadataItem]] forKey:kSCHLibreAccessWebServiceContentMetadataList];
 		} else if ([anObject isKindOfClass:[tns1_SaveUserProfilesResponse class]] == YES) {

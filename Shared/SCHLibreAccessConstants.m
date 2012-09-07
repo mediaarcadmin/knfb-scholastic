@@ -180,7 +180,6 @@ NSString * const kSCHLibreAccessWebServiceTransactionId = @"transactionId";
 NSString * const kSCHLibreAccessWebServiceTransactionIdSourceField = @"transactionIdSourceField";
 NSString * const kSCHLibreAccessWebServiceType = @"Type";
 NSString * const kSCHLibreAccessWebServiceUCN = @"ucn";
-NSString * const kSCHLibreAccessWebServiceUserContentList = @"UserContentList";
 NSString * const kSCHLibreAccessWebServiceUserKey = @"UserKey";
 NSString * const kSCHLibreAccessWebServiceUserSettingsList = @"UserSettingsList";
 NSString * const kSCHLibreAccessWebServiceUserSettingsStatusList = @"UserSettingsStatusList";
