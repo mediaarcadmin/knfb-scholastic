@@ -48,7 +48,7 @@
         values = [valueArray copy];
         binding = [radioBinding copy];
         value = [aValue copy];
-        useWebview = YES;
+        useWebview = NO;
     }
     
     return self;
@@ -56,13 +56,18 @@
 
 - (CGSize)intrinsicSize
 {
-    CGFloat adjustedSize;
+    if (self.useWebview) {
+        CGFloat adjustedSize;
     
-    CGSize textSize = [@"PLACEHOLDER" sizeWithFont:[UIFont fontWithName:@"Times New Roman" size:EucCSSPixelsMediumFontSize] minFontSize:6 actualFontSize:&adjustedSize forWidth:100 lineBreakMode:UILineBreakModeWordWrap];
+        CGSize textSize = [@"PLACEHOLDER" sizeWithFont:[UIFont fontWithName:@"Times New Roman" size:EucCSSPixelsMediumFontSize] minFontSize:6 actualFontSize:&adjustedSize forWidth:100 lineBreakMode:UILineBreakModeWordWrap];
     
-    NSUInteger elementCount = MIN([self.keys count], [self.values count]);
+        NSUInteger elementCount = MIN([self.keys count], [self.values count]);
 
-    return CGSizeMake(100, 10 + textSize.height * elementCount);
+        return CGSizeMake(100, 10 + textSize.height * elementCount);
+    } else {
+        UIFont *intrinsicFont = self.font ? : [UIFont systemFontOfSize:EucCSSPixelsMediumFontSize];
+        return [SCHBSBReplacedElementRadioControl sizeWithFont:intrinsicFont forWidth:300 items:self.values];
+    }
 }
 
 - (THCGViewSpiritElement *)newViewSpiritElement
@@ -78,10 +83,10 @@
 {
     if (!radioView) {
         
-        CGRect radioFrame = CGRectZero;
-        radioFrame.size = self.intrinsicSize;
-        
         if (self.useWebview) {
+            
+            CGRect radioFrame = CGRectZero;
+            radioFrame.size = self.intrinsicSize;
             
             SCHBSBReplacedElementWebView *webview = [[SCHBSBReplacedElementWebView alloc] initWithFrame:radioFrame];
             webview.jsBridgeTarget = self;
@@ -102,15 +107,29 @@
             radioView = webview;
             
         } else {
-            SCHBSBReplacedElementRadioControl *radio = [[SCHBSBReplacedElementRadioControl alloc] initWithItems:self.values];
-            radio.frame = radioFrame;
+            SCHBSBReplacedElementRadioControl *radio = [[SCHBSBReplacedElementRadioControl alloc] initWithFont:self.font width:self.intrinsicSize.width items:self.values];
+            [radio addTarget:self action:@selector(radioSelectionChanged:) forControlEvents:UIControlEventValueChanged];
+            
+            if (self.value) {
+                NSInteger index = [self.values indexOfObject:self.value];
+                [radio setSelectedButtonIndex:index];
+            }
+            
+            radioView = radio;
         }
     }
     
     return radioView;
 }
 
-#pragma mark - jsBridgeTarget Methods
+#pragma mark - Target Methods
+
+- (void)radioSelectionChanged:(SCHBSBReplacedElementRadioControl *)sender
+{
+    NSString *selection = [sender titleForButtonAtIndex:[sender selectedButtonIndex]];
+    NSLog(@"Radio changed: %@", selection);
+    [self.delegate binding:self.binding didUpdateValue:selection];
+}
 
 - (void)selectionDidChange:(NSString *)selection
 {

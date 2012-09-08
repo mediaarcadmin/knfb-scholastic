@@ -255,14 +255,18 @@
 
     if (replacedElement && [replacedElement isKindOfClass:[SCHBSBReplacedElement class]]) {
         CGFloat scaleFactor = self.pointSize / EucCSSPixelsMediumFontSize;
+        [(SCHBSBReplacedElement *)replacedElement setScaleFactor:scaleFactor];
+        
         CGFloat cssPointSize = [documentNode textPointSizeWithScaleFactor:scaleFactor];
         
         THStringRenderer *renderer = [documentNode stringRenderer];
         NSString *fontPostscriptName = [renderer fontPostscriptName];
         UIFont *font = [UIFont fontWithName:fontPostscriptName size:cssPointSize];
         
-        [(SCHBSBReplacedElement *)replacedElement setFont:font];
-        [(SCHBSBReplacedElement *)replacedElement setPointSize:cssPointSize];
+        if (font) {
+            [(SCHBSBReplacedElement *)replacedElement setFont:font];
+        }
+        
         THCGViewSpiritElement *viewSpiritElement = [[replacedElement newViewSpiritElement] autorelease];
         
         if (viewSpiritElement) {

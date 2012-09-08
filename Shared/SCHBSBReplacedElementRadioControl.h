@@ -14,9 +14,7 @@ enum {
 
 @interface SCHBSBReplacedElementRadioControl : UIControl
 
-- (id)initWithItems:(NSArray *)items; // items can be NSStrings. Control is automatically sized to fit content
-
-- (void)setFont:(UIFont *)font;
+- (id)initWithFont:(UIFont *)font width:(CGFloat)width items:(NSArray *)items; // items can be NSStrings. Control is automatically sized to fit content in width
 
 - (void)setTitle:(NSString *)title forButtonAtIndex:(NSUInteger)index;
 - (NSString *)titleForButtonAtIndex:(NSUInteger)index;
@@ -24,10 +22,13 @@ enum {
 - (BOOL)isEnabledForButtonAtIndex:(NSUInteger)index;
 
 
-@property (nonatomic,readonly, assign) NSUInteger numberOfButtons;
+@property (nonatomic, readonly, assign) NSUInteger numberOfButtons;
+@property (nonatomic, readonly, assign) BOOL allowsTapOnLabel; // Defaults to YES, not currently configurable
 
 // Returns last segment pressed. default is SCHBSBReplacedElementRadioControlNoButton until a button is pressed
 // the UIControlEventValueChanged action is invoked when the button changes via a user event. set to SCHBSBReplacedElementRadioControlNoButton to turn off selection
 @property (nonatomic, assign) NSInteger selectedButtonIndex;
+
++ (CGSize)sizeWithFont:(UIFont *)font forWidth:(CGFloat)width items:(NSArray *)items;
 
 @end

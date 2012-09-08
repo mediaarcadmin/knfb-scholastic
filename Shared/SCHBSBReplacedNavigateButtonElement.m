@@ -110,7 +110,6 @@
         
         UILabel *buttonLabel = [[[UILabel alloc] initWithFrame:labelFrame] autorelease];
         [buttonLabel setFont:self.font];
-        //[buttonLabel setFont:[UIFont fontWithName:@"Times New Roman" size:self.pointSize]];
         [buttonLabel setAdjustsFontSizeToFitWidth:YES];
         [buttonLabel setMinimumFontSize:6];
         [buttonLabel setNumberOfLines:0];
@@ -126,11 +125,6 @@
     }
     
     return navigateView;
-}
-
-- (void)renderInRect:(CGRect)rect inContext:(CGContextRef)context
-{
-    // noop
 }
 
 - (void)navigateToNode:(id)sender

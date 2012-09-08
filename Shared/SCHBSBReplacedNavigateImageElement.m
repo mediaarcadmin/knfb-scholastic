@@ -81,11 +81,6 @@
     return navigateView;
 }
 
-- (void)renderInRect:(CGRect)rect inContext:(CGContextRef)context
-{
-    // noop
-}
-
 - (void)navigateToNode:(id)sender
 {
     if (self.binding && self.value) {
