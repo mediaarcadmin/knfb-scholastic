@@ -26,7 +26,7 @@
 #import "SCHBSBReplacedNavigateButtonElement.h"
 #import "SCHBSBReplacedNavigateImageElement.h"
 #import "SCHBSBReplacedTextElement.h"
-#import <libEucalyptus/EucCSSXHTMLTree.h>
+#import "SCHBSBCSSXHTMLTree.h"
 #import <libEucalyptus/EucPageLayoutController.h>
 #import <libEucalyptus/EucCSSHTMLIntermediateDocument.h>
 #import <libEucalyptus/EucCSSIntermediateDocumentNode.h>
@@ -143,7 +143,7 @@
             if ([xmlData length]) {
                 NSURL *docURL = [NSURL URLWithString:[[NSString stringWithFormat:@"bsb://%@", self.identifier] stringByAppendingPathComponent:node.uri]];
                 
-                EucCSSXHTMLTree *docTree = [[[EucCSSXHTMLTree alloc] initWithData:xmlData] autorelease];
+                SCHBSBCSSXHTMLTree *docTree = [[[SCHBSBCSSXHTMLTree alloc] initWithData:xmlData] autorelease];
                 doc = [[EucCSSHTMLIntermediateDocument alloc] initWithDocumentTree:docTree
                                                                             forURL:docURL
                                                                        pageOptions:pageOptions

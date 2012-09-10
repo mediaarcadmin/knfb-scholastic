@@ -2548,6 +2548,16 @@
 		C92EB9291404068F00832B31 /* icon-back-older-landscape~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92EB9221404068F00832B31 /* icon-back-older-landscape~iphone.png */; };
 		C92EB92B1404068F00832B31 /* icon-back-older-landscape@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C92EB9231404068F00832B31 /* icon-back-older-landscape@2x~iphone.png */; };
 		C92EB92D1404068F00832B31 /* icon-back-older~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C92EB9241404068F00832B31 /* icon-back-older~ipad.png */; };
+		C92F0B7115FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C92F0B7015FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m */; };
+		C92F0B7215FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C92F0B7015FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m */; };
+		C92F0B7315FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C92F0B7015FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m */; };
+		C92F0B7415FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C92F0B7015FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m */; };
+		C92F0B7515FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C92F0B7015FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m */; };
+		C92F0B7815FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C92F0B7715FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m */; };
+		C92F0B7915FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C92F0B7715FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m */; };
+		C92F0B7A15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C92F0B7715FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m */; };
+		C92F0B7B15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C92F0B7715FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m */; };
+		C92F0B7C15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C92F0B7715FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m */; };
 		C92FA7CD1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */; };
 		C92FA7D21355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */; };
 		C92FA7E81355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */; };
@@ -6081,6 +6091,9 @@
 		C92EB9221404068F00832B31 /* icon-back-older-landscape~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-back-older-landscape~iphone.png"; path = "Resources/icon-back-older-landscape~iphone.png"; sourceTree = "<group>"; };
 		C92EB9231404068F00832B31 /* icon-back-older-landscape@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-back-older-landscape@2x~iphone.png"; path = "Resources/icon-back-older-landscape@2x~iphone.png"; sourceTree = "<group>"; };
 		C92EB9241404068F00832B31 /* icon-back-older~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-back-older~ipad.png"; path = "Resources/icon-back-older~ipad.png"; sourceTree = "<group>"; };
+		C92F0B7015FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBCSSXHTMLTreeNode.m; path = Shared/SCHBSBCSSXHTMLTreeNode.m; sourceTree = "<group>"; };
+		C92F0B7615FE337E0036E8BD /* SCHBSBCSSXHTMLTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBCSSXHTMLTree.h; path = Shared/SCHBSBCSSXHTMLTree.h; sourceTree = "<group>"; };
+		C92F0B7715FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBCSSXHTMLTree.m; path = Shared/SCHBSBCSSXHTMLTree.m; sourceTree = "<group>"; };
 		C92FA7CB1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBSmartZoomBlockSource.h; path = SmartZoom/KNFBSmartZoomBlockSource.h; sourceTree = "<group>"; };
 		C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBSmartZoomBlockSource.m; path = SmartZoom/KNFBSmartZoomBlockSource.m; sourceTree = "<group>"; };
 		C92FA7CF1355B8E0001BAA6B /* KNFBPageZoomBlockSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBPageZoomBlockSource.h; path = SmartZoom/KNFBPageZoomBlockSource.h; sourceTree = "<group>"; };
@@ -6341,6 +6354,7 @@
 		C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementRadioControl.m; path = Shared/SCHBSBReplacedElementRadioControl.m; sourceTree = "<group>"; };
 		C9A1F43D15FDDB81000705C4 /* SCHBSBReplacedElementDropdownControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementDropdownControl.h; path = Shared/SCHBSBReplacedElementDropdownControl.h; sourceTree = "<group>"; };
 		C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementDropdownControl.m; path = Shared/SCHBSBReplacedElementDropdownControl.m; sourceTree = "<group>"; };
+		C9A1F44415FE3152000705C4 /* SCHBSBCSSXHTMLTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBCSSXHTMLTreeNode.h; path = Shared/SCHBSBCSSXHTMLTreeNode.h; sourceTree = "<group>"; };
 		C9A6B3F9148B7F0900B31277 /* SCHHelpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpManager.h; path = Shared/SCHHelpManager.h; sourceTree = "<group>"; };
 		C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpManager.m; path = Shared/SCHHelpManager.m; sourceTree = "<group>"; };
 		C9A6B3FE148B853C00B31277 /* SCHAppHelpState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppHelpState.h; path = Shared/SCHAppHelpState.h; sourceTree = "<group>"; };
@@ -9593,6 +9607,10 @@
 				C9E73ACC15F0D41600DC7C11 /* SCHBSBEucBookDelegate.h */,
 				C9C33C68155A903D00C7041F /* SCHBSBEucBook.h */,
 				C9C33C69155A903D00C7041F /* SCHBSBEucBook.m */,
+				C9A1F44415FE3152000705C4 /* SCHBSBCSSXHTMLTreeNode.h */,
+				C92F0B7015FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m */,
+				C92F0B7615FE337E0036E8BD /* SCHBSBCSSXHTMLTree.h */,
+				C92F0B7715FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m */,
 				C9C33C94155BC8C300C7041F /* SCHBSBManifest.h */,
 				C9C33C95155BC8C300C7041F /* SCHBSBManifest.m */,
 				C9C33C9A155BDAD200C7041F /* SCHBSBNode.h */,
@@ -13771,6 +13789,8 @@
 				C9A1F41715F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
 				C9A1F41E15F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
 				C9A1F43F15FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
+				C92F0B7115FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
+				C92F0B7815FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14189,6 +14209,8 @@
 				C9A1F41915F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
 				C9A1F42015F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
 				C9A1F44115FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
+				C92F0B7315FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
+				C92F0B7A15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14602,6 +14624,8 @@
 				C9A1F41815F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
 				C9A1F41F15F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
 				C9A1F44015FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
+				C92F0B7215FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
+				C92F0B7915FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15015,6 +15039,8 @@
 				C9A1F41A15F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
 				C9A1F42115F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
 				C9A1F44215FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
+				C92F0B7415FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
+				C92F0B7B15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15428,6 +15454,8 @@
 				C9A1F41B15F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
 				C9A1F42215F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
 				C9A1F44315FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
+				C92F0B7515FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
+				C92F0B7C15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
