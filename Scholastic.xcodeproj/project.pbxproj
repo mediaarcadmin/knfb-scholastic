@@ -3249,6 +3249,11 @@
 		C9A1F42015F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */; };
 		C9A1F42115F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */; };
 		C9A1F42215F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */; };
+		C9A1F43F15FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */; };
+		C9A1F44015FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */; };
+		C9A1F44115FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */; };
+		C9A1F44215FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */; };
+		C9A1F44315FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */; };
 		C9A6B3FB148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
 		C9A6B3FC148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
 		C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
@@ -6334,6 +6339,8 @@
 		C9A1F41615F89190000705C4 /* SCHBSBReplacedElementNavigateButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementNavigateButton.m; path = Shared/SCHBSBReplacedElementNavigateButton.m; sourceTree = "<group>"; };
 		C9A1F41C15F8B618000705C4 /* SCHBSBReplacedElementRadioControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementRadioControl.h; path = Shared/SCHBSBReplacedElementRadioControl.h; sourceTree = "<group>"; };
 		C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementRadioControl.m; path = Shared/SCHBSBReplacedElementRadioControl.m; sourceTree = "<group>"; };
+		C9A1F43D15FDDB81000705C4 /* SCHBSBReplacedElementDropdownControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementDropdownControl.h; path = Shared/SCHBSBReplacedElementDropdownControl.h; sourceTree = "<group>"; };
+		C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementDropdownControl.m; path = Shared/SCHBSBReplacedElementDropdownControl.m; sourceTree = "<group>"; };
 		C9A6B3F9148B7F0900B31277 /* SCHHelpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpManager.h; path = Shared/SCHHelpManager.h; sourceTree = "<group>"; };
 		C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpManager.m; path = Shared/SCHHelpManager.m; sourceTree = "<group>"; };
 		C9A6B3FE148B853C00B31277 /* SCHAppHelpState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppHelpState.h; path = Shared/SCHAppHelpState.h; sourceTree = "<group>"; };
@@ -9617,6 +9624,8 @@
 				C9A1F41615F89190000705C4 /* SCHBSBReplacedElementNavigateButton.m */,
 				C9A1F41C15F8B618000705C4 /* SCHBSBReplacedElementRadioControl.h */,
 				C9A1F41D15F8B61A000705C4 /* SCHBSBReplacedElementRadioControl.m */,
+				C9A1F43D15FDDB81000705C4 /* SCHBSBReplacedElementDropdownControl.h */,
+				C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */,
 			);
 			name = "Branching Stories";
 			sourceTree = "<group>";
@@ -13761,6 +13770,7 @@
 				C9A1F34615F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */,
 				C9A1F41715F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
 				C9A1F41E15F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
+				C9A1F43F15FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14178,6 +14188,7 @@
 				C9A1F34815F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */,
 				C9A1F41915F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
 				C9A1F42015F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
+				C9A1F44115FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14590,6 +14601,7 @@
 				C9A1F34715F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */,
 				C9A1F41815F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
 				C9A1F41F15F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
+				C9A1F44015FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15002,6 +15014,7 @@
 				C9A1F34915F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */,
 				C9A1F41A15F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
 				C9A1F42115F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
+				C9A1F44215FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15414,6 +15427,7 @@
 				C9A1F34A15F6137B000705C4 /* SCHBSBReplacedNavigateImageElement.m in Sources */,
 				C9A1F41B15F89194000705C4 /* SCHBSBReplacedElementNavigateButton.m in Sources */,
 				C9A1F42215F8B61F000705C4 /* SCHBSBReplacedElementRadioControl.m in Sources */,
+				C9A1F44315FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

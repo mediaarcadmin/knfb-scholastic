@@ -8,6 +8,7 @@
 
 #import "SCHBSBReplacedDropdownElement.h"
 #import "SCHBSBReplacedElementWebView.h"
+#import "SCHBSBReplacedElementDropdownControl.h"
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
 #import <libEucalyptus/EucCSSDPI.h>
 
@@ -28,6 +29,7 @@
 @synthesize binding;
 @synthesize value;
 @synthesize dropdownView;
+@synthesize useWebview;
 
 - (void)dealloc
 {
@@ -46,6 +48,7 @@
         values = [valueArray copy];
         binding = [dropdownBinding copy];
         value = [aValue copy];
+        useWebview = NO;
     }
     
     return self;
@@ -53,11 +56,18 @@
 
 - (CGSize)intrinsicSize
 {
-    CGFloat adjustedSize;
-    
-    CGSize textSize = [@"PLACEHOLDER" sizeWithFont:[UIFont fontWithName:@"Times New Roman" size:EucCSSPixelsMediumFontSize] minFontSize:6 actualFontSize:&adjustedSize forWidth:100 lineBreakMode:UILineBreakModeWordWrap];
-    
-    return CGSizeMake(100, 10 + textSize.height);
+    if (self.useWebview) {
+        CGFloat adjustedSize;
+        
+        CGSize textSize = [@"PLACEHOLDER" sizeWithFont:[UIFont fontWithName:@"Times New Roman" size:EucCSSPixelsMediumFontSize] minFontSize:6 actualFontSize:&adjustedSize forWidth:100 lineBreakMode:UILineBreakModeWordWrap];
+        
+        return CGSizeMake(100, 10 + textSize.height);
+    } else {
+        UIFont *intrinsicFont = self.font ? : [UIFont systemFontOfSize:EucCSSPixelsMediumFontSize];
+        NSMutableArray *allItems = [[self.values mutableCopy] autorelease];
+        [allItems addObject:@"Choose One"];
+        return [SCHBSBReplacedElementDropdownControl sizeWithFont:intrinsicFont forWidth:300 items:allItems];
+    }
 }
 
 - (THCGViewSpiritElement *)newViewSpiritElement
@@ -72,38 +82,57 @@
 - (UIView *)dropdownView
 {
     if (!dropdownView) {
-        CGRect dropdownFrame = CGRectZero;
-        dropdownFrame.size = self.intrinsicSize;
-        
-        SCHBSBReplacedElementWebView *webview = [[SCHBSBReplacedElementWebView alloc] initWithFrame:dropdownFrame];
-        webview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        webview.jsBridgeTarget = self;
-
-        NSString *dataBinding = @"foo";
-
-        NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<head><style type='text/css'>* {-webkit-touch-callout: none;-webkit-user-select: none; font-family: 'Times New Roman';}</style></head><body><form><select name='%@' onchange='window.location = \"js-bridge:selectionDidChange:\" + this.options[this.selectedIndex].value'><option value=''>Choose One</option><br />", dataBinding];
-        NSUInteger elementCount = MIN([self.keys count], [self.values count]);
-        
-        for (int i = 0; i < elementCount; i++) {
-            BOOL selected = [self.value isEqualToString:[self.values objectAtIndex:i]];
-            [htmlString appendFormat:@"<option value='%@'%@>%@</option><br />", [self.values objectAtIndex:i], selected ? @" selected='selected'" : @"", [self.keys objectAtIndex:i]];
+        if (self.useWebview) {
+            CGRect dropdownFrame = CGRectZero;
+            dropdownFrame.size = self.intrinsicSize;
+            
+            SCHBSBReplacedElementWebView *webview = [[SCHBSBReplacedElementWebView alloc] initWithFrame:dropdownFrame];
+            webview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            webview.jsBridgeTarget = self;
+            
+            NSString *dataBinding = @"foo";
+            
+            NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<head><style type='text/css'>* {-webkit-touch-callout: none;-webkit-user-select: none; font-family: 'Times New Roman';}</style></head><body><form><select name='%@' onchange='window.location = \"js-bridge:selectionDidChange:\" + this.options[this.selectedIndex].value'><option value=''>Choose One</option><br />", dataBinding];
+            NSUInteger elementCount = MIN([self.keys count], [self.values count]);
+            
+            for (int i = 0; i < elementCount; i++) {
+                BOOL selected = [self.value isEqualToString:[self.values objectAtIndex:i]];
+                [htmlString appendFormat:@"<option value='%@'%@>%@</option><br />", [self.values objectAtIndex:i], selected ? @" selected='selected'" : @"", [self.keys objectAtIndex:i]];
+            }
+            
+            [htmlString appendString:@"</select></form></body>"];
+            
+            [webview loadHTMLString:htmlString baseURL:nil];
+            UIGraphicsBeginImageContext(CGSizeMake(1, 1));
+            CGContextRef ctx = UIGraphicsGetCurrentContext();
+            [[webview layer] renderInContext:ctx];
+            UIGraphicsEndImageContext();
+            
+            dropdownView = webview;
+        } else {
+            SCHBSBReplacedElementDropdownControl *dropdown = [[SCHBSBReplacedElementDropdownControl alloc] initWithFont:self.font width:self.intrinsicSize.width items:self.values];
+            [dropdown addTarget:self action:@selector(dropdownSelectionChanged:) forControlEvents:UIControlEventValueChanged];
+            
+            if (self.value) {
+                NSInteger index = [self.values indexOfObject:self.value];
+                [dropdown setSelectedItemIndex:index];
+            }
+            
+            dropdownView = dropdown;
         }
-        
-        [htmlString appendString:@"</select></form></body>"];
-        
-        [webview loadHTMLString:htmlString baseURL:nil];
-        UIGraphicsBeginImageContext(CGSizeMake(1, 1));
-        CGContextRef ctx = UIGraphicsGetCurrentContext();
-        [[webview layer] renderInContext:ctx];
-        UIGraphicsEndImageContext();
-        
-        dropdownView = webview;
     }
     
     return dropdownView;
 }
 
-#pragma mark - jsBridgeTarget Methods
+#pragma mark - Target Methods
+
+- (void)dropdownSelectionChanged:(SCHBSBReplacedElementDropdownControl *)sender
+{
+    NSString *selection = [sender titleForItemAtIndex:[sender selectedItemIndex]];
+    NSLog(@"Dropdown changed: %@", selection);
+    [self.delegate binding:self.binding didUpdateValue:selection];
+}
 
 - (void)selectionDidChange:(NSString *)selection
 {

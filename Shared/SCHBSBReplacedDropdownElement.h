@@ -12,4 +12,6 @@
 
 - (id)initWithKeys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)dropdownBinding value:(NSString *)aValue;
 
+@property (nonatomic, assign) BOOL useWebview;
+
 @end

@@ -18,6 +18,7 @@
 @property (nonatomic, retain) UIImage *defaultUnselectedRadioImage;
 @property (nonatomic, retain) UIImage *defaultSelectedRadioImage;
 
+- (void)insertRadioItem:(NSString *)item atIndex:(NSUInteger)index;
 + (CGRect)containerBoundsWithFont:(UIFont *)font forWidth:(CGFloat)width item:(NSString *)item;
 
 @end;

@@ -25,7 +25,7 @@ enum {
 @property (nonatomic, readonly, assign) NSUInteger numberOfButtons;
 @property (nonatomic, readonly, assign) BOOL allowsTapOnLabel; // Defaults to YES, not currently configurable
 
-// Returns last segment pressed. default is SCHBSBReplacedElementRadioControlNoButton until a button is pressed
+// Returns last button pressed. default is SCHBSBReplacedElementRadioControlNoButton until a button is pressed
 // the UIControlEventValueChanged action is invoked when the button changes via a user event. set to SCHBSBReplacedElementRadioControlNoButton to turn off selection
 @property (nonatomic, assign) NSInteger selectedButtonIndex;
 
