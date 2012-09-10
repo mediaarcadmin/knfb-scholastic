@@ -515,7 +515,7 @@
                                                   entityForName:kSCHSettingItem
                                                   inManagedObjectContext:self.managedObjectContext];
         [fetchRequest setEntity:entityDescription];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"settingName = %@", settingName]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"settingName =[c] %@", settingName]];
         
         NSError *error = nil;
         NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
