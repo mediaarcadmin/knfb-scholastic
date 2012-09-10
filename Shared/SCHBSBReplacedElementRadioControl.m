@@ -235,7 +235,7 @@ static const CGFloat SCHBSBReplacedElementRadioGraphicSpan = 26.0f;
         CGContextStrokeEllipseInRect(ctx, elipseBounds);
         
         defaultUnselectedRadioImage = UIGraphicsGetImageFromCurrentImageContext();
-        [defaultSelectedRadioImage retain];
+        [defaultUnselectedRadioImage retain];
         
         UIGraphicsEndImageContext();
     }
