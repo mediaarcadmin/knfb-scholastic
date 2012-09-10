@@ -16,6 +16,7 @@
 #import "SCHAppStateManager.h"
 #import "NSDate+ServerDate.h"
 #import "tns1.h"
+#import "USAdditions.h"
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
 static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"statusmessage";
@@ -97,6 +98,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsEntryItem:(tns1_ReadingStatsEntryItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoQuizTrialsItem:(tns1_QuizTrialsItem *)intoObject;
 
+- (USBoolean *)fromObjectTranslateToUSBoolean:(id)anObject;
 - (id)makeNullNil:(id)object;
 
 @end
@@ -1550,8 +1552,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoSaveProfileItem:(tns1_SaveProfileItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.AutoAssignContentToProfiles = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
-		intoObject.ProfilePasswordRequired = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
+		intoObject.AutoAssignContentToProfiles = [self fromObjectTranslateToUSBoolean:[object valueForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
+		intoObject.ProfilePasswordRequired = [self fromObjectTranslateToUSBoolean:[object valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
 		intoObject.Firstname = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFirstName]];
 		intoObject.Lastname = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastName]];
 		intoObject.BirthDay = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceBirthday]];
@@ -1567,9 +1569,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
             intoObject.id_ = [NSNumber numberWithInt:0];
         }
 		intoObject.BookshelfStyle = (tns1_BookshelfStyle)[[object valueForKey:kSCHLibreAccessWebServiceBookshelfStyle] bookshelfStyleValue];
-		intoObject.storyInteractionEnabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
-		intoObject.recommendationsOn = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStoryRecommendationsOn]];
-		intoObject.allowReadThrough = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAllowReadThrough]];
+		intoObject.storyInteractionEnabled = [self fromObjectTranslateToUSBoolean:[object valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
+		intoObject.recommendationsOn = [self fromObjectTranslateToUSBoolean:[object valueForKey:kSCHLibreAccessWebServiceStoryRecommendationsOn]];
+		intoObject.allowReadThrough = [self fromObjectTranslateToUSBoolean:[object valueForKey:kSCHLibreAccessWebServiceAllowReadThrough]];
 	}
 }
 
@@ -1870,7 +1872,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		}
 		intoObject.text = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceText]];
-		intoObject.disabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDisabled]];
+		intoObject.disabled = [self fromObjectTranslateToUSBoolean:[object valueForKey:kSCHLibreAccessWebServiceDisabled]];
 		id location = [[tns1_LocationBookmark alloc] init];
 		intoObject.location = location;
 		[location release];
@@ -2004,6 +2006,20 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.quizScore = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceQuizScore]];
 		intoObject.quizTotal = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceQuizTotal]];
 	}
+}
+
+- (USBoolean *)fromObjectTranslateToUSBoolean:(id)anObject
+{
+	USBoolean *ret = nil;
+
+	if (anObject != nil) {
+		ret = [self fromObjectTranslate:anObject];
+		if (ret != nil) {
+			ret = [[[USBoolean alloc] initWithBool:[anObject boolValue]] autorelease];
+		}
+	}
+
+	return ret;
 }
 
 - (id)makeNullNil:(id)object
