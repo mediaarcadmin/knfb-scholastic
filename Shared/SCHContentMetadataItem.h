@@ -31,7 +31,6 @@ extern NSString * const kSCHContentMetadataItem;
 @property (nonatomic, retain) NSString * Description;
 @property (nonatomic, retain) NSString * eBookLexileLevel;
 @property (nonatomic, retain) NSNumber * Enhanced;
-@property (nonatomic, retain) NSString * FileName;
 @property (nonatomic, retain) NSNumber * FileSize;
 @property (nonatomic, retain) NSString * FormatAuthorString;
 @property (nonatomic, retain) NSString * formatTitleString;

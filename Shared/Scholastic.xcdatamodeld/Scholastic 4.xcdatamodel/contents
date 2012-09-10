@@ -311,9 +311,6 @@
         <attribute name="Enhanced" optional="YES" attributeType="Boolean" defaultValueString="0">
             <userInfo/>
         </attribute>
-        <attribute name="FileName" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
         <attribute name="FileSize" optional="YES" attributeType="Integer 32" defaultValueString="0">
             <userInfo/>
         </attribute>
@@ -799,7 +796,7 @@
         <element name="SCHBookmark" positionX="292" positionY="653" width="128" height="105"/>
         <element name="SCHBooksAssignment" positionX="160" positionY="192" width="128" height="195"/>
         <element name="SCHContentItem" positionX="772" positionY="531" width="128" height="90"/>
-        <element name="SCHContentMetadataItem" positionX="990" positionY="586" width="128" height="270"/>
+        <element name="SCHContentMetadataItem" positionX="990" positionY="586" width="128" height="420"/>
         <element name="SCHContentProfileItem" positionX="806" positionY="1147" width="128" height="120"/>
         <element name="SCHDeviceInfo" positionX="1336" positionY="1274" width="128" height="225"/>
         <element name="SCHDictionaryEntry" positionX="151" positionY="1080" width="128" height="105"/>

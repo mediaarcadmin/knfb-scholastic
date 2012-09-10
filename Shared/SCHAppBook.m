@@ -169,11 +169,6 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 	return [self.ContentMetadataItem.PageNumber intValue];
 }
 
-- (NSString *)FileName
-{
-	return self.ContentMetadataItem.FileName;
-}
-
 - (NSNumber *)AverageRating
 {
     NSNumber *averageRating = nil;

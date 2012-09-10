@@ -600,7 +600,6 @@
 																						   format:[book objectForKey:kSCHLibreAccessWebServiceFormat]
                                                                                        profileIDs:profileIDs]];
             SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItemFromMainThread:book];
-            newContentMetadataItem.FileName = [xpsFilePath lastPathComponent];
             
             // extract the cover image
             NSData *imageData = [xpsProvider coverThumbData];

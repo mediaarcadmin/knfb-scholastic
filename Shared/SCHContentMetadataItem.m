@@ -51,7 +51,6 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 @dynamic Description;
 @dynamic eBookLexileLevel;
 @dynamic Enhanced;
-@dynamic FileName;
 @dynamic FileSize;
 @dynamic FormatAuthorString;
 @dynamic formatTitleString;

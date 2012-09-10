@@ -132,7 +132,6 @@ typedef enum {
 @property (nonatomic, readonly) NSString * Title;
 @property (nonatomic, readonly) NSNumber * FileSize;
 @property (nonatomic, readonly) int PageNumber;
-@property (nonatomic, readonly) NSString * FileName;
 @property (nonatomic, readonly) SCHBookIdentifier *bookIdentifier;
 @property (nonatomic, readonly) NSString *categoryType;
 @property (nonatomic, readonly) BOOL shouldShowChapters;
