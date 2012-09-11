@@ -32,6 +32,8 @@
 #import "SCHAnnotationsItem.h"
 #import "SCHProfileItemSortObject.h"
 #import "SCHAppStateManager.h"
+#import "SCHQuizTrialsItem.h"
+#import "SCHLibreAccessConstants.h"
 
 // Constants
 NSString * const kSCHProfileItem = @"SCHProfileItem";
@@ -411,7 +413,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
             } 
             
             if (readingStatsContentItem == nil) {
-                readingStatsContentItem = [self makeReadingStatsContentItemForBook:bookIdentifier];   
+                readingStatsContentItem = [self makeReadingStatsContentItemForBook:bookIdentifier];
                 readingStatsContentItem.ReadingStatsDetailItem = readingStatsDetailItem;                
             }
             
@@ -422,7 +424,21 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
             readingStatsEntryItem.ReadingDuration = [NSNumber numberWithUnsignedInteger:bookStatistics.readingDuration];
             readingStatsEntryItem.PagesRead = [NSNumber numberWithUnsignedInteger:bookStatistics.pagesRead];
             readingStatsEntryItem.StoryInteractions = [NSNumber numberWithUnsignedInteger:bookStatistics.storyInteractions];
-            readingStatsEntryItem.DictionaryLookupsList = bookStatistics.dictionaryLookupsList;        
+            readingStatsEntryItem.DictionaryLookupsList = bookStatistics.dictionaryLookupsList;
+
+            for (NSDictionary *quizTrialsItem in bookStatistics.quizResultsList) {
+                NSNumber *score = [quizTrialsItem objectForKey:kSCHLibreAccessWebServiceQuizScore];
+                NSNumber *total = [quizTrialsItem objectForKey:kSCHLibreAccessWebServiceQuizTotal];
+
+                if (score != nil && total != nil) {
+                    SCHQuizTrialsItem *quizTrialsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHQuizTrialsItem
+                                                                                      inManagedObjectContext:self.managedObjectContext];
+                    quizTrialsItem.quizScore = score;
+                    quizTrialsItem.quizTotal = total;
+
+                    [readingStatsEntryItem addQuizResultsObject:quizTrialsItem];
+                }
+            }
         }
     }
 }
