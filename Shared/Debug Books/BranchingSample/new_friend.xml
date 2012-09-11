@@ -1,0 +1,23 @@
+﻿<node id="NewFriend">
+	<body>
+		<p>You reach into the <span data-if="Supply == 'sandbag'">first cubbyhole and pull out the bag of sand.</span> <span data-if="Supply == 'diamond'">second cubbyhole and pull out the diamond.</span> <span data-if="Supply == 'pbandj'">third cubbyhole and pull out the peanut butter and jelly sandwich.</span> As soon as you do, hidden doors slide down to cover the other two cubbyholes. Apparently, you only get one supply.
+		</p>
+		
+		<p>A moment later, the other door in the room slides open, the one opposite the way you came in, showing another dark room beyond. There’s nothing to do but go through. You step through the opening. The door slides shut behind you and the lights snap on.
+		</p>
+		
+		<p>You see a man sitting in the corner of the new room. He blinks and rubs his eyes, like he’s just waking up from a nap.</p>
+		
+		<p>“Who are you?” he asks.</p>
+		
+		<p>“My name is [$Name$],” you reply. “Who are you?”</p>
+		
+		<p>He looks confused. “I know I had a name,” he says, “but I’ve been here so long, I can’t remember it any more. Why don’t you decide what do you want to call me.”</p>
+		
+		<p style="font-weight: bold">What do you call the man?
+			<div data-type="text" data-binding="FriendName"></div>
+		</p>
+		
+		<div data-type="navigate" data-value="Done" data-goto="DoorTrick"></div><br />
+	</body>
+</node>

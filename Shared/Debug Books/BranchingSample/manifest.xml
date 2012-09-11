@@ -1,0 +1,26 @@
+<manifest>
+	<metadata>
+		<title>Branching Stories Prototype</title>
+		<author>Test</author>
+	</metadata>
+	<nodes>
+		<node id="Start" uri="start.xml" />
+		<node id="GoodMorning" uri="good_morning.xml" />
+		<node id="Supplies" uri="supplies.xml" />
+		<node id="NewFriend" uri="new_friend.xml" />
+		<node id="DoorTrick" uri="door_trick.xml" />
+		<node id="LeftBehind" uri="left_behind.xml" />
+		<node id="EscapeAlone" uri="escape_alone.xml" />
+		<node id="EscapeTogether" uri="escape_together.xml" />
+		<node id="Challenge" uri="challenge.xml" />
+		<node id="SkillChallenge" uri="skill_challenge.xml" />
+		<node id="HitButton" uri="hit_button.xml" />
+		<node id="MissButton" uri="miss_button.xml" />
+		<node id="MemoryChallenge" uri="memory_challenge.xml" />
+		<node id="DoYouRemember" uri="do_you_remember.xml" />
+		<node id="WrongDoor" uri="wrong_door.xml" />
+		<node id="RightDoor" uri="right_door.xml" />
+		<node id="CourageChallenge" uri="courage_challenge.xml" />
+		<node id="AllYours" uri="all_yours.xml" />
+	</nodes>
+</manifest>

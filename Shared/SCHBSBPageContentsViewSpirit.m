@@ -9,13 +9,14 @@
 #if !BRANCHING_STORIES_DISABLED
 #import "SCHBSBPageContentsViewSpirit.h"
 #import "SCHBSBEucBook.h"
-#import "SCHBSBTreeNode.h"
+#import "SCHBSBReplacedElement.h"
 #import <libEucalyptus/EucCSSDPI.h>
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucCSSXHTMLTree.h>
 #import <libEucalyptus/EucCSSRenderPageViewSpirit.h>
 #import <libEucalyptus/EucBookPageIndexPointRange.h>
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
+#import <libEucalyptus/THStringRenderer.h>
 
 @interface SCHBSBPageContentsViewSpirit() <EucCSSRenderPageViewSpiritDelegate>
 
@@ -91,6 +92,9 @@
             case EucBookIndexPointPlacementRightPage:
                 layoutPoint.placement = EucCSSLayoutPointPlacementRightPage;
                 break;
+            case EucBookIndexPointPlacementRightPaddingPage:
+                NSLog(@"Warning: Unexpected placement of EucBookIndexPointPlacementRightPaddingPage");
+                NSParameterAssert(pointPlacement != EucBookIndexPointPlacementRightPaddingPage);
             case EucBookIndexPointPlacementUnspecified:
                 layoutPoint.placement = EucCSSLayoutPointPlacementUnspecified;
                 break;
@@ -110,30 +114,40 @@
         }
         
         if(!pageCSSViewSpirit || pageCSSViewSpirit.containsEndOfDocument) {
-            uint32_t sourceCount = (uint32_t)book.sourceCount;
-            uint32_t newSource = point.source;
-            
-            nextPageStartPoint = [[EucBookPageIndexPoint alloc] init];
-            
-            do {
-                nextPageStartPoint.source = ++newSource;
-            } while(newSource < book.sourceCount &&
-                    ![book intermediateDocumentForIndexPoint:nextPageStartPoint
-                                                 pageOptions:self.pageOptions]);
-            
-            if(newSource < sourceCount) {
-                // Sections always start on the right hand page, if we're two-up 
-                // (i.e. if the previous page had a specified placement).
-                if(pointPlacement != EucBookIndexPointPlacementUnspecified) {
-                    nextPageStartPoint.placement = EucBookIndexPointPlacementRightPage;
+            uint32_t newSource = point.source + 1;
+                        
+            EucBookPageIndexPoint *nextSectionStart = nil;
+            for(EucBookPageIndexPoint *potentialStart in book.hardPageBreakIndexPoints) {
+                if(potentialStart.source >= newSource &&
+                   [book intermediateDocumentForIndexPoint:nextPageStartPoint
+                                               pageOptions:self.pageOptions]) {
+                       nextSectionStart = potentialStart;
+                       break;
                 }
-            } else {
-                nextPageStartPoint = nil;
+            }
+            
+            if(nextSectionStart) {
+                if(pointPlacement == EucBookIndexPointPlacementUnspecified) {
+                    // We're not two-up, so we make the section start on an unspecified side.
+                    if(nextSectionStart.placement != EucBookIndexPointPlacementUnspecified) {
+                        nextSectionStart = [[nextSectionStart copy] autorelease];
+                        nextSectionStart.placement = EucBookIndexPointPlacementUnspecified;
+                    }
+                } else {
+                    // We're two-up, so we make sure the section starts on a specified side,
+                    // if the book does not specify one (the right by default).
+                    if(nextSectionStart.placement == EucBookIndexPointPlacementUnspecified) {
+                        nextSectionStart = [[nextSectionStart copy] autorelease];
+                        nextSectionStart.placement = EucBookIndexPointPlacementRightPage;
+                    }
+                }
+                
+                nextPageStartPoint = nextSectionStart;
             }
         } else {
             EucCSSLayoutPoint nextPageStartLayoutPoint = pageCSSViewSpirit.nextPageStartPoint;
             
-            nextPageStartPoint = [[EucBookPageIndexPoint alloc] init];
+            nextPageStartPoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
             nextPageStartPoint.source = point.source;
             nextPageStartPoint.block = nextPageStartLayoutPoint.nodeKey;
             nextPageStartPoint.word = nextPageStartLayoutPoint.word;
@@ -146,6 +160,9 @@
                     case EucBookIndexPointPlacementRightPage:
                         nextPageStartPoint.placement = EucBookIndexPointPlacementLeftPage;
                         break;
+                    case EucBookIndexPointPlacementRightPaddingPage:
+                        NSLog(@"Warning: Unexpected placement of EucBookIndexPointPlacementRightPaddingPage");
+                        NSParameterAssert(pointPlacement != EucBookIndexPointPlacementRightPaddingPage);
                     case EucBookIndexPointPlacementUnspecified:
                         break;            
                 }
@@ -162,26 +179,44 @@
             [self addSubSpirit:pageCSSViewSpirit];
         }
                 
-        // Work out if you started on the left and the next page is on the left it adds a blank page
-        
         if(nextPageStartPoint &&
            pointPlacement != EucBookIndexPointPlacementUnspecified && 
            pointPlacement == nextPageStartPoint.placement) {
+            // If the next page starts on the same side as the current page,
+            // add a blank padding page between them.
+
             EucBookPageIndexPoint *midPoint = [nextPageStartPoint copy];
             if(pointPlacement == EucBookIndexPointPlacementLeftPage) {
-                midPoint.placement = EucBookIndexPointPlacementRightPage;
+                midPoint.placement = EucBookIndexPointPlacementRightPaddingPage;
             } else {
                 midPoint.placement = EucBookIndexPointPlacementLeftPage;
             }
             ret = [NSArray arrayWithObjects:[EucBookPageIndexPointRange indexPointRangeWithStartPoint:point endPoint:midPoint],
                    [EucBookPageIndexPointRange indexPointRangeWithStartPoint:midPoint endPoint:nextPageStartPoint],
                    nil];
+            [midPoint release];
         } else {
             if(!nextPageStartPoint) {
-                nextPageStartPoint = book.offTheEndIndexPoint;
-            } 
-            EucBookPageIndexPointRange *pageRange = [[EucBookPageIndexPointRange alloc] initWithStartPoint:point endPoint:nextPageStartPoint];
-            ret = [NSArray arrayWithObject:pageRange];
+                if(pointPlacement == EucBookIndexPointPlacementRightPage ||
+                   pointPlacement == EucBookIndexPointPlacementUnspecified) {
+                    nextPageStartPoint = book.offTheEndIndexPoint;
+                } else {
+                    // If this is a left-hand page at the end of a book,
+                    // add a right-hand padding page.
+                    nextPageStartPoint = book.offTheEndIndexPoint;
+                    EucBookPageIndexPoint *midPoint = [nextPageStartPoint copy];
+                    midPoint.placement = EucBookIndexPointPlacementRightPaddingPage;
+                    ret = [NSArray arrayWithObjects:[EucBookPageIndexPointRange indexPointRangeWithStartPoint:point endPoint:midPoint],
+                           [EucBookPageIndexPointRange indexPointRangeWithStartPoint:midPoint endPoint:nextPageStartPoint],
+                           nil];
+                    [midPoint release];
+                }
+            }
+            if(!ret) {
+                EucBookPageIndexPointRange *pageRange = [[EucBookPageIndexPointRange alloc] initWithStartPoint:point endPoint:nextPageStartPoint];
+                ret = [NSArray arrayWithObject:pageRange];
+                [pageRange release];
+            }
         }
     }
     
@@ -211,6 +246,35 @@
 - (NSString *)accessibilityLabelForElementWithIdentifier:(id)elementId ofBlockWithIdentifier:(id)blockId
 {
     return [self.pageCSSViewSpirit accessibilityLabelForElementWithIdentifier:elementId ofBlockWithIdentifier:blockId];
+}
+
+- (THCGViewSpiritElement *)eucCSSRenderPageViewSpirit:(EucCSSRenderPageViewSpirit *)pageViewSpirit
+                   overlayElementsForDocumentNode:(EucCSSIntermediateDocumentNode *)documentNode
+{
+    id<EucCSSReplacedElement> replacedElement = [documentNode replacedElement];
+
+    if (replacedElement && [replacedElement isKindOfClass:[SCHBSBReplacedElement class]]) {
+        CGFloat scaleFactor = self.pointSize / EucCSSPixelsMediumFontSize;
+        [(SCHBSBReplacedElement *)replacedElement setScaleFactor:scaleFactor];
+        
+        CGFloat cssPointSize = [documentNode textPointSizeWithScaleFactor:scaleFactor];
+        
+        THStringRenderer *renderer = [documentNode stringRenderer];
+        NSString *fontPostscriptName = [renderer fontPostscriptName];
+        UIFont *font = [UIFont fontWithName:fontPostscriptName size:cssPointSize];
+        
+        if (font) {
+            [(SCHBSBReplacedElement *)replacedElement setFont:font];
+        }
+        
+        THCGViewSpiritElement *viewSpiritElement = [[replacedElement newViewSpiritElement] autorelease];
+        
+        if (viewSpiritElement) {
+            return [NSArray arrayWithObject:viewSpiritElement];
+        }
+    }
+    
+    return nil;
 }
 
 @end

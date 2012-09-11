@@ -563,7 +563,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         // Ignore chapter names if we have less than 2 sections in the TOC - it will never change!
         if ([[self.textFlow tableOfContents] count] > 1) {
             NSString *uuid = [self.textFlow sectionUuidForPageIndex:pageIndex];
-            chapterName = [self.textFlow contentsTableViewController:nil presentationNameAndSubTitleForSectionUuid:uuid].first;
+            chapterName = [self.textFlow contentsTableViewController:nil presentationNameAndSubTitleForSectionIdentifier:uuid].first;
         }
         
         if (chapterName) {

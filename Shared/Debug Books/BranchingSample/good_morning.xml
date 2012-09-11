@@ -1,0 +1,20 @@
+﻿<node id="GoodMorning">
+	<body>
+	    <p>You wake up in an empty room, with no memory of how you got there. The walls, floor, and ceiling are all perfect white. In fact, the only features of the room are two doors on opposite sides of the room. One has the word “IN” printed in large black letters and the other has the word “OUT”.
+	    </p>
+        
+	    <p>Neither door has a doorknob. You walk toward the IN door, and when you are a couple of feet way, it slides open. Beyond you see a dark room, but you can’t make out any details inside. You’re not sure you want to go in there and so you step away. Immediately, the door slides shut. 
+	    </p>
+        
+	    <p>Now you walk toward the OUT door. Again, the door slides open as you approach, revealing a dark room. You step away and the door slides shut.
+	    </p>
+        
+		<p>It seems there’s nothing left to do except go through one of the doors.
+		</p>
+		
+		<p style="font-weight: bold">What do you do?</p>
+	    <br />
+        <div data-type="navigate" data-value="Go through the 'IN' door." data-goto="Challenge"></div><br />
+		<div data-type="navigate" data-value="Go through the 'OUT' door." data-goto="Supplies"></div><br />
+	</body>
+</node>

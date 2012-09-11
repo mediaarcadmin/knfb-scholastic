@@ -8,22 +8,26 @@
 
 #import "SCHBSBProvider.h"
 #import "SCHBSBConstants.h"
+#import "SCHBSBManifest.h"
 
 NSString * const SCHBSBManifestFile = @"/manifest.xml";
 
 @interface SCHBSBProvider()
 
 @property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
+@property (nonatomic, retain) SCHBSBManifest *manifest;
 
 @end
 
 @implementation SCHBSBProvider
 
 @synthesize bookIdentifier;
+@synthesize manifest;
 
 - (void)dealloc
 {
     [bookIdentifier release], bookIdentifier = nil;
+    [manifest release], manifest = nil;
     [super dealloc];
 }
 
@@ -60,6 +64,11 @@ NSString * const SCHBSBManifestFile = @"/manifest.xml";
     return NO;
 }
 
+- (BOOL)containsFixedRepresentation
+{
+    return NO;
+}
+
 - (void)resetDrmDecrypter
 {
     // noop
@@ -88,5 +97,23 @@ NSString * const SCHBSBManifestFile = @"/manifest.xml";
         return [super fileURLForPath:path];
     }
 }
+
+#pragma mark - SCHBSBContentsProvider
+
+- (SCHBSBManifest *)manifest
+{
+    if (!manifest) {
+        NSData *manifestData = [self dataForComponentAtPath:@"manifest.xml"];
+        manifest = [[SCHBSBManifest alloc] initWithXMLData:manifestData];
+    }
+    
+    return manifest;
+}
+
+- (NSData *)dataForBSBComponentAtPath:(NSString *)path
+{
+    return [self dataForComponentAtPath:path];
+}
+
 
 @end

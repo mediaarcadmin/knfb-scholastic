@@ -8,6 +8,7 @@
 
 #import "SCHBSBManifest.h"
 #import "SCHBSBNode.h"
+#import "SCHBSBProperty.h"
 #import "SCHBSBConstants.h"
 
 NSString * const SCHBSBManifestMetadataAuthorKey = @"author";
@@ -17,6 +18,7 @@ NSString * const SCHBSBManifestMetadataTitleKey = @"title";
 
 @property (nonatomic, retain) NSMutableDictionary *metadata;
 @property (nonatomic, retain) NSMutableArray *nodes;
+@property (nonatomic, retain) NSMutableArray *properties;
 @property (nonatomic, retain) NSMutableString *currentParsedString;
 
 @end
@@ -25,12 +27,14 @@ NSString * const SCHBSBManifestMetadataTitleKey = @"title";
 
 @synthesize metadata;
 @synthesize nodes;
+@synthesize properties;
 @synthesize currentParsedString;
 
 - (void)dealloc
 {
     [metadata release], metadata = nil;
     [nodes release], nodes = nil;
+    [properties release], properties = nil;
     [currentParsedString release], currentParsedString = nil;
     
     [super dealloc];
@@ -50,6 +54,19 @@ NSString * const SCHBSBManifestMetadataTitleKey = @"title";
             [(NSMutableArray *)self.nodes addObject:node];
             
             [node release];
+        }
+    } else if ([elementName isEqualToString:@"property"]) {
+        NSString *nameAttr  = [attributeDict objectForKey:@"name"];
+        NSString *valueAttr = [attributeDict objectForKey:@"value"];
+        
+        if (nameAttr && valueAttr) {
+            SCHBSBProperty *property = [[SCHBSBProperty alloc] init];
+            property.name = nameAttr;
+            property.value = valueAttr;
+            
+            [(NSMutableArray *)self.properties addObject:property];
+            
+            [property release];
         }
     }
     
@@ -85,6 +102,7 @@ NSString * const SCHBSBManifestMetadataTitleKey = @"title";
         
         metadata = [[NSMutableDictionary alloc] init];
         nodes = [[NSMutableArray alloc] init];
+        properties = [[NSMutableArray alloc] init];
         
         NSXMLParser *manifestParser = [[NSXMLParser alloc] initWithData:data];
         [manifestParser setDelegate:self];

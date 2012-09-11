@@ -6,10 +6,10 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHBSBReplacedElementPlaceholder.h"
+#import "SCHBSBReplacedElement.h"
 
-@interface SCHBSBReplacedTextElement : SCHBSBReplacedElementPlaceholder
+@interface SCHBSBReplacedTextElement : SCHBSBReplacedElement
 
-- (id)initWithPointSize:(CGFloat)point binding:(NSString *)binding;
+- (id)initWithBinding:(NSString *)textBinding value:(NSString *)value;
 
 @end

@@ -6,10 +6,12 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHBSBReplacedElementPlaceholder.h"
+#import "SCHBSBReplacedElement.h"
 
-@interface SCHBSBReplacedRadioElement : SCHBSBReplacedElementPlaceholder
+@interface SCHBSBReplacedRadioElement : SCHBSBReplacedElement
 
-- (id)initWithPointSize:(CGFloat)point keys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)binding;
+- (id)initWithKeys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)radioBinding value:(NSString *)aValue;
+
+@property (nonatomic, assign) BOOL useWebview;
 
 @end

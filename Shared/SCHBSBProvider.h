@@ -7,12 +7,13 @@
 //
 
 #import "SCHBookPackageProvider.h"
+#import "SCHBSBContentsProvider.h"
 #import <libEucalyptus/EucEPubZipCachingDataProvider.h>
 
 @class SCHBookIdentifier;
 @class EucEPubZipCachingDataProvider;
 
-@interface SCHBSBProvider : EucEPubZipCachingDataProvider <SCHBookPackageProvider>
+@interface SCHBSBProvider : EucEPubZipCachingDataProvider <SCHBookPackageProvider, SCHBSBContentsProvider>
 
 - (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier path:(NSString *)bsbPath error:(NSError **)error;
 

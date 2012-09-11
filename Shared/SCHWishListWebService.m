@@ -119,7 +119,7 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
         ax21_WishListProfileItem *wishListProfileItem = nil;
         for (id item in wishListItems) {
             wishListProfileItem = [[ax21_WishListProfileItem alloc] init];
-            [self fromObject:item intoWishListProfileItem:wishListProfileItem 
+            [self fromObject:item intoWishListProfileItem:wishListProfileItem
                     forState:[NSNumber numberWithStatus:kSCHStatusCreated]];		
             [request addProfileItemList:wishListProfileItem];
             [wishListProfileItem release], wishListProfileItem = nil;

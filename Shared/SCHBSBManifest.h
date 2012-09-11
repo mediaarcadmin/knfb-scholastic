@@ -14,5 +14,6 @@
 
 - (NSDictionary *)metadata;
 - (NSArray *)nodes; // SCHBSBNode array;
+- (NSArray *)properties; // SCHBSBProperty array;
 
 @end

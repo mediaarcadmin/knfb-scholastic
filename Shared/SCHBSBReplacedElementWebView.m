@@ -10,6 +10,14 @@
 
 @implementation SCHBSBReplacedElementWebView
 
+@synthesize jsBridgeTarget;
+
+- (void)dealloc
+{
+    jsBridgeTarget = nil;
+    [super dealloc];
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     if ((self = [super initWithFrame:frame])) {
@@ -26,10 +34,10 @@
     return self;
 }
 
-- (void)synchronouslyLoadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL
+- (void)setDelegate:(id<UIWebViewDelegate>)delegate
 {
-    [self loadHTMLString:string baseURL:baseURL];
-    CFRunLoopRunInMode((CFStringRef)NSDefaultRunLoopMode, 0.1, NO);
+    NSAssert(delegate == self, @"Cannot change SCHBSBReplacedElementWebView delegate");
+    [super setDelegate:self];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView
@@ -38,21 +46,44 @@
     [aScrollView setContentOffset: CGPointMake(aScrollView.contentOffset.x, 0)];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    CFRunLoopRef runLoop = [[NSRunLoop currentRunLoop] getCFRunLoop];
-	CFRunLoopStop(runLoop);
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    CFRunLoopRef runLoop = [[NSRunLoop currentRunLoop] getCFRunLoop];
-	CFRunLoopStop(runLoop);
-}
-
 - (BOOL)eucPageTurningViewShouldRenderPresentationLayer
 {
     return NO;
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSString *requestString = [[request URL] absoluteString];
+    
+    // Intercept custom location change, URL begins with "js-bridge:"
+    if ([requestString hasPrefix:@"js-bridge:"]) {
+        
+        // Extract the selector name from the URL
+        NSArray *components = [requestString componentsSeparatedByString:@":"];
+        if ([components count] > 1) {
+            NSString *functionName = [components objectAtIndex:1];
+            
+            if (self.jsBridgeTarget) {
+                if ([components count] > 2) {
+                    NSString *selectorName = [functionName stringByAppendingString:@":"];
+                    if ([self.jsBridgeTarget respondsToSelector:NSSelectorFromString(selectorName)]) {
+                        [self.jsBridgeTarget performSelector:NSSelectorFromString(selectorName) withObject:[components objectAtIndex:2]];
+                    }
+                } else {
+                    NSString *selectorName = functionName;
+                    if ([self.jsBridgeTarget respondsToSelector:NSSelectorFromString(selectorName)]) {
+                        [self.jsBridgeTarget performSelector:NSSelectorFromString(selectorName)];
+                    }
+                }
+            }
+            
+            // Cancel the location change
+            return NO;
+        }
+    }
+    
+    // Accept this location change
+    return YES;
 }
 
 

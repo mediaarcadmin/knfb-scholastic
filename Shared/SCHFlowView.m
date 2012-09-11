@@ -13,6 +13,7 @@
 #import "SCHBookRange.h"
 #import "KNFBParagraphSource.h"
 #import "SCHEPubBook.h"
+#import "SCHBSBEucBook.h"
 #import <libEucalyptus/EucBookView.h>
 #import <libEucalyptus/EucEPubBook.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
@@ -24,7 +25,7 @@
 #import <libEucalyptus/THPair.h>
 #import <libEucalyptus/EucOTFIndex.h>
 
-@interface SCHFlowView ()
+@interface SCHFlowView () <SCHBSBEucBookDelegate>
 
 @property (nonatomic, retain) id<EucBook, SCHEucBookmarkPointTranslation> eucBook;
 @property (nonatomic, retain) id<KNFBParagraphSource> paragraphSource;
@@ -67,11 +68,14 @@
         [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
         
         if (self.openingPoint) {
-            [self jumpToBookPoint:self.openingPoint animated:NO];
+            if (![self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
+                [self jumpToBookPoint:self.openingPoint animated:NO];
+            }
             self.openingPoint = nil;
         }
         
-        [self addSubview:eucBookView];          
+        [self addSubview:eucBookView];
+        
     }
 }
 
@@ -103,7 +107,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
            delegate:(id<SCHReadingViewDelegate>)delegate
               point:(SCHBookPoint *)point
 {
-    self = [super initWithFrame:frame 
+    self = [super initWithFrame:frame
                  bookIdentifier:bookIdentifier 
            managedObjectContext:managedObjectContext
                        delegate:delegate
@@ -116,6 +120,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         
         if ([eucBook isKindOfClass:[EucEPubBook class]]) {
             paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
+        } else if ([eucBook isKindOfClass:[SCHBSBEucBook class]]) {
+            [(SCHBSBEucBook *)eucBook setDelegate:self];
         }
         
         openingPoint = [point retain];
@@ -185,6 +191,13 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         // eucBookView which sets the page count
         [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
         [self.eucBookView addObserver:self forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
+        
+        if ([self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
+            // Reset needs to be here as page layout controller isn't instantiated earlier and that does the shrinking
+            [self.eucBookView bookWillShrink];
+            EucBookPageIndexPoint *startPoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
+            [self.eucBookView bookHasShrunkToIndexPoint:startPoint];
+        }
 
         [self attachSelector];
     }
@@ -353,6 +366,19 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 - (BOOL)bookView:(EucBookView *)bookView shouldHandleTapOnHyperlink:(NSURL *)link
 {
     return YES;
+}
+
+- (BOOL)bookView:(EucBookView *)bookView shouldAllowTurnInDirection:(EucBookViewTurnDirection)direction
+{
+    BOOL ret = YES;
+
+    if ([self.eucBook isKindOfClass:[SCHBSBEucBook class]] &&
+        (direction == EucBookViewTurnDirectionShowPageToLeft)) {
+        
+        ret = [(SCHBSBEucBook *)self.eucBook shouldAllowTurnBackFromIndexPoint:bookView.currentPageIndexPoint];
+    }
+    
+    return ret;
 }
 
 - (void)bookViewPageTurnWillBegin:(EucBookView *)bookView
@@ -620,6 +646,24 @@ static void sortedHighlightRangePredicateInit() {
 - (BOOL)eucSelector:(EucSelector *)selector shouldReceiveTouch:(UITouch *)touch
 {
     return [self.eucBookView eucSelector:selector shouldReceiveTouch:touch];
+}
+
+#pragma mark - SCHBSBEucBookDelegate
+
+- (void)bookWillShrink:(SCHBSBEucBook *)book
+{
+    [self.eucBookView bookWillShrink];
+}
+
+- (void)book:(SCHBSBEucBook *)book hasShrunkToIndexPoint:(EucBookPageIndexPoint *)indexPoint
+{
+    [self.eucBookView bookHasShrunkToIndexPoint:indexPoint];
+}
+
+- (void)book:(SCHBSBEucBook *)book hasGrownToIndexPoint:(EucBookPageIndexPoint *)indexPoint;
+{
+    [self.eucBookView bookHasGrown];
+    [self jumpToPageAtIndexPoint:indexPoint animated:YES withCompletionHandler:nil];
 }
 
 @end
