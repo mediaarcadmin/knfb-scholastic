@@ -33,6 +33,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @dynamic Timestamp;
 @dynamic DictionaryLookupsList;
 @dynamic ReadingStatsContentItem;
+@dynamic quizResults;
 
 @dynamic DeviceKey;
 @dynamic DictionaryLookups;

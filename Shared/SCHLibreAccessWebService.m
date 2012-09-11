@@ -1991,6 +1991,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		for (NSString *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDictionaryLookupsList]]) {
 			[intoObject.DictionaryLookupsList addDictionaryLookupsItem:item];
 		}
+        id quizTrialsList = [[tns1_QuizTrialsList alloc] init];
+		intoObject.quizResults = quizTrialsList;
+        [quizTrialsList release];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceQuizResults]]) {
 			tns1_QuizTrialsItem *quizTrialsItem = [[tns1_QuizTrialsItem alloc] init];
 			[self fromObject:item intoQuizTrialsItem:quizTrialsItem];
