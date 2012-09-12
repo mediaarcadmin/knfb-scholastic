@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 
 // Constants
-NSString * const kSCHQuizTrialsItem = @"SCHQuizTrialsItem";
+extern NSString * const kSCHQuizTrialsItem;
 
 @class SCHReadingStatsEntryItem;
 

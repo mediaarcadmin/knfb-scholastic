@@ -10,7 +10,7 @@
 #import "SCHReadingStatsEntryItem.h"
 
 // Constants
-extern NSString * const kSCHQuizTrialsItem;
+NSString * const kSCHQuizTrialsItem = @"SCHQuizTrialsItem";
 
 @implementation SCHQuizTrialsItem
 

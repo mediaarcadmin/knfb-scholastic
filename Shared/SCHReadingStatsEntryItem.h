@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class SCHReadingStatsContentItem;
+@class SCHQuizTrialsItem;
 
 // Constants
 extern NSString * const kSCHReadingStatsEntryItem;
@@ -24,9 +25,18 @@ extern NSString * const kSCHReadingStatsEntryItem;
 @property (nonatomic, retain) NSDate *Timestamp;
 @property (nonatomic, retain) NSMutableSet *DictionaryLookupsList;
 @property (nonatomic, retain) SCHReadingStatsContentItem *ReadingStatsContentItem;
+@property (nonatomic, retain) NSSet *quizResults;
 
 @property (nonatomic, retain) NSString *DeviceKey;
 @property (nonatomic, retain) NSNumber *DictionaryLookups;
 
+@end
+
+@interface SCHReadingStatsEntryItem (CoreDataGeneratedAccessors)
+
+- (void)addQuizResultsObject:(SCHQuizTrialsItem *)value;
+- (void)removeQuizResultsObject:(SCHQuizTrialsItem *)value;
+- (void)addQuizResults:(NSSet *)values;
+- (void)removeQuizResults:(NSSet *)values;
 
 @end

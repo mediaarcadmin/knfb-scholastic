@@ -780,6 +780,7 @@
         <memberEntity name="SCHAppRecommendationItem"/>
         <memberEntity name="SCHRating"/>
         <memberEntity name="SCHBooksAssignment"/>
+        <memberEntity name="SCHQuizTrialsItem"/>
     </configuration>
     <elements>
         <element name="SCHAnnotation" positionX="292" positionY="362" width="128" height="90"/>
