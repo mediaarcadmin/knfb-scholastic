@@ -565,7 +565,7 @@
         <attribute name="ProfilePasswordRequired" optional="YES" attributeType="Boolean">
             <userInfo/>
         </attribute>
-        <attribute name="recommendationsOn" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="recommendationsOn" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="ScreenName" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
