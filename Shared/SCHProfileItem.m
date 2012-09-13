@@ -515,7 +515,22 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     return(ret);
 }
 
-- (void)setRawPassword:(NSString *)value 
+- (NSString *)profileName
+{
+    NSString *ret = nil;
+
+    if ([[self.ScreenName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+        ret = self.ScreenName;
+    } else if ([[self.FirstName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+        ret = self.FirstName;
+    } else {
+        ret = @"";
+    }
+
+    return ret;
+}
+
+- (void)setRawPassword:(NSString *)value
 {
     self.Password = [self SHA1:value];
 }

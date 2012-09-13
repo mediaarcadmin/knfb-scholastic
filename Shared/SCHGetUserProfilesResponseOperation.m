@@ -224,7 +224,7 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
         SCHWishListProfile *newWishListProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListProfile 
                                                                                inManagedObjectContext:aManagedObjectContext];    
         newWishListProfile.ProfileID = newProfileItem.ID;
-        newWishListProfile.ProfileName = newProfileItem.ScreenName;
+        newWishListProfile.ProfileName = [newProfileItem profileName];
         
         NSLog(@"Added profile with screenname %@ and ID %@", newProfileItem.ScreenName, newProfileItem.ID);
     }

@@ -10,6 +10,8 @@
 #import <CoreData/CoreData.h>
 #import "SCHSyncEntity.h"
 
+@class SCHProfileItem;
+
 extern NSString * const kSCHWishListProfile;
 
 @interface SCHWishListProfile : SCHSyncEntity
@@ -19,6 +21,9 @@ extern NSString * const kSCHWishListProfile;
 @property (nonatomic, retain) NSSet *ItemList;
 
 @property (nonatomic, readonly) NSDate * Timestamp;
+
+- (SCHProfileItem *)profileItem;
+- (void)setProfileNameFromProfileItem;
 
 + (BOOL)isValidProfileID:(NSNumber *)profileID;
 
