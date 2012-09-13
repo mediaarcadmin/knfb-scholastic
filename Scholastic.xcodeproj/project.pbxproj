@@ -361,6 +361,14 @@
 		521B7AEB1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
 		521B7AEC1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
 		521B7AED1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		522250F0160235D6003DCB91 /* tns1.m in Sources */ = {isa = PBXBuildFile; fileRef = 520DF6FB15EE64C800C4452F /* tns1.m */; };
+		522250F11602362A003DCB91 /* SCHQuizTrialsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C78C0715F7ACEE003B291C /* SCHQuizTrialsItem.m */; };
+		522250F216023650003DCB91 /* SCHBSBEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C69155A903D00C7041F /* SCHBSBEucBook.m */; };
+		522250F316023677003DCB91 /* SCHBSBManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C95155BC8C300C7041F /* SCHBSBManifest.m */; };
+		522250F416023692003DCB91 /* SCHBSBTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33CF4155C05D300C7041F /* SCHBSBTree.m */; };
+		522250F5160236B9003DCB91 /* SCHBSBTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33CEE155C059600C7041F /* SCHBSBTreeNode.m */; };
+		522250F6160236D7003DCB91 /* SCHBSBPageContentsViewSpirit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C84155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m */; };
+		522250F7160236F5003DCB91 /* SCHBSBNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C9B155BDAD200C7041F /* SCHBSBNode.m */; };
 		5222F290158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
 		5222F291158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
 		5222F292158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
@@ -14139,6 +14147,14 @@
 				C97DCBBF15E3CE69003B2DF3 /* SCHBSBReplacedElementTextField.m in Sources */,
 				C97DCBC615E3CECE003B2DF3 /* SCHBSBReplacedTextElement.m in Sources */,
 				5295F5B315CAB35000F547C8 /* SCHBooksAssignment.m in Sources */,
+				522250F0160235D6003DCB91 /* tns1.m in Sources */,
+				522250F11602362A003DCB91 /* SCHQuizTrialsItem.m in Sources */,
+				522250F216023650003DCB91 /* SCHBSBEucBook.m in Sources */,
+				522250F316023677003DCB91 /* SCHBSBManifest.m in Sources */,
+				522250F416023692003DCB91 /* SCHBSBTree.m in Sources */,
+				522250F5160236B9003DCB91 /* SCHBSBTreeNode.m in Sources */,
+				522250F6160236D7003DCB91 /* SCHBSBPageContentsViewSpirit.m in Sources */,
+				522250F7160236F5003DCB91 /* SCHBSBNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
