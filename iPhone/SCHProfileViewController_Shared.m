@@ -25,6 +25,7 @@
 #import "SCHProfileSyncComponent.h"
 #import "BITModalSheetController.h"
 #import "SCHNavigationControllerForModalForm.h"
+#import "SCHReadingManagerViewController.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
@@ -33,7 +34,8 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, retain) BITModalSheetController *webParentToolsPopoverController;
-@property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController; 
+@property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController;
+@property (nonatomic, retain) UIViewController *readingManagerController;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (void)checkForBookUpdates;
@@ -66,6 +68,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 @synthesize webParentToolsPopoverController;
 @synthesize parentalToolsWebViewController;
 @synthesize simultaneousTapCount;
+@synthesize readingManagerController;
 
 #pragma mark - Object lifecycle
 
@@ -128,6 +131,8 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     [managedObjectContext_ release], managedObjectContext_ = nil;
     [bookUpdates release], bookUpdates = nil;
     profileSetupDelegate = nil;
+    
+    [readingManagerController release], readingManagerController = nil;
     
     [super dealloc];
 }
@@ -659,7 +664,29 @@ didSelectButtonAnimated:(BOOL)animated
                                         title:(NSString *)title 
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide 
-{    
+{
+    
+#if USE_CODEANDTHEORY
+    SCHReadingManagerViewController *aReadingManager = [[[SCHReadingManagerViewController alloc] init] autorelease];
+    aReadingManager.modalPresenterDelegate = self;
+    aReadingManager.pToken = token;
+    self.readingManagerController = aReadingManager;
+
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:NO];
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.navigationController pushViewController:self.readingManagerController animated:YES];
+     } else {
+        [self presentModalViewController:self.readingManagerController animated:YES];
+    }
+    
+    [CATransaction commit];
+#else
     
     SCHParentalToolsWebViewController *aParentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
     aParentalToolsWebViewController.title = title;
@@ -707,6 +734,8 @@ didSelectButtonAnimated:(BOOL)animated
     }
     
     [CATransaction commit];
+    
+#endif
 }
 
 - (void)dismissModalWebParentToolsAnimated:(BOOL)animated withSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
@@ -742,7 +771,23 @@ didSelectButtonAnimated:(BOOL)animated
             }
         });
     };
-        
+    
+#if USE_CODEANDTHEORY
+    
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        completion();
+    }];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self presentModalViewController:self.readingManagerController animated:YES];
+    }
+    
+    [CATransaction commit];
+
+#else
     if ([self.webParentToolsPopoverController isModalSheetVisible]) {
         
         self.parentalToolsWebViewController.textView.alpha = 0;
@@ -762,7 +807,8 @@ didSelectButtonAnimated:(BOOL)animated
         }
     } else {
         completion();
-    }  
+    }
+#endif
 }
 
 - (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated

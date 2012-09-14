@@ -4282,6 +4282,11 @@
 		C9D703A514ED50B100C10006 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9EFB176134F4C8E00ADF905 /* libXpsSDKipad.a */; };
 		C9D703A614ED50B100C10006 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E2D3BF13B9C7AC001E207B /* CoreText.framework */; };
 		C9D703A714ED50B100C10006 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28B193ED1405253100313821 /* AssetsLibrary.framework */; };
+		C9E1BF9F1603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */; };
+		C9E1BFA01603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */; };
+		C9E1BFA11603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */; };
+		C9E1BFA21603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */; };
+		C9E1BFA31603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */; };
 		C9E73AC615EF8A6D00DC7C11 /* SCHBSBProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E73AC515EF8A6D00DC7C11 /* SCHBSBProperty.m */; };
 		C9E73AC715EF8A6D00DC7C11 /* SCHBSBProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E73AC515EF8A6D00DC7C11 /* SCHBSBProperty.m */; };
 		C9E73AC815EF8A6D00DC7C11 /* SCHBSBProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E73AC515EF8A6D00DC7C11 /* SCHBSBProperty.m */; };
@@ -6562,6 +6567,8 @@
 		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlow.h; path = Shared/SCHTextFlow.h; sourceTree = "<group>"; };
 		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlow.m; path = Shared/SCHTextFlow.m; sourceTree = "<group>"; };
 		C9D703AC14ED50B100C10006 /* Storia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Storia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9E1BF9D1603446400CB8A4E /* SCHReadingManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingManagerViewController.h; path = Shared/SCHReadingManagerViewController.h; sourceTree = "<group>"; };
+		C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingManagerViewController.m; path = Shared/SCHReadingManagerViewController.m; sourceTree = "<group>"; };
 		C9E73AC515EF8A6D00DC7C11 /* SCHBSBProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBProperty.m; path = Shared/SCHBSBProperty.m; sourceTree = "<group>"; };
 		C9E73ACB15EFAB9500DC7C11 /* SCHBSBReplacedElementDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementDelegate.h; path = Shared/SCHBSBReplacedElementDelegate.h; sourceTree = "<group>"; };
 		C9E73ACC15F0D41600DC7C11 /* SCHBSBEucBookDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBEucBookDelegate.h; path = Shared/SCHBSBEucBookDelegate.h; sourceTree = "<group>"; };
@@ -9387,6 +9394,8 @@
 				2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */,
 				527DDC61144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.h */,
 				527DDC62144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m */,
+				C9E1BF9D1603446400CB8A4E /* SCHReadingManagerViewController.h */,
+				C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */,
 				28986DE813DD6FF10011B148 /* Dictionary */,
 				28986DE713DD6FDF0011B148 /* Deregistration */,
 				28986DE613DD6FCC0011B148 /* Update Books */,
@@ -13835,6 +13844,7 @@
 				C9A1F43F15FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
 				C92F0B7115FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
 				C92F0B7815FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
+				C9E1BF9F1603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14253,6 +14263,7 @@
 				C9A1F44115FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
 				C92F0B7315FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
 				C92F0B7A15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
+				C9E1BFA11603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14673,6 +14684,7 @@
 				C9A1F44015FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
 				C92F0B7215FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
 				C92F0B7915FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
+				C9E1BFA01603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15093,6 +15105,7 @@
 				C9A1F44215FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
 				C92F0B7415FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
 				C92F0B7B15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
+				C9E1BFA21603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15513,6 +15526,7 @@
 				C9A1F44315FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */,
 				C92F0B7515FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
 				C92F0B7C15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
+				C9E1BFA31603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
