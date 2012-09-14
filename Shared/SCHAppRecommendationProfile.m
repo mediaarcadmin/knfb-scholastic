@@ -1,18 +1,18 @@
 //
-//  SCHRecommendationProfile.m
+//  SCHAppRecommendationProfile.m
 //  Scholastic
 //
 //  Created by John Eddie on 13/03/2012.
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHRecommendationProfile.h"
+#import "SCHAppRecommendationProfile.h"
 #import "SCHRecommendationItem.h"
 
 // Constants
-NSString * const kSCHRecommendationProfile = @"SCHRecommendationProfile";
+NSString * const kSCHAppRecommendationProfile = @"SCHAppRecommendationProfile";
 
-@implementation SCHRecommendationProfile
+@implementation SCHAppRecommendationProfile
 
 @dynamic age;
 @dynamic fetchDate;

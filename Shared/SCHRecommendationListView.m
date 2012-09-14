@@ -144,12 +144,12 @@
 {
     [self setupImages];
     
-    self.ISBN = [item objectForKey:kSCHAppRecommendationISBN];
-    self.titleLabel.text = [item objectForKey:kSCHAppRecommendationTitle];
-    self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationAuthor];
+    self.ISBN = [item objectForKey:kSCHAppRecommendationItemISBN];
+    self.titleLabel.text = [item objectForKey:kSCHAppRecommendationItemTitle];
+    self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationItemAuthor];
     self.rateView.dimEmptyRatings = !self.showOnBackCover;
-    self.rateView.rating = [[item objectForKey:kSCHAppRecommendationAverageRating] floatValue];
-    UIImage *coverImage = [item objectForKey:kSCHAppRecommendationCoverImage];
+    self.rateView.rating = [[item objectForKey:kSCHAppRecommendationItemAverageRating] floatValue];
+    UIImage *coverImage = [item objectForKey:kSCHAppRecommendationItemCoverImage];
     
     if (coverImage && ![coverImage isKindOfClass:[NSNull class]]) {
         self.coverImageView.image = coverImage;
@@ -172,11 +172,11 @@
 {
     [self setupImages];
     
-    self.ISBN = [item objectForKey:kSCHAppRecommendationISBN];
-    self.titleLabel.text = [item objectForKey:kSCHAppRecommendationTitle];
-    self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationAuthor];
-    self.rateView.rating = [[item objectForKey:kSCHAppRecommendationAverageRating] floatValue];
-    UIImage *coverImage = [item objectForKey:kSCHAppRecommendationCoverImage];
+    self.ISBN = [item objectForKey:kSCHAppRecommendationItemISBN];
+    self.titleLabel.text = [item objectForKey:kSCHAppRecommendationItemTitle];
+    self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationItemAuthor];
+    self.rateView.rating = [[item objectForKey:kSCHAppRecommendationItemAverageRating] floatValue];
+    UIImage *coverImage = [item objectForKey:kSCHAppRecommendationItemCoverImage];
     
     if (coverImage && ![coverImage isKindOfClass:[NSNull class]]) {
         self.coverImageView.image = coverImage;

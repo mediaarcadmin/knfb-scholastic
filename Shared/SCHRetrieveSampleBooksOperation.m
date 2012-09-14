@@ -10,8 +10,6 @@
 
 #import "SCHRecommendationSyncComponent.h"
 #import "SCHRecommendationWebService.h"
-#import "SCHRecommendationProfile.h"
-#import "SCHRecommendationISBN.h"
 #import "SCHProfileItem.h"
 #import "SCHLibreAccessConstants.h"
 #import "SCHRecommendationConstants.h"

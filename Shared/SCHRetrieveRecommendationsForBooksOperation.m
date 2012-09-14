@@ -10,7 +10,7 @@
 
 #import "SCHRecommendationSyncComponent.h"
 #import "SCHRecommendationWebService.h"
-#import "SCHRecommendationISBN.h"
+#import "SCHAppRecommendationISBN.h"
 #import "SCHLibreAccessConstants.h"
 #import "SCHRecommendationConstants.h"
 #import "BITAPIError.h" 
@@ -21,10 +21,10 @@
 
 - (NSArray *)localRecommendationISBNsWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (void)syncRecommendationISBN:(NSDictionary *)webRecommendationISBN 
-        withRecommendationISBN:(SCHRecommendationISBN *)localRecommendationISBN
+        withRecommendationISBN:(SCHAppRecommendationISBN *)localRecommendationISBN
                       syncDate:(NSDate *)syncDate
           managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
-- (SCHRecommendationISBN *)recommendationISBN:(NSDictionary *)webRecommendationISBN
+- (SCHAppRecommendationISBN *)recommendationISBN:(NSDictionary *)webRecommendationISBN
                                      syncDate:(NSDate *)syncDate
                          managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
@@ -82,7 +82,7 @@
 	NSEnumerator *localEnumerator = [localRecommendationISBNsArray objectEnumerator];			  			  
     
 	NSDictionary *webItem = [webEnumerator nextObject];
-	SCHRecommendationISBN *localItem = [localEnumerator nextObject];
+	SCHAppRecommendationISBN *localItem = [localEnumerator nextObject];
 	
 	while (webItem != nil || localItem != nil) {		            
         if (webItem == nil) {
@@ -148,7 +148,7 @@
 {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationISBN 
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationISBN
                                         inManagedObjectContext:aManagedObjectContext]];	
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationWebServiceISBN ascending:YES]]];
@@ -165,7 +165,7 @@
 }
 
 - (void)syncRecommendationISBN:(NSDictionary *)webRecommendationISBN 
-        withRecommendationISBN:(SCHRecommendationISBN *)localRecommendationISBN
+        withRecommendationISBN:(SCHAppRecommendationISBN *)localRecommendationISBN
                       syncDate:(NSDate *)syncDate
           managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
@@ -181,16 +181,16 @@
     }
 }
 
-- (SCHRecommendationISBN *)recommendationISBN:(NSDictionary *)webRecommendationISBN
+- (SCHAppRecommendationISBN *)recommendationISBN:(NSDictionary *)webRecommendationISBN
                                      syncDate:(NSDate *)syncDate
                          managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
-	SCHRecommendationISBN *ret = nil;
+	SCHAppRecommendationISBN *ret = nil;
 	SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithISBN:[self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceISBN]]
                                                                       DRMQualifier:[self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceDRMQualifier]]];    
     
 	if (webRecommendationISBN != nil && webRecommendationISBN != nil) {
-        ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationISBN 
+        ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppRecommendationISBN
                                             inManagedObjectContext:aManagedObjectContext];			
         
         ret.isbn = webBookIdentifier.isbn;

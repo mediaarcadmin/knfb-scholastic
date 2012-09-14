@@ -11,8 +11,8 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHRecommendationWebService.h"
-#import "SCHRecommendationProfile.h"
-#import "SCHRecommendationISBN.h"
+#import "SCHAppRecommendationProfile.h"
+#import "SCHAppRecommendationISBN.h"
 #import "SCHProfileItem.h"
 #import "SCHLibreAccessConstants.h"
 #import "SCHRecommendationConstants.h"
@@ -107,8 +107,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 {
 	NSError *error = nil;
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHRecommendationProfile error:&error priorToDeletionBlock:nil] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHRecommendationISBN error:&error priorToDeletionBlock:nil] ||
+	if (![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationProfile error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationISBN error:&error priorToDeletionBlock:nil] ||
         ![self.managedObjectContext BITemptyEntity:kSCHRecommendationItem error:&error priorToDeletionBlock:nil] ||
         ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error priorToDeletionBlock:^(NSManagedObject *managedObject) {
         [(SCHAppRecommendationItem *)managedObject deleteAllFiles];
@@ -360,7 +360,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         allProfileAges = [NSMutableArray arrayWithCapacity:[results count]];
         filteredProfileAges = [NSMutableArray arrayWithCapacity:[results count]];        
         for (SCHProfileItem *item in results) {
-            SCHRecommendationProfile *profile = [[item AppProfile] recommendationProfile];
+            SCHAppRecommendationProfile *profile = [[item AppProfile] appRecommendationProfile];
             NSDate *nextUpdate = [profile.fetchDate dateByAddingTimeInterval:kSCHRecommendationSyncComponentProfileSyncDelayTimeInterval];
             NSNumber *age = [NSNumber numberWithUnsignedInteger:[item age]]; 
             
@@ -412,11 +412,11 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         ret = [NSMutableArray arrayWithCapacity:[results count]];
         for (SCHBooksAssignment *item in results) {
             NSSet *contentMetadataItems = [item ContentMetadataItem];            
-            SCHRecommendationISBN *isbn = nil;
+            SCHAppRecommendationISBN *isbn = nil;
             if ([contentMetadataItems count] > 0) {
                 // it's a book to book relationship so only 1 book in the set
                 SCHContentMetadataItem *contentMetadataItem = [contentMetadataItems anyObject];
-                isbn = [contentMetadataItem.AppBook recommendationISBN];
+                isbn = [contentMetadataItem.AppBook appRecommendationISBN];
             }
             NSDate *nextUpdate = [isbn.fetchDate dateByAddingTimeInterval:kSCHRecommendationSyncComponentBookSyncDelayTimeInterval];
             
@@ -574,7 +574,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     if ([profileAges count] > 0) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
         NSError *error = nil;    
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationProfile
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationProfile
                                             inManagedObjectContext:self.managedObjectContext]];
         
         NSArray *recommendationProfiles = [self.managedObjectContext executeFetchRequest:fetchRequest 
@@ -583,7 +583,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         if (recommendationProfiles == nil) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         } else {
-            for (SCHRecommendationProfile *profile in recommendationProfiles) {
+            for (SCHAppRecommendationProfile *profile in recommendationProfiles) {
                 if ([profileAges containsObject:profile.age] == NO) {
                     [self.managedObjectContext deleteObject:profile];
                 }

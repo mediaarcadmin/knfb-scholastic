@@ -1379,18 +1379,18 @@
 		5251716615501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */; };
 		5251716715501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */; };
 		5251716815501FB5009C3B61 /* NSFileManager+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */; };
-		5256686F150F697A00570623 /* SCHRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHRecommendationISBN.m */; };
-		52566870150F697A00570623 /* SCHRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHRecommendationISBN.m */; };
-		52566871150F697A00570623 /* SCHRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHRecommendationISBN.m */; };
-		52566872150F697A00570623 /* SCHRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHRecommendationISBN.m */; };
+		5256686F150F697A00570623 /* SCHAppRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHAppRecommendationISBN.m */; };
+		52566870150F697A00570623 /* SCHAppRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHAppRecommendationISBN.m */; };
+		52566871150F697A00570623 /* SCHAppRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHAppRecommendationISBN.m */; };
+		52566872150F697A00570623 /* SCHAppRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHAppRecommendationISBN.m */; };
 		52566875150F698800570623 /* SCHRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52566874150F698800570623 /* SCHRecommendationItem.m */; };
 		52566876150F698800570623 /* SCHRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52566874150F698800570623 /* SCHRecommendationItem.m */; };
 		52566877150F698800570623 /* SCHRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52566874150F698800570623 /* SCHRecommendationItem.m */; };
 		52566878150F698800570623 /* SCHRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52566874150F698800570623 /* SCHRecommendationItem.m */; };
-		5256687B150F699800570623 /* SCHRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHRecommendationProfile.m */; };
-		5256687C150F699800570623 /* SCHRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHRecommendationProfile.m */; };
-		5256687D150F699800570623 /* SCHRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHRecommendationProfile.m */; };
-		5256687E150F699800570623 /* SCHRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHRecommendationProfile.m */; };
+		5256687B150F699800570623 /* SCHAppRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHAppRecommendationProfile.m */; };
+		5256687C150F699800570623 /* SCHAppRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHAppRecommendationProfile.m */; };
+		5256687D150F699800570623 /* SCHAppRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHAppRecommendationProfile.m */; };
+		5256687E150F699800570623 /* SCHAppRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHAppRecommendationProfile.m */; };
 		525668D9150F6DCC00570623 /* SCHRecommendationWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668D8150F6DCC00570623 /* SCHRecommendationWebService.m */; };
 		525668DA150F6DCC00570623 /* SCHRecommendationWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668D8150F6DCC00570623 /* SCHRecommendationWebService.m */; };
 		525668DB150F6DCC00570623 /* SCHRecommendationWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 525668D8150F6DCC00570623 /* SCHRecommendationWebService.m */; };
@@ -2959,9 +2959,9 @@
 		C96C184D15C7FF46002EBEBB /* SCHReadingStatsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */; };
 		C96C184E15C7FF46002EBEBB /* SCHReadingStatsDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */; };
 		C96C184F15C7FF46002EBEBB /* SCHReadingStatsEntryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */; };
-		C96C185015C7FF46002EBEBB /* SCHRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHRecommendationISBN.m */; };
+		C96C185015C7FF46002EBEBB /* SCHAppRecommendationISBN.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256686E150F697A00570623 /* SCHAppRecommendationISBN.m */; };
 		C96C185115C7FF46002EBEBB /* SCHRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52566874150F698800570623 /* SCHRecommendationItem.m */; };
-		C96C185215C7FF53002EBEBB /* SCHRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHRecommendationProfile.m */; };
+		C96C185215C7FF53002EBEBB /* SCHAppRecommendationProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5256687A150F699800570623 /* SCHAppRecommendationProfile.m */; };
 		C96C185315C7FF53002EBEBB /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
 		C96C185515C7FF53002EBEBB /* SCHWishListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323715011CA10069C72E /* SCHWishListItem.m */; };
 		C96C185615C7FF53002EBEBB /* SCHWishListProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EA323015011C2E0069C72E /* SCHWishListProfile.m */; };
@@ -5524,12 +5524,12 @@
 		5251716315501FB5009C3B61 /* NSFileManager+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+Extensions.h"; path = "Shared/NSFileManager+Extensions.h"; sourceTree = "<group>"; };
 		5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+Extensions.m"; path = "Shared/NSFileManager+Extensions.m"; sourceTree = "<group>"; };
 		525477D114BD9B6D001E2388 /* Scholastic 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Scholastic 2.xcdatamodel"; sourceTree = "<group>"; };
-		5256686D150F697A00570623 /* SCHRecommendationISBN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationISBN.h; path = Shared/SCHRecommendationISBN.h; sourceTree = "<group>"; };
-		5256686E150F697A00570623 /* SCHRecommendationISBN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationISBN.m; path = Shared/SCHRecommendationISBN.m; sourceTree = "<group>"; };
+		5256686D150F697A00570623 /* SCHAppRecommendationISBN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppRecommendationISBN.h; path = Shared/SCHAppRecommendationISBN.h; sourceTree = "<group>"; };
+		5256686E150F697A00570623 /* SCHAppRecommendationISBN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppRecommendationISBN.m; path = Shared/SCHAppRecommendationISBN.m; sourceTree = "<group>"; };
 		52566873150F698800570623 /* SCHRecommendationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationItem.h; path = Shared/SCHRecommendationItem.h; sourceTree = "<group>"; };
 		52566874150F698800570623 /* SCHRecommendationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationItem.m; path = Shared/SCHRecommendationItem.m; sourceTree = "<group>"; };
-		52566879150F699800570623 /* SCHRecommendationProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationProfile.h; path = Shared/SCHRecommendationProfile.h; sourceTree = "<group>"; };
-		5256687A150F699800570623 /* SCHRecommendationProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationProfile.m; path = Shared/SCHRecommendationProfile.m; sourceTree = "<group>"; };
+		52566879150F699800570623 /* SCHAppRecommendationProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppRecommendationProfile.h; path = Shared/SCHAppRecommendationProfile.h; sourceTree = "<group>"; };
+		5256687A150F699800570623 /* SCHAppRecommendationProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppRecommendationProfile.m; path = Shared/SCHAppRecommendationProfile.m; sourceTree = "<group>"; };
 		525668D7150F6DCC00570623 /* SCHRecommendationWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationWebService.h; path = Shared/SCHRecommendationWebService.h; sourceTree = "<group>"; };
 		525668D8150F6DCC00570623 /* SCHRecommendationWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationWebService.m; path = Shared/SCHRecommendationWebService.m; sourceTree = "<group>"; };
 		525668DD150F80F600570623 /* SCHRecommendationSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationSyncComponent.h; path = Shared/SCHRecommendationSyncComponent.h; sourceTree = "<group>"; };
@@ -8309,12 +8309,12 @@
 				5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */,
 				5248E11213C4858900FA2CDC /* SCHReadingStatsEntryItem.h */,
 				5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */,
-				5256686D150F697A00570623 /* SCHRecommendationISBN.h */,
-				5256686E150F697A00570623 /* SCHRecommendationISBN.m */,
+				5256686D150F697A00570623 /* SCHAppRecommendationISBN.h */,
+				5256686E150F697A00570623 /* SCHAppRecommendationISBN.m */,
 				52566873150F698800570623 /* SCHRecommendationItem.h */,
 				52566874150F698800570623 /* SCHRecommendationItem.m */,
-				52566879150F699800570623 /* SCHRecommendationProfile.h */,
-				5256687A150F699800570623 /* SCHRecommendationProfile.m */,
+				52566879150F699800570623 /* SCHAppRecommendationProfile.h */,
+				5256687A150F699800570623 /* SCHAppRecommendationProfile.m */,
 				52298A6F12F0EF5600BBBCE6 /* SCHSyncEntity.h */,
 				52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */,
 				52298A5F12F0EF5600BBBCE6 /* SCHSettingItem.h */,
@@ -13655,9 +13655,9 @@
 				52C62CFB14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m in Sources */,
 				52EA323115011C2E0069C72E /* SCHWishListProfile.m in Sources */,
 				52EA323815011CA10069C72E /* SCHWishListItem.m in Sources */,
-				5256686F150F697A00570623 /* SCHRecommendationISBN.m in Sources */,
+				5256686F150F697A00570623 /* SCHAppRecommendationISBN.m in Sources */,
 				52566875150F698800570623 /* SCHRecommendationItem.m in Sources */,
-				5256687B150F699800570623 /* SCHRecommendationProfile.m in Sources */,
+				5256687B150F699800570623 /* SCHAppRecommendationProfile.m in Sources */,
 				525668D9150F6DCC00570623 /* SCHRecommendationWebService.m in Sources */,
 				525668DF150F80F600570623 /* SCHRecommendationSyncComponent.m in Sources */,
 				525668E5150FAAA100570623 /* SCHRecommendationConstants.m in Sources */,
@@ -14072,9 +14072,9 @@
 				C96C184D15C7FF46002EBEBB /* SCHReadingStatsContentItem.m in Sources */,
 				C96C184E15C7FF46002EBEBB /* SCHReadingStatsDetailItem.m in Sources */,
 				C96C184F15C7FF46002EBEBB /* SCHReadingStatsEntryItem.m in Sources */,
-				C96C185015C7FF46002EBEBB /* SCHRecommendationISBN.m in Sources */,
+				C96C185015C7FF46002EBEBB /* SCHAppRecommendationISBN.m in Sources */,
 				C96C185115C7FF46002EBEBB /* SCHRecommendationItem.m in Sources */,
-				C96C185215C7FF53002EBEBB /* SCHRecommendationProfile.m in Sources */,
+				C96C185215C7FF53002EBEBB /* SCHAppRecommendationProfile.m in Sources */,
 				C96C185315C7FF53002EBEBB /* SCHSyncEntity.m in Sources */,
 				C96C185515C7FF53002EBEBB /* SCHWishListItem.m in Sources */,
 				C96C185615C7FF53002EBEBB /* SCHWishListProfile.m in Sources */,
@@ -14483,9 +14483,9 @@
 				52C62CFC14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m in Sources */,
 				52EA323215011C2E0069C72E /* SCHWishListProfile.m in Sources */,
 				52EA323915011CA10069C72E /* SCHWishListItem.m in Sources */,
-				52566870150F697A00570623 /* SCHRecommendationISBN.m in Sources */,
+				52566870150F697A00570623 /* SCHAppRecommendationISBN.m in Sources */,
 				52566876150F698800570623 /* SCHRecommendationItem.m in Sources */,
-				5256687C150F699800570623 /* SCHRecommendationProfile.m in Sources */,
+				5256687C150F699800570623 /* SCHAppRecommendationProfile.m in Sources */,
 				525668DA150F6DCC00570623 /* SCHRecommendationWebService.m in Sources */,
 				525668E0150F80F600570623 /* SCHRecommendationSyncComponent.m in Sources */,
 				525668E6150FAAA100570623 /* SCHRecommendationConstants.m in Sources */,
@@ -14895,9 +14895,9 @@
 				52C62CFD14F3A2FA00F261DA /* SCHScholasticGetUserInfoWebService.m in Sources */,
 				52EA323415011C2E0069C72E /* SCHWishListProfile.m in Sources */,
 				52EA323A15011CA10069C72E /* SCHWishListItem.m in Sources */,
-				52566871150F697A00570623 /* SCHRecommendationISBN.m in Sources */,
+				52566871150F697A00570623 /* SCHAppRecommendationISBN.m in Sources */,
 				52566877150F698800570623 /* SCHRecommendationItem.m in Sources */,
-				5256687D150F699800570623 /* SCHRecommendationProfile.m in Sources */,
+				5256687D150F699800570623 /* SCHAppRecommendationProfile.m in Sources */,
 				525668DB150F6DCC00570623 /* SCHRecommendationWebService.m in Sources */,
 				525668E1150F80F600570623 /* SCHRecommendationSyncComponent.m in Sources */,
 				525668E7150FAAA100570623 /* SCHRecommendationConstants.m in Sources */,
@@ -15307,9 +15307,9 @@
 				52EA323515011C2E0069C72E /* SCHWishListProfile.m in Sources */,
 				52EA323B15011CA10069C72E /* SCHWishListItem.m in Sources */,
 				C9B32A3D150A33F3008A04FC /* RateView.m in Sources */,
-				52566872150F697A00570623 /* SCHRecommendationISBN.m in Sources */,
+				52566872150F697A00570623 /* SCHAppRecommendationISBN.m in Sources */,
 				52566878150F698800570623 /* SCHRecommendationItem.m in Sources */,
-				5256687E150F699800570623 /* SCHRecommendationProfile.m in Sources */,
+				5256687E150F699800570623 /* SCHAppRecommendationProfile.m in Sources */,
 				525668DC150F6DCC00570623 /* SCHRecommendationWebService.m in Sources */,
 				525668E2150F80F600570623 /* SCHRecommendationSyncComponent.m in Sources */,
 				525668E8150FAAA100570623 /* SCHRecommendationConstants.m in Sources */,

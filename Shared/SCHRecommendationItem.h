@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class SCHRecommendationISBN;
-@class SCHRecommendationProfile;
+@class SCHAppRecommendationISBN;
+@class SCHAppRecommendationProfile;
 @class SCHAppRecommendationItem;
 
 // Constants
@@ -28,8 +28,8 @@ extern NSString * const kSCHRecommendationItem;
 @property (nonatomic, retain) NSString * author;
 @property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) SCHAppRecommendationItem *appRecommendationItem;
-@property (nonatomic, retain) SCHRecommendationISBN *recommendationISBN;
-@property (nonatomic, retain) SCHRecommendationProfile *recommendationProfile;
+@property (nonatomic, retain) SCHAppRecommendationISBN *appRecommendationISBN;
+@property (nonatomic, retain) SCHAppRecommendationProfile *appRecommendationProfile;
 
 - (NSString *)isbn;
 - (void)assignAppRecommendationItem;

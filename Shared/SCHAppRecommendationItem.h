@@ -22,12 +22,12 @@ extern NSString * const kSCHAppRecommendationItemErrorCode;
 extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad;
 extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone;
 
-extern NSString * const kSCHAppRecommendationTitle;
-extern NSString * const kSCHAppRecommendationAuthor;
-extern NSString * const kSCHAppRecommendationISBN;
-extern NSString * const kSCHAppRecommendationAverageRating;
-extern NSString * const kSCHAppRecommendationCoverImage;
-extern NSString * const kSCHAppRecommendationFullCoverImagePath;
+extern NSString * const kSCHAppRecommendationItemTitle;
+extern NSString * const kSCHAppRecommendationItemAuthor;
+extern NSString * const kSCHAppRecommendationItemISBN;
+extern NSString * const kSCHAppRecommendationItemAverageRating;
+extern NSString * const kSCHAppRecommendationItemCoverImage;
+extern NSString * const kSCHAppRecommendationItemFullCoverImagePath;
 
 typedef enum {
     kSCHAppRecommendationProcessingStateInvalidRecommendation   = -6,
