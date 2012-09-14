@@ -89,6 +89,16 @@
     return [self dataForComponentAtPath:@"Metadata/Thumbnail.jpg"];
 }
 
+- (BOOL)containsFixedRepresentation
+{
+    return YES;
+}
+
+- (BOOL)containsEmbeddedBSB
+{
+    return [self componentExistsAtPath:@"/Documents/1/Other/KNFB/Branching/manifest.xml"];
+}
+
 - (BOOL)containsEmbeddedEPub
 {
     return [self componentExistsAtPath:@"META-INF/container.xml"];

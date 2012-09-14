@@ -126,6 +126,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, assign) BOOL shouldShowChapters;
 @property (nonatomic, assign) BOOL shouldShowPageNumbers;
 @property (nonatomic, assign) NSNumber *forceOpenToCover;
+@property (nonatomic, assign) SCHReadingViewLayoutType forceLayoutType;
 
 @property (nonatomic, assign) BOOL highlightsModeEnabled;
 @property (nonatomic, assign) BOOL firstTimePlayForHelpController;
@@ -260,6 +261,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize shouldShowChapters;
 @synthesize shouldShowPageNumbers;
 @synthesize forceOpenToCover;
+@synthesize forceLayoutType;
 @synthesize highlightsModeEnabled;
 @synthesize highlightsInfoButton;
 @synthesize highlightsCancelButton;
@@ -463,6 +465,15 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.shouldShowChapters = book.shouldShowChapters;
         self.shouldShowPageNumbers = book.shouldShowPageNumbers;
         self.forceOpenToCover = [NSNumber numberWithBool:book.alwaysOpenToCover];
+
+#if FLOW_VIEW_DISABLED
+        // If Flow View is disabled, always use fixed view
+        self.forceLayoutType = SCHReadingViewLayoutTypeFixed;
+#else
+        if (![bookPackageProvider containsFixedRepresentation]) {
+            self.forceLayoutType = SCHReadingViewLayoutTypeFlow;
+        }
+#endif
         
         [[SCHSyncManager sharedSyncManager] openDocumentSync:book.ContentMetadataItem.booksAssignment
                                               forProfile:profile.ID];
@@ -587,31 +598,25 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
     // Older reader defaults: fixed view for iPad, flow view for iPhone
     // Younger reader defaults: always fixed, no need to save
-    
-#if FLOW_VIEW_DISABLED
-    // If Flow View is disabled, always use fixed view white paper
-    self.layoutType = SCHReadingViewLayoutTypeFixed;
-    self.paperType = SCHReadingViewPaperTypeWhite;    
-#else
     if (self.youngerMode) {
         self.layoutType = SCHReadingViewLayoutTypeFixed;
         self.paperType = SCHReadingViewPaperTypeWhite;
     } else {
         
-        if (1) {
-            self.layoutType = SCHReadingViewLayoutTypeFlow;
-        } else {
         // Default layout type
-        NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
-        if (savedLayoutType) {
-            self.layoutType = [savedLayoutType intValue];
+        if (self.forceLayoutType != SCHReadingViewLayoutTypeUnspecified) {
+            self.layoutType = self.forceLayoutType;
         } else {
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-                self.layoutType = SCHReadingViewLayoutTypeFlow;
+            NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
+            if (savedLayoutType) {
+                self.layoutType = [savedLayoutType intValue];
             } else {
-                self.layoutType = SCHReadingViewLayoutTypeFixed;
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                    self.layoutType = SCHReadingViewLayoutTypeFlow;
+                } else {
+                    self.layoutType = SCHReadingViewLayoutTypeFixed;
+                }
             }
-        }
         }
         
         // Default font size index
@@ -632,7 +637,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             [[self.profile AppProfile] setPaperType:[NSNumber numberWithInt:SCHReadingViewPaperTypeWhite]];
         }
     }  
-#endif
     
     [self.paperTypeSegmentedControl setSelectedSegmentIndex:self.paperType];
     
@@ -758,12 +762,21 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     // Conditional Button Logic - remove buttons in reverse order to guarantee
     // that buttons and spacers are where we expect
     
+    BOOL showOptions = YES;
 #if FLOW_VIEW_DISABLED
-    // if flow view is disabled, then remove the options button
-    if ([toolbarArray count] >= 11) {
-        [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(8, 2)]];
+    showOptions = NO;
+#else
+    if (![self.bookPackageProvider containsFixedRepresentation]) {
+        showOptions = NO;
     }
 #endif
+    
+    if (!showOptions) {
+    // if flow view is disabled, then remove the options button
+        if ([toolbarArray count] >= 11) {
+            [toolbarArray removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(8, 2)]];
+        }
+    }
     
     // Reading Quiz
     if (!readingChallenge && [toolbarArray count] >= 9) {

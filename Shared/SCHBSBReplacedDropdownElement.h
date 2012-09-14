@@ -6,10 +6,12 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHBSBReplacedElementPlaceholder.h"
+#import "SCHBSBReplacedElement.h"
 
-@interface SCHBSBReplacedDropdownElement : SCHBSBReplacedElementPlaceholder
+@interface SCHBSBReplacedDropdownElement : SCHBSBReplacedElement
 
-- (id)initWithPointSize:(CGFloat)point keys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)binding;
+- (id)initWithKeys:(NSArray *)keyArray values:(NSArray *)valueArray binding:(NSString *)dropdownBinding value:(NSString *)aValue;
+
+@property (nonatomic, assign) BOOL useWebview;
 
 @end

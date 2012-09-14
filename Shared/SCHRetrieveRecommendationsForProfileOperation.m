@@ -94,7 +94,7 @@
         id webItemID =  [self makeNullNil:[webItem valueForKey:kSCHRecommendationWebServiceAge]];
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceAge];
 		
-        if (webItemID == nil || [SCHAppRecommendationProfile isValidProfileID:webItemID] == NO) {
+        if (webItemID == nil || [SCHAppRecommendationProfile isValidAge:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;
@@ -172,13 +172,13 @@
                                               syncDate:(NSDate *)syncDate
 {
 	SCHAppRecommendationProfile *ret = nil;
-	id recommendationProfileID =  [self makeNullNil:[webRecommendationProfile valueForKey:kSCHRecommendationWebServiceAge]];
+	id recommendationAge =  [self makeNullNil:[webRecommendationProfile valueForKey:kSCHRecommendationWebServiceAge]];
     
-	if (webRecommendationProfile != nil && [SCHAppRecommendationProfile isValidProfileID:recommendationProfileID] == YES) {
+	if (webRecommendationProfile != nil && [SCHAppRecommendationProfile isValidAge:recommendationAge] == YES) {
         ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppRecommendationProfile
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];			
         
-        ret.age = recommendationProfileID;
+        ret.age = recommendationAge;
         ret.fetchDate = syncDate;
         
         [(SCHRecommendationSyncComponent *)self.syncComponent syncRecommendationItems:[self makeNullNil:[webRecommendationProfile objectForKey:kSCHRecommendationWebServiceItems]] 
