@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "SCHStartingViewController.h"
+
+// Constants
+extern NSString * const kSCHLoginErrorDomain;
+extern NSInteger const kSCHLoginReachabilityError;
+extern NSString * const kSCHSamplesErrorDomain;
+extern NSInteger const kSCHSamplesUnspecifiedError;
 
 typedef enum {
 	kSCHStoreTypeStandardStore,
@@ -22,7 +27,6 @@ typedef enum {
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet SCHStartingViewController *startingViewController;
 @property (nonatomic, readonly) SCHCoreDataHelper *coreDataHelper;
 
 - (NSURL *)applicationDocumentsDirectory;
