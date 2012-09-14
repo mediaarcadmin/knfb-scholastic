@@ -369,6 +369,7 @@
 		522250F5160236B9003DCB91 /* SCHBSBTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33CEE155C059600C7041F /* SCHBSBTreeNode.m */; };
 		522250F6160236D7003DCB91 /* SCHBSBPageContentsViewSpirit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C84155AA9DE00C7041F /* SCHBSBPageContentsViewSpirit.m */; };
 		522250F7160236F5003DCB91 /* SCHBSBNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C9B155BDAD200C7041F /* SCHBSBNode.m */; };
+		522250FA16023766003DCB91 /* SCHCoreDataSchemaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 522250F916023766003DCB91 /* SCHCoreDataSchemaTests.m */; };
 		5222F290158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
 		5222F291158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
 		5222F292158A1C12006040D7 /* SCHSyncComponentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */; };
@@ -1515,6 +1516,7 @@
 		52AD9D72130000570099FB88 /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
 		52AD9D73130000570099FB88 /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
 		52AD9D74130000570099FB88 /* SCHSettingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */; };
+		52AE222516032EED0037A0C8 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
 		52BAFB69135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */; };
 		52C489CB1369AC4200460876 /* UIColor+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C489CA1369AC4200460876 /* UIColor+Extensions.m */; };
 		52C62CE914F2A4F100F261DA /* SCHCOPPAManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C62CE814F2A4F100F261DA /* SCHCOPPAManager.m */; };
@@ -5431,6 +5433,8 @@
 		521B7AE81521D67E00DC0739 /* WishListServiceSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WishListServiceSvc+Binding.h"; sourceTree = "<group>"; };
 		521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WishListServiceSvc+Binding.m"; sourceTree = "<group>"; };
 		521BB6C015207FF00045AC92 /* SCHISBNItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHISBNItem.h; path = Shared/SCHISBNItem.h; sourceTree = "<group>"; };
+		522250F816023766003DCB91 /* SCHCoreDataSchemaTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHCoreDataSchemaTests.h; sourceTree = "<group>"; };
+		522250F916023766003DCB91 /* SCHCoreDataSchemaTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHCoreDataSchemaTests.m; sourceTree = "<group>"; };
 		5222F28E158A1C11006040D7 /* SCHSyncComponentOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponentOperation.h; path = Shared/SCHSyncComponentOperation.h; sourceTree = "<group>"; };
 		5222F28F158A1C11006040D7 /* SCHSyncComponentOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncComponentOperation.m; path = Shared/SCHSyncComponentOperation.m; sourceTree = "<group>"; };
 		5222F294158A2BF2006040D7 /* SCHGetUserProfilesResponseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHGetUserProfilesResponseOperation.h; path = Shared/SCHGetUserProfilesResponseOperation.h; sourceTree = "<group>"; };
@@ -8695,6 +8699,8 @@
 			children = (
 				52CEC19615C166A3004C749A /* NSNumber+ObjectTypesTests.h */,
 				52CEC19715C166A3004C749A /* NSNumber+ObjectTypesTests.m */,
+				522250F816023766003DCB91 /* SCHCoreDataSchemaTests.h */,
+				522250F916023766003DCB91 /* SCHCoreDataSchemaTests.m */,
 			);
 			name = "Core Data Model Tests";
 			sourceTree = "<group>";
@@ -14155,6 +14161,8 @@
 				522250F5160236B9003DCB91 /* SCHBSBTreeNode.m in Sources */,
 				522250F6160236D7003DCB91 /* SCHBSBPageContentsViewSpirit.m in Sources */,
 				522250F7160236F5003DCB91 /* SCHBSBNode.m in Sources */,
+				522250FA16023766003DCB91 /* SCHCoreDataSchemaTests.m in Sources */,
+				52AE222516032EED0037A0C8 /* Scholastic.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
