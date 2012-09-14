@@ -297,7 +297,7 @@
         <attribute name="ContentIdentifierType" optional="YES" attributeType="Integer 16" defaultValueString="0">
             <userInfo/>
         </attribute>
-        <attribute name="DRMQualifier" attributeType="Integer 16" defaultValueString="0" indexed="YES">
+        <attribute name="DRMQualifier" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES">
             <userInfo/>
         </attribute>
         <userInfo/>
@@ -600,8 +600,8 @@
         <userInfo/>
     </entity>
     <entity name="SCHQuizTrialsItem" representedClassName="SCHQuizTrialsItem" syncable="YES">
-        <attribute name="quizScore" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="quizTotal" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="quizScore" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="quizTotal" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="readingStatsEntryItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHReadingStatsEntryItem" inverseName="quizResults" inverseEntity="SCHReadingStatsEntryItem" syncable="YES"/>
     </entity>
     <entity name="SCHRating" representedClassName="SCHRating" parentEntity="SCHSyncEntity" syncable="YES">
@@ -662,7 +662,7 @@
         <attribute name="image_link" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="order" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="product_code" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="regular_price" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="sale_price" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -680,10 +680,10 @@
         <userInfo/>
     </entity>
     <entity name="SCHSyncEntity" representedClassName="SCHSyncEntity" isAbstract="YES">
-        <attribute name="LastModified" attributeType="Date">
+        <attribute name="LastModified" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
-        <attribute name="State" attributeType="Integer 16" defaultValueString="0" indexed="YES">
+        <attribute name="State" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES">
             <userInfo/>
         </attribute>
         <userInfo/>
