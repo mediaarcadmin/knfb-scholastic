@@ -561,15 +561,14 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
                                         animated:(BOOL)animated
 {
+    // TODO: this all seems overly complex - simplify it
     NSMutableArray *viewControllers = [NSMutableArray array];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        if (self.profileSetupDelegate) {
-            [viewControllers addObject:self.profileSetupDelegate];
-        }
+        [viewControllers addObjectsFromArray:[self.navigationController viewControllers]];
+    } else {
+        [viewControllers addObject:self];
     }
-    
-    [viewControllers addObject:self];
     
     NSArray *profileControllers = [self viewControllersForProfileItem:profileItem showWelcome:NO];
     if (profileControllers) {

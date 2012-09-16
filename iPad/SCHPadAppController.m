@@ -17,7 +17,7 @@
 #import "LambdaAlert.h"
 #import "SCHDownloadDictionaryViewController.h"
 #import "Reachability.h"
-#import "SCHProfileViewController_iPhone.h"
+#import "SCHProfileViewController_iPad.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHProfileSetupDelegate.h"
 #import "SCHAccountValidation.h"
@@ -37,12 +37,15 @@
 @property (nonatomic, retain) UINavigationController *modalContainerView;
 @property (nonatomic, retain) LambdaAlert *undismissableAlert;
 
-- (BOOL)dictionaryDownloadRequired;
+// Cached View Controllers
+@property (nonatomic, retain) SCHStoriaLoginViewController *loginViewController;
+@property (nonatomic, retain) SCHProfileViewController_iPad *profileViewController;
+@property (nonatomic, retain) SCHProfileViewController_iPad *samplesViewController;
+
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
 - (void)pushProfileAnimated:(BOOL)animated;
 - (void)pushProfileSetupAnimated:(BOOL)animated;
 
-- (UIViewController *)loginViewController;
 - (BOOL)isCurrentlyModal;
 
 @end
@@ -51,11 +54,17 @@
 
 @synthesize modalContainerView;
 @synthesize undismissableAlert;
+@synthesize loginViewController;
+@synthesize profileViewController;
+@synthesize samplesViewController;
 
 - (void)dealloc
 {
     [modalContainerView release], modalContainerView = nil;
     [undismissableAlert release], undismissableAlert = nil;
+    [loginViewController release], loginViewController = nil;
+    [profileViewController release], profileViewController = nil;
+    [samplesViewController release], samplesViewController = nil;
     
     [super dealloc];
 }
@@ -79,44 +88,14 @@
         self.undismissableAlert = nil;
     }
     
-    if ([self isCurrentlyModal]) {
-        // Check if dictionary needs set up
-        if ([self dictionaryDownloadRequired]) {
-            SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-            downloadDictionary.completion = ^{
-                [self pushProfileAnimated:NO];
-                [self dismissModalViewControllerAnimated:YES];
-                
-                self.modalContainerView = nil;
-            };
-            
-            [self.modalContainerView pushViewController:downloadDictionary animated:YES];
-            [downloadDictionary release];
-        } else {
-            [self pushProfileAnimated:NO];
-            [self dismissModalViewControllerAnimated:YES];
-        }
-        
-    } else {
-        [self pushProfileAnimated:NO];
-    }
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
+    [self pushProfileAnimated:shouldAnimate];
 }
 
 - (void)presentProfilesSetup
 {
     if ([self isCurrentlyModal]) {
-        // Check if dictionary needs set up
-        if ([self dictionaryDownloadRequired]) {
-            SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-            downloadDictionary.completion = ^{
-                [self pushProfileSetupAnimated:YES];
-            };
-            
-            [self.modalContainerView pushViewController:downloadDictionary animated:YES];
-            [downloadDictionary release];
-        } else {
-            [self pushProfileSetupAnimated:YES];
-        }
+        [self pushProfileSetupAnimated:YES];
     } else {
         BOOL shouldAnimate = ([self.viewControllers count] > 0);
         [self pushProfileSetupAnimated:shouldAnimate];
@@ -125,35 +104,13 @@
 
 - (void)presentSamplesWithWelcome:(BOOL)welcome
 {
-    if ([self isCurrentlyModal]) {
-        // Check if dictionary needs set up
-        if ([self dictionaryDownloadRequired]) {
-            SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-            downloadDictionary.completion = ^{
-                [self pushSamplesAnimated:NO showWelcome:welcome];
-                [self dismissModalViewControllerAnimated:YES];
-                
-                self.modalContainerView = nil;
-            };
-            
-            [self.modalContainerView pushViewController:downloadDictionary animated:YES];
-            [downloadDictionary release];
-        } else {
-            [self pushSamplesAnimated:NO showWelcome:welcome];
-            [self dismissModalViewControllerAnimated:YES];
-        }
-    } else {
-        [self pushSamplesAnimated:NO showWelcome:welcome];
-    }
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
+    [self pushSamplesAnimated:shouldAnimate showWelcome:welcome];
 }
 
 - (void)presentLogin
 {
-    
-    UIViewController *login = [self loginViewController];
-    self.modalContainerView = [[[UINavigationController alloc] initWithRootViewController:login] autorelease];
-    
-    [self presentModalViewController:self.modalContainerView animated:NO];
+    [self setViewControllers:[NSArray arrayWithObject:self.loginViewController] animated:NO];
 }
 
 #pragma mark - Errors
@@ -171,7 +128,7 @@
 
 - (void)failedLoginWithError:(NSError *)error
 {
-    SCHStoriaLoginViewController *login = (SCHStoriaLoginViewController *)[self.modalContainerView topViewController];
+    SCHStoriaLoginViewController *login = self.loginViewController;
     
     if (error && [[error domain] isEqualToString:kSCHAccountValidationErrorDomain] && ([error code] == kSCHAccountValidationMalformedEmailError)) {
         [login setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningMalformedEmail];
@@ -230,22 +187,12 @@
     
 }
 
-- (BOOL)dictionaryDownloadRequired
-{
-    BOOL downloadRequired =
-    ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserNotYetAsked)
-    || ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup);
-    
-    return (downloadRequired && [[Reachability reachabilityForLocalWiFi] isReachable]);
-}
-
 - (void)pushProfileSetupAnimated:(BOOL)animated
 {
     SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
     setupBookshelves.profileSetupDelegate = self;
     
-    UIViewController *login = [self loginViewController];
-    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, setupBookshelves, nil];
+    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:self.loginViewController, setupBookshelves, nil];
     
     if ([self isCurrentlyModal]) {
         [self.modalContainerView setViewControllers:controllers animated:animated];
@@ -258,17 +205,8 @@
 
 - (void)pushProfileAnimated:(BOOL)animated
 {
-    SCHProfileViewController_Shared *profileViewController = [[SCHProfileViewController_iPhone alloc] init];
-    
-    // access to the AppDelegate's managedObjectContext is deferred until we know we don't
-    // want to use the same database any more
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-    profileViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
-    profileViewController.profileSetupDelegate = self;
-    
-    if ([[profileViewController profileItems] count]) {
-        NSMutableArray *viewControllers = [NSMutableArray arrayWithObject:profileViewController];
-        [self setViewControllers:viewControllers animated:animated];
+    if ([[self.profileViewController profileItems] count]) {
+        [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, nil] animated:animated];
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Unable To Open the Profile", @"")
@@ -284,20 +222,11 @@
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome
 {
-    
-    SCHProfileViewController_Shared *profileViewController = [[SCHProfileViewController_iPhone alloc] init];
-    
-    // access to the AppDelegate's managedObjectContext is deferred until we know we don't
-    // want to use the same database any more
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-    profileViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
-    profileViewController.profileSetupDelegate = self;
-    
-    SCHProfileItem *profileItem = [[profileViewController profileItems] lastObject]; // Only one sample bookshelf so any result will do
-    
-    if (profileItem) {
-        NSMutableArray *viewControllers = [NSMutableArray array];
-        [viewControllers addObjectsFromArray:[profileViewController viewControllersForProfileItem:profileItem showWelcome:welcome]];
+    if ([[self.samplesViewController profileItems] count]) {
+        SCHProfileItem *profileItem = [[self.samplesViewController profileItems] lastObject]; // Only one sample bookshelf so any result will do
+
+        NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self.loginViewController, self.samplesViewController, nil];
+        [viewControllers addObjectsFromArray:[self.samplesViewController viewControllersForProfileItem:profileItem showWelcome:welcome]];
         [self setViewControllers:viewControllers animated:animated];
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
@@ -318,7 +247,7 @@
 
 - (void)popToAuthenticatedProfileAnimated:(BOOL)animated
 {
-    [self popToRootViewControllerAnimated:animated];
+    [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, nil] animated:animated];
 }
 
 - (void)pushCurrentProfileAnimated:(BOOL)animated
@@ -359,20 +288,13 @@
 {
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
-        [self setViewControllers:nil];
         if (completion) {
             completion();
         }
     }];
     
-    if ([self isCurrentlyModal]) {
-        [self.modalContainerView popToRootViewControllerAnimated:animated];
-    } else {
-        UIViewController *login = [self loginViewController];
-        self.modalContainerView = [[[UINavigationController alloc] initWithRootViewController:login] autorelease];
-        [self presentModalViewController:self.modalContainerView animated:animated];
-    }
-    
+    [self popToRootViewControllerAnimated:YES];
+       
     [CATransaction commit];
 }
 
@@ -445,25 +367,59 @@
 
 #pragma mark - View Controllers
 
-- (UIViewController *)loginViewController
+- (SCHStoriaLoginViewController *)loginViewController
 {
-    SCHStoriaLoginViewController *login = [[[SCHStoriaLoginViewController alloc] initWithNibName:@"SCHStoriaLoginViewController" bundle:nil] autorelease];
+    if (!loginViewController) {
+        loginViewController = [[SCHStoriaLoginViewController alloc] initWithNibName:@"SCHStoriaLoginViewController" bundle:nil];
     
-    AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
-    SCHAppModel *appModel = [appDelegate appModel];
+        AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
+        SCHAppModel *appModel = [appDelegate appModel];
     
-    login.previewBlock = ^{
-        [appModel setupPreview];
-    };
+        loginViewController.previewBlock = ^{
+            [appModel setupPreview];
+        };
     
-    __block SCHStoriaLoginViewController *weakLoginRef = login;
+        __block SCHStoriaLoginViewController *weakLoginRef = loginViewController;
     
-    login.loginBlock = ^(NSString *username, NSString *password) {
-        [weakLoginRef startShowingProgress];
-        [appModel loginWithUsername:username password:password];
-    };
+        loginViewController.loginBlock = ^(NSString *username, NSString *password) {
+            [weakLoginRef startShowingProgress];
+            [appModel loginWithUsername:username password:password];
+        };
+    }
     
-    return login;
+    return loginViewController;
+}
+
+- (SCHProfileViewController_iPad *)profileViewController
+{
+    if (!profileViewController) {
+        
+        profileViewController = [[SCHProfileViewController_iPad alloc] init];
+    
+        // access to the AppDelegate's managedObjectContext is deferred until we know we don't
+        // want to use the same database any more
+        AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+        profileViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
+        profileViewController.profileSetupDelegate = self;
+    }
+    
+    return profileViewController;
+}
+
+- (SCHProfileViewController_iPad *)samplesViewController
+{
+    if (!samplesViewController) {
+        
+        samplesViewController = [[SCHProfileViewController_iPad alloc] init];
+        
+        // access to the AppDelegate's managedObjectContext is deferred until we know we don't
+        // want to use the same database any more
+        AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+        samplesViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
+        samplesViewController.profileSetupDelegate = self;
+    }
+    
+    return samplesViewController;
 }
 
 #pragma mark - Utilities

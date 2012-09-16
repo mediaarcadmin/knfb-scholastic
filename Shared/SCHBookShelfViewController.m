@@ -602,11 +602,7 @@ typedef enum
         }
         
         [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:kSCHBookSortTypeUser]];
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
-        } else {
-            [self.navigationController popToRootViewControllerAnimated:NO];  
-        }
+        [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
         [[SCHThemeManager sharedThemeManager] resetToDefault];
     } else {
         [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
