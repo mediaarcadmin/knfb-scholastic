@@ -1,19 +1,19 @@
 //
-//  SCHRecommendationISBN.m
+//  SCHAppRecommendationISBN.m
 //  Scholastic
 //
 //  Created by John Eddie on 13/03/2012.
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHRecommendationISBN.h"
+#import "SCHAppRecommendationISBN.h"
 
 #import "SCHBookIdentifier.h"
 
 // Constants
-NSString * const kSCHRecommendationISBN = @"SCHRecommendationISBN";
+NSString * const kSCHAppRecommendationISBN = @"SCHAppRecommendationISBN";
 
-@implementation SCHRecommendationISBN
+@implementation SCHAppRecommendationISBN
 
 @dynamic isbn;
 @dynamic fetchDate;

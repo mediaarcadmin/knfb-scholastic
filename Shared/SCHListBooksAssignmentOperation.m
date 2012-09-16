@@ -22,7 +22,7 @@
 #import "SCHBookIdentifier.h"
 #import "BITAPIError.h"
 #import "SCHContentMetadataItem.h"
-#import "SCHRecommendationISBN.h"
+#import "SCHAppRecommendationISBN.h"
 #import "SCHRecommendationItem.h"
 
 @interface SCHListBooksAssignmentOperation ()
@@ -609,7 +609,7 @@
                managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
     if (contentMetadataItem != nil) {
-        SCHRecommendationISBN *recommendationISBN = [contentMetadataItem.AppBook recommendationISBN];
+        SCHAppRecommendationISBN *recommendationISBN = [contentMetadataItem.AppBook appRecommendationISBN];
         if (recommendationISBN != nil) {
             [aManagedObjectContext deleteObject:recommendationISBN];
             [self saveWithManagedObjectContext:aManagedObjectContext];

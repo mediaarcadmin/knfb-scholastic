@@ -69,6 +69,7 @@ typedef enum {
 - (void)saveBookOrder:(NSArray *)books;
 - (void)clearBookOrder:(NSArray *)books;
 - (NSString *)bookshelfName:(BOOL)shortName;
+- (NSString *)profileName;
 - (void)setRawPassword:(NSString *)value;
 - (BOOL)hasPassword;
 - (BOOL)validatePasswordWith:(NSString *)withPassword;

@@ -201,11 +201,16 @@
             // convert timestamp to lastmodified
             localWishListProfile.LastModified = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceTimestamp]];
             localWishListProfile.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
-            
+
             localWishListProfile.ProfileID = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceProfileID]];
-            localWishListProfile.ProfileName = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceProfileName]];
+            id profileName = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceProfileName]];
+            if ([[profileName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+                localWishListProfile.ProfileName = profileName;
+            } else {
+                [localWishListProfile setProfileNameFromProfileItem];
+            }
             
-            [self syncWishListItems:[self makeNullNil:[webWishListProfile objectForKey:kSCHWishListWebServiceItemList]] 
+            [self syncWishListItems:[self makeNullNil:[webWishListProfile objectForKey:kSCHWishListWebServiceItemList]]
                   withWishListItems:localWishListProfile.ItemList
                          insertInto:localWishListProfile];
         }

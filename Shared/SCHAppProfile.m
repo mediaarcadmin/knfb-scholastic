@@ -10,7 +10,7 @@
 
 #import "SCHProfileItem.h"
 #import "SCHRecommendationItem.h"
-#import "SCHRecommendationProfile.h"
+#import "SCHAppRecommendationProfile.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHWishListItem.h"
 #import "SCHWishListProfile.h"
@@ -42,12 +42,12 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 @dynamic SortType;
 @dynamic ShowListView;
 
-- (SCHRecommendationProfile *)recommendationProfile
+- (SCHAppRecommendationProfile *)appRecommendationProfile
 {
-    SCHRecommendationProfile *ret = nil;
+    SCHAppRecommendationProfile *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationProfile 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationProfile 
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"age = %d", self.ProfileItem.age]];
     
@@ -90,7 +90,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 - (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
-    NSSet *allItems = [[self recommendationProfile] recommendationItems];
+    NSSet *allItems = [[self appRecommendationProfile] recommendationItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.isReady = %d", YES];
     NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations] 
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
@@ -103,7 +103,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
             NSDictionary *recommendationDictionary = [item.appRecommendationItem dictionary];
             
             if (recommendationDictionary && 
-                [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO) {
+                [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationItemISBN]] == NO) {
                 [objectArray addObject:recommendationDictionary];
             }
         }

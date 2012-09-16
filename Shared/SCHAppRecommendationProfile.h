@@ -1,5 +1,5 @@
 //
-//  SCHRecommendationISBN.h
+//  SCHAppRecommendationProfile.h
 //  Scholastic
 //
 //  Created by John Eddie on 13/03/2012.
@@ -10,23 +10,21 @@
 #import <CoreData/CoreData.h>
 
 @class SCHRecommendationItem;
-@class SCHBookIdentifier;
 
 // Constants
-extern NSString * const kSCHRecommendationISBN;
+extern NSString * const kSCHAppRecommendationProfile;
 
-@interface SCHRecommendationISBN : NSManagedObject
+@interface SCHAppRecommendationProfile : NSManagedObject
 
-@property (nonatomic, retain) NSString * isbn;
+@property (nonatomic, retain) NSNumber * age;
 @property (nonatomic, retain) NSDate * fetchDate;
-@property (nonatomic, retain) NSNumber * DRMQualifier;
 @property (nonatomic, retain) NSSet *recommendationItems;
 
-- (SCHBookIdentifier *)bookIdentifier;
++ (BOOL)isValidAge:(NSNumber *)age;
 
 @end
 
-@interface SCHRecommendationISBN (CoreDataGeneratedAccessors)
+@interface SCHAppRecommendationProfile (CoreDataGeneratedAccessors)
 
 - (void)addRecommendationItemsObject:(SCHRecommendationItem *)value;
 - (void)removeRecommendationItemsObject:(SCHRecommendationItem *)value;

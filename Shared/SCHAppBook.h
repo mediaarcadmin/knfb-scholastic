@@ -30,7 +30,7 @@ typedef enum
 } SCHAppBookError;
 
 @class SCHBookIdentifier;
-@class SCHRecommendationISBN;
+@class SCHAppRecommendationISBN;
 
 // Constants
 extern NSString * const kSCHAppBookProcessingState;
@@ -176,7 +176,7 @@ typedef enum {
 - (CGSize)bookCoverImageSize;
 - (SCHAppBookFeatures) bookFeatures;
 - (BOOL)isSampleBook;
-- (SCHRecommendationISBN *)recommendationISBN;
+- (SCHAppRecommendationISBN *)appRecommendationISBN;
 - (NSArray *)recommendationDictionaries;
 
 - (void)setForcedProcessing:(BOOL)forceProcess;
