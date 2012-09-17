@@ -33,7 +33,7 @@
 #import "SCHSetupBookshelvesViewController.h"
 #import "SCHTourViewController.h"
 
-@interface SCHPadAppController () <SCHProfileSetupDelegate>
+@interface SCHPadAppController () <SCHProfileSetupDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, retain) UINavigationController *modalContainerView;
 @property (nonatomic, retain) LambdaAlert *undismissableAlert;
@@ -77,6 +77,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.delegate = self;
 }
 
 - (void)viewDidUnload
@@ -109,7 +110,8 @@
 - (void)presentSamplesWithWelcome:(BOOL)welcome
 {
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
-    [self pushTourAnimated:shouldAnimate];
+    //[self pushTourAnimated:shouldAnimate];
+    [self pushSamplesAnimated:shouldAnimate showWelcome:welcome];
 }
 
 - (void)presentLogin
@@ -302,7 +304,7 @@
         }
     }];
     
-    [self popToRootViewControllerAnimated:YES];
+    [self setViewControllers:[NSArray arrayWithObject:self.loginViewController] animated:animated];
        
     [CATransaction commit];
 }
@@ -452,6 +454,23 @@
 {
     // This will eventually be deprecated and we will have to add a conditional check
     return (self.modalViewController != nil);
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (![viewController shouldAutorotateToInterfaceOrientation:self.interfaceOrientation]) {
+        // Need to force a rotation
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        if ([window.subviews count]) {
+            UIView *aView = [window.subviews objectAtIndex:0];
+            [aView retain];
+            [aView removeFromSuperview];
+            [window addSubview:aView];
+            [aView release];
+        }
+    }
 }
 
 @end
