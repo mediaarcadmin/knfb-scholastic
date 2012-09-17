@@ -6,4 +6,4 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-static id makeNullNil(id object);
+id makeNullNil(id object);
