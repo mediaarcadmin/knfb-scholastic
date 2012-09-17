@@ -31,6 +31,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 @property (nonatomic, retain) LibreAccessServiceSoap11Binding *binding;
 
+- (NSString *)statusMessageKeyForObject:(id)object;
 - (NSError *)errorFromStatusMessage:(tns1_StatusHolder *)statusMessage;
 - (NSString *)methodNameFromObject:(id)anObject;
 - (NSDictionary *)requestInfoFromOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
@@ -501,23 +502,19 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                 
                 tns1_StatusHolder *status = nil;
                 BOOL errorTriggered = NO;
-                @try {
-                    status = (tns1_StatusHolder *)[bodyPart valueForKey:kSCHLibreAccessWebServiceStatusHolderStatusMessage];
+                NSString *statusMessageKey = [self statusMessageKeyForObject:bodyPart];
+                if (statusMessageKey != nil) {
+                    status = (tns1_StatusHolder *)[bodyPart valueForKey:statusMessageKey];
                 }
-                @catch (NSException * e) {
-                    // everything has a status message however be defensive
-                    status = nil;
-                }
-                @finally {
-                    if(status != nil && 
-                       [status isKindOfClass:[tns1_StatusHolder class]] == YES && 
-                       status.status != tns1_statuscodes_SUCCESS &&
-                       [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-                        errorTriggered = YES;
-                        [(id)self.delegate method:methodName didFailWithError:[self errorFromStatusMessage:status] 
-                                      requestInfo:[self requestInfoFromOperation:operation]
-                                           result:[self objectFrom:bodyPart]];			
-                    }
+
+                if(status != nil &&
+                   [status isKindOfClass:[tns1_StatusHolder class]] == YES &&
+                   status.status != tns1_statuscodes_SUCCESS &&
+                   [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
+                    errorTriggered = YES;
+                    [(id)self.delegate method:methodName didFailWithError:[self errorFromStatusMessage:status]
+                                  requestInfo:[self requestInfoFromOperation:operation]
+                                       result:[self objectFrom:bodyPart]];
                 }
 
                 NSDate *serverDate = [self.rfc822DateFormatter dateFromString:[operation.responseHeaders objectForKey:@"Date"]];
@@ -536,7 +533,33 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 #pragma mark -
 #pragma mark Private methods
-				
+
+- (NSString *)statusMessageKeyForObject:(id)object
+{
+    NSString *ret = nil;
+
+    if (object != nil) {
+        unsigned int propertiesCount;
+        objc_property_t *properties = class_copyPropertyList([object class], &propertiesCount);
+
+        for(int i = 0; i < propertiesCount; i++) {
+            const char *propertyName = property_getName(properties[i]);
+            if(propertyName != NULL) {
+                NSString *propertyNameString = [NSString stringWithCString:propertyName encoding:NSUTF8StringEncoding];
+                if ([propertyNameString caseInsensitiveCompare:kSCHLibreAccessWebServiceStatusHolderStatusMessage] == NSOrderedSame) {
+                    ret = propertyNameString;
+                    break;
+                }
+            }
+        }
+        free(properties);
+    }
+
+    NSAssert(ret, @"All responses should have a status message!");
+    
+    return ret;
+}
+
 - (NSError *)errorFromStatusMessage:(tns1_StatusHolder *)statusMessage
 {
 	NSError *ret = nil;
