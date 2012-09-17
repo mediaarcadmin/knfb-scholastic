@@ -31,7 +31,7 @@
 #import "SCHScholasticAuthenticationWebService.h"
 #import "SCHAccountValidationViewController.h"
 #import "SCHSetupBookshelvesViewController.h"
-#import "SCHTourViewController.h"
+#import "SCHTourStartViewController.h"
 
 @interface SCHPadAppController () <SCHProfileSetupDelegate, UINavigationControllerDelegate>
 
@@ -42,7 +42,7 @@
 @property (nonatomic, retain) SCHStoriaLoginViewController *loginViewController;
 @property (nonatomic, retain) SCHProfileViewController_iPad *profileViewController;
 @property (nonatomic, retain) SCHProfileViewController_iPad *samplesViewController;
-@property (nonatomic, retain) SCHTourViewController *tourViewController;
+@property (nonatomic, retain) SCHTourStartViewController *tourViewController;
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
 - (void)pushProfileAnimated:(BOOL)animated;
@@ -433,11 +433,11 @@
     return samplesViewController;
 }
 
-- (SCHTourViewController *)tourViewController
+- (SCHTourStartViewController *)tourViewController
 {
     if (!tourViewController) {
         
-        tourViewController = [[SCHTourViewController alloc] init];
+        tourViewController = [[SCHTourStartViewController alloc] init];
         
         // access to the AppDelegate's managedObjectContext is deferred until we know we don't
         // want to use the same database any more
