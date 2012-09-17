@@ -1,5 +1,5 @@
 //
-//  SCHTourViewController.h
+//  SCHTourStartViewController.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 17/09/2012.
@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "SCHProfileSetupDelegate.h"
 
-@interface SCHTourViewController : UIViewController
+@interface SCHTourStartViewController : UIViewController
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+
+- (IBAction)startReading:(UIButton *)sender;
 
 @end
