@@ -31,6 +31,7 @@
 #import "SCHScholasticAuthenticationWebService.h"
 #import "SCHAccountValidationViewController.h"
 #import "SCHSetupBookshelvesViewController.h"
+#import "SCHTourViewController.h"
 
 @interface SCHPadAppController () <SCHProfileSetupDelegate>
 
@@ -41,6 +42,7 @@
 @property (nonatomic, retain) SCHStoriaLoginViewController *loginViewController;
 @property (nonatomic, retain) SCHProfileViewController_iPad *profileViewController;
 @property (nonatomic, retain) SCHProfileViewController_iPad *samplesViewController;
+@property (nonatomic, retain) SCHTourViewController *tourViewController;
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
 - (void)pushProfileAnimated:(BOOL)animated;
@@ -57,6 +59,7 @@
 @synthesize loginViewController;
 @synthesize profileViewController;
 @synthesize samplesViewController;
+@synthesize tourViewController;
 
 - (void)dealloc
 {
@@ -65,6 +68,7 @@
     [loginViewController release], loginViewController = nil;
     [profileViewController release], profileViewController = nil;
     [samplesViewController release], samplesViewController = nil;
+    [tourViewController release], tourViewController = nil;
     
     [super dealloc];
 }
@@ -105,7 +109,7 @@
 - (void)presentSamplesWithWelcome:(BOOL)welcome
 {
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
-    [self pushSamplesAnimated:shouldAnimate showWelcome:welcome];
+    [self pushTourAnimated:shouldAnimate];
 }
 
 - (void)presentLogin
@@ -240,6 +244,11 @@
         [alert release];
     }
     
+}
+
+- (void)pushTourAnimated:(BOOL)animated
+{
+    [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.tourViewController, nil] animated:animated];
 }
 
 #pragma mark - SCHProfileSetupDelegate
@@ -420,6 +429,21 @@
     }
     
     return samplesViewController;
+}
+
+- (SCHTourViewController *)tourViewController
+{
+    if (!tourViewController) {
+        
+        tourViewController = [[SCHTourViewController alloc] init];
+        
+        // access to the AppDelegate's managedObjectContext is deferred until we know we don't
+        // want to use the same database any more
+        AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+        tourViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
+    }
+    
+    return tourViewController;
 }
 
 #pragma mark - Utilities

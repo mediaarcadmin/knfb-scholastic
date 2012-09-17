@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCHProfileSetupDelegate.h"
 
 @interface SCHTourViewController : UIViewController
+
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 @end

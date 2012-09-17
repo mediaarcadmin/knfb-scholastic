@@ -14,6 +14,15 @@
 
 @implementation SCHTourViewController
 
+@synthesize managedObjectContext;
+
+- (void)dealloc
+{
+    [managedObjectContext release], managedObjectContext = nil;
+    
+    [super dealloc];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
