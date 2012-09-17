@@ -31,8 +31,9 @@
 #import "SCHScholasticAuthenticationWebService.h"
 #import "SCHAccountValidationViewController.h"
 #import "SCHSetupBookshelvesViewController.h"
+#import "SCHTourStartViewController.h"
 
-@interface SCHPadAppController () <SCHProfileSetupDelegate>
+@interface SCHPadAppController () <SCHProfileSetupDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, retain) UINavigationController *modalContainerView;
 @property (nonatomic, retain) LambdaAlert *undismissableAlert;
@@ -41,6 +42,7 @@
 @property (nonatomic, retain) SCHStoriaLoginViewController *loginViewController;
 @property (nonatomic, retain) SCHProfileViewController_iPad *profileViewController;
 @property (nonatomic, retain) SCHProfileViewController_iPad *samplesViewController;
+@property (nonatomic, retain) SCHTourStartViewController *tourViewController;
 
 - (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
 - (void)pushProfileAnimated:(BOOL)animated;
@@ -57,6 +59,7 @@
 @synthesize loginViewController;
 @synthesize profileViewController;
 @synthesize samplesViewController;
+@synthesize tourViewController;
 
 - (void)dealloc
 {
@@ -65,6 +68,7 @@
     [loginViewController release], loginViewController = nil;
     [profileViewController release], profileViewController = nil;
     [samplesViewController release], samplesViewController = nil;
+    [tourViewController release], tourViewController = nil;
     
     [super dealloc];
 }
@@ -73,6 +77,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.delegate = self;
 }
 
 - (void)viewDidUnload
@@ -105,7 +110,8 @@
 - (void)presentSamplesWithWelcome:(BOOL)welcome
 {
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
-    [self pushSamplesAnimated:shouldAnimate showWelcome:welcome];
+    [self pushTourAnimated:shouldAnimate];
+    //[self pushSamplesAnimated:shouldAnimate showWelcome:welcome];
 }
 
 - (void)presentLogin
@@ -242,6 +248,11 @@
     
 }
 
+- (void)pushTourAnimated:(BOOL)animated
+{
+    [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.tourViewController, nil] animated:animated];
+}
+
 #pragma mark - SCHProfileSetupDelegate
 
 
@@ -293,7 +304,7 @@
         }
     }];
     
-    [self popToRootViewControllerAnimated:YES];
+    [self setViewControllers:[NSArray arrayWithObject:self.loginViewController] animated:animated];
        
     [CATransaction commit];
 }
@@ -422,12 +433,44 @@
     return samplesViewController;
 }
 
+- (SCHTourStartViewController *)tourViewController
+{
+    if (!tourViewController) {
+        
+        tourViewController = [[SCHTourStartViewController alloc] init];
+        
+        // access to the AppDelegate's managedObjectContext is deferred until we know we don't
+        // want to use the same database any more
+        AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+        tourViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
+    }
+    
+    return tourViewController;
+}
+
 #pragma mark - Utilities
 
 - (BOOL)isCurrentlyModal
 {
     // This will eventually be deprecated and we will have to add a conditional check
     return (self.modalViewController != nil);
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (![viewController shouldAutorotateToInterfaceOrientation:self.interfaceOrientation]) {
+        // Need to force a rotation
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        if ([window.subviews count]) {
+            UIView *aView = [window.subviews objectAtIndex:0];
+            [aView retain];
+            [aView removeFromSuperview];
+            [window addSubview:aView];
+            [aView release];
+        }
+    }
 }
 
 @end

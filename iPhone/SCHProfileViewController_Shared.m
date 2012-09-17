@@ -641,8 +641,8 @@ didSelectButtonAnimated:(BOOL)animated
 {
     if (self.modalViewController) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [self dismissModalViewControllerAnimated:animated];
-            [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+            [self dismissModalViewControllerAnimated:NO];
+            [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:completion];
         } else {
             [CATransaction begin];
             [CATransaction setCompletionBlock:^{
