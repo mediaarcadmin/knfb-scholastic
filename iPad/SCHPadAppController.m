@@ -110,8 +110,8 @@
 - (void)presentSamplesWithWelcome:(BOOL)welcome
 {
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
-    //[self pushTourAnimated:shouldAnimate];
-    [self pushSamplesAnimated:shouldAnimate showWelcome:welcome];
+    [self pushTourAnimated:shouldAnimate];
+    //[self pushSamplesAnimated:shouldAnimate showWelcome:welcome];
 }
 
 - (void)presentLogin
