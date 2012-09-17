@@ -4682,6 +4682,14 @@
 		F8844BEF137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */; };
 		F8844BF9137D6655003D3014 /* SCHProfileViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */; };
 		F8844BFA137D6655003D3014 /* SCHProfileViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8844BF8137D6655003D3014 /* SCHProfileViewController_iPad.xib */; };
+		F888C3FD16071E6300256F60 /* SCHTourViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F888C3FB16071E6300256F60 /* SCHTourViewController.m */; };
+		F888C3FE16071E6300256F60 /* SCHTourViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F888C3FB16071E6300256F60 /* SCHTourViewController.m */; };
+		F888C3FF16071E6300256F60 /* SCHTourViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F888C3FB16071E6300256F60 /* SCHTourViewController.m */; };
+		F888C40016071E6300256F60 /* SCHTourViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F888C3FB16071E6300256F60 /* SCHTourViewController.m */; };
+		F888C40116071E6300256F60 /* SCHTourViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F888C3FC16071E6300256F60 /* SCHTourViewController.xib */; };
+		F888C40216071E6300256F60 /* SCHTourViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F888C3FC16071E6300256F60 /* SCHTourViewController.xib */; };
+		F888C40316071E6300256F60 /* SCHTourViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F888C3FC16071E6300256F60 /* SCHTourViewController.xib */; };
+		F888C40416071E6300256F60 /* SCHTourViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F888C3FC16071E6300256F60 /* SCHTourViewController.xib */; };
 		F8898903135877B100D236ED /* SCHProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8898902135877B100D236ED /* SCHProfileViewCell.m */; };
 		F88A7F7F138D151D006A7D12 /* SCHDictionaryAccessManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */; };
 		F88F03DF13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F88F03DC13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib */; };
@@ -6854,6 +6862,9 @@
 		F8844BF6137D6654003D3014 /* SCHProfileViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewController_iPad.h; path = iPad/SCHProfileViewController_iPad.h; sourceTree = SOURCE_ROOT; };
 		F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileViewController_iPad.m; path = iPad/SCHProfileViewController_iPad.m; sourceTree = SOURCE_ROOT; };
 		F8844BF8137D6655003D3014 /* SCHProfileViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHProfileViewController_iPad.xib; path = iPad/SCHProfileViewController_iPad.xib; sourceTree = SOURCE_ROOT; };
+		F888C3FA16071E6300256F60 /* SCHTourViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTourViewController.h; path = Shared/SCHTourViewController.h; sourceTree = "<group>"; };
+		F888C3FB16071E6300256F60 /* SCHTourViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTourViewController.m; path = Shared/SCHTourViewController.m; sourceTree = "<group>"; };
+		F888C3FC16071E6300256F60 /* SCHTourViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHTourViewController.xib; path = Shared/SCHTourViewController.xib; sourceTree = "<group>"; };
 		F8898901135877B100D236ED /* SCHProfileViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewCell.h; path = iPhone/SCHProfileViewCell.h; sourceTree = "<group>"; };
 		F8898902135877B100D236ED /* SCHProfileViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileViewCell.m; path = iPhone/SCHProfileViewCell.m; sourceTree = "<group>"; };
 		F88A7F7D138D151D006A7D12 /* SCHDictionaryAccessManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryAccessManager.h; path = Shared/SCHDictionaryAccessManager.h; sourceTree = "<group>"; };
@@ -7840,6 +7851,9 @@
 				28C3D1A613E2B30300931F5C /* SCHStartingViewController.m */,
 				C9F8FD5B14B4909800136C22 /* SCHStoriaLoginViewController.h */,
 				C9F8FD5C14B4909800136C22 /* SCHStoriaLoginViewController.m */,
+				F888C3FA16071E6300256F60 /* SCHTourViewController.h */,
+				F888C3FB16071E6300256F60 /* SCHTourViewController.m */,
+				F888C3FC16071E6300256F60 /* SCHTourViewController.xib */,
 			);
 			name = "Starting View";
 			sourceTree = "<group>";
@@ -11475,6 +11489,7 @@
 				F8C097CA15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */,
 				C9E1BFB216036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg in Resources */,
 				C9E1BFB616036CBC00CB8A4E /* storia-loginbackground~ipad.jpg in Resources */,
+				F888C40116071E6300256F60 /* SCHTourViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12282,6 +12297,7 @@
 				C9C5DF5915ECFCE20020BA9E /* BranchingStoryXPSSample.xps in Resources */,
 				C9E1BFB316036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg in Resources */,
 				C9E1BFB716036CBC00CB8A4E /* storia-loginbackground~ipad.jpg in Resources */,
+				F888C40216071E6300256F60 /* SCHTourViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12844,6 +12860,7 @@
 				F8C097CC15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */,
 				C9E1BFB516036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg in Resources */,
 				C9E1BFB916036CBC00CB8A4E /* storia-loginbackground~ipad.jpg in Resources */,
+				F888C40316071E6300256F60 /* SCHTourViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13404,6 +13421,7 @@
 				F8C097C515EB91630056D0D0 /* gen_scoreresponsehigh.mp3 in Resources */,
 				F8C097C915EB91630056D0D0 /* gen_scoreresponselow.mp3 in Resources */,
 				F8C097CD15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */,
+				F888C40416071E6300256F60 /* SCHTourViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13859,6 +13877,7 @@
 				C92F0B7815FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 				C9E1BF9F1603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 				C9E1BFA616035A4300CB8A4E /* SCHPadAppController.m in Sources */,
+				F888C3FD16071E6300256F60 /* SCHTourViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14711,6 +14730,7 @@
 				C92F0B7915FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 				C9E1BFA01603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 				C9E1BFA716035A4300CB8A4E /* SCHPadAppController.m in Sources */,
+				F888C3FE16071E6300256F60 /* SCHTourViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15133,6 +15153,7 @@
 				C92F0B7B15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 				C9E1BFA21603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 				C9E1BFA916035A4300CB8A4E /* SCHPadAppController.m in Sources */,
+				F888C3FF16071E6300256F60 /* SCHTourViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15555,6 +15576,7 @@
 				C92F0B7C15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 				C9E1BFA31603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 				C9E1BFAA16035A4300CB8A4E /* SCHPadAppController.m in Sources */,
+				F888C40016071E6300256F60 /* SCHTourViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
