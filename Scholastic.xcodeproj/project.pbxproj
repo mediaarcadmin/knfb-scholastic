@@ -1429,6 +1429,9 @@
 		5279E09315176481000D7D8D /* SCHAppRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5279E09115176481000D7D8D /* SCHAppRecommendationItem.m */; };
 		5279E09415176481000D7D8D /* SCHAppRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5279E09115176481000D7D8D /* SCHAppRecommendationItem.m */; };
 		5279E09515176481000D7D8D /* SCHAppRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5279E09115176481000D7D8D /* SCHAppRecommendationItem.m */; };
+		527ABDF51607708600DE2893 /* SCHMakeNullNilTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 527ABDF41607708600DE2893 /* SCHMakeNullNilTests.m */; };
+		527ABDF6160771B200DE2893 /* SCHMakeNullNil.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7894815F5FC75003B291C /* SCHMakeNullNil.m */; };
+		527ABDF7160771C600DE2893 /* SCHTourStartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F888C3FB16071E6300256F60 /* SCHTourStartViewController.m */; };
 		527BBAE013A011D4000B407C /* SCHStoryInteractionControllerImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */; };
 		527BBAE213A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527BBADF13A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib */; };
 		527BBAE513A0186D000B407C /* SCHStoryInteractionImage_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527BBAE413A0186D000B407C /* SCHStoryInteractionImage_iPad.xib */; };
@@ -5623,7 +5626,6 @@
 		5264FAC613A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTopTenPopoverTableView.xib; path = Shared/SCHBookShelfTopTenPopoverTableView.xib; sourceTree = "<group>"; };
 		5266D38213007D15004E3AC6 /* SCHComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponent.h; path = Shared/SCHComponent.h; sourceTree = "<group>"; };
 		5266D38313007D15004E3AC6 /* SCHComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHComponent.m; path = Shared/SCHComponent.m; sourceTree = "<group>"; };
-		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
 		526760AA144C85AF00F3FE56 /* SCHAccountValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAccountValidation.h; path = Shared/SCHAccountValidation.h; sourceTree = "<group>"; };
 		526760AB144C85AF00F3FE56 /* SCHAccountValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAccountValidation.m; path = Shared/SCHAccountValidation.m; sourceTree = "<group>"; };
 		526760AE144D6A6A00F3FE56 /* NSURL+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURL+Extensions.h"; path = "Shared/NSURL+Extensions.h"; sourceTree = "<group>"; };
@@ -5633,6 +5635,8 @@
 		526FEB41140FD83A00638712 /* KIF.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KIF.xcodeproj; path = Shared/Libraries/Submodules/KIF/KIF.xcodeproj; sourceTree = "<group>"; };
 		5279E09015176481000D7D8D /* SCHAppRecommendationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppRecommendationItem.h; path = Shared/SCHAppRecommendationItem.h; sourceTree = "<group>"; };
 		5279E09115176481000D7D8D /* SCHAppRecommendationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppRecommendationItem.m; path = Shared/SCHAppRecommendationItem.m; sourceTree = "<group>"; };
+		527ABDF31607708600DE2893 /* SCHMakeNullNilTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHMakeNullNilTests.h; sourceTree = "<group>"; };
+		527ABDF41607708600DE2893 /* SCHMakeNullNilTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHMakeNullNilTests.m; sourceTree = "<group>"; };
 		527BBADD13A011D4000B407C /* SCHStoryInteractionControllerImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerImage.h; sourceTree = "<group>"; };
 		527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerImage.m; sourceTree = "<group>"; };
 		527BBADF13A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionImage_iPhone.xib; sourceTree = "<group>"; };
@@ -8678,7 +8682,6 @@
 				5266D38213007D15004E3AC6 /* SCHComponent.h */,
 				5266D38313007D15004E3AC6 /* SCHComponent.m */,
 				52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */,
-				5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */,
 				52C7894D15F5FC97003B291C /* SCHMakeNullNil.h */,
 				52C7894815F5FC75003B291C /* SCHMakeNullNil.m */,
 				52AD9B2612FC207A0099FB88 /* Sync */,
@@ -8691,6 +8694,8 @@
 			children = (
 				52A36A6515B068D300162753 /* SCHScholasticResponseParserTests.h */,
 				52A36A6615B068D300162753 /* SCHScholasticResponseParserTests.m */,
+				527ABDF31607708600DE2893 /* SCHMakeNullNilTests.h */,
+				527ABDF41607708600DE2893 /* SCHMakeNullNilTests.m */,
 				52A36A7215B45A2400162753 /* Sync Tests */,
 			);
 			name = "Web Service Tests";
@@ -14336,6 +14341,9 @@
 				C92F0B7A15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 				C9E1BFA11603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 				C9E1BFA816035A4300CB8A4E /* SCHPadAppController.m in Sources */,
+				527ABDF51607708600DE2893 /* SCHMakeNullNilTests.m in Sources */,
+				527ABDF6160771B200DE2893 /* SCHMakeNullNil.m in Sources */,
+				527ABDF7160771C600DE2893 /* SCHTourStartViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,6 +17,7 @@
 #import "SCHWishListItem.h"
 #import "SCHWishListSyncComponent.h"
 #import "BITAPIError.h"
+#import "SCHMakeNullNil.h"
 
 @interface SCHGetUserProfilesResponseOperation ()
 
@@ -99,7 +100,7 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 			break;			
 		}
 
-		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
+		id webItemID = makeNullNil([webItem valueForKey:kSCHLibreAccessWebServiceID]);
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
         
         if (webItemID == nil || [SCHProfileItem isValidProfileID:webItemID] == NO) {
@@ -189,29 +190,29 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
           managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
     SCHProfileItem *newProfileItem = nil;
-    id profileID = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceID]];
+    id profileID = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceID]);
     
     if (webProfile != nil && [SCHProfileItem isValidProfileID:profileID] == YES) {
         newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem 
                                                        inManagedObjectContext:aManagedObjectContext];
         
-        newProfileItem.StoryInteractionEnabled = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
+        newProfileItem.StoryInteractionEnabled = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]);
         newProfileItem.ID = profileID;
-        newProfileItem.LastPasswordModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastPasswordModified]];
-        newProfileItem.Password = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServicePassword]];
-        newProfileItem.Birthday = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBirthday]];
-        newProfileItem.FirstName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceFirstName]];
-        newProfileItem.ProfilePasswordRequired = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
-        newProfileItem.Type = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceType]];
-        newProfileItem.ScreenName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceScreenName]];
-        newProfileItem.AutoAssignContentToProfiles = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
-        newProfileItem.LastScreenNameModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastScreenNameModified]];
-        newProfileItem.UserKey = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceUserKey]];
-        newProfileItem.BookshelfStyle = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]];
-        newProfileItem.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
-        newProfileItem.allowReadThrough = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceAllowReadThrough]];
-        newProfileItem.recommendationsOn = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceRecommendationsOn]];
-        newProfileItem.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
+        newProfileItem.LastPasswordModified = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceLastPasswordModified]);
+        newProfileItem.Password = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServicePassword]);
+        newProfileItem.Birthday = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceBirthday]);
+        newProfileItem.FirstName = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceFirstName]);
+        newProfileItem.ProfilePasswordRequired = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]);
+        newProfileItem.Type = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceType]);
+        newProfileItem.ScreenName = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceScreenName]);
+        newProfileItem.AutoAssignContentToProfiles = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]);
+        newProfileItem.LastScreenNameModified = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceLastScreenNameModified]);
+        newProfileItem.UserKey = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceUserKey]);
+        newProfileItem.BookshelfStyle = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]);
+        newProfileItem.LastName = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceLastName]);
+        newProfileItem.allowReadThrough = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceAllowReadThrough]);
+        newProfileItem.recommendationsOn = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceRecommendationsOn]);
+        newProfileItem.LastModified = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]);
         newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
         
         newProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile 
@@ -235,23 +236,23 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile
 {	
     if (webProfile != nil) {
-        localProfile.StoryInteractionEnabled = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
-        localProfile.ID = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceID]];
-        localProfile.LastPasswordModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastPasswordModified]];
-        localProfile.Password = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServicePassword]];
-        localProfile.Birthday = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBirthday]];
-        localProfile.FirstName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceFirstName]];
-        localProfile.ProfilePasswordRequired = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
-        localProfile.Type = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceType]];
-        localProfile.ScreenName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceScreenName]];
-        localProfile.AutoAssignContentToProfiles = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
-        localProfile.LastScreenNameModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastScreenNameModified]];
-        localProfile.UserKey = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceUserKey]];
-        localProfile.BookshelfStyle = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]];
-        localProfile.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
-        localProfile.recommendationsOn = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceRecommendationsOn]];
-        localProfile.allowReadThrough = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceAllowReadThrough]];
-        localProfile.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
+        localProfile.StoryInteractionEnabled = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]);
+        localProfile.ID = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceID]);
+        localProfile.LastPasswordModified = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceLastPasswordModified]);
+        localProfile.Password = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServicePassword]);
+        localProfile.Birthday = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceBirthday]);
+        localProfile.FirstName = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceFirstName]);
+        localProfile.ProfilePasswordRequired = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]);
+        localProfile.Type = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceType]);
+        localProfile.ScreenName = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceScreenName]);
+        localProfile.AutoAssignContentToProfiles = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]);
+        localProfile.LastScreenNameModified = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceLastScreenNameModified]);
+        localProfile.UserKey = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceUserKey]);
+        localProfile.BookshelfStyle = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]);
+        localProfile.LastName = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceLastName]);
+        localProfile.recommendationsOn = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceRecommendationsOn]);
+        localProfile.allowReadThrough = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceAllowReadThrough]);
+        localProfile.LastModified = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]);
         localProfile.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				
     }
 }

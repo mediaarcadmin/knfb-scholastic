@@ -16,6 +16,7 @@
 #import "BITAPIError.h" 
 #import "SCHBookIdentifier.h"
 #import "SCHProfileSyncComponent.h"
+#import "SCHMakeNullNil.h"
 
 @interface SCHRetrieveRecommendationsForBooksOperation ()
 
@@ -35,7 +36,7 @@
 - (void)main
 {
     @try {
-        NSArray *books = [self makeNullNil:[self.result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks]];
+        NSArray *books = makeNullNil([self.result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForBooks]);
         if ([books count] > 0) { 
             [self syncRecommendationISBNs:books 
                      managedObjectContext:self.backgroundThreadManagedObjectContext];            
@@ -97,8 +98,8 @@
 			break;			
 		}
         
-        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithISBN:[self makeNullNil:[webItem objectForKey:kSCHRecommendationWebServiceISBN]]
-                                                                          DRMQualifier:[self makeNullNil:[webItem objectForKey:kSCHRecommendationWebServiceDRMQualifier]]];            
+        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithISBN:makeNullNil([webItem objectForKey:kSCHRecommendationWebServiceISBN])
+                                                                          DRMQualifier:makeNullNil([webItem objectForKey:kSCHRecommendationWebServiceDRMQualifier])];
         SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
         
         if (webBookIdentifier == nil) {
@@ -170,11 +171,11 @@
           managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
     if (webRecommendationISBN != nil) {
-        localRecommendationISBN.isbn = [self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceISBN]];
-        localRecommendationISBN.DRMQualifier = [self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceDRMQualifier]];        
+        localRecommendationISBN.isbn = makeNullNil([webRecommendationISBN objectForKey:kSCHRecommendationWebServiceISBN]);
+        localRecommendationISBN.DRMQualifier = makeNullNil([webRecommendationISBN objectForKey:kSCHRecommendationWebServiceDRMQualifier]);
         localRecommendationISBN.fetchDate = syncDate;
         
-        [(SCHRecommendationSyncComponent *)self.syncComponent syncRecommendationItems:[self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceItems]] 
+        [(SCHRecommendationSyncComponent *)self.syncComponent syncRecommendationItems:makeNullNil([webRecommendationISBN objectForKey:kSCHRecommendationWebServiceItems])
               withRecommendationItems:localRecommendationISBN.recommendationItems
                            insertInto:localRecommendationISBN
                  managedObjectContext:aManagedObjectContext];
@@ -186,8 +187,8 @@
                          managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
 	SCHAppRecommendationISBN *ret = nil;
-	SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithISBN:[self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceISBN]]
-                                                                      DRMQualifier:[self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceDRMQualifier]]];    
+	SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithISBN:makeNullNil([webRecommendationISBN objectForKey:kSCHRecommendationWebServiceISBN])
+                                                                      DRMQualifier:makeNullNil([webRecommendationISBN objectForKey:kSCHRecommendationWebServiceDRMQualifier])];
     
 	if (webRecommendationISBN != nil && webRecommendationISBN != nil) {
         ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppRecommendationISBN
@@ -197,7 +198,7 @@
         ret.DRMQualifier = webBookIdentifier.DRMQualifier;        
         ret.fetchDate = syncDate;
         
-        [(SCHRecommendationSyncComponent *)self.syncComponent syncRecommendationItems:[self makeNullNil:[webRecommendationISBN objectForKey:kSCHRecommendationWebServiceItems]] 
+        [(SCHRecommendationSyncComponent *)self.syncComponent syncRecommendationItems:makeNullNil([webRecommendationISBN objectForKey:kSCHRecommendationWebServiceItems])
                                                               withRecommendationItems:ret.recommendationItems
                                                                            insertInto:ret
                                                                  managedObjectContext:aManagedObjectContext];            

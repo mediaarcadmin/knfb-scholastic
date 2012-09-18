@@ -28,6 +28,7 @@
 #import "BITAPIError.h"
 #import "NSDate+ServerDate.h"
 #import "SCHLibreAccessWebService.h"
+#import "SCHMakeNullNil.h"
 
 @interface SCHListProfileContentAnnotationsOperation ()
 
@@ -140,7 +141,7 @@
                                          notificationUserInfo:notificationUserInfo];
             }
         });   
-    }                    
+    }
 }
 
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList 
@@ -148,13 +149,13 @@
                         canSyncRating:(BOOL)canSyncRating
                              syncDate:(NSDate *)syncDate
 {
-	NSDictionary *annotationsList = [self makeNullNil:[profileContentAnnotationList 
-                                                       objectForKey:kSCHLibreAccessWebServiceAnnotationsList]];
+	NSDictionary *annotationsList = makeNullNil([profileContentAnnotationList 
+                                                       objectForKey:kSCHLibreAccessWebServiceAnnotationsList]);
 	
     // uncomment if we require to use this info
-    //	NSDictionary *itemsCount = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceItemsCount]];	
-    //	NSNumber *found = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceFound]];
-    //	NSNumber *returned = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceReturned]];	
+    //	NSDictionary *itemsCount = makeNullNil([profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceItemsCount]);
+    //	NSNumber *found = makeNullNil([itemsCount objectForKey:kSCHLibreAccessWebServiceFound]);
+    //	NSNumber *returned = makeNullNil([itemsCount objectForKey:kSCHLibreAccessWebServiceReturned]);	
     
     for (NSDictionary *annotationsItem in annotationsList) {
         NSNumber *annotationProfileID = [annotationsItem objectForKey:kSCHLibreAccessWebServiceProfileID];
@@ -162,7 +163,7 @@
         
         if ([localAnnotationsItems count] > 0) {
             // sync me baby
-            NSArray *annotationsContentList = [self makeNullNil:[annotationsItem objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList]];
+            NSArray *annotationsContentList = makeNullNil([annotationsItem objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList]);
             if ([annotationsItem objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList] != nil) {
                 [self syncAnnotationsContentList:annotationsContentList
                        withAnnotationContentList:[[localAnnotationsItems objectAtIndex:0] AnnotationsContentItem] 
@@ -298,16 +299,16 @@
                           syncDate:(NSDate *)syncDate
 {
     if (webAnnotationsContentItem != nil) {
-        localAnnotationsContentItem.DRMQualifier = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
-        localAnnotationsContentItem.ContentIdentifierType = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
-        localAnnotationsContentItem.ContentIdentifier = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+        localAnnotationsContentItem.DRMQualifier = makeNullNil([webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]);
+        localAnnotationsContentItem.ContentIdentifierType = makeNullNil([webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]);
+        localAnnotationsContentItem.ContentIdentifier = makeNullNil([webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]);
         
-        localAnnotationsContentItem.Format = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];
+        localAnnotationsContentItem.Format = makeNullNil([webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]);
         
-        NSDictionary *privateAnnotations = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]];
+        NSDictionary *privateAnnotations = makeNullNil([webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]);
         
         if (privateAnnotations != nil) {
-            NSArray *annotation = [self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceHighlights]];
+            NSArray *annotation = makeNullNil([privateAnnotations objectForKey:kSCHLibreAccessWebServiceHighlights]);
             if (annotation != nil) {
                 [self syncHighlights:annotation
                       withHighlights:localAnnotationsContentItem.PrivateAnnotations.Highlights 
@@ -315,7 +316,7 @@
                             syncDate:syncDate];
             }
             if (canSyncNotes == YES) {
-                annotation = [self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceNotes]];
+                annotation = makeNullNil([privateAnnotations objectForKey:kSCHLibreAccessWebServiceNotes]);
                 if (annotation != nil) {        
                     [self syncNotes:annotation
                           withNotes:localAnnotationsContentItem.PrivateAnnotations.Notes 
@@ -323,17 +324,17 @@
                            syncDate:syncDate];
                 }
             }
-            annotation = [self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceBookmarks]] ;
+            annotation = makeNullNil([privateAnnotations objectForKey:kSCHLibreAccessWebServiceBookmarks]);
             if (annotation != nil) {                
                 [self syncBookmarks:annotation
                       withBookmarks:localAnnotationsContentItem.PrivateAnnotations.Bookmarks 
                          insertInto:localAnnotationsContentItem.PrivateAnnotations
                            syncDate:syncDate];        
             }
-            [self syncLastPage:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceLastPage]] 
+            [self syncLastPage:makeNullNil([privateAnnotations objectForKey:kSCHLibreAccessWebServiceLastPage])
                   withLastPage:localAnnotationsContentItem.PrivateAnnotations.LastPage];
             if (canSyncRating == YES) {
-                [self syncRating:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceRating]] 
+                [self syncRating:makeNullNil([privateAnnotations objectForKey:kSCHLibreAccessWebServiceRating])
                       withRating:localAnnotationsContentItem.PrivateAnnotations.rating];            
             }
         }
@@ -350,10 +351,10 @@
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
         
 		ret.DRMQualifier = webBookIdentifier.DRMQualifier;
-		ret.ContentIdentifierType = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
+		ret.ContentIdentifierType = makeNullNil([annotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]);
 		ret.ContentIdentifier = webBookIdentifier.isbn;
 		
-		ret.Format = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];
+		ret.Format = makeNullNil([annotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]);
         ret.PrivateAnnotations = [self privateAnnotation:[annotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]];        
     }
 	[webBookIdentifier release], webBookIdentifier = nil;
@@ -425,7 +426,7 @@
 			break;			
 		}
 		
-		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
+		id webItemID = makeNullNil([webItem valueForKey:kSCHLibreAccessWebServiceID]);
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
         if (webItemID == nil || [SCHAnnotation isValidAnnotationID:webItemID] == NO) {
@@ -487,16 +488,16 @@
         withHighlight:(SCHHighlight *)localHighlight
 {
     if ([localHighlight.State statusValue] == kSCHStatusUnmodified) {
-        localHighlight.Color = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceColor]];
-        localHighlight.EndPage = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceEndPage]];
+        localHighlight.Color = makeNullNil([webHighlight objectForKey:kSCHLibreAccessWebServiceColor]);
+        localHighlight.EndPage = makeNullNil([webHighlight objectForKey:kSCHLibreAccessWebServiceEndPage]);
         
-        localHighlight.ID = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceID]];
-        localHighlight.Version = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceVersion]];
+        localHighlight.ID = makeNullNil([webHighlight objectForKey:kSCHLibreAccessWebServiceID]);
+        localHighlight.Version = makeNullNil([webHighlight objectForKey:kSCHLibreAccessWebServiceVersion]);
         
-        localHighlight.LastModified = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localHighlight.LastModified = makeNullNil([webHighlight objectForKey:kSCHLibreAccessWebServiceLastModified]);
         localHighlight.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
         
-        [self syncLocationText:[self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceLocation]] 
+        [self syncLocationText:makeNullNil([webHighlight objectForKey:kSCHLibreAccessWebServiceLocation])
               withLocationText:localHighlight.Location];
     }
 }
@@ -504,20 +505,20 @@
 - (SCHHighlight *)highlight:(NSDictionary *)highlight
 {
 	SCHHighlight *ret = nil;
-	id annotationID = [self makeNullNil:[highlight valueForKey:kSCHLibreAccessWebServiceID]];
+	id annotationID = makeNullNil([highlight valueForKey:kSCHLibreAccessWebServiceID]);
     
 	if (highlight != nil && [SCHAnnotation isValidAnnotationID:annotationID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHHighlight 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
 		
-		ret.LastModified = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceLastModified]];
+		ret.LastModified = makeNullNil([highlight objectForKey:kSCHLibreAccessWebServiceLastModified]);
         ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
         
 		ret.ID = annotationID;
-		ret.Version = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceVersion]];
+		ret.Version = makeNullNil([highlight objectForKey:kSCHLibreAccessWebServiceVersion]);
 		
-		ret.Color = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceColor]];
-		ret.EndPage = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceEndPage]];
+		ret.Color = makeNullNil([highlight objectForKey:kSCHLibreAccessWebServiceColor]);
+		ret.EndPage = makeNullNil([highlight objectForKey:kSCHLibreAccessWebServiceEndPage]);
 		ret.Location = [self locationText:[highlight objectForKey:kSCHLibreAccessWebServiceLocation]];
 	}
 	
@@ -528,9 +529,9 @@
         withLocationText:(SCHLocationText *)localLocationText
 {
     if (webLocationText != nil) {
-        localLocationText.Page = [self makeNullNil:[webLocationText objectForKey:kSCHLibreAccessWebServicePage]];    
+        localLocationText.Page = makeNullNil([webLocationText objectForKey:kSCHLibreAccessWebServicePage]);
         
-        [self syncWordIndex:[self makeNullNil:[webLocationText objectForKey:kSCHLibreAccessWebServiceWordIndex]] 
+        [self syncWordIndex:makeNullNil([webLocationText objectForKey:kSCHLibreAccessWebServiceWordIndex])
               withWordIndex:localLocationText.WordIndex];    
     }
 }
@@ -541,7 +542,7 @@
                                                                inManagedObjectContext:self.backgroundThreadManagedObjectContext];
     
 	if (locationText != nil) {
-		ret.Page = [self makeNullNil:[locationText objectForKey:kSCHLibreAccessWebServicePage]];
+		ret.Page = makeNullNil([locationText objectForKey:kSCHLibreAccessWebServicePage]);
 	} else {
         [ret setInitialValues];
     }
@@ -554,8 +555,8 @@
         withWordIndex:(SCHWordIndex *)localsyncWordIndex
 {
     if (websyncWordIndex != nil) {
-        localsyncWordIndex.Start = [self makeNullNil:[websyncWordIndex objectForKey:kSCHLibreAccessWebServiceStart]];
-        localsyncWordIndex.End = [self makeNullNil:[websyncWordIndex objectForKey:kSCHLibreAccessWebServiceEnd]];        
+        localsyncWordIndex.Start = makeNullNil([websyncWordIndex objectForKey:kSCHLibreAccessWebServiceStart]);
+        localsyncWordIndex.End = makeNullNil([websyncWordIndex objectForKey:kSCHLibreAccessWebServiceEnd]);
     }
 }
 
@@ -566,8 +567,8 @@
     
 	
 	if (wordIndex != nil) {
-		ret.Start = [self makeNullNil:[wordIndex objectForKey:kSCHLibreAccessWebServiceStart]];
-		ret.End = [self makeNullNil:[wordIndex objectForKey:kSCHLibreAccessWebServiceEnd]];
+		ret.Start = makeNullNil([wordIndex objectForKey:kSCHLibreAccessWebServiceStart]);
+		ret.End = makeNullNil([wordIndex objectForKey:kSCHLibreAccessWebServiceEnd]);
 	} else {
         [ret setInitialValues];
     }
@@ -608,7 +609,7 @@
 			break;			
 		}
 		
-		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
+		id webItemID = makeNullNil([webItem valueForKey:kSCHLibreAccessWebServiceID]);
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
         if (webItemID == nil || [SCHAnnotation isValidAnnotationID:webItemID] == NO) {
@@ -670,16 +671,16 @@
         withNote:(SCHNote *)localNote
 {
     if ([localNote.State statusValue] == kSCHStatusUnmodified) {
-        localNote.Color = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceColor]];
-        localNote.Value = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceValue]];
+        localNote.Color = makeNullNil([webNote objectForKey:kSCHLibreAccessWebServiceColor]);
+        localNote.Value = makeNullNil([webNote objectForKey:kSCHLibreAccessWebServiceValue]);
         
-        localNote.ID = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceID]];
-        localNote.Version = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceVersion]];
+        localNote.ID = makeNullNil([webNote objectForKey:kSCHLibreAccessWebServiceID]);
+        localNote.Version = makeNullNil([webNote objectForKey:kSCHLibreAccessWebServiceVersion]);
         
-        localNote.LastModified = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localNote.LastModified = makeNullNil([webNote objectForKey:kSCHLibreAccessWebServiceLastModified]);
         localNote.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
         
-        [self syncLocationGraphics:[self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceLocation]] 
+        [self syncLocationGraphics:makeNullNil([webNote objectForKey:kSCHLibreAccessWebServiceLocation])
               withLocationGraphics:localNote.Location];
     }
 }
@@ -687,20 +688,20 @@
 - (SCHNote *)note:(NSDictionary *)note
 {
 	SCHNote *ret = nil;
-	id annotationID = [self makeNullNil:[note valueForKey:kSCHLibreAccessWebServiceID]];
+	id annotationID = makeNullNil([note valueForKey:kSCHLibreAccessWebServiceID]);
     
 	if (note != nil && [SCHAnnotation isValidAnnotationID:annotationID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
 		
-		ret.LastModified = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceLastModified]];
+		ret.LastModified = makeNullNil([note objectForKey:kSCHLibreAccessWebServiceLastModified]);
         ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
         
 		ret.ID = annotationID;
-		ret.Version = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceVersion]];
+		ret.Version = makeNullNil([note objectForKey:kSCHLibreAccessWebServiceVersion]);
 		
-		ret.Color = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceColor]];
-		ret.Value = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceValue]];
+		ret.Color = makeNullNil([note objectForKey:kSCHLibreAccessWebServiceColor]);
+		ret.Value = makeNullNil([note objectForKey:kSCHLibreAccessWebServiceValue]);
 		ret.Location = [self locationGraphics:[note objectForKey:kSCHLibreAccessWebServiceLocation]];
 	}
 	
@@ -711,7 +712,7 @@
         withLocationGraphics:(SCHLocationGraphics *)localLocationGraphics
 {
     if (webLocationGraphics != nil) {
-        localLocationGraphics.Page = [self makeNullNil:[webLocationGraphics objectForKey:kSCHLibreAccessWebServicePage]];    
+        localLocationGraphics.Page = makeNullNil([webLocationGraphics objectForKey:kSCHLibreAccessWebServicePage]);
     }
 }
 
@@ -721,7 +722,7 @@
                                                              inManagedObjectContext:self.backgroundThreadManagedObjectContext];
     
 	if (locationGraphics != nil) {		
-		ret.Page = [self makeNullNil:[locationGraphics objectForKey:kSCHLibreAccessWebServicePage]];
+		ret.Page = makeNullNil([locationGraphics objectForKey:kSCHLibreAccessWebServicePage]);
 	} else {
         [ret setInitialValues];
     }
@@ -762,7 +763,7 @@
 			break;			
 		}
 		
-		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceID]];
+		id webItemID = makeNullNil([webItem valueForKey:kSCHLibreAccessWebServiceID]);
 		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 		
         if (webItemID == nil || [SCHAnnotation isValidAnnotationID:webItemID] == NO) {
@@ -824,16 +825,16 @@
         withBookmark:(SCHBookmark *)localBookmark
 {
     if ([localBookmark.State statusValue] == kSCHStatusUnmodified) {
-        localBookmark.Disabled = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceDisabled]];
-        localBookmark.Text = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceText]];
+        localBookmark.Disabled = makeNullNil([webBookmark objectForKey:kSCHLibreAccessWebServiceDisabled]);
+        localBookmark.Text = makeNullNil([webBookmark objectForKey:kSCHLibreAccessWebServiceText]);
         
-        localBookmark.ID = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceID]];
-        localBookmark.Version = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceVersion]];
+        localBookmark.ID = makeNullNil([webBookmark objectForKey:kSCHLibreAccessWebServiceID]);
+        localBookmark.Version = makeNullNil([webBookmark objectForKey:kSCHLibreAccessWebServiceVersion]);
         
-        localBookmark.LastModified = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localBookmark.LastModified = makeNullNil([webBookmark objectForKey:kSCHLibreAccessWebServiceLastModified]);
         localBookmark.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
         
-        [self syncLocationBookmark:[self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceLocation]] 
+        [self syncLocationBookmark:makeNullNil([webBookmark objectForKey:kSCHLibreAccessWebServiceLocation])
               withLocationBookmark:localBookmark.Location];
     }
 }
@@ -841,20 +842,20 @@
 - (SCHBookmark *)bookmark:(NSDictionary *)bookmark
 {
 	SCHBookmark *ret = nil;
-	id annotationID = [self makeNullNil:[bookmark valueForKey:kSCHLibreAccessWebServiceID]];
+	id annotationID = makeNullNil([bookmark valueForKey:kSCHLibreAccessWebServiceID]);
     
 	if (bookmark != nil && [SCHAnnotation isValidAnnotationID:annotationID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHBookmark 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
 		
-		ret.LastModified = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceLastModified]];
+		ret.LastModified = makeNullNil([bookmark objectForKey:kSCHLibreAccessWebServiceLastModified]);
         ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
         
 		ret.ID = annotationID;
-		ret.Version = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceVersion]];
+		ret.Version = makeNullNil([bookmark objectForKey:kSCHLibreAccessWebServiceVersion]);
 		
-		ret.Disabled = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceDisabled]];
-		ret.Text = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceText]];
+		ret.Disabled = makeNullNil([bookmark objectForKey:kSCHLibreAccessWebServiceDisabled]);
+		ret.Text = makeNullNil([bookmark objectForKey:kSCHLibreAccessWebServiceText]);
 		ret.Location = [self locationBookmark:[bookmark objectForKey:kSCHLibreAccessWebServiceLocation]];
 	}
 	
@@ -865,7 +866,7 @@
         withLocationBookmark:(SCHLocationBookmark *)localLocationBookmark
 {
     if (webLocationBookmark != nil) {
-        localLocationBookmark.Page = [self makeNullNil:[webLocationBookmark objectForKey:kSCHLibreAccessWebServicePage]];
+        localLocationBookmark.Page = makeNullNil([webLocationBookmark objectForKey:kSCHLibreAccessWebServicePage]);
     }
 }
 
@@ -875,7 +876,7 @@
                                                              inManagedObjectContext:self.backgroundThreadManagedObjectContext];
     
     if (locationBookmark != nil) {
-		ret.Page = [self makeNullNil:[locationBookmark objectForKey:kSCHLibreAccessWebServicePage]];
+		ret.Page = makeNullNil([locationBookmark objectForKey:kSCHLibreAccessWebServicePage]);
 	} else {
         [ret setInitialValues];
     }
@@ -886,11 +887,11 @@
 - (void)syncLastPage:(NSDictionary *)webLastPage withLastPage:(SCHLastPage *)localLastPage
 {
     if (webLastPage != nil) {
-        localLastPage.LastPageLocation = [self makeNullNil:[webLastPage objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
-        localLastPage.Component = [self makeNullNil:[webLastPage objectForKey:kSCHLibreAccessWebServiceComponent]];
-        localLastPage.Percentage = [self makeNullNil:[webLastPage objectForKey:kSCHLibreAccessWebServicePercentage]];	
+        localLastPage.LastPageLocation = makeNullNil([webLastPage objectForKey:kSCHLibreAccessWebServiceLastPageLocation]);
+        localLastPage.Component = makeNullNil([webLastPage objectForKey:kSCHLibreAccessWebServiceComponent]);
+        localLastPage.Percentage = makeNullNil([webLastPage objectForKey:kSCHLibreAccessWebServicePercentage]);
         
-        localLastPage.LastModified = [self makeNullNil:[webLastPage objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localLastPage.LastModified = makeNullNil([webLastPage objectForKey:kSCHLibreAccessWebServiceLastModified]);
         localLastPage.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				    
     }
 }
@@ -901,11 +902,11 @@
                                                      inManagedObjectContext:self.backgroundThreadManagedObjectContext];
     
 	if (lastPage != nil) {				
-		ret.LastPageLocation = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
-		ret.Percentage = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServicePercentage]];
-		ret.Component = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceComponent]];
+		ret.LastPageLocation = makeNullNil([lastPage objectForKey:kSCHLibreAccessWebServiceLastPageLocation]);
+		ret.Percentage = makeNullNil([lastPage objectForKey:kSCHLibreAccessWebServicePercentage]);
+		ret.Component = makeNullNil([lastPage objectForKey:kSCHLibreAccessWebServiceComponent]);
         
-		ret.LastModified = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceLastModified]];
+		ret.LastModified = makeNullNil([lastPage objectForKey:kSCHLibreAccessWebServiceLastModified]);
 		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];        
 	} else {
         [ret setInitialValues];
@@ -917,11 +918,11 @@
 - (void)syncRating:(NSDictionary *)webRating withRating:(SCHRating *)localRating
 {
     if (webRating != nil) {
-        localRating.averageRating = [self makeNullNil:[webRating objectForKey:kSCHLibreAccessWebServiceAverageRating]];
-        localRating.rating = [self makeNullNil:[webRating objectForKey:kSCHLibreAccessWebServiceRating]];
-        localRating.numVotes = [self makeNullNil:[webRating objectForKey:kSCHLibreAccessWebServiceNumVotes]];
+        localRating.averageRating = makeNullNil([webRating objectForKey:kSCHLibreAccessWebServiceAverageRating]);
+        localRating.rating = makeNullNil([webRating objectForKey:kSCHLibreAccessWebServiceRating]);
+        localRating.numVotes = makeNullNil([webRating objectForKey:kSCHLibreAccessWebServiceNumVotes]);
         
-        localRating.LastModified = [self makeNullNil:[webRating objectForKey:kSCHLibreAccessWebServiceLastModified]];
+        localRating.LastModified = makeNullNil([webRating objectForKey:kSCHLibreAccessWebServiceLastModified]);
         localRating.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				    
     }
 }
@@ -932,11 +933,11 @@
                                                    inManagedObjectContext:self.backgroundThreadManagedObjectContext];
     
 	if (rating != nil) {				
-		ret.averageRating = [self makeNullNil:[rating objectForKey:kSCHLibreAccessWebServiceAverageRating]];
-		ret.rating = [self makeNullNil:[rating objectForKey:kSCHLibreAccessWebServiceRating]];
-        ret.numVotes = [self makeNullNil:[rating objectForKey:kSCHLibreAccessWebServiceNumVotes]];
+		ret.averageRating = makeNullNil([rating objectForKey:kSCHLibreAccessWebServiceAverageRating]);
+		ret.rating = makeNullNil([rating objectForKey:kSCHLibreAccessWebServiceRating]);
+        ret.numVotes = makeNullNil([rating objectForKey:kSCHLibreAccessWebServiceNumVotes]);
         
-		ret.LastModified = [self makeNullNil:[rating objectForKey:kSCHLibreAccessWebServiceLastModified]];
+		ret.LastModified = makeNullNil([rating objectForKey:kSCHLibreAccessWebServiceLastModified]);
 		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];        
 	} else {
         [ret setInitialValues];
@@ -948,7 +949,7 @@
 - (BOOL)shouldCreate:(NSDictionary *)webItem
 {
     BOOL ret = NO;
-    NSNumber *saveAction = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceAction]];
+    NSNumber *saveAction = makeNullNil([webItem valueForKey:kSCHLibreAccessWebServiceAction]);
     
     if ([saveAction saveActionValue] != kSCHSaveActionsRemove) {
         ret = YES;
@@ -960,7 +961,7 @@
 - (BOOL)shouldDelete:(NSDictionary *)webItem
 {
     BOOL ret = NO;
-    NSNumber *saveAction = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceAction]];
+    NSNumber *saveAction = makeNullNil([webItem valueForKey:kSCHLibreAccessWebServiceAction]);
     
     if ([saveAction saveActionValue] == kSCHSaveActionsRemove) {                    
         ret = YES;
