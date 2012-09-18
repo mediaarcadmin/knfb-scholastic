@@ -8,7 +8,7 @@
 
 #import "SCHMakeNullNil.h"
 
-static id makeNullNil(id object)
+id makeNullNil(id object)
 {
     return(object == [NSNull null] ? nil : object);
 }

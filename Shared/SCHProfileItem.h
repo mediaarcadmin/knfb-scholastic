@@ -68,8 +68,7 @@ typedef enum {
 - (void)newStatistics:(SCHBookStatistics *)bookStatistics forBook:(SCHBookIdentifier *)bookIdentifier;
 - (void)saveBookOrder:(NSArray *)books;
 - (void)clearBookOrder:(NSArray *)books;
-- (NSString *)bookshelfName:(BOOL)shortName;
-- (NSString *)profileName;
+- (NSString *)displayName;
 - (void)setRawPassword:(NSString *)value;
 - (BOOL)hasPassword;
 - (BOOL)validatePasswordWith:(NSString *)withPassword;

@@ -310,7 +310,7 @@ typedef enum
     }
     
     if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        self.navigationItem.title = [self.profileItem bookshelfName:YES];
+        self.navigationItem.title = [self.profileItem displayName];
     } else {
         self.navigationItem.title = NSLocalizedString(@"My eBooks", @"Sample bookshelf title");
     }
@@ -678,7 +678,7 @@ typedef enum
     profileItem = newProfileItem;
     
     if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        self.navigationItem.title = [self.profileItem bookshelfName:YES];
+        self.navigationItem.title = [self.profileItem displayName];
     }
 
 	self.books = [self.profileItem allBookIdentifiers];
@@ -773,7 +773,7 @@ typedef enum
                 }
                 
                 NSString *localizedMessage = [NSString stringWithFormat:
-                                              NSLocalizedString(@"%@ has been removed", nil), [self.profileItem bookshelfName:YES]];  
+                                              NSLocalizedString(@"%@ has been removed", nil), [self.profileItem displayName]];
                 LambdaAlert *alert = [[LambdaAlert alloc]
                                       initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
                                       message:localizedMessage];
@@ -803,7 +803,7 @@ typedef enum
     for (SCHProfileItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
         if (object == self.profileItem) {
             if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-                self.navigationItem.title = [object bookshelfName:YES];
+                self.navigationItem.title = [object displayName];
             }
         }
     }

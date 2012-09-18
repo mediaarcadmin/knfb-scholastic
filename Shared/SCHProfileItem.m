@@ -500,22 +500,7 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 #pragma mark - Accessor methods
 
-- (NSString *)bookshelfName:(BOOL)shortName
-{
-    NSString *ret = nil;
-        
-    if ([[self.ScreenName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-        ret = self.ScreenName;
-    } else if ([[self.FirstName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-        ret = self.FirstName;
-    } else {
-        ret = (shortName == NO ? @"" : NSLocalizedString(@"eBooks", @""));
-    }
-    
-    return(ret);
-}
-
-- (NSString *)profileName
+- (NSString *)displayName
 {
     NSString *ret = nil;
 

@@ -23,6 +23,7 @@
 #import "SCHRetrieveRecommendationsForProfileOperation.h"
 #import "SCHRetrieveRecommendationsForBooksOperation.h"
 #import "SCHRetrieveSampleBooksOperation.h"
+#import "SCHMakeNullNil.h"
 
 // Constants
 NSString * const SCHRecommendationSyncComponentISBNs = @"SCHRecommendationSyncComponentISBNs";
@@ -424,7 +425,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                 nextUpdate == nil ||
                 [[NSDate date] earlierDate:nextUpdate] == nextUpdate) {
                 if (asISBN == YES) {
-                    NSString *isbn = [self makeNullNil:[item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+                    NSString *isbn = makeNullNil([item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
                     if (isbn != nil && [ret containsObject:isbn] == NO) {
                         [ret addObject:isbn];
                     }
@@ -480,7 +481,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 			break;			
 		}
 		
-		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHRecommendationWebServiceProductCode]];
+		id webItemID = makeNullNil([webItem valueForKey:kSCHRecommendationWebServiceProductCode]);
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceProductCode];
 		
         if (webItemID == nil || [SCHRecommendationItem isValidItemID:webItemID] == NO) {
@@ -531,21 +532,21 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                          managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
 	SCHRecommendationItem *ret = nil;
-	id recommendationItemID = [self makeNullNil:[webRecommendationItem valueForKey:kSCHRecommendationWebServiceProductCode]];
+	id recommendationItemID = makeNullNil([webRecommendationItem valueForKey:kSCHRecommendationWebServiceProductCode]);
     
 	if (webRecommendationItem != nil && [SCHRecommendationItem isValidItemID:recommendationItemID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationItem 
                                             inManagedObjectContext:aManagedObjectContext];			
         
-        ret.name = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceName]];
-        ret.link = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceLink]];
-        ret.image_link = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceImageLink]];
-        ret.regular_price = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceRegularPrice]];
-        ret.sale_price = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceSalePrice]];        
+        ret.name = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceName]);
+        ret.link = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceLink]);
+        ret.image_link = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceImageLink]);
+        ret.regular_price = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceRegularPrice]);
+        ret.sale_price = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceSalePrice]);
         ret.product_code = recommendationItemID;
-        ret.format = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceFormat]];                        
-        ret.author = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceAuthor]];                                
-        ret.order = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]];                                        
+        ret.format = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceFormat]);
+        ret.author = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceAuthor]);
+        ret.order = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]);
         
         [ret assignAppRecommendationItem];        
 	}
@@ -557,15 +558,15 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         withRecommendationItem:(SCHRecommendationItem *)localRecommendationItem
 {
     if (webRecommendationItem != nil) {
-        localRecommendationItem.name = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceName]];
-        localRecommendationItem.link = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceLink]];
-        localRecommendationItem.image_link = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceImageLink]];
-        localRecommendationItem.regular_price = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceRegularPrice]];
-        localRecommendationItem.sale_price = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceSalePrice]];        
-        localRecommendationItem.product_code = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceProductCode]];                
-        localRecommendationItem.format = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceFormat]];                        
-        localRecommendationItem.author = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceAuthor]];                                
-        localRecommendationItem.order = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]];                                        
+        localRecommendationItem.name = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceName]);
+        localRecommendationItem.link = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceLink]);
+        localRecommendationItem.image_link = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceImageLink]);
+        localRecommendationItem.regular_price = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceRegularPrice]);
+        localRecommendationItem.sale_price = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceSalePrice]);
+        localRecommendationItem.product_code = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceProductCode]);
+        localRecommendationItem.format = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceFormat]);
+        localRecommendationItem.author = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceAuthor]);
+        localRecommendationItem.order = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]);
     }
 }
 

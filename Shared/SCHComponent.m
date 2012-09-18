@@ -7,7 +7,6 @@
 //
 
 #import "SCHComponent.h"
-#import "SCHComponentProtected.h"
 
 @implementation SCHComponent
 
@@ -56,13 +55,6 @@
         result:(NSDictionary *)result
 {
     NSAssert(NO, @"SCHComponent:method:didFailWithError:requestInfo:result needs to be overidden in sub-classes");
-}
-
-#pragma mark - Private methods
-
-- (id)makeNullNil:(id)object
-{
-	return(object == [NSNull null] ? nil : object);
 }
 
 @end
