@@ -33,7 +33,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUIView" id="217641012">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIImageView" id="1007468301">
@@ -41,13 +41,14 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{1024, 748}</string>
 						<reference key="NSSuperview" ref="217641012"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="95613536"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">storia-tourstartviewcontroller-static-landscape~ipad.png</string>
+							<string key="NSResourceName">storia-tourstartviewcontroller-static-landscape~ipad.jpg</string>
 						</object>
 					</object>
 					<object class="IBUIButton" id="95613536">
@@ -55,6 +56,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{5, 41}, {72, 37}}</string>
 						<reference key="NSSuperview" ref="217641012"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="327505262"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -90,6 +92,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{896, 391}, {94, 37}}</string>
 						<reference key="NSSuperview" ref="217641012"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="769048679"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -112,6 +115,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{305, 702}, {123, 37}}</string>
 						<reference key="NSSuperview" ref="217641012"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="800477443"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -135,6 +139,8 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{817, 702}, {123, 37}}</string>
 						<reference key="NSSuperview" ref="217641012"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<int key="IBUITag">100</int>
@@ -154,6 +160,8 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{1024, 748}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="1007468301"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
@@ -293,7 +301,29 @@
 			<nil key="sourceID"/>
 			<int key="maxID">13</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHTourStartViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">startReading:</string>
+						<string key="NS.object.0">UIButton</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">startReading:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">startReading:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHTourStartViewController.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
@@ -303,7 +333,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">storia-tourstartviewcontroller-static-landscape~ipad.png</string>
+			<string key="NS.key.0">storia-tourstartviewcontroller-static-landscape~ipad.jpg</string>
 			<string key="NS.object.0">{1024, 748}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">1498</string>
