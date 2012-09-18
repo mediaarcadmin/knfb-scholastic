@@ -27,6 +27,7 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHLibreAccessConstants.h"
 #import "NSFileManager+Extensions.h"
+#import "SCHAppProfile.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -376,7 +377,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             self.firstSyncAfterDelay = NO;
             
             [self addToQueue:self.profileSyncComponent];
-            [self addToQueue:self.contentSyncComponent];
+            if ([self shouldSyncContent] == YES) {
+                [self addToQueue:self.contentSyncComponent];
+            }
             [self addToQueue:self.bookshelfSyncComponent];
                         
             [self addAllProfilesToAnnotationSync];
@@ -979,6 +982,27 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 {
     return [[SCHAppStateManager sharedAppStateManager] canSync] && 
         [[NSFileManager defaultManager] BITfileSystemHasBytesAvailable:kSCHSyncManagerMinimumDiskSpaceRequiredForSync];
+}
+
+- (BOOL)shouldSyncContent
+{
+    BOOL ret = NO;
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHAppProfile
+                                              inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastEnteredBookshelfDate != nil"];
+    [fetchRequest setPredicate:predicate];
+
+    NSError *error = nil;
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest
+                                                                 error:&error];
+    if (count != NSNotFound) {
+        ret = count > 0;
+    }
+
+    return ret;
 }
 
 #pragma mark - Notification methods

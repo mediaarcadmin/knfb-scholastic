@@ -314,6 +314,8 @@ typedef enum
     } else {
         self.navigationItem.title = NSLocalizedString(@"My eBooks", @"Sample bookshelf title");
     }
+
+    self.profileItem.AppProfile.lastEnteredBookshelfDate = [NSDate date];
     
     // Always force a sync if we are on the sample bookshelf
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
