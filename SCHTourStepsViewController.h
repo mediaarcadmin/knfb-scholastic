@@ -11,7 +11,8 @@
 typedef enum {
     SCHTourStepsViewTypeSingleImage = 0,
     SCHTourStepsViewTypeDoubleImage,
-    SCHTourStepsViewTypeReadthrough
+    SCHTourStepsViewTypeReadthrough,
+    SCHTourStepsViewTypeBeginTour
 } SCHTourStepsViewType;
 
 @interface SCHTourStepsViewController : UIViewController <UIScrollViewDelegate>

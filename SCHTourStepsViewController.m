@@ -7,6 +7,10 @@
 //
 
 #import "SCHTourStepsViewController.h"
+#import "SCHTourFullScreenImageViewController.h"
+
+#define LEFT_TAG 101
+#define RIGHT_TAG 102
 
 @interface SCHTourStepsViewController ()
 
@@ -87,6 +91,28 @@
 
 - (IBAction)goBack:(UIButton *)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)signIn:(UIButton *)sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (IBAction)pickedFullScreenImage:(UIButton *)sender
+{
+    // determine if we picked the left or the right image
+    NSInteger multiIndex = 0;
+    
+    if (sender.tag == RIGHT_TAG) {
+        multiIndex = 1;
+    }
+    
+    // FIXME: this is then ignored because we're always going to use the same image
+    
+    SCHTourFullScreenImageViewController *fullScreenController = [[SCHTourFullScreenImageViewController alloc] initWithNibName:nil bundle:nil];
+    fullScreenController.imageTitle = @"Word Match";
+    fullScreenController.imageName = [NSString stringWithFormat:@"tour_full_image_%d_%d", 1, 0];
+    
+    [self presentModalViewController:fullScreenController animated:YES];
 }
 
 //            NSString *fullImageName = [NSString stringWithFormat:@"tour_full_image_%d_%d", index, 0];
@@ -190,9 +216,13 @@
             // image view
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:scrollImageName]];
             // button
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [button setFrame:CGRectMake(697, 540, 92, 32)];
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            [button setBackgroundImage:[[UIImage imageNamed:@"tour-tab-button-bg"] stretchableImageWithLeftCapWidth:8 topCapHeight:0] forState:UIControlStateNormal];
+            [button setFrame:CGRectMake(697, 539, 92, 32)];
+            [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
             [button setTitle:@"Full Screen" forState:UIControlStateNormal];
+            
+            [button addTarget:self action:@selector(pickedFullScreenImage:) forControlEvents:UIControlEventTouchUpInside];
             // FIXME: styling
             // FIXME: add target
             
@@ -211,12 +241,22 @@
             // image view
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:scrollImageName]];
             // button
-            UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [leftButton setFrame:CGRectMake(402, 524, 92, 32)];
+            UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [leftButton setBackgroundImage:[[UIImage imageNamed:@"tour-tab-button-bg"] stretchableImageWithLeftCapWidth:8 topCapHeight:0] forState:UIControlStateNormal];
+            [leftButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
+            leftButton.tag = LEFT_TAG;
+            [leftButton addTarget:self action:@selector(pickedFullScreenImage:) forControlEvents:UIControlEventTouchUpInside];
+
+            [leftButton setFrame:CGRectMake(402, 525, 92, 32)];
             [leftButton setTitle:@"Full Screen" forState:UIControlStateNormal];
 
-            UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [rightButton setFrame:CGRectMake(900, 524, 92, 32)];
+            UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [rightButton setBackgroundImage:[[UIImage imageNamed:@"tour-tab-button-bg"] stretchableImageWithLeftCapWidth:8 topCapHeight:0] forState:UIControlStateNormal];
+            [rightButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
+            rightButton.tag = RIGHT_TAG;
+            [rightButton addTarget:self action:@selector(pickedFullScreenImage:) forControlEvents:UIControlEventTouchUpInside];
+
+            [rightButton setFrame:CGRectMake(900, 525, 92, 32)];
             [rightButton setTitle:@"Full Screen" forState:UIControlStateNormal];
             // FIXME: styling
             // FIXME: add target
@@ -237,8 +277,11 @@
             // image view
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:scrollImageName]];
             // button
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [button setFrame:CGRectMake(654, 540, 132, 32)];
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            [button setBackgroundImage:[[UIImage imageNamed:@"tour-tab-button-bg"] stretchableImageWithLeftCapWidth:8 topCapHeight:0] forState:UIControlStateNormal];
+            [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
+
+            [button setFrame:CGRectMake(654, 539, 131, 32)];
             [button setTitle:@"Play Read-Aloud" forState:UIControlStateNormal];
             // FIXME: styling
             // FIXME: add target
@@ -248,6 +291,27 @@
             
             [tourView addSubview:imageView];
             [tourView addSubview:button];
+            break;
+        }
+        case SCHTourStepsViewTypeBeginTour:
+        {
+            NSString *scrollImageName = [NSString stringWithFormat:@"tour_scrolled_image_%d", index];
+            
+            // image view
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:scrollImageName]];
+            // button
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [button setFrame:CGRectMake(394, 552, 240, 37)];
+            [button setTitle:@"Sign In" forState:UIControlStateNormal];
+            // FIXME: styling
+            [button addTarget:self action:@selector(signIn:) forControlEvents:UIControlEventTouchUpInside];
+            
+            // container view
+            tourView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
+            
+            [tourView addSubview:imageView];
+            [tourView addSubview:button];
+            
             break;
         }
         default:

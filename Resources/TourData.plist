@@ -14,5 +14,25 @@
 		<key>type</key>
 		<integer>1</integer>
 	</dict>
+	<dict>
+		<key>type</key>
+		<integer>1</integer>
+	</dict>
+    <dict>
+		<key>type</key>
+		<integer>1</integer>
+	</dict>
+	<dict>
+		<key>type</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>type</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>type</key>
+		<integer>3</integer>
+	</dict>
 </array>
 </plist>
