@@ -95,12 +95,12 @@
         // Check if dictionary needs set up
         if ([self dictionaryDownloadRequired]) {
             SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-            downloadDictionary.completion = ^{
-                [self pushProfileAnimated:NO];
-                [self dismissModalViewControllerAnimated:YES];
+           // downloadDictionary.completion = ^{
+            //    [self pushProfileAnimated:NO];
+             //   [self dismissModalViewControllerAnimated:YES];
                 
-                self.modalContainerView = nil;
-            };
+             //   self.modalContainerView = nil;
+           // };
             
             [self.modalContainerView pushViewController:downloadDictionary animated:YES];
             [downloadDictionary release];
@@ -130,9 +130,9 @@
         // Check if dictionary needs set up
         if ([self dictionaryDownloadRequired]) {
             SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-            downloadDictionary.completion = ^{
-                [self pushProfileSetupAnimated:YES];
-            };
+          //  downloadDictionary.completion = ^{
+          //      [self pushProfileSetupAnimated:YES];
+          //  };
             
             [self.modalContainerView pushViewController:downloadDictionary animated:YES];
             [downloadDictionary release];
@@ -151,12 +151,12 @@
         // Check if dictionary needs set up
         if ([self dictionaryDownloadRequired]) {
             SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-            downloadDictionary.completion = ^{
-                [self pushSamplesAnimated:NO showWelcome:YES];
-                [self dismissModalViewControllerAnimated:YES];
+           // downloadDictionary.completion = ^{
+           //     [self pushSamplesAnimated:NO showWelcome:YES];
+            //    [self dismissModalViewControllerAnimated:YES];
             
-                self.modalContainerView = nil;
-            };
+            //    self.modalContainerView = nil;
+           // };
         
             [self.modalContainerView pushViewController:downloadDictionary animated:YES];        
             [downloadDictionary release];

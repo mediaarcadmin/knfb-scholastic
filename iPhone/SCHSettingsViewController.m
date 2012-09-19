@@ -866,7 +866,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                     return kSCHSettingsPanelAdditionalSettings;
                     break;
                 case 1:
-                    return kSCHSettingsPanelDictionaryDownload;
+                    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
+                        return kSCHSettingsPanelDictionaryDelete;
+                    } else {
+                        return kSCHSettingsPanelDictionaryDownload;
+                    }
                     break;
                 case 2:
                     return kSCHSettingsPanelDeregisterDevice;
@@ -901,8 +905,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             SCHDownloadDictionaryViewController *controller = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
             self.contentViewController = controller;
         } break;
+        case kSCHSettingsPanelDictionaryDelete: {
+            SCHRemoveDictionaryViewController *controller = [[[SCHRemoveDictionaryViewController alloc] init] autorelease];
+            self.contentViewController = controller;
+        } break;
         case kSCHSettingsPanelDeregisterDevice: {
             SCHDeregisterDeviceViewController *controller = [[[SCHDeregisterDeviceViewController alloc] init] autorelease];
+            controller.appController = self.appController;
             self.contentViewController = controller;
         } break;
         case kSCHSettingsPanelEbookUpdates: {

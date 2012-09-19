@@ -120,7 +120,7 @@
         [self showAppVersionOutdatedAlert];
     } else if ([self connectionIsReachable]) {
         SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
-        vc.profileSetupDelegate = self.profileSetupDelegate;
+        //vc.profileSetupDelegate = self.profileSetupDelegate;
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
     } else {

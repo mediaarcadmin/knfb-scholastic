@@ -757,10 +757,10 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         
         if ([self dictionaryDownloadRequired]) {
             SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-            downloadDictionary.completion = ^{
-                [self pushSamplesAnimated:NO showWelcome:YES];
-                completion(nil);
-            };
+            //downloadDictionary.completion = ^{
+               // [self pushSamplesAnimated:NO showWelcome:YES];
+              //  completion(nil);
+            //};
             
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                 [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:downloadDictionary]];
@@ -836,12 +836,12 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
     if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHDownloadDictionaryViewController")]) {
         SCHDownloadDictionaryViewController *downloadDictionary = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
-        downloadDictionary.profileSetupDelegate = self;
-        downloadDictionary.completion = ^{
-            if (self.modalViewController) {
-                [self dismissModalViewControllerAnimated:YES];
-            }
-        };
+        //downloadDictionary.profileSetupDelegate = self;
+       // downloadDictionary.completion = ^{
+       //     if (self.modalViewController) {
+        //        [self dismissModalViewControllerAnimated:YES];
+       //     }
+       // };
         [controllers addObject:downloadDictionary];
     }
     

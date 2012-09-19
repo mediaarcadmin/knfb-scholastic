@@ -18,9 +18,10 @@ typedef enum {
     kSCHSettingsPanelReadingManager     = 1 << 1,
     kSCHSettingsPanelAdditionalSettings = 1 << 2,
     kSCHSettingsPanelDictionaryDownload = 1 << 3,
-    kSCHSettingsPanelDeregisterDevice   = 1 << 4,
-    kSCHSettingsPanelSupport            = 1 << 5,
-    kSCHSettingsPanelEbookUpdates       = 1 << 6,
+    kSCHSettingsPanelDictionaryDelete   = 1 << 4,
+    kSCHSettingsPanelDeregisterDevice   = 1 << 5,
+    kSCHSettingsPanelSupport            = 1 << 6,
+    kSCHSettingsPanelEbookUpdates       = 1 << 7,
     kSCHSettingsPanelAll                = 0
 } SCHSettingsPanel;
 
