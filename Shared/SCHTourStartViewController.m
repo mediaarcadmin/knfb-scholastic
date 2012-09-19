@@ -7,6 +7,7 @@
 //
 
 #import "SCHTourStartViewController.h"
+#import "SCHTourStepsViewController.h"
 
 #define OLDER_READING_TAG 100
 #define YOUNGER_READING_TAG 200
@@ -96,6 +97,9 @@
 
 - (IBAction)takeTheTour:(id)sender {
     NSLog(@"Take the tour!");
+    SCHTourStepsViewController *stepsController = [[SCHTourStepsViewController alloc] initWithNibName:nil bundle:nil];
+    [self.navigationController pushViewController:stepsController animated:YES];
+    [stepsController release];
 }
 
 
