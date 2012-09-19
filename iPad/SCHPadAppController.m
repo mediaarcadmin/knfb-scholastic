@@ -170,7 +170,8 @@
 
 - (void)presentLogin
 {
-    [self setViewControllers:[NSArray arrayWithObject:self.loginViewController] animated:NO];
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
+    [self setViewControllers:[NSArray arrayWithObject:self.loginViewController] animated:shouldAnimate];
 }
 
 #pragma mark - Errors

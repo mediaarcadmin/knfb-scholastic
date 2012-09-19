@@ -936,6 +936,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)addContentSubview:(UIView *)newContentView
 {
+
+    // TODO: this doesn't work if you are editing
     
     for (UIView *view in [self.contentView subviews]) {
         [view removeFromSuperview];
