@@ -456,7 +456,7 @@
 		5248882A1407990500DA9AFA /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
 		5248882B1407990500DA9AFA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		5248882C1407990500DA9AFA /* SCHProfileViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */; };
-		5248882D1407990500DA9AFA /* SCHSettingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */; };
+		5248882D1407990500DA9AFA /* SCHSettingsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController~ipad.xib */; };
 		5248882E1407990500DA9AFA /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		5248882F1407990500DA9AFA /* SCHLoginViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController~iphone.xib */; };
 		524888301407990500DA9AFA /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D866133F93FA00661718 /* Icon.png */; };
@@ -1437,12 +1437,12 @@
 		527DDC65144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 527DDC62144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m */; };
 		527FA6EB15C7C68F002D0250 /* UNIX2003Remapping.c in Sources */ = {isa = PBXBuildFile; fileRef = 527FA6EA15C7C68F002D0250 /* UNIX2003Remapping.c */; };
 		528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
-		528465EF144DB5F7009DBADD /* SCHAccountValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */; };
-		528465F0144DB5F7009DBADD /* SCHAccountValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */; };
-		528465F2144DB64D009DBADD /* SCHAccountValidationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F1144DB64C009DBADD /* SCHAccountValidationViewController~iphone.xib */; };
-		528465F3144DB64D009DBADD /* SCHAccountValidationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F1144DB64C009DBADD /* SCHAccountValidationViewController~iphone.xib */; };
-		528465F5144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F4144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib */; };
-		528465F6144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F4144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib */; };
+		528465EF144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m */; };
+		528465F0144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m */; };
+		528465F2144DB64D009DBADD /* SCHReadingManagerAuthorisationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F1144DB64C009DBADD /* SCHReadingManagerAuthorisationViewController~iphone.xib */; };
+		528465F3144DB64D009DBADD /* SCHReadingManagerAuthorisationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F1144DB64C009DBADD /* SCHReadingManagerAuthorisationViewController~iphone.xib */; };
+		528465F5144DB679009DBADD /* SCHReadingManagerAuthorisationViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F4144DB679009DBADD /* SCHReadingManagerAuthorisationViewController~ipad.xib */; };
+		528465F6144DB679009DBADD /* SCHReadingManagerAuthorisationViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F4144DB679009DBADD /* SCHReadingManagerAuthorisationViewController~ipad.xib */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2D6012CDE39C0053A343 /* SCHProfileViewController_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* SCHProfileViewController_Shared.m */; };
 		528A2D6212CDE3B10053A343 /* SCHProfileViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */; };
@@ -1457,7 +1457,7 @@
 		528F14E0151247CD00C2C6DA /* SCHRecommendationListView.m in Sources */ = {isa = PBXBuildFile; fileRef = F81B00DC1510A67F002DEE25 /* SCHRecommendationListView.m */; };
 		528F14E1151247CD00C2C6DA /* SCHRecommendationListView.m in Sources */ = {isa = PBXBuildFile; fileRef = F81B00DC1510A67F002DEE25 /* SCHRecommendationListView.m */; };
 		529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
-		529385B612DF231800045B44 /* SCHSettingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */; };
+		529385B612DF231800045B44 /* SCHSettingsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController~ipad.xib */; };
 		5293869C12DF3A3300045B44 /* AuthenticateSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293868F12DF3A3300045B44 /* AuthenticateSvc.m */; };
 		5293869E12DF3A3300045B44 /* NSDate+ISO8601Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */; };
 		5293869F12DF3A3300045B44 /* NSDate+ISO8601Unparsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869512DF3A3300045B44 /* NSDate+ISO8601Unparsing.m */; };
@@ -1642,7 +1642,7 @@
 		A3D3F0B514CDDF31004A56A5 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
 		A3D3F0B614CDDF31004A56A5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		A3D3F0B714CDDF31004A56A5 /* SCHProfileViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */; };
-		A3D3F0B814CDDF31004A56A5 /* SCHSettingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */; };
+		A3D3F0B814CDDF31004A56A5 /* SCHSettingsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController~ipad.xib */; };
 		A3D3F0B914CDDF31004A56A5 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		A3D3F0BA14CDDF31004A56A5 /* SCHLoginViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController~iphone.xib */; };
 		A3D3F0BB14CDDF31004A56A5 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D866133F93FA00661718 /* Icon.png */; };
@@ -2065,8 +2065,8 @@
 		A3D3F31014CDDF31004A56A5 /* storyinteraction-wordbird-BalloonPop.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F84021407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png */; };
 		A3D3F31114CDDF31004A56A5 /* icon-audio-younger-small-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C9279739140FA4AC0091B8B5 /* icon-audio-younger-small-landscape.png */; };
 		A3D3F31314CDDF31004A56A5 /* Interaction1_Relaxed.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C92797AB1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 */; };
-		A3D3F31414CDDF31004A56A5 /* SCHAccountValidationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F1144DB64C009DBADD /* SCHAccountValidationViewController~iphone.xib */; };
-		A3D3F31514CDDF31004A56A5 /* SCHAccountValidationViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F4144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib */; };
+		A3D3F31414CDDF31004A56A5 /* SCHReadingManagerAuthorisationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F1144DB64C009DBADD /* SCHReadingManagerAuthorisationViewController~iphone.xib */; };
+		A3D3F31514CDDF31004A56A5 /* SCHReadingManagerAuthorisationViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F4144DB679009DBADD /* SCHReadingManagerAuthorisationViewController~ipad.xib */; };
 		A3D3F31614CDDF31004A56A5 /* rotation.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CE1451DD6E0094F144 /* rotation.png */; };
 		A3D3F31914CDDF31004A56A5 /* old-lightning-bolt-3~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D636145579CC0094F144 /* old-lightning-bolt-3~ipad.png */; };
 		A3D3F31A14CDDF31004A56A5 /* old-lightning-bolt-3~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D637145579CC0094F144 /* old-lightning-bolt-3~iphone.png */; };
@@ -2383,7 +2383,7 @@
 		A3D3F46A14CDDF31004A56A5 /* SCHParentalToolsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 527DDC62144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m */; };
 		A3D3F46B14CDDF31004A56A5 /* SCHAccountValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 526760AB144C85AF00F3FE56 /* SCHAccountValidation.m */; };
 		A3D3F46C14CDDF31004A56A5 /* NSURL+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 526760AF144D6A6A00F3FE56 /* NSURL+Extensions.m */; };
-		A3D3F46D14CDDF31004A56A5 /* SCHAccountValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */; };
+		A3D3F46D14CDDF31004A56A5 /* SCHReadingManagerAuthorisationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m */; };
 		A3D3F46E14CDDF31004A56A5 /* SCHHelpVideoManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */; };
 		A3D3F46F14CDDF31004A56A5 /* SCHHelpVideoFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */; };
 		A3D3F47014CDDF31004A56A5 /* SCHHelpVideoManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */; };
@@ -2763,7 +2763,7 @@
 		C96C177E15C7F9DD002EBEBB /* SCHAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */; };
 		C96C177F15C7F9DD002EBEBB /* SCHPrivacyPolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A39009941379B13000D6B608 /* SCHPrivacyPolicyViewController.m */; };
 		C96C178015C7F9DD002EBEBB /* SCHBaseTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7415A13D8A06700EEAB36 /* SCHBaseTextViewController.m */; };
-		C96C178115C7F9DD002EBEBB /* SCHAccountValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */; };
+		C96C178115C7F9DD002EBEBB /* SCHReadingManagerAuthorisationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m */; };
 		C96C178215C7F9DD002EBEBB /* SCHBaseModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E6BCF013D72C7500A5C9E3 /* SCHBaseModalViewController.m */; };
 		C96C178315C7F9DD002EBEBB /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
 		C96C178415C7F9DD002EBEBB /* SCHSetupBookshelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */; };
@@ -3484,7 +3484,7 @@
 		C9D7006714ED50B100C10006 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
 		C9D7006814ED50B100C10006 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		C9D7006914ED50B100C10006 /* SCHProfileViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */; };
-		C9D7006A14ED50B100C10006 /* SCHSettingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */; };
+		C9D7006A14ED50B100C10006 /* SCHSettingsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController~ipad.xib */; };
 		C9D7006B14ED50B100C10006 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		C9D7006C14ED50B100C10006 /* SCHLoginViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController~iphone.xib */; };
 		C9D7006D14ED50B100C10006 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D866133F93FA00661718 /* Icon.png */; };
@@ -3907,8 +3907,8 @@
 		C9D7021614ED50B100C10006 /* storyinteraction-wordbird-BalloonPop.png in Resources */ = {isa = PBXBuildFile; fileRef = C97F84021407B349002BB9FB /* storyinteraction-wordbird-BalloonPop.png */; };
 		C9D7021714ED50B100C10006 /* icon-audio-younger-small-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C9279739140FA4AC0091B8B5 /* icon-audio-younger-small-landscape.png */; };
 		C9D7021814ED50B100C10006 /* Interaction1_Relaxed.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C92797AB1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 */; };
-		C9D7021914ED50B100C10006 /* SCHAccountValidationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F1144DB64C009DBADD /* SCHAccountValidationViewController~iphone.xib */; };
-		C9D7021A14ED50B100C10006 /* SCHAccountValidationViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F4144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib */; };
+		C9D7021914ED50B100C10006 /* SCHReadingManagerAuthorisationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F1144DB64C009DBADD /* SCHReadingManagerAuthorisationViewController~iphone.xib */; };
+		C9D7021A14ED50B100C10006 /* SCHReadingManagerAuthorisationViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528465F4144DB679009DBADD /* SCHReadingManagerAuthorisationViewController~ipad.xib */; };
 		C9D7021B14ED50B100C10006 /* rotation.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CE1451DD6E0094F144 /* rotation.png */; };
 		C9D7021C14ED50B100C10006 /* old-lightning-bolt-3~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D636145579CC0094F144 /* old-lightning-bolt-3~ipad.png */; };
 		C9D7021D14ED50B100C10006 /* old-lightning-bolt-3~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D637145579CC0094F144 /* old-lightning-bolt-3~iphone.png */; };
@@ -4228,7 +4228,7 @@
 		C9D7036B14ED50B100C10006 /* SCHParentalToolsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 527DDC62144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m */; };
 		C9D7036C14ED50B100C10006 /* SCHAccountValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 526760AB144C85AF00F3FE56 /* SCHAccountValidation.m */; };
 		C9D7036D14ED50B100C10006 /* NSURL+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 526760AF144D6A6A00F3FE56 /* NSURL+Extensions.m */; };
-		C9D7036E14ED50B100C10006 /* SCHAccountValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */; };
+		C9D7036E14ED50B100C10006 /* SCHReadingManagerAuthorisationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m */; };
 		C9D7036F14ED50B100C10006 /* SCHHelpVideoManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B18144D69F100D0D265 /* SCHHelpVideoManifestOperation.m */; };
 		C9D7037014ED50B100C10006 /* SCHHelpVideoFileDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B1C144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m */; };
 		C9D7037114ED50B100C10006 /* SCHHelpVideoManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */; };
@@ -5643,10 +5643,10 @@
 		527FA6EA15C7C68F002D0250 /* UNIX2003Remapping.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = UNIX2003Remapping.c; sourceTree = "<group>"; };
 		528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppDictionaryState.h; path = Shared/SCHAppDictionaryState.h; sourceTree = "<group>"; };
 		528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppDictionaryState.m; path = Shared/SCHAppDictionaryState.m; sourceTree = "<group>"; };
-		528465ED144DB5F7009DBADD /* SCHAccountValidationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAccountValidationViewController.h; path = Shared/SCHAccountValidationViewController.h; sourceTree = "<group>"; };
-		528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAccountValidationViewController.m; path = Shared/SCHAccountValidationViewController.m; sourceTree = "<group>"; };
-		528465F1144DB64C009DBADD /* SCHAccountValidationViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHAccountValidationViewController~iphone.xib"; sourceTree = "<group>"; };
-		528465F4144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHAccountValidationViewController~ipad.xib"; path = "iPad/SCHAccountValidationViewController~ipad.xib"; sourceTree = "<group>"; };
+		528465ED144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingManagerAuthorisationViewController.h; path = Shared/SCHReadingManagerAuthorisationViewController.h; sourceTree = "<group>"; };
+		528465EE144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingManagerAuthorisationViewController.m; path = Shared/SCHReadingManagerAuthorisationViewController.m; sourceTree = "<group>"; };
+		528465F1144DB64C009DBADD /* SCHReadingManagerAuthorisationViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHReadingManagerAuthorisationViewController~iphone.xib"; sourceTree = "<group>"; };
+		528465F4144DB679009DBADD /* SCHReadingManagerAuthorisationViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHReadingManagerAuthorisationViewController~ipad.xib"; path = "iPad/SCHReadingManagerAuthorisationViewController~ipad.xib"; sourceTree = "<group>"; };
 		528A2CD912CCDDB00053A343 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		528A2CDA12CCDE070053A343 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Shared/Localizable.strings; sourceTree = "<group>"; };
 		528A2D5E12CDE39C0053A343 /* SCHProfileViewController_Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewController_Shared.h; path = iPhone/SCHProfileViewController_Shared.h; sourceTree = "<group>"; };
@@ -5657,7 +5657,7 @@
 		528C615E13FAA56F00D033F8 /* SCHHelpViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHHelpViewController~ipad.xib"; path = "Shared/SCHHelpViewController~ipad.xib"; sourceTree = "<group>"; };
 		529385B212DF231800045B44 /* SCHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsViewController.h; path = iPhone/SCHSettingsViewController.h; sourceTree = "<group>"; };
 		529385B312DF231800045B44 /* SCHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSettingsViewController.m; path = iPhone/SCHSettingsViewController.m; sourceTree = "<group>"; };
-		529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHSettingsViewController_iPad.xib; path = iPhone/SCHSettingsViewController_iPad.xib; sourceTree = "<group>"; };
+		529385B412DF231800045B44 /* SCHSettingsViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "SCHSettingsViewController~ipad.xib"; path = "iPhone/SCHSettingsViewController~ipad.xib"; sourceTree = "<group>"; };
 		5293868E12DF3A3300045B44 /* AuthenticateSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticateSvc.h; sourceTree = "<group>"; };
 		5293868F12DF3A3300045B44 /* AuthenticateSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticateSvc.m; sourceTree = "<group>"; };
 		5293869212DF3A3300045B44 /* NSDate+ISO8601Parsing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ISO8601Parsing.h"; sourceTree = "<group>"; };
@@ -9407,7 +9407,7 @@
 		C972283E1392B203008605E8 /* Settings Controller */ = {
 			isa = PBXGroup;
 			children = (
-				528465F1144DB64C009DBADD /* SCHAccountValidationViewController~iphone.xib */,
+				528465F1144DB64C009DBADD /* SCHReadingManagerAuthorisationViewController~iphone.xib */,
 				C972283F1392B245008605E8 /* SCHSettingsViewController_iPhone.xib */,
 				28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */,
 				284DE23013D98D8B009FE14E /* SCHDownloadDictionaryViewController~iphone.xib */,
@@ -9422,8 +9422,8 @@
 		C97228421392B27E008605E8 /* Settings Controller */ = {
 			isa = PBXGroup;
 			children = (
-				528465ED144DB5F7009DBADD /* SCHAccountValidationViewController.h */,
-				528465EE144DB5F7009DBADD /* SCHAccountValidationViewController.m */,
+				528465ED144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.h */,
+				528465EE144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m */,
 				28C7416813D8A6F400EEAB36 /* SCHModalPresenterDelegate.h */,
 				C9185122144F207500585C6A /* SCHProfileSetupDelegate.h */,
 				C9185123144F217900585C6A /* SCHSettingsDelegate.h */,
@@ -9449,8 +9449,8 @@
 		C97228431392B28E008605E8 /* Settings Controller */ = {
 			isa = PBXGroup;
 			children = (
-				528465F4144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib */,
-				529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */,
+				528465F4144DB679009DBADD /* SCHReadingManagerAuthorisationViewController~ipad.xib */,
+				529385B412DF231800045B44 /* SCHSettingsViewController~ipad.xib */,
 				28BF26F713D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib */,
 				28D2AA0913D6E80D00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib */,
 				F858319115514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib */,
@@ -10784,7 +10784,7 @@
 				2860E38B111B897F00E27156 /* MainWindow_iPhone.xib in Resources */,
 				528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */,
 				528A2D6212CDE3B10053A343 /* SCHProfileViewController_iPhone.xib in Resources */,
-				529385B612DF231800045B44 /* SCHSettingsViewController_iPad.xib in Resources */,
+				529385B612DF231800045B44 /* SCHSettingsViewController~ipad.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
 				52EF4E6012E6E01C00E374F7 /* SCHLoginViewController~iphone.xib in Resources */,
 				C908D86F133F93FA00661718 /* Icon.png in Resources */,
@@ -11379,8 +11379,8 @@
 				C927973B140FA4AD0091B8B5 /* icon-audio-younger-small-landscape.png in Resources */,
 				C927973D140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png in Resources */,
 				C92797AC1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */,
-				528465F2144DB64D009DBADD /* SCHAccountValidationViewController~iphone.xib in Resources */,
-				528465F5144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib in Resources */,
+				528465F2144DB64D009DBADD /* SCHReadingManagerAuthorisationViewController~iphone.xib in Resources */,
+				528465F5144DB679009DBADD /* SCHReadingManagerAuthorisationViewController~ipad.xib in Resources */,
 				28D6D5D01451DD6E0094F144 /* rotation.png in Resources */,
 				28D6D5D21451DD6E0094F144 /* rotation@2x.png in Resources */,
 				28D6D638145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png in Resources */,
@@ -11570,7 +11570,7 @@
 				5248882A1407990500DA9AFA /* MainWindow_iPhone.xib in Resources */,
 				5248882B1407990500DA9AFA /* Localizable.strings in Resources */,
 				5248882C1407990500DA9AFA /* SCHProfileViewController_iPhone.xib in Resources */,
-				5248882D1407990500DA9AFA /* SCHSettingsViewController_iPad.xib in Resources */,
+				5248882D1407990500DA9AFA /* SCHSettingsViewController~ipad.xib in Resources */,
 				5248882E1407990500DA9AFA /* SCHBookShelfViewController.xib in Resources */,
 				5248882F1407990500DA9AFA /* SCHLoginViewController~iphone.xib in Resources */,
 				524888301407990500DA9AFA /* Icon.png in Resources */,
@@ -12179,8 +12179,8 @@
 				C927973C140FA4AD0091B8B5 /* icon-audio-younger-small-landscape.png in Resources */,
 				C927973E140FA4AD0091B8B5 /* icon-audio-younger-small-landscape@2x.png in Resources */,
 				C92797AD1410C75A0091B8B5 /* Interaction1_Relaxed.mp3 in Resources */,
-				528465F3144DB64D009DBADD /* SCHAccountValidationViewController~iphone.xib in Resources */,
-				528465F6144DB679009DBADD /* SCHAccountValidationViewController~ipad.xib in Resources */,
+				528465F3144DB64D009DBADD /* SCHReadingManagerAuthorisationViewController~iphone.xib in Resources */,
+				528465F6144DB679009DBADD /* SCHReadingManagerAuthorisationViewController~ipad.xib in Resources */,
 				28D6D5D11451DD6E0094F144 /* rotation.png in Resources */,
 				28D6D5D31451DD6E0094F144 /* rotation@2x.png in Resources */,
 				28D6D639145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png in Resources */,
@@ -12333,7 +12333,7 @@
 				A3D3F0B514CDDF31004A56A5 /* MainWindow_iPhone.xib in Resources */,
 				A3D3F0B614CDDF31004A56A5 /* Localizable.strings in Resources */,
 				A3D3F0B714CDDF31004A56A5 /* SCHProfileViewController_iPhone.xib in Resources */,
-				A3D3F0B814CDDF31004A56A5 /* SCHSettingsViewController_iPad.xib in Resources */,
+				A3D3F0B814CDDF31004A56A5 /* SCHSettingsViewController~ipad.xib in Resources */,
 				A3D3F0B914CDDF31004A56A5 /* SCHBookShelfViewController.xib in Resources */,
 				A3D3F0BA14CDDF31004A56A5 /* SCHLoginViewController~iphone.xib in Resources */,
 				A3D3F0BB14CDDF31004A56A5 /* Icon.png in Resources */,
@@ -12756,8 +12756,8 @@
 				A3D3F31014CDDF31004A56A5 /* storyinteraction-wordbird-BalloonPop.png in Resources */,
 				A3D3F31114CDDF31004A56A5 /* icon-audio-younger-small-landscape.png in Resources */,
 				A3D3F31314CDDF31004A56A5 /* Interaction1_Relaxed.mp3 in Resources */,
-				A3D3F31414CDDF31004A56A5 /* SCHAccountValidationViewController~iphone.xib in Resources */,
-				A3D3F31514CDDF31004A56A5 /* SCHAccountValidationViewController~ipad.xib in Resources */,
+				A3D3F31414CDDF31004A56A5 /* SCHReadingManagerAuthorisationViewController~iphone.xib in Resources */,
+				A3D3F31514CDDF31004A56A5 /* SCHReadingManagerAuthorisationViewController~ipad.xib in Resources */,
 				A3D3F31614CDDF31004A56A5 /* rotation.png in Resources */,
 				A3D3F31914CDDF31004A56A5 /* old-lightning-bolt-3~ipad.png in Resources */,
 				A3D3F31A14CDDF31004A56A5 /* old-lightning-bolt-3~iphone.png in Resources */,
@@ -12898,7 +12898,7 @@
 				C9D7006714ED50B100C10006 /* MainWindow_iPhone.xib in Resources */,
 				C9D7006814ED50B100C10006 /* Localizable.strings in Resources */,
 				C9D7006914ED50B100C10006 /* SCHProfileViewController_iPhone.xib in Resources */,
-				C9D7006A14ED50B100C10006 /* SCHSettingsViewController_iPad.xib in Resources */,
+				C9D7006A14ED50B100C10006 /* SCHSettingsViewController~ipad.xib in Resources */,
 				C9D7006B14ED50B100C10006 /* SCHBookShelfViewController.xib in Resources */,
 				C9D7006C14ED50B100C10006 /* SCHLoginViewController~iphone.xib in Resources */,
 				C9D7006D14ED50B100C10006 /* Icon.png in Resources */,
@@ -13321,8 +13321,8 @@
 				C9D7021614ED50B100C10006 /* storyinteraction-wordbird-BalloonPop.png in Resources */,
 				C9D7021714ED50B100C10006 /* icon-audio-younger-small-landscape.png in Resources */,
 				C9D7021814ED50B100C10006 /* Interaction1_Relaxed.mp3 in Resources */,
-				C9D7021914ED50B100C10006 /* SCHAccountValidationViewController~iphone.xib in Resources */,
-				C9D7021A14ED50B100C10006 /* SCHAccountValidationViewController~ipad.xib in Resources */,
+				C9D7021914ED50B100C10006 /* SCHReadingManagerAuthorisationViewController~iphone.xib in Resources */,
+				C9D7021A14ED50B100C10006 /* SCHReadingManagerAuthorisationViewController~ipad.xib in Resources */,
 				C9D7021B14ED50B100C10006 /* rotation.png in Resources */,
 				C9D7021C14ED50B100C10006 /* old-lightning-bolt-3~ipad.png in Resources */,
 				C9D7021D14ED50B100C10006 /* old-lightning-bolt-3~iphone.png in Resources */,
@@ -13776,7 +13776,7 @@
 				527DDC64144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m in Sources */,
 				526760AC144C85AF00F3FE56 /* SCHAccountValidation.m in Sources */,
 				526760B0144D6A6B00F3FE56 /* NSURL+Extensions.m in Sources */,
-				528465EF144DB5F7009DBADD /* SCHAccountValidationViewController.m in Sources */,
+				528465EF144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m in Sources */,
 				F8615B19144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */,
 				F8615B1D144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
 				F8615B21144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */,
@@ -14035,7 +14035,7 @@
 				C96C177E15C7F9DD002EBEBB /* SCHAboutViewController.m in Sources */,
 				C96C177F15C7F9DD002EBEBB /* SCHPrivacyPolicyViewController.m in Sources */,
 				C96C178015C7F9DD002EBEBB /* SCHBaseTextViewController.m in Sources */,
-				C96C178115C7F9DD002EBEBB /* SCHAccountValidationViewController.m in Sources */,
+				C96C178115C7F9DD002EBEBB /* SCHReadingManagerAuthorisationViewController.m in Sources */,
 				C96C178215C7F9DD002EBEBB /* SCHBaseModalViewController.m in Sources */,
 				C96C178315C7F9DD002EBEBB /* SCHSettingsViewController.m in Sources */,
 				C96C178415C7F9DD002EBEBB /* SCHSetupBookshelvesViewController.m in Sources */,
@@ -14629,7 +14629,7 @@
 				527DDC65144C6A0D004D4FE3 /* SCHParentalToolsWebViewController.m in Sources */,
 				526760AD144C85AF00F3FE56 /* SCHAccountValidation.m in Sources */,
 				526760B1144D6A6B00F3FE56 /* NSURL+Extensions.m in Sources */,
-				528465F0144DB5F7009DBADD /* SCHAccountValidationViewController.m in Sources */,
+				528465F0144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m in Sources */,
 				F8615B1A144D69F100D0D265 /* SCHHelpVideoManifestOperation.m in Sources */,
 				F8615B1E144D6E7000D0D265 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
 				F8615B22144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */,
@@ -15052,7 +15052,7 @@
 				A3D3F46A14CDDF31004A56A5 /* SCHParentalToolsWebViewController.m in Sources */,
 				A3D3F46B14CDDF31004A56A5 /* SCHAccountValidation.m in Sources */,
 				A3D3F46C14CDDF31004A56A5 /* NSURL+Extensions.m in Sources */,
-				A3D3F46D14CDDF31004A56A5 /* SCHAccountValidationViewController.m in Sources */,
+				A3D3F46D14CDDF31004A56A5 /* SCHReadingManagerAuthorisationViewController.m in Sources */,
 				A3D3F46E14CDDF31004A56A5 /* SCHHelpVideoManifestOperation.m in Sources */,
 				A3D3F46F14CDDF31004A56A5 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
 				A3D3F47014CDDF31004A56A5 /* SCHHelpVideoManifest.m in Sources */,
@@ -15475,7 +15475,7 @@
 				C9D7036B14ED50B100C10006 /* SCHParentalToolsWebViewController.m in Sources */,
 				C9D7036C14ED50B100C10006 /* SCHAccountValidation.m in Sources */,
 				C9D7036D14ED50B100C10006 /* NSURL+Extensions.m in Sources */,
-				C9D7036E14ED50B100C10006 /* SCHAccountValidationViewController.m in Sources */,
+				C9D7036E14ED50B100C10006 /* SCHReadingManagerAuthorisationViewController.m in Sources */,
 				C9D7036F14ED50B100C10006 /* SCHHelpVideoManifestOperation.m in Sources */,
 				C9D7037014ED50B100C10006 /* SCHHelpVideoFileDownloadOperation.m in Sources */,
 				C9D7037114ED50B100C10006 /* SCHHelpVideoManifest.m in Sources */,

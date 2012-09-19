@@ -26,6 +26,7 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHCOPPAManager.h"
 #import "SCHRecommendationManager.h"
+#import "USAdditions.h"
 
 // Constants
 NSString * const SCHAuthenticationManagerReceivedServerDeregistrationNotification = @"SCHAuthenticationManagerReceivedServerDeregistrationNotification";
@@ -410,10 +411,6 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         [appln addObject:@"ns"];   
         
         NSString *token = (pToken == nil) ? self.accountValidation.pToken : pToken;
-        NSString *escapedToken = [token urlEncodeUsingEncoding:NSUTF8StringEncoding];
-        
-        NSString *userKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey];
-        NSString *escapedKey = [userKey urlEncodeUsingEncoding:NSUTF8StringEncoding];
         
         NSString *application = [appln componentsJoinedByString:@"|"];
         NSString *escapedApplication = [application urlEncodeUsingEncoding:NSUTF8StringEncoding];
@@ -426,14 +423,37 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
             webParentToolsServer = WEB_PARENT_TOOLS_SERVER_PHONE;
         }
         
+#if USE_CODEANDTHEORY
+        NSData *tokenData = [token dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *base64Token = [tokenData base64Encoding];
+        
+        NSString *mobileIndicator = @"";
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            mobileIndicator = @"&mobile=iOS";
+        }
+        
+        NSString *escapedURL = [NSString stringWithFormat:@"%@?token=%@&appln=%@%@",
+                                webParentToolsServer,
+                                base64Token, 
+                                escapedApplication,
+                                mobileIndicator];
+        
+#else
+        NSString *escapedToken = [token urlEncodeUsingEncoding:NSUTF8StringEncoding];
+        NSString *userKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey];
+        NSString *escapedKey = [userKey urlEncodeUsingEncoding:NSUTF8StringEncoding];
+
         NSString *escapedURL = [NSString stringWithFormat:@"%@?tk=%@&appln=%@&spsId=%@",
                                 webParentToolsServer,
-                                escapedToken, 
-                                escapedApplication, 
+                                escapedToken,
+                                escapedApplication,
                                 escapedKey];
-        
+#endif
         ret = [NSURL URLWithString:escapedURL];
     }
+    
+    NSLog(@"Accessing WPT URL: %@", ret);
     
     return ret;
 }

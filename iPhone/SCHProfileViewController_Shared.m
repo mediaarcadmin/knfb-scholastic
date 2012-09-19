@@ -151,7 +151,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     [self.updatesBubble addGestureRecognizer:tap];
     [tap release];
  
-    self.settingsViewController.settingsDelegate = self;
+    //self.settingsViewController.settingsDelegate = self;
     self.settingsViewController.managedObjectContext = self.managedObjectContext; 
 }  
 
@@ -601,6 +601,7 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (void)pushSettingsControllerAnimated:(BOOL)animated
 {
+#if 0
     NSArray *viewControllers = [self.settingsViewController currentSettingsViewControllers];
     [self.modalNavigationController setViewControllers:viewControllers];
     [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
@@ -608,6 +609,7 @@ didSelectButtonAnimated:(BOOL)animated
     [self.modalNavigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
     [self presentModalViewController:self.modalNavigationController animated:animated];
     [self showUpdatesBubble:NO];
+#endif
 }
 
 #pragma mark - SCHSettingsDelegate

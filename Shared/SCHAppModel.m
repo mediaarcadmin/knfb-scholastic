@@ -45,7 +45,7 @@ typedef enum {
 - (void)dealloc
 {
     appController = nil;
-    
+
     [super dealloc];
 }
 

@@ -7,22 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHBaseModalViewController.h"
+#import "SCHAppController.h"
 
-@protocol SCHSetupDelegete;
+@interface SCHReadingManagerAuthorisationViewController : UIViewController {}
 
-@interface SCHAccountValidationViewController : SCHBaseModalViewController <UITextFieldDelegate> {}
-
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *promptLabel;
+@property (nonatomic, assign) id <SCHAppController> appController;
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
 @property (nonatomic, retain) IBOutlet UITextField *usernameField;
 @property (nonatomic, retain) IBOutlet UITextField *passwordField;
 @property (nonatomic, retain) IBOutlet UIButton *validateButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
-@property (nonatomic, retain) IBOutlet UIScrollView *scrollView; // iPhone only
-
-@property (nonatomic, assign) BOOL validatedControllerShouldHideCloseButton;
 
 - (IBAction)validate:(id)sender;
 

@@ -11,7 +11,7 @@
 
 #import "SCHAuthenticationManager.h"
 #import "NSURL+Extensions.h"
-#import "SCHAccountValidationViewController.h"
+#import "SCHReadingManagerAuthorisationViewController.h"
 #import "SCHSyncManager.h"
 #import "LambdaAlert.h"
 

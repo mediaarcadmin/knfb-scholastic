@@ -16,6 +16,7 @@
 
 - (void)presentProfiles;
 - (void)presentProfilesSetup;
+- (void)presentReadingManager;
 - (void)presentSamplesWithWelcome:(BOOL)welcome;
 - (void)presentLogin;
 

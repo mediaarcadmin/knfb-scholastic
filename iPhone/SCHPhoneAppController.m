@@ -27,7 +27,7 @@
 #import "SCHAppModel.h"
 #import "SCHParentalToolsWebViewController.h"
 #import "SCHScholasticAuthenticationWebService.h"
-#import "SCHAccountValidationViewController.h"
+#import "SCHReadingManagerAuthorisationViewController.h"
 #import "SCHSetupBookshelvesViewController.h"
 
 @interface SCHPhoneAppController () <SCHProfileSetupDelegate>
@@ -115,6 +115,11 @@
 }
 
 - (void)presentProfilesSetup
+{
+    [self presentReadingManager];
+}
+
+- (void)presentReadingManager
 {    
     if ([self isCurrentlyModal]) {
         // Check if dictionary needs set up
@@ -412,26 +417,26 @@
 
 - (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated
 {    
-    SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
-    setupBookshelves.profileSetupDelegate = self;
-    
-    SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
-    accountValidationViewController.profileSetupDelegate = self;        
-    accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
-    accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
-    
-    UIViewController *login = [self loginViewController];
-    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, setupBookshelves, accountValidationViewController, nil];
-    
-    if ([self isCurrentlyModal]) {
-        [self.modalContainerView setViewControllers:controllers animated:animated];
-    } else {
-        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
-        [self.modalContainerView setViewControllers:controllers animated:NO];
-        [self presentModalViewController:self.modalContainerView animated:animated];
-    } 
-    
-    [self waitingForPassword];
+//    SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
+//    setupBookshelves.profileSetupDelegate = self;
+//    
+//    SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+//    accountValidationViewController.profileSetupDelegate = self;        
+//    accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+//    accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
+//    
+//    UIViewController *login = [self loginViewController];
+//    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, setupBookshelves, accountValidationViewController, nil];
+//    
+//    if ([self isCurrentlyModal]) {
+//        [self.modalContainerView setViewControllers:controllers animated:animated];
+//    } else {
+//        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
+//        [self.modalContainerView setViewControllers:controllers animated:NO];
+//        [self presentModalViewController:self.modalContainerView animated:animated];
+//    } 
+//    
+//    [self waitingForPassword];
 }
 
 - (void)dismissModalWebParentToolsAnimated:(BOOL)animated

@@ -10,7 +10,7 @@
 #import "SCHSettingsDelegate.h"
 #import "SCHParentalToolsWebViewController.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHAccountValidationViewController.h"
+#import "SCHReadingManagerAuthorisationViewController.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHDeregisterDeviceViewController.h"
 #import "LambdaAlert.h"
@@ -106,9 +106,9 @@
                                                               modalStyle:UIModalPresentationFullScreen 
                                                    shouldHideCloseButton:YES];
     } else {
-        SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
-        accountValidationViewController.profileSetupDelegate = self.profileSetupDelegate;        
-        accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+        SCHReadingManagerAuthorisationViewController *accountValidationViewController = [[[SCHReadingManagerAuthorisationViewController alloc] init] autorelease];
+        //accountValidationViewController.profileSetupDelegate = self.profileSetupDelegate;
+        //accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
         accountValidationViewController.title = self.title;
         [self.navigationController pushViewController:accountValidationViewController animated:YES];        
     }    

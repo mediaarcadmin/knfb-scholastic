@@ -37,7 +37,7 @@
 #import "SCHStoriaLoginViewController.h"
 #import "BITOperationWithBlocks.h"
 #import "SCHVersionDownloadManager.h"
-#import "SCHAccountValidationViewController.h"
+#import "SCHReadingManagerAuthorisationViewController.h"
 #import "NSString+EmailValidation.h"
 #import "BITAPIError.h"
 
@@ -806,10 +806,10 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     
     if (showValidation) {
         if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHAccountValidationViewController")]) {
-            SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
-            accountValidationViewController.profileSetupDelegate = self;        
-            accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
-            accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
+            SCHReadingManagerAuthorisationViewController *accountValidationViewController = [[[SCHReadingManagerAuthorisationViewController alloc] init] autorelease];
+            //accountValidationViewController.profileSetupDelegate = self;
+            //accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+            //accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
             [controllers addObject:accountValidationViewController];
         }
     }

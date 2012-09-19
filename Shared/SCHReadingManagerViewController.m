@@ -9,7 +9,7 @@
 #import "SCHReadingManagerViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "NSURL+Extensions.h"
-#import "SCHAccountValidationViewController.h"
+#import "SCHReadingManagerAuthorisationViewController.h"
 #import "SCHSyncManager.h"
 #import "LambdaAlert.h"
 
@@ -57,12 +57,6 @@
         [close setTitle:@"Client Close" forState:UIControlStateNormal];
         [close setFrame:CGRectMake(CGRectGetWidth(self.view.bounds) - 137, 7, 130, 30)];
         [self.view addSubview:close];
-                
-        // register for going into the background
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didEnterBackground:)
-                                                     name:UIApplicationDidEnterBackgroundNotification
-                                                   object:nil];
         
         [self.modalPresenterDelegate waitingForWebParentToolsToComplete];
     } else {
@@ -100,13 +94,6 @@
 - (void)back:(id)sender
 {
     [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES];
-}
-
-#pragma mark - Notification methods
-
-- (void)didEnterBackground:(NSNotification *)notification
-{
-    [self.modalPresenterDelegate popModalWebParentToolsToValidationAnimated:NO];
 }
 
 #pragma mark - UIWebView delegate methods
