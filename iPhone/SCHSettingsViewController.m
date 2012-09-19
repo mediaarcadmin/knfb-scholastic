@@ -833,8 +833,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 #pragma mark - UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [aTableView deselectRowAtIndexPath:indexPath animated:NO];
     SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
     [self displaySettingsPanel:panel];
 }
@@ -913,6 +914,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
     
     [self addContentSubview:self.contentViewController.view];
+}
+
+- (IBAction)close:(id)sender
+{
+    [self.appController presentProfiles];
 }
 
 - (void)addContentSubview:(UIView *)newContentView

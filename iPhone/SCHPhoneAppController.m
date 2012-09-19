@@ -119,6 +119,11 @@
     [self presentReadingManager];
 }
 
+- (void)presentSettings
+{
+    [self presentReadingManager];
+}
+
 - (void)presentReadingManager
 {    
     if ([self isCurrentlyModal]) {
@@ -140,14 +145,14 @@
     }
 }
 
-- (void)presentSamplesWithWelcome:(BOOL)welcome
+- (void)presentTour
 {    
     if ([self isCurrentlyModal]) {
         // Check if dictionary needs set up
         if ([self dictionaryDownloadRequired]) {
             SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
             downloadDictionary.completion = ^{
-                [self pushSamplesAnimated:NO showWelcome:welcome];
+                [self pushSamplesAnimated:NO showWelcome:YES];
                 [self dismissModalViewControllerAnimated:YES];
             
                 self.modalContainerView = nil;
@@ -156,11 +161,11 @@
             [self.modalContainerView pushViewController:downloadDictionary animated:YES];        
             [downloadDictionary release];
         } else {
-            [self pushSamplesAnimated:NO showWelcome:welcome];
+            [self pushSamplesAnimated:NO showWelcome:YES];
             [self dismissModalViewControllerAnimated:YES];
         }
     } else {
-        [self pushSamplesAnimated:NO showWelcome:welcome];
+        [self pushSamplesAnimated:NO showWelcome:YES];
     }
 }
 

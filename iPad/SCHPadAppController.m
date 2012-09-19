@@ -146,6 +146,12 @@
     [self presentReadingManager];
 }
 
+- (void)presentSettings
+{
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
+    [self pushSettingsAnimated:shouldAnimate];
+}
+
 - (void)presentReadingManager
 {
     if (self.undismissableAlert) {
@@ -157,7 +163,7 @@
     [self pushReadingManagerAnimated:shouldAnimate];
 }
 
-- (void)presentSamplesWithWelcome:(BOOL)welcome
+- (void)presentTour
 {
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
     [self pushTourAnimated:shouldAnimate];
@@ -241,6 +247,13 @@
 - (void)failedSyncWithError:(NSError *)error
 {
     
+}
+
+- (void)pushSettingsAnimated:(BOOL)animated
+{
+    self.settingsViewController.settingsDisplayMask = kSCHSettingsPanelAll;
+    [self.settingsViewController displaySettingsPanel:kSCHSettingsPanelReadingManager];
+    [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, nil] animated:animated];
 }
 
 - (void)pushReadingManagerAnimated:(BOOL)animated
@@ -461,6 +474,7 @@
         AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
         profileViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
         profileViewController.profileSetupDelegate = self;
+        profileViewController.appController = self;
     }
     
     return profileViewController;

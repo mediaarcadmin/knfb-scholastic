@@ -82,7 +82,7 @@ typedef enum {
             [self.appController presentProfilesSetup];
         }
     } else if ([appStateManager isSampleStore]) {
-        [self.appController presentSamplesWithWelcome:NO];
+        [self.appController presentTour];
     } else {
         [self.appController presentLogin];
     }
@@ -104,7 +104,7 @@ typedef enum {
     [importer importSampleBooksFromRemoteManifest:[NSURL URLWithString:kSCHSampleBooksRemoteManifestURL] 
                                                                    localManifest:localManifestURL
                                                                     successBlock:^{
-                                                                        [self.appController presentSamplesWithWelcome:YES];
+                                                                        [self.appController presentTour];
                                                                     }
                                                                     failureBlock:^(NSString * failureReason){
                                                                         NSError *error = [NSError errorWithDomain:kSCHSamplesErrorDomain code:kSCHSamplesUnspecifiedError userInfo:[NSDictionary dictionaryWithObject:failureReason forKey:@"failureReason"]];

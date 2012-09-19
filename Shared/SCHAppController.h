@@ -13,12 +13,12 @@
 @required
 
 // Presentation Methods
-
+- (void)presentLogin;
+- (void)presentTour;
 - (void)presentProfiles;
 - (void)presentProfilesSetup;
 - (void)presentReadingManager;
-- (void)presentSamplesWithWelcome:(BOOL)welcome;
-- (void)presentLogin;
+- (void)presentSettings;
 
 // Failure Methods
 

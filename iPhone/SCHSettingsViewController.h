@@ -36,5 +36,6 @@ typedef enum {
 @property (nonatomic, assign) NSUInteger settingsDisplayMask; // defaults to kSCHSettingsPanelAll
 
 - (void)displaySettingsPanel:(SCHSettingsPanel)panel;
+- (IBAction)close:(id)sender;
 
 @end

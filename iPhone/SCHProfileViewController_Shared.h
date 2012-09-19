@@ -11,6 +11,7 @@
 #import "SCHProfileViewCell.h"
 #import "SCHSettingsDelegate.h"
 #import "SCHProfileSetupDelegate.h"
+#import "SCHAppController.h"
 
 @class SCHSettingsViewController;
 @class SCHProfileItem;
@@ -29,6 +30,7 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate;
+@property (nonatomic, assign) id<SCHAppController> appController;
 
 - (NSArray *)profileItems;
 - (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem showWelcome:(BOOL)welcome;
