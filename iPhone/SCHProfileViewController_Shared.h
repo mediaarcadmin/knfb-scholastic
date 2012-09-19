@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "SCHProfileViewCell.h"
-#import "SCHSettingsDelegate.h"
 #import "SCHProfileSetupDelegate.h"
 #import "SCHAppController.h"
 
@@ -17,7 +16,7 @@
 @class SCHProfileItem;
 @class SCHBookShelfViewController;
 
-@interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate, SCHSettingsDelegate> {}
+@interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;

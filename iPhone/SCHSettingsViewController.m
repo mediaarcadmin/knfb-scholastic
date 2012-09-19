@@ -8,9 +8,9 @@
 
 #import "SCHSettingsViewController.h"
 
-#import "SCHAboutViewController.h"
-#import "SCHPrivacyPolicyViewController.h"
+#import "SCHSettingsViewController.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHDownloadDictionaryViewController.h"
 #import "SCHRemoveDictionaryViewController.h"
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHCheckbox.h"
@@ -30,7 +30,7 @@
 #import "LambdaAlert.h"
 #import "SCHReadingManagerAuthorisationViewController.h"
 #import "SCHVersionDownloadManager.h"
-#import "SCHDownloadDictionaryFromSettingsViewController.h"
+#import "SCHSupportViewController.h"
 
 @interface UIView(Debug)
 - (NSString *)recursiveDescription;
@@ -912,6 +912,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         case kSCHSettingsPanelDeregisterDevice: {
             SCHDeregisterDeviceViewController *controller = [[[SCHDeregisterDeviceViewController alloc] init] autorelease];
             controller.appController = self.appController;
+            self.contentViewController = controller;
+        } break;
+        case kSCHSettingsPanelSupport: {
+            SCHSupportViewController *controller = [[[SCHSupportViewController alloc] init] autorelease];
             self.contentViewController = controller;
         } break;
         case kSCHSettingsPanelEbookUpdates: {

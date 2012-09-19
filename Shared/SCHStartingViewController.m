@@ -10,7 +10,6 @@
 
 #import "SCHProfileViewController_iPad.h"
 #import "SCHProfileViewController_iPhone.h"
-#import "SCHSetupBookshelvesViewController.h"
 #import "SCHDownloadDictionaryViewController.h"
 #import "SCHLoginPasswordViewController.h"
 #import "SCHCustomNavigationBar.h"
@@ -31,7 +30,6 @@
 #import "SCHDrmSession.h"
 #import "SCHSampleBooksImporter.h"
 #import "SCHAccountValidation.h"
-#import "SCHParentalToolsWebViewController.h"
 #import "Reachability.h"
 #import "BITModalSheetController.h"
 #import "SCHStoriaLoginViewController.h"
@@ -369,101 +367,101 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide 
 {
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:NO];
-    }
-    
-    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
-    parentalToolsWebViewController.title = title;
-    parentalToolsWebViewController.modalPresenterDelegate = self;
-    parentalToolsWebViewController.pToken = token;
-    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        
-        BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:parentalToolsWebViewController];
-        aPopoverController.contentSize = CGSizeMake(540, 620);
-        aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-        self.webParentToolsPopoverController = aPopoverController;
-        [aPopoverController release];
-        
-        __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
-        __block UIViewController *weakSelf = self;
-        __block SCHParentalToolsWebViewController *weakParentTools = parentalToolsWebViewController;
-        
-        [self.webParentToolsPopoverController presentSheetInViewController:[self profileViewController] animated:NO completion:^{
-            weakParentTools.textView.alpha = 0;
-            
-            CGSize expandedSize;
-            
-            if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
-                expandedSize = CGSizeMake(700, 530);
-            } else {
-                expandedSize = CGSizeMake(964, 530);
-            }
-            
-            [weakPopover setContentSize:expandedSize animated:YES completion:^{
-                weakParentTools.textView.alpha = 1;
-            }];
-        }];    
-    } else {
-        [self presentModalViewController:parentalToolsWebViewController animated:YES];        
-    }
-    
-    [CATransaction commit];
+//    [CATransaction begin];
+//    [CATransaction setDisableActions:YES];
+//    
+//    if (self.modalViewController) {
+//        [self dismissModalViewControllerAnimated:NO];
+//    }
+//    
+//    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+//    parentalToolsWebViewController.title = title;
+//    parentalToolsWebViewController.modalPresenterDelegate = self;
+//    parentalToolsWebViewController.pToken = token;
+//    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
+//    
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//        
+//        BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:parentalToolsWebViewController];
+//        aPopoverController.contentSize = CGSizeMake(540, 620);
+//        aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+//        self.webParentToolsPopoverController = aPopoverController;
+//        [aPopoverController release];
+//        
+//        __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
+//        __block UIViewController *weakSelf = self;
+//        __block SCHParentalToolsWebViewController *weakParentTools = parentalToolsWebViewController;
+//        
+//        [self.webParentToolsPopoverController presentSheetInViewController:[self profileViewController] animated:NO completion:^{
+//            weakParentTools.textView.alpha = 0;
+//            
+//            CGSize expandedSize;
+//            
+//            if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
+//                expandedSize = CGSizeMake(700, 530);
+//            } else {
+//                expandedSize = CGSizeMake(964, 530);
+//            }
+//            
+//            [weakPopover setContentSize:expandedSize animated:YES completion:^{
+//                weakParentTools.textView.alpha = 1;
+//            }];
+//        }];    
+//    } else {
+//        [self presentModalViewController:parentalToolsWebViewController animated:YES];        
+//    }
+//    
+//    [CATransaction commit];
 }
 
 - (void)dismissModalWebParentToolsAnimated:(BOOL)animated withSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
 {
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:NO];
-    }
-    
-    SCHStartingViewController *weakSelf = self;
-    
-    dispatch_block_t completion = ^{
-        [weakSelf setWebParentToolsPopoverController:nil];
-        
-        if (showValidation) {
-            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
-        } else {
-            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
-        }
-        
-        [weakSelf runSetupProfileSequenceAnimated:NO pushProfile:NO showValidation:showValidation];
-        
-        if (shouldSync) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
-                weakSelf.checkProfilesAlert = [[[LambdaAlert alloc]
-                                                initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
-                                                message:@"\n"] autorelease];
-                [weakSelf.checkProfilesAlert setSpinnerHidden:NO];
-                [weakSelf.checkProfilesAlert show];
-            });
-        }
-    };
-    
-    if ([self.webParentToolsPopoverController isModalSheetVisible]) {
-        if (animated) {
-            [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
-                [CATransaction begin];
-                [CATransaction setDisableActions:YES];
-                [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
-                    completion();
-                    [CATransaction commit];
-                }];
-            }];
-        } else {
-            [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
-            completion();
-        }
-    } else {
-        completion();
-    }    
+//    if (self.modalViewController) {
+//        [self dismissModalViewControllerAnimated:NO];
+//    }
+//    
+//    SCHStartingViewController *weakSelf = self;
+//    
+//    dispatch_block_t completion = ^{
+//        [weakSelf setWebParentToolsPopoverController:nil];
+//        
+//        if (showValidation) {
+//            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+//        } else {
+//            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+//        }
+//        
+//        [weakSelf runSetupProfileSequenceAnimated:NO pushProfile:NO showValidation:showValidation];
+//        
+//        if (shouldSync) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+//                weakSelf.checkProfilesAlert = [[[LambdaAlert alloc]
+//                                                initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+//                                                message:@"\n"] autorelease];
+//                [weakSelf.checkProfilesAlert setSpinnerHidden:NO];
+//                [weakSelf.checkProfilesAlert show];
+//            });
+//        }
+//    };
+//    
+//    if ([self.webParentToolsPopoverController isModalSheetVisible]) {
+//        if (animated) {
+//            [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
+//                [CATransaction begin];
+//                [CATransaction setDisableActions:YES];
+//                [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
+//                    completion();
+//                    [CATransaction commit];
+//                }];
+//            }];
+//        } else {
+//            [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
+//            completion();
+//        }
+//    } else {
+//        completion();
+//    }    
 }
 
 - (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated
@@ -799,9 +797,9 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             controllers = [NSMutableArray array];
         }
 
-        SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
-        setupBookshelves.profileSetupDelegate = self;
-        [controllers addObject:setupBookshelves];
+//        SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
+//        setupBookshelves.profileSetupDelegate = self;
+//        [controllers addObject:setupBookshelves];
     }
     
     if (showValidation) {

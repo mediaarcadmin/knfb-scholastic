@@ -8,12 +8,10 @@
 
 #import "SCHReadingManagerAuthorisationViewController.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHSettingsDelegate.h"
 #import "LambdaAlert.h"
 #import "Reachability.h"
 #import "SCHAccountValidation.h"
 #import "SCHAccountVerifier.h"
-#import "SCHParentalToolsWebViewController.h"
 #import "SCHUserDefaults.h"
 #import "SCHSyncManager.h"
 #import "SCHVersionDownloadManager.h"

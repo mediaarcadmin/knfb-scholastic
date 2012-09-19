@@ -27,10 +27,8 @@
 #import "SCHSyncManager.h"
 #import "SCHDrmSession.h"
 #import "SCHAppModel.h"
-#import "SCHParentalToolsWebViewController.h"
 #import "SCHScholasticAuthenticationWebService.h"
 #import "SCHReadingManagerAuthorisationViewController.h"
-#import "SCHSetupBookshelvesViewController.h"
 #import "SCHTourStartViewController.h"
 #import "SCHReadingManagerViewController.h"
 #import "SCHSettingsViewController.h"
@@ -376,22 +374,22 @@
                                    modalStyle:(UIModalPresentationStyle)style
                         shouldHideCloseButton:(BOOL)shouldHide
 {
-    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
-    parentalToolsWebViewController.title = title;
-    parentalToolsWebViewController.modalPresenterDelegate = self;
-    parentalToolsWebViewController.pToken = token;
-    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
-    
-    UIViewController *login = [self loginViewController];
-    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, parentalToolsWebViewController, nil];
-    
-    if ([self isCurrentlyModal]) {
-        [self.modalContainerView setViewControllers:controllers animated:YES];
-    } else {
-        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
-        [self.modalContainerView setViewControllers:controllers animated:NO];
-        [self presentModalViewController:self.modalContainerView animated:YES];
-    }
+//    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+//    parentalToolsWebViewController.title = title;
+//    parentalToolsWebViewController.modalPresenterDelegate = self;
+//    parentalToolsWebViewController.pToken = token;
+//    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
+//    
+//    UIViewController *login = [self loginViewController];
+//    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, parentalToolsWebViewController, nil];
+//    
+//    if ([self isCurrentlyModal]) {
+//        [self.modalContainerView setViewControllers:controllers animated:YES];
+//    } else {
+//        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
+//        [self.modalContainerView setViewControllers:controllers animated:NO];
+//        [self presentModalViewController:self.modalContainerView animated:YES];
+//    }
 }
 
 - (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated

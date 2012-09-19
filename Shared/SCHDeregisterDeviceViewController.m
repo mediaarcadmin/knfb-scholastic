@@ -8,7 +8,6 @@
 
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHSettingsDelegate.h"
 #import "LambdaAlert.h"
 #import "SCHUnderlinedButton.h"
 #import "Reachability.h"

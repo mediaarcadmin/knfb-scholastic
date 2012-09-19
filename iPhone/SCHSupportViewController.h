@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHBaseTextViewController.h"
 
-@interface SCHAboutViewController : SCHBaseTextViewController {}
+@interface SCHSupportViewController : UIViewController {}
+
+@property (nonatomic, retain) IBOutlet UIWebView *webView;
 
 @end

@@ -19,12 +19,10 @@
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHSyncManager.h"
-#import "SCHParentalToolsWebViewController.h"
 #import "LambdaAlert.h"
 #import "Reachability.h"
 #import "SCHProfileSyncComponent.h"
 #import "BITModalSheetController.h"
-#import "SCHNavigationControllerForModalForm.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
@@ -33,7 +31,6 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, retain) BITModalSheetController *webParentToolsPopoverController;
-@property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (void)checkForBookUpdates;
@@ -64,7 +61,6 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 @synthesize updatesBubble;
 @synthesize profileSetupDelegate;
 @synthesize webParentToolsPopoverController;
-@synthesize parentalToolsWebViewController;
 @synthesize simultaneousTapCount;
 @synthesize appController;
 
@@ -106,7 +102,6 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
         [webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
     }
     [webParentToolsPopoverController release], webParentToolsPopoverController = nil;
-    [parentalToolsWebViewController release], parentalToolsWebViewController = nil;
 }
 
 - (void)dealloc 
@@ -186,8 +181,8 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 - (UINavigationController *)modalNavigationController
 {
     if (!modalNavigationController) {
-        modalNavigationController = [[SCHNavigationControllerForModalForm alloc] init];
-        modalNavigationController.navigationBarHidden = YES;
+        //modalNavigationController = [[SCHNavigationControllerForModalForm alloc] init];
+        //modalNavigationController.navigationBarHidden = YES;
     }
     
     return modalNavigationController;
