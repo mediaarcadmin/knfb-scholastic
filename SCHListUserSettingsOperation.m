@@ -12,6 +12,7 @@
 #import "SCHSettingItem.h"
 #import "SCHSettingsSyncComponent.h"
 #import "BITAPIError.h"
+#import "SCHMakeNullNil.h"
 
 @interface SCHListUserSettingsOperation ()
 
@@ -64,8 +65,8 @@
             SCHSettingItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHSettingItem 
                                                                                 inManagedObjectContext:self.backgroundThreadManagedObjectContext];
             
-            newUserSettingsItem.SettingName = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingName]];
-            newUserSettingsItem.SettingValue = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue]];
+            newUserSettingsItem.SettingName = makeNullNil([setting objectForKey:kSCHLibreAccessWebServiceSettingName]);
+            newUserSettingsItem.SettingValue = makeNullNil([setting objectForKey:kSCHLibreAccessWebServiceSettingValue]);
         }
         
         [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];

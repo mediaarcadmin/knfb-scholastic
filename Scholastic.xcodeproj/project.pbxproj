@@ -1429,6 +1429,9 @@
 		5279E09315176481000D7D8D /* SCHAppRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5279E09115176481000D7D8D /* SCHAppRecommendationItem.m */; };
 		5279E09415176481000D7D8D /* SCHAppRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5279E09115176481000D7D8D /* SCHAppRecommendationItem.m */; };
 		5279E09515176481000D7D8D /* SCHAppRecommendationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5279E09115176481000D7D8D /* SCHAppRecommendationItem.m */; };
+		527ABDF51607708600DE2893 /* SCHMakeNullNilTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 527ABDF41607708600DE2893 /* SCHMakeNullNilTests.m */; };
+		527ABDF6160771B200DE2893 /* SCHMakeNullNil.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7894815F5FC75003B291C /* SCHMakeNullNil.m */; };
+		527ABDF7160771C600DE2893 /* SCHTourStartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F888C3FB16071E6300256F60 /* SCHTourStartViewController.m */; };
 		527BBAE013A011D4000B407C /* SCHStoryInteractionControllerImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */; };
 		527BBAE213A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527BBADF13A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib */; };
 		527BBAE513A0186D000B407C /* SCHStoryInteractionImage_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527BBAE413A0186D000B407C /* SCHStoryInteractionImage_iPad.xib */; };
@@ -4501,6 +4504,50 @@
 		F839EB3B15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
 		F839EB3C15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
 		F839EB3D15C813F7000F452E /* storyinteraction-younger-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */; };
+		F83F3D531609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F83F3D511609CF9F00DE35F0 /* SCHTourStepsViewController.m */; };
+		F83F3D541609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F83F3D511609CF9F00DE35F0 /* SCHTourStepsViewController.m */; };
+		F83F3D551609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F83F3D511609CF9F00DE35F0 /* SCHTourStepsViewController.m */; };
+		F83F3D561609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F83F3D511609CF9F00DE35F0 /* SCHTourStepsViewController.m */; };
+		F83F3D571609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D521609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib */; };
+		F83F3D581609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D521609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib */; };
+		F83F3D591609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D521609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib */; };
+		F83F3D5A1609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D521609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib */; };
+		F83F3D5D1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D5B1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg */; };
+		F83F3D5E1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D5B1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg */; };
+		F83F3D5F1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D5B1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg */; };
+		F83F3D601609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D5B1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg */; };
+		F83F3D611609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D5C1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg */; };
+		F83F3D621609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D5C1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg */; };
+		F83F3D631609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D5C1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg */; };
+		F83F3D641609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D5C1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg */; };
+		F83F3D661609D4DC00DE35F0 /* TourData.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData.plist */; };
+		F83F3D671609D4DC00DE35F0 /* TourData.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData.plist */; };
+		F83F3D681609D4DC00DE35F0 /* TourData.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData.plist */; };
+		F83F3D691609D4DC00DE35F0 /* TourData.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData.plist */; };
+		F83F3D6D1609E1A000DE35F0 /* tour_scrolled_image_0.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6A1609E1A000DE35F0 /* tour_scrolled_image_0.png */; };
+		F83F3D6E1609E1A000DE35F0 /* tour_scrolled_image_0.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6A1609E1A000DE35F0 /* tour_scrolled_image_0.png */; };
+		F83F3D6F1609E1A000DE35F0 /* tour_scrolled_image_0.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6A1609E1A000DE35F0 /* tour_scrolled_image_0.png */; };
+		F83F3D701609E1A000DE35F0 /* tour_scrolled_image_0.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6A1609E1A000DE35F0 /* tour_scrolled_image_0.png */; };
+		F83F3D711609E1A000DE35F0 /* tour_scrolled_image_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6B1609E1A000DE35F0 /* tour_scrolled_image_1.png */; };
+		F83F3D721609E1A000DE35F0 /* tour_scrolled_image_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6B1609E1A000DE35F0 /* tour_scrolled_image_1.png */; };
+		F83F3D731609E1A000DE35F0 /* tour_scrolled_image_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6B1609E1A000DE35F0 /* tour_scrolled_image_1.png */; };
+		F83F3D741609E1A000DE35F0 /* tour_scrolled_image_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6B1609E1A000DE35F0 /* tour_scrolled_image_1.png */; };
+		F83F3D751609E1A000DE35F0 /* tour_scrolled_image_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6C1609E1A000DE35F0 /* tour_scrolled_image_2.png */; };
+		F83F3D761609E1A000DE35F0 /* tour_scrolled_image_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6C1609E1A000DE35F0 /* tour_scrolled_image_2.png */; };
+		F83F3D771609E1A000DE35F0 /* tour_scrolled_image_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6C1609E1A000DE35F0 /* tour_scrolled_image_2.png */; };
+		F83F3D781609E1A000DE35F0 /* tour_scrolled_image_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D6C1609E1A000DE35F0 /* tour_scrolled_image_2.png */; };
+		F83F3D7C1609E1C900DE35F0 /* tour_scrolled_image_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D791609E1C900DE35F0 /* tour_scrolled_image_0@2x.png */; };
+		F83F3D7D1609E1C900DE35F0 /* tour_scrolled_image_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D791609E1C900DE35F0 /* tour_scrolled_image_0@2x.png */; };
+		F83F3D7E1609E1C900DE35F0 /* tour_scrolled_image_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D791609E1C900DE35F0 /* tour_scrolled_image_0@2x.png */; };
+		F83F3D7F1609E1C900DE35F0 /* tour_scrolled_image_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D791609E1C900DE35F0 /* tour_scrolled_image_0@2x.png */; };
+		F83F3D801609E1C900DE35F0 /* tour_scrolled_image_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D7A1609E1C900DE35F0 /* tour_scrolled_image_1@2x.png */; };
+		F83F3D811609E1C900DE35F0 /* tour_scrolled_image_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D7A1609E1C900DE35F0 /* tour_scrolled_image_1@2x.png */; };
+		F83F3D821609E1C900DE35F0 /* tour_scrolled_image_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D7A1609E1C900DE35F0 /* tour_scrolled_image_1@2x.png */; };
+		F83F3D831609E1C900DE35F0 /* tour_scrolled_image_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D7A1609E1C900DE35F0 /* tour_scrolled_image_1@2x.png */; };
+		F83F3D841609E1C900DE35F0 /* tour_scrolled_image_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D7B1609E1C900DE35F0 /* tour_scrolled_image_2@2x.png */; };
+		F83F3D851609E1C900DE35F0 /* tour_scrolled_image_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D7B1609E1C900DE35F0 /* tour_scrolled_image_2@2x.png */; };
+		F83F3D861609E1C900DE35F0 /* tour_scrolled_image_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D7B1609E1C900DE35F0 /* tour_scrolled_image_2@2x.png */; };
+		F83F3D871609E1C900DE35F0 /* tour_scrolled_image_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D7B1609E1C900DE35F0 /* tour_scrolled_image_2@2x.png */; };
 		F844DF3C15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
 		F844DF3D15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
 		F844DF3E15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
@@ -4558,6 +4605,14 @@
 		F8537F13139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */; };
 		F8537F17139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */; };
 		F8537F1A139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8537F19139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib */; };
+		F856652C16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F856652A16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg */; };
+		F856652D16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F856652A16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg */; };
+		F856652E16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F856652A16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg */; };
+		F856652F16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F856652A16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg */; };
+		F856653016089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F856652B16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg */; };
+		F856653116089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F856652B16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg */; };
+		F856653216089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F856652B16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg */; };
+		F856653316089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F856652B16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg */; };
 		F8577FBC14AE2B200003FF20 /* Default-Landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8577FBA14AE2B200003FF20 /* Default-Landscape~ipad.jpg */; };
 		F8577FBD14AE2B200003FF20 /* Default-Landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8577FBA14AE2B200003FF20 /* Default-Landscape~ipad.jpg */; };
 		F8577FBE14AE2B200003FF20 /* Default-Portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8577FBB14AE2B200003FF20 /* Default-Portrait~ipad.jpg */; };
@@ -4858,10 +4913,6 @@
 		F8E9334A1607275800F68FCC /* SCHTourStartViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8E933481607275800F68FCC /* SCHTourStartViewController~ipad.xib */; };
 		F8E9334B1607275800F68FCC /* SCHTourStartViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8E933481607275800F68FCC /* SCHTourStartViewController~ipad.xib */; };
 		F8E9334C1607275800F68FCC /* SCHTourStartViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8E933481607275800F68FCC /* SCHTourStartViewController~ipad.xib */; };
-		F8E9334F1607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8E9334E1607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png */; };
-		F8E933501607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8E9334E1607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png */; };
-		F8E933511607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8E9334E1607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png */; };
-		F8E933521607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8E9334E1607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png */; };
 		F8EB725A13FBD81F00FE2410 /* BookSITab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBC13F9289A000B67A4 /* BookSITab~ipad.png */; };
 		F8EB725C13FBD82700FE2410 /* BookSISampleTab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */; };
 		F8EB725E13FBD82E00FE2410 /* BookShelfErrorIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */; };
@@ -5623,7 +5674,6 @@
 		5264FAC613A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTopTenPopoverTableView.xib; path = Shared/SCHBookShelfTopTenPopoverTableView.xib; sourceTree = "<group>"; };
 		5266D38213007D15004E3AC6 /* SCHComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponent.h; path = Shared/SCHComponent.h; sourceTree = "<group>"; };
 		5266D38313007D15004E3AC6 /* SCHComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHComponent.m; path = Shared/SCHComponent.m; sourceTree = "<group>"; };
-		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
 		526760AA144C85AF00F3FE56 /* SCHAccountValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAccountValidation.h; path = Shared/SCHAccountValidation.h; sourceTree = "<group>"; };
 		526760AB144C85AF00F3FE56 /* SCHAccountValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAccountValidation.m; path = Shared/SCHAccountValidation.m; sourceTree = "<group>"; };
 		526760AE144D6A6A00F3FE56 /* NSURL+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURL+Extensions.h"; path = "Shared/NSURL+Extensions.h"; sourceTree = "<group>"; };
@@ -5633,6 +5683,8 @@
 		526FEB41140FD83A00638712 /* KIF.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KIF.xcodeproj; path = Shared/Libraries/Submodules/KIF/KIF.xcodeproj; sourceTree = "<group>"; };
 		5279E09015176481000D7D8D /* SCHAppRecommendationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppRecommendationItem.h; path = Shared/SCHAppRecommendationItem.h; sourceTree = "<group>"; };
 		5279E09115176481000D7D8D /* SCHAppRecommendationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppRecommendationItem.m; path = Shared/SCHAppRecommendationItem.m; sourceTree = "<group>"; };
+		527ABDF31607708600DE2893 /* SCHMakeNullNilTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHMakeNullNilTests.h; sourceTree = "<group>"; };
+		527ABDF41607708600DE2893 /* SCHMakeNullNilTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHMakeNullNilTests.m; sourceTree = "<group>"; };
 		527BBADD13A011D4000B407C /* SCHStoryInteractionControllerImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerImage.h; sourceTree = "<group>"; };
 		527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerImage.m; sourceTree = "<group>"; };
 		527BBADF13A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionImage_iPhone.xib; sourceTree = "<group>"; };
@@ -6753,6 +6805,18 @@
 		F839EB1D15C813F5000F452E /* storyinteraction-younger-progress-unfilled@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-unfilled@2x~iphone.png"; sourceTree = "<group>"; };
 		F839EB1E15C813F6000F452E /* storyinteraction-younger-progress-unfilled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-unfilled~ipad.png"; sourceTree = "<group>"; };
 		F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-unfilled~iphone.png"; sourceTree = "<group>"; };
+		F83F3D501609CF9F00DE35F0 /* SCHTourStepsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHTourStepsViewController.h; sourceTree = "<group>"; };
+		F83F3D511609CF9F00DE35F0 /* SCHTourStepsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHTourStepsViewController.m; sourceTree = "<group>"; };
+		F83F3D521609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHTourStepsViewController~ipad.xib"; sourceTree = "<group>"; };
+		F83F3D5B1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg"; path = "Resources/UIAssets/storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg"; sourceTree = "<group>"; };
+		F83F3D5C1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-tourstepsviewcontroller-static-landscape~ipad.jpg"; path = "Resources/UIAssets/storia-tourstepsviewcontroller-static-landscape~ipad.jpg"; sourceTree = "<group>"; };
+		F83F3D651609D4DC00DE35F0 /* TourData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = TourData.plist; path = Resources/TourData.plist; sourceTree = "<group>"; };
+		F83F3D6A1609E1A000DE35F0 /* tour_scrolled_image_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tour_scrolled_image_0.png; path = Resources/UIAssets/tour_scrolled_image_0.png; sourceTree = "<group>"; };
+		F83F3D6B1609E1A000DE35F0 /* tour_scrolled_image_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tour_scrolled_image_1.png; path = Resources/UIAssets/tour_scrolled_image_1.png; sourceTree = "<group>"; };
+		F83F3D6C1609E1A000DE35F0 /* tour_scrolled_image_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tour_scrolled_image_2.png; path = Resources/UIAssets/tour_scrolled_image_2.png; sourceTree = "<group>"; };
+		F83F3D791609E1C900DE35F0 /* tour_scrolled_image_0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tour_scrolled_image_0@2x.png"; path = "Resources/UIAssets/tour_scrolled_image_0@2x.png"; sourceTree = "<group>"; };
+		F83F3D7A1609E1C900DE35F0 /* tour_scrolled_image_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tour_scrolled_image_1@2x.png"; path = "Resources/UIAssets/tour_scrolled_image_1@2x.png"; sourceTree = "<group>"; };
+		F83F3D7B1609E1C900DE35F0 /* tour_scrolled_image_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tour_scrolled_image_2@2x.png"; path = "Resources/UIAssets/tour_scrolled_image_2@2x.png"; sourceTree = "<group>"; };
 		F844DF3A15C7D681001D075F /* icon-readingquiz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz.png"; path = "Resources/icon-readingquiz.png"; sourceTree = "<group>"; };
 		F844DF3B15C7D681001D075F /* icon-readingquiz@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz@2x.png"; path = "Resources/icon-readingquiz@2x.png"; sourceTree = "<group>"; };
 		F848F40A152B4F9C00048074 /* BookShelfListRatingBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfListRatingBackground.png; path = Resources/BookShelfListRatingBackground.png; sourceTree = "<group>"; };
@@ -6777,6 +6841,8 @@
 		F8537F15139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerAboutYouQuiz.h; sourceTree = "<group>"; };
 		F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerAboutYouQuiz.m; sourceTree = "<group>"; };
 		F8537F19139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionAboutYouQuiz_iPad.xib; sourceTree = "<group>"; };
+		F856652A16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg"; path = "Resources/UIAssets/storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg"; sourceTree = "<group>"; };
+		F856652B16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-tourstartviewcontroller-static-landscape~ipad.jpg"; path = "Resources/UIAssets/storia-tourstartviewcontroller-static-landscape~ipad.jpg"; sourceTree = "<group>"; };
 		F8577FBA14AE2B200003FF20 /* Default-Landscape~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Default-Landscape~ipad.jpg"; sourceTree = "<group>"; };
 		F8577FBB14AE2B200003FF20 /* Default-Portrait~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Default-Portrait~ipad.jpg"; sourceTree = "<group>"; };
 		F858319115514D73004960E8 /* SCHDownloadDictionaryFromSettingsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHDownloadDictionaryFromSettingsViewController~ipad.xib"; path = "iPad/SCHDownloadDictionaryFromSettingsViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -6977,7 +7043,6 @@
 		F8DCE5C313EC415F00100B6A /* SCHCoreDataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCoreDataHelper.m; path = Shared/SCHCoreDataHelper.m; sourceTree = "<group>"; };
 		F8E2D3BF13B9C7AC001E207B /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F8E933481607275800F68FCC /* SCHTourStartViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHTourStartViewController~ipad.xib"; path = "Shared/SCHTourStartViewController~ipad.xib"; sourceTree = "<group>"; };
-		F8E9334E1607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-tourstartviewcontroller-static-landscape~ipad.png"; path = "Resources/UIAssets/storia-tourstartviewcontroller-static-landscape~ipad.png"; sourceTree = "<group>"; };
 		F8EB728E13FD504900FE2410 /* OptionsCustomButtonActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsCustomButtonActive.png; path = Resources/UIAssets/OptionsCustomButtonActive.png; sourceTree = "<group>"; };
 		F8EB728F13FD504900FE2410 /* OptionsCustomButtonActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OptionsCustomButtonActive@2x.png"; path = "Resources/UIAssets/OptionsCustomButtonActive@2x.png"; sourceTree = "<group>"; };
 		F8EB729013FD504900FE2410 /* OptionsCustomButtonInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OptionsCustomButtonInactive.png; path = Resources/UIAssets/OptionsCustomButtonInactive.png; sourceTree = "<group>"; };
@@ -7865,6 +7930,9 @@
 				F888C3FB16071E6300256F60 /* SCHTourStartViewController.m */,
 				F888C3FC16071E6300256F60 /* SCHTourStartViewController~iphone.xib */,
 				F8E933481607275800F68FCC /* SCHTourStartViewController~ipad.xib */,
+				F83F3D501609CF9F00DE35F0 /* SCHTourStepsViewController.h */,
+				F83F3D511609CF9F00DE35F0 /* SCHTourStepsViewController.m */,
+				F83F3D521609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib */,
 			);
 			name = "Starting View";
 			sourceTree = "<group>";
@@ -8514,6 +8582,7 @@
 				289A2B3A13F5140A0047EE45 /* Puzzle-6pc.xaml */,
 				289A2B3B13F5140A0047EE45 /* Puzzle-12pc.xaml */,
 				289A2B3C13F5140A0047EE45 /* Puzzle-20pc.xaml */,
+				F83F3D651609D4DC00DE35F0 /* TourData.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -8678,7 +8747,6 @@
 				5266D38213007D15004E3AC6 /* SCHComponent.h */,
 				5266D38313007D15004E3AC6 /* SCHComponent.m */,
 				52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */,
-				5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */,
 				52C7894D15F5FC97003B291C /* SCHMakeNullNil.h */,
 				52C7894815F5FC75003B291C /* SCHMakeNullNil.m */,
 				52AD9B2612FC207A0099FB88 /* Sync */,
@@ -8691,6 +8759,8 @@
 			children = (
 				52A36A6515B068D300162753 /* SCHScholasticResponseParserTests.h */,
 				52A36A6615B068D300162753 /* SCHScholasticResponseParserTests.m */,
+				527ABDF31607708600DE2893 /* SCHMakeNullNilTests.h */,
+				527ABDF41607708600DE2893 /* SCHMakeNullNilTests.m */,
 				52A36A7215B45A2400162753 /* Sync Tests */,
 			);
 			name = "Web Service Tests";
@@ -10447,7 +10517,16 @@
 		F8E9334D1607410F00F68FCC /* Tour Views */ = {
 			isa = PBXGroup;
 			children = (
-				F8E9334E1607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png */,
+				F83F3D6A1609E1A000DE35F0 /* tour_scrolled_image_0.png */,
+				F83F3D791609E1C900DE35F0 /* tour_scrolled_image_0@2x.png */,
+				F83F3D6B1609E1A000DE35F0 /* tour_scrolled_image_1.png */,
+				F83F3D7A1609E1C900DE35F0 /* tour_scrolled_image_1@2x.png */,
+				F83F3D6C1609E1A000DE35F0 /* tour_scrolled_image_2.png */,
+				F83F3D7B1609E1C900DE35F0 /* tour_scrolled_image_2@2x.png */,
+				F83F3D5B1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg */,
+				F83F3D5C1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg */,
+				F856652A16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg */,
+				F856652B16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg */,
 			);
 			name = "Tour Views";
 			sourceTree = "<group>";
@@ -11511,7 +11590,18 @@
 				C9E1BFB616036CBC00CB8A4E /* storia-loginbackground~ipad.jpg in Resources */,
 				F888C40116071E6300256F60 /* SCHTourStartViewController~iphone.xib in Resources */,
 				F8E933491607275800F68FCC /* SCHTourStartViewController~ipad.xib in Resources */,
-				F8E9334F1607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png in Resources */,
+				F856652C16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
+				F856653016089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */,
+				F83F3D571609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib in Resources */,
+				F83F3D5D1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
+				F83F3D611609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */,
+				F83F3D661609D4DC00DE35F0 /* TourData.plist in Resources */,
+				F83F3D6D1609E1A000DE35F0 /* tour_scrolled_image_0.png in Resources */,
+				F83F3D711609E1A000DE35F0 /* tour_scrolled_image_1.png in Resources */,
+				F83F3D751609E1A000DE35F0 /* tour_scrolled_image_2.png in Resources */,
+				F83F3D7C1609E1C900DE35F0 /* tour_scrolled_image_0@2x.png in Resources */,
+				F83F3D801609E1C900DE35F0 /* tour_scrolled_image_1@2x.png in Resources */,
+				F83F3D841609E1C900DE35F0 /* tour_scrolled_image_2@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12321,7 +12411,18 @@
 				C9E1BFB716036CBC00CB8A4E /* storia-loginbackground~ipad.jpg in Resources */,
 				F888C40216071E6300256F60 /* SCHTourStartViewController~iphone.xib in Resources */,
 				F8E9334A1607275800F68FCC /* SCHTourStartViewController~ipad.xib in Resources */,
-				F8E933501607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png in Resources */,
+				F856652D16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
+				F856653116089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */,
+				F83F3D581609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib in Resources */,
+				F83F3D5E1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
+				F83F3D621609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */,
+				F83F3D671609D4DC00DE35F0 /* TourData.plist in Resources */,
+				F83F3D6E1609E1A000DE35F0 /* tour_scrolled_image_0.png in Resources */,
+				F83F3D721609E1A000DE35F0 /* tour_scrolled_image_1.png in Resources */,
+				F83F3D761609E1A000DE35F0 /* tour_scrolled_image_2.png in Resources */,
+				F83F3D7D1609E1C900DE35F0 /* tour_scrolled_image_0@2x.png in Resources */,
+				F83F3D811609E1C900DE35F0 /* tour_scrolled_image_1@2x.png in Resources */,
+				F83F3D851609E1C900DE35F0 /* tour_scrolled_image_2@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12886,7 +12987,18 @@
 				C9E1BFB916036CBC00CB8A4E /* storia-loginbackground~ipad.jpg in Resources */,
 				F888C40316071E6300256F60 /* SCHTourStartViewController~iphone.xib in Resources */,
 				F8E9334B1607275800F68FCC /* SCHTourStartViewController~ipad.xib in Resources */,
-				F8E933511607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png in Resources */,
+				F856652E16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
+				F856653216089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */,
+				F83F3D591609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib in Resources */,
+				F83F3D5F1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
+				F83F3D631609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */,
+				F83F3D681609D4DC00DE35F0 /* TourData.plist in Resources */,
+				F83F3D6F1609E1A000DE35F0 /* tour_scrolled_image_0.png in Resources */,
+				F83F3D731609E1A000DE35F0 /* tour_scrolled_image_1.png in Resources */,
+				F83F3D771609E1A000DE35F0 /* tour_scrolled_image_2.png in Resources */,
+				F83F3D7E1609E1C900DE35F0 /* tour_scrolled_image_0@2x.png in Resources */,
+				F83F3D821609E1C900DE35F0 /* tour_scrolled_image_1@2x.png in Resources */,
+				F83F3D861609E1C900DE35F0 /* tour_scrolled_image_2@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13449,7 +13561,18 @@
 				F8C097CD15EB91630056D0D0 /* gen_scoreresponsemedium.mp3 in Resources */,
 				F888C40416071E6300256F60 /* SCHTourStartViewController~iphone.xib in Resources */,
 				F8E9334C1607275800F68FCC /* SCHTourStartViewController~ipad.xib in Resources */,
-				F8E933521607411A00F68FCC /* storia-tourstartviewcontroller-static-landscape~ipad.png in Resources */,
+				F856652F16089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
+				F856653316089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */,
+				F83F3D5A1609CF9F00DE35F0 /* SCHTourStepsViewController~ipad.xib in Resources */,
+				F83F3D601609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
+				F83F3D641609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */,
+				F83F3D691609D4DC00DE35F0 /* TourData.plist in Resources */,
+				F83F3D701609E1A000DE35F0 /* tour_scrolled_image_0.png in Resources */,
+				F83F3D741609E1A000DE35F0 /* tour_scrolled_image_1.png in Resources */,
+				F83F3D781609E1A000DE35F0 /* tour_scrolled_image_2.png in Resources */,
+				F83F3D7F1609E1C900DE35F0 /* tour_scrolled_image_0@2x.png in Resources */,
+				F83F3D831609E1C900DE35F0 /* tour_scrolled_image_1@2x.png in Resources */,
+				F83F3D871609E1C900DE35F0 /* tour_scrolled_image_2@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13906,6 +14029,7 @@
 				C9E1BF9F1603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 				C9E1BFA616035A4300CB8A4E /* SCHPadAppController.m in Sources */,
 				F888C3FD16071E6300256F60 /* SCHTourStartViewController.m in Sources */,
+				F83F3D531609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14336,6 +14460,9 @@
 				C92F0B7A15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 				C9E1BFA11603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 				C9E1BFA816035A4300CB8A4E /* SCHPadAppController.m in Sources */,
+				527ABDF51607708600DE2893 /* SCHMakeNullNilTests.m in Sources */,
+				527ABDF6160771B200DE2893 /* SCHMakeNullNil.m in Sources */,
+				527ABDF7160771C600DE2893 /* SCHTourStartViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14759,6 +14886,7 @@
 				C9E1BFA01603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 				C9E1BFA716035A4300CB8A4E /* SCHPadAppController.m in Sources */,
 				F888C3FE16071E6300256F60 /* SCHTourStartViewController.m in Sources */,
+				F83F3D541609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15182,6 +15310,7 @@
 				C9E1BFA21603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 				C9E1BFA916035A4300CB8A4E /* SCHPadAppController.m in Sources */,
 				F888C3FF16071E6300256F60 /* SCHTourStartViewController.m in Sources */,
+				F83F3D551609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15605,6 +15734,7 @@
 				C9E1BFA31603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
 				C9E1BFAA16035A4300CB8A4E /* SCHPadAppController.m in Sources */,
 				F888C40016071E6300256F60 /* SCHTourStartViewController.m in Sources */,
+				F83F3D561609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

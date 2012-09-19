@@ -12,6 +12,7 @@
 #import "SCHWishListConstants.h"
 #import "SCHWishListItem.h"
 #import "BITAPIError.h" 
+#import "SCHMakeNullNil.h"
 
 @interface SCHDeleteWishListItemsOperation ()
 
@@ -24,8 +25,8 @@
 - (void)main
 {
     @try {
-        NSDictionary *deleteWishListItems = [self makeNullNil:[self.result objectForKey:kSCHWishListWebServiceDeleteWishListItems]];
-        NSArray *profileStatusList = [self makeNullNil:[deleteWishListItems objectForKey:kSCHWishListWebServiceProfileStatusList]];                
+        NSDictionary *deleteWishListItems = makeNullNil([self.result objectForKey:kSCHWishListWebServiceDeleteWishListItems]);
+        NSArray *profileStatusList = makeNullNil([deleteWishListItems objectForKey:kSCHWishListWebServiceProfileStatusList]);
         
         if ([profileStatusList count] > 0) {
             [self processDeletedWishListItems:profileStatusList];
@@ -59,13 +60,13 @@
 {
     if ([wishListItems count] > 0) {
         for (NSDictionary *wishListItem in wishListItems) {
-            NSNumber *profileID = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceProfileID]];
+            NSNumber *profileID = makeNullNil([wishListItem objectForKey:kSCHWishListWebServiceProfileID]);
             if ([profileID integerValue] > 0) {
-                for (NSDictionary *item in [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceItemStatusList]]) {
-                    NSString *isbn = [self makeNullNil:[item objectForKey:kSCHWishListWebServiceISBN]];
-                    NSDictionary *wishListError = [self makeNullNil:[item objectForKey:kSCHWishListWebServiceWishListError]];
+                for (NSDictionary *item in makeNullNil([wishListItem objectForKey:kSCHWishListWebServiceItemStatusList])) {
+                    NSString *isbn = makeNullNil([item objectForKey:kSCHWishListWebServiceISBN]);
+                    NSDictionary *wishListError = makeNullNil([item objectForKey:kSCHWishListWebServiceWishListError]);
                     if (wishListError != nil) {
-                        NSNumber *errorCode = [self makeNullNil:[wishListError objectForKey:kSCHWishListWebServiceErrorCode]];
+                        NSNumber *errorCode = makeNullNil([wishListError objectForKey:kSCHWishListWebServiceErrorCode]);
                         
                         if (isbn != nil && errorCode != nil && [errorCode integerValue] == 0) {
                             NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

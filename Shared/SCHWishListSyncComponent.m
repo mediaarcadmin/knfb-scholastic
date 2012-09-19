@@ -19,6 +19,7 @@
 #import "SCHAppRecommendationItem.h"
 #import "SCHDeleteWishListItemsOperation.h"
 #import "SCHGetWishListItemsOperation.h"
+#import "SCHMakeNullNil.h"
 
 // Constants
 NSString * const SCHWishListSyncComponentDidInsertNotification = @"SCHWishListSyncComponentDidInsertNotification";
@@ -242,7 +243,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
     if ([profiles count] > 0) {
         NSMutableArray *profileIDs = [NSMutableArray arrayWithCapacity:[profiles count]];
         for (id item in profiles) {
-            NSNumber *profileID = [self makeNullNil:[item valueForKey:kSCHLibreAccessWebServiceID]];
+            NSNumber *profileID = makeNullNil([item valueForKey:kSCHLibreAccessWebServiceID]);
             if ([profileID integerValue] > 0) {
                 [profileIDs addObject:profileID];
             }

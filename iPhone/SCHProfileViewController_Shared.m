@@ -270,7 +270,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     
     SCHProfileItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	if (indexPath) {
-        [cell setButtonTitles:[NSArray arrayWithObjects:[managedObject bookshelfName:NO] ? : @"", nil] 
+        [cell setButtonTitles:[NSArray arrayWithObjects:[managedObject displayName] ? : @"", nil] 
                 forIndexPaths:[NSArray arrayWithObjects:indexPath, nil] 
                  forCellStyle:kSCHProfileCellLayoutStyle1Up];
     }
@@ -297,12 +297,12 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     leftIndexPath = [NSIndexPath indexPathForRow:(indexPath.row == 0 ? 0 : indexPath.row * 2)
                                        inSection:indexPath.section];
     profileItem = [self.fetchedResultsController objectAtIndexPath:leftIndexPath]; 
-    leftTitle = [profileItem bookshelfName:NO] ? : @"";
+    leftTitle = [profileItem displayName] ? : @"";
     
     if (leftIndexPath.row + 1 < [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects]) {
         rightIndexPath = [NSIndexPath indexPathForRow:leftIndexPath.row + 1 inSection:indexPath.section];
         profileItem = [self.fetchedResultsController objectAtIndexPath:rightIndexPath]; 
-        rightTitle = [profileItem bookshelfName:NO] ? : @"";
+        rightTitle = [profileItem displayName] ? : @"";
     }
     
     if (leftIndexPath && rightIndexPath) {
@@ -471,7 +471,7 @@ didSelectButtonAnimated:(BOOL)animated
     };
     
     passwordController.controllerType = kSCHControllerPasswordOnlyView;
-    [passwordController.profileLabel setText:[profileItem bookshelfName:YES]];
+    [passwordController.profileLabel setText:[profileItem displayName]];
     
     [self presentModalViewController:passwordController animated:YES];
     [passwordController release];
@@ -531,7 +531,7 @@ didSelectButtonAnimated:(BOOL)animated
     };
     
     passwordController.controllerType = kSCHControllerDoublePasswordView;
-    [passwordController.profileLabel setText:[profileItem bookshelfName:YES]];
+    [passwordController.profileLabel setText:[profileItem displayName]];
     [self presentModalViewController:passwordController animated:YES];
     [passwordController release];
 }

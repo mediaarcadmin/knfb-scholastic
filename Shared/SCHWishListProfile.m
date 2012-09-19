@@ -47,7 +47,7 @@ NSString * const kSCHWishListProfile = @"SCHWishListProfile";
     SCHProfileItem *profileItem = [self profileItem];
 
     if (profileItem != nil) {
-        NSString *name = [profileItem profileName];
+        NSString *name = [profileItem displayName];
         if ([[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
             self.ProfileName = name;
         }

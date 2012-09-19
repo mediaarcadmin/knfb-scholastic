@@ -19,6 +19,7 @@
 #import "SCHWishListConstants.h"
 #import "SCHBooksAssignment.h"
 #import "NSNumber+ObjectTypes.h"
+#import "SCHMakeNullNil.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -26,7 +27,6 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 @interface SCHAppProfile ()
 
 - (NSArray *)purchasedBooks;
-- (id)makeNullNil:(id)object;
 - (void)save;
 
 @end
@@ -186,9 +186,9 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
             SCHWishListItem *newWishListItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListItem 
                                                                              inManagedObjectContext:self.managedObjectContext];
             
-            newWishListItem.Title = [self makeNullNil:[wishListItem objectForKey:kSCHWishListTitle]];
-            newWishListItem.Author = [self makeNullNil:[wishListItem objectForKey:kSCHWishListAuthor]];
-            newWishListItem.ISBN = [self makeNullNil:[wishListItem objectForKey:kSCHWishListISBN]];
+            newWishListItem.Title = makeNullNil([wishListItem objectForKey:kSCHWishListTitle]);
+            newWishListItem.Author = makeNullNil([wishListItem objectForKey:kSCHWishListAuthor]);
+            newWishListItem.ISBN = makeNullNil([wishListItem objectForKey:kSCHWishListISBN]);
             newWishListItem.InitiatedBy = kSCHWishListWebServiceCHILD;
             
             [newWishListItem assignAppRecommendationItem];
@@ -211,11 +211,6 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
             [self save];
         }
     }
-}
-
-- (id)makeNullNil:(id)object
-{
-	return(object == [NSNull null] ? nil : object);
 }
 
 - (void)save
