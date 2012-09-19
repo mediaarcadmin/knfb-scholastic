@@ -895,6 +895,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)displaySettingsPanel:(SCHSettingsPanel)panel
 {
+    [self.view endEditing:YES];
+    
     switch (panel) {
         case kSCHSettingsPanelReadingManager: {
             SCHReadingManagerAuthorisationViewController *controller = [[[SCHReadingManagerAuthorisationViewController alloc] init] autorelease];
@@ -936,9 +938,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)addContentSubview:(UIView *)newContentView
 {
-
-    // TODO: this doesn't work if you are editing
-    
     for (UIView *view in [self.contentView subviews]) {
         [view removeFromSuperview];
     }
