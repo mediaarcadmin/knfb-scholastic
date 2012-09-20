@@ -33,7 +33,7 @@
 #import "SCHReadingManagerViewController.h"
 #import "SCHSettingsViewController.h"
 
-@interface SCHPadAppController () <SCHProfileSetupDelegate, UINavigationControllerDelegate>
+@interface SCHPadAppController () <UINavigationControllerDelegate>
 
 @property (nonatomic, retain) UINavigationController *modalContainerView;
 @property (nonatomic, retain) LambdaAlert *undismissableAlert;
@@ -99,11 +99,6 @@
     }
     
     return self;
-}
-
-- (void)awakeFromNib
-{
-    
 }
 
 - (void)registerForNotifications
@@ -250,7 +245,12 @@
 
 - (void)pushSettingsAnimated:(BOOL)animated
 {
-    self.settingsViewController.settingsDisplayMask = kSCHSettingsPanelAll;
+    if ([[self.profileViewController profileItems] count]) {
+        [self.settingsViewController setBackButtonHidden:NO];
+    } else {
+        [self.settingsViewController setBackButtonHidden:YES];
+    }
+    
     [self.settingsViewController displaySettingsPanel:kSCHSettingsPanelReadingManager];
     [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, nil] animated:animated];
 }
@@ -264,7 +264,8 @@
         [(SCHReadingManagerViewController *)self.readingManagerViewController setPToken:[[SCHAuthenticationManager sharedAuthenticationManager] pToken]];
         [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, self.readingManagerViewController, nil] animated:animated];
     } else {
-        self.settingsViewController.settingsDisplayMask = kSCHSettingsPanelReadingManager;
+        [self pushSettingsAnimated:animated];
+        [self.settingsViewController setBackButtonHidden:YES];
         [self.settingsViewController displaySettingsPanel:kSCHSettingsPanelReadingManager];
         [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, nil] animated:animated];
     }
@@ -276,10 +277,10 @@
         [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, nil] animated:animated];
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Unable To Open the Profile", @"")
-                              message:NSLocalizedString(@"There was a problem while opening the profile. Please try again.", @"")];
+                              initWithTitle:NSLocalizedString(@"Setup Bookshelves", @"")
+                              message:NSLocalizedString(@"Please set up some bookshelves.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            [self presentLogin];
+            [self pushSettingsAnimated:animated];
         }];
         
         [alert show];
@@ -430,7 +431,7 @@
     });
 }
 
-- (void)waitingForWebParentToolsToComplete
+- (void)waitForWebParentToolsToComplete
 {
     AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
     SCHAppModel *appModel = [appDelegate appModel];
@@ -472,7 +473,7 @@
         // want to use the same database any more
         AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
         profileViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
-        profileViewController.profileSetupDelegate = self;
+        //profileViewController.profileSetupDelegate = self;
         profileViewController.appController = self;
     }
     
@@ -489,7 +490,7 @@
         // want to use the same database any more
         AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
         samplesViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
-        samplesViewController.profileSetupDelegate = self;
+        //samplesViewController.profileSetupDelegate = self;
     }
     
     return samplesViewController;
@@ -526,7 +527,7 @@
     if (!readingManagerViewController) {
 #if USE_CODEANDTHEORY
         SCHReadingManagerViewController *aReadingManager = [[SCHReadingManagerViewController alloc] init];
-        aReadingManager.modalPresenterDelegate = self;
+        aReadingManager.appController = self;
         readingManagerViewController = aReadingManager;
 #else
         SCHParentalToolsWebViewController *aParentalToolsWebViewController = [[SCHParentalToolsWebViewController alloc] init];
@@ -569,9 +570,7 @@
 - (void)willEnterForeground:(NSNotification *)note
 {
     if (self.topViewController == self.readingManagerViewController) {
-        // TODO: this logic should be elsewhere
-        [[SCHAuthenticationManager sharedAuthenticationManager] expireToken];
-        [self pushReadingManagerAnimated:NO];
+        [self pushSettingsAnimated:NO];
     }
 }
 

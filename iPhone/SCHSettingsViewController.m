@@ -56,7 +56,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)showWifiRequiredAlert;
 - (void)showAlertForSyncFailure;
 
-
 - (SCHSettingsPanel)panelForIndexPath:(NSIndexPath *)indexPath;
 
 @end
@@ -73,6 +72,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize contentView;
 @synthesize contentViewController;
 @synthesize appController;
+@synthesize settingsDisplayMask;
+@synthesize backButton;
+@synthesize backButtonHidden;
 
 #pragma mark - Object lifecycle
 
@@ -85,6 +87,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [containerView release], containerView = nil;
     [shadowView release], shadowView = nil;
     [tableView release], tableView = nil;
+    [backButton release], backButton = nil;
     
 }
 
@@ -107,6 +110,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [super viewDidLoad];
     
     [self addContentSubview:self.contentViewController.view];
+    [self.backButton setHidden:self.backButtonHidden];
         
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UIView *whiteView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
@@ -134,6 +138,21 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                                              selector:@selector(dictionaryStateChanged:)
                                                  name:kSCHDictionaryProcessingPercentageUpdate
                                                object:nil];
+}
+
+- (void)setSettingsDisplayMask:(NSUInteger)newMask
+{
+    settingsDisplayMask = newMask;
+    [self.tableView reloadData];
+}
+
+- (void)setBackButtonHidden:(BOOL)hidden
+{
+    backButtonHidden = hidden;
+
+    if ([self.backButton isHidden] != backButtonHidden) {
+        [self.backButton setHidden:backButtonHidden];
+    }
 }
 
 - (SCHBookUpdates *)bookUpdates
@@ -177,6 +196,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [self.checkBooksAlert dismissAnimated:NO];
     }
     
+    [self.view endEditing:YES];
     [self deregisterForKeyboardNotifications];
 }
 

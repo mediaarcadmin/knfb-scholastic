@@ -20,12 +20,12 @@
 @implementation SCHReadingManagerViewController
 
 @synthesize pToken;
-@synthesize modalPresenterDelegate;
+@synthesize appController;
 
 - (void)dealloc
 {
     [pToken release], pToken = nil;
-    modalPresenterDelegate = nil;
+    appController = nil;
     [super dealloc];
 }
 
@@ -58,13 +58,13 @@
         [close setFrame:CGRectMake(CGRectGetWidth(self.view.bounds) - 137, 7, 130, 30)];
         [self.view addSubview:close];
         
-        [self.modalPresenterDelegate waitingForWebParentToolsToComplete];
+        [self.appController waitForWebParentToolsToComplete];
     } else {
         LambdaAlert *lambdaAlert = [[LambdaAlert alloc]
                                     initWithTitle:NSLocalizedString(@"Error", @"")
                                     message:NSLocalizedString(@"A problem occured accessing web Parent Tools with your account. Please contact support.", @"")];
         [lambdaAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-            [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES];
+            [self.appController presentSettings];
         }];
         [lambdaAlert show];
         [lambdaAlert release], lambdaAlert = nil;
@@ -86,14 +86,9 @@
     }
 }
 
-- (void)requestPasswordAnimated:(BOOL)animated
-{
-    [self.modalPresenterDelegate popModalWebParentToolsToValidationAnimated:animated];
-}
- 
 - (void)back:(id)sender
 {
-    [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES];
+    [self.appController presentSettings];
 }
 
 #pragma mark - UIWebView delegate methods
@@ -104,17 +99,14 @@
     //NSLog(@"Request: %@",request);
     BOOL ret = YES;
     
-    if (self.modalPresenterDelegate != nil) {
         NSDictionary *parameters = [[request URL] queryParameters];
         NSString *cmd = [parameters objectForKey:@"cmd"];
         
         if ([cmd isEqualToString:@"bookshelfSetupDidCompleteWithSuccess"] == YES) {
             ret = NO;
             
-            [self.modalPresenterDelegate dismissModalWebParentToolsAnimated:YES];
-        }
-    }
-    
+            [self.appController presentSettings];
+        }    
     return(ret);
 }
 

@@ -79,6 +79,8 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)deregister:(id)sender
 {
+    [self.view endEditing:YES];
+    
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else {

@@ -20,8 +20,10 @@
 - (void)presentReadingManager;
 - (void)presentSettings;
 
-// Failure Methods
+// TODO: refactor these
+- (void)waitForWebParentToolsToComplete;
 
+// Failure Methods
 - (void)failedSamplesWithError:(NSError *)error;
 - (void)failedLoginWithError:(NSError *)error;
 - (void)failedSyncWithError:(NSError *)error;

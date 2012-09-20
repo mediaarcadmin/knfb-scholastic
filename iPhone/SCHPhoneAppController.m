@@ -457,6 +457,11 @@
 
 - (void)waitingForWebParentToolsToComplete
 {
+    [self waitForWebParentToolsToComplete];    
+}
+
+- (void)waitForWebParentToolsToComplete
+{
     AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
     SCHAppModel *appModel = [appDelegate appModel];
     [appModel waitForWebParentToolsToComplete];

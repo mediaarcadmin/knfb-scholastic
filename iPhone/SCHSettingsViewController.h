@@ -34,7 +34,9 @@ typedef enum {
 
 @property (nonatomic, retain) IBOutlet UIView *contentView; // iPad only
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, assign) NSUInteger settingsDisplayMask; // defaults to kSCHSettingsPanelAll
+@property (nonatomic, assign) BOOL backButtonHidden; // defaults to NO
 
 - (void)displaySettingsPanel:(SCHSettingsPanel)panel;
 - (IBAction)close:(id)sender;
