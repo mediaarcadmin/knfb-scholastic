@@ -32,9 +32,6 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHSupportViewController.h"
 
-@interface UIView(Debug)
-- (NSString *)recursiveDescription;
-@end
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @interface SCHSettingsViewController()
@@ -793,7 +790,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    if ([self.bookUpdates areBookUpdatesAvailable]) {
+        return 3;
+    } else {
+        return 2;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -823,6 +824,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
+    cell.userInteractionEnabled = YES;
+    
     SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
     
     switch (panel) {
@@ -831,6 +834,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             break;
         case kSCHSettingsPanelAdditionalSettings:
             cell.textLabel.text = @"ADDITIONAL SETTINGS";
+            cell.userInteractionEnabled = NO;
             break;
         case kSCHSettingsPanelDictionaryDownload:
             cell.textLabel.text = @"Download Dictionary";

@@ -517,6 +517,8 @@
         
         settingsViewController = [[SCHSettingsViewController alloc] init];
         settingsViewController.appController = self;
+        AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+        settingsViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
     }
     
     return settingsViewController;
