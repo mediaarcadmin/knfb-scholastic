@@ -47,7 +47,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @property (nonatomic, retain) NSDate *lastFirstSyncEnded;
 @property (nonatomic, assign) BOOL firstSyncAfterDelay;
 @property (nonatomic, retain) NSDate *lastBookshelfSyncEnded;
-@property (nonatomic, assign) BOOL bookshelfAfterDelay;
+@property (nonatomic, assign) BOOL bookshelfSyncAfterDelay;
 @property (nonatomic, retain) NSDate *lastWishListSyncEnded;
 @property (nonatomic, assign) BOOL wishListSyncAfterDelay;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
