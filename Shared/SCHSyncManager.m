@@ -34,6 +34,7 @@ NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidComp
 
 static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
+static NSTimeInterval const kSCHLastBookshelfSyncInterval = -300.0;
 static NSTimeInterval const kSCHLastWishListSyncInterval = -300.0;
 
 // Core Data will fail to save changes if there is no disk space left
@@ -45,6 +46,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 @property (nonatomic, retain) NSDate *lastFirstSyncEnded;
 @property (nonatomic, assign) BOOL firstSyncAfterDelay;
+@property (nonatomic, retain) NSDate *lastBookshelfSyncEnded;
+@property (nonatomic, assign) BOOL bookshelfAfterDelay;
 @property (nonatomic, retain) NSDate *lastWishListSyncEnded;
 @property (nonatomic, assign) BOOL wishListSyncAfterDelay;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
@@ -88,6 +91,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 @synthesize lastFirstSyncEnded;
 @synthesize firstSyncAfterDelay;
+@synthesize lastBookshelfSyncEnded;
+@synthesize bookshelfSyncAfterDelay;
 @synthesize lastWishListSyncEnded;
 @synthesize wishListSyncAfterDelay;
 @synthesize timer;
@@ -189,6 +194,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     [self endBackgroundTask];
     
     [lastFirstSyncEnded release], lastFirstSyncEnded = nil;
+    [lastBookshelfSyncEnded release], lastBookshelfSyncEnded = nil;
     [lastWishListSyncEnded release], lastWishListSyncEnded = nil;
 	[timer release], timer = nil;
 	[queue release], queue = nil;
@@ -330,6 +336,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	
     self.lastFirstSyncEnded = nil;
     self.firstSyncAfterDelay = NO;
+    self.lastBookshelfSyncEnded = nil;
+    self.bookshelfSyncAfterDelay = NO;
     self.lastWishListSyncEnded = nil;
     self.wishListSyncAfterDelay = NO;
     self.suspended = NO;
@@ -528,21 +536,45 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     }
 }
 
-- (void)bookshelfSync
+- (void)bookshelfSyncNow:(BOOL)syncNow
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
-    if ([self shouldSync] == YES) {	
-        NSLog(@"Scheduling Update Bookshelf");
-        
-        [self addToQueue:self.bookshelfSyncComponent];
-        
-        [self kickQueue];
+    // reset if the date has been changed in a backward motion
+    if (self.lastBookshelfSyncEnded != nil &&
+        [self.lastBookshelfSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
+        self.lastBookshelfSyncEnded = nil;
+    }
+    
+    if ([self shouldSync] == YES) {
+        if (syncNow == YES || self.lastBookshelfSyncEnded == nil ||
+            [self.lastBookshelfSyncEnded timeIntervalSinceNow] < kSCHLastBookshelfSyncInterval) {
+            NSLog(@"Scheduling Update Bookshelf");
+            
+            self.bookshelfSyncAfterDelay = NO;
+            
+            if ([self shouldSyncContent] == YES) {
+                [self addToQueue:self.contentSyncComponent];
+            }
+            
+            [self addToQueue:self.bookshelfSyncComponent];
+            
+            [self kickQueue];
+        } else {
+            self.bookshelfSyncAfterDelay = YES;
+        }
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                                                object:self];		
-        });        
+        if (syncNow == YES || self.lastBookshelfSyncEnded == nil ||
+            [self.lastBookshelfSyncEnded timeIntervalSinceNow] < kSCHLastBookshelfSyncInterval) {
+            self.lastBookshelfSyncEnded = [NSDate date];
+        
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification
+                                                                    object:self];
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification
+                                                                    object:self];
+            });
+        }
     }
 }
 
@@ -810,6 +842,10 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         self.lastFirstSyncEnded = [NSDate date];
     }
 
+    if ([component isKindOfClass:[SCHBookshelfSyncComponent class]] == YES) {
+        self.lastBookshelfSyncEnded = [NSDate date];
+    }
+
     if ([component isKindOfClass:[SCHWishListSyncComponent class]] == YES) {
         self.lastWishListSyncEnded = [NSDate date];
     }
@@ -972,6 +1008,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     if (self.flushSaveMode == NO) {
         if (self.firstSyncAfterDelay == YES) {
             [self firstSync:NO requireDeviceAuthentication:NO];   
+        } else if (self.bookshelfSyncAfterDelay == YES) {
+            [self bookshelfSyncNow:NO];
         } else if (self.wishListSyncAfterDelay == YES) {
             [self wishListSync:NO];
         }
@@ -1012,6 +1050,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     if (self.flushSaveMode == NO) {
         // force any delayed syncs to perform now
         self.lastFirstSyncEnded = nil;
+        self.lastBookshelfSyncEnded = nil;
         self.lastWishListSyncEnded = nil;
         
         [self performDelayedSyncIfRequired];
