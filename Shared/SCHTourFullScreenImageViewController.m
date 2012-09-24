@@ -7,12 +7,15 @@
 //
 
 #import "SCHTourFullScreenImageViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SCHTourFullScreenImageViewController ()
 
 @end
 
 @implementation SCHTourFullScreenImageViewController
+
+@synthesize navBarImageView;
 @synthesize mainImageView;
 @synthesize closeButton;
 @synthesize titleLabel;
@@ -31,12 +34,16 @@
     [self releaseViewObjects];
     [imageName release], imageName = nil;
     [imageTitle release], imageTitle = nil;
+    [navBarImageView release], navBarImageView = nil;
+    [_bottomView release];
     [super dealloc];
 }
 
 - (void)viewDidUnload
 {
     [self releaseViewObjects];
+    [self setNavBarImageView:nil];
+    [self setBottomView:nil];
     [super viewDidUnload];
 }
 
@@ -55,6 +62,17 @@
     
     self.mainImageView.image = [UIImage imageNamed:self.imageName];
     self.titleLabel.text = self.imageTitle;
+    
+    [self.closeButton setBackgroundImage:[[UIImage imageNamed:@"tour-tab-button-bg"] stretchableImageWithLeftCapWidth:8 topCapHeight:0] forState:UIControlStateNormal];
+
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bottomView.bounds
+                                                   byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight
+                                                         cornerRadii:CGSizeMake(6, 6)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = self.bottomView.bounds;
+    maskLayer.path = maskPath.CGPath;
+    [self.bottomView.layer setMask:maskLayer];
+    [maskLayer release];
 }
 
 
