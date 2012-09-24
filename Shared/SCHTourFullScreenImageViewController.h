@@ -10,9 +10,11 @@
 
 @interface SCHTourFullScreenImageViewController : UIViewController
 
+@property (retain, nonatomic) IBOutlet UIImageView *navBarImageView;
 @property (retain, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (retain, nonatomic) IBOutlet UIButton *closeButton;
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
+@property (retain, nonatomic) IBOutlet UIView *bottomView;
 
 @property (retain, nonatomic) NSString *imageName;
 @property (retain, nonatomic) NSString *imageTitle;

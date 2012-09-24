@@ -106,16 +106,17 @@
         multiIndex = 1;
     }
     
-    // FIXME: this is then ignored because we're always going to use the same image
+    NSDictionary *tourItem = [self.tourData objectAtIndex:self.currentIndex];
+    NSString *title = [tourItem objectForKey:[NSString stringWithFormat:@"title%d", multiIndex]];
     
     SCHTourFullScreenImageViewController *fullScreenController = [[SCHTourFullScreenImageViewController alloc] initWithNibName:nil bundle:nil];
-    fullScreenController.imageTitle = @"Word Match";
-    fullScreenController.imageName = [NSString stringWithFormat:@"tour_full_image_%d_%d", 1, 0];
+    fullScreenController.imageTitle = title;
+    fullScreenController.imageName = [NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", self.currentIndex, multiIndex];
+    
+    NSLog(@"Loading %@", fullScreenController.imageName);
     
     [self presentModalViewController:fullScreenController animated:YES];
 }
-
-//            NSString *fullImageName = [NSString stringWithFormat:@"tour_full_image_%d_%d", index, 0];
 
 - (void)setupScrollViewForIndex:(NSInteger)index
 {
@@ -224,7 +225,6 @@
             
             [button addTarget:self action:@selector(pickedFullScreenImage:) forControlEvents:UIControlEventTouchUpInside];
             // FIXME: styling
-            // FIXME: add target
             
             // container view
             tourView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
