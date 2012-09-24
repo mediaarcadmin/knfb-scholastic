@@ -28,7 +28,7 @@
 
 @implementation SCHSampleBooksManifestOperation
 
-@synthesize processingDelegate;
+//@synthesize processingDelegate;
 @synthesize manifestURL;
 @synthesize executing;
 @synthesize finished;
@@ -41,7 +41,7 @@
 
 - (void)dealloc 
 {
-    processingDelegate = nil;
+   //processingDelegate = nil;
     [manifestURL release], manifestURL = nil;
 	[connection release], connection = nil;
 	[connectionData release], connectionData = nil;
@@ -91,7 +91,7 @@
 
 - (void)importFailedWithReason:(NSString *)reason
 {
-    [self.processingDelegate importFailedWithReason:reason];
+//    [self.processingDelegate importFailedWithReason:reason];
     [self finishOp];
 }
 

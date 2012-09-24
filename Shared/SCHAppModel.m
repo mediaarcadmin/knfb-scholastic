@@ -12,13 +12,15 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHSyncManager.h"
 #import "SCHProfileItem.h"
-#import "SCHSampleBooksImporter.h"
+#import "SCHPopulateDataStore.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHBookManager.h"
 #import "Reachability.h"
 #import "AppDelegate_Shared.h"
 #import "SCHStartingViewController.h" /* For errors */
 #import "NSString+EmailValidation.h"
 #import "SCHProfileSyncComponent.h"
+#import "SCHSampleBooksImporter.h"
 
 typedef enum {
 	kSCHAppModelSyncStateNone = 0,
@@ -33,6 +35,7 @@ typedef enum {
 @property (nonatomic, assign) id<SCHAppController> appController;
 @property (nonatomic, assign) SCHAppModelSyncState syncState;
 
+- (void)createLocalSampleBooksWithCompletion:(dispatch_block_t)completion importLocalBooks:(BOOL)importLocal;
 - (void)startSyncNow:(BOOL)now requireAuthentication:(BOOL)authenticate withSyncManager:(SCHSyncManager *)syncManager;
 
 @end
@@ -81,35 +84,24 @@ typedef enum {
         } else {
             [self.appController presentProfilesSetup];
         }
-    } else if ([appStateManager isSampleStore]) {
-        [self.appController presentTour];
     } else {
         [self.appController presentLogin];
     }
 }
 
-- (void)setupPreview
+- (void)setupSamples
 {
-    [self setupPreviewWithImporter:[SCHSampleBooksImporter sharedImporter]];
+    [self createLocalSampleBooksWithCompletion:^{
+        [self.appController presentSamples];
+    } importLocalBooks:YES];
+    
 }
 
-- (void)setupPreviewWithImporter:(SCHSampleBooksImporter *)importer
+- (void)setupTour
 {
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-    [appDelegate setStoreType:kSCHStoreTypeSampleStore];
-    
-    NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
-    NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
-            
-    [importer importSampleBooksFromRemoteManifest:[NSURL URLWithString:kSCHSampleBooksRemoteManifestURL] 
-                                                                   localManifest:localManifestURL
-                                                                    successBlock:^{
-                                                                        [self.appController presentTour];
-                                                                    }
-                                                                    failureBlock:^(NSString * failureReason){
-                                                                        NSError *error = [NSError errorWithDomain:kSCHSamplesErrorDomain code:kSCHSamplesUnspecifiedError userInfo:[NSDictionary dictionaryWithObject:failureReason forKey:@"failureReason"]];
-                                                                        [self.appController failedSamplesWithError:error];
-                                                                    }];
+    [self createLocalSampleBooksWithCompletion:^{
+        [self.appController presentTour];
+    } importLocalBooks:NO];
 }
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password
@@ -241,6 +233,36 @@ typedef enum {
 
 #pragma mark - Utility Methods
 
+- (void)createLocalSampleBooksWithCompletion:(dispatch_block_t)completion importLocalBooks:(BOOL)importLocal
+{
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+    [appDelegate setStoreType:kSCHStoreTypeSampleStore];
+        
+    SCHSampleBooksImporter *importer = [[[SCHSampleBooksImporter alloc] init] autorelease];
+    
+    BOOL sampleSuccess = [importer importSampleBooks];
+    
+    if (!sampleSuccess) {
+        NSError *error = [NSError errorWithDomain:kSCHSamplesErrorDomain code:kSCHSamplesUnspecifiedError userInfo:[NSDictionary dictionaryWithObject:@"Failed to import Sample eBooks" forKey:@"failureReason"]];
+        [self.appController failedSamplesWithError:error];
+    } else {
+        BOOL localSuccess =  YES;
+        
+        if (importLocal && [self hasBooksToImport]) {
+            localSuccess = [importer importLocalBooks];
+        }
+        
+        if (!localSuccess) {
+            NSError *error = [NSError errorWithDomain:kSCHSamplesErrorDomain code:kSCHSamplesUnspecifiedError userInfo:[NSDictionary dictionaryWithObject:@"Failed to import local eBooks" forKey:@"failureReason"]];
+            [self.appController failedSamplesWithError:error];
+        } else {
+            if (completion) {
+                completion();
+            }
+        }
+    }
+}
+
 - (void)startSyncNow:(BOOL)now requireAuthentication:(BOOL)authenticate withSyncManager:(SCHSyncManager *)syncManager
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncSucceeded:) name:SCHProfileSyncComponentDidCompleteNotification object:nil];
@@ -328,6 +350,30 @@ typedef enum {
     } else { 
         [self.appController failedSyncWithError:error];
     }
+}
+
+#pragma mark - Interogate State
+
+- (BOOL)hasBooksToImport
+{
+    return [SCHPopulateDataStore hasBooksToImport];
+}
+
+- (BOOL)hasExtraSampleBooks
+{
+    BOOL ret = NO;
+    
+    SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
+
+    if ([appStateManager isSampleStore]) {
+        NSArray *allSampleBooks = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:appStateManager.managedObjectContext];
+        
+        if ([allSampleBooks count] > 2) {
+            ret = YES;
+        }
+    }
+    
+    return ret;
 }
 
 @end

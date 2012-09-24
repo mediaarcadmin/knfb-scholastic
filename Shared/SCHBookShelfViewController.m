@@ -65,8 +65,6 @@ typedef enum
 @property (nonatomic, retain) BITModalSheetController *welcomePopoverController;
 @property (nonatomic, retain) BITModalSheetController *menuPopover;
 
-- (void)showWelcomeView;
-- (void)showWelcomeTwoView;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
 - (CGSize)cellSize;
@@ -108,7 +106,7 @@ typedef enum
 @synthesize backgroundView;
 @synthesize gridViewNeedsRefreshed;
 @synthesize listViewNeedsRefreshed;
-@synthesize profileSetupDelegate;
+@synthesize appController;
 @synthesize loadingView;
 @synthesize shouldShowBookshelfFailedErrorMessage;
 @synthesize shouldWaitForCellsToLoad;
@@ -181,7 +179,7 @@ typedef enum
     [books release], books = nil;
     [profileItem release], profileItem = nil;
     [managedObjectContext release], managedObjectContext = nil;
-    profileSetupDelegate = nil;
+    appController = nil;
     
     [super dealloc];
 }
@@ -361,74 +359,6 @@ typedef enum
 {
     [super viewDidAppear:animated];
     self.shouldWaitForCellsToLoad = NO;
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSInteger currentWelcomeShowCount = [userDefaults integerForKey:kSCHUserDefaultsWelcomeViewShowCount];
-    
-    if (self.showWelcome) {
-        if (currentWelcomeShowCount == 0) {
-            [self showWelcomeView];        
-        } else {
-            [self showWelcomeTwoView]; 
-        }
-    
-        currentWelcomeShowCount++;
-        
-        [userDefaults setInteger:currentWelcomeShowCount
-                          forKey:kSCHUserDefaultsWelcomeViewShowCount];
-        [userDefaults synchronize];
-        
-        self.showWelcome = NO;
-    }
-}
-
-- (void)showWelcomeView
-{
-    SCHStoriaWelcomeViewController *welcomeVC = [[SCHStoriaWelcomeViewController alloc] init];
-    
-    BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeVC];
-    [aWelcomePopoverController setContentSize:CGSizeMake(577, 241)];
-    [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
-    
-    __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
-    __block SCHBookShelfViewController *weakSelf = self;
-    
-    welcomeVC.closeBlock = ^{
-        [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
-        weakSelf.welcomePopoverController = nil;
-    };
-    
-    [welcomeVC release];
-    
-    [aWelcomePopoverController presentSheetInViewController:self animated:YES completion:nil];
-    
-    self.welcomePopoverController = aWelcomePopoverController;
-    
-    [aWelcomePopoverController release];    
-}
-
-- (void)showWelcomeTwoView
-{
-    SCHStoriaWelcomeViewController *welcomeTwoVC = [[SCHStoriaWelcomeViewController alloc] initWithNibName:@"SCHStoriaWelcomeTwoViewController" bundle:nil];
-    
-    BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeTwoVC];
-    [aWelcomePopoverController setContentSize:CGSizeMake(577, 241)];
-    [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
-    
-    __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
-    __block SCHBookShelfViewController *weakSelf = self;
-    
-    welcomeTwoVC.closeBlock = ^{
-        [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
-        weakSelf.welcomePopoverController = nil;
-    };
-    
-    [welcomeTwoVC release];
-    
-    [aWelcomePopoverController presentSheetInViewController:self animated:YES completion:nil];
-    
-    self.welcomePopoverController = aWelcomePopoverController;
-    
-    [aWelcomePopoverController release];    
 }
 
 - (void)reloadData
@@ -602,10 +532,10 @@ typedef enum
         }
         
         [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:kSCHBookSortTypeUser]];
-        [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
+        [self.appController exitBookshelf];
         [[SCHThemeManager sharedThemeManager] resetToDefault];
     } else {
-        [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
+        [self.appController exitBookshelf];
     }
     
     [[SCHSyncManager sharedSyncManager] wishListSync:NO];                        
@@ -778,7 +708,7 @@ typedef enum
                                       initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
                                       message:localizedMessage];
                 [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
-                    [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
+                    [self.appController presentProfiles];
                 }];
                 
                 self.profileItem = nil;

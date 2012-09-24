@@ -46,7 +46,7 @@
 @property (nonatomic, retain) SCHSettingsViewController *settingsViewController;
 @property (nonatomic, retain) UIViewController *readingManagerViewController;
 
-- (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome;
+- (void)pushSamplesAnimated:(BOOL)animated;
 - (void)pushProfileAnimated:(BOOL)animated;
 - (void)pushReadingManagerAnimated:(BOOL)animated;
 - (BOOL)isCurrentlyModal;
@@ -160,13 +160,25 @@
 {
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
     [self pushTourAnimated:shouldAnimate];
-    //[self pushSamplesAnimated:shouldAnimate showWelcome:welcome];
+}
+
+- (void)presentSamples
+{
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
+    [self pushSamplesAnimated:shouldAnimate];
 }
 
 - (void)presentLogin
 {
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
     [self setViewControllers:[NSArray arrayWithObject:self.loginViewController] animated:shouldAnimate];
+}
+
+#pragma mark - Exit Methods
+
+- (void)exitBookshelf
+{
+    [self popViewControllerAnimated:YES];
 }
 
 #pragma mark - Errors
@@ -288,14 +300,13 @@
     }
 }
 
-- (void)pushSamplesAnimated:(BOOL)animated showWelcome:(BOOL)welcome
+- (void)pushSamplesAnimated:(BOOL)animated
 {
+    // TODO, this reliance on using a profile view controller to get at a bookshelf should be refactored
     if ([[self.samplesViewController profileItems] count]) {
         SCHProfileItem *profileItem = [[self.samplesViewController profileItems] lastObject]; // Only one sample bookshelf so any result will do
-
-        NSMutableArray *viewControllers = [NSMutableArray arrayWithObjects:self.loginViewController, self.samplesViewController, nil];
-        [viewControllers addObjectsFromArray:[self.samplesViewController viewControllersForProfileItem:profileItem showWelcome:welcome]];
-        [self setViewControllers:viewControllers animated:animated];
+        UIViewController *bookshelfViewController = [[self.samplesViewController viewControllersForProfileItem:profileItem showWelcome:NO] lastObject];
+        [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, bookshelfViewController, nil] animated:animated];
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
@@ -444,12 +455,15 @@
 {
     if (!loginViewController) {
         loginViewController = [[SCHStoriaLoginViewController alloc] initWithNibName:@"SCHStoriaLoginViewController" bundle:nil];
-    
         AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
         SCHAppModel *appModel = [appDelegate appModel];
-    
+   
         loginViewController.previewBlock = ^{
-            [appModel setupPreview];
+            [appModel setupTour];
+        };
+        
+        loginViewController.samplesBlock = ^{
+            [appModel setupSamples];
         };
     
         __block SCHStoriaLoginViewController *weakLoginRef = loginViewController;
@@ -473,7 +487,6 @@
         // want to use the same database any more
         AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
         profileViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
-        //profileViewController.profileSetupDelegate = self;
         profileViewController.appController = self;
     }
     
@@ -490,7 +503,7 @@
         // want to use the same database any more
         AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
         samplesViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
-        //samplesViewController.profileSetupDelegate = self;
+        samplesViewController.appController = self;
     }
     
     return samplesViewController;
@@ -554,6 +567,12 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    if (viewController == self.loginViewController) {
+        AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
+        SCHAppModel *appModel = [appDelegate appModel];
+        loginViewController.showSamples = [appModel hasBooksToImport] || [appModel hasExtraSampleBooks];
+    }
+    
     if (![viewController shouldAutorotateToInterfaceOrientation:self.interfaceOrientation]) {
         // Need to force a rotation
         UIWindow *window = [[UIApplication sharedApplication] keyWindow];

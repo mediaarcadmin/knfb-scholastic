@@ -8,28 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const kSCHSampleBooksRemoteManifestURL;
-extern NSString * const kSCHSampleBooksLocalManifestFile;
+@interface SCHSampleBooksImporter : NSObject {}
 
-typedef void (^SCHSampleBooksProcessingSuccessBlock)(void);
-typedef void (^SCHSampleBooksProcessingFailureBlock)(NSString * failureReason);
-
-@protocol SCHSampleBooksImporterDelegate <NSObject>
-
-- (void)importFailedWithReason:(NSString *)reason;
-
-@end
-
-@interface SCHSampleBooksImporter : NSObject <SCHSampleBooksImporterDelegate> {
-    
-}
-
-- (void)importSampleBooksFromRemoteManifest:(NSURL *)remote 
-                              localManifest:(NSURL *)local 
-                               successBlock:(SCHSampleBooksProcessingSuccessBlock)successBlock
-                               failureBlock:(SCHSampleBooksProcessingFailureBlock)failureBlock;
-- (void)cancel;
-
-+ (SCHSampleBooksImporter *)sharedImporter;
+- (BOOL)importSampleBooks;
+- (BOOL)importLocalBooks;
 
 @end

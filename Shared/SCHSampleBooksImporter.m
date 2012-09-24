@@ -7,245 +7,63 @@
 //
 
 #import "SCHSampleBooksImporter.h"
-#import "Reachability.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHSampleBooksManifestOperation.h"
 #import "SCHSyncManager.h"
-#import "LambdaAlert.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHBookIdentifier.h"
 #import "SCHAppStateManager.h"
 
-NSString * const kSCHSampleBooksRemoteManifestURL = FREE_MANIFEST;
 NSString * const kSCHSampleBooksLocalManifestFile = @"LocalSamplesManifest.xml";
 
-static NSTimeInterval const kSCHSampleBooksRemoteManifestUpdateInterval = -(3600*24*7); // 1 week
+@interface SCHSampleBooksImporter() <NSXMLParserDelegate>
 
-typedef enum {
-	kSCHSampleBooksProcessingStateError = 0,
-    kSCHSampleBooksProcessingStateNotStarted,
-    kSCHSampleBooksProcessingStateLocalManifestInProgress,
-    kSCHSampleBooksProcessingStateLocalManifestComplete,
-    kSCHSampleBooksProcessingStateRemoteManifestInProgress
-} SCHSampleBooksProcessingState;
+@property (nonatomic, retain) NSMutableArray *sampleManifestEntries;
+@property (nonatomic, retain) NSMutableDictionary *currentEntry;
+@property (nonatomic, retain) NSMutableString *currentStringValue;
 
-@interface SCHSampleBooksImporter()
-
-@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTask;
-@property (nonatomic, assign) SCHSampleBooksProcessingState processingState;
-@property (nonatomic, retain) NSOperationQueue *processingQueue;
-@property (nonatomic, retain) Reachability *reachabilityNotifier;
-@property (nonatomic, copy) NSURL *remoteManifestURL;
-@property (nonatomic, copy) NSURL *localManifestURL;
-@property (nonatomic, copy) SCHSampleBooksProcessingSuccessBlock successBlock;
-@property (nonatomic, copy) SCHSampleBooksProcessingFailureBlock failureBlock;
-@property (nonatomic, retain) NSMutableArray *sampleEntries;
-@property (nonatomic, retain) LambdaAlert *remoteSamplesAlert;
-
-- (BOOL)isConnected;
-- (BOOL)needsRemoteManifest;
-- (void)enterBackground:(NSNotification *)note;
-- (void)enterForeground:(NSNotification *)note;
-- (void)checkRemoteState;
-- (void)startLocal;
-- (void)startRemote;
-- (NSString *)lastRemoteSampleBooksFilePath;
-- (void)reset;
-- (void)populateSampleStore;
-- (void)perfomSuccessBlockOnMainThread;
-- (void)perfomFailureBlockOnMainThreadWithReason:(NSString *)failureReason;
+- (BOOL)populateSampleStoreFromEntries:(NSArray *)sampleEntries;
 - (SCHBookIdentifier *)identifierForSampleEntry:(NSDictionary *)sampleEntry;
-- (void)registerForNotifications;
-- (void)deregisterForNotifications;
-+ (BOOL)stateIsReadyToBegin:(SCHSampleBooksProcessingState)state;
 
 @end
 
 @implementation SCHSampleBooksImporter
 
-@synthesize backgroundTask;
-@synthesize processingState;
-@synthesize processingQueue;
-@synthesize reachabilityNotifier;
-@synthesize remoteManifestURL;
-@synthesize localManifestURL;
-@synthesize successBlock;
-@synthesize failureBlock;
-@synthesize sampleEntries;
-@synthesize remoteSamplesAlert;
+@synthesize sampleManifestEntries;
+@synthesize currentEntry;
+@synthesize currentStringValue;
 
 - (void)dealloc
 {
-    [reachabilityNotifier stopNotifier];
-    [reachabilityNotifier release], reachabilityNotifier = nil;
-
-    [processingQueue cancelAllOperations];
-    [processingQueue release], processingQueue = nil;
-    
-    [self deregisterForNotifications];
-
-    [remoteManifestURL release], remoteManifestURL = nil;
-    [localManifestURL release], localManifestURL = nil;
-    [successBlock release], successBlock = nil;
-    [failureBlock release], failureBlock = nil;
-    [sampleEntries release], sampleEntries = nil;
-    [remoteSamplesAlert release], remoteSamplesAlert = nil;
-
+    [sampleManifestEntries release], sampleManifestEntries = nil;
+    [currentEntry release], currentEntry = nil;
+    [currentStringValue release], currentStringValue = nil;
     [super dealloc];
 }
 
-- (id)init
+- (BOOL)importSampleBooks
 {
-	if ((self = [super init])) {
-		processingQueue = [[NSOperationQueue alloc] init];
-		[processingQueue setMaxConcurrentOperationCount:1];
-    }
-	
-	return self;
+    BOOL success = NO;
+    NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
+    NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
+    NSData *data = [NSData dataWithContentsOfURL:localManifestURL];
+    
+    self.sampleManifestEntries = [NSMutableArray array];
+    
+    NSXMLParser *aParser = [[NSXMLParser alloc] initWithData:data];
+    aParser.delegate = self;
+    [aParser parse];
+    [aParser release];
+        
+    success = [self populateSampleStoreFromEntries:self.sampleManifestEntries];
+    
+    return success;
 }
 
-- (void)importSampleBooksFromRemoteManifest:(NSURL *)remote 
-                              localManifest:(NSURL *)local 
-                               successBlock:(SCHSampleBooksProcessingSuccessBlock)aSuccessBlock
-                               failureBlock:(SCHSampleBooksProcessingFailureBlock)aFailureBlock 
+- (BOOL)importLocalBooks
 {
-    [self cancel];
-    [self registerForNotifications];
-    
-    self.remoteManifestURL = remote;
-    self.localManifestURL = local;
-    self.successBlock = aSuccessBlock;
-    self.failureBlock = aFailureBlock;
-    self.sampleEntries = [NSMutableArray array];
-    
-    if (self.localManifestURL) {
-        [self startLocal];
-    } else if (self.remoteManifestURL) {
-        self.reachabilityNotifier = [Reachability reachabilityForInternetConnection];
-        
-        if ([self isConnected] && [SCHSampleBooksImporter stateIsReadyToBegin:self.processingState]) {
-            [self startRemote];
-        } else {
-            [self perfomFailureBlockOnMainThreadWithReason:NSLocalizedString(@"You must be connected to the internet", @"")];
-        }
-        
-    } else {
-        [self perfomFailureBlockOnMainThreadWithReason:NSLocalizedString(@"No sample eBooks were found", @"")];
-    }
-}
-
-- (void)checkRemoteState
-{
-    self.reachabilityNotifier = [Reachability reachabilityForInternetConnection];
-
-	if ([self isConnected] && [SCHSampleBooksImporter stateIsReadyToBegin:self.processingState]) {
-        [self startRemote];
-	} else {
-		[self.processingQueue cancelAllOperations];
-	}
-}
-
-- (void)cancel
-{
-    [self.processingQueue cancelAllOperations];
-    [self reset];
-}
-
-- (void)reset
-{
-    [self deregisterForNotifications];
-    self.processingState = kSCHSampleBooksProcessingStateNotStarted;
-    
-    [self.reachabilityNotifier stopNotifier];
-    self.reachabilityNotifier = nil;
-    
-    self.remoteManifestURL = nil;
-    self.localManifestURL = nil;
-    self.failureBlock = nil;
-    self.sampleEntries = nil;
-}
-        
-- (void)startLocal
-{
-    self.processingState = kSCHSampleBooksProcessingStateLocalManifestInProgress;
-    
-    SCHSampleBooksManifestOperation *manifestOp = [[SCHSampleBooksManifestOperation alloc] init];
-    manifestOp.manifestURL = self.localManifestURL;
-    manifestOp.processingDelegate = self;
-    
-    __block SCHSampleBooksManifestOperation *opPtr = manifestOp;
-    
-    [manifestOp setCompletionBlock:^{
-        if (![opPtr isCancelled]) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                [self.sampleEntries addObjectsFromArray:opPtr.sampleEntries];
-                self.processingState = kSCHSampleBooksProcessingStateLocalManifestComplete;
-                
-                self.reachabilityNotifier = [Reachability reachabilityForInternetConnection];
-
-                [self startRemote];
-            });
-        }
-    }];
-    
-    [self.processingQueue addOperation:manifestOp];
-    [manifestOp release];      
-}
-
-- (BOOL)needsRemoteManifest
-{
-    NSDate *lastRemoteManifestUpdateDate = [[SCHAppStateManager sharedAppStateManager] lastRemoteManifestUpdateDate];
-
-    return (lastRemoteManifestUpdateDate == nil || 
-            ([lastRemoteManifestUpdateDate timeIntervalSinceNow] < kSCHSampleBooksRemoteManifestUpdateInterval));
-}
-
-- (void)startRemote
-{        
-    if ([self isConnected] && [self needsRemoteManifest]) {
-        
-        self.remoteSamplesAlert = [[[LambdaAlert alloc]
-                                    initWithTitle:NSLocalizedString(@"Updating Sample eBooks", @"")
-                                    message:@"\n"] autorelease];
-        [self.remoteSamplesAlert setSpinnerHidden:NO];
-        [self.remoteSamplesAlert show];
-        
-        SCHSampleBooksManifestOperation *manifestOp = [[SCHSampleBooksManifestOperation alloc] init];
-        manifestOp.manifestURL = self.remoteManifestURL;
-        manifestOp.processingDelegate = self;
-        
-        __block SCHSampleBooksManifestOperation *opPtr = manifestOp;
-        
-        [manifestOp setCompletionBlock:^{
-            if (![opPtr isCancelled]) {
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    [[SCHAppStateManager sharedAppStateManager] setLastRemoteManifestUpdateDate:[NSDate date]];
-                    [opPtr.sampleEntries writeToFile:[self lastRemoteSampleBooksFilePath] atomically:YES];
-                    [self.sampleEntries addObjectsFromArray:opPtr.sampleEntries];
-                    [self populateSampleStore];
-                    [self reset];
-                });
-            }
-        }];
-        
-        
-        [self.processingQueue addOperation:manifestOp];
-        [manifestOp release];
-    } else {
-        NSArray *lastRemoteSampleBooks = [NSArray arrayWithContentsOfFile:[self lastRemoteSampleBooksFilePath]];
-        if (lastRemoteSampleBooks != nil) {
-            [self.sampleEntries addObjectsFromArray:lastRemoteSampleBooks];
-        }
-        [self populateSampleStore];
-        [self reset];
-    }
-}
-
-- (NSString *)lastRemoteSampleBooksFilePath
-{
-    NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-    
-    return [applicationSupportDirectory stringByAppendingPathComponent:@"LastRemoteSampleBooks.plist"];
+    BOOL success = [[SCHSyncManager sharedSyncManager] populateSampleStoreFromImport];
+    return success;
 }
 
 - (SCHBookIdentifier *)identifierForSampleEntry:(NSDictionary *)sampleEntry
@@ -262,21 +80,24 @@ typedef enum {
     return sampleIdentifier;
 }
                           
-- (void)populateSampleStore {
-    if ([self.sampleEntries count]) {
+- (BOOL)populateSampleStoreFromEntries:(NSArray *)sampleEntries {
+    
+    BOOL success = NO;
+    
+    if ([sampleEntries count]) {
         
         // Remove duplicates from samples, newest version trumps
         NSMutableArray *uniqueSamples = [NSMutableArray array];
         
-        [self.sampleEntries enumerateObjectsUsingBlock:^(id sampleObj, NSUInteger sampleIdx, BOOL *sampleStop) {
+        [sampleEntries enumerateObjectsUsingBlock:^(id sampleObj, NSUInteger sampleIdx, BOOL *sampleStop) {
             SCHBookIdentifier *sampleIdentifier = [self identifierForSampleEntry:(NSDictionary *)sampleObj];
-                        
+            
             if (sampleIdentifier) {
                 
                 __block id sampleToBeRemoved = nil;
                 __block id sampleToBeAdded = sampleObj;
                 
-                [uniqueSamples enumerateObjectsUsingBlock:^(id existingObj, NSUInteger exampleIdx, BOOL *existingStop) {       
+                [uniqueSamples enumerateObjectsUsingBlock:^(id existingObj, NSUInteger exampleIdx, BOOL *existingStop) {
                     
                     SCHBookIdentifier *existingIdentifier = [self identifierForSampleEntry:(NSDictionary *)existingObj];
                     
@@ -305,209 +126,58 @@ typedef enum {
             }
         }];
         
-        self.sampleEntries = uniqueSamples;
         
-        if ([[SCHSyncManager sharedSyncManager] populateSampleStoreFromManifestEntries:self.sampleEntries]) {
-            [self perfomSuccessBlockOnMainThread];
-        } else {
-            [self importFailedWithReason:NSLocalizedString(@"Unable to populate the store with the sample eBooks", @"")];
-        }
-    } else {
-        [self importFailedWithReason:NSLocalizedString(@"No sample eBooks were found", @"")];
-    }
-}
-
-- (void)perfomSuccessBlockOnMainThread
-{    
-    [self.remoteSamplesAlert dismissAnimated:NO];
-    self.remoteSamplesAlert = nil;
-    
-    if (self.successBlock != nil) {
-        SCHSampleBooksProcessingSuccessBlock handler = Block_copy(self.successBlock);
-        self.successBlock = nil;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            handler();
-        });
-        Block_release(handler);
-    }
-}
-
-- (void)perfomFailureBlockOnMainThreadWithReason:(NSString *)failureReason
-{
-    [self.remoteSamplesAlert dismissAnimated:NO];
-    self.remoteSamplesAlert = nil;
-    
-    self.processingState = kSCHSampleBooksProcessingStateError;
-
-    if (self.failureBlock != nil) {
-        SCHSampleBooksProcessingFailureBlock handler = Block_copy(self.failureBlock);
-        self.failureBlock = nil;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            handler(failureReason);
-        });
-        Block_release(handler);
-    }
-}
-
-- (void)importFailedWithReason:(NSString *)reason
-{
-    [self.processingQueue cancelAllOperations];
-    
-    if ([self.sampleEntries count]) {
-        // We have some samples, we might as well use them
-        [self populateSampleStore];
-    } else {
-        [self perfomFailureBlockOnMainThreadWithReason:reason];
-    }
-    
-    [self reset];
-}
-
-- (void)enterBackground:(NSNotification *)note
-{
-    UIDevice* device = [UIDevice currentDevice];
-    BOOL backgroundSupported = [device respondsToSelector:@selector(isMultitaskingSupported)] && device.multitaskingSupported;
-    if(backgroundSupported) {        
-		
-        // if there's already a background monitoring task, then return - the existing one will work
-        if (self.backgroundTask && self.backgroundTask != UIBackgroundTaskInvalid) {
-            return;
-        }
+        success = [[SCHSyncManager sharedSyncManager] populateSampleStoreFromManifestEntries:uniqueSamples];
         
-		if ((self.processingQueue && [self.processingQueue operationCount]) ) {
-			NSLog(@"Sample books processing needs more time - going into the background.");
-			
-            self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-                if(self.backgroundTask != UIBackgroundTaskInvalid) {
-                    NSLog(@"Ran out of time. Pausing queue.");
-                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
-                    self.backgroundTask = UIBackgroundTaskInvalid;
-                }
-            }];
-			
-            dispatch_queue_t taskcompletion = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-			
-			dispatch_async(taskcompletion, ^{
+    }
+    
+    return success;
+}
 
-                if(self.backgroundTask != UIBackgroundTaskInvalid) {
-					[self.processingQueue waitUntilAllOperationsAreFinished];
-					NSLog(@"Sample books processing queue is finished!");
-                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
-                    self.backgroundTask = UIBackgroundTaskInvalid;
-                }
-            });
+#pragma mark - NSXMLParserDelegate methods
+
+- (void)parser:(NSXMLParser *)parser
+didStartElement:(NSString *)elementName
+  namespaceURI:(NSString *)namespaceURI
+ qualifiedName:(NSString *)qName
+    attributes:(NSDictionary *)attributeDict
+{
+    if ([elementName isEqualToString:@"Book"]) {
+        self.currentEntry = [NSMutableDictionary dictionary];
+    }
+}
+
+- (void)parser:(NSXMLParser *)parser
+ didEndElement:(NSString *)elementName
+  namespaceURI:(NSString *)namespaceURI
+ qualifiedName:(NSString *)qName
+{
+	if ([elementName isEqualToString:@"Book"]) {
+        if (self.currentEntry != nil) {
+            [self.sampleManifestEntries addObject:self.currentEntry];
+            self.currentEntry = nil;
         }
-	}
-    
-    // if the user kills the app while we are performing background tasks the 
-    // DidEnterBackground notification is called again, so we disable it and 
-    // enable it in the foreground
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                    name:UIApplicationDidEnterBackgroundNotification 
-                                                  object:nil];        
-}
-
-- (void)enterForeground:(NSNotification *)note
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(enterBackground:) 
-                                                 name:UIApplicationDidEnterBackgroundNotification 
-                                               object:nil];	
-    
-    if(self.backgroundTask != UIBackgroundTaskInvalid) {
-		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
-		self.backgroundTask = UIBackgroundTaskInvalid;
-	}		
-	
-	[self checkRemoteState];
-}
-
-#pragma mark -
-#pragma mark Reachability
-
-- (void)reachabilityNotification:(NSNotification *)note
-{
-    if (self.reachabilityNotifier == [note object]) {
-        [self checkRemoteState];
-    }
-}
-
-- (BOOL)isConnected
-{
-	BOOL ret = YES;
-    NetworkStatus netStatus = [self.reachabilityNotifier currentReachabilityStatus];
-    
-	switch (netStatus)
-    {
-        case NotReachable:
-            ret = NO;
-            break;
-        case ReachableViaWWAN:
-        case ReachableViaWiFi:
-        default:
-		{
-			ret = YES;
-            break;
-		}
+	} else if ([elementName isEqualToString:@"Isbn13"] ||
+               [elementName isEqualToString:@"Title"] ||
+               [elementName isEqualToString:@"Author"] ||
+               [elementName isEqualToString:@"Category"] ||
+               [elementName isEqualToString:@"CoverUrl"] ||
+               [elementName isEqualToString:@"DownloadUrl"] ||
+               [elementName isEqualToString:@"Version"] ||
+               [elementName isEqualToString:@"IsEnhanced"] ||
+               [elementName isEqualToString:@"FileSize"]) {
+        [self.currentEntry setValue:self.currentStringValue forKey:elementName];
     }
     
-    return ret;
+    self.currentStringValue = nil;
 }
 
-#pragma mark - State Checking
-  
-+ (BOOL)stateIsReadyToBegin:(SCHSampleBooksProcessingState)state
-{
-    return (state == kSCHSampleBooksProcessingStateError) || (state == kSCHSampleBooksProcessingStateNotStarted) || (state == kSCHSampleBooksProcessingStateLocalManifestComplete);
-}
-                               
-#pragma mark - Singleton Instance method
-
-+ (SCHSampleBooksImporter *)sharedImporter
-{
-    static dispatch_once_t pred;
-    static SCHSampleBooksImporter *sharedManager = nil;
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+    if (!self.currentStringValue) {
+        self.currentStringValue = [[[NSMutableString alloc] initWithCapacity:50] autorelease];
+    }
     
-    dispatch_once(&pred, ^{
-        sharedManager = [[super allocWithZone:NULL] init];
-    });
-	
-    return sharedManager;
-}
-
-#pragma mark - Notification registration
-
-- (void)registerForNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(reachabilityNotification:) 
-                                                 name:kReachabilityChangedNotification 
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(enterBackground:) 
-                                                 name:UIApplicationDidEnterBackgroundNotification 
-                                               object:nil];			
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(enterForeground:) 
-                                                 name:UIApplicationWillEnterForegroundNotification 
-                                               object:nil];
-}
-
-- (void)deregisterForNotifications
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                    name:kReachabilityChangedNotification 
-                                                  object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                    name:UIApplicationDidEnterBackgroundNotification 
-                                                  object:nil];			
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                    name:UIApplicationWillEnterForegroundNotification 
-                                                  object:nil];
+    [self.currentStringValue appendString:[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
 }
 
 @end

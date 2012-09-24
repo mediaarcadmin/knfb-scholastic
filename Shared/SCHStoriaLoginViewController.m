@@ -27,6 +27,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 
 @synthesize loginBlock;
 @synthesize previewBlock;
+@synthesize samplesBlock;
 @synthesize topFieldLabel;
 @synthesize topField;
 @synthesize bottomField;
@@ -37,6 +38,8 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 @synthesize activeTextField;
 @synthesize scrollView;
 @synthesize backgroundView;
+@synthesize showSamples;
+@synthesize samplesButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -69,6 +72,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 {
     [self releaseViewObjects];
     [previewBlock release], previewBlock = nil;
+    [samplesBlock release], samplesBlock = nil;
     [loginBlock release], loginBlock = nil;
     
     [super dealloc];
@@ -135,6 +139,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES];
+    [self.samplesButton setHidden:!self.showSamples];
     
     [self stopShowingProgress];
     [self setupContentSizeForOrientation:self.interfaceOrientation];
@@ -183,6 +188,12 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     }   
 }
 
+- (void)setShowSamples:(BOOL)newShowSamples
+{
+    showSamples = newShowSamples;
+    [self.samplesButton setHidden:!showSamples];
+}
+
 #pragma mark - Actions
 
 - (IBAction)loginButtonAction:(id)sender
@@ -206,6 +217,17 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
         self.previewBlock();
     }
 }
+
+- (IBAction)samplesButtonAction:(id)sender
+{
+    [self.view endEditing:YES];
+    [self clearFields];
+    
+    if (self.samplesBlock) {
+        self.samplesBlock();
+    }
+}
+
 
 #pragma mark - SCHLoginHandlerDelegate
 

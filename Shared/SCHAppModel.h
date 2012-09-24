@@ -13,7 +13,6 @@
 @class SCHAuthenticationManager;
 @class SCHSyncManager;
 @class SCHAppStateManager;
-@class SCHSampleBooksImporter;
 
 @interface SCHAppModel : NSObject
 
@@ -22,15 +21,16 @@
 // Shared Instance Actions
 
 - (void)restoreAppState;
-- (void)setupPreview;
+
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password;
+- (void)setupSamples;
+- (void)setupTour;
 
 // Actions
 
 - (void)restoreAppStateWithAppStateManager:(SCHAppStateManager *)appStateManager
                      authenticationManager:(SCHAuthenticationManager *)authenticationManager
                                syncManager:(SCHSyncManager *)syncManager;
-- (void)setupPreviewWithImporter:(SCHSampleBooksImporter *)importer;
 - (void)loginWithUsername:(NSString *)username 
                  password:(NSString *)password 
               syncManager:(SCHSyncManager *)syncManager
@@ -44,6 +44,11 @@
 
 - (void)waitForBookshelvesWithSyncManager:(SCHSyncManager *)syncManager;
 - (void)waitForWebParentToolsToCompleteWithSyncManager:(SCHSyncManager *)syncManager;
+
+// Interogate App State
+
+- (BOOL)hasBooksToImport;
+- (BOOL)hasExtraSampleBooks;
 
 // Exposed for testing purposes
 

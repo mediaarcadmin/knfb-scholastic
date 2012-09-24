@@ -15,10 +15,14 @@
 // Presentation Methods
 - (void)presentLogin;
 - (void)presentTour;
+- (void)presentSamples;
 - (void)presentProfiles;
 - (void)presentProfilesSetup;
 - (void)presentReadingManager;
 - (void)presentSettings;
+
+// Exit Methods
+- (void)exitBookshelf;
 
 // TODO: refactor these
 - (void)waitForWebParentToolsToComplete;

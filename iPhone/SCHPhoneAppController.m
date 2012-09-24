@@ -167,12 +167,24 @@
     }
 }
 
+- (void)presentSamples
+{
+    [self pushSamplesAnimated:NO showWelcome:YES];
+}
+
 - (void)presentLogin
 {   
     UIViewController *login = [self loginViewController];
     self.modalContainerView = [[[UINavigationController alloc] initWithRootViewController:login] autorelease];
     
     [self presentModalViewController:self.modalContainerView animated:NO];
+}
+
+#pragma mark - Exit Methods
+
+- (void)exitBookshelf
+{
+    [self popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - Errors
@@ -477,7 +489,7 @@
     SCHAppModel *appModel = [appDelegate appModel];
 
     login.previewBlock = ^{
-        [appModel setupPreview];
+        [appModel setupTour];
     };
     
     __block SCHStoriaLoginViewController *weakLoginRef = login;

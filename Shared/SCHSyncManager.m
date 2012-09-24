@@ -396,15 +396,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             self.firstSyncAfterDelay = YES;
         }
     } else  {
-        BOOL importedBooks = NO;
-        
-        if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
-            SCHPopulateDataStore *populateDataStore = [self populateDataStore];
-            
-            importedBooks = [populateDataStore populateFromImport] > 0;
-        }
-
-        if (syncNow == YES || importedBooks == YES || self.lastFirstSyncEnded == nil || 
+        if (syncNow == YES || self.lastFirstSyncEnded == nil || 
             [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
             self.lastFirstSyncEnded = [NSDate date];
     
@@ -1020,6 +1012,16 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     
     SCHPopulateDataStore *populateDataStore = [self populateDataStore];
     return [populateDataStore populateSampleStoreFromManifestEntries:entries];
+}
+
+- (BOOL)populateSampleStoreFromImport
+{
+    BOOL importedBooks = NO;
+    
+    SCHPopulateDataStore *populateDataStore = [self populateDataStore];
+    importedBooks = [populateDataStore populateFromImport] > 0;
+    
+    return importedBooks;
 }
 
 - (SCHPopulateDataStore *)populateDataStore

@@ -722,19 +722,19 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         
         AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
         [appDelegate setStoreType:kSCHStoreTypeSampleStore];
-        
-        NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
-        NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
-        
-        [[SCHSampleBooksImporter sharedImporter] importSampleBooksFromRemoteManifest:[NSURL URLWithString:kSCHSampleBooksRemoteManifestURL] 
-                                                                       localManifest:localManifestURL
-                                                                        successBlock:^{
-                                                                            completion(nil);
-                                                                        }
-                                                                        failureBlock:^(NSString * failureReason){
-                                                                            NSError *error = [NSError errorWithDomain:kSCHSamplesErrorDomain code:kSCHSamplesUnspecifiedError userInfo:[NSDictionary dictionaryWithObject:failureReason forKey:@"failureReason"]];
-                                                                            completion(error);
-                                                                        }];
+//        
+//        NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
+//        NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
+//        
+//        [[SCHSampleBooksImporter sharedImporter] importSampleBooksFromRemoteManifest:[NSURL URLWithString:kSCHSampleBooksRemoteManifestURL] 
+//                                                                       localManifest:localManifestURL
+//                                                                        successBlock:^{
+//                                                                            completion(nil);
+//                                                                        }
+//                                                                        failureBlock:^(NSString * failureReason){
+//                                                                            NSError *error = [NSError errorWithDomain:kSCHSamplesErrorDomain code:kSCHSamplesUnspecifiedError userInfo:[NSDictionary dictionaryWithObject:failureReason forKey:@"failureReason"]];
+//                                                                            completion(error);
+//                                                                        }];
     };
     
     setupSequenceImportSamplesOperation.failed = ^(NSError *error){

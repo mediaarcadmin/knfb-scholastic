@@ -18,12 +18,19 @@
 #import "NSString+EmailValidation.h"
 #import "SFHFKeychainUtils.h"
 
+typedef enum  {
+    SCHReadingManagerAlertNone,
+    SCHReadingManagerAlertMalformedEmail,
+    SCHReadingManagerAlertAuthenticationFailure
+} SCHReadingManagerAlert;
+
 @interface SCHReadingManagerAuthorisationViewController () <UITextFieldDelegate>
 
 @property (nonatomic, retain) SCHAccountValidation *accountValidation;
 @property (nonatomic, retain) SCHAccountVerifier *accountVerifier;
 
 - (void)showAppVersionOutdatedAlert;
+- (void)setAlert:(SCHReadingManagerAlert)alert;
 
 @end
 
@@ -60,7 +67,7 @@
 {
     [super viewDidLoad];
     
-    self.messageLabel.alpha = 0;
+    [self setAlert:SCHReadingManagerAlertNone];    
 }
 - (void)viewDidUnload
 {
@@ -86,6 +93,25 @@
     }
     
     return(accountVerifier);    
+}
+
+- (void)setAlert:(SCHReadingManagerAlert)alert
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    self.messageLabel.alpha = 1;
+
+    switch (alert) {
+        case SCHReadingManagerAlertNone:
+            self.messageLabel.alpha = 0;
+            break;
+            
+        default:
+            break;
+    }
+    
+    [CATransaction commit];
 }
 
 #pragma mark - Actions

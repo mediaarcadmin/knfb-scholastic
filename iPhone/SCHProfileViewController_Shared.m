@@ -542,7 +542,7 @@ didSelectButtonAnimated:(BOOL)animated
     SCHBookShelfViewController *bookShelfViewController = [[self newBookShelfViewController] autorelease];
     bookShelfViewController.profileItem = profileItem;
     bookShelfViewController.managedObjectContext = self.managedObjectContext;
-    bookShelfViewController.profileSetupDelegate = self.profileSetupDelegate;
+    bookShelfViewController.appController = self.appController;
     bookShelfViewController.showWelcome = welcome;
     
     [viewControllers addObject:bookShelfViewController];
