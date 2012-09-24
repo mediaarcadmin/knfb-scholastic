@@ -324,9 +324,7 @@ typedef enum
         self.shouldWaitForCellsToLoad = YES;
         [self reloadDataImmediately:YES];
     } else {
-        if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
-            [[SCHSyncManager sharedSyncManager] bookshelfSyncNow:forceBookshelfSync];
-        }
+        [[SCHSyncManager sharedSyncManager] bookshelfSyncNow:forceBookshelfSync];
         
         if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
             [[SCHProcessingManager sharedProcessingManager] checkStateForAllBooks];
