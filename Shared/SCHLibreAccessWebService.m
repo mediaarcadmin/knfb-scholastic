@@ -18,6 +18,7 @@
 #import "tns1.h"
 #import "USAdditions.h"
 #import "SCHMakeNullNil.h"
+#import "SCHSyncEntity.h"
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
 static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"statusmessage";
@@ -118,7 +119,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		binding = [[LibreAccessServiceSvc SCHLibreAccessServiceSoap11Binding] retain];
 		binding.logXMLInOut = NO;
 	}
-	
+
 	return(self);
 }
 
@@ -126,14 +127,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
     [binding clearBindingOperations]; // Will invalidate the delegate on any underway operations
 	[binding release], binding = nil;
-	
+
 	[super dealloc];
 }
 
 - (void)clear
 {
     self.binding = [LibreAccessServiceSvc SCHLibreAccessServiceSoap11Binding];
-    binding.logXMLInOut = NO;		
+    binding.logXMLInOut = NO;
 }
 
 #pragma mark - API Proxy methods
@@ -147,65 +148,65 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	request.deviceKey = @"";
 	request.impersonationkey = @"";
 	request.UserName = userName;
-	
-	[self.binding TokenExchangeAsyncUsingBody:request delegate:self]; 
+
+	[self.binding TokenExchangeAsyncUsingBody:request delegate:self];
 	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-	
+
 	[request release], request = nil;
 }
 
 - (void)authenticateDevice:(NSString *)deviceKey forUserKey:(NSString *)userKey
 {
 	tns1_AuthenticateDeviceRequest *request = [tns1_AuthenticateDeviceRequest new];
-    
+
 	request.vaid = [NSNumber numberWithInt:kSCHLibreAccessWebServiceVaid];
 	request.deviceKey = deviceKey;
 	request.userKey = userKey;
-	
-	[self.binding AuthenticateDeviceAsyncUsingBody:request delegate:self]; 
+
+	[self.binding AuthenticateDeviceAsyncUsingBody:request delegate:self];
 	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-	
+
 	[request release], request = nil;
 }
 
 - (void)renewToken:(NSString *)aToken
 {
     tns1_RenewTokenRequest *request = [tns1_RenewTokenRequest new];
-    
+
     request.authtoken = aToken;
-    
-    [self.binding RenewTokenAsyncUsingBody:request delegate:self]; 
+
+    [self.binding RenewTokenAsyncUsingBody:request delegate:self];
     [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-    
+
     [request release], request = nil;
 }
 
 - (BOOL)getUserProfiles
 {
 	BOOL ret = NO;
-	
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
+
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
 		tns1_GetUserProfilesRequest *request = [tns1_GetUserProfilesRequest new];
-		
+
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-		
-		[self.binding GetUserProfilesAsyncUsingParameters:request delegate:self]; 
+
+		[self.binding GetUserProfilesAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-		
+
 		[request release], request = nil;
 		ret = YES;
 	}
-	
-	return(ret);	
+
+	return(ret);
 }
 
 - (BOOL)saveUserProfiles:(NSArray *)userProfiles
 {
 	BOOL ret = NO;
-	
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
+
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
 		tns1_SaveUserProfilesRequest *request = [tns1_SaveUserProfilesRequest new];
-		
+
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
         id saveProfileList = [[tns1_SaveProfileList alloc] init];
 		request.SaveProfileList = saveProfileList;
@@ -213,147 +214,147 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		tns1_SaveProfileItem *item = nil;
 		for (id profile in userProfiles) {
 			item = [[tns1_SaveProfileItem alloc] init];
-			[self fromObject:profile intoObject:item];		
-			[request.SaveProfileList addSaveProfileItem:item];	
+			[self fromObject:profile intoObject:item];
+			[request.SaveProfileList addSaveProfileItem:item];
 			[item release], item = nil;
-		}	
-		
-		[self.binding SaveUserProfilesAsyncUsingParameters:request delegate:self]; 
+		}
+
+		[self.binding SaveUserProfilesAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-		
+
 		[request release], request = nil;
 		ret = YES;
 	}
-	
-	return(ret);		
+
+	return(ret);
 }
 
-// we previously used listUserContent 
+// we previously used listUserContent
 - (BOOL)listBooksAssignment
 {
 	BOOL ret = NO;
-	
+
 	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
 		tns1_ListBooksAssignmentRequest *request = [tns1_ListBooksAssignmentRequest new];
-		
+
 		request.authToken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-		
+
 		[self.binding ListBooksAssignmentAsyncUsingBody:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-		
-		[request release], request = nil;	
+
+		[request release], request = nil;
 		ret = YES;
 	}
-	
-	return(ret);			
+
+	return(ret);
 }
 
 - (BOOL)listFavoriteTypes
 {
 	BOOL ret = NO;
-	
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
+
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
 		tns1_ListFavoriteTypesRequest *request = [tns1_ListFavoriteTypesRequest new];
-		
+
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 
-		[self.binding ListFavoriteTypesAsyncUsingParameters:request delegate:self]; 
+		[self.binding ListFavoriteTypesAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-		
-		[request release], request = nil;	
+
+		[request release], request = nil;
 		ret = YES;
 	}
-	
-	return(ret);			
+
+	return(ret);
 }
 
-- (BOOL)listContentMetadata:(NSArray *)bookISBNs 
+- (BOOL)listContentMetadata:(NSArray *)bookISBNs
                 includeURLs:(BOOL)includeURLs
                coverURLOnly:(BOOL)coverURLOnly
 {
 	BOOL ret = NO;
-	
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {				
+
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
 		tns1_ListContentMetadata *request = [tns1_ListContentMetadata new];
-		
+
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 		USBoolean *includeurls = [[USBoolean alloc] initWithBool:includeURLs];
 		request.includeurls = includeurls;
-		[includeurls release], includeurls = nil;	
-        USBoolean *coverurlonly = [[USBoolean alloc] initWithBool:coverURLOnly];        
+		[includeurls release], includeurls = nil;
+        USBoolean *coverurlonly = [[USBoolean alloc] initWithBool:coverURLOnly];
         request.coverURLOnly = coverurlonly;
-        [coverurlonly release], coverurlonly = nil;	
+        [coverurlonly release], coverurlonly = nil;
 		tns1_isbnItem *item = nil;
 		for (id book in bookISBNs) {
 			item = [[tns1_isbnItem alloc] init];
 			[self fromObject:book intoObject:item];
-			[request addIsbn13s:item];	
+			[request addIsbn13s:item];
 			[item release], item = nil;
 		}
-		
-		[self.binding ListContentMetadataAsyncUsingBody:request delegate:self]; 
+
+		[self.binding ListContentMetadataAsyncUsingBody:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-		
+
 		[request release], request = nil;
 		ret = YES;
 	}
-	
-	return(ret);				
+
+	return(ret);
 }
 
 - (BOOL)listUserSettings
 {
 	BOOL ret = NO;
-	
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {						
+
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
 		tns1_ListUserSettingsRequest *request = [tns1_ListUserSettingsRequest new];
-		
+
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-		
-		[self.binding ListUserSettingsAsyncUsingParameters:request delegate:self]; 
+
+		[self.binding ListUserSettingsAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-		
-		[request release], request = nil;	
+
+		[request release], request = nil;
 		ret = YES;
 	}
-	
-	return(ret);					
+
+	return(ret);
 }
 
 - (BOOL)saveUserSettings:(NSArray *)settings
 {
 	BOOL ret = NO;
-	
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {								
+
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
 		tns1_SaveUserSettingsRequest *request = [tns1_SaveUserSettingsRequest new];
-		
+
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
         request.settingsList = [[[tns1_SettingsList alloc] init] autorelease];
 		tns1_SettingItem *item = nil;
 		for (id setting in settings) {
 			item = [[tns1_SettingItem alloc] init];
 			[self fromObject:setting intoObject:item];
-			[request.settingsList addSettingItem:item];	
+			[request.settingsList addSettingItem:item];
 			[item release], item = nil;
 		}
-		
-		[self.binding SaveUserSettingsAsyncUsingParameters:request delegate:self]; 
+
+		[self.binding SaveUserSettingsAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-		
+
 		[request release], request = nil;
 		ret = YES;
 	}
-	
-	return(ret);						
+
+	return(ret);
 }
 
 - (BOOL)listProfileContentAnnotations:(NSArray *)annotations forProfile:(NSNumber *)profileID
 {
 	BOOL ret = NO;
-	
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {								
+
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
 		tns1_ListProfileContentAnnotationsRequest *request = [tns1_ListProfileContentAnnotationsRequest new];
-		
+
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
         tns1_AnnotationsRequestList *annotationsRequestList = [[tns1_AnnotationsRequestList alloc] init];
         tns1_AnnotationsRequestItem *annotationsRequestItem = [[tns1_AnnotationsRequestItem alloc] init];
@@ -362,7 +363,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[annotationsRequestList addAnnotationsRequestItem:annotationsRequestItem];
         annotationsRequestItem.profileID = profileID;
 		annotationsRequestItem.AnnotationsRequestContentList = annotationsRequestContentList;
-		
+
 		tns1_AnnotationsRequestContentItem *item = nil;
 		for (id annotation in annotations) {
 			item = [[tns1_AnnotationsRequestContentItem alloc] init];
@@ -372,28 +373,28 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		}
         request.includeRemoved = [[[USBoolean alloc] initWithBool:YES] autorelease];
         [annotationsRequestContentList release];
-        [annotationsRequestItem release];        
+        [annotationsRequestItem release];
         [annotationsRequestList release];
-		
-		[self.binding ListProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
+
+		[self.binding ListProfileContentAnnotationsAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-		
+
 		[request release], request = nil;
 		ret = YES;
 	}
-	
-	return(ret);							
+
+	return(ret);
 }
 
-// we save books with a modified LastPage and within each book annotations that 
+// we save books with a modified LastPage and within each book annotations that
 // have been modified
 - (BOOL)saveProfileContentAnnotations:(NSArray *)annotations
 {
 	BOOL ret = NO;
-	
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {										
+
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
 		tns1_SaveProfileContentAnnotationsRequest *request = [tns1_SaveProfileContentAnnotationsRequest new];
-		
+
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
         id annotationsList = [[tns1_AnnotationsList alloc] init];
 		request.AnnotationsList = annotationsList;
@@ -405,29 +406,29 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.AnnotationsList addAnnotationsItem:item];
 			[item release], item = nil;
 		}
-		
-		[self.binding SaveProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
+
+		[self.binding SaveProfileContentAnnotationsAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-		
-		[request release], request = nil;		
+
+		[request release], request = nil;
 		ret = YES;
 	}
-	
-	return(ret);								
+
+	return(ret);
 }
 
 - (BOOL)saveContentProfileAssignment:(NSArray *)contentProfileAssignments
 {
 	BOOL ret = NO;
-	
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {												
+
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
 		tns1_SaveContentProfileAssignmentRequest *request = [tns1_SaveContentProfileAssignmentRequest new];
-		
+
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
         id contentProfileAssignmentList = [[tns1_ContentProfileAssignmentList alloc] init];
 		request.ContentProfileAssignmentList = contentProfileAssignmentList;
         [contentProfileAssignmentList release];
-        
+
 		tns1_ContentProfileAssignmentItem *item = nil;
 		for (id contentProfileAssignment in contentProfileAssignments) {
 			item = [[tns1_ContentProfileAssignmentItem alloc] init];
@@ -435,29 +436,29 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.ContentProfileAssignmentList addContentProfileAssignmentItem:item];
 			[item release], item = nil;
 		}
-		
-		[self.binding SaveContentProfileAssignmentAsyncUsingParameters:request delegate:self]; 
+
+		[self.binding SaveContentProfileAssignmentAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-		
-		[request release], request = nil;	
+
+		[request release], request = nil;
 		ret = YES;
 	}
-	
-	return(ret);									
+
+	return(ret);
 }
 
 - (BOOL)saveReadingStatisticsDetailed:(NSArray *)readingStatsDetailList
 {
 	BOOL ret = NO;
-	
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {												
+
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
 		tns1_SaveReadingStatisticsDetailedRequest *request = [tns1_SaveReadingStatisticsDetailedRequest new];
-		
+
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
         id newReadingStatsDetailList = [[tns1_ReadingStatsDetailList alloc] init];
 		request.ReadingStatsDetailList = newReadingStatsDetailList;
         [newReadingStatsDetailList release];
-        
+
 		tns1_ReadingStatsDetailItem *item = nil;
 		for (id readingStatsDetail in readingStatsDetailList) {
 			item = [[tns1_ReadingStatsDetailItem alloc] init];
@@ -465,41 +466,41 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.ReadingStatsDetailList addReadingStatsDetailItem:item];
 			[item release], item = nil;
 		}
-		
-		[self.binding SaveReadingStatisticsDetailedAsyncUsingParameters:request delegate:self]; 
+
+		[self.binding SaveReadingStatisticsDetailedAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-		
-		[request release], request = nil;	
+
+		[request release], request = nil;
 		ret = YES;
 	}
-	
-	return(ret);										
+
+	return(ret);
 }
 
 #pragma mark - LibreAccessBindingResponse Delegate methods
 
 - (void)operation:(LibreAccessServiceSoap11BindingOperation *)operation completedWithResponse:(LibreAccessServiceSoap11BindingResponse *)response
-{	
+{
 	[[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
-	
+
 	// just in case we have a stray operation make sure it's bound to the current binding
     if (self.binding == operation.binding ) {
         NSString *methodName = [self methodNameFromObject:operation];
-        
+
         if (operation.response.error != nil) {
             if ([(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:result:)]) {
-                [(id)self.delegate method:methodName didFailWithError:[self confirmErrorDomain:operation.response.error 
+                [(id)self.delegate method:methodName didFailWithError:[self confirmErrorDomain:operation.response.error
                                                                                  forDomainName:@"LibreAccessServiceSoap11BindingResponseHTTP"]
                               requestInfo:[self requestInfoFromOperation:operation] result:nil];
             }
         } else {
             for (id bodyPart in response.bodyParts) {
                 if ([bodyPart isKindOfClass:[SOAPFault class]]) {
-                    [self reportFault:(SOAPFault *)bodyPart forMethod:methodName 
+                    [self reportFault:(SOAPFault *)bodyPart forMethod:methodName
                           requestInfo:[self requestInfoFromOperation:operation]];
                     continue;
                 }
-                
+
                 tns1_StatusHolder *status = nil;
                 BOOL errorTriggered = NO;
                 NSString *statusMessageKey = [self statusMessageKeyForObject:bodyPart];
@@ -521,12 +522,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                 NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:(double)operation.serverDateDelta], @"serverDateDelta",
                                           (serverDate == nil ? (id)[NSNull null] : serverDate), @"serverDate",
                                           nil];
-                
+
                 if(errorTriggered == NO && [(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {
-                    [(id)self.delegate method:methodName didCompleteWithResult:[self objectFrom:bodyPart] 
-                                     userInfo:userInfo];									
+                    [(id)self.delegate method:methodName didCompleteWithResult:[self objectFrom:bodyPart]
+                                     userInfo:userInfo];
                 }
-            }		
+            }
         }
     }
 }
@@ -556,48 +557,48 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
     }
 
     NSAssert(ret, @"All responses should have a status message!");
-    
+
     return ret;
 }
 
 - (NSError *)errorFromStatusMessage:(tns1_StatusHolder *)statusMessage
 {
 	NSError *ret = nil;
-	
-	if (statusMessage != nil && statusMessage.status != tns1_statuscodes_SUCCESS) {					 
+
+	if (statusMessage != nil && statusMessage.status != tns1_statuscodes_SUCCESS) {
 		NSDictionary *userInfo = nil;
-		
+
 		if (statusMessage.statusmessage != nil) {
-			userInfo = [NSDictionary dictionaryWithObject:statusMessage.statusmessage forKey:NSLocalizedDescriptionKey];		
+			userInfo = [NSDictionary dictionaryWithObject:statusMessage.statusmessage forKey:NSLocalizedDescriptionKey];
 		}
-		
+
 		ret = [NSError errorWithDomain:kBITAPIErrorDomain code:[statusMessage.statuscode integerValue] userInfo:userInfo];
 	}
-	
+
 	return(ret);
 }
 
 - (NSString *)methodNameFromObject:(id)anObject
 {
 	NSString *ret = kSCHLibreAccessWebServiceUndefinedMethod;
-	
+
 	if (anObject != nil) {
 		if([anObject isKindOfClass:[tns1_TokenExchange class]] == YES ||
-		   [anObject isKindOfClass:[tns1_TokenExchangeResponse class]] == YES ||		   
+		   [anObject isKindOfClass:[tns1_TokenExchangeResponse class]] == YES ||
 		   [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_TokenExchange class]] == YES) {
-			ret = kSCHLibreAccessWebServiceTokenExchange;	
+			ret = kSCHLibreAccessWebServiceTokenExchange;
 		} else if([anObject isKindOfClass:[tns1_AuthenticateDeviceRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_AuthenticateDeviceResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_AuthenticateDevice class]] == YES) {
-			ret = kSCHLibreAccessWebServiceAuthenticateDevice;	
+			ret = kSCHLibreAccessWebServiceAuthenticateDevice;
 		} else if([anObject isKindOfClass:[tns1_RenewTokenRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_RenewTokenResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_RenewToken class]] == YES) {
-			ret = kSCHLibreAccessWebServiceRenewToken;	
+			ret = kSCHLibreAccessWebServiceRenewToken;
 		} else if([anObject isKindOfClass:[tns1_GetUserProfilesRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_GetUserProfilesResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_GetUserProfiles class]] == YES) {
-			ret = kSCHLibreAccessWebServiceGetUserProfiles;	
+			ret = kSCHLibreAccessWebServiceGetUserProfiles;
 		} else if([anObject isKindOfClass:[tns1_ListBooksAssignmentRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_ListBooksAssignmentResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListBooksAssignment class]] == YES) {
@@ -605,23 +606,23 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		} else if([anObject isKindOfClass:[tns1_ListContentMetadata class]] == YES ||
 				  [anObject isKindOfClass:[tns1_ListContentMetadataResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListContentMetadata class]] == YES) {
-			ret = kSCHLibreAccessWebServiceListContentMetadata;				
+			ret = kSCHLibreAccessWebServiceListContentMetadata;
 		} else if([anObject isKindOfClass:[tns1_SaveUserProfilesRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_SaveUserProfilesResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveUserProfiles class]] == YES) {
-			ret = kSCHLibreAccessWebServiceSaveUserProfiles;				
+			ret = kSCHLibreAccessWebServiceSaveUserProfiles;
 		} else if([anObject isKindOfClass:[tns1_ListUserSettingsRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_ListUserSettingsResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListUserSettings class]] == YES) {
-			ret = kSCHLibreAccessWebServiceListUserSettings;				
+			ret = kSCHLibreAccessWebServiceListUserSettings;
 		} else if([anObject isKindOfClass:[tns1_SaveUserSettingsRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_SaveUserSettingsResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveUserSettings class]] == YES) {
-			ret = kSCHLibreAccessWebServiceSaveUserSettings;				
+			ret = kSCHLibreAccessWebServiceSaveUserSettings;
 		} else if([anObject isKindOfClass:[tns1_ListProfileContentAnnotationsRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_ListProfileContentAnnotationsResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListProfileContentAnnotations class]] == YES) {
-			ret = kSCHLibreAccessWebServiceListProfileContentAnnotations;				
+			ret = kSCHLibreAccessWebServiceListProfileContentAnnotations;
 		} else if([anObject isKindOfClass:[tns1_SaveProfileContentAnnotationsRequest class]] == YES ||
 				  [anObject isKindOfClass:[tns1_SaveProfileContentAnnotationsResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveProfileContentAnnotations class]] == YES) {
@@ -640,35 +641,35 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = kSCHLibreAccessWebServiceListFavoriteTypes;
 		}
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)requestInfoFromOperation:(LibreAccessServiceSoap11BindingOperation *)operation
 {
     NSDictionary * ret = nil;
-    
+
     if ([operation isKindOfClass:[LibreAccessServiceSoap11Binding_ListContentMetadata class]] == YES) {
         id body = [(id)operation body];
-        
+
         NSMutableArray *isbnItems = [NSMutableArray array];
         for (tns1_isbnItem *isbnItem in [body isbn13s]) {
             [isbnItems addObject:[self objectFromISBNItem:isbnItem]];
         }
-        
+
         ret = [NSDictionary dictionaryWithObject:isbnItems forKey:kSCHLibreAccessWebServiceListContentMetadata];
     }
-    
+
     return(ret);
 }
 
 #pragma mark -
-#pragma mark ObjectMapper Protocol methods 
-	
+#pragma mark ObjectMapper Protocol methods
+
 - (NSDictionary *)objectFrom:(id)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		if ([anObject isKindOfClass:[tns1_TokenExchangeResponse class]] == YES) {
 			ret = [self objectFromTokenExchange:anObject];
@@ -688,9 +689,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject settingsList] settingItem]] forKey:kSCHLibreAccessWebServiceUserSettingsList];
 		} else if ([anObject isKindOfClass:[tns1_ListProfileContentAnnotationsResponse class]] == YES) {
 			NSMutableDictionary *listProfileContentAnnotations = [NSMutableDictionary dictionary];
-			
+
 			[listProfileContentAnnotations setObject:[self objectFromTranslate:[[anObject AnnotationsList] AnnotationsItem]] forKey:kSCHLibreAccessWebServiceAnnotationsList];
-			[listProfileContentAnnotations setObject:[self objectFromItemsCount:[anObject ItemsCount]] forKey:kSCHLibreAccessWebServiceItemsCount];			
+			[listProfileContentAnnotations setObject:[self objectFromItemsCount:[anObject ItemsCount]] forKey:kSCHLibreAccessWebServiceItemsCount];
 
 			ret = [NSDictionary dictionaryWithObject:listProfileContentAnnotations forKey:kSCHLibreAccessWebServiceListProfileContentAnnotations];
 		} else if ([anObject isKindOfClass:[tns1_SaveContentProfileAssignmentResponse class]] == YES) {
@@ -704,9 +705,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		} else if ([anObject isKindOfClass:[tns1_SaveUserSettingsResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject settingStatusList] settingStatusItem]] forKey:kSCHLibreAccessWebServiceUserSettingsStatusList];
 		}
-        
+
 	}
-	
+
 	return(ret);
 }
 
@@ -732,15 +733,15 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 }
 
 #pragma mark -
-#pragma mark ObjectMapper objectFrom: converter methods 
+#pragma mark ObjectMapper objectFrom: converter methods
 
 - (NSDictionary *)objectFromTokenExchange:(tns1_TokenExchangeResponse *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
         [objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];
@@ -752,89 +753,89 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromAuthenticateDevice:(tns1_AuthenticateDeviceResponse *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
 		[objects setObject:[self objectFromTranslate:anObject.deviceIsDeregistered] forKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];
-		[objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];        
+		[objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
-        
-		ret = objects;				
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromRenewToken:(tns1_RenewTokenResponse *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
-		[objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];        
+		[objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
-        
-		ret = objects;				
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromProfileItem:(tns1_ProfileItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.AutoAssignContentToProfiles] forKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles];
-		[objects setObject:[self objectFromTranslate:anObject.ProfilePasswordRequired] forKey:kSCHLibreAccessWebServiceProfilePasswordRequired];		
-		[objects setObject:[self objectFromTranslate:anObject.Firstname] forKey:kSCHLibreAccessWebServiceFirstName];		
-		[objects setObject:[self objectFromTranslate:anObject.Lastname] forKey:kSCHLibreAccessWebServiceLastName];		
-		[objects setObject:[self objectFromTranslate:anObject.BirthDay] forKey:kSCHLibreAccessWebServiceBirthday];		
-		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenName];		
-		[objects setObject:[self objectFromTranslate:anObject.password] forKey:kSCHLibreAccessWebServicePassword];		
-		[objects setObject:[self objectFromTranslate:anObject.userkey] forKey:kSCHLibreAccessWebServiceUserKey];		
-		[objects setObject:[NSNumber numberWithProfileType:(SCHProfileTypes)anObject.type] forKey:kSCHLibreAccessWebServiceType];		
-		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];		
+		[objects setObject:[self objectFromTranslate:anObject.ProfilePasswordRequired] forKey:kSCHLibreAccessWebServiceProfilePasswordRequired];
+		[objects setObject:[self objectFromTranslate:anObject.Firstname] forKey:kSCHLibreAccessWebServiceFirstName];
+		[objects setObject:[self objectFromTranslate:anObject.Lastname] forKey:kSCHLibreAccessWebServiceLastName];
+		[objects setObject:[self objectFromTranslate:anObject.BirthDay] forKey:kSCHLibreAccessWebServiceBirthday];
+		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenName];
+		[objects setObject:[self objectFromTranslate:anObject.password] forKey:kSCHLibreAccessWebServicePassword];
+		[objects setObject:[self objectFromTranslate:anObject.userkey] forKey:kSCHLibreAccessWebServiceUserKey];
+		[objects setObject:[NSNumber numberWithProfileType:(SCHProfileTypes)anObject.type] forKey:kSCHLibreAccessWebServiceType];
+		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[NSNumber numberWithBookshelfStyle:(SCHBookshelfStyles)anObject.BookshelfStyle] forKey:kSCHLibreAccessWebServiceBookshelfStyle];
 		[objects setObject:[self objectFromTranslate:anObject.LastModified] forKey:kSCHLibreAccessWebServiceLastModified];
-		[objects setObject:[self objectFromTranslate:anObject.LastScreenNameModified] forKey:kSCHLibreAccessWebServiceLastScreenNameModified];		
-		[objects setObject:[self objectFromTranslate:anObject.LastPasswordModified] forKey:kSCHLibreAccessWebServiceLastPasswordModified];		
-		[objects setObject:[self objectFromTranslate:anObject.storyInteractionEnabled] forKey:kSCHLibreAccessWebServiceStoryInteractionEnabled];		
+		[objects setObject:[self objectFromTranslate:anObject.LastScreenNameModified] forKey:kSCHLibreAccessWebServiceLastScreenNameModified];
+		[objects setObject:[self objectFromTranslate:anObject.LastPasswordModified] forKey:kSCHLibreAccessWebServiceLastPasswordModified];
+		[objects setObject:[self objectFromTranslate:anObject.storyInteractionEnabled] forKey:kSCHLibreAccessWebServiceStoryInteractionEnabled];
         [objects setObject:[self objectFromTranslate:anObject.recommendationsOn] forKey:kSCHLibreAccessWebServiceRecommendationsOn];
 		[objects setObject:[self objectFromTranslate:anObject.allowReadThrough] forKey:kSCHLibreAccessWebServiceAllowReadThrough];
 
-		ret = objects;					
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromBooksAssignment:(tns1_BooksAssignment *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.ContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
-		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];		
-		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.DRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];		
-		[objects setObject:[self objectFromTranslate:anObject.Format] forKey:kSCHLibreAccessWebServiceFormat];		
+		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.DRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+		[objects setObject:[self objectFromTranslate:anObject.Format] forKey:kSCHLibreAccessWebServiceFormat];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
         [objects setObject:[self objectFromTranslate:anObject.averageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
         [objects setObject:[self objectFromTranslate:anObject.numVotes] forKey:kSCHLibreAccessWebServiceNumVotes];
@@ -846,37 +847,37 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.quantityInit] forKey:kSCHLibreAccessWebServiceQuantityInit];
 		[objects setObject:[self objectFromTranslate:[[anObject contentProfileList] contentProfileItem]] forKey:kSCHLibreAccessWebServiceProfileList];
 
-        ret = objects;					
+        ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromContentProfileItem:(tns1_ContentProfileItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.profileID] forKey:kSCHLibreAccessWebServiceProfileID];
 		[objects setObject:[self objectFromTranslate:anObject.rating] forKey:kSCHLibreAccessWebServiceRating];
 		[objects setObject:[self objectFromTranslate:anObject.lastPageLocation] forKey:kSCHLibreAccessWebServiceLastPageLocation];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromContentMetadataItem:(tns1_ContentMetadataItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.ContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
 		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
 		[objects setObject:[self objectFromTranslate:anObject.AverageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
@@ -903,106 +904,106 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         [objects setObject:[self objectFromTranslate:anObject.Misc4] forKey:kSCHLibreAccessWebServiceMisc4];
         [objects setObject:[self objectFromTranslate:anObject.Misc5] forKey:kSCHLibreAccessWebServiceMisc5];
 
-		ret = objects;					
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromProfileStatusItem:(tns1_ProfileStatusItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[NSNumber numberWithSaveAction:(SCHSaveActions)anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[NSNumber numberWithStatusCode:(SCHStatusCodes)anObject.status] forKey:kSCHLibreAccessWebServiceStatus];
 		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenName];
 		[objects setObject:[self objectFromTranslate:anObject.statuscode] forKey:kSCHLibreAccessWebServiceStatusCode];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromSettingItem:(tns1_SettingItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.settingName] forKey:kSCHLibreAccessWebServiceSettingName];
 		[objects setObject:[self objectFromTranslate:anObject.settingValue] forKey:kSCHLibreAccessWebServiceSettingValue];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromSettingsStatusItem:(tns1_SettingStatusItem *)anObject
 {
     NSDictionary *ret = nil;
-    
+
     if (anObject != nil) {
         NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-        
+
         [objects setObject:[self objectFromTranslate:anObject.settingName   ] forKey:kSCHLibreAccessWebServiceSettingName];
         [objects setObject:[self objectFromTranslate:anObject.statusMessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
-        
-        ret = objects;					
+
+        ret = objects;
     }
-    
+
     return(ret);
 }
 
 - (NSDictionary *)objectFromAnnotationsItem:(tns1_AnnotationsItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:[[anObject AnnotationsContentList] AnnotationsContentItem]] forKey:kSCHLibreAccessWebServiceAnnotationsContentList];
 		[objects setObject:[self objectFromTranslate:anObject.profileID] forKey:kSCHLibreAccessWebServiceProfileID];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromAnnotationsContentItem:(tns1_AnnotationsContentItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.contentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
 		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
 		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.drmqualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
 		[objects setObject:[self objectFromTranslate:anObject.format] forKey:kSCHLibreAccessWebServiceFormat];
 		[objects setObject:[self objectFromTranslate:anObject.PrivateAnnotations] forKey:kSCHLibreAccessWebServicePrivateAnnotations];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromPrivateAnnotations:(tns1_PrivateAnnotations *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-                
+
 		[objects setObject:[self objectFromTranslate:[anObject.Highlights Highlight]] forKey:kSCHLibreAccessWebServiceHighlights];
         if ([[SCHAppStateManager sharedAppStateManager] canSyncNotes] == YES) {
             [objects setObject:[self objectFromTranslate:[anObject.Notes Note]] forKey:kSCHLibreAccessWebServiceNotes];
@@ -1011,91 +1012,91 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 		[objects setObject:[self objectFromTranslate:anObject.LastPage] forKey:kSCHLibreAccessWebServiceLastPage];
 		[objects setObject:[self objectFromTranslate:anObject.Rating] forKey:kSCHLibreAccessWebServiceRating];
-        
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromRating:(tns1_Rating *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-        
+
 		[objects setObject:[self objectFromTranslate:anObject.rating] forKey:kSCHLibreAccessWebServiceRating];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
 		[objects setObject:[self objectFromTranslate:anObject.averageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
 		[objects setObject:[self objectFromTranslate:anObject.numVotes] forKey:kSCHLibreAccessWebServiceNumVotes];
-        
-		ret = objects;					
+
+		ret = objects;
 	}
-	
-	return(ret);    
+
+	return(ret);
 }
 
 - (NSDictionary *)objectFromHighlight:(tns1_Highlight *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[NSNumber numberWithSaveAction:(SCHSaveActions)anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:anObject.color] forKey:kSCHLibreAccessWebServiceColor];
 		[objects setObject:[self objectFromTranslate:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
 		[objects setObject:[self objectFromTranslate:anObject.endPage] forKey:kSCHLibreAccessWebServiceEndPage];
-		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];		
+		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromLocationText:(tns1_LocationText *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.page] forKey:kSCHLibreAccessWebServicePage];
 		[objects setObject:[self objectFromTranslate:anObject.wordindex] forKey:kSCHLibreAccessWebServiceWordIndex];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromWordIndex:(tns1_WordIndex *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.start] forKey:kSCHLibreAccessWebServiceStart];
 		[objects setObject:[self objectFromTranslate:anObject.end] forKey:kSCHLibreAccessWebServiceEnd];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromNote:(tns1_Note *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[NSNumber numberWithSaveAction:(SCHSaveActions)anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
@@ -1103,35 +1104,35 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.value] forKey:kSCHLibreAccessWebServiceValue];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromLocationGraphics:(tns1_LocationGraphics *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.page] forKey:kSCHLibreAccessWebServicePage];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromBookmark:(tns1_Bookmark *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[NSNumber numberWithSaveAction:(SCHSaveActions)anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:anObject.text] forKey:kSCHLibreAccessWebServiceText];
@@ -1139,143 +1140,143 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromLocationBookmark:(tns1_LocationBookmark *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.page] forKey:kSCHLibreAccessWebServicePage];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromLastPage:(tns1_LastPage *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.lastPageLocation] forKey:kSCHLibreAccessWebServiceLastPageLocation];
 		[objects setObject:[self objectFromTranslate:anObject.percentage] forKey:kSCHLibreAccessWebServicePercentage];
 		[objects setObject:[self objectFromTranslate:anObject.component] forKey:kSCHLibreAccessWebServiceComponent];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromItemsCount:(tns1_ItemsCount *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.Returned] forKey:kSCHLibreAccessWebServiceReturned];
 		[objects setObject:[self objectFromTranslate:anObject.Found] forKey:kSCHLibreAccessWebServiceFound];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromFavoriteTypesValuesItem:(tns1_FavoriteTypesValuesItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.Value] forKey:kSCHLibreAccessWebServiceValue];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromFavoriteTypesItem:(tns1_FavoriteTypesItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[NSNumber numberWithTopFavoritesType:(SCHTopFavoritesTypes)anObject.FavoriteType] forKey:kSCHLibreAccessWebServiceFavoriteType];
 		[objects setObject:[self objectFromTranslate:[anObject.FavoriteTypeValuesList FavoriteTypesValuesItem]] forKey:kSCHLibreAccessWebServiceFavoriteTypeValuesList];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromAnnotationStatusItem:(tns1_AnnotationStatusItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.profileId] forKey:kSCHLibreAccessWebServiceProfileID];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
 		[objects setObject:[self objectFromTranslate:[anObject.AnnotationStatusContentList AnnotationStatusContentItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusContentList];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromStatusHolder:(tns1_StatusHolder *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[NSNumber numberWithStatusCode:(SCHStatusCodes)anObject.status] forKey:kSCHLibreAccessWebServiceStatus];
 		[objects setObject:[self objectFromTranslate:anObject.statuscode] forKey:kSCHLibreAccessWebServiceStatusCode];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromAnnotationStatusContentItem:(tns1_AnnotationStatusContentItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.contentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
 		[objects setObject:[self objectFromTranslate:anObject.AverageRating] forKey:kSCHLibreAccessWebServiceAverageRating];
 		[objects setObject:[self objectFromTranslate:anObject.numVotes] forKey:kSCHLibreAccessWebServiceNumVotes];
-		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];        
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
 		[objects setObject:[self objectFromTranslate:anObject.PrivateAnnotationsStatus] forKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus];
-		
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
@@ -1285,74 +1286,74 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
     if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:[anObject.HighlightsStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceHighlightsStatusList];
         [objects setObject:[self objectFromTranslate:[anObject.NotesStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceNotesStatusList];
         [objects setObject:[self objectFromTranslate:[anObject.BookmarksStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceBookmarksStatusList];
 
         [objects setObject:[self objectFromTranslate:anObject.LastPageStatus] forKey:kSCHLibreAccessWebServiceLastPageStatus];
         [objects setObject:[self objectFromTranslate:anObject.RatingStatus] forKey:kSCHLibreAccessWebServiceRatingStatus];
-        
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromAnnotationTypeStatusItem:(tns1_AnnotationTypeStatusItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
         [objects setObject:[NSNumber numberWithSaveAction:(SCHSaveActions)anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
-                
-		ret = objects;					
+
+		ret = objects;
 	}
-	
+
 	return(ret);
 }
 
 - (NSDictionary *)objectFromISBNItem:(tns1_isbnItem *)anObject
 {
 	NSDictionary *ret = nil;
-	
+
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.ISBN] forKey:kSCHLibreAccessWebServiceContentIdentifier];
         [objects setObject:[self objectFromTranslate:anObject.Format] forKey:kSCHLibreAccessWebServiceFormat];
 		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.IdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
 		[objects setObject:[NSNumber numberWithDRMQualifier:(SCHDRMQualifiers)anObject.Qualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
-        
-		ret = objects;					
+
+		ret = objects;
 	}
-	
-	return(ret);    
+
+	return(ret);
 }
 
 - (id)objectFromTranslate:(id)anObject
 {
 	id ret = nil;
-	
+
 	if (anObject == nil) {
 		ret = [NSNull null];
 	} else if([anObject isKindOfClass:[NSMutableArray class]] == YES) {
 		ret = [NSMutableArray array];
-		
+
 		if ([(NSMutableArray *)anObject count] > 0) {
 			id firstItem = [anObject objectAtIndex:0];
-			
+
 			if ([firstItem isKindOfClass:[tns1_ProfileItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromProfileItem:item]];					
+					[ret addObject:[self objectFromProfileItem:item]];
 				}
 			} else if ([firstItem isKindOfClass:[tns1_BooksAssignment class]] == YES) {
-				for (id item in anObject) {				
+				for (id item in anObject) {
 					[ret addObject:[self objectFromBooksAssignment:item]];
 				}
 			} else if ([firstItem isKindOfClass:[tns1_ContentProfileItem class]] == YES) {
@@ -1361,35 +1362,35 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				}
 			} else if ([firstItem isKindOfClass:[tns1_ContentMetadataItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromContentMetadataItem:item]];													
+					[ret addObject:[self objectFromContentMetadataItem:item]];
 				}
 			} else if ([firstItem isKindOfClass:[tns1_ProfileStatusItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromProfileStatusItem:item]];													
+					[ret addObject:[self objectFromProfileStatusItem:item]];
 				}
 			} else if ([firstItem isKindOfClass:[tns1_SettingItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromSettingItem:item]];	
+					[ret addObject:[self objectFromSettingItem:item]];
 				}
 			} else if ([firstItem isKindOfClass:[tns1_AnnotationsItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromAnnotationsItem:item]];	
+					[ret addObject:[self objectFromAnnotationsItem:item]];
 				}
 			} else if ([firstItem isKindOfClass:[tns1_AnnotationsContentItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromAnnotationsContentItem:item]];	
+					[ret addObject:[self objectFromAnnotationsContentItem:item]];
 				}
 			} else if ([firstItem isKindOfClass:[tns1_PrivateAnnotations class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromPrivateAnnotations:item]];	
+					[ret addObject:[self objectFromPrivateAnnotations:item]];
 				}
 			} else if ([firstItem isKindOfClass:[tns1_Rating class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromRating:item]];	
-				}                
+					[ret addObject:[self objectFromRating:item]];
+				}
 			} else if ([firstItem isKindOfClass:[tns1_Highlight class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromHighlight:item]];	
+					[ret addObject:[self objectFromHighlight:item]];
 				}
 			} else if ([firstItem isKindOfClass:[tns1_Note class]] == YES) {
 				for (id item in anObject) {
@@ -1398,10 +1399,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
             } else if ([firstItem isKindOfClass:[tns1_Bookmark class]] == YES) {
 				for (id item in anObject) {
 					[ret addObject:[self objectFromBookmark:item]];
-				} 
+				}
 			} else if ([firstItem isKindOfClass:[tns1_FavoriteTypesValuesItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromFavoriteTypesValuesItem:item]];	
+					[ret addObject:[self objectFromFavoriteTypesValuesItem:item]];
 				}
 			} else if ([firstItem isKindOfClass:[tns1_FavoriteTypesItem class]] == YES) {
 				for (id item in anObject) {
@@ -1410,14 +1411,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			} else if ([firstItem isKindOfClass:[tns1_AnnotationStatusItem class]] == YES) {
 				for (id item in anObject) {
                     // the server sends a separate AnnotationStatusContentItem
-                    // for each bookmark/note/highlight/rating/last page (it 
+                    // for each bookmark/note/highlight/rating/last page (it
                     // shouldnt but it does) so we combine them here
                     NSDictionary *newAnnotationStatusForRatingsItem = [self objectFromAnnotationStatusItem:item];
 
                     if (newAnnotationStatusForRatingsItem != nil) {
                         NSNumber *newProfileID = makeNullNil([newAnnotationStatusForRatingsItem objectForKey:kSCHLibreAccessWebServiceProfileID]);
                         NSUInteger statusAlreadyExists = NSNotFound;
-                        
+
                         if (newProfileID != nil) {
                             statusAlreadyExists = [ret indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
                                 NSNumber *currentProfileID = makeNullNil([obj objectForKey:kSCHLibreAccessWebServiceProfileID]);
@@ -1429,29 +1430,29 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                                 }
                             }];
                         }
-                        
+
                         if (statusAlreadyExists == NSNotFound) {
                             [self combineMultipleAnnotationStatusContentBooks:newAnnotationStatusForRatingsItem];
-                            [ret addObject:newAnnotationStatusForRatingsItem];	
+                            [ret addObject:newAnnotationStatusForRatingsItem];
                         } else {
                             NSDictionary *existingAnnotationStatusForRatingsItem = [ret objectAtIndex:statusAlreadyExists];
                             NSArray *existingAnnotationStatusContentList = makeNullNil([existingAnnotationStatusForRatingsItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]);
                             NSArray *newAnnotationStatusContentList = makeNullNil([newAnnotationStatusForRatingsItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]);
-                            
+
                             for (NSDictionary *newAnnotationStatusContent in newAnnotationStatusContentList) {
                                 NSString *newContentIdentifier = makeNullNil([newAnnotationStatusContent objectForKey:kSCHLibreAccessWebServiceContentIdentifier]);
                                 NSIndexSet *existingBooks = nil;
-                                
+
                                 if (newContentIdentifier != nil) {
                                     existingBooks = [existingAnnotationStatusContentList indexesOfObjectsPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
                                         NSString *currentContentIdentifer = makeNullNil([obj objectForKey:kSCHLibreAccessWebServiceContentIdentifier]);
                                         return [currentContentIdentifer isEqualToString:newContentIdentifier];
                                     }];
                                 }
-                                
+
                                 [existingBooks enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
                                     NSDictionary *existingBook = [existingAnnotationStatusContentList objectAtIndex:idx];
-                                    
+
                                     [self overwritePrivateAnnotations:makeNullNil([existingBook objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus])
                                                withPrivateAnnotations:makeNullNil([newAnnotationStatusContent objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus])];
                                 }];
@@ -1461,40 +1462,40 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				}
 			} else if ([firstItem isKindOfClass:[tns1_AnnotationStatusContentItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromAnnotationStatusContentItem:item]];	
-				}                
+					[ret addObject:[self objectFromAnnotationStatusContentItem:item]];
+				}
 			} else if ([firstItem isKindOfClass:[tns1_AnnotationTypeStatusItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromAnnotationTypeStatusItem:item]];	
-				}                                
+					[ret addObject:[self objectFromAnnotationTypeStatusItem:item]];
+				}
 			} else if ([firstItem isKindOfClass:[tns1_ProfileStatusItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromProfileStatusItem:item]];	
-				}                                
+					[ret addObject:[self objectFromProfileStatusItem:item]];
+				}
 			} else if ([firstItem isKindOfClass:[tns1_SettingStatusItem class]] == YES) {
 				for (id item in anObject) {
-					[ret addObject:[self objectFromSettingsStatusItem:item]];	
-				}                                
+					[ret addObject:[self objectFromSettingsStatusItem:item]];
+				}
 			}
-        }		
+        }
 	} else if([anObject isKindOfClass:[USBoolean class]] == YES) {
 		ret = [NSNumber numberWithBool:[anObject boolValue]];
     } else if ([anObject isKindOfClass:[tns1_StatusHolder class]] == YES) {
-        ret = [self objectFromStatusHolder:anObject];	
+        ret = [self objectFromStatusHolder:anObject];
     } else if ([anObject isKindOfClass:[tns1_PrivateAnnotationsStatus class]] == YES) {
-        ret = [self objectFromPrivateAnnotationsStatus:anObject];	
+        ret = [self objectFromPrivateAnnotationsStatus:anObject];
     } else if ([anObject isKindOfClass:[tns1_AnnotationTypeStatusItem class]] == YES) {
-        ret = [self objectFromAnnotationTypeStatusItem:anObject];	
+        ret = [self objectFromAnnotationTypeStatusItem:anObject];
     } else if ([anObject isKindOfClass:[tns1_PrivateAnnotations class]] == YES) {
-        ret = [self objectFromPrivateAnnotations:anObject];	                        
+        ret = [self objectFromPrivateAnnotations:anObject];
     } else if ([anObject isKindOfClass:[tns1_LocationText class]] == YES) {
-        ret = [self objectFromLocationText:anObject];	                
+        ret = [self objectFromLocationText:anObject];
     } else if ([anObject isKindOfClass:[tns1_WordIndex class]] == YES) {
-        ret = [self objectFromWordIndex:anObject];	                        
+        ret = [self objectFromWordIndex:anObject];
     } else if ([anObject isKindOfClass:[tns1_LocationGraphics class]] == YES) {
-        ret = [self objectFromLocationGraphics:anObject];	                        
+        ret = [self objectFromLocationGraphics:anObject];
     } else if ([anObject isKindOfClass:[tns1_LocationBookmark class]] == YES) {
-        ret = [self objectFromLocationBookmark:anObject];	                        
+        ret = [self objectFromLocationBookmark:anObject];
     } else if ([anObject isKindOfClass:[tns1_LastPage class]] == YES) {
         ret = [self objectFromLastPage:anObject];
     } else if ([anObject isKindOfClass:[tns1_Rating class]] == YES) {
@@ -1509,29 +1510,29 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)combineMultipleAnnotationStatusContentBooks:(NSDictionary *)annotationStatusItem
 {
     NSMutableArray *annotationStatusContentList = makeNullNil([annotationStatusItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]);
-    
+
     if ([annotationStatusContentList count] > 1) {
         for (NSUInteger idx = 1; idx < [annotationStatusContentList count]; idx++) {
             NSDictionary *annotationStatusContent = [annotationStatusContentList objectAtIndex:idx];
             NSString *contentIdentifier = makeNullNil([annotationStatusContent objectForKey:kSCHLibreAccessWebServiceContentIdentifier]);
             NSIndexSet *existingBooks = nil;
-            
+
             if (contentIdentifier != nil) {
                 existingBooks = [annotationStatusContentList indexesOfObjectsPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
                     NSString *currentContentIdentifer = makeNullNil([obj objectForKey:kSCHLibreAccessWebServiceContentIdentifier]);
                     return (obj != annotationStatusContent &&
-                        [currentContentIdentifer isEqualToString:contentIdentifier]);
+                            [currentContentIdentifer isEqualToString:contentIdentifier]);
                 }];
             }
-            
+
             NSMutableIndexSet *deleteBooks = [NSMutableIndexSet indexSet];
             [existingBooks enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
                 NSDictionary *duplicateBook = [annotationStatusContentList objectAtIndex:idx];
-                
+
                 if (duplicateBook != annotationStatusContent) {
                     [self overwritePrivateAnnotations:makeNullNil([annotationStatusContent objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus])
                                withPrivateAnnotations:makeNullNil([duplicateBook objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus])];
-                    
+
                     [deleteBooks addIndex:idx];
                 }
             }];
@@ -1542,7 +1543,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 - (void)overwritePrivateAnnotations:(NSMutableDictionary *)existingPrivateAnnotations
              withPrivateAnnotations:(NSDictionary *)newPrivateAnnotations
-{        
+{
     if (existingPrivateAnnotations != nil && newPrivateAnnotations != nil &&
         existingPrivateAnnotations != newPrivateAnnotations) {
         NSDictionary *newHighlights = makeNullNil([newPrivateAnnotations objectForKey:kSCHLibreAccessWebServiceHighlightsStatusList]);
@@ -1552,16 +1553,16 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         NSDictionary *newNotes = makeNullNil([newPrivateAnnotations objectForKey:kSCHLibreAccessWebServiceNotesStatusList]);
         if ([newNotes count] > 0) {
             [existingPrivateAnnotations setValue:newNotes forKey:kSCHLibreAccessWebServiceNotesStatusList];
-        }                
+        }
         NSDictionary *newBookmarks = makeNullNil([newPrivateAnnotations objectForKey:kSCHLibreAccessWebServiceBookmarksStatusList]);
         if ([newBookmarks count] > 0) {
             [existingPrivateAnnotations setValue:newBookmarks forKey:kSCHLibreAccessWebServiceBookmarksStatusList];
         }
-        
+
         NSDictionary *newLastPage = makeNullNil([newPrivateAnnotations objectForKey:kSCHLibreAccessWebServiceLastPageStatus]);
         if (newLastPage != nil) {
             [existingPrivateAnnotations setValue:newLastPage forKey:kSCHLibreAccessWebServiceLastPageStatus];
-        }                
+        }
         NSDictionary *newRating = makeNullNil([newPrivateAnnotations objectForKey:kSCHLibreAccessWebServiceRatingStatus]);
         if (newRating != nil) {
             [existingPrivateAnnotations setValue:newRating forKey:kSCHLibreAccessWebServiceRatingStatus];
@@ -1570,7 +1571,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 }
 
 #pragma mark -
-#pragma mark ObjectMapper fromObject: converter methods 
+#pragma mark ObjectMapper fromObject: converter methods
 
 - (void)fromObject:(NSDictionary *)object intoSaveProfileItem:(tns1_SaveProfileItem *)intoObject
 {
@@ -1584,14 +1585,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.screenname = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceScreenName]];
 		intoObject.password = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePassword]];
 		intoObject.userkey = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceUserKey]];
-		intoObject.type = (tns1_ProfileTypes)[[object valueForKey:kSCHLibreAccessWebServiceType] profileTypeValue];
+		intoObject.type = (tns1_ProfileTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceType]] profileTypeValue];
 		intoObject.action = (tns1_SaveActions)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
         if (intoObject.action != kSCHSaveActionsCreate) {
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		} else {
             intoObject.id_ = [NSNumber numberWithInt:0];
         }
-		intoObject.BookshelfStyle = (tns1_BookshelfStyle)[[object valueForKey:kSCHLibreAccessWebServiceBookshelfStyle] bookshelfStyleValue];
+		intoObject.BookshelfStyle = (tns1_BookshelfStyle)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]] bookshelfStyleValue];
 		intoObject.storyInteractionEnabled = [self fromObjectTranslateToUSBoolean:[object valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
 		intoObject.recommendationsOn = [self fromObjectTranslateToUSBoolean:[object valueForKey:kSCHLibreAccessWebServiceStoryRecommendationsOn]];
 		intoObject.allowReadThrough = [self fromObjectTranslateToUSBoolean:[object valueForKey:kSCHLibreAccessWebServiceAllowReadThrough]];
@@ -1605,8 +1606,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         // hard coded to XPS, same as the windows application
 //		intoObject.Format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
         intoObject.Format = @"XPS";
-		intoObject.IdentifierType = (tns1_ContentIdentifierTypes)[[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
-		intoObject.Qualifier = (tns1_drmqualifiers)[[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
+		intoObject.IdentifierType = (tns1_ContentIdentifierTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
+		intoObject.Qualifier = (tns1_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];
 		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];
 	}
 }
@@ -1636,12 +1637,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoPrivateAnnotationsRequest:(tns1_PrivateAnnotationsRequest *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];		
+		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];
 		intoObject.HighlightsAfter = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceHighlightsAfter]];
 		intoObject.NotesAfter = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNotesAfter]];
 		intoObject.BookmarksAfter = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceBookmarksAfter]];
 	}
-}	
+}
 
 // we only save those annotation content items that have changed, i.e. the last page or rating has also change
 - (void)fromObject:(NSDictionary *)object intoAnnotationsItem:(tns1_AnnotationsItem *)intoObject
@@ -1660,14 +1661,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		}
 		intoObject.profileID = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfileID]];
 	}
-}												
+}
 
 - (BOOL)annotationsContentItemHasChanges:(NSDictionary *)annotationsContentItem
 {
     BOOL ret = NO;
-    
+
     if (annotationsContentItem != nil) {
-		NSDictionary *privateAnnotations = [annotationsContentItem valueForKey:kSCHLibreAccessWebServicePrivateAnnotations];        
+		NSDictionary *privateAnnotations = [annotationsContentItem valueForKey:kSCHLibreAccessWebServicePrivateAnnotations];
         if (privateAnnotations != nil) {
             NSDictionary *lastPage = [privateAnnotations valueForKey:kSCHLibreAccessWebServiceLastPage];
             if (lastPage != nil) {
@@ -1681,10 +1682,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                     ret = YES;
                 }
             }
-            
+
         }
     }
-    
+
     return ret;
 }
 
@@ -1693,26 +1694,26 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	if (object != nil && intoObject != nil) {
 		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
 		intoObject.ContentIdentifierType = (tns1_ContentIdentifierTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
-		intoObject.drmqualifier = (tns1_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
+		intoObject.drmqualifier = (tns1_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
         id privateAnnotations = [[tns1_PrivateAnnotations alloc] init];
 		intoObject.PrivateAnnotations = privateAnnotations;
         [privateAnnotations release];
 		[self fromObject:[object valueForKey:kSCHLibreAccessWebServicePrivateAnnotations] intoPrivateAnnotations:intoObject.PrivateAnnotations];
 	}
-}												
+}
 
 // returns the most recent last modified date
 - (NSDate *)latestLastModifiedFromPrivateAnnotations:(NSDictionary *)privateAnnotations
 {
     NSDate *ret = nil;
     NSDate *lastModified = nil;
-    
+
     if (privateAnnotations != nil) {
         for (NSDictionary *item in [self fromObjectTranslate:[privateAnnotations valueForKey:kSCHLibreAccessWebServiceHighlights]]) {
             if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
                 lastModified = [self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceLastModified]];
-                if (lastModified != nil && 
+                if (lastModified != nil &&
                     (ret == nil || [ret earlierDate:lastModified] == ret)) {
                     ret = lastModified;
                 }
@@ -1723,7 +1724,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
             for (NSDictionary *item in [self fromObjectTranslate:[privateAnnotations valueForKey:kSCHLibreAccessWebServiceNotes]]) {
                 if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
                     lastModified = [self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceLastModified]];
-                    if (lastModified != nil && 
+                    if (lastModified != nil &&
                         (ret == nil || [ret earlierDate:lastModified] == ret)) {
                         ret = lastModified;
                     }
@@ -1734,7 +1735,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         for (NSDictionary *item in [self fromObjectTranslate:[privateAnnotations valueForKey:kSCHLibreAccessWebServiceBookmarks]]) {
             if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
                 lastModified = [self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceLastModified]];
-                if (lastModified != nil && 
+                if (lastModified != nil &&
                     (ret == nil || [ret earlierDate:lastModified] == ret)) {
                     ret = lastModified;
                 }
@@ -1744,23 +1745,23 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         NSDictionary *lastPage = [self fromObjectTranslate:[privateAnnotations valueForKey:kSCHLibreAccessWebServiceLastPage]];
         if (lastPage != nil) {
             lastModified = [self fromObjectTranslate:[lastPage valueForKey:kSCHLibreAccessWebServiceLastModified]];
-            if (lastModified != nil && 
+            if (lastModified != nil &&
                 (ret == nil || [ret earlierDate:lastModified] == ret)) {
                 ret = lastModified;
-            }            
+            }
         }
-        
+
         NSDictionary *rating = [self fromObjectTranslate:[privateAnnotations valueForKey:kSCHLibreAccessWebServiceRating]];
         if (rating != nil) {
             lastModified = [self fromObjectTranslate:[rating valueForKey:kSCHLibreAccessWebServiceLastModified]];
-            if (lastModified != nil && 
+            if (lastModified != nil &&
                 (ret == nil || [ret earlierDate:lastModified] == ret)) {
                 ret = lastModified;
-            }            
+            }
         }
-        
+
     }
-    
+
     return ret;
 }
 
@@ -1779,7 +1780,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                 [highlight release], highlight = nil;
             }
 		}
-		
+
         id notes = [[tns1_Notes alloc] init];
 		intoObject.Notes = notes;
         [notes release];
@@ -1793,7 +1794,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                 }
             }
 		}
-		
+
         id bookmarks = [[tns1_Bookmarks alloc] init];
 		intoObject.Bookmarks = bookmarks;
         [bookmarks release];
@@ -1805,18 +1806,25 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                 [bookmark release], bookmark = nil;
             }
 		}
-        
-        id lastPage = [[tns1_LastPage alloc] init];
-		intoObject.LastPage = lastPage;
-        [lastPage release];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastPage]] intoLastPage:intoObject.LastPage];
-        
-        id rating = [[tns1_Rating alloc] init];
-		intoObject.Rating = rating;
-        [rating release];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]] intoRating:intoObject.Rating];
+
+        id lastPageObject = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastPage]];
+        if ([[self fromObjectTranslate:[lastPageObject valueForKey:SCHSyncEntityState]] statusValue] == kSCHStatusModified) {
+            id lastPage = [[tns1_LastPage alloc] init];
+            intoObject.LastPage = lastPage;
+            [lastPage release];
+            [self fromObject:lastPageObject intoLastPage:intoObject.LastPage];
+        }
+
+        id ratingObject = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]];
+        if ([[self fromObjectTranslate:[ratingObject valueForKey:SCHSyncEntityState]] statusValue] == kSCHStatusModified &&
+            [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
+            id rating = [[tns1_Rating alloc] init];
+            intoObject.Rating = rating;
+            [rating release];
+            [self fromObject:ratingObject intoRating:intoObject.Rating];
+        }
 	}
-}												
+}
 
 - (void)fromObject:(NSDictionary *)object intoHighlight:(tns1_Highlight *)intoObject
 {
@@ -1825,15 +1833,18 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         if (intoObject.action != kSCHSaveActionsCreate) {
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		}
-		intoObject.color = [object valueForKey:kSCHLibreAccessWebServiceColor];	
-        id location = [[tns1_LocationText alloc] init];
-		intoObject.location = location;
-        [location release];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]] intoLocationText:intoObject.location];
-		intoObject.endPage = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceEndPage]];		
-		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];				
-		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
-	}	
+		intoObject.color = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceColor]];
+        id locationObject = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]];
+        if (locationObject != nil) {
+            id location = [[tns1_LocationText alloc] init];
+            intoObject.location = location;
+            [location release];
+            [self fromObject:locationObject intoLocationText:intoObject.location];
+        }
+        intoObject.endPage = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceEndPage]];
+		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoLocationText:(tns1_LocationText *)intoObject
@@ -1844,15 +1855,15 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.wordindex = wordIndex;
         [wordIndex release];
 		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceWordIndex]] intoWordIndex:intoObject.wordindex];
-	}	
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoWordIndex:(tns1_WordIndex *)intoObject
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.start = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStart]];
-		intoObject.end = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceEnd]];		
-	}	
+		intoObject.end = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceEnd]];
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoNote:(tns1_Note *)intoObject
@@ -1862,15 +1873,18 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         if (intoObject.action != kSCHSaveActionsCreate) {
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		}
-        id location = [[tns1_LocationGraphics alloc] init];
-		intoObject.location = location;
-        [location release];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]] intoLocationGraphics:intoObject.location];
-		intoObject.color = [object valueForKey:kSCHLibreAccessWebServiceColor];
-		intoObject.value = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceValue]];		
-		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];				
-		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
-	}	
+        id locationObject = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]];
+        if (locationObject != nil) {
+            id location = [[tns1_LocationGraphics alloc] init];
+            intoObject.location = location;
+            [location release];
+            [self fromObject:locationObject intoLocationGraphics:intoObject.location];
+        }
+		intoObject.color = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceColor]];
+        intoObject.value = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceValue]];
+		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoLocationGraphics:(tns1_LocationGraphics *)intoObject
@@ -1883,8 +1897,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         // default values as Scholastic doesnt actually use these values
 		intoObject.coords.x = [NSNumber numberWithInteger:0];
         intoObject.coords.y = [NSNumber numberWithInteger:0];
-//		intoObject.wordindex = nil;
-	}	
+        //		intoObject.wordindex = nil;
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoBookmark:(tns1_Bookmark *)intoObject
@@ -1896,20 +1910,23 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		}
 		intoObject.text = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceText]];
 		intoObject.disabled = [self fromObjectTranslateToUSBoolean:[object valueForKey:kSCHLibreAccessWebServiceDisabled]];
-		id location = [[tns1_LocationBookmark alloc] init];
-		intoObject.location = location;
-		[location release];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]] intoLocationBookmark:intoObject.location];
-		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];						
-		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
-	}	
+        id locationObject = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]];
+        if (locationObject != nil) {
+            id location = [[tns1_LocationBookmark alloc] init];
+            intoObject.location = location;
+            [location release];
+            [self fromObject:locationObject intoLocationBookmark:intoObject.location];
+        }
+		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoLocationBookmark:(tns1_LocationBookmark *)intoObject
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePage]];
-	}	
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoLastPage:(tns1_LastPage *)intoObject
@@ -1918,22 +1935,18 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.lastPageLocation = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastPageLocation]];
 		intoObject.percentage = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePercentage]];
 		intoObject.component = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceComponent]];
-		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];						
-	}	
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoRating:(tns1_Rating *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-        if ([[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
-            intoObject.rating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]];
-        } else {
-            intoObject.rating = [NSNumber numberWithInteger:0];
-        }
-		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];						
+        intoObject.rating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]];
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];
         intoObject.averageRating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAverageRating]];
         intoObject.numVotes = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNumVotes]];
-	}	
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoContentProfileAssignmentItem:(tns1_ContentProfileAssignmentItem *)intoObject
@@ -1941,7 +1954,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	if (object != nil && intoObject != nil) {
 		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
 		intoObject.ContentIdentifierType = (tns1_ContentIdentifierTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
-		intoObject.drmqualifier = (tns1_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
+		intoObject.drmqualifier = (tns1_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
         id assignedProfileList = [[tns1_AssignedProfileList alloc] init];
 		intoObject.AssignedProfileList = assignedProfileList;
@@ -1952,7 +1965,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[intoObject.AssignedProfileList addAssignedProfileItem:contentProfileAssignmentItem];
 			[contentProfileAssignmentItem release], contentProfileAssignmentItem = nil;
 		}
-	}	
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoAssignedProfileItem:(tns1_AssignedProfileItem *)intoObject
@@ -1960,24 +1973,27 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	if (object != nil && intoObject != nil) {
 		intoObject.profileID = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfileID]];
 		intoObject.action = (tns1_SaveActions)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
-		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
-	}	
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoReadingStatsDetailItem:(tns1_ReadingStatsDetailItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-        id readingStatsContentList = [[tns1_ReadingStatsContentList alloc] init];
-		intoObject.ReadingStatsContentList = readingStatsContentList;
-        [readingStatsContentList release];
-		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsContentItem]]) {
-			tns1_ReadingStatsContentItem *readingStatsContentItem = [[tns1_ReadingStatsContentItem alloc] init];
-			[self fromObject:item intoReadingStatsContentItem:readingStatsContentItem];
-			[intoObject.ReadingStatsContentList addReadingStatsContentItem:readingStatsContentItem];
-			[readingStatsContentItem release], readingStatsContentItem = nil;
-		}
+        NSSet *readingStatsContentItems = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsContentItem]];
+        if ([readingStatsContentItems count] > 0) {
+            id readingStatsContentList = [[tns1_ReadingStatsContentList alloc] init];
+            intoObject.ReadingStatsContentList = readingStatsContentList;
+            [readingStatsContentList release];
+            for (NSDictionary *item in readingStatsContentItems) {
+                tns1_ReadingStatsContentItem *readingStatsContentItem = [[tns1_ReadingStatsContentItem alloc] init];
+                [self fromObject:item intoReadingStatsContentItem:readingStatsContentItem];
+                [intoObject.ReadingStatsContentList addReadingStatsContentItem:readingStatsContentItem];
+                [readingStatsContentItem release], readingStatsContentItem = nil;
+            }
+        }
 		intoObject.profileID = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfileID]];
-	}	
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoReadingStatsContentItem:(tns1_ReadingStatsContentItem *)intoObject
@@ -1985,18 +2001,21 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	if (object != nil && intoObject != nil) {
 		intoObject.ContentIdentifierType = (tns1_ContentIdentifierTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
 		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.drmqualifier = (tns1_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
+		intoObject.drmqualifier = (tns1_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
-        id readingStatsEntryList = [[tns1_ReadingStatsEntryList alloc] init];
-		intoObject.ReadingStatsEntryList = readingStatsEntryList;
-        [readingStatsEntryList release];
-		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsEntryItem]]) {
-			tns1_ReadingStatsEntryItem *readingStatsEntryItem = [[tns1_ReadingStatsEntryItem alloc] init];
-			[self fromObject:item intoReadingStatsEntryItem:readingStatsEntryItem];
-			[intoObject.ReadingStatsEntryList addReadingStatsEntryItem:readingStatsEntryItem];
-			[readingStatsEntryItem release], readingStatsEntryItem = nil;
-		}
-	}	
+        NSSet *readingStatsEntryItems = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsEntryItem]];
+        if ([readingStatsEntryItems count] > 0) {
+            id readingStatsEntryList = [[tns1_ReadingStatsEntryList alloc] init];
+            intoObject.ReadingStatsEntryList = readingStatsEntryList;
+            [readingStatsEntryList release];
+            for (NSDictionary *item in readingStatsEntryItems) {
+                tns1_ReadingStatsEntryItem *readingStatsEntryItem = [[tns1_ReadingStatsEntryItem alloc] init];
+                [self fromObject:item intoReadingStatsEntryItem:readingStatsEntryItem];
+                [intoObject.ReadingStatsEntryList addReadingStatsEntryItem:readingStatsEntryItem];
+                [readingStatsEntryItem release], readingStatsEntryItem = nil;
+            }
+        }
+	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoReadingStatsEntryItem:(tns1_ReadingStatsEntryItem *)intoObject
@@ -2008,21 +2027,23 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.dictionaryLookups = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDictionaryLookups]];
 		intoObject.deviceKey = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDeviceKey]];
 		intoObject.timestamp = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTimestamp]];
-        id dictionaryLookupsList = [[tns1_DictionaryLookupsList alloc] init];
-		intoObject.DictionaryLookupsList = dictionaryLookupsList;
-        [dictionaryLookupsList release];
-		for (NSString *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDictionaryLookupsList]]) {
-			[intoObject.DictionaryLookupsList addDictionaryLookupsItem:item];
-		}
-        id quizTrialsList = [[tns1_QuizTrialsList alloc] init];
-		intoObject.quizResults = quizTrialsList;
-        [quizTrialsList release];
-		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceQuizResults]]) {
-			tns1_QuizTrialsItem *quizTrialsItem = [[tns1_QuizTrialsItem alloc] init];
-			[self fromObject:item intoQuizTrialsItem:quizTrialsItem];
-			[intoObject.quizResults addQuizTrialsItem:quizTrialsItem];
-			[quizTrialsItem release], quizTrialsItem = nil;
-		}
+        NSSet *dictionaryLookupsList = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDictionaryLookupsList]];
+        if ([dictionaryLookupsList count] > 0) {
+            intoObject.DictionaryLookupsList = [[[tns1_DictionaryLookupsList alloc] init] autorelease];
+            for (NSString *item in dictionaryLookupsList) {
+                [intoObject.DictionaryLookupsList addDictionaryLookupsItem:item];
+            }
+        }
+        NSSet *quizResults = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceQuizResults]];
+        if ([quizResults count] > 0) {
+            intoObject.quizResults = [[[tns1_QuizTrialsList alloc] init] autorelease];
+            for (NSDictionary *item in quizResults) {
+                tns1_QuizTrialsItem *quizTrialsItem = [[tns1_QuizTrialsItem alloc] init];
+                [self fromObject:item intoQuizTrialsItem:quizTrialsItem];
+                [intoObject.quizResults addQuizTrialsItem:quizTrialsItem];
+                [quizTrialsItem release], quizTrialsItem = nil;
+            }
+        }
 	}
 }
 
@@ -2047,7 +2068,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 	return ret;
 }
-                                                  
+
 #pragma mark - Internal Debug Methods
 
 // Call this from GDB with:
@@ -2064,16 +2085,16 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
     [item setValue:[NSDate date] forKey:kSCHLibreAccessWebServiceLastModified];
     [item setValue:@"John Doe" forKey:kSCHLibreAccessWebServiceScreenName];
     [item setValue:@"" forKey:kSCHLibreAccessWebServicePassword];
-//    [item setValue:@"Key" forKey:kSCHLibreAccessWebServiceUserKey];
+    //    [item setValue:@"Key" forKey:kSCHLibreAccessWebServiceUserKey];
     [item setValue:[NSNumber numberWithInt:tns1_ProfileTypes_CHILD] forKey:kSCHLibreAccessWebServiceType];
     [item setValue:[NSNumber numberWithInt:0] forKey:kSCHLibreAccessWebServiceID];
     [item setValue:[NSNumber numberWithInt:tns1_SaveActions_CREATE] forKey:kSCHLibreAccessWebServiceAction];
     [item setValue:[NSNumber numberWithInt:tns1_BookshelfStyle_OLDER_CHILD] forKey:kSCHLibreAccessWebServiceBookshelfStyle];
     [item setValue:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceStoryInteractionEnabled];
     [item setValue:[NSNumber numberWithInt:tns1_SaveActions_CREATE] forKey:kSCHLibreAccessWebServiceAction];
-    
+
     [self performSelector:@selector(saveUserProfiles:) withObject:[NSArray arrayWithObject:item] afterDelay:0.1f];
-    
+
 }
 
 // Call this from GDB with:
@@ -2081,33 +2102,33 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 // continue
 - (void)debugAssignBook:(NSString *)isbn toProfile:(NSUInteger)profileID
 {
-    
+
     /*
      NSNumber * profileID;
      LibreAccessServiceSvc_SaveActions action;
      NSDate * lastmodified;
      */
-    
+
     NSMutableDictionary *profileList = [NSMutableDictionary dictionary];
     [profileList setValue:[NSNumber numberWithInt:profileID] forKey:kSCHLibreAccessWebServiceProfileID];
     [profileList setValue:[NSNumber numberWithInt:tns1_SaveActions_CREATE] forKey:kSCHLibreAccessWebServiceAction];
     [profileList setValue:[NSDate date] forKey:kSCHLibreAccessWebServiceLastModified];
-     
-     /*
-      NSString * contentIdentifier;
-      LibreAccessServiceSvc_ContentIdentifierTypes ContentIdentifierType;
-      LibreAccessServiceSvc_drmqualifiers drmqualifier;
-      NSString * format;
-      LibreAccessServiceSvc_AssignedProfileList * AssignedProfileList;
-      */
-    
+
+    /*
+     NSString * contentIdentifier;
+     LibreAccessServiceSvc_ContentIdentifierTypes ContentIdentifierType;
+     LibreAccessServiceSvc_drmqualifiers drmqualifier;
+     NSString * format;
+     LibreAccessServiceSvc_AssignedProfileList * AssignedProfileList;
+     */
+
     NSMutableDictionary *item = [NSMutableDictionary dictionary];
     [item setValue:isbn forKey:kSCHLibreAccessWebServiceContentIdentifier];
     [item setValue:[NSNumber numberWithInt:tns1_ContentIdentifierTypes_ISBN13] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
     [item setValue:[NSNumber numberWithInt:tns1_drmqualifiers_FULL_NO_DRM] forKey:kSCHLibreAccessWebServiceDRMQualifier];
     [item setValue:@"XPS" forKey:kSCHLibreAccessWebServiceFormat];
     [item setValue:[NSArray arrayWithObject:profileList] forKey:kSCHLibreAccessWebServiceAssignedProfileList];
-    
+
     [self performSelector:@selector(saveContentProfileAssignment:) withObject:[NSArray arrayWithObject:item] afterDelay:0.1f];
     
 }
