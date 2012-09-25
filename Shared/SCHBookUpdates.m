@@ -12,7 +12,7 @@
 #import "SCHBookManager.h"
 #import "SCHAppStateManager.h"
 #import "SCHContentMetadataItem.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "SCHAuthenticationManager.h"
 
 #define DEBUG_FORCE_ENABLE_UPDATES 0
@@ -104,7 +104,7 @@
         NSString *onDiskVersion = [(SCHAppBook*) obj OnDiskVersion];
         BOOL validOnDiskVersion = (onDiskVersion != nil);
                 
-        if (validOnDiskVersion && ([contentMetadataItem.UserContentItem.Version integerValue] > [onDiskVersion integerValue])) {
+        if (validOnDiskVersion && ([contentMetadataItem.booksAssignment.version integerValue] > [onDiskVersion integerValue])) {
             [self.results addObject:obj];
         }
     }];

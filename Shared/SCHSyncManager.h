@@ -14,7 +14,7 @@
 // Constants
 extern NSString * const SCHSyncManagerDidCompleteNotification;
 
-@class SCHUserContentItem;
+@class SCHBooksAssignment;
 
 @interface SCHSyncManager : NSObject <SCHComponentDelegate>
 {	
@@ -37,9 +37,11 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication;
 - (void)performFlushSaves;
 - (void)profileSync;
-- (void)bookshelfSync;
-- (void)openDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
-- (void)closeDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
+- (void)bookshelfSyncNow:(BOOL)syncNow;
+- (void)openDocumentSync:(SCHBooksAssignment *)booksAssignment
+              forProfile:(NSNumber *)profileID;
+- (void)closeDocumentSync:(SCHBooksAssignment *)booksAssignment
+               forProfile:(NSNumber *)profileID;
 - (void)recommendationSync;
 - (void)wishListSync:(BOOL)syncNow;
 

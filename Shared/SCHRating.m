@@ -18,12 +18,14 @@ NSString * const kSCHRating = @"SCHRating";
 
 @dynamic rating;
 @dynamic averageRating;
+@dynamic numVotes;
 @dynamic PrivateAnnotations;
 
 - (void)setInitialValues
 {
     self.rating = [NSNumber numberWithFloat:0.0];
     self.averageRating = [NSNumber numberWithFloat:0.0];
+    self.numVotes = [NSNumber numberWithInteger:0];
     
     self.LastModified = [NSDate distantPast];
     self.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];    

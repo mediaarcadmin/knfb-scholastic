@@ -36,6 +36,12 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 static NSString* const devCertFilename = @"devcert.dat";
 static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 
+// Constants
+NSString * const kSCHLoginErrorDomain = @"LoginErrorDomain";
+NSInteger const kSCHLoginReachabilityError = 1000;
+NSString * const kSCHSamplesErrorDomain = @"SamplesErrorDomain";
+NSInteger const kSCHSamplesUnspecifiedError = 1000;
+
 @interface AppDelegate_Shared ()
 
 - (void)setupUserDefaults;
@@ -51,7 +57,6 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 @implementation AppDelegate_Shared
 
 @synthesize window;
-@synthesize startingViewController;
 @synthesize coreDataHelper;
 
 #pragma mark - Application lifecycle
@@ -59,7 +64,6 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 - (void)dealloc 
 {    
     [coreDataHelper release], coreDataHelper = nil;
-    [startingViewController release], startingViewController = nil;
     [window release], window = nil;
     [super dealloc];
 }
@@ -316,7 +320,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         [upgradeAlert setSpinnerHidden:NO];
         [upgradeAlert show];
         
-        // Remove the username key so that the sign-in screen is presented by the startingviewcontroller
+        // Remove the username key so that the sign-in screen is presented after login
         // There should probably be a cleaner way to do this
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUsername];
         [[NSUserDefaults standardUserDefaults] synchronize];

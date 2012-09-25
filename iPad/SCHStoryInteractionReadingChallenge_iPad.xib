@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">12A269</string>
+		<string key="IBDocument.SystemVersion">12B19</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2549</string>
 		<string key="IBDocument.AppKitVersion">1187</string>
 		<string key="IBDocument.HIToolboxVersion">624.00</string>
@@ -995,7 +995,7 @@
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="-1.CustomClassName">SCHStoryInteractionControllerReadingQuiz</string>
+				<string key="-1.CustomClassName">SCHStoryInteractionControllerReadingChallenge</string>
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1043,6 +1043,128 @@
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHStoryInteractionController</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHStoryInteractionController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHStoryInteractionControllerReadingChallenge</string>
+					<string key="superclassName">SCHStoryInteractionController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="answerButtonTapCancelled:">id</string>
+						<string key="answerButtonTapped:">id</string>
+						<string key="answerButtonTouched:">id</string>
+						<string key="playAgainButtonTapped:">id</string>
+						<string key="startViewButtonTapped:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="answerButtonTapCancelled:">
+							<string key="name">answerButtonTapCancelled:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="answerButtonTapped:">
+							<string key="name">answerButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="answerButtonTouched:">
+							<string key="name">answerButtonTouched:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="playAgainButtonTapped:">
+							<string key="name">playAgainButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="startViewButtonTapped:">
+							<string key="name">startViewButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="answerBackgroundView">UIView</string>
+						<string key="answerScrollView">UIScrollView</string>
+						<string key="answerScrollViewContainer">UIView</string>
+						<string key="bestScoreLabel">UILabel</string>
+						<string key="introActionButton">SCHStretchableImageButton</string>
+						<string key="introSubtitleLabel">UILabel</string>
+						<string key="introTitleLabel">UILabel</string>
+						<string key="ipadQuestionLabel">UILabel</string>
+						<string key="progressView">SCHStoryInteractionProgressView</string>
+						<string key="resultsHeaderLabel">UILabel</string>
+						<string key="scoreLabel">UILabel</string>
+						<string key="scoreSublabel">UILabel</string>
+						<string key="tryAgainButton">SCHStretchableImageButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="answerBackgroundView">
+							<string key="name">answerBackgroundView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="answerScrollView">
+							<string key="name">answerScrollView</string>
+							<string key="candidateClassName">UIScrollView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="answerScrollViewContainer">
+							<string key="name">answerScrollViewContainer</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="bestScoreLabel">
+							<string key="name">bestScoreLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="introActionButton">
+							<string key="name">introActionButton</string>
+							<string key="candidateClassName">SCHStretchableImageButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="introSubtitleLabel">
+							<string key="name">introSubtitleLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="introTitleLabel">
+							<string key="name">introTitleLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="ipadQuestionLabel">
+							<string key="name">ipadQuestionLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="progressView">
+							<string key="name">progressView</string>
+							<string key="candidateClassName">SCHStoryInteractionProgressView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="resultsHeaderLabel">
+							<string key="name">resultsHeaderLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="scoreLabel">
+							<string key="name">scoreLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="scoreSublabel">
+							<string key="name">scoreSublabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="tryAgainButton">
+							<string key="name">tryAgainButton</string>
+							<string key="candidateClassName">SCHStretchableImageButton</string>
+						</object>
+					</dictionary>
+					<object class="NSMutableDictionary" key="toManyOutletInfosByName">
+						<string key="NS.key.0">answerButtons</string>
+						<object class="IBToManyOutletInfo" key="NS.object.0">
+							<string key="name">answerButtons</string>
+							<string key="candidateClassName">UIButton</string>
+							<string key="collectionClassName">NSArray</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHStoryInteractionControllerReadingChallenge.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">SCHStoryInteractionProgressView</string>
 					<string key="superclassName">UIView</string>

@@ -25,5 +25,6 @@
 - (NSData *)coverThumbData;
 - (void)resetDrmDecrypter;
 - (BOOL)containsEmbeddedEPub;
+- (BOOL)containsEmbeddedBSB;
 
 @end

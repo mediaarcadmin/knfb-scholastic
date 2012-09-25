@@ -43,12 +43,13 @@ typedef enum
 @property (nonatomic, assign) id <SCHReadingViewNavigationToolbarDelegate> delegate;
 
 - (id)initWithStyle:(SCHReadingViewNavigationToolbarStyle)aStyle 
-              audio:(BOOL)showAudio 
-               help:(BOOL)showHelp
+    showAudioButton:(BOOL)showAudio
+     showHelpButton:(BOOL)showHelp
         orientation:(UIInterfaceOrientation)orientation;
 
 - (void)setTitle:(NSString *)title;
 - (void)setAudioItemActive:(BOOL)active;
+- (void)setReadingQuizItemActive:(BOOL)active;
 - (void)setOrientation:(UIInterfaceOrientation)orientation;
 
 @end

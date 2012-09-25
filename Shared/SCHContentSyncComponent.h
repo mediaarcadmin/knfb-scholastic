@@ -10,8 +10,6 @@
 
 #import "SCHSyncComponent.h"
 
-@class SCHUserContentItem;
-
 // Constants
 extern NSString * const SCHContentSyncComponentWillDeleteNotification;
 extern NSString * const SCHContentSyncComponentDidAddBookToProfileNotification;
@@ -24,8 +22,8 @@ extern NSString * const SCHContentSyncComponentDidFailNotification;
 {
 }
 
-- (void)syncUserContentItemsFromMainThread:(NSArray *)userContentList;
-- (void)addUserContentItemFromMainThread:(NSDictionary *)webUserContentItem;
+- (void)syncBooksAssignmentsFromMainThread:(NSArray *)booksAssignmentList;
+- (void)addBooksAssignmentFromMainThread:(NSDictionary *)webBooksAssignment;
 
 
 @end

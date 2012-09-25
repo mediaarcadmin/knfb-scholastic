@@ -1,5 +1,5 @@
 //
-//  SCHRecommendationTopRating.m
+//  SCHAppRecommendationTopRating.m
 //  Scholastic
 //
 //  Created by John S. Eddie on 27/08/2012.
@@ -10,9 +10,9 @@
 #import "SCHRecommendationItem.h"
 
 // Constants
-NSString * const kSCHRecommendationTopRating = @"SCHRecommendationTopRating";
+NSString * const kSCHAppRecommendationTopRating = @"SCHAppRecommendationTopRating";
 
-@implementation SCHRecommendationTopRating
+@implementation SCHAppRecommendationTopRating
 
 @dynamic categoryClass;
 @dynamic fetchDate;

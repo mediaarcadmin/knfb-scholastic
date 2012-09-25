@@ -20,9 +20,9 @@
 - (void)syncRecommendationTopRatings:(NSArray *)webRecommendationTopRatings;
 - (NSArray *)localTopRatings;
 - (void)syncRecommendationTopRating:(NSDictionary *)webRecommendationTopRating
-        withRecommendationTopRating:(SCHRecommendationTopRating *)localRecommendationTopRating
+        withRecommendationTopRating:(SCHAppRecommendationTopRating *)localRecommendationTopRating
                            syncDate:(NSDate *)syncDate;
-- (SCHRecommendationTopRating *)recommendationTopRating:(NSDictionary *)webRecommendationTopRating
+- (SCHAppRecommendationTopRating *)recommendationTopRating:(NSDictionary *)webRecommendationTopRating
                                                syncDate:(NSDate *)syncDate;
 - (void)syncRecommendationItems:(NSArray *)webRecommendationItems
         withRecommendationItems:(NSSet *)localRecommendationItems
@@ -90,7 +90,7 @@
 	NSEnumerator *localEnumerator = [localRecommendationProfilesArray objectEnumerator];
 
 	NSDictionary *webItem = [webEnumerator nextObject];
-	SCHRecommendationTopRating *localItem = [localEnumerator nextObject];
+	SCHAppRecommendationTopRating *localItem = [localEnumerator nextObject];
 
 	while (webItem != nil || localItem != nil) {
         if (webItem == nil) {
@@ -108,7 +108,7 @@
         id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceTopRatingsTypeValue]];
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceCategoryClass];
 
-        if (webItemID == nil || [SCHRecommendationTopRating isValidCategoryClass:webItemID] == NO) {
+        if (webItemID == nil || [SCHAppRecommendationTopRating isValidCategoryClass:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;
@@ -151,7 +151,7 @@
 {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationTopRating
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationTopRating
                                         inManagedObjectContext:self.backgroundThreadManagedObjectContext]];
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationWebServiceCategoryClass ascending:YES]]];
@@ -168,7 +168,7 @@
 }
 
 - (void)syncRecommendationTopRating:(NSDictionary *)webRecommendationTopRating
-        withRecommendationTopRating:(SCHRecommendationTopRating *)localRecommendationTopRating
+        withRecommendationTopRating:(SCHAppRecommendationTopRating *)localRecommendationTopRating
                            syncDate:(NSDate *)syncDate
 {
     if (webRecommendationTopRating != nil) {
@@ -181,14 +181,14 @@
     }
 }
 
-- (SCHRecommendationTopRating *)recommendationTopRating:(NSDictionary *)webRecommendationTopRating
+- (SCHAppRecommendationTopRating *)recommendationTopRating:(NSDictionary *)webRecommendationTopRating
                                                syncDate:(NSDate *)syncDate
 {
-	SCHRecommendationTopRating *ret = nil;
+	SCHAppRecommendationTopRating *ret = nil;
 	id topRatingCategoryClass =  [self makeNullNil:[webRecommendationTopRating valueForKey:kSCHLibreAccessWebServiceTopRatingsTypeValue]];
 
-	if (webRecommendationTopRating != nil && [SCHRecommendationTopRating isValidCategoryClass:topRatingCategoryClass] == YES) {
-        ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationTopRating
+	if (webRecommendationTopRating != nil && [SCHAppRecommendationTopRating isValidCategoryClass:topRatingCategoryClass] == YES) {
+        ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppRecommendationTopRating
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
 
         ret.categoryClass = topRatingCategoryClass;

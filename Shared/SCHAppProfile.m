@@ -10,7 +10,7 @@
 
 #import "SCHProfileItem.h"
 #import "SCHRecommendationItem.h"
-#import "SCHRecommendationProfile.h"
+#import "SCHAppRecommendationProfile.h"
 #import "SCHRecommendationTopRating.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHWishListItem.h"
@@ -18,9 +18,10 @@
 #import "SCHAppRecommendationItem.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHWishListConstants.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHRecommendationManager.h"
+#import "SCHMakeNullNil.h"
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -29,7 +30,6 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 
 - (NSSet *)recommendationItems;
 - (NSArray *)purchasedBooks;
-- (id)makeNullNil:(id)object;
 - (void)save;
 
 @end
@@ -44,13 +44,14 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 @dynamic PaperType;
 @dynamic SortType;
 @dynamic ShowListView;
+@dynamic lastEnteredBookshelfDate;
 
-- (SCHRecommendationProfile *)recommendationProfile
+- (SCHAppRecommendationProfile *)appRecommendationProfile
 {
-    SCHRecommendationProfile *ret = nil;
+    SCHAppRecommendationProfile *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationProfile 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationProfile 
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"age = %d", self.ProfileItem.age]];
     
@@ -67,12 +68,12 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     return ret;
 }
 
-- (SCHRecommendationTopRating *)recommendationTopRating
+- (SCHAppRecommendationTopRating *)appRecommendationTopRating
 {
-    SCHRecommendationTopRating *ret = nil;
+    SCHAppRecommendationTopRating *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationTopRating
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationTopRating
                                         inManagedObjectContext:self.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"categoryClass = %@", self.ProfileItem.categoryClass]];
 
@@ -92,7 +93,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 - (NSSet *)recommendationItems
 {
 #if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
-    return [[self recommendationTopRating] recommendationItems];
+    return [[self appRecommendationTopRating] recommendationItems];
 #else
     return [[self recommendationProfile] recommendationItems];
 #endif
@@ -104,7 +105,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     NSArray *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"DRMQualifier IN %@", 
                                 [NSNumber arrayOfPurchasedDRMQualifiers]]];
@@ -124,9 +125,9 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 - (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
-    NSSet *allItems = [self recommendationItems];
+    NSSet *allItems = [[self appRecommendationProfile] recommendationItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.isReady = %d", YES];
-    NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations]
+    NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations] 
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
 
     NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
@@ -137,14 +138,14 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
             NSDictionary *recommendationDictionary = [item.appRecommendationItem dictionary];
             
             if (recommendationDictionary && 
-                [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO) {
+                [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationItemISBN]] == NO) {
                 [objectArray addObject:recommendationDictionary];
             }
         }
     }
     
     ret = [NSArray arrayWithArray:objectArray];
-
+    
     [self processUserAction:allItems];
 
     return ret;
@@ -231,9 +232,9 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
             SCHWishListItem *newWishListItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListItem 
                                                                              inManagedObjectContext:self.managedObjectContext];
             
-            newWishListItem.Title = [self makeNullNil:[wishListItem objectForKey:kSCHWishListTitle]];
-            newWishListItem.Author = [self makeNullNil:[wishListItem objectForKey:kSCHWishListAuthor]];
-            newWishListItem.ISBN = [self makeNullNil:[wishListItem objectForKey:kSCHWishListISBN]];
+            newWishListItem.Title = makeNullNil([wishListItem objectForKey:kSCHWishListTitle]);
+            newWishListItem.Author = makeNullNil([wishListItem objectForKey:kSCHWishListAuthor]);
+            newWishListItem.ISBN = makeNullNil([wishListItem objectForKey:kSCHWishListISBN]);
             newWishListItem.InitiatedBy = kSCHWishListWebServiceCHILD;
             
             [newWishListItem assignAppRecommendationItem];
@@ -256,11 +257,6 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
             [self save];
         }
     }
-}
-
-- (id)makeNullNil:(id)object
-{
-	return(object == [NSNull null] ? nil : object);
 }
 
 - (void)save

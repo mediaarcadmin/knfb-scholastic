@@ -95,7 +95,7 @@ static NSTimeInterval const kSCHTopRatingsSyncComponentSyncDelayTimeInterval = 8
 {
 	NSError *error = nil;
 
-	if (![self.managedObjectContext BITemptyEntity:kSCHRecommendationTopRating error:&error priorToDeletionBlock:nil] ||
+	if (![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationTopRating error:&error priorToDeletionBlock:nil] ||
         ![self.managedObjectContext BITemptyEntity:kSCHRecommendationItem error:&error priorToDeletionBlock:nil] ||
         ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error priorToDeletionBlock:^(NSManagedObject *managedObject) {
         [(SCHAppRecommendationItem *)managedObject deleteAllFiles];
@@ -212,7 +212,7 @@ static NSTimeInterval const kSCHTopRatingsSyncComponentSyncDelayTimeInterval = 8
         allProfileCategoryClasses = [NSMutableArray arrayWithCapacity:[results count]];
         filteredProfileCategoryClasses = [NSMutableArray arrayWithCapacity:[results count]];
         for (SCHProfileItem *item in results) {
-            SCHRecommendationTopRating *topRating = [[item AppProfile] recommendationTopRating];
+            SCHAppRecommendationTopRating *topRating = [[item AppProfile] appRecommendationTopRating];
             NSDate *nextUpdate = [topRating.fetchDate dateByAddingTimeInterval:kSCHTopRatingsSyncComponentSyncDelayTimeInterval];
             NSString *categoryClass = [item categoryClass];
 
@@ -254,7 +254,7 @@ static NSTimeInterval const kSCHTopRatingsSyncComponentSyncDelayTimeInterval = 8
     if ([categoryClasses count] > 0) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSError *error = nil;
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationTopRating
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationTopRating
                                             inManagedObjectContext:self.managedObjectContext]];
 
         NSArray *recommendationTopRatings = [self.managedObjectContext executeFetchRequest:fetchRequest
@@ -263,7 +263,7 @@ static NSTimeInterval const kSCHTopRatingsSyncComponentSyncDelayTimeInterval = 8
         if (recommendationTopRatings == nil) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         } else {
-            for (SCHRecommendationTopRating *topRating in recommendationTopRatings) {
+            for (SCHAppRecommendationTopRating *topRating in recommendationTopRatings) {
                 if ([categoryClasses containsObject:topRating.categoryClass] == NO) {
                     [self.managedObjectContext deleteObject:topRating];
                 }

@@ -52,12 +52,6 @@ typedef enum {
 //static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = 60 * 60 * 24 * 7; // 1 week
 static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (60 * 5) - 1;
 
-// Constants
-NSString * const kSCHLoginErrorDomain = @"LoginErrorDomain";
-NSInteger const kSCHLoginReachabilityError = 1000;
-NSString * const kSCHSamplesErrorDomain = @"SamplesErrorDomain";
-NSInteger const kSCHSamplesUnspecifiedError = 1000;
-
 @interface SCHStartingViewController ()
 
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;

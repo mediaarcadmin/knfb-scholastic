@@ -35,6 +35,7 @@
 
 @property (nonatomic, assign, readonly) BOOL audioItemHidden;
 @property (nonatomic, assign, readonly) BOOL helpItemHidden;
+@property (nonatomic, assign) BOOL readingQuizActive;
 
 - (NSArray *)toolbarItemsForOrientation:(UIInterfaceOrientation)orientation;
 
@@ -84,6 +85,7 @@
 @synthesize helpItemButton;
 @synthesize audioItemHidden;
 @synthesize helpItemHidden;
+@synthesize readingQuizActive;
 
 - (void)dealloc
 {
@@ -113,8 +115,8 @@
 }
 
 - (id)initWithStyle:(SCHReadingViewNavigationToolbarStyle)aStyle 
-              audio:(BOOL)showAudio 
-               help:(BOOL)showHelp
+    showAudioButton:(BOOL)showAudio
+     showHelpButton:(BOOL)showHelp
         orientation:(UIInterfaceOrientation)orientation
 {
     CGRect bounds = CGRectZero;
@@ -184,6 +186,17 @@
 - (void)setAudioItemActive:(BOOL)active
 {
     [self.audioItemButton setSelected:active];
+}
+
+- (void)setReadingQuizItemActive:(BOOL)active
+{
+    self.readingQuizActive = active;
+    
+    if (self.readingQuizActive) {
+        self.readingQuizItemButton.alpha = 1;
+    } else {
+        self.readingQuizItemButton.alpha = 0.5;
+    }
 }
 
 - (void)setOrientation:(UIInterfaceOrientation)orientation
@@ -337,6 +350,12 @@
             break;
         default:
             break;
+    }
+    
+    if (self.readingQuizActive) {
+        self.readingQuizItemButton.alpha = 1;
+    } else {
+        self.readingQuizItemButton.alpha = 0.5;
     }
     
     return readingQuizItem;

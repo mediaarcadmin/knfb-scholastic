@@ -9,10 +9,12 @@
 #import "SCHBSBReplacedTextElement.h"
 #import "SCHBSBReplacedElementTextField.h"
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
+#import <libEucalyptus/EucCSSDPI.h>
 
 @interface SCHBSBReplacedTextElement() <UITextFieldDelegate>
 
-@property (nonatomic, retain) NSString *binding;
+@property (nonatomic, copy) NSString *binding;
+@property (nonatomic, copy) NSString *value;
 @property (nonatomic, retain) UIView *textView;
 
 @end
@@ -20,19 +22,22 @@
 @implementation SCHBSBReplacedTextElement
 
 @synthesize binding;
+@synthesize value;
 @synthesize textView;
 
 - (void)dealloc
 {
     [binding release], binding = nil;
+    [value release], value = nil;
     [textView release], textView = nil;
     [super dealloc];
 }
 
-- (id)initWithPointSize:(CGFloat)point binding:(NSString *)textBinding
+- (id)initWithBinding:(NSString *)textBinding value:(NSString *)aValue
 {
-    if (self = [super initWithPointSize:point]) {
+    if (self = [super init]) {
         binding = [textBinding copy];
+        value = [aValue copy];
     }
     
     return self;
@@ -40,7 +45,13 @@
 
 - (CGSize)intrinsicSize
 {
-    return CGSizeMake(160, 10 + self.pointSize * 2);
+    CGFloat adjustedSize;
+    
+    CGSize textSize = [@"PLACEHOLDER TEXT STRING" sizeWithFont:[UIFont fontWithName:@"Times New Roman" size:EucCSSPixelsMediumFontSize] minFontSize:6 actualFontSize:&adjustedSize forWidth:160 lineBreakMode:UILineBreakModeWordWrap];
+    
+    textSize.height += 10;
+
+    return textSize;
 }
 
 - (THCGViewSpiritElement *)newViewSpiritElement
@@ -63,6 +74,11 @@
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textField.returnKeyType = UIReturnKeyDone;
         textField.delegate = self;
+        textField.adjustsFontSizeToFitWidth = YES;
+        textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        textField.text = self.value;
+        textField.font = self.font;
+        //textField.font = [UIFont fontWithName:@"Times New Roman" size:self.pointSize];
         
         [textField addTarget:textField action:@selector(endEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
         textView = textField;
@@ -102,6 +118,8 @@
     [UIView animateWithDuration:0.25f animations:^{
         [container setTransform:CGAffineTransformIdentity];
     }];
+    
+    [self.delegate binding:self.binding didUpdateValue:textField.text];
 }
 
 @end

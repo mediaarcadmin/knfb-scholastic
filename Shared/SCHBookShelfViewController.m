@@ -310,10 +310,13 @@ typedef enum
     }
     
     if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        self.navigationItem.title = [self.profileItem bookshelfName:YES];
+        self.navigationItem.title = [self.profileItem displayName];
     } else {
         self.navigationItem.title = NSLocalizedString(@"My eBooks", @"Sample bookshelf title");
     }
+
+    BOOL forceBookshelfSync = self.profileItem.AppProfile.lastEnteredBookshelfDate == nil;
+    self.profileItem.AppProfile.lastEnteredBookshelfDate = [NSDate date];
     
     // Always force a sync if we are on the sample bookshelf
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
@@ -321,9 +324,7 @@ typedef enum
         self.shouldWaitForCellsToLoad = YES;
         [self reloadDataImmediately:YES];
     } else {
-        if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
-            [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
-        }
+        [[SCHSyncManager sharedSyncManager] bookshelfSyncNow:forceBookshelfSync];
         
         if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
             [[SCHProcessingManager sharedProcessingManager] checkStateForAllBooks];
@@ -602,11 +603,7 @@ typedef enum
         }
         
         [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:kSCHBookSortTypeUser]];
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
-        } else {
-            [self.navigationController popToRootViewControllerAnimated:NO];  
-        }
+        [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
         [[SCHThemeManager sharedThemeManager] resetToDefault];
     } else {
         [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
@@ -682,7 +679,7 @@ typedef enum
     profileItem = newProfileItem;
     
     if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        self.navigationItem.title = [self.profileItem bookshelfName:YES];
+        self.navigationItem.title = [self.profileItem displayName];
     }
 
 	self.books = [self.profileItem allBookIdentifiers];
@@ -777,7 +774,7 @@ typedef enum
                 }
                 
                 NSString *localizedMessage = [NSString stringWithFormat:
-                                              NSLocalizedString(@"%@ has been removed", nil), [self.profileItem bookshelfName:YES]];  
+                                              NSLocalizedString(@"%@ has been removed", nil), [self.profileItem displayName]];
                 LambdaAlert *alert = [[LambdaAlert alloc]
                                       initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
                                       message:localizedMessage];
@@ -807,7 +804,7 @@ typedef enum
     for (SCHProfileItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
         if (object == self.profileItem) {
             if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-                self.navigationItem.title = [object bookshelfName:YES];
+                self.navigationItem.title = [object displayName];
             }
         }
     }

@@ -10,11 +10,11 @@
 
 #import "BITSOAPProxy.h"
 
-#import "LibreAccessServiceSvc.h"
+#import "LibreAccessServiceSvc+Binding.h"
 #import "BITObjectMapperProtocol.h"
 #import "SCHLibreAccessConstants.h"
 
-@interface SCHLibreAccessWebService : BITSOAPProxy <LibreAccessServiceSoap11BindingResponseDelegate, BITObjectMapperProtocol> 
+@interface SCHLibreAccessWebService : BITSOAPProxy <LibreAccessServiceSoap11BindingResponseDelegate, BITObjectMapperProtocol>
 {
 }
 
@@ -25,11 +25,10 @@
 - (void)renewToken:(NSString *)aToken;
 - (BOOL)getUserProfiles;
 - (BOOL)saveUserProfiles:(NSArray *)userProfiles;
-- (BOOL)listUserContent;
+- (BOOL)listBooksAssignment;
 - (BOOL)listFavoriteTypes;
-- (BOOL)listTopFavorites:(NSArray *)favorites withCount:(NSUInteger)count;
 - (BOOL)listTopRatings:(NSArray *)ratings withCount:(NSUInteger)count;
-- (BOOL)listContentMetadata:(NSArray *)bookISBNs
+- (BOOL)listContentMetadata:(NSArray *)bookISBNs 
                 includeURLs:(BOOL)includeURLs
                coverURLOnly:(BOOL)coverURLOnly;
 - (BOOL)listUserSettings;

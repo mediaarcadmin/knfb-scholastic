@@ -64,12 +64,12 @@
     if (!recommendationDictionary) {
         self.wishListButton.hidden = YES;
     } else {
-        NSString *fullImagePath = [recommendationDictionary objectForKey:kSCHAppRecommendationFullCoverImagePath];
+        NSString *fullImagePath = [recommendationDictionary objectForKey:kSCHAppRecommendationItemFullCoverImagePath];
         if (fullImagePath) {
             self.largeCoverImageView.image = [UIImage imageWithContentsOfFile:fullImagePath];
         }
         
-        self.ISBN = [recommendationDictionary objectForKey:kSCHAppRecommendationISBN];
+        self.ISBN = [recommendationDictionary objectForKey:kSCHAppRecommendationItemISBN];
         
     }
 }

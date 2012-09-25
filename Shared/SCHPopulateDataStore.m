@@ -42,8 +42,9 @@
                               drmQualifer:(SCHDRMQualifiers)drmQualifer
                                  coverURL:(NSString *)coverURL
                                contentURL:(NSString *)contentURL
-                                 enhanced:(BOOL)enhanced;
-- (NSDictionary *)userContentItemWith:(NSString *)contentIdentifier 
+                                 enhanced:(BOOL)enhanced
+                             thumbnailURL:(NSString *)thumbnailURL;
+- (NSDictionary *)booksAssignmentWith:(NSString *)contentIdentifier
                           drmQualifer:(SCHDRMQualifiers)drmQualifer
                                format:(NSString *)format
                            profileIDs:(NSArray *)profileIDs;
@@ -116,7 +117,8 @@
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
                                                coverURL:@"9780545283502.NightOfTheLivingDummy.jpg"
                                              contentURL:@"9780545283502.NightOfTheLivingDummy.xps"
-                                               enhanced:YES];
+                                               enhanced:YES
+                                           thumbnailURL:nil];
     [self addBook:book1 forProfiles:olderBookshelfOnly];
     
     NSDictionary *book2 = [self contentMetaDataItemWith:@"9780545287012"
@@ -127,7 +129,8 @@
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
                                                coverURL:@"9780545287012_r1.HalloweenParade.jpg"
                                              contentURL:@"9780545287012_r1.HalloweenParade.xps"
-                                               enhanced:YES];
+                                               enhanced:YES
+                                           thumbnailURL:nil];
     [self addBook:book2 forProfiles:youngerBookshelfOnly];
     
     NSDictionary *book3 = [self contentMetaDataItemWith:@"9780545289726"
@@ -138,7 +141,8 @@
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
                                                coverURL:@"9780545289726_r1.OlliesNewTricks.jpg"
                                              contentURL:@"9780545289726_r1.OlliesNewTricks.xps"
-                                               enhanced:YES];
+                                               enhanced:YES
+                                           thumbnailURL:nil];
     [self addBook:book3 forProfiles:youngerBookshelfOnly];
     
     NSDictionary *book4 = [self contentMetaDataItemWith:@"9780545345019"
@@ -149,7 +153,8 @@
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
                                                coverURL:@"9780545345019_r1.AllieFinkleMovingDay.jpg"
                                              contentURL:@"9780545345019_r1.AllieFinkleMovingDay.xps"
-                                               enhanced:YES];
+                                               enhanced:YES
+                                           thumbnailURL:nil];
     [self addBook:book4 forProfiles:olderBookshelfOnly];
     
     NSDictionary *book5 = [self contentMetaDataItemWith:@"9780545327619"
@@ -160,7 +165,8 @@
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
                                                coverURL:@"9780545327619_r1.WhoWillCarveTheTurkey.jpg"
                                              contentURL:@"9780545327619_r1.WhoWillCarveTheTurkey.xps"
-                                               enhanced:YES];
+                                               enhanced:YES
+                                           thumbnailURL:nil];
     [self addBook:book5 forProfiles:youngerBookshelfOnly];
     
     NSDictionary *book6 = [self contentMetaDataItemWith:@"9780545366779"
@@ -171,7 +177,8 @@
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
                                                coverURL:@"9780545366779.2.MazeOfBones.jpg"
                                              contentURL:@"9780545366779.2.MazeOfBones.xps"
-                                               enhanced:YES];
+                                               enhanced:YES
+                                           thumbnailURL:nil];
     [self addBook:book6 forProfiles:olderBookshelfOnly];
     
     NSDictionary *book7 = [self contentMetaDataItemWith:@"9780545308656"
@@ -182,7 +189,8 @@
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
                                                coverURL:@"9780545308656.6.StableMatesPatch.jpg"
                                              contentURL:@"9780545308656.6.StableMatesPatch.xps"
-                                               enhanced:YES];
+                                               enhanced:YES
+                                           thumbnailURL:nil];
     [self addBook:book7 forProfiles:allBookshelves];
     
     NSDictionary *book8 = [self contentMetaDataItemWith:@"9780545368896"
@@ -193,7 +201,8 @@
                                             drmQualifer:kSCHDRMQualifiersFullNoDRM
                                                coverURL:@"9780545368896_r1.TheHiddenStairs.jpg"
                                              contentURL:@"9780545368896_r1.TheHiddenStairs.xps"
-                                               enhanced:YES];
+                                               enhanced:YES
+                                           thumbnailURL:nil];
     [self addBook:book8 forProfiles:olderBookshelfOnly]; 
     
     if ([self.managedObjectContext save:&error] == NO) {
@@ -204,7 +213,7 @@
 - (void)addBook:(NSDictionary *)book forProfiles:(NSArray *)profileIDs
 {
     if (book != nil && profileIDs != nil && [profileIDs count] > 0) {
-        [self.contentSyncComponent addUserContentItemFromMainThread:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
+        [self.contentSyncComponent addBooksAssignmentFromMainThread:[self booksAssignmentWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
                                                                                   drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
 																					   format:[book objectForKey:kSCHLibreAccessWebServiceFormat]
                                                                                    profileIDs:profileIDs]];
@@ -217,13 +226,13 @@
 {
     if ([entries count] && [profileIDs count]) {
         
-        NSMutableArray *userContentItems =     [NSMutableArray arrayWithCapacity:[entries count] * [profileIDs count]];
+        NSMutableArray *booksAssignments     = [NSMutableArray arrayWithCapacity:[entries count] * [profileIDs count]];
         NSMutableArray *contentMetadataItems = [NSMutableArray arrayWithCapacity:[entries count]];
         NSMutableArray *profileItems         = [NSMutableArray arrayWithCapacity:[entries count]];
 
         for (NSDictionary *entry in entries) {
             for (NSNumber *profileID in profileIDs) {
-                [userContentItems addObject:[self userContentItemWith:[entry objectForKey:@"Isbn13"]
+                [booksAssignments addObject:[self booksAssignmentWith:[entry objectForKey:@"Isbn13"]
                                                           drmQualifer:kSCHDRMQualifiersNone
                                                                format:[[entry objectForKey:@"DownloadUrl"] pathExtension]
                                                            profileIDs:profileIDs]];
@@ -237,7 +246,8 @@
                                                               drmQualifer:kSCHDRMQualifiersNone
                                                                  coverURL:[entry objectForKey:@"CoverUrl"]
                                                                contentURL:[entry objectForKey:@"DownloadUrl"]
-                                                                 enhanced:[[entry objectForKey:@"IsEnhanced"] boolValue]]];
+                                                                 enhanced:[[entry objectForKey:@"IsEnhanced"] boolValue]
+                                                             thumbnailURL:nil]];
   
         }
         
@@ -250,7 +260,7 @@
         }
 
         [self.profileSyncComponent syncProfilesFromMainThread:profileItems];
-        [self.contentSyncComponent syncUserContentItemsFromMainThread:userContentItems];
+        [self.contentSyncComponent syncBooksAssignmentsFromMainThread:booksAssignments];
         [self.bookshelfSyncComponent syncContentMetadataItemsFromMainThread:contentMetadataItems];        
     }
 }
@@ -359,7 +369,8 @@
                                                   drmQualifer:kSCHDRMQualifiersSample
                                                      coverURL:@"http://bitwink.com/private/ChristmasCarol.jpg"
                                                    contentURL:@"http://bitwink.com/private/ChristmasCarol.xps"
-                                                     enhanced:NO];
+                                                     enhanced:NO
+                                                 thumbnailURL:nil];
     [self addBook:youngerBook forProfiles:[NSArray arrayWithObject:[youngerProfileItem objectForKey:kSCHLibreAccessWebServiceID]]];
     
     // Older bookshelf    
@@ -378,7 +389,8 @@
                                                 drmQualifer:kSCHDRMQualifiersSample
                                                    coverURL:@"http://bitwink.com/private/ATaleOfTwoCities.jpg"
                                                  contentURL:@"http://bitwink.com/private/ATaleOfTwoCities.xps"
-                                                   enhanced:NO];
+                                                   enhanced:NO
+                                               thumbnailURL:nil];
     [self addBook:olderBook forProfiles:[NSArray arrayWithObject:[olderProfileItem objectForKey:kSCHLibreAccessWebServiceID]]];
     
     if ([self.managedObjectContext save:&error] == NO) {
@@ -437,7 +449,8 @@
     [ret setObject:@"" forKey:kSCHLibreAccessWebServiceUserKey];            
     [ret setObject:[NSNumber numberWithBookshelfStyle:bookshelf] forKey:kSCHLibreAccessWebServiceBookshelfStyle];                
     [ret setObject:(title == nil ? (id)[NSNull null] : title) forKey:kSCHLibreAccessWebServiceLastName];                
-    [ret setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceRecommendationsOn];            
+    [ret setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceAllowReadThrough];
+    [ret setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceRecommendationsOn];
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];                
     
     return(ret);
@@ -452,6 +465,7 @@
                                  coverURL:(NSString *)coverURL
                                contentURL:(NSString *)contentURL
                                  enhanced:(BOOL)enhanced
+                             thumbnailURL:(NSString *)thumbnailURL
 {
     NSParameterAssert(contentIdentifier);
     NSParameterAssert(title);
@@ -460,7 +474,9 @@
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];    
     
     [ret setObject:(contentIdentifier == nil ? (id)[NSNull null] : contentIdentifier) forKey:kSCHLibreAccessWebServiceContentIdentifier];
-    [ret setObject:[NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+    [ret setObject:[NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13] forKey:kSCHLibreAccessWebServiceContentIdentifierType];    
+    [ret setObject:[NSNumber numberWithFloat:0.0] forKey:kSCHLibreAccessWebServiceAverageRating];
+    [ret setObject:[NSNumber numberWithInteger:0] forKey:kSCHLibreAccessWebServiceNumVotes];
     [ret setObject:(title == nil ? (id)[NSNull null] : title) forKey:kSCHLibreAccessWebServiceTitle];
     [ret setObject:(author == nil ? (id)[NSNull null] : author) forKey:kSCHLibreAccessWebServiceAuthor];
     [ret setObject:[NSString stringWithFormat:@"A book by %@", author] forKey:kSCHLibreAccessWebServiceDescription];
@@ -472,12 +488,21 @@
     [ret setObject:(contentURL == nil ? (id)[NSNull null] : contentURL) forKey:kSCHLibreAccessWebServiceContentURL];
     [ret setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceeReaderCategories];
     [ret setObject:[NSNumber numberWithBool:enhanced] forKey:kSCHLibreAccessWebServiceEnhanced];
-    [ret setObject:[NSNumber numberWithFloat:0.0] forKey:kSCHLibreAccessWebServiceAverageRating];
-    
-    return(ret);    
+    [ret setObject:(thumbnailURL == nil ? (id)[NSNull null] : thumbnailURL) forKey:kSCHLibreAccessWebServiceThumbnailURL];
+    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceReadingLevel];
+    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceAppealsToLow];
+    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceAppealsToHigh];
+    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceGuidedReadingLevel];
+    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceEBookLexileLevel];
+    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceMisc2];
+    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceMisc3];
+    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceMisc4];
+    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceMisc5];
+
+    return ret;
 }
 
-- (NSDictionary *)userContentItemWith:(NSString *)contentIdentifier
+- (NSDictionary *)booksAssignmentWith:(NSString *)contentIdentifier
                           drmQualifer:(SCHDRMQualifiers)drmQualifer
                                format:(NSString *)format
                            profileIDs:(NSArray *)profileIDs
@@ -486,11 +511,8 @@
 
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];    
     NSDate *dateNow = [NSDate date];
-    NSString *version = @"1";
     
     NSMutableArray *profileList = [NSMutableArray arrayWithCapacity:[profileIDs count]];
-    NSMutableArray *orderList = [NSMutableArray arrayWithCapacity:[profileIDs count]];    
-    NSInteger orderID = 1;
     for (NSNumber *profileID in profileIDs) {
         NSMutableDictionary *profileItem = [NSMutableDictionary dictionary];
         [profileItem setObject:profileID forKey:kSCHLibreAccessWebServiceProfileID];        
@@ -498,21 +520,15 @@
         [profileItem setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];        
         [profileItem setObject:[NSNumber numberWithInt:0] forKey:kSCHLibreAccessWebServiceRating];        
         [profileList addObject:profileItem];
-        
-        NSMutableDictionary *orderItem = [NSMutableDictionary dictionary];
-        [orderItem setObject:[NSString stringWithFormat:@"%x", orderID++] forKey:kSCHLibreAccessWebServiceOrderID];        
-        [orderItem setObject:[dateNow dateByAddingTimeInterval:orderID * 60] forKey:kSCHLibreAccessWebServiceOrderDate];                
-        [orderList addObject:orderItem];
     }
     
     [ret setObject:(contentIdentifier == nil ? (id)[NSNull null] : contentIdentifier) forKey:kSCHLibreAccessWebServiceContentIdentifier];
     [ret setObject:[NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
     [ret setObject:[NSNumber numberWithDRMQualifier:drmQualifer] forKey:kSCHLibreAccessWebServiceDRMQualifier];
     [ret setObject:(format == nil ? @"XPS" : [format uppercaseString]) forKey:kSCHLibreAccessWebServiceFormat];
-    [ret setObject:version forKey:kSCHLibreAccessWebServiceVersion];    
+    [ret setObject:[NSNumber numberWithInteger:1] forKey:kSCHLibreAccessWebServiceVersion];    
     [ret setObject:profileList forKey:kSCHLibreAccessWebServiceProfileList];
-    [ret setObject:orderList forKey:kSCHLibreAccessWebServiceOrderList]; 
-    [ret setObject:version forKey:kSCHLibreAccessWebServiceLastVersion];    
+    [ret setObject:[NSNumber numberWithInteger:1] forKey:kSCHLibreAccessWebServiceLastVersion];
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceFreeBook];        
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceDefaultAssignment];
@@ -576,14 +592,14 @@
                                                    drmQualifer:kSCHDRMQualifiersFullNoDRM
                                                       coverURL:nil
                                                     contentURL:nil
-                                                      enhanced:[xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile]];
+                                                      enhanced:[xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile]
+                                                  thumbnailURL:nil];
             
-            [self.contentSyncComponent addUserContentItemFromMainThread:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
+            [self.contentSyncComponent addBooksAssignmentFromMainThread:[self booksAssignmentWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
                                                                                       drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
 																						   format:[book objectForKey:kSCHLibreAccessWebServiceFormat]
                                                                                        profileIDs:profileIDs]];
             SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItemFromMainThread:book];
-            newContentMetadataItem.FileName = [xpsFilePath lastPathComponent];
             
             // extract the cover image
             NSData *imageData = [xpsProvider coverThumbData];

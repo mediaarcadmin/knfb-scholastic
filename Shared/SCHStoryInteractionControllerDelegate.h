@@ -46,4 +46,7 @@
 // The SI Cache directory for the current SI
 - (NSString *)storyInteractionCacheDirectory;
 
+// Has the book been read through completely?
+- (BOOL)bookHasBeenReadThroughCompletely;
+
 @end

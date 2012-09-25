@@ -12,6 +12,7 @@
 #import "SCHProfileItem.h"
 #import "SCHLibreAccessWebService.h"
 #import "BITAPIError.h"
+#import "SCHMakeNullNil.h"
 
 @interface SCHSaveUserProfilesOperation ()
 
@@ -79,7 +80,7 @@
                     switch ([[profile objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue]) {
                         case kSCHSaveActionsCreate:
                         {
-                            NSNumber *profileID = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceID]];
+                            NSNumber *profileID = makeNullNil([profile objectForKey:kSCHLibreAccessWebServiceID]);
                             if ([SCHProfileItem isValidProfileID:profileID] == YES) {
                                 [profileManagedObject setValue:profileID forKey:kSCHLibreAccessWebServiceID];
                             }

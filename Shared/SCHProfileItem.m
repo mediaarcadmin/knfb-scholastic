@@ -14,7 +14,7 @@
 
 #import "SCHContentProfileItem.h"
 #import "SCHContentMetadataItem.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "SCHBookManager.h"
 #import "USAdditions.h"
 #import "SCHLibreAccessConstants.h"
@@ -22,7 +22,6 @@
 #import "SCHPrivateAnnotations.h"
 #import "SCHBookAnnotations.h"
 #import "SCHAnnotationsContentItem.h"
-#import "SCHOrderItem.h"
 #import "SCHLastPage.h"
 #import "SCHBookIdentifier.h"
 #import "SCHBookStatistics.h"
@@ -33,6 +32,8 @@
 #import "SCHAnnotationsItem.h"
 #import "SCHProfileItemSortObject.h"
 #import "SCHAppStateManager.h"
+#import "SCHQuizTrialsItem.h"
+#import "SCHLibreAccessConstants.h"
 
 // Constants
 NSString * const kSCHProfileItem = @"SCHProfileItem";
@@ -75,12 +76,13 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
 @dynamic BookshelfStyle;
 @dynamic LastName;
 @dynamic recommendationsOn;
+@dynamic allowReadThrough;
 @dynamic AppProfile;
 @dynamic AppContentProfileItem;
 
 @synthesize age;
 
-// we are prefetching the ContentProfileItem.UserContentItem and returning non-faulted objects
+// we are prefetching the ContentProfileItem.SCHBooksAssignment and returning non-faulted objects
 - (NSSet *)ContentProfileItem
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -90,7 +92,7 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];
     [fetchRequest setReturnsObjectsAsFaults:NO];
-    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"UserContentItem"]];
+    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"SCHBooksAssignment"]];
     
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
                                                                error:&error];
@@ -171,7 +173,7 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
     NSMutableArray *ret = [NSMutableArray arrayWithCapacity:[contentProfileItem count]];
                            
     for(SCHContentProfileItem *item in contentProfileItem) {
-        SCHBookIdentifier *bookIdentifier = item.UserContentItem.bookIdentifier;
+        SCHBookIdentifier *bookIdentifier = item.booksAssignment.bookIdentifier;
         if (bookIdentifier != nil) {
             [ret addObject:bookIdentifier];
         }
@@ -197,9 +199,9 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
         NSMutableArray *books = [NSMutableArray array];
         
         for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
-            NSSet *contentMetadataItems = contentProfileItem.UserContentItem.ContentMetadataItem;
+            NSSet *contentMetadataItems = contentProfileItem.booksAssignment.ContentMetadataItem;
             if ([contentMetadataItems count] > 0) {
-                for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
+                for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.booksAssignment.ContentMetadataItem) {
                     SCHBookIdentifier *identifier = [contentMetadataItem bookIdentifier];
                     if (identifier != nil) {
                         [books addObject:identifier];
@@ -243,7 +245,7 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
     NSMutableArray *bookObjects = [NSMutableArray array];
     
     for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
-        for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
+        for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.booksAssignment.ContentMetadataItem) {
             [bookObjects addObject:contentMetadataItem];
         }
     }
@@ -420,7 +422,7 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
             } 
             
             if (readingStatsContentItem == nil) {
-                readingStatsContentItem = [self makeReadingStatsContentItemForBook:bookIdentifier];   
+                readingStatsContentItem = [self makeReadingStatsContentItemForBook:bookIdentifier];
                 readingStatsContentItem.ReadingStatsDetailItem = readingStatsDetailItem;                
             }
             
@@ -431,7 +433,21 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
             readingStatsEntryItem.ReadingDuration = [NSNumber numberWithUnsignedInteger:bookStatistics.readingDuration];
             readingStatsEntryItem.PagesRead = [NSNumber numberWithUnsignedInteger:bookStatistics.pagesRead];
             readingStatsEntryItem.StoryInteractions = [NSNumber numberWithUnsignedInteger:bookStatistics.storyInteractions];
-            readingStatsEntryItem.DictionaryLookupsList = bookStatistics.dictionaryLookupsList;        
+            readingStatsEntryItem.DictionaryLookupsList = bookStatistics.dictionaryLookupsList;
+
+            for (NSDictionary *quizTrialsItem in bookStatistics.quizResultsList) {
+                NSNumber *score = [quizTrialsItem objectForKey:kSCHLibreAccessWebServiceQuizScore];
+                NSNumber *total = [quizTrialsItem objectForKey:kSCHLibreAccessWebServiceQuizTotal];
+
+                if (score != nil && total != nil) {
+                    SCHQuizTrialsItem *quizTrialsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHQuizTrialsItem
+                                                                                      inManagedObjectContext:self.managedObjectContext];
+                    quizTrialsItem.quizScore = score;
+                    quizTrialsItem.quizTotal = total;
+
+                    [readingStatsEntryItem addQuizResultsObject:quizTrialsItem];
+                }
+            }
         }
     }
 }
@@ -439,31 +455,29 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
 - (SCHReadingStatsContentItem *)makeReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier
 {
     SCHReadingStatsContentItem *ret = nil;
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
     NSError *error = nil;
-    NSEntityDescription *entityDescription = [NSEntityDescription 
-                                              entityForName:kSCHUserContentItem
-                                              inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel
-                                    fetchRequestFromTemplateWithName:kSCHUserContentItemFetchWithContentIdentifier
-                                    substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                           bookIdentifier.isbn, kSCHUserContentItemCONTENT_IDENTIFIER,
-                                                           bookIdentifier.DRMQualifier, kSCHUserContentItemDRM_QUALIFIER,
-                                                           nil]];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
+                                        inManagedObjectContext:self.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@",
+                                bookIdentifier.isbn, bookIdentifier.DRMQualifier]];
+    
     [fetchRequest setFetchLimit:1];
     
-    NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-    if (userContentItems == nil) {
+    NSArray *booksAssignments = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if (booksAssignments == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
     
-    if ([userContentItems count] > 0) {
-        SCHUserContentItem *userContentItem = [userContentItems objectAtIndex:0];
+    if ([booksAssignments count] > 0) {
+        SCHBooksAssignment *booksAssignment = [booksAssignments objectAtIndex:0];
         ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHReadingStatsContentItem 
                                             inManagedObjectContext:self.managedObjectContext];
-        ret.ContentIdentifier = userContentItem.ContentIdentifier;
-        ret.ContentIdentifierType = userContentItem.ContentIdentifierType;
-        ret.DRMQualifier = userContentItem.DRMQualifier;
-        ret.Format = userContentItem.Format;
+        ret.ContentIdentifier = booksAssignment.ContentIdentifier;
+        ret.ContentIdentifierType = booksAssignment.ContentIdentifierType;
+        ret.DRMQualifier = booksAssignment.DRMQualifier;
+        ret.Format = booksAssignment.format;
     }
     
     return(ret);
@@ -495,22 +509,22 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
 
 #pragma mark - Accessor methods
 
-- (NSString *)bookshelfName:(BOOL)shortName
+- (NSString *)displayName
 {
     NSString *ret = nil;
-        
+
     if ([[self.ScreenName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
         ret = self.ScreenName;
     } else if ([[self.FirstName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
         ret = self.FirstName;
     } else {
-        ret = (shortName == NO ? @"" : NSLocalizedString(@"eBooks", @""));
+        ret = @"";
     }
-    
-    return(ret);
+
+    return ret;
 }
 
-- (void)setRawPassword:(NSString *)value 
+- (void)setRawPassword:(NSString *)value
 {
     self.Password = [self SHA1:value];
 }

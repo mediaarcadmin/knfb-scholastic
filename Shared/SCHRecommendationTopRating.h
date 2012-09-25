@@ -1,5 +1,5 @@
 //
-//  SCHRecommendationTopRating.h
+//  SCHAppRecommendationTopRating.h
 //  Scholastic
 //
 //  Created by John S. Eddie on 27/08/2012.
@@ -12,9 +12,9 @@
 @class SCHRecommendationItem;
 
 // Constants
-extern NSString * const kSCHRecommendationTopRating;
+extern NSString * const kSCHAppRecommendationTopRating;
 
-@interface SCHRecommendationTopRating : NSManagedObject
+@interface SCHAppRecommendationTopRating : NSManagedObject
 
 @property (nonatomic, retain) NSString * categoryClass;
 @property (nonatomic, retain) NSDate * fetchDate;
@@ -24,7 +24,7 @@ extern NSString * const kSCHRecommendationTopRating;
 
 @end
 
-@interface SCHRecommendationTopRating (CoreDataGeneratedAccessors)
+@interface SCHAppRecommendationTopRating (CoreDataGeneratedAccessors)
 
 - (void)addRecommendationItemsObject:(SCHRecommendationItem *)value;
 - (void)removeRecommendationItemsObject:(SCHRecommendationItem *)value;

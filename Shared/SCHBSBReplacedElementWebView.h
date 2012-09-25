@@ -10,6 +10,7 @@
 
 @interface SCHBSBReplacedElementWebView : UIWebView <UIWebViewDelegate>
 
-- (void)synchronouslyLoadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL;
+// locations of the form js-bridge:selectorName or js-bridge:selectorName:stringParam will be messaged to the jsBridgeTarget
+@property (nonatomic, assign) id jsBridgeTarget;
 
 @end

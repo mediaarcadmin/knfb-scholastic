@@ -25,6 +25,7 @@
 #import "SCHProfileSyncComponent.h"
 #import "BITModalSheetController.h"
 #import "SCHNavigationControllerForModalForm.h"
+#import "SCHReadingManagerViewController.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
@@ -33,7 +34,8 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, retain) BITModalSheetController *webParentToolsPopoverController;
-@property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController; 
+@property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController;
+@property (nonatomic, retain) UIViewController *readingManagerController;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (void)checkForBookUpdates;
@@ -66,6 +68,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 @synthesize webParentToolsPopoverController;
 @synthesize parentalToolsWebViewController;
 @synthesize simultaneousTapCount;
+@synthesize readingManagerController;
 
 #pragma mark - Object lifecycle
 
@@ -128,6 +131,8 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     [managedObjectContext_ release], managedObjectContext_ = nil;
     [bookUpdates release], bookUpdates = nil;
     profileSetupDelegate = nil;
+    
+    [readingManagerController release], readingManagerController = nil;
     
     [super dealloc];
 }
@@ -265,7 +270,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     
     SCHProfileItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	if (indexPath) {
-        [cell setButtonTitles:[NSArray arrayWithObjects:[managedObject bookshelfName:NO] ? : @"", nil] 
+        [cell setButtonTitles:[NSArray arrayWithObjects:[managedObject displayName] ? : @"", nil] 
                 forIndexPaths:[NSArray arrayWithObjects:indexPath, nil] 
                  forCellStyle:kSCHProfileCellLayoutStyle1Up];
     }
@@ -292,12 +297,12 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     leftIndexPath = [NSIndexPath indexPathForRow:(indexPath.row == 0 ? 0 : indexPath.row * 2)
                                        inSection:indexPath.section];
     profileItem = [self.fetchedResultsController objectAtIndexPath:leftIndexPath]; 
-    leftTitle = [profileItem bookshelfName:NO] ? : @"";
+    leftTitle = [profileItem displayName] ? : @"";
     
     if (leftIndexPath.row + 1 < [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects]) {
         rightIndexPath = [NSIndexPath indexPathForRow:leftIndexPath.row + 1 inSection:indexPath.section];
         profileItem = [self.fetchedResultsController objectAtIndexPath:rightIndexPath]; 
-        rightTitle = [profileItem bookshelfName:NO] ? : @"";
+        rightTitle = [profileItem displayName] ? : @"";
     }
     
     if (leftIndexPath && rightIndexPath) {
@@ -466,7 +471,7 @@ didSelectButtonAnimated:(BOOL)animated
     };
     
     passwordController.controllerType = kSCHControllerPasswordOnlyView;
-    [passwordController.profileLabel setText:[profileItem bookshelfName:YES]];
+    [passwordController.profileLabel setText:[profileItem displayName]];
     
     [self presentModalViewController:passwordController animated:YES];
     [passwordController release];
@@ -526,7 +531,7 @@ didSelectButtonAnimated:(BOOL)animated
     };
     
     passwordController.controllerType = kSCHControllerDoublePasswordView;
-    [passwordController.profileLabel setText:[profileItem bookshelfName:YES]];
+    [passwordController.profileLabel setText:[profileItem displayName]];
     [self presentModalViewController:passwordController animated:YES];
     [passwordController release];
 }
@@ -556,15 +561,14 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
                                         animated:(BOOL)animated
 {
+    // TODO: this all seems overly complex - simplify it
     NSMutableArray *viewControllers = [NSMutableArray array];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        if (self.profileSetupDelegate) {
-            [viewControllers addObject:self.profileSetupDelegate];
-        }
+        [viewControllers addObjectsFromArray:[self.navigationController viewControllers]];
+    } else {
+        [viewControllers addObject:self];
     }
-    
-    [viewControllers addObject:self];
     
     NSArray *profileControllers = [self viewControllersForProfileItem:profileItem showWelcome:NO];
     if (profileControllers) {
@@ -637,8 +641,8 @@ didSelectButtonAnimated:(BOOL)animated
 {
     if (self.modalViewController) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [self dismissModalViewControllerAnimated:animated];
-            [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+            [self dismissModalViewControllerAnimated:NO];
+            [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:completion];
         } else {
             [CATransaction begin];
             [CATransaction setCompletionBlock:^{
@@ -659,7 +663,29 @@ didSelectButtonAnimated:(BOOL)animated
                                         title:(NSString *)title 
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide 
-{    
+{
+    
+#if USE_CODEANDTHEORY
+    SCHReadingManagerViewController *aReadingManager = [[[SCHReadingManagerViewController alloc] init] autorelease];
+    aReadingManager.modalPresenterDelegate = self;
+    aReadingManager.pToken = token;
+    self.readingManagerController = aReadingManager;
+
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    if (self.modalViewController) {
+        [self dismissModalViewControllerAnimated:NO];
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.navigationController pushViewController:self.readingManagerController animated:YES];
+     } else {
+        [self presentModalViewController:self.readingManagerController animated:YES];
+    }
+    
+    [CATransaction commit];
+#else
     
     SCHParentalToolsWebViewController *aParentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
     aParentalToolsWebViewController.title = title;
@@ -707,6 +733,8 @@ didSelectButtonAnimated:(BOOL)animated
     }
     
     [CATransaction commit];
+    
+#endif
 }
 
 - (void)dismissModalWebParentToolsAnimated:(BOOL)animated withSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
@@ -742,7 +770,23 @@ didSelectButtonAnimated:(BOOL)animated
             }
         });
     };
-        
+    
+#if USE_CODEANDTHEORY
+    
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        completion();
+    }];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self presentModalViewController:self.readingManagerController animated:YES];
+    }
+    
+    [CATransaction commit];
+
+#else
     if ([self.webParentToolsPopoverController isModalSheetVisible]) {
         
         self.parentalToolsWebViewController.textView.alpha = 0;
@@ -762,7 +806,8 @@ didSelectButtonAnimated:(BOOL)animated
         }
     } else {
         completion();
-    }  
+    }
+#endif
 }
 
 - (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated

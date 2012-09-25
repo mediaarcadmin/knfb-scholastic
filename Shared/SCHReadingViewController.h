@@ -60,6 +60,7 @@ SCHBookStoryInteractionsDelegate, SCHRecommendationSampleViewDelegate>
 
 // interface builder
 @property (nonatomic, retain) IBOutlet UIButton *notesButton;
+@property (retain, nonatomic) IBOutlet UIButton *readingQuizButton;
 @property (nonatomic, retain) IBOutlet UIButton *storyInteractionsListButton;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *scrubberToolbar;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *olderBottomToolbar;

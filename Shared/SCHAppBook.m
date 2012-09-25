@@ -14,8 +14,8 @@
 #import "SCHRecommendationItem.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHRecommendationConstants.h"
-#import "SCHRecommendationISBN.h"
-#import "SCHUserContentItem.h"
+#import "SCHAppRecommendationISBN.h"
+#import "SCHBooksAssignment.h"
 #import "NSNumber+ObjectTypes.h"
 
 // Constants
@@ -169,17 +169,12 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 	return [self.ContentMetadataItem.PageNumber intValue];
 }
 
-- (NSString *)FileName
-{
-	return self.ContentMetadataItem.FileName;
-}
-
 - (NSNumber *)AverageRating
 {
     NSNumber *averageRating = nil;
-    SCHUserContentItem *userContentItem = self.ContentMetadataItem.UserContentItem;
+    SCHBooksAssignment *booksAssignment = self.ContentMetadataItem.booksAssignment;
     
-    averageRating = userContentItem.AverageRating;
+    averageRating = booksAssignment.averageRating;
     if (averageRating == nil) {
         averageRating = [NSNumber numberWithInteger:0];
     }
@@ -400,12 +395,12 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     return ret;
 }
 
-- (SCHRecommendationISBN *)recommendationISBN
+- (SCHAppRecommendationISBN *)appRecommendationISBN
 {
-    SCHRecommendationISBN *ret = nil;
+    SCHAppRecommendationISBN *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationISBN 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationISBN
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"isbn = %@ AND DRMQualifier = %@", 
                                 self.bookIdentifier.isbn, self.bookIdentifier.DRMQualifier]];
@@ -429,7 +424,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     NSArray *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"DRMQualifier != %@", 
                                 [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersSample]]];
@@ -449,7 +444,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 - (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
-    NSSet *allItems = [[self recommendationISBN] recommendationItems];
+    NSSet *allItems = [[self appRecommendationISBN] recommendationItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.isReady = %d", YES];
     NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations]
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
@@ -462,7 +457,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
         
         if (recommendationDictionary && 
             ([self isSampleBook] ||
-             [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO)
+             [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationItemISBN]] == NO)
             ) {
             
             [objectArray addObject:recommendationDictionary];

@@ -11,18 +11,19 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHRecommendationWebService.h"
-#import "SCHRecommendationProfile.h"
-#import "SCHRecommendationISBN.h"
+#import "SCHAppRecommendationProfile.h"
+#import "SCHAppRecommendationISBN.h"
 #import "SCHProfileItem.h"
 #import "SCHLibreAccessConstants.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHRecommendationItem.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHRetrieveRecommendationsForProfileOperation.h"
 #import "SCHRetrieveRecommendationsForBooksOperation.h"
 #import "SCHRetrieveSampleBooksOperation.h"
+#import "SCHMakeNullNil.h"
 
 // Constants
 NSString * const SCHRecommendationSyncComponentISBNs = @"SCHRecommendationSyncComponentISBNs";
@@ -107,8 +108,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 {
 	NSError *error = nil;
     
-	if (![self.managedObjectContext BITemptyEntity:kSCHRecommendationProfile error:&error priorToDeletionBlock:nil] ||
-        ![self.managedObjectContext BITemptyEntity:kSCHRecommendationISBN error:&error priorToDeletionBlock:nil] ||
+	if (![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationProfile error:&error priorToDeletionBlock:nil] ||
+        ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationISBN error:&error priorToDeletionBlock:nil] ||
         ![self.managedObjectContext BITemptyEntity:kSCHRecommendationItem error:&error priorToDeletionBlock:nil] ||
         ![self.managedObjectContext BITemptyEntity:kSCHAppRecommendationItem error:&error priorToDeletionBlock:^(NSManagedObject *managedObject) {
         [(SCHAppRecommendationItem *)managedObject deleteAllFiles];
@@ -378,7 +379,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         allProfileAges = [NSMutableArray arrayWithCapacity:[results count]];
         filteredProfileAges = [NSMutableArray arrayWithCapacity:[results count]];        
         for (SCHProfileItem *item in results) {
-            SCHRecommendationProfile *profile = [[item AppProfile] recommendationProfile];
+            SCHAppRecommendationProfile *profile = [[item AppProfile] appRecommendationProfile];
             NSDate *nextUpdate = [profile.fetchDate dateByAddingTimeInterval:kSCHRecommendationSyncComponentProfileSyncDelayTimeInterval];
             NSNumber *age = [NSNumber numberWithUnsignedInteger:[item age]]; 
             
@@ -410,13 +411,13 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     NSMutableArray *ret = nil;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
                                         inManagedObjectContext:aManagedObjectContext]];	
     // we only want books that are on a bookshelf
     if (drmQualifier == nil) {
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileList.@count > 0"]];    
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"profileList.@count > 0"]];
     } else {
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileList.@count > 0 AND DRMQualifier = %@", drmQualifier]];            
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"profileList.@count > 0 AND DRMQualifier = %@", drmQualifier]];            
     }
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
@@ -428,13 +429,13 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     } else {
         // only return those items that require updating
         ret = [NSMutableArray arrayWithCapacity:[results count]];
-        for (SCHUserContentItem *item in results) {
+        for (SCHBooksAssignment *item in results) {
             NSSet *contentMetadataItems = [item ContentMetadataItem];            
-            SCHRecommendationISBN *isbn = nil;
+            SCHAppRecommendationISBN *isbn = nil;
             if ([contentMetadataItems count] > 0) {
                 // it's a book to book relationship so only 1 book in the set
                 SCHContentMetadataItem *contentMetadataItem = [contentMetadataItems anyObject];
-                isbn = [contentMetadataItem.AppBook recommendationISBN];
+                isbn = [contentMetadataItem.AppBook appRecommendationISBN];
             }
             NSDate *nextUpdate = [isbn.fetchDate dateByAddingTimeInterval:kSCHRecommendationSyncComponentBookSyncDelayTimeInterval];
             
@@ -442,7 +443,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                 nextUpdate == nil ||
                 [[NSDate date] earlierDate:nextUpdate] == nextUpdate) {
                 if (asISBN == YES) {
-                    NSString *isbn = [self makeNullNil:[item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+                    NSString *isbn = makeNullNil([item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
                     if (isbn != nil && [ret containsObject:isbn] == NO) {
                         [ret addObject:isbn];
                     }
@@ -498,7 +499,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 			break;			
 		}
 		
-		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHRecommendationWebServiceProductCode]];
+		id webItemID = makeNullNil([webItem valueForKey:kSCHRecommendationWebServiceProductCode]);
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceProductCode];
 		
         if (webItemID == nil || [SCHRecommendationItem isValidItemID:webItemID] == NO) {
@@ -549,21 +550,21 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                          managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {
 	SCHRecommendationItem *ret = nil;
-	id recommendationItemID = [self makeNullNil:[webRecommendationItem valueForKey:kSCHRecommendationWebServiceProductCode]];
+	id recommendationItemID = makeNullNil([webRecommendationItem valueForKey:kSCHRecommendationWebServiceProductCode]);
     
 	if (webRecommendationItem != nil && [SCHRecommendationItem isValidItemID:recommendationItemID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationItem 
                                             inManagedObjectContext:aManagedObjectContext];			
         
-        ret.name = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceName]];
-        ret.link = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceLink]];
-        ret.image_link = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceImageLink]];
-        ret.regular_price = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceRegularPrice]];
-        ret.sale_price = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceSalePrice]];        
+        ret.name = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceName]);
+        ret.link = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceLink]);
+        ret.image_link = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceImageLink]);
+        ret.regular_price = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceRegularPrice]);
+        ret.sale_price = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceSalePrice]);
         ret.product_code = recommendationItemID;
-        ret.format = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceFormat]];                        
-        ret.author = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceAuthor]];                                
-        ret.order = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]];                                        
+        ret.format = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceFormat]);
+        ret.author = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceAuthor]);
+        ret.order = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]);
         
         [ret assignAppRecommendationItem];        
 	}
@@ -575,15 +576,15 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         withRecommendationItem:(SCHRecommendationItem *)localRecommendationItem
 {
     if (webRecommendationItem != nil) {
-        localRecommendationItem.name = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceName]];
-        localRecommendationItem.link = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceLink]];
-        localRecommendationItem.image_link = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceImageLink]];
-        localRecommendationItem.regular_price = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceRegularPrice]];
-        localRecommendationItem.sale_price = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceSalePrice]];        
-        localRecommendationItem.product_code = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceProductCode]];                
-        localRecommendationItem.format = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceFormat]];                        
-        localRecommendationItem.author = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceAuthor]];                                
-        localRecommendationItem.order = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]];                                        
+        localRecommendationItem.name = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceName]);
+        localRecommendationItem.link = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceLink]);
+        localRecommendationItem.image_link = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceImageLink]);
+        localRecommendationItem.regular_price = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceRegularPrice]);
+        localRecommendationItem.sale_price = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceSalePrice]);
+        localRecommendationItem.product_code = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceProductCode]);
+        localRecommendationItem.format = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceFormat]);
+        localRecommendationItem.author = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceAuthor]);
+        localRecommendationItem.order = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]);
     }
 }
 
@@ -596,7 +597,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     if ([profileAges count] > 0) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
         NSError *error = nil;    
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationProfile
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationProfile
                                             inManagedObjectContext:self.managedObjectContext]];
         
         NSArray *recommendationProfiles = [self.managedObjectContext executeFetchRequest:fetchRequest 
@@ -605,7 +606,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         if (recommendationProfiles == nil) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         } else {
-            for (SCHRecommendationProfile *profile in recommendationProfiles) {
+            for (SCHAppRecommendationProfile *profile in recommendationProfiles) {
                 if ([profileAges containsObject:profile.age] == NO) {
                     [self.managedObjectContext deleteObject:profile];
                 }

@@ -9,25 +9,14 @@
 #if !BRANCHING_STORIES_DISABLED
 #import "SCHBSBPageContentsViewSpirit.h"
 #import "SCHBSBEucBook.h"
-#import "SCHBSBTreeNode.h"
+#import "SCHBSBReplacedElement.h"
 #import <libEucalyptus/EucCSSDPI.h>
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucCSSXHTMLTree.h>
 #import <libEucalyptus/EucCSSRenderPageViewSpirit.h>
 #import <libEucalyptus/EucBookPageIndexPointRange.h>
 #import <libEucalyptus/EucUIViewViewSpiritElement.h>
-
-@interface SCHBSBViewSpiritRenderableLayer : CALayer
-@end
-
-@interface SCHBSBPageContentsViewSpiritWebView : UIWebView <UIWebViewDelegate>
-
-- (void)synchronouslyLoadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL;
-
-@end
-
-@interface SCHBSBPageContentsViewSpiritTextField : UITextField
-@end
+#import <libEucalyptus/THStringRenderer.h>
 
 @interface SCHBSBPageContentsViewSpirit() <EucCSSRenderPageViewSpiritDelegate>
 
@@ -103,6 +92,9 @@
             case EucBookIndexPointPlacementRightPage:
                 layoutPoint.placement = EucCSSLayoutPointPlacementRightPage;
                 break;
+            case EucBookIndexPointPlacementRightPaddingPage:
+                NSLog(@"Warning: Unexpected placement of EucBookIndexPointPlacementRightPaddingPage");
+                NSParameterAssert(pointPlacement != EucBookIndexPointPlacementRightPaddingPage);
             case EucBookIndexPointPlacementUnspecified:
                 layoutPoint.placement = EucCSSLayoutPointPlacementUnspecified;
                 break;
@@ -122,30 +114,40 @@
         }
         
         if(!pageCSSViewSpirit || pageCSSViewSpirit.containsEndOfDocument) {
-            uint32_t sourceCount = (uint32_t)book.sourceCount;
-            uint32_t newSource = point.source;
-            
-            nextPageStartPoint = [[EucBookPageIndexPoint alloc] init];
-            
-            do {
-                nextPageStartPoint.source = ++newSource;
-            } while(newSource < book.sourceCount &&
-                    ![book intermediateDocumentForIndexPoint:nextPageStartPoint
-                                                 pageOptions:self.pageOptions]);
-            
-            if(newSource < sourceCount) {
-                // Sections always start on the right hand page, if we're two-up 
-                // (i.e. if the previous page had a specified placement).
-                if(pointPlacement != EucBookIndexPointPlacementUnspecified) {
-                    nextPageStartPoint.placement = EucBookIndexPointPlacementRightPage;
+            uint32_t newSource = point.source + 1;
+                        
+            EucBookPageIndexPoint *nextSectionStart = nil;
+            for(EucBookPageIndexPoint *potentialStart in book.hardPageBreakIndexPoints) {
+                if(potentialStart.source >= newSource &&
+                   [book intermediateDocumentForIndexPoint:nextPageStartPoint
+                                               pageOptions:self.pageOptions]) {
+                       nextSectionStart = potentialStart;
+                       break;
                 }
-            } else {
-                nextPageStartPoint = nil;
+            }
+            
+            if(nextSectionStart) {
+                if(pointPlacement == EucBookIndexPointPlacementUnspecified) {
+                    // We're not two-up, so we make the section start on an unspecified side.
+                    if(nextSectionStart.placement != EucBookIndexPointPlacementUnspecified) {
+                        nextSectionStart = [[nextSectionStart copy] autorelease];
+                        nextSectionStart.placement = EucBookIndexPointPlacementUnspecified;
+                    }
+                } else {
+                    // We're two-up, so we make sure the section starts on a specified side,
+                    // if the book does not specify one (the right by default).
+                    if(nextSectionStart.placement == EucBookIndexPointPlacementUnspecified) {
+                        nextSectionStart = [[nextSectionStart copy] autorelease];
+                        nextSectionStart.placement = EucBookIndexPointPlacementRightPage;
+                    }
+                }
+                
+                nextPageStartPoint = nextSectionStart;
             }
         } else {
             EucCSSLayoutPoint nextPageStartLayoutPoint = pageCSSViewSpirit.nextPageStartPoint;
             
-            nextPageStartPoint = [[EucBookPageIndexPoint alloc] init];
+            nextPageStartPoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
             nextPageStartPoint.source = point.source;
             nextPageStartPoint.block = nextPageStartLayoutPoint.nodeKey;
             nextPageStartPoint.word = nextPageStartLayoutPoint.word;
@@ -158,6 +160,9 @@
                     case EucBookIndexPointPlacementRightPage:
                         nextPageStartPoint.placement = EucBookIndexPointPlacementLeftPage;
                         break;
+                    case EucBookIndexPointPlacementRightPaddingPage:
+                        NSLog(@"Warning: Unexpected placement of EucBookIndexPointPlacementRightPaddingPage");
+                        NSParameterAssert(pointPlacement != EucBookIndexPointPlacementRightPaddingPage);
                     case EucBookIndexPointPlacementUnspecified:
                         break;            
                 }
@@ -174,26 +179,44 @@
             [self addSubSpirit:pageCSSViewSpirit];
         }
                 
-        // Work out if you started on the left and the next page is on the left it adds a blank page
-        
         if(nextPageStartPoint &&
            pointPlacement != EucBookIndexPointPlacementUnspecified && 
            pointPlacement == nextPageStartPoint.placement) {
+            // If the next page starts on the same side as the current page,
+            // add a blank padding page between them.
+
             EucBookPageIndexPoint *midPoint = [nextPageStartPoint copy];
             if(pointPlacement == EucBookIndexPointPlacementLeftPage) {
-                midPoint.placement = EucBookIndexPointPlacementRightPage;
+                midPoint.placement = EucBookIndexPointPlacementRightPaddingPage;
             } else {
                 midPoint.placement = EucBookIndexPointPlacementLeftPage;
             }
             ret = [NSArray arrayWithObjects:[EucBookPageIndexPointRange indexPointRangeWithStartPoint:point endPoint:midPoint],
                    [EucBookPageIndexPointRange indexPointRangeWithStartPoint:midPoint endPoint:nextPageStartPoint],
                    nil];
+            [midPoint release];
         } else {
             if(!nextPageStartPoint) {
-                nextPageStartPoint = book.offTheEndIndexPoint;
-            } 
-            EucBookPageIndexPointRange *pageRange = [[EucBookPageIndexPointRange alloc] initWithStartPoint:point endPoint:nextPageStartPoint];
-            ret = [NSArray arrayWithObject:pageRange];
+                if(pointPlacement == EucBookIndexPointPlacementRightPage ||
+                   pointPlacement == EucBookIndexPointPlacementUnspecified) {
+                    nextPageStartPoint = book.offTheEndIndexPoint;
+                } else {
+                    // If this is a left-hand page at the end of a book,
+                    // add a right-hand padding page.
+                    nextPageStartPoint = book.offTheEndIndexPoint;
+                    EucBookPageIndexPoint *midPoint = [nextPageStartPoint copy];
+                    midPoint.placement = EucBookIndexPointPlacementRightPaddingPage;
+                    ret = [NSArray arrayWithObjects:[EucBookPageIndexPointRange indexPointRangeWithStartPoint:point endPoint:midPoint],
+                           [EucBookPageIndexPointRange indexPointRangeWithStartPoint:midPoint endPoint:nextPageStartPoint],
+                           nil];
+                    [midPoint release];
+                }
+            }
+            if(!ret) {
+                EucBookPageIndexPointRange *pageRange = [[EucBookPageIndexPointRange alloc] initWithStartPoint:point endPoint:nextPageStartPoint];
+                ret = [NSArray arrayWithObject:pageRange];
+                [pageRange release];
+            }
         }
     }
     
@@ -225,169 +248,35 @@
     return [self.pageCSSViewSpirit accessibilityLabelForElementWithIdentifier:elementId ofBlockWithIdentifier:blockId];
 }
 
-#pragma mark - EucCSSRenderPageViewSpiritDelegate
-
 - (THCGViewSpiritElement *)eucCSSRenderPageViewSpirit:(EucCSSRenderPageViewSpirit *)pageViewSpirit
-             overlayElementForDocumentTreeNodeWithKey:(uint32_t)documentTreeNode
-                                              inFrame:(CGRect)frame
+                   overlayElementsForDocumentNode:(EucCSSIntermediateDocumentNode *)documentNode
 {
-    
-    SCHBSBTreeNode *node = (SCHBSBTreeNode *)[self.document.documentTree nodeForKey:documentTreeNode];
-    
-    if ([node isUIKitNode]) {
+    id<EucCSSReplacedElement> replacedElement = [documentNode replacedElement];
+
+    if (replacedElement && [replacedElement isKindOfClass:[SCHBSBReplacedElement class]]) {
+        CGFloat scaleFactor = self.pointSize / EucCSSPixelsMediumFontSize;
+        [(SCHBSBReplacedElement *)replacedElement setScaleFactor:scaleFactor];
         
-        UIView *aView = [self viewForNode:node constrainedToSize:frame.size];
-        aView.frame = frame;
+        CGFloat cssPointSize = [documentNode textPointSizeWithScaleFactor:scaleFactor];
         
-        EucUIViewViewSpiritElement *aViewSpiritElement = [[EucUIViewViewSpiritElement alloc] initWithView:aView];
+        THStringRenderer *renderer = [documentNode stringRenderer];
+        NSString *fontPostscriptName = [renderer fontPostscriptName];
+        UIFont *font = [UIFont fontWithName:fontPostscriptName size:cssPointSize];
         
-        return [aViewSpiritElement autorelease];
+        if (font) {
+            [(SCHBSBReplacedElement *)replacedElement setFont:font];
+        }
+        
+        THCGViewSpiritElement *viewSpiritElement = [[replacedElement newViewSpiritElement] autorelease];
+        
+        if (viewSpiritElement) {
+            return [NSArray arrayWithObject:viewSpiritElement];
+        }
     }
     
     return nil;
 }
 
-- (UIView *)viewForNode:(SCHBSBTreeNode *)node constrainedToSize:(CGSize)constrainedSize
-{
-    UIView *view = nil;
-    CGRect constrainedFrame = CGRectZero;
-    constrainedFrame.size = constrainedSize;
-    
-    NSString *dataType = [node attributeWithName:@"data-type"];
-    
-    if ([dataType isEqualToString:@"text"]) {
-        SCHBSBPageContentsViewSpiritTextField *aTextField = [[SCHBSBPageContentsViewSpiritTextField alloc] initWithFrame:constrainedFrame];
-        aTextField.frame = constrainedFrame;
-        aTextField.borderStyle = UITextBorderStyleRoundedRect;
-        view = [aTextField autorelease];
-    } else if ([dataType isEqualToString:@"radio"]) {
-        SCHBSBPageContentsViewSpiritWebView *radio = [[SCHBSBPageContentsViewSpiritWebView alloc] init];
-        
-        NSString *dataBinding = [node attributeWithName:@"data-binding"];
-        
-        NSMutableString *htmlString = [NSMutableString stringWithString:@"<body><form>"];
-        
-        SCHBSBTreeNode *childNode = node.firstChild;
-        
-        while (childNode != nil) {
-            NSString *dataKey = [childNode attributeWithName:@"data-key"];
-            NSString *dataValue = [childNode attributeWithName:@"data-value"];
-            
-            if (dataKey && dataValue) {
-                [htmlString appendFormat:@"<input type='radio' name='%@' value='%@' /> %@<br />", dataBinding, dataValue, dataKey];
-            }
-            
-            childNode = childNode.nextSibling;
-        }
-        
-        [htmlString appendString:@"</form></body>"];
-        
-        [radio synchronouslyLoadHTMLString:htmlString baseURL:nil];
-        radio.frame = constrainedFrame;
-        view = radio;
-    } else if ([dataType isEqualToString:@"dropdown"]) {
-        SCHBSBPageContentsViewSpiritWebView *dropdown = [[SCHBSBPageContentsViewSpiritWebView alloc] init];
-        NSString *dataBinding = [node attributeWithName:@"data-binding"];
-        
-        NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<body><form><select name='%@'>", dataBinding];
-        
-        SCHBSBTreeNode *childNode = node.firstChild;
-        
-        while (childNode != nil) {
-            NSString *dataKey = [childNode attributeWithName:@"data-key"];
-            NSString *dataValue = [childNode attributeWithName:@"data-value"];
-            
-            if (dataKey && dataValue) {
-                [htmlString appendFormat:@"<option value='%@'>%@</option>", dataValue, dataKey];
-            }
-            
-            childNode = childNode.nextSibling;
-        }
-        
-        [htmlString appendString:@"</select></form></body>"];
-        
-        [dropdown synchronouslyLoadHTMLString:htmlString baseURL:nil];
-        dropdown.frame = constrainedFrame;
-        view = dropdown;
-    } else {
-        UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        aButton.frame = constrainedFrame;
-        [aButton setTitle:@"Hello World" forState:UIControlStateNormal];
-        view = aButton;
-    }
-    
-    return view;
-}
-
 @end
 
-@implementation SCHBSBPageContentsViewSpiritWebView
-
-- (id)initWithFrame:(CGRect)frame
-{
-    if ((self = [super initWithFrame:frame])) {
-        if ([self respondsToSelector:@selector(scrollView)]) {
-            UIScrollView *aScrollView = [self scrollView];
-            [aScrollView setBounces:NO];
-            [aScrollView setScrollEnabled:NO];
-        }
-        
-        self.delegate = self;
-    }
-    
-    return self;
-}
-
-- (void)synchronouslyLoadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL
-{
-    [self loadHTMLString:string baseURL:baseURL];    
-    CFRunLoopRunInMode((CFStringRef)NSDefaultRunLoopMode, 0.1, NO);
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)aScrollView
-{
-    // Only required for iOS < 4.0
-    [aScrollView setContentOffset: CGPointMake(aScrollView.contentOffset.x, 0)];
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    CFRunLoopRef runLoop = [[NSRunLoop currentRunLoop] getCFRunLoop];
-	CFRunLoopStop(runLoop);
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    CFRunLoopRef runLoop = [[NSRunLoop currentRunLoop] getCFRunLoop];
-	CFRunLoopStop(runLoop);
-}
-
-+ (Class)layerClass
-{
-    return [SCHBSBViewSpiritRenderableLayer class];
-}
-
-@end
-
-@implementation SCHBSBPageContentsViewSpiritTextField
-
-+ (Class)layerClass
-{
-    return [SCHBSBViewSpiritRenderableLayer class];
-}
-
-@end
-
-@implementation SCHBSBViewSpiritRenderableLayer
-
-- (void)renderInContext:(CGContextRef)ctx
-{
-    if (self == self.presentationLayer) {
-        [self.modelLayer renderInContext:ctx];
-    } else {
-        [super renderInContext:ctx];
-    }
-}
-
-@end
 #endif
