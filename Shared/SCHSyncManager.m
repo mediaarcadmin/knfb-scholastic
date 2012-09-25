@@ -753,7 +753,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         self.lastWishListSyncEnded = nil;
     }
     
-    if ([self wishListSyncActive] == YES) {
+//    if ([self wishListSyncActive] == YES) {
         if ([self shouldSync] == YES) {
             if (syncNow == YES || self.lastWishListSyncEnded == nil || 
                 [self.lastWishListSyncEnded timeIntervalSinceNow] < kSCHLastWishListSyncInterval) {
@@ -778,9 +778,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                 });        
             }
         }
-    } else {
-        NSLog(@"Wishlists are OFF");
-    }
+//    } else {
+//        NSLog(@"Wishlists are OFF");
+//    }
 }
 
 #pragma mark - SCHComponent Delegate methods

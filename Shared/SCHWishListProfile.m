@@ -42,16 +42,19 @@ NSString * const kSCHWishListProfile = @"SCHWishListProfile";
     return ret;
 }
 
-- (void)setProfileNameFromProfileItem
+- (NSString *)profileNameFromProfileItem
 {
+    NSString *ret = nil;
     SCHProfileItem *profileItem = [self profileItem];
 
     if (profileItem != nil) {
         NSString *name = [profileItem displayName];
         if ([[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-            self.ProfileName = name;
+            ret = name;
         }
     }
+
+    return ret;
 }
 
 - (NSDate *)Timestamp
