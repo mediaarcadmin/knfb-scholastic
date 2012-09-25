@@ -637,7 +637,7 @@
             [xpsProvider release], xpsProvider = nil;
             
             // move the XPS file
-            [[NSFileManager defaultManager] moveItemAtPath:xpsFilePath 
+            [[NSFileManager defaultManager] copyItemAtPath:xpsFilePath
                                                     toPath:[newContentMetadataItem.AppBook bookPackagePath] 
                                                      error:&error];        
             if (error != nil) {
