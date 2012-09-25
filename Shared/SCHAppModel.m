@@ -371,14 +371,19 @@ typedef enum {
 {
     BOOL ret = NO;
     
+    NSUInteger expectedSampleBookCount = 2;
+    
     SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
 
     if ([appStateManager isSampleStore]) {
         NSArray *allSampleBooks = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:appStateManager.managedObjectContext];
         
-        if ([allSampleBooks count] > 1) {
+        if ([allSampleBooks count] > expectedSampleBookCount) {
             ret = YES;
         }
+    } else {
+        SCHSampleBooksImporter *importer = [[[SCHSampleBooksImporter alloc] init] autorelease];
+        return ([importer sampleBookCount] > expectedSampleBookCount);
     }
     
     return ret;

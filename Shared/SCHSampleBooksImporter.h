@@ -12,5 +12,6 @@
 
 - (BOOL)importSampleBooks;
 - (BOOL)importLocalBooks;
+- (NSUInteger)sampleBookCount;
 
 @end

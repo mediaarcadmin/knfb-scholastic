@@ -396,25 +396,9 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     if ([[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey] == nil) {
         ret = nil;
     } else {
-        NSMutableArray *appln = [NSMutableArray array];
-        
-        [appln addObject:@"eReader"];
-        
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            [appln addObject:@"iPad"];                   
-        } else if([[[UIDevice currentDevice] model] hasPrefix:@"iPod"] == YES) {
-            [appln addObject:@"iPod"];
-        } else {
-            [appln addObject:@"iPhone"];        
-        }
-        
-        [appln addObject:@"ns"];   
         
         NSString *token = (pToken == nil) ? self.accountValidation.pToken : pToken;
-        
-        NSString *application = [appln componentsJoinedByString:@"|"];
-        NSString *escapedApplication = [application urlEncodeUsingEncoding:NSUTF8StringEncoding];
-        
+
         NSString *webParentToolsServer = nil;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -427,19 +411,27 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
         NSData *tokenData = [token dataUsingEncoding:NSUTF8StringEncoding];
         NSString *base64Token = [tokenData base64Encoding];
         
-        NSString *mobileIndicator = @"";
+        NSString *escapedURL = [NSString stringWithFormat:@"%@?token=%@&appln=eReader",
+                                webParentToolsServer,
+                                base64Token];
+#else
+        NSMutableArray *appln = [NSMutableArray array];
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            mobileIndicator = @"&mobile=iOS";
+        [appln addObject:@"eReader"];
+        
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            [appln addObject:@"iPad"];
+        } else if([[[UIDevice currentDevice] model] hasPrefix:@"iPod"] == YES) {
+            [appln addObject:@"iPod"];
+        } else {
+            [appln addObject:@"iPhone"];
         }
         
-        NSString *escapedURL = [NSString stringWithFormat:@"%@?token=%@&appln=%@%@",
-                                webParentToolsServer,
-                                base64Token, 
-                                escapedApplication,
-                                mobileIndicator];
+        [appln addObject:@"ns"];
+
+        NSString *application = [appln componentsJoinedByString:@"|"];
+        NSString *escapedApplication = [application urlEncodeUsingEncoding:NSUTF8StringEncoding];
         
-#else
         NSString *escapedToken = [token urlEncodeUsingEncoding:NSUTF8StringEncoding];
         NSString *userKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey];
         NSString *escapedKey = [userKey urlEncodeUsingEncoding:NSUTF8StringEncoding];

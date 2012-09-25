@@ -41,6 +41,23 @@ NSString * const kSCHSampleBooksLocalManifestFile = @"LocalSamplesManifest.xml";
     [super dealloc];
 }
 
+- (NSUInteger)sampleBookCount
+{
+    // TODO: refactor this parsing to make it DRY
+    NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
+    NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
+    NSData *data = [NSData dataWithContentsOfURL:localManifestURL];
+    
+    self.sampleManifestEntries = [NSMutableArray array];
+    
+    NSXMLParser *aParser = [[NSXMLParser alloc] initWithData:data];
+    aParser.delegate = self;
+    [aParser parse];
+    [aParser release];
+    
+    return [self.sampleManifestEntries count];
+}
+
 - (BOOL)importSampleBooks
 {
     BOOL success = NO;
