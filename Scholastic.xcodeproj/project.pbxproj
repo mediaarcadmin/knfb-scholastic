@@ -2647,6 +2647,22 @@
 		C94735FB1377F482005B2B1D /* icon-font-increase.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F61377F482005B2B1D /* icon-font-increase.png */; };
 		C94735FD1377F482005B2B1D /* icon-font-decrease@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */; };
 		C94735FF1377F482005B2B1D /* icon-font-decrease.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F81377F482005B2B1D /* icon-font-decrease.png */; };
+		C947DF0A16106E06003B1E7D /* 9780545323024_enr_v6.xps in Resources */ = {isa = PBXBuildFile; fileRef = C947DF0816106E06003B1E7D /* 9780545323024_enr_v6.xps */; };
+		C947DF0B16106E06003B1E7D /* 9780545323024_enr_v6.xps in Resources */ = {isa = PBXBuildFile; fileRef = C947DF0816106E06003B1E7D /* 9780545323024_enr_v6.xps */; };
+		C947DF0C16106E06003B1E7D /* 9780545323024_enr_v6.xps in Resources */ = {isa = PBXBuildFile; fileRef = C947DF0816106E06003B1E7D /* 9780545323024_enr_v6.xps */; };
+		C947DF0D16106E06003B1E7D /* 9780545323024_enr_v6.xps in Resources */ = {isa = PBXBuildFile; fileRef = C947DF0816106E06003B1E7D /* 9780545323024_enr_v6.xps */; };
+		C947DF0E16106E06003B1E7D /* 9780545283502.xps in Resources */ = {isa = PBXBuildFile; fileRef = C947DF0916106E06003B1E7D /* 9780545283502.xps */; };
+		C947DF0F16106E06003B1E7D /* 9780545283502.xps in Resources */ = {isa = PBXBuildFile; fileRef = C947DF0916106E06003B1E7D /* 9780545283502.xps */; };
+		C947DF1016106E06003B1E7D /* 9780545283502.xps in Resources */ = {isa = PBXBuildFile; fileRef = C947DF0916106E06003B1E7D /* 9780545283502.xps */; };
+		C947DF1116106E06003B1E7D /* 9780545283502.xps in Resources */ = {isa = PBXBuildFile; fileRef = C947DF0916106E06003B1E7D /* 9780545283502.xps */; };
+		C947DF1416106F4E003B1E7D /* 9780545323024_enr_v6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C947DF1216106F4E003B1E7D /* 9780545323024_enr_v6.jpg */; };
+		C947DF1516106F4E003B1E7D /* 9780545323024_enr_v6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C947DF1216106F4E003B1E7D /* 9780545323024_enr_v6.jpg */; };
+		C947DF1616106F4E003B1E7D /* 9780545323024_enr_v6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C947DF1216106F4E003B1E7D /* 9780545323024_enr_v6.jpg */; };
+		C947DF1716106F4E003B1E7D /* 9780545323024_enr_v6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C947DF1216106F4E003B1E7D /* 9780545323024_enr_v6.jpg */; };
+		C947DF1816106F4E003B1E7D /* 9780545283502.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C947DF1316106F4E003B1E7D /* 9780545283502.jpg */; };
+		C947DF1916106F4E003B1E7D /* 9780545283502.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C947DF1316106F4E003B1E7D /* 9780545283502.jpg */; };
+		C947DF1A16106F4E003B1E7D /* 9780545283502.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C947DF1316106F4E003B1E7D /* 9780545283502.jpg */; };
+		C947DF1B16106F4E003B1E7D /* 9780545283502.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C947DF1316106F4E003B1E7D /* 9780545283502.jpg */; };
 		C94975C014C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C94975BF14C9B871008A19C7 /* storia-preview-close-button~ipad.png */; };
 		C94975C114C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C94975BF14C9B871008A19C7 /* storia-preview-close-button~ipad.png */; };
 		C949B3A413963B5F00525C6A /* MagnificationLoupeHigh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B39E13963B5F00525C6A /* MagnificationLoupeHigh@2x.png */; };
@@ -4634,10 +4650,6 @@
 		F8615B21144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */; };
 		F8615B22144D712400D0D265 /* SCHHelpVideoManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */; };
 		F864333713813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */; };
-		F864916D15139122003A8B81 /* sampleCoverImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F864916C15139122003A8B81 /* sampleCoverImage.jpg */; };
-		F864916E15139122003A8B81 /* sampleCoverImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F864916C15139122003A8B81 /* sampleCoverImage.jpg */; };
-		F864916F15139122003A8B81 /* sampleCoverImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F864916C15139122003A8B81 /* sampleCoverImage.jpg */; };
-		F864917015139122003A8B81 /* sampleCoverImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F864916C15139122003A8B81 /* sampleCoverImage.jpg */; };
 		F8687ED613BA234100B59987 /* BookShelfNewIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon~iphone.png */; };
 		F86DEBFE13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */; };
 		F86DEC0613A21C5F00053999 /* SCHImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEC0513A21C5F00053999 /* SCHImageButton.m */; };
@@ -6320,6 +6332,10 @@
 		C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-decrease@2x.png"; path = "Resources/UIAssets/icon-font-decrease@2x.png"; sourceTree = "<group>"; };
 		C94735F81377F482005B2B1D /* icon-font-decrease.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-decrease.png"; path = "Resources/UIAssets/icon-font-decrease.png"; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
+		C947DF0816106E06003B1E7D /* 9780545323024_enr_v6.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545323024_enr_v6.xps; path = "Shared/Debug Books/9780545323024_enr_v6.xps"; sourceTree = "<group>"; };
+		C947DF0916106E06003B1E7D /* 9780545283502.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545283502.xps; path = "Shared/Debug Books/9780545283502.xps"; sourceTree = "<group>"; };
+		C947DF1216106F4E003B1E7D /* 9780545323024_enr_v6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545323024_enr_v6.jpg; path = "Shared/Debug Books/9780545323024_enr_v6.jpg"; sourceTree = "<group>"; };
+		C947DF1316106F4E003B1E7D /* 9780545283502.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 9780545283502.jpg; path = "Shared/Debug Books/9780545283502.jpg"; sourceTree = "<group>"; };
 		C94975BF14C9B871008A19C7 /* storia-preview-close-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-preview-close-button~ipad.png"; path = "Resources/UIAssets/storia-preview-close-button~ipad.png"; sourceTree = "<group>"; };
 		C949B39E13963B5F00525C6A /* MagnificationLoupeHigh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MagnificationLoupeHigh@2x.png"; sourceTree = "<group>"; };
 		C949B39F13963B5F00525C6A /* MagnificationLoupeHigh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MagnificationLoupeHigh.png; sourceTree = "<group>"; };
@@ -6896,7 +6912,6 @@
 		F8615B20144D712400D0D265 /* SCHHelpVideoManifest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpVideoManifest.m; path = Shared/SCHHelpVideoManifest.m; sourceTree = "<group>"; };
 		F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController_iPad.h; path = iPad/SCHBookShelfViewController_iPad.h; sourceTree = "<group>"; };
 		F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController_iPad.m; path = iPad/SCHBookShelfViewController_iPad.m; sourceTree = "<group>"; };
-		F864916C15139122003A8B81 /* sampleCoverImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sampleCoverImage.jpg; sourceTree = "<group>"; };
 		F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTableViewCell_iPad.xib; path = iPad/SCHBookShelfTableViewCell_iPad.xib; sourceTree = "<group>"; };
 		F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ScholasticFeatureCompatibility.plist; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/ScholasticFeatureCompatibility.plist; sourceTree = "<group>"; };
 		F8687ED513BA234100B59987 /* BookShelfNewIcon~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfNewIcon~iphone.png"; path = "Resources/BookShelfNewIcon~iphone.png"; sourceTree = "<group>"; };
@@ -8547,7 +8562,6 @@
 			isa = PBXGroup;
 			children = (
 				F8C7C5171521C07E0067674D /* Custom Popover Graphics */,
-				F864916C15139122003A8B81 /* sampleCoverImage.jpg */,
 				C995171F146D690B00EA7337 /* Sample Manifests */,
 				A3A19356146AC94E00938888 /* gnulesser-license.html */,
 				A3A19357146AC94F00938888 /* minizip-license.html */,
@@ -10106,6 +10120,10 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
+				C947DF0816106E06003B1E7D /* 9780545323024_enr_v6.xps */,
+				C947DF1216106F4E003B1E7D /* 9780545323024_enr_v6.jpg */,
+				C947DF1316106F4E003B1E7D /* 9780545283502.jpg */,
+				C947DF0916106E06003B1E7D /* 9780545283502.xps */,
 				C9C5DF5615ECFCE10020BA9E /* BranchingStoryXPSSample.jpg */,
 				C9C5DF5715ECFCE20020BA9E /* BranchingStoryXPSSample.xps */,
 				C9C5DEE315EB9FB30020BA9E /* BSB_Big.jpg */,
@@ -11511,7 +11529,6 @@
 				C94975C014C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */,
 				C937E7E7150F5718001882AC /* THFonts in Resources */,
 				F89140C41511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib in Resources */,
-				F864916D15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E761517702000390D56 /* SCHBookShelfWishListController~ipad.xib in Resources */,
 				F88F6FD515208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
 				F84DB7721520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
@@ -11629,8 +11646,6 @@
 				F8DA8125160A112300387591 /* tour-tab-button-bg.png in Resources */,
 				F8DA8129160A112300387591 /* tour-tab-button-bg@2x.png in Resources */,
 				F806757A160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
-				F8067580160A2A8F00F5024A /* tour_full_image_1_0.png in Resources */,
-				F8067584160A2A8F00F5024A /* tour_full_image_1_0@2x.png in Resources */,
 				C9DFBBCE160A625C00A02805 /* SCHSupportViewController~ipad.xib in Resources */,
 				F80D1113160CC2F600ABC40F /* tour-fullscreen-toptoolbar.png in Resources */,
 				F80D1117160CC2F600ABC40F /* tour-fullscreen-toptoolbar@2x.png in Resources */,
@@ -11642,6 +11657,10 @@
 				F82D2BB6161067700033F3E5 /* tour_full_image_3_0@2x.jpg in Resources */,
 				F82D2BBA161067700033F3E5 /* tour_full_image_3_1.jpg in Resources */,
 				F82D2BBE161067700033F3E5 /* tour_full_image_3_1@2x.jpg in Resources */,
+				C947DF0A16106E06003B1E7D /* 9780545323024_enr_v6.xps in Resources */,
+				C947DF0E16106E06003B1E7D /* 9780545283502.xps in Resources */,
+				C947DF1416106F4E003B1E7D /* 9780545323024_enr_v6.jpg in Resources */,
+				C947DF1816106F4E003B1E7D /* 9780545283502.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12341,7 +12360,6 @@
 				C94975C114C9B871008A19C7 /* storia-preview-close-button~ipad.png in Resources */,
 				C937E7E8150F5718001882AC /* THFonts in Resources */,
 				F89140C51511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib in Resources */,
-				F864916E15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E771517702000390D56 /* SCHBookShelfWishListController~ipad.xib in Resources */,
 				F88F6FD615208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
 				F84DB7731520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
@@ -12469,8 +12487,6 @@
 				F8DA8126160A112300387591 /* tour-tab-button-bg.png in Resources */,
 				F8DA812A160A112300387591 /* tour-tab-button-bg@2x.png in Resources */,
 				F806757B160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
-				F8067581160A2A8F00F5024A /* tour_full_image_1_0.png in Resources */,
-				F8067585160A2A8F00F5024A /* tour_full_image_1_0@2x.png in Resources */,
 				C9DFBBCF160A625C00A02805 /* SCHSupportViewController~ipad.xib in Resources */,
 				F80D1114160CC2F600ABC40F /* tour-fullscreen-toptoolbar.png in Resources */,
 				F80D1118160CC2F600ABC40F /* tour-fullscreen-toptoolbar@2x.png in Resources */,
@@ -12482,6 +12498,10 @@
 				F82D2BB7161067700033F3E5 /* tour_full_image_3_0@2x.jpg in Resources */,
 				F82D2BBB161067700033F3E5 /* tour_full_image_3_1.jpg in Resources */,
 				F82D2BBF161067700033F3E5 /* tour_full_image_3_1@2x.jpg in Resources */,
+				C947DF0B16106E06003B1E7D /* 9780545323024_enr_v6.xps in Resources */,
+				C947DF0F16106E06003B1E7D /* 9780545283502.xps in Resources */,
+				C947DF1516106F4E003B1E7D /* 9780545323024_enr_v6.jpg in Resources */,
+				C947DF1916106F4E003B1E7D /* 9780545283502.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12947,7 +12967,6 @@
 				A3775D8614D9BDB400473314 /* Icon-Small@2x.png in Resources */,
 				C937E7E9150F5718001882AC /* THFonts in Resources */,
 				F89140C61511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib in Resources */,
-				F864916F15139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E781517702000390D56 /* SCHBookShelfWishListController~ipad.xib in Resources */,
 				F88F6FD715208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
 				F84DB7741520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
@@ -13064,8 +13083,6 @@
 				F8DA8127160A112300387591 /* tour-tab-button-bg.png in Resources */,
 				F8DA812B160A112300387591 /* tour-tab-button-bg@2x.png in Resources */,
 				F806757C160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
-				F8067582160A2A8F00F5024A /* tour_full_image_1_0.png in Resources */,
-				F8067586160A2A8F00F5024A /* tour_full_image_1_0@2x.png in Resources */,
 				C9DFBBD1160A625C00A02805 /* SCHSupportViewController~ipad.xib in Resources */,
 				F80D1115160CC2F600ABC40F /* tour-fullscreen-toptoolbar.png in Resources */,
 				F80D1119160CC2F600ABC40F /* tour-fullscreen-toptoolbar@2x.png in Resources */,
@@ -13077,6 +13094,10 @@
 				F82D2BB8161067700033F3E5 /* tour_full_image_3_0@2x.jpg in Resources */,
 				F82D2BBC161067700033F3E5 /* tour_full_image_3_1.jpg in Resources */,
 				F82D2BC0161067700033F3E5 /* tour_full_image_3_1@2x.jpg in Resources */,
+				C947DF0C16106E06003B1E7D /* 9780545323024_enr_v6.xps in Resources */,
+				C947DF1016106E06003B1E7D /* 9780545283502.xps in Resources */,
+				C947DF1616106F4E003B1E7D /* 9780545323024_enr_v6.jpg in Resources */,
+				C947DF1A16106F4E003B1E7D /* 9780545283502.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13542,7 +13563,6 @@
 				C9D7024414ED50B100C10006 /* Icon-Small@2x.png in Resources */,
 				C937E7EA150F5718001882AC /* THFonts in Resources */,
 				F89140C71511EB310026F16F /* SCHBookShelfRecommendationListController~ipad.xib in Resources */,
-				F864917015139122003A8B81 /* sampleCoverImage.jpg in Resources */,
 				F8A57E791517702000390D56 /* SCHBookShelfWishListController~ipad.xib in Resources */,
 				F88F6FD815208A1600572E7C /* SCHBookShelfMenuController.xib in Resources */,
 				F84DB7751520D2750025BFCF /* SCHBookShelfTypeMenuTableController.xib in Resources */,
@@ -13657,8 +13677,6 @@
 				F8DA8128160A112300387591 /* tour-tab-button-bg.png in Resources */,
 				F8DA812C160A112300387591 /* tour-tab-button-bg@2x.png in Resources */,
 				F806757D160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
-				F8067583160A2A8F00F5024A /* tour_full_image_1_0.png in Resources */,
-				F8067587160A2A8F00F5024A /* tour_full_image_1_0@2x.png in Resources */,
 				C9DFBBD2160A625C00A02805 /* SCHSupportViewController~ipad.xib in Resources */,
 				F80D1116160CC2F600ABC40F /* tour-fullscreen-toptoolbar.png in Resources */,
 				F80D111A160CC2F600ABC40F /* tour-fullscreen-toptoolbar@2x.png in Resources */,
@@ -13670,6 +13688,10 @@
 				F82D2BB9161067700033F3E5 /* tour_full_image_3_0@2x.jpg in Resources */,
 				F82D2BBD161067700033F3E5 /* tour_full_image_3_1.jpg in Resources */,
 				F82D2BC1161067700033F3E5 /* tour_full_image_3_1@2x.jpg in Resources */,
+				C947DF0D16106E06003B1E7D /* 9780545323024_enr_v6.xps in Resources */,
+				C947DF1116106E06003B1E7D /* 9780545283502.xps in Resources */,
+				C947DF1716106F4E003B1E7D /* 9780545323024_enr_v6.jpg in Resources */,
+				C947DF1B16106F4E003B1E7D /* 9780545283502.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

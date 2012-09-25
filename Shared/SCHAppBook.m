@@ -317,10 +317,20 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 	return [[SCHProcessingManager sharedProcessingManager] identifierIsProcessing:[self bookIdentifier]];
 }
 
-//- (void)setProcessing:(BOOL)value
-//{
-//	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forIdentifier:[self bookIdentifier]];
-//}
+- (BOOL)requiresNetworkForProcessing
+{
+    BOOL ret = NO;
+    
+    if (![self bookCoverURLIsBundleURL]) {
+        SCHBookCurrentProcessingState state = [[self State] intValue];
+        if ((state == SCHBookProcessingStateReadyForBookFileDownload) ||
+            (state == SCHBookProcessingStateDownloadPaused)) {
+            ret = YES;
+        }
+    }
+    
+    return ret;
+}
 
 - (NSString *)categoryType
 {

@@ -180,6 +180,23 @@
     [self presentModalViewController:self.modalContainerView animated:NO];
 }
 
+#pragma mark - Book Presentation Methods
+
+- (void)presentTourBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    
+}
+
+- (void)presentSampleBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    
+}
+
+- (void)presentAccountBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    
+}
+
 #pragma mark - Exit Methods
 
 - (void)exitBookshelf

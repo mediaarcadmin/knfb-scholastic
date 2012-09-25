@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHProfileSetupDelegate.h"
+#import "SCHAppController.h"
 
 @interface SCHTourStartViewController : UIViewController
 
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, assign) id<SCHAppController> appController;
 
 - (IBAction)startReading:(UIButton *)sender;
 

@@ -21,6 +21,13 @@
 #import "NSString+EmailValidation.h"
 #import "SCHProfileSyncComponent.h"
 #import "SCHSampleBooksImporter.h"
+#import "SCHProcessingManager.h"
+#import "SCHBookIdentifier.h"
+#import "SCHAppBook.h"
+
+NSString * const kSCHAppModelErrorDomain  = @"com.knfb.scholastic.AppModelErrorDomain";
+NSInteger const kSCHAppModelErrorBookDoesntExist = 1000;
+NSInteger const kSCHAppModelErrorBookRequiresNetworkConnection = 1001;
 
 typedef enum {
 	kSCHAppModelSyncStateNone = 0,
@@ -100,6 +107,7 @@ typedef enum {
 - (void)setupTour
 {
     [self createLocalSampleBooksWithCompletion:^{
+        [[SCHProcessingManager sharedProcessingManager] checkStateForAllBooks];
         [self.appController presentTour];
     } importLocalBooks:NO];
 }
@@ -352,7 +360,7 @@ typedef enum {
     }
 }
 
-#pragma mark - Interogate State
+#pragma mark - Interrogate App State
 
 - (BOOL)hasBooksToImport
 {
@@ -368,7 +376,7 @@ typedef enum {
     if ([appStateManager isSampleStore]) {
         NSArray *allSampleBooks = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:appStateManager.managedObjectContext];
         
-        if ([allSampleBooks count] > 2) {
+        if ([allSampleBooks count] > 1) {
             ret = YES;
         }
     }
@@ -376,4 +384,52 @@ typedef enum {
     return ret;
 }
 
+#pragma mark - Interrogate Book State
+
+- (BOOL)canOpenBookWithIdentifier:(SCHBookIdentifier *)identifier error:(NSError **)error
+{
+    BOOL canOpen = NO;
+    
+    SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:appStateManager.managedObjectContext];
+    
+    if (book) {
+        if ([book requiresNetworkForProcessing] && ![[Reachability reachabilityForInternetConnection] isReachable]) {
+            NSDictionary *eDict = [NSDictionary dictionaryWithObject:NSLocalizedString(@"This eBook has not yet been downloaded. Please connect to the Internet in order to download and read this eBook.", @"")
+                                                              forKey:NSLocalizedDescriptionKey];
+            
+            if (error != NULL) {
+                *error = [[[NSError alloc] initWithDomain:kSCHAppModelErrorDomain
+                                                     code:kSCHAppModelErrorBookRequiresNetworkConnection userInfo:eDict] autorelease];
+            }
+        } else {
+            canOpen = [book canOpenBookError:error];
+        }
+    } else {
+        if (error != NULL) {
+            *error = [[[NSError alloc] initWithDomain:kSCHAppModelErrorDomain
+                                                 code:kSCHAppModelErrorBookDoesntExist userInfo:nil] autorelease];
+        }
+    }
+    
+    return canOpen;
+}
+
+- (NSInteger)bookshelfStyleForBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:appStateManager.managedObjectContext];
+
+    SCHBookshelfStyles ret = kSCHBookshelfStyleNone;
+    NSString *categoryType = book.categoryType;
+    
+    if ([categoryType isEqualToString:kSCHAppBookYoungReader]) {
+        ret = kSCHBookshelfStyleYoungChild;
+    } else if ([categoryType isEqualToString:kSCHAppBookOldReader]) {
+        ret = kSCHBookshelfStyleOlderChild;
+    }
+    
+    return ret;
+}
+    
 @end

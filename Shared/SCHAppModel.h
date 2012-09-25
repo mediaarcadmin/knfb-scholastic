@@ -8,11 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString* const kSCHAppModelErrorDomain;
+extern NSInteger const kSCHAppModelErrorBookDoesntExist;
+extern NSInteger const kSCHAppModelErrorBookRequiresNetworkConnection;
+
 @protocol SCHAppController;
 
 @class SCHAuthenticationManager;
 @class SCHSyncManager;
 @class SCHAppStateManager;
+@class SCHBookIdentifier;
 
 @interface SCHAppModel : NSObject
 
@@ -45,10 +50,14 @@
 - (void)waitForBookshelvesWithSyncManager:(SCHSyncManager *)syncManager;
 - (void)waitForWebParentToolsToCompleteWithSyncManager:(SCHSyncManager *)syncManager;
 
-// Interogate App State
+// Interrogate App State
 
 - (BOOL)hasBooksToImport;
 - (BOOL)hasExtraSampleBooks;
+
+// Interrogate Book State
+- (BOOL)canOpenBookWithIdentifier:(SCHBookIdentifier *)identifier error:(NSError **)error;
+- (NSInteger)bookshelfStyleForBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
 // Exposed for testing purposes
 

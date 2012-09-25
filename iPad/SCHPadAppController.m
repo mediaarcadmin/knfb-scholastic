@@ -32,6 +32,11 @@
 #import "SCHTourStartViewController.h"
 #import "SCHReadingManagerViewController.h"
 #import "SCHSettingsViewController.h"
+#import "SCHReadingViewController.h"
+#import "SCHBookIdentifier.h"
+#import "SCHAppBook.h"
+#import "SCHBookManager.h"
+#import "SCHProfileItem.h"
 
 @interface SCHPadAppController () <UINavigationControllerDelegate>
 
@@ -49,7 +54,10 @@
 - (void)pushSamplesAnimated:(BOOL)animated;
 - (void)pushProfileAnimated:(BOOL)animated;
 - (void)pushReadingManagerAnimated:(BOOL)animated;
+- (void)pushBookWithIdentifier:(SCHBookIdentifier *)identifier profileItem:(SCHProfileItem *)profileItem viewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
 - (BOOL)isCurrentlyModal;
+- (SCHReadingViewController *)readingViewControllerForBookWithIdentifier:(SCHBookIdentifier *)identifier profileItem:(SCHProfileItem *)profileItem error:(NSError **)error;
+- (void)failedOpenBookWithError:(NSError *)error;
 
 @end
 
@@ -123,6 +131,8 @@
     // Release any retained subviews of the main view.
 }
 
+#pragma mark - Presentation Methods
+
 - (void)presentProfiles
 {
     if (self.undismissableAlert) {
@@ -172,6 +182,58 @@
 {
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
     [self setViewControllers:[NSArray arrayWithObject:self.loginViewController] animated:shouldAnimate];
+}
+
+#pragma mark - Book Presentation Methods
+
+- (void)presentTourBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
+    
+    // TODO, this reliance on using a profile view controller to get at a bookshelf should be refactored
+    if ([[self.samplesViewController profileItems] count]) {
+        SCHProfileItem *profileItem = [[self.samplesViewController profileItems] lastObject]; // Only one sample bookshelf so any result will do
+        NSArray *stack = [NSArray arrayWithObjects:self.loginViewController, self.tourViewController, nil];
+        [self pushBookWithIdentifier:identifier profileItem:profileItem viewControllers:stack animated:shouldAnimate];
+    } else {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
+                              message:NSLocalizedString(@"There was a problem while opening the sample bookshelf. Please try again.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            [self presentLogin];
+        }];
+        
+        [alert show];
+        [alert release];
+    }
+}
+
+- (void)presentSampleBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
+    
+    // TODO, this reliance on using a profile view controller to get at a bookshelf should be refactored
+    if ([[self.samplesViewController profileItems] count]) {
+        SCHProfileItem *profileItem = [[self.samplesViewController profileItems] lastObject]; // Only one sample bookshelf so any result will do
+        UIViewController *bookshelfViewController = [[self.samplesViewController viewControllersForProfileItem:profileItem showWelcome:NO] lastObject];
+        NSArray *stack = [NSArray arrayWithObjects:self.loginViewController, bookshelfViewController, nil];
+        [self pushBookWithIdentifier:identifier profileItem:profileItem viewControllers:stack animated:shouldAnimate];
+    } else {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
+                              message:NSLocalizedString(@"There was a problem while opening the sample bookshelf. Please try again.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+            [self presentLogin];
+        }];
+        
+        [alert show];
+        [alert release];
+    }
+}
+
+- (void)presentAccountBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    return; // TODO implement this
 }
 
 #pragma mark - Exit Methods
@@ -250,10 +312,33 @@
     }
 }
 
+- (void)failedOpenBookWithError:(NSError *)error
+{
+    NSString *message;
+    NSString *errorReason = [[error userInfo] valueForKey:@"failureReason"];
+    
+    if (errorReason) {
+        message = [NSString stringWithFormat:NSLocalizedString(@"There was a problem while opening this eBook. %@. Please try again.", @""), errorReason];
+    } else {
+        message = [NSString stringWithFormat:NSLocalizedString(@"There was a problem while opening this eBook. Please try again.", @"")];
+    }
+    
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Unable To Open eBook", @"")
+                          message:message];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    
+    [alert show];
+    [alert release];
+}
+
 - (void)failedSyncWithError:(NSError *)error
 {
     
 }
+
+#pragma mark - Push Methods
+
 
 - (void)pushSettingsAnimated:(BOOL)animated
 {
@@ -324,6 +409,20 @@
 - (void)pushTourAnimated:(BOOL)animated
 {
     [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.tourViewController, nil] animated:animated];
+}
+
+- (void)pushBookWithIdentifier:(SCHBookIdentifier *)identifier profileItem:(SCHProfileItem *)profileItem viewControllers:(NSArray *)viewControllers animated:(BOOL)animated
+{
+    NSError *error = nil;
+    SCHReadingViewController *readingViewController = [self readingViewControllerForBookWithIdentifier:identifier profileItem:profileItem error:&error];
+    
+    if (readingViewController) {
+        NSMutableArray *allViewControllers = [[viewControllers mutableCopy] autorelease];
+        [allViewControllers addObject:readingViewController];
+        [self setViewControllers:allViewControllers animated:animated];
+    } else {
+        [self failedOpenBookWithError:error];
+    }
 }
 
 #pragma mark - SCHProfileSetupDelegate
@@ -514,11 +613,7 @@
     if (!tourViewController) {
         
         tourViewController = [[SCHTourStartViewController alloc] init];
-        
-        // access to the AppDelegate's managedObjectContext is deferred until we know we don't
-        // want to use the same database any more
-        AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-        tourViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
+        tourViewController.appController = self;
     }
     
     return tourViewController;
@@ -553,6 +648,43 @@
     }
     
     return readingManagerViewController;
+}
+
+- (SCHReadingViewController *)readingViewControllerForBookWithIdentifier:(SCHBookIdentifier *)identifier profileItem:(SCHProfileItem *)profileItem error:(NSError **)error
+{
+    AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
+    SCHAppModel *appModel = [appDelegate appModel];
+    
+    SCHReadingViewController *ret = nil;
+    
+    if ([appModel canOpenBookWithIdentifier:identifier error:error]) {
+        NSManagedObjectContext *moc = profileItem.managedObjectContext;
+        
+        ret = [[[SCHReadingViewController alloc] initWithNibName:nil
+                                                         bundle:nil
+                                                 bookIdentifier:identifier
+                                                        profile:profileItem
+                                           managedObjectContext:moc
+                                                          error:error] autorelease];
+        
+        SCHBookshelfStyles bookshelfStyle = [appModel bookshelfStyleForBookWithIdentifier:identifier];
+        
+        if (bookshelfStyle == kSCHBookshelfStyleNone) {
+            if ([profileItem.BookshelfStyle intValue] == kSCHBookshelfStyleYoungChild) {
+                bookshelfStyle = kSCHBookshelfStyleYoungChild;
+            } else {
+                bookshelfStyle = kSCHBookshelfStyleOlderChild;
+            }
+        }
+        
+        if (bookshelfStyle == kSCHBookshelfStyleYoungChild) {
+            ret.youngerMode = YES;
+        } else {
+            ret.youngerMode = NO;
+        }
+    }
+           
+    return ret;
 }
 
 #pragma mark - Utilities

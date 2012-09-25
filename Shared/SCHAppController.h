@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class SCHBookIdentifier;
+
 @protocol SCHAppController <NSObject>
 
 @required
@@ -20,6 +22,11 @@
 - (void)presentProfilesSetup;
 - (void)presentReadingManager;
 - (void)presentSettings;
+
+// Book Presentation Methods
+- (void)presentTourBookWithIdentifier:(SCHBookIdentifier *)identifier;
+- (void)presentSampleBookWithIdentifier:(SCHBookIdentifier *)identifier;
+- (void)presentAccountBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
 // Exit Methods
 - (void)exitBookshelf;
