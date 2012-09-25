@@ -15,6 +15,8 @@
 #import "SCHBookIdentifier.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHListContentMetadataOperation.h"
+#import "SCHProfileItem.h"
+#import "SCHAppProfile.h"
 
 // Constants
 NSString * const SCHBookshelfSyncComponentWillDeleteNotification = @"SCHBookshelfSyncComponentWillDeleteNotification";
@@ -176,13 +178,26 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 	NSMutableArray *results = [NSMutableArray array];
 
-    // only update books we don't already have unless there is a version change
+    // only update books on a bookshelf that has been accessed and we don't
+    // already have unless there is a version change
     [[self localBooksAssignments] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         SCHBooksAssignment *booksAssignment = obj;
+        NSSet *contentProfileItems = [obj profileList];
         NSSet *contentMetadataItems = (NSSet *)[obj ContentMetadataItem];
-        
-        if ([contentMetadataItems count] < 1 || 
-            [[[contentMetadataItems anyObject] Version] integerValue] != [booksAssignment.version integerValue]) {
+        BOOL onAbookShelf = NO;
+
+        for (SCHContentProfileItem *contentProfileItem in contentProfileItems) {
+            for (SCHProfileItem *profileItem in [contentProfileItem ProfileItem]) {
+                if ([profileItem AppProfile].lastEnteredBookshelfDate != nil) {
+                    onAbookShelf = YES;
+                    break;
+                }
+            }
+        }
+
+        if (onAbookShelf == YES &&
+            ([contentMetadataItems count] < 1 ||
+            [[[contentMetadataItems anyObject] Version] integerValue] != [booksAssignment.version integerValue])) {
             [results addObject:obj];
         }
     }];

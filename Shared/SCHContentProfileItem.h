@@ -26,6 +26,7 @@ extern NSString * const kSCHContentProfileItem;
 @property (nonatomic, retain) SCHAppContentProfileItem * AppContentProfileItem;
 @property (nonatomic, retain) NSNumber * Rating;
 
+- (NSSet *)ProfileItem;
 - (void)deleteAnnotationsForBook:(SCHBookIdentifier *)bookIdentifier;
 - (void)deleteStatisticsForBook:(SCHBookIdentifier *)bookIdentifier;
 

@@ -41,6 +41,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 @dynamic PaperType;
 @dynamic SortType;
 @dynamic ShowListView;
+@dynamic lastEnteredBookshelfDate;
 
 - (SCHAppRecommendationProfile *)appRecommendationProfile
 {

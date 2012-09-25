@@ -312,6 +312,9 @@ typedef enum
     } else {
         self.navigationItem.title = NSLocalizedString(@"My eBooks", @"Sample bookshelf title");
     }
+
+    BOOL forceBookshelfSync = self.profileItem.AppProfile.lastEnteredBookshelfDate == nil;
+    self.profileItem.AppProfile.lastEnteredBookshelfDate = [NSDate date];
     
     // Always force a sync if we are on the sample bookshelf
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
@@ -319,9 +322,7 @@ typedef enum
         self.shouldWaitForCellsToLoad = YES;
         [self reloadDataImmediately:YES];
     } else {
-        if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
-            [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
-        }
+        [[SCHSyncManager sharedSyncManager] bookshelfSyncNow:forceBookshelfSync];
         
         if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
             [[SCHProcessingManager sharedProcessingManager] checkStateForAllBooks];

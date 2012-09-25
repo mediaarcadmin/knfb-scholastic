@@ -28,6 +28,7 @@ extern NSString * const kSCHAppProfile;
 @property (nonatomic, retain) NSNumber *PaperType;
 @property (nonatomic, retain) NSNumber *SortType;
 @property (nonatomic, retain) NSNumber *ShowListView;
+@property (nonatomic, retain) NSDate * lastEnteredBookshelfDate;
 
 - (SCHAppRecommendationProfile *)appRecommendationProfile;
 - (NSArray *)recommendationDictionaries;
