@@ -27,6 +27,7 @@ NSString * const kSCHWishListWebServiceProfileError = @"ProfileError";
 NSString * const kSCHWishListWebServiceProfileID = @"ProfileID";
 NSString * const kSCHWishListWebServiceProfileItemList = @"ProfileItemList";
 NSString * const kSCHWishListWebServiceProfileName = @"ProfileName";
+NSString * const kSCHWishListWebServiceProfileNameFromProfileItem = @"profileNameFromProfileItem";
 NSString * const kSCHWishListWebServiceProfileStatusList = @"ProfileStatusList";
 NSString * const kSCHWishListWebServicespsID = @"spsID";
 NSString * const kSCHWishListWebServiceState = @"State";

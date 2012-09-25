@@ -204,13 +204,8 @@
             localWishListProfile.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
 
             localWishListProfile.ProfileID = makeNullNil([webProfile objectForKey:kSCHWishListWebServiceProfileID]);
-            id profileName = makeNullNil([webProfile objectForKey:kSCHWishListWebServiceProfileName]);
-            if ([[profileName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                localWishListProfile.ProfileName = profileName;
-            } else {
-                [localWishListProfile setProfileNameFromProfileItem];
-            }
-            
+            localWishListProfile.ProfileName = makeNullNil([webProfile objectForKey:kSCHWishListWebServiceProfileName]);
+
             [self syncWishListItems:makeNullNil([webWishListProfile objectForKey:kSCHWishListWebServiceItemList])
                   withWishListItems:localWishListProfile.ItemList
                          insertInto:localWishListProfile];

@@ -21,9 +21,9 @@ extern NSString * const kSCHWishListProfile;
 @property (nonatomic, retain) NSSet *ItemList;
 
 @property (nonatomic, readonly) NSDate * Timestamp;
+@property (nonatomic, readonly) NSString *profileNameFromProfileItem;
 
 - (SCHProfileItem *)profileItem;
-- (void)setProfileNameFromProfileItem;
 
 + (BOOL)isValidProfileID:(NSNumber *)profileID;
 
