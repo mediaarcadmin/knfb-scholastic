@@ -125,12 +125,14 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     BOOL ret = YES;
 
     if (self.saveOnly == NO) {
+#if !USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
         NSMutableArray *profiles = [self localFilteredProfiles];
-        
+
         if ([profiles count] > 0) {
             self.remainingBatchedItems = [self removeBatchItemsFrom:profiles];
             ret = [self retrieveProfiles:profiles];
         } else if (self.saveOnly == NO) {
+#endif
             SCHRetrieveSampleBooksOperation *operation = [[[SCHRetrieveSampleBooksOperation alloc] initWithSyncComponent:self
                                                                                                                   result:nil
                                                                                                                 userInfo:nil] autorelease];
@@ -159,6 +161,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                            notificationName:SCHRecommendationSyncComponentDidCompleteNotification 
                        notificationUserInfo:nil];
         }
+#if !USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
     } else {
         [self completeWithSuccessMethod:nil 
                                  result:nil 
@@ -166,7 +169,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                        notificationName:SCHRecommendationSyncComponentDidCompleteNotification 
                    notificationUserInfo:nil];
     }
-    
+#endif
     return  ret;
 }
 
@@ -209,6 +212,9 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
       userInfo:(NSDictionary *)userInfo
 {	
         if ([method isEqualToString:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile] == YES) {
+#if !USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+            NSAssert(YES, @"Something is very wrong we are using Top Ratings for profile recommendations");
+#endif
             SCHRetrieveRecommendationsForProfileOperation *operation = [[[SCHRetrieveRecommendationsForProfileOperation alloc] initWithSyncComponent:self
                                                                                                                                               result:result
                                                                                                                                             userInfo:userInfo] autorelease];
@@ -232,6 +238,10 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 - (void)retrieveRecommendationsForProfileCompletionResult:(NSDictionary *)result 
                                                  userInfo:(NSDictionary *)userInfo
 {
+#if !USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    NSAssert(YES, @"Something is very wrong we are using Top Ratings for profile recommendations");
+#endif
+
     if (self.saveOnly == NO) {
         if ([self.remainingBatchedItems count] > 0) {
             NSMutableArray *remainingProfiles = [self removeBatchItemsFrom:self.remainingBatchedItems];
@@ -315,6 +325,10 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 
 - (BOOL)retrieveProfiles:(NSArray *)profileAges
 {
+#if !USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    NSAssert(YES, @"Something is very wrong we are using Top Ratings for profile recommendations");
+#endif
+
     BOOL ret = NO;
     
     if ([profileAges count] > 0) {        
@@ -343,6 +357,10 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 
 - (NSMutableArray *)localFilteredProfiles
 {
+#if !USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    NSAssert(YES, @"Something is very wrong we are using Top Ratings for profile recommendations");
+#endif
+
     NSMutableArray *allProfileAges = nil;
     NSMutableArray *filteredProfileAges = nil;    
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -572,6 +590,10 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 
 - (void)deleteUnusedProfileAges:(NSArray *)profileAges
 {
+#if !USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    NSAssert(YES, @"Something is very wrong we are using Top Ratings for profile recommendations");
+#endif
+
     if ([profileAges count] > 0) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init]; 
         NSError *error = nil;    

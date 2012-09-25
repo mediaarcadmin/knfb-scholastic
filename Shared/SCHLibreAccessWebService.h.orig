@@ -27,8 +27,13 @@
 - (BOOL)saveUserProfiles:(NSArray *)userProfiles;
 - (BOOL)listBooksAssignment;
 - (BOOL)listFavoriteTypes;
+<<<<<<< HEAD
+- (BOOL)listTopFavorites:(NSArray *)favorites withCount:(NSUInteger)count;
 - (BOOL)listTopRatings:(NSArray *)ratings withCount:(NSUInteger)count;
+- (BOOL)listContentMetadata:(NSArray *)bookISBNs
+=======
 - (BOOL)listContentMetadata:(NSArray *)bookISBNs 
+>>>>>>> drop83
                 includeURLs:(BOOL)includeURLs
                coverURLOnly:(BOOL)coverURLOnly;
 - (BOOL)listUserSettings;

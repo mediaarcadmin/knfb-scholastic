@@ -43,6 +43,15 @@ NSString * const kSCHProfileItemPROFILE_ID = @"PROFILE_ID";
 NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
 NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
+static NSUInteger const kSCHProfileItemPictureBooksMaximumAge = 7;
+static NSUInteger const kSCHProfileItemLevelReaderMaximumAge = 9;
+static NSUInteger const kSCHProfileItemChapterBooksMaximumAge = 12;
+
+static NSString * const kSCHProfileItemCategoryPictureBooks = @"Picture books";
+static NSString * const kSCHProfileItemCategoryLevelReader = @"Level readers";
+static NSString * const kSCHProfileItemCategoryChapterBooks = @"Chapter books";
+static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
+
 @interface SCHProfileItem ()
 
 - (SCHReadingStatsContentItem *)makeReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier;
@@ -554,6 +563,24 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
     }
     
     return(ret);
+}
+
+- (NSString *)categoryClass
+{
+    NSString *ret = nil;
+    NSUInteger profileAge = self.age;
+
+    if (profileAge < kSCHProfileItemPictureBooksMaximumAge) {
+        ret = kSCHProfileItemCategoryPictureBooks;
+    } else if (profileAge < kSCHProfileItemLevelReaderMaximumAge) {
+        ret = kSCHProfileItemCategoryLevelReader;
+    } else if (profileAge < kSCHProfileItemChapterBooksMaximumAge) {
+        ret = kSCHProfileItemCategoryChapterBooks;
+    } else {
+        ret = kSCHProfileItemCategoryYoungAdults;
+    }
+
+    return ret;
 }
 
 - (BOOL)storyInteractionsDisabled

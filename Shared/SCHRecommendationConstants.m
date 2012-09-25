@@ -18,6 +18,7 @@ NSString * const kSCHRecommendationWebServiceIGDREC = @"igdrec";
 NSString * const kSCHRecommendationWebServiceInputKey = @"input_key";
 NSString * const kSCHRecommendationWebServiceInputValue = @"input_value";
 NSString * const kSCHRecommendationWebServiceAge = @"age";
+NSString * const kSCHRecommendationWebServiceCategoryClass = @"categoryClass";
 NSString * const kSCHRecommendationWebServiceISBN = @"isbn";
 NSString * const kSCHRecommendationWebServiceTitle = @"title";
 NSString * const kSCHRecommendationWebServiceItems = @"items";

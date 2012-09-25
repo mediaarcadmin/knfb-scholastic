@@ -26,9 +26,14 @@ NSString * const kSCHRecommendationItem = @"SCHRecommendationItem";
 @dynamic author;
 @dynamic order;
 @dynamic appRecommendationItem;
+<<<<<<< HEAD
+@dynamic recommendationISBN;
+@dynamic recommendationProfile;
+@dynamic recommendationTopRating;
+=======
 @dynamic appRecommendationISBN;
 @dynamic appRecommendationProfile;
-@dynamic appRecommendationTopRating;
+>>>>>>> drop83
 
 - (void)assignAppRecommendationItem
 {

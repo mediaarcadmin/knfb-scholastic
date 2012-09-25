@@ -10,8 +10,12 @@
 #import <CoreData/CoreData.h>
 
 @class SCHProfileItem;
+<<<<<<< HEAD
+@class SCHRecommendationProfile;
+@class SCHRecommendationTopRating;
+=======
 @class SCHAppRecommendationProfile;
-@class SCHAppRecommendationTopRating;
+>>>>>>> drop83
 @class SCHWishListProfile;
 
 // Constants
@@ -31,8 +35,12 @@ extern NSString * const kSCHAppProfile;
 @property (nonatomic, retain) NSNumber *ShowListView;
 @property (nonatomic, retain) NSDate * lastEnteredBookshelfDate;
 
+<<<<<<< HEAD
+- (SCHRecommendationProfile *)recommendationProfile;
+- (SCHRecommendationTopRating *)recommendationTopRating;
+=======
 - (SCHAppRecommendationProfile *)appRecommendationProfile;
-- (SCHAppRecommendationTopRating *)appRecommendationTopRating;
+>>>>>>> drop83
 - (NSArray *)recommendationDictionaries;
 - (SCHWishListProfile *)wishListProfile;
 - (NSArray *)wishListItemDictionaries;

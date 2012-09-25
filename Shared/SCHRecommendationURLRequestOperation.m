@@ -9,10 +9,8 @@
 #import "SCHRecommendationURLRequestOperation.h"
 #import "SCHURLManager.h"
 #import "SCHLibreAccessConstants.h"
-#import "SCHAppRecommendationItem.h"
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHBookIdentifier.h"
-#import "SCHAppRecommendationItem.h"
 
 @implementation SCHRecommendationURLRequestOperation
 

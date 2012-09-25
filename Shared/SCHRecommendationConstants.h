@@ -18,6 +18,7 @@ extern NSString * const kSCHRecommendationWebServiceIGDREC;
 extern NSString * const kSCHRecommendationWebServiceInputKey;
 extern NSString * const kSCHRecommendationWebServiceInputValue;
 extern NSString * const kSCHRecommendationWebServiceAge;
+extern NSString * const kSCHRecommendationWebServiceCategoryClass;
 extern NSString * const kSCHRecommendationWebServiceISBN;
 extern NSString * const kSCHRecommendationWebServiceTitle;
 extern NSString * const kSCHRecommendationWebServiceItems;

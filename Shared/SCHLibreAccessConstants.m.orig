@@ -20,7 +20,12 @@ NSString * const kSCHLibreAccessWebServiceListContentMetadata = @"ListContentMet
 NSString * const kSCHLibreAccessWebServiceListFavoriteTypes = @"ListFavoriteTypes";
 NSString * const kSCHLibreAccessWebServiceListProfileContentAnnotations = @"ListProfileContentAnnotations";
 NSString * const kSCHLibreAccessWebServiceListTopFavorites = @"ListTopFavorites";
+<<<<<<< HEAD
 NSString * const kSCHLibreAccessWebServiceListTopRatings = @"ListTopRatings";
+NSString * const kSCHLibreAccessWebServiceListContentMetadata = @"ListContentMetadata";
+=======
+NSString * const kSCHLibreAccessWebServiceListUserContent = @"ListUserContent";
+>>>>>>> drop83
 NSString * const kSCHLibreAccessWebServiceListUserSettings = @"ListUserSettings";
 NSString * const kSCHLibreAccessWebServiceRenewToken = @"RenewToken";
 NSString * const kSCHLibreAccessWebServiceSaveContentProfileAssignment = @"SaveContentProfileAssignment";
@@ -175,10 +180,16 @@ NSString * const kSCHLibreAccessWebServiceTopFavoritesContentItems = @"TopFavori
 NSString * const kSCHLibreAccessWebServiceTopFavoritesList = @"TopFavoritesList";
 NSString * const kSCHLibreAccessWebServiceTopFavoritesType = @"TopFavoritesType";
 NSString * const kSCHLibreAccessWebServiceTopFavoritesTypeValue = @"TopFavoritesTypeValue";
+<<<<<<< HEAD
 NSString * const kSCHLibreAccessWebServiceTopRatingsContentItems = @"TopRatingsContentItems";
 NSString * const kSCHLibreAccessWebServiceTopRatingsList = @"TopRatingsList";
 NSString * const kSCHLibreAccessWebServiceTopRatingsType = @"TopRatingsType";
 NSString * const kSCHLibreAccessWebServiceTopRatingsTypeValue = @"TopRatingsTypeValue";
+=======
+NSString * const kSCHLibreAccessWebServiceTransactionDate = @"transactionDate";
+NSString * const kSCHLibreAccessWebServiceTransactionId = @"transactionId";
+NSString * const kSCHLibreAccessWebServiceTransactionIdSourceField = @"transactionIdSourceField";
+>>>>>>> drop83
 NSString * const kSCHLibreAccessWebServiceType = @"Type";
 NSString * const kSCHLibreAccessWebServiceUCN = @"ucn";
 NSString * const kSCHLibreAccessWebServiceUserKey = @"UserKey";

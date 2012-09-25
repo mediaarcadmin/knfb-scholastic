@@ -15,12 +15,15 @@
 #import "UIColor+Extensions.h"
 #import "SCHAppStateManager.h"
 #import "NSDate+ServerDate.h"
+<<<<<<< HEAD
 #import "LibreAccessServiceSvc+Binding.h"
 #import "SCHRecommendationConstants.h"
+=======
 #import "tns1.h"
 #import "USAdditions.h"
 #import "SCHMakeNullNil.h"
 #import "SCHSyncEntity.h"
+>>>>>>> drop83
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
 static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"statusmessage";
@@ -40,6 +43,44 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSString *)methodNameFromObject:(id)anObject;
 - (NSDictionary *)requestInfoFromOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
 
+<<<<<<< HEAD
+- (NSDictionary *)objectFromTokenExchange:(LibreAccessServiceSvc_TokenExchangeExResponse *)anObject;
+- (NSDictionary *)objectFromAuthenticateDevice:(LibreAccessServiceSvc_AuthenticateDeviceResponse *)anObject;
+- (NSDictionary *)objectFromRenewToken:(LibreAccessServiceSvc_RenewTokenResponse *)anObject;
+- (NSDictionary *)objectFromProfileItem:(LibreAccessServiceSvc_ProfileItemRecommendations *)anObject;
+- (NSDictionary *)objectFromUserContentForRatingsItem:(LibreAccessServiceSvc_UserContentForRatingsItem *)anObject;
+- (NSDictionary *)objectFromContentProfileForRatingsItem:(LibreAccessServiceSvc_ContentProfileForRatingsItem *)anObject;
+- (NSDictionary *)objectFromOrderItem:(LibreAccessServiceSvc_OrderItem *)anObject;
+- (NSDictionary *)objectFromContentMetadataForRatingsItem:(LibreAccessServiceSvc_ContentMetadataForRatingsItem *)anObject;
+- (NSDictionary *)objectFromProfileStatusItem:(LibreAccessServiceSvc_ProfileStatusItem *)anObject;
+- (NSDictionary *)objectFromSettingItem:(LibreAccessServiceSvc_SettingItem *)anObject;
+- (NSDictionary *)objectFromSettingsStatusItem:(LibreAccessServiceSvc_SettingStatusItem *)anObject;
+- (NSDictionary *)objectFromAnnotationsForRatingsItem:(LibreAccessServiceSvc_AnnotationsForRatingsItem *)anObject;
+- (NSDictionary *)objectFromAnnotationsContentForRatingsItem:(LibreAccessServiceSvc_AnnotationsContentForRatingsItem *)anObject;
+- (NSDictionary *)objectFromPrivateAnnotations:(LibreAccessServiceSvc_PrivateAnnotationsForRatings *)anObject;
+- (NSDictionary *)objectFromRating:(LibreAccessServiceSvc_Rating *)anObject;
+- (NSDictionary *)objectFromHighlight:(LibreAccessServiceSvc_Highlight *)anObject;
+- (NSDictionary *)objectFromLocationText:(LibreAccessServiceSvc_LocationText *)anObject;
+- (NSDictionary *)objectFromWordIndex:(LibreAccessServiceSvc_WordIndex *)anObject;
+- (NSDictionary *)objectFromNote:(LibreAccessServiceSvc_Note *)anObject;
+- (NSDictionary *)objectFromLocationGraphics:(LibreAccessServiceSvc_LocationGraphics *)anObject;
+- (NSDictionary *)objectFromBookmark:(LibreAccessServiceSvc_Bookmark *)anObject;
+- (NSDictionary *)objectFromLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)anObject;
+- (NSDictionary *)objectFromLastPage:(LibreAccessServiceSvc_LastPage *)anObject;
+- (NSDictionary *)objectFromItemsCount:(LibreAccessServiceSvc_ItemsCount *)anObject;
+- (NSDictionary *)objectFromFavoriteTypesItem:(LibreAccessServiceSvc_FavoriteTypesItem *)anObject;
+- (NSDictionary *)objectFromFavoriteTypesValuesItem:(LibreAccessServiceSvc_FavoriteTypesValuesItem *)anObject;
+- (NSDictionary *)objectFromTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesResponseItem *)anObject;
+- (NSDictionary *)objectFromTopFavoritesContentItem:(LibreAccessServiceSvc_TopFavoritesContentItem *)anObject;
+- (NSDictionary *)objectFromTopRatingsItem:(LibreAccessServiceSvc_TopRatingsResponseItem *)anObject;
+- (NSMutableDictionary *)objectFromTopRatingsContentItem:(LibreAccessServiceSvc_TopRatingsContentItem *)anObject;
+- (NSDictionary *)objectFromAnnotationStatusForRatingsItem:(LibreAccessServiceSvc_AnnotationStatusForRatingsItem *)anObject;
+- (NSDictionary *)objectFromStatusHolder:(LibreAccessServiceSvc_StatusHolder *)anObject;
+- (NSDictionary *)objectFromAnnotationStatusContentForRatingsItem:(LibreAccessServiceSvc_AnnotationStatusContentForRatingsItem *)anObject;
+- (NSMutableDictionary *)objectFromPrivateAnnotationsStatus:(LibreAccessServiceSvc_PrivateAnnotationsStatusForRatings *)anObject;
+- (NSDictionary *)objectFromAnnotationTypeStatusItem:(LibreAccessServiceSvc_AnnotationTypeStatusItem *)anObject;
+- (NSDictionary *)objectFromISBNItem:(LibreAccessServiceSvc_isbnItem *)anObject;
+=======
 - (NSDictionary *)objectFromTokenExchange:(tns1_TokenExchangeResponse *)anObject;
 - (NSDictionary *)objectFromAuthenticateDevice:(tns1_AuthenticateDeviceResponse *)anObject;
 - (NSDictionary *)objectFromRenewToken:(tns1_RenewTokenResponse *)anObject;
@@ -65,14 +106,13 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromItemsCount:(tns1_ItemsCount *)anObject;
 - (NSDictionary *)objectFromFavoriteTypesItem:(tns1_FavoriteTypesItem *)anObject;
 - (NSDictionary *)objectFromFavoriteTypesValuesItem:(tns1_FavoriteTypesValuesItem *)anObject;
-- (NSDictionary *)objectFromTopRatingsItem:(tns1_TopRatingsResponseItem *)anObject;
-- (NSMutableDictionary *)objectFromTopRatingsContentItem:(tns1_TopRatingsContentItem *)anObject;
 - (NSDictionary *)objectFromAnnotationStatusItem:(tns1_AnnotationStatusItem *)anObject;
 - (NSDictionary *)objectFromStatusHolder:(tns1_StatusHolder *)anObject;
 - (NSDictionary *)objectFromAnnotationStatusContentItem:(tns1_AnnotationStatusContentItem *)anObject;
 - (NSMutableDictionary *)objectFromPrivateAnnotationsStatus:(tns1_PrivateAnnotationsStatus *)anObject;
 - (NSDictionary *)objectFromAnnotationTypeStatusItem:(tns1_AnnotationTypeStatusItem *)anObject;
 - (NSDictionary *)objectFromISBNItem:(tns1_isbnItem *)anObject;
+>>>>>>> drop83
 
 - (id)objectFromTranslate:(id)anObject;
 - (void)combineMultipleAnnotationStatusContentBooks:(NSDictionary *)annotationStatusItem;
@@ -88,6 +128,27 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (BOOL)annotationsContentItemHasChanges:(NSDictionary *)annotationsContentItem;
 - (void)fromObject:(NSDictionary *)object intoAnnotationsContentItem:(tns1_AnnotationsContentItem *)intoObject;
 - (NSDate *)latestLastModifiedFromPrivateAnnotations:(NSDictionary *)privateAnnotations;
+<<<<<<< HEAD
+- (void)fromObject:(NSDictionary *)object intoPrivateAnnotations:(LibreAccessServiceSvc_PrivateAnnotationsForRatings *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoHighlight:(LibreAccessServiceSvc_Highlight *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoLocationText:(LibreAccessServiceSvc_LocationText *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoWordIndex:(LibreAccessServiceSvc_WordIndex *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoNote:(LibreAccessServiceSvc_Note *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoLocationGraphics:(LibreAccessServiceSvc_LocationGraphics *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoBookmark:(LibreAccessServiceSvc_Bookmark *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoLastPage:(LibreAccessServiceSvc_LastPage *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoRating:(LibreAccessServiceSvc_Rating *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoContentProfileAssignmentItem:(LibreAccessServiceSvc_ContentProfileAssignmentItem *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoAssignedProfileItem:(LibreAccessServiceSvc_AssignedProfileItem *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoReadingStatsDetailItem:(LibreAccessServiceSvc_ReadingStatsDetailItem *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoReadingStatsContentItem:(LibreAccessServiceSvc_ReadingStatsContentItem *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoReadingStatsEntryItem:(LibreAccessServiceSvc_ReadingStatsEntryItem *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesRequestItem *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoTopRatingsItem:(LibreAccessServiceSvc_TopRatingsRequestItem *)intoObject;
+
+- (id)makeNullNil:(id)object;
+=======
 - (void)fromObject:(NSDictionary *)object intoPrivateAnnotations:(tns1_PrivateAnnotations *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoHighlight:(tns1_Highlight *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoLocationText:(tns1_LocationText *)intoObject;
@@ -103,10 +164,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsDetailItem:(tns1_ReadingStatsDetailItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsContentItem:(tns1_ReadingStatsContentItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsEntryItem:(tns1_ReadingStatsEntryItem *)intoObject;
-- (void)fromObject:(NSDictionary *)object intoTopRatingsItem:(tns1_TopRatingsRequestItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoQuizTrialsItem:(tns1_QuizTrialsItem *)intoObject;
 
 - (USBoolean *)fromObjectTranslateToUSBoolean:(id)anObject;
+>>>>>>> drop83
 
 @end
 
@@ -273,19 +334,20 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
+<<<<<<< HEAD
 - (BOOL)listTopRatings:(NSArray *)ratings withCount:(NSUInteger)count
 {
 	BOOL ret = NO;
 	
 	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
-		tns1_ListTopRatingsRequest *request = [tns1_ListTopRatingsRequest new];
+		LibreAccessServiceSvc_ListTopRatingsRequest *request = [LibreAccessServiceSvc_ListTopRatingsRequest new];
 		
 		request.authToken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 		request.count = [NSNumber numberWithInteger:(count < 1 ? 1 : count)];
-		request.topRatingsRequestList = [[[tns1_TopRatingsRequestList alloc] init] autorelease];
-		tns1_TopRatingsRequestItem *item = nil;
+		request.topRatingsRequestList = [[[LibreAccessServiceSvc_TopRatingsRequestList alloc] init] autorelease];
+		LibreAccessServiceSvc_TopRatingsRequestItem *item = nil;
 		for (id rating in ratings) {
-			item = [[tns1_TopRatingsRequestItem alloc] init];
+			item = [[LibreAccessServiceSvc_TopRatingsRequestItem alloc] init];
 			[self fromObject:rating intoObject:item];
 			[request.topRatingsRequestList addTopRatingsRequestItem:item];
 			[item release], item = nil;
@@ -301,7 +363,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
+- (BOOL)listContentMetadata:(NSArray *)bookISBNs 
+=======
 - (BOOL)listContentMetadata:(NSArray *)bookISBNs
+>>>>>>> drop83
                 includeURLs:(BOOL)includeURLs
                coverURLOnly:(BOOL)coverURLOnly
 {
@@ -672,10 +737,17 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				  [anObject isKindOfClass:[tns1_ListFavoriteTypesResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListFavoriteTypes class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListFavoriteTypes;
-		} else if([anObject isKindOfClass:[tns1_ListTopRatingsRequest class]] == YES ||
-				  [anObject isKindOfClass:[tns1_ListTopRatingsResponse class]] == YES ||
+<<<<<<< HEAD
+		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListTopFavoritesRequest class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListTopFavoritesResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListTopFavorites class]] == YES) {
+			ret = kSCHLibreAccessWebServiceListTopFavorites;
+		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListTopRatingsRequest class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListTopRatingsResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListTopRatings class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListTopRatings;
+=======
+>>>>>>> drop83
 		}
 	}
 
@@ -737,11 +809,19 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = nil;	// only returns the status so nothing to return
 		} else if ([anObject isKindOfClass:[tns1_ListFavoriteTypesResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject FavoriteTypesList] FavoriteTypesItem]] forKey:kSCHLibreAccessWebServiceFavoriteTypesList];
-		} else if ([anObject isKindOfClass:[tns1_ListTopRatingsResponse class]] == YES) {
+<<<<<<< HEAD
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListTopFavoritesResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject TopFavoritesResponseList] TopFavoritesResponseItem]] forKey:kSCHLibreAccessWebServiceTopFavoritesList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListTopRatingsResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject topRatingsResponseList] TopRatingsResponseItem]] forKey:kSCHLibreAccessWebServiceTopRatingsList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveProfileContentAnnotationsForRatingsResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationStatusForRatingsList] AnnotationStatusForRatingsItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserSettingsExResponse class]] == YES) {
+=======
 		} else if ([anObject isKindOfClass:[tns1_SaveProfileContentAnnotationsResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationStatusForRatingsList] AnnotationStatusItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusList];
 		} else if ([anObject isKindOfClass:[tns1_SaveUserSettingsResponse class]] == YES) {
+>>>>>>> drop83
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject settingStatusList] settingStatusItem]] forKey:kSCHLibreAccessWebServiceUserSettingsStatusList];
 		}
 
@@ -767,8 +847,13 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[self fromObject:object intoContentProfileAssignmentItem:intoObject];
 		} else if ([intoObject isKindOfClass:[tns1_ReadingStatsDetailItem class]] == YES) {
 			[self fromObject:object intoReadingStatsDetailItem:intoObject];
-		} else if ([intoObject isKindOfClass:[tns1_TopRatingsRequestItem class]] == YES) {
+<<<<<<< HEAD
+		} else if ([intoObject isKindOfClass:[LibreAccessServiceSvc_TopFavoritesRequestItem class]] == YES) {
+			[self fromObject:object intoTopFavoritesItem:intoObject];
+		} else if ([intoObject isKindOfClass:[LibreAccessServiceSvc_TopRatingsRequestItem class]] == YES) {
 			[self fromObject:object intoTopRatingsItem:intoObject];
+=======
+>>>>>>> drop83
 		}
 	}
 }
@@ -1268,7 +1353,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
-- (NSDictionary *)objectFromTopRatingsItem:(tns1_TopRatingsResponseItem *)anObject
+- (NSDictionary *)objectFromAnnotationStatusItem:(tns1_AnnotationStatusItem *)anObject
+{
+	NSDictionary *ret = nil;
+
+<<<<<<< HEAD
+- (NSDictionary *)objectFromTopRatingsItem:(LibreAccessServiceSvc_TopRatingsResponseItem *)anObject
 {
 	NSDictionary *ret = nil;
 	
@@ -1285,7 +1375,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
-- (NSMutableDictionary *)objectFromTopRatingsContentItem:(tns1_TopRatingsContentItem *)anObject
+- (NSMutableDictionary *)objectFromTopRatingsContentItem:(LibreAccessServiceSvc_TopRatingsContentItem *)anObject
 {
 	NSMutableDictionary *ret = nil;
 	
@@ -1302,13 +1392,15 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
-- (NSDictionary *)objectFromAnnotationStatusItem:(tns1_AnnotationStatusItem *)anObject
+- (NSDictionary *)objectFromAnnotationStatusForRatingsItem:(LibreAccessServiceSvc_AnnotationStatusForRatingsItem *)anObject
 {
 	NSDictionary *ret = nil;
 	
+=======
+>>>>>>> drop83
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
+
 		[objects setObject:[self objectFromTranslate:anObject.profileId] forKey:kSCHLibreAccessWebServiceProfileID];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
 		[objects setObject:[self objectFromTranslate:[anObject.AnnotationStatusContentList AnnotationStatusContentItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusContentList];
@@ -1483,11 +1575,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				for (id item in anObject) {
 					[ret addObject:[self objectFromFavoriteTypesItem:item]];
 				}
-			} else if ([firstItem isKindOfClass:[tns1_TopRatingsResponseItem class]] == YES) {
+<<<<<<< HEAD
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_TopRatingsResponseItem class]] == YES) {
 				for (id item in anObject) {
 					[ret addObject:[self objectFromTopRatingsItem:item]];
 				}
-			} else if ([firstItem isKindOfClass:[tns1_TopRatingsContentItem class]] == YES) {
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_TopRatingsContentItem class]] == YES) {
                 NSInteger order = 0;
 				for (id item in anObject) {
                     NSMutableDictionary *object = [self objectFromTopRatingsContentItem:item];
@@ -1495,7 +1588,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                     order++;
 					[ret addObject:object];
 				}                
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationStatusForRatingsItem class]] == YES) {
+=======
 			} else if ([firstItem isKindOfClass:[tns1_AnnotationStatusItem class]] == YES) {
+>>>>>>> drop83
 				for (id item in anObject) {
                     // the server sends a separate AnnotationStatusContentItem
                     // for each bookmark/note/highlight/rating/last page (it
@@ -2142,15 +2238,19 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	}
 }
 
-- (void)fromObject:(NSDictionary *)object intoTopRatingsItem:(tns1_TopRatingsRequestItem *)intoObject
+<<<<<<< HEAD
+- (void)fromObject:(NSDictionary *)object intoTopRatingsItem:(LibreAccessServiceSvc_TopRatingsRequestItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.TopRatingsType = (tns1_TopFavoritesTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTopRatingsType]] topRatingsTypeValue];
+		intoObject.TopRatingsType = (LibreAccessServiceSvc_TopFavoritesTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTopRatingsType]] topRatingsTypeValue];
 		intoObject.TopRatingsTypeValue = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTopRatingsTypeValue]];
 	}
 }
 
+- (id)makeNullNil:(id)object
+=======
 - (USBoolean *)fromObjectTranslateToUSBoolean:(id)anObject
+>>>>>>> drop83
 {
 	USBoolean *ret = nil;
 

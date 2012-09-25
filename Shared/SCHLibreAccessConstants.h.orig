@@ -14,7 +14,12 @@ extern NSString * const kSCHLibreAccessWebServiceListContentMetadata;
 extern NSString * const kSCHLibreAccessWebServiceListFavoriteTypes;
 extern NSString * const kSCHLibreAccessWebServiceListProfileContentAnnotations;
 extern NSString * const kSCHLibreAccessWebServiceListTopFavorites;
+<<<<<<< HEAD
 extern NSString * const kSCHLibreAccessWebServiceListTopRatings;
+extern NSString * const kSCHLibreAccessWebServiceListContentMetadata;
+=======
+extern NSString * const kSCHLibreAccessWebServiceListUserContent;
+>>>>>>> drop83
 extern NSString * const kSCHLibreAccessWebServiceListUserSettings;
 extern NSString * const kSCHLibreAccessWebServiceRenewToken;
 extern NSString * const kSCHLibreAccessWebServiceSaveContentProfileAssignment;
@@ -169,10 +174,16 @@ extern NSString * const kSCHLibreAccessWebServiceTopFavoritesContentItems;
 extern NSString * const kSCHLibreAccessWebServiceTopFavoritesList;
 extern NSString * const kSCHLibreAccessWebServiceTopFavoritesType;
 extern NSString * const kSCHLibreAccessWebServiceTopFavoritesTypeValue;
+<<<<<<< HEAD
 extern NSString * const kSCHLibreAccessWebServiceTopRatingsContentItems;
 extern NSString * const kSCHLibreAccessWebServiceTopRatingsList;
 extern NSString * const kSCHLibreAccessWebServiceTopRatingsType;
 extern NSString * const kSCHLibreAccessWebServiceTopRatingsTypeValue;
+=======
+extern NSString * const kSCHLibreAccessWebServiceTransactionDate;
+extern NSString * const kSCHLibreAccessWebServiceTransactionId;
+extern NSString * const kSCHLibreAccessWebServiceTransactionIdSourceField;
+>>>>>>> drop83
 extern NSString * const kSCHLibreAccessWebServiceType;
 extern NSString * const kSCHLibreAccessWebServiceUCN;
 extern NSString * const kSCHLibreAccessWebServiceUserKey;

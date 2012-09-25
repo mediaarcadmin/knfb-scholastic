@@ -10,8 +10,12 @@
 
 #import "SCHProfileItem.h"
 #import "SCHRecommendationItem.h"
-#import "SCHAppRecommendationProfile.h"
+<<<<<<< HEAD
+#import "SCHRecommendationProfile.h"
 #import "SCHRecommendationTopRating.h"
+=======
+#import "SCHAppRecommendationProfile.h"
+>>>>>>> drop83
 #import "SCHRecommendationConstants.h"
 #import "SCHWishListItem.h"
 #import "SCHWishListProfile.h"
@@ -20,8 +24,11 @@
 #import "SCHWishListConstants.h"
 #import "SCHBooksAssignment.h"
 #import "NSNumber+ObjectTypes.h"
+<<<<<<< HEAD
 #import "SCHRecommendationManager.h"
+=======
 #import "SCHMakeNullNil.h"
+>>>>>>> drop83
 
 // Constants
 NSString * const kSCHAppProfile = @"SCHAppProfile";
@@ -68,12 +75,12 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     return ret;
 }
 
-- (SCHAppRecommendationTopRating *)appRecommendationTopRating
+- (SCHRecommendationTopRating *)recommendationTopRating
 {
-    SCHAppRecommendationTopRating *ret = nil;
+    SCHRecommendationTopRating *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationTopRating
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationTopRating
                                         inManagedObjectContext:self.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"categoryClass = %@", self.ProfileItem.categoryClass]];
 
@@ -93,7 +100,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 - (NSSet *)recommendationItems
 {
 #if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
-    return [[self appRecommendationTopRating] recommendationItems];
+    return [[self recommendationTopRating] recommendationItems];
 #else
     return [[self recommendationProfile] recommendationItems];
 #endif
@@ -125,9 +132,13 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 - (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
+<<<<<<< HEAD
+    NSSet *allItems = [self recommendationItems];
+=======
     NSSet *allItems = [[self appRecommendationProfile] recommendationItems];
+>>>>>>> drop83
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.isReady = %d", YES];
-    NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations] 
+    NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations]
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
 
     NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
@@ -145,7 +156,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     }
     
     ret = [NSArray arrayWithArray:objectArray];
-    
+
     [self processUserAction:allItems];
 
     return ret;

@@ -163,6 +163,21 @@
 	return([self intValue]);		
 }
 
++ (NSNumber *)numberWithTopRatingsType:(SCHTopRatingsTypes)value
+{
+	return([NSNumber numberWithInt:value]);
+}
+
+- (id)initWithTopRatingsType:(SCHTopRatingsTypes)value
+{
+	return([self initWithInt:value]);
+}
+
+- (SCHTopRatingsTypes)topRatingsTypeValue
+{
+	return([self intValue]);
+}
+
 + (NSNumber *)numberWithDataStoreType:(SCHDataStoreTypes)value
 {
 	return([NSNumber numberWithInt:value]);			    

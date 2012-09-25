@@ -8,7 +8,6 @@
 
 #import "SCHRecommendationDownloadCoverOperation.h"
 #import "BITNetworkActivityManager.h"
-#import "SCHAppRecommendationItem.h"
 
 @interface SCHRecommendationDownloadCoverOperation()
 
