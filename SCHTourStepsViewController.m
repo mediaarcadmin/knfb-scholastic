@@ -97,8 +97,8 @@
         BOOL hasNewMethod = [UIPageControl instancesRespondToSelector:@selector(setPageIndicatorTintColor:)];
 
         if (hasNewMethod) {
-            [[UIPageControl appearance] setPageIndicatorTintColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.4]];
-            [[UIPageControl appearance] setCurrentPageIndicatorTintColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.8]];
+            //[[UIPageControl appearance] setPageIndicatorTintColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.4]];
+            //[[UIPageControl appearance] setCurrentPageIndicatorTintColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.8]];
         }
     }
 
