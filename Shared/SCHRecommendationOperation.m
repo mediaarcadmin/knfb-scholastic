@@ -7,7 +7,6 @@
 //
 
 #import "SCHRecommendationOperation.h"
-#import "SCHAppRecommendationItem.h"
 
 @implementation SCHRecommendationOperation
 

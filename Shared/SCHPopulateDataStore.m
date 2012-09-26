@@ -48,7 +48,7 @@
                           drmQualifer:(SCHDRMQualifiers)drmQualifer
                                format:(NSString *)format
                            profileIDs:(NSArray *)profileIDs;
-- (NSArray *)listXPSFilesFrom:(NSString *)directory;
++ (NSArray *)listXPSFilesFrom:(NSString *)directory;
 - (BOOL)populateBook:(NSString *)xpsFilePath profileIDs:(NSArray *)profileIDs;
 
 @end
@@ -267,6 +267,24 @@
 
 #pragma mark - Import
 
++ (BOOL)hasBooksToImport
+{
+    BOOL ret = NO;
+    
+    NSArray *documentDirectorys = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = ([documentDirectorys count] > 0) ? [documentDirectorys objectAtIndex:0] : nil;
+    
+    if (documentDirectory != nil) {
+        NSArray *xpsFiles = [self listXPSFilesFrom:documentDirectory];
+        
+        if ([xpsFiles count]) {
+            ret = YES;
+        }
+    }
+    
+    return ret;
+}
+
 - (NSUInteger)populateFromImport
 {
     NSError *error = nil;
@@ -276,11 +294,11 @@
     
     if (documentDirectory != nil) {
         
-        NSArray *xpsFiles = [self listXPSFilesFrom:documentDirectory];
+        NSArray *xpsFiles = [SCHPopulateDataStore listXPSFilesFrom:documentDirectory];
         
         if ([xpsFiles count]) {
             
-            for (NSString *xpsFilePath in [self listXPSFilesFrom:documentDirectory]) {
+            for (NSString *xpsFilePath in xpsFiles) {
                 // use the first profile which we expect to be profileID 1
                 if ([self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObject:[NSNumber numberWithInteger:1]]] == YES) {
                     ret++;
@@ -298,7 +316,7 @@
             } else {
                 LambdaAlert *doneAlert = [[LambdaAlert alloc]
                                           initWithTitle:NSLocalizedString(@"Import Complete", @"")
-                                          message:[NSString stringWithFormat:@"You imported %d eBook(s). Imported eBook(s) will be erased if you exit this bookshelf",[xpsFiles count]]];
+                                          message:[NSString stringWithFormat:@"You imported %d %@.",[xpsFiles count], [xpsFiles count] == 1 ? @"eBook" : @"eBooks"]];
                 [doneAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{}];          
                 [doneAlert show];
                 [doneAlert release];
@@ -309,7 +327,7 @@
     return(ret);
 }
 
-- (NSArray *)listXPSFilesFrom:(NSString *)directory
++ (NSArray *)listXPSFilesFrom:(NSString *)directory
 {
     NSMutableArray *ret = nil;
     NSError *error = nil;
@@ -619,7 +637,7 @@
             [xpsProvider release], xpsProvider = nil;
             
             // move the XPS file
-            [[NSFileManager defaultManager] moveItemAtPath:xpsFilePath 
+            [[NSFileManager defaultManager] copyItemAtPath:xpsFilePath
                                                     toPath:[newContentMetadataItem.AppBook bookPackagePath] 
                                                      error:&error];        
             if (error != nil) {

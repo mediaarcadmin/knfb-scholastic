@@ -11,6 +11,7 @@
 #import "SCHProfileItem.h"
 #import "SCHRecommendationItem.h"
 #import "SCHAppRecommendationProfile.h"
+#import "SCHRecommendationTopRating.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHWishListItem.h"
 #import "SCHWishListProfile.h"
@@ -19,6 +20,7 @@
 #import "SCHWishListConstants.h"
 #import "SCHBooksAssignment.h"
 #import "NSNumber+ObjectTypes.h"
+#import "SCHRecommendationManager.h"
 #import "SCHMakeNullNil.h"
 
 // Constants
@@ -26,6 +28,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 
 @interface SCHAppProfile ()
 
+- (NSSet *)recommendationItems;
 - (NSArray *)purchasedBooks;
 - (void)save;
 
@@ -41,6 +44,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 @dynamic PaperType;
 @dynamic SortType;
 @dynamic ShowListView;
+@dynamic lastEnteredBookshelfDate;
 
 - (SCHAppRecommendationProfile *)appRecommendationProfile
 {
@@ -62,6 +66,37 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     [fetchRequest release], fetchRequest = nil;        
     
     return ret;
+}
+
+- (SCHAppRecommendationTopRating *)appRecommendationTopRating
+{
+    SCHAppRecommendationTopRating *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationTopRating
+                                        inManagedObjectContext:self.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"categoryClass = %@", self.ProfileItem.categoryClass]];
+
+    NSError *error = nil;
+    NSArray *topRatings = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (topRatings == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else if ([topRatings count] > 0) {
+        ret = [topRatings objectAtIndex:0];
+    }
+
+    [fetchRequest release], fetchRequest = nil;
+
+    return ret;
+}
+
+- (NSSet *)recommendationItems
+{
+#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    return [[self appRecommendationTopRating] recommendationItems];
+#else
+    return [[self recommendationProfile] recommendationItems];
+#endif
 }
 
 // returns an array of isbns
@@ -111,7 +146,18 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     
     ret = [NSArray arrayWithArray:objectArray];
     
+    [self processUserAction:allItems];
+
     return ret;
+}
+
+- (void)processUserAction:(NSSet *)recommendations
+{
+    for (SCHRecommendationItem *item in recommendations) {
+        [item.appRecommendationItem processUserAction];
+    }
+
+    [self save];
 }
 
 - (SCHWishListProfile *)wishListProfile

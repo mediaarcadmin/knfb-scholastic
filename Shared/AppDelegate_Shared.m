@@ -426,7 +426,8 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
 		return;
 	}
 	NSURL* supportDir = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-	NSURL* srcWmModelCert = [[[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"DRM"] 
+    NSURL *resourceURL = [[NSBundle mainBundle] resourceURL];
+	NSURL* srcWmModelCert = [[[resourceURL URLByAppendingPathComponent:@"DRM"]
                               URLByAppendingPathComponent:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone?@"iPhone":@"iPad")] 
                              URLByAppendingPathComponent:wmModelCertFilename]; 
 

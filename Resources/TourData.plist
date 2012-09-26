@@ -3,6 +3,8 @@
 <plist version="1.0">
 <array>
 	<dict>
+		<key>title0</key>
+		<string>Create Personalized Bookshelves</string>
 		<key>type</key>
 		<integer>0</integer>
 	</dict>
@@ -13,22 +15,38 @@
 	<dict>
 		<key>type</key>
 		<integer>1</integer>
+		<key>title0</key>
+		<string>Younger Dictionary</string>
+		<key>title1</key>
+		<string>Older Dictionary</string>
 	</dict>
 	<dict>
 		<key>type</key>
 		<integer>1</integer>
+		<key>title0</key>
+		<string>Highlight</string>
+		<key>title1</key>
+		<string>Notes</string>
 	</dict>
-    <dict>
+	<dict>
 		<key>type</key>
 		<integer>1</integer>
+        <key>title0</key>
+		<string>Word Match</string>
+		<key>title1</key>
+		<string>Who Said It?</string>
 	</dict>
 	<dict>
 		<key>type</key>
 		<integer>0</integer>
+        <key>title0</key>
+		<string>Reading Reports</string>
 	</dict>
 	<dict>
 		<key>type</key>
 		<integer>0</integer>
+        <key>title0</key>
+		<string>Recommendations and Wish Lists</string>
 	</dict>
 	<dict>
 		<key>type</key>

@@ -155,6 +155,7 @@ typedef enum {
 
 - (NSString *)processingStateAsString;
 - (BOOL)isProcessing;
+- (BOOL)requiresNetworkForProcessing;
 
 - (SCHAppBookPackageType)bookPackageType;
 - (NSString *)bookPackagePath;

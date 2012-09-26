@@ -16,6 +16,7 @@
 #import "SCHSettingsSyncComponent.h"
 #import "SCHWishListSyncComponent.h"
 #import "SCHRecommendationSyncComponent.h"
+#import "SCHTopRatingsSyncComponent.h"
 #import "SCHProfileItem.h"
 #import "SCHContentProfileItem.h"
 #import "SCHUserDefaults.h"
@@ -27,12 +28,14 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHLibreAccessConstants.h"
 #import "NSFileManager+Extensions.h"
+#import "SCHAppProfile.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
 
 static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
+static NSTimeInterval const kSCHLastBookshelfSyncInterval = -300.0;
 static NSTimeInterval const kSCHLastWishListSyncInterval = -300.0;
 
 // Core Data will fail to save changes if there is no disk space left
@@ -44,6 +47,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 @property (nonatomic, retain) NSDate *lastFirstSyncEnded;
 @property (nonatomic, assign) BOOL firstSyncAfterDelay;
+@property (nonatomic, retain) NSDate *lastBookshelfSyncEnded;
+@property (nonatomic, assign) BOOL bookshelfSyncAfterDelay;
 @property (nonatomic, retain) NSDate *lastWishListSyncEnded;
 @property (nonatomic, assign) BOOL wishListSyncAfterDelay;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
@@ -80,6 +85,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @property (retain, nonatomic) SCHSettingsSyncComponent *settingsSyncComponent;
 @property (retain, nonatomic) SCHWishListSyncComponent *wishListSyncComponent;
 @property (retain, nonatomic) SCHRecommendationSyncComponent *recommendationSyncComponent;
+@property (retain, nonatomic) SCHTopRatingsSyncComponent *topRatingsSyncComponent;
 
 @end
 
@@ -87,6 +93,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 @synthesize lastFirstSyncEnded;
 @synthesize firstSyncAfterDelay;
+@synthesize lastBookshelfSyncEnded;
+@synthesize bookshelfSyncAfterDelay;
 @synthesize lastWishListSyncEnded;
 @synthesize wishListSyncAfterDelay;
 @synthesize timer;
@@ -100,6 +108,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @synthesize settingsSyncComponent;
 @synthesize wishListSyncComponent;
 @synthesize recommendationSyncComponent;
+@synthesize topRatingsSyncComponent;
 @synthesize backgroundTaskIdentifier;
 @synthesize flushSaveMode;
 @synthesize suspended;
@@ -142,7 +151,10 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         wishListSyncComponent.delegate = self;
         recommendationSyncComponent = [[SCHRecommendationSyncComponent alloc] init];
         recommendationSyncComponent.delegate = self;
-        
+#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+        topRatingsSyncComponent = [[SCHTopRatingsSyncComponent alloc] init];
+        topRatingsSyncComponent.delegate = self;
+#endif
         backgroundTaskIdentifier = UIBackgroundTaskInvalid;	
         
         flushSaveMode = NO;
@@ -188,6 +200,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     [self endBackgroundTask];
     
     [lastFirstSyncEnded release], lastFirstSyncEnded = nil;
+    [lastBookshelfSyncEnded release], lastBookshelfSyncEnded = nil;
     [lastWishListSyncEnded release], lastWishListSyncEnded = nil;
 	[timer release], timer = nil;
 	[queue release], queue = nil;
@@ -199,7 +212,10 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[settingsSyncComponent release], settingsSyncComponent = nil;
     [wishListSyncComponent release], wishListSyncComponent = nil;
     [recommendationSyncComponent release], recommendationSyncComponent = nil;
-	
+#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    [topRatingsSyncComponent release], topRatingsSyncComponent = nil;
+#endif
+
 	[super dealloc];
 }
 
@@ -217,6 +233,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	self.settingsSyncComponent.managedObjectContext = newManagedObjectContext;	
     self.wishListSyncComponent.managedObjectContext = newManagedObjectContext;
     self.recommendationSyncComponent.managedObjectContext = newManagedObjectContext;
+#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    self.topRatingsSyncComponent.managedObjectContext = newManagedObjectContext;
+#endif
 }
 
 - (BOOL)isSynchronizing
@@ -249,7 +268,10 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         self.settingsSyncComponent.saveOnly = flushSaveMode;
         self.wishListSyncComponent.saveOnly = flushSaveMode;
         self.recommendationSyncComponent.saveOnly = flushSaveMode;
-    }    
+#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+        self.topRatingsSyncComponent.saveOnly = flushSaveMode;
+#endif
+    }
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification
@@ -326,9 +348,14 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[self.settingsSyncComponent resetSync];	
 	[self.wishListSyncComponent resetSync];	
     [self.recommendationSyncComponent resetSync];
-	
+#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    [self.topRatingsSyncComponent resetSync];
+#endif
+
     self.lastFirstSyncEnded = nil;
     self.firstSyncAfterDelay = NO;
+    self.lastBookshelfSyncEnded = nil;
+    self.bookshelfSyncAfterDelay = NO;
     self.lastWishListSyncEnded = nil;
     self.wishListSyncAfterDelay = NO;
     self.suspended = NO;
@@ -376,7 +403,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             self.firstSyncAfterDelay = NO;
             
             [self addToQueue:self.profileSyncComponent];
-            [self addToQueue:self.contentSyncComponent];
+            if ([self shouldSyncContent] == YES) {
+                [self addToQueue:self.contentSyncComponent];
+            }
             [self addToQueue:self.bookshelfSyncComponent];
                         
             [self addAllProfilesToAnnotationSync];
@@ -396,15 +425,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
             self.firstSyncAfterDelay = YES;
         }
     } else  {
-        BOOL importedBooks = NO;
-        
-        if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
-            SCHPopulateDataStore *populateDataStore = [self populateDataStore];
-            
-            importedBooks = [populateDataStore populateFromImport] > 0;
-        }
-
-        if (syncNow == YES || importedBooks == YES || self.lastFirstSyncEnded == nil || 
+        if (syncNow == YES || self.lastFirstSyncEnded == nil || 
             [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
             self.lastFirstSyncEnded = [NSDate date];
     
@@ -525,21 +546,45 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     }
 }
 
-- (void)bookshelfSync
+- (void)bookshelfSyncNow:(BOOL)syncNow
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
-    if ([self shouldSync] == YES) {	
-        NSLog(@"Scheduling Update Bookshelf");
-        
-        [self addToQueue:self.bookshelfSyncComponent];
-        
-        [self kickQueue];
+    // reset if the date has been changed in a backward motion
+    if (self.lastBookshelfSyncEnded != nil &&
+        [self.lastBookshelfSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
+        self.lastBookshelfSyncEnded = nil;
+    }
+    
+    if ([self shouldSync] == YES) {
+        if (syncNow == YES || self.lastBookshelfSyncEnded == nil ||
+            [self.lastBookshelfSyncEnded timeIntervalSinceNow] < kSCHLastBookshelfSyncInterval) {
+            NSLog(@"Scheduling Update Bookshelf");
+            
+            self.bookshelfSyncAfterDelay = NO;
+            
+            if ([self shouldSyncContent] == YES) {
+                [self addToQueue:self.contentSyncComponent];
+            }
+            
+            [self addToQueue:self.bookshelfSyncComponent];
+            
+            [self kickQueue];
+        } else {
+            self.bookshelfSyncAfterDelay = YES;
+        }
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                                                object:self];		
-        });        
+        if (syncNow == YES || self.lastBookshelfSyncEnded == nil ||
+            [self.lastBookshelfSyncEnded timeIntervalSinceNow] < kSCHLastBookshelfSyncInterval) {
+            self.lastBookshelfSyncEnded = [NSDate date];
+        
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification
+                                                                    object:self];
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification
+                                                                    object:self];
+            });
+        }
     }
 }
 
@@ -728,12 +773,19 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         NSLog(@"Scheduling Recommendation Sync");  
         
         [self addToQueue:self.recommendationSyncComponent];
+#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+        [self addToQueue:self.topRatingsSyncComponent];
+#endif
         
         [self kickQueue];	
     } else {
         dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification 
-                                                                object:self];		
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification
+                                                                object:self];
+#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCHTopRatingsSyncComponentDidCompleteNotification
+                                                                object:self];
+#endif            
         });        
     }
 }
@@ -753,7 +805,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         self.lastWishListSyncEnded = nil;
     }
     
-    if ([self wishListSyncActive] == YES) {
+//    if ([self wishListSyncActive] == YES) {
         if ([self shouldSync] == YES) {
             if (syncNow == YES || self.lastWishListSyncEnded == nil || 
                 [self.lastWishListSyncEnded timeIntervalSinceNow] < kSCHLastWishListSyncInterval) {
@@ -778,9 +830,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                 });        
             }
         }
-    } else {
-        NSLog(@"Wishlists are OFF");
-    }
+//    } else {
+//        NSLog(@"Wishlists are OFF");
+//    }
 }
 
 #pragma mark - SCHComponent Delegate methods
@@ -805,6 +857,10 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     // the settings sync is the last component in the firstSync so signal it is complete
     if ([component isKindOfClass:[SCHSettingsSyncComponent class]] == YES) {
         self.lastFirstSyncEnded = [NSDate date];
+    }
+
+    if ([component isKindOfClass:[SCHBookshelfSyncComponent class]] == YES) {
+        self.lastBookshelfSyncEnded = [NSDate date];
     }
 
     if ([component isKindOfClass:[SCHWishListSyncComponent class]] == YES) {
@@ -969,6 +1025,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     if (self.flushSaveMode == NO) {
         if (self.firstSyncAfterDelay == YES) {
             [self firstSync:NO requireDeviceAuthentication:NO];   
+        } else if (self.bookshelfSyncAfterDelay == YES) {
+            [self bookshelfSyncNow:NO];
         } else if (self.wishListSyncAfterDelay == YES) {
             [self wishListSync:NO];
         }
@@ -981,6 +1039,27 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         [[NSFileManager defaultManager] BITfileSystemHasBytesAvailable:kSCHSyncManagerMinimumDiskSpaceRequiredForSync];
 }
 
+- (BOOL)shouldSyncContent
+{
+    BOOL ret = NO;
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHAppProfile
+                                              inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastEnteredBookshelfDate != nil"];
+    [fetchRequest setPredicate:predicate];
+
+    NSError *error = nil;
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest
+                                                                 error:&error];
+    if (count != NSNotFound) {
+        ret = count > 0;
+    }
+
+    return ret;
+}
+
 #pragma mark - Notification methods
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification 
@@ -988,6 +1067,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     if (self.flushSaveMode == NO) {
         // force any delayed syncs to perform now
         self.lastFirstSyncEnded = nil;
+        self.lastBookshelfSyncEnded = nil;
         self.lastWishListSyncEnded = nil;
         
         [self performDelayedSyncIfRequired];
@@ -1010,7 +1090,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
     SCHPopulateDataStore *populateDataStore = [self populateDataStore];
-    
+
     [populateDataStore populateSampleStore];
 }
 
@@ -1020,6 +1100,16 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     
     SCHPopulateDataStore *populateDataStore = [self populateDataStore];
     return [populateDataStore populateSampleStoreFromManifestEntries:entries];
+}
+
+- (BOOL)populateSampleStoreFromImport
+{
+    BOOL importedBooks = NO;
+    
+    SCHPopulateDataStore *populateDataStore = [self populateDataStore];
+    importedBooks = [populateDataStore populateFromImport] > 0;
+    
+    return importedBooks;
 }
 
 - (SCHPopulateDataStore *)populateDataStore

@@ -36,7 +36,7 @@ typedef enum {
     kSCHAppRecommendationProcessingStateCachedCoverError        = -3,
     kSCHAppRecommendationProcessingStateThumbnailError          = -2,
 	kSCHAppRecommendationProcessingStateUnspecifiedError        = -1,
-	kSCHAppRecommendationProcessingStateCheckValidity           = 0,
+	kSCHAppRecommendationProcessingStateWaitingOnUserAction     = 0,
 	kSCHAppRecommendationProcessingStateNoMetadata              = 1,
     kSCHAppRecommendationProcessingStateNoCover                 = 2,
     kSCHAppRecommendationProcessingStateNoThumbnails            = 3,
@@ -60,6 +60,7 @@ typedef enum {
 - (UIImage *)bookCover;
 - (BOOL)isInUse;
 - (BOOL)isReady;
+- (BOOL)processUserAction;
 
 - (void)deleteAllFiles;
 

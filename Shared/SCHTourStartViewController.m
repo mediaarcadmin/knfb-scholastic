@@ -8,6 +8,8 @@
 
 #import "SCHTourStartViewController.h"
 #import "SCHTourStepsViewController.h"
+#import "SCHBookIdentifier.h"
+#import "NSNumber+ObjectTypes.h"
 
 #define OLDER_READING_TAG 100
 #define YOUNGER_READING_TAG 200
@@ -18,13 +20,13 @@
 
 @implementation SCHTourStartViewController
 
-@synthesize managedObjectContext;
+@synthesize appController;
 
 - (void)dealloc
 {
     [self releaseViewObjects];
     
-    [managedObjectContext release], managedObjectContext = nil;
+    appController = nil;
     [super dealloc];
 }
 
@@ -76,15 +78,20 @@
 }
 
 - (IBAction)startReading:(UIButton *)sender {
+    
+    SCHBookIdentifier *identifier = nil;
+    
     switch ([sender tag]) {
         case YOUNGER_READING_TAG:
         {
             NSLog(@"Start reading younger book");
+            identifier = [[[SCHBookIdentifier alloc] initWithISBN:@"9780545323024" DRMQualifier:[NSNumber numberWithDRMQualifier:kSCHDRMQualifiersNone]] autorelease];
             break;
         }
         case OLDER_READING_TAG:
         {
             NSLog(@"Start reading older book");
+            identifier = [[[SCHBookIdentifier alloc] initWithISBN:@"9780545283502" DRMQualifier:[NSNumber numberWithDRMQualifier:kSCHDRMQualifiersNone]] autorelease];
             break;
         }
             default:
@@ -92,6 +99,10 @@
             NSLog(@"Warning: unknown reading button action.");
             break;
         }
+    }
+    
+    if (identifier) {
+        [self.appController presentTourBookWithIdentifier:identifier];
     }
 }
 

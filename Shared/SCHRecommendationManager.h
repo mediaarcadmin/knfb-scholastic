@@ -18,6 +18,7 @@
 - (void)cancelAllOperationsWaitUntilFinished:(BOOL)waitUntilFinished;
 - (void)cancelAllOperationsForIsbn:(NSString *)isbn
 waitUntilFinished:(BOOL)waitUntilFinished;
+- (void)checkStateForRecommendation:(SCHAppRecommendationItem *)recommendationItem;
 - (SCHAppRecommendationItem *)appRecommendationForIsbn:(NSString *)isbn;
 - (void)setProcessing:(BOOL)processing forIsbn:(NSString *)isbn;
 

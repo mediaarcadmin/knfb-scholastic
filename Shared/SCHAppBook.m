@@ -317,10 +317,20 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 	return [[SCHProcessingManager sharedProcessingManager] identifierIsProcessing:[self bookIdentifier]];
 }
 
-//- (void)setProcessing:(BOOL)value
-//{
-//	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forIdentifier:[self bookIdentifier]];
-//}
+- (BOOL)requiresNetworkForProcessing
+{
+    BOOL ret = NO;
+    
+    if (![self bookCoverURLIsBundleURL]) {
+        SCHBookCurrentProcessingState state = [[self State] intValue];
+        if ((state == SCHBookProcessingStateReadyForBookFileDownload) ||
+            (state == SCHBookProcessingStateDownloadPaused)) {
+            ret = YES;
+        }
+    }
+    
+    return ret;
+}
 
 - (NSString *)categoryType
 {
@@ -465,8 +475,29 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     }
     
     ret = [NSArray arrayWithArray:objectArray];
-    
+
+    [self processUserAction:allItems];
+
     return ret;
+}
+
+- (void)processUserAction:(NSSet *)recommendations
+{
+    for (SCHRecommendationItem *item in recommendations) {
+        [item.appRecommendationItem processUserAction];
+    }
+
+    [self save];
+}
+
+- (void)save
+{
+    NSError *error = nil;
+
+    if ([self.managedObjectContext hasChanges] == YES &&
+        ![self.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
 }
 
 #pragma mark - Directory for Current Book

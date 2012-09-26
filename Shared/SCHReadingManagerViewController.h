@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHModalPresenterDelegate.h"
+#import "SCHAppController.h"
 
 @interface SCHReadingManagerViewController : UIViewController
 
 @property (nonatomic, copy) NSString *pToken;
-@property (nonatomic, assign) id<SCHModalPresenterDelegate> modalPresenterDelegate;
+@property (nonatomic, assign) id<SCHAppController> appController;
 
 @end

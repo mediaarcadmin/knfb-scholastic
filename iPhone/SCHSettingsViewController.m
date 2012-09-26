@@ -8,9 +8,9 @@
 
 #import "SCHSettingsViewController.h"
 
-#import "SCHAboutViewController.h"
-#import "SCHPrivacyPolicyViewController.h"
+#import "SCHSettingsViewController.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHDownloadDictionaryViewController.h"
 #import "SCHRemoveDictionaryViewController.h"
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHCheckbox.h"
@@ -28,9 +28,9 @@
 #import "SCHSyncManager.h"
 #import "Reachability.h"
 #import "LambdaAlert.h"
-#import "SCHAccountValidationViewController.h"
+#import "SCHReadingManagerAuthorisationViewController.h"
 #import "SCHVersionDownloadManager.h"
-#import "SCHDownloadDictionaryFromSettingsViewController.h"
+#import "SCHSupportViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -39,6 +39,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, retain) LambdaAlert *checkBooksAlert;
 @property (nonatomic, retain) Reachability *syncReachability;
+@property (nonatomic, retain) UIViewController *contentViewController;
 
 - (void)updateDictionaryButton;
 - (void)releaseViewObjects;
@@ -52,20 +53,25 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)showWifiRequiredAlert;
 - (void)showAlertForSyncFailure;
 
+- (SCHSettingsPanel)panelForIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 @implementation SCHSettingsViewController
 
-@synthesize scrollView;
-@synthesize manageBooksGroupView;
-@synthesize checkBooksButton;
-@synthesize manageBooksButton;
-@synthesize deregisterDeviceButton;
-@synthesize downloadDictionaryButton;
 @synthesize bookUpdates;
 @synthesize managedObjectContext;
 @synthesize checkBooksAlert;
 @synthesize syncReachability;
+@synthesize containerView;
+@synthesize shadowView;
+@synthesize tableView;
+@synthesize contentView;
+@synthesize contentViewController;
+@synthesize appController;
+@synthesize settingsDisplayMask;
+@synthesize backButton;
+@synthesize backButtonHidden;
 
 #pragma mark - Object lifecycle
 
@@ -73,15 +79,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    [scrollView release], scrollView = nil;
-    [manageBooksGroupView release], manageBooksGroupView = nil;
-    [checkBooksButton release], checkBooksButton = nil;
-    [manageBooksButton release], manageBooksButton = nil;
-    [deregisterDeviceButton release], deregisterDeviceButton = nil;
-    [downloadDictionaryButton release], downloadDictionaryButton = nil;
     [checkBooksAlert release], checkBooksAlert = nil;
+    [contentView release], contentView = nil;
+    [containerView release], containerView = nil;
+    [shadowView release], shadowView = nil;
+    [tableView release], tableView = nil;
+    [backButton release], backButton = nil;
     
-    [super releaseViewObjects];
 }
 
 - (void)dealloc 
@@ -89,6 +93,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [bookUpdates release], bookUpdates = nil;
 	[managedObjectContext release], managedObjectContext = nil;
     [syncReachability release], syncReachability = nil;
+    [contentViewController release], contentViewController = nil;
+    appController = nil;
     
     [self releaseViewObjects];
     [super dealloc];
@@ -100,29 +106,19 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [super viewDidLoad];
     
-    [self.scrollView setContentSize:CGSizeMake(320, 416)];
-    [self.manageBooksGroupView.layer setBorderColor:[UIColor SCHGray2Color].CGColor];
-    [self.manageBooksGroupView.layer setBorderWidth:2];
-    [self.manageBooksGroupView.layer setCornerRadius:15];
-    [self.manageBooksGroupView.layer setOpacity:0.66f];
-    
-    [self setButtonBackground:self.checkBooksButton];
-    [self setButtonBackground:self.manageBooksButton];
-    [self setButtonBackground:self.downloadDictionaryButton];
-    [self setButtonBackground:self.deregisterDeviceButton];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        self.navigationItem.title = NSLocalizedString(@"Back", @"");
-        UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
-        CGRect logoFrame = logoImageView.bounds;
-        logoFrame.size.height = self.navigationController.navigationBar.frame.size.height;
-        logoImageView.frame = logoFrame;
-        logoImageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin
-                                          | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight
-                                          | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin);
-        logoImageView.contentMode = UIViewContentModeScaleAspectFit;
-        self.navigationItem.titleView = logoImageView;
-        [logoImageView release];
+    [self addContentSubview:self.contentViewController.view];
+    [self.backButton setHidden:self.backButtonHidden];
+        
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UIView *whiteView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
+        whiteView.backgroundColor = [UIColor whiteColor];
+        self.tableView.backgroundView = whiteView;
+        self.shadowView.layer.shadowOpacity = 0.5f;
+        self.shadowView.layer.shadowOffset = CGSizeMake(0, 0);
+        self.shadowView.layer.shadowRadius = 4.0f;
+        self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
+        self.containerView.layer.masksToBounds = YES;
+        self.containerView.layer.cornerRadius = 10.0f;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -141,21 +137,19 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                                                object:nil];
 }
 
-- (NSArray *)currentSettingsViewControllers
+- (void)setSettingsDisplayMask:(NSUInteger)newMask
 {
-    NSArray *viewControllers = nil;
-    
-    if ([self.bookUpdates areBookUpdatesAvailable] &&
-        [[Reachability reachabilityForInternetConnection] isReachable]) {
-        SCHUpdateBooksViewController *updateBooksViewController = [[SCHUpdateBooksViewController alloc] init];
-        updateBooksViewController.bookUpdates = self.bookUpdates;
-        viewControllers = [NSArray arrayWithObjects:self, updateBooksViewController, nil];
-        [updateBooksViewController release];
-    } else {
-        viewControllers = [NSArray arrayWithObject:self];
+    settingsDisplayMask = newMask;
+    [self.tableView reloadData];
+}
+
+- (void)setBackButtonHidden:(BOOL)hidden
+{
+    backButtonHidden = hidden;
+
+    if ([self.backButton isHidden] != backButtonHidden) {
+        [self.backButton setHidden:backButtonHidden];
     }
-    
-    return viewControllers;
 }
 
 - (SCHBookUpdates *)bookUpdates
@@ -178,15 +172,17 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];    
-    [self updateDictionaryButton];
+     
+    [self.navigationController setNavigationBarHidden:YES];
     
-    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
-        [self.manageBooksButton setEnabled:NO];
-        [self.checkBooksButton setEnabled:NO];
-    } else {
-        [self.manageBooksButton setEnabled:YES];
-        [self.checkBooksButton setEnabled:YES];
-    }
+    [self registerForKeyboardNotifications];
+//    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
+//        [self.manageBooksButton setEnabled:NO];
+//        [self.checkBooksButton setEnabled:NO];
+//    } else {
+//        [self.manageBooksButton setEnabled:YES];
+//        [self.checkBooksButton setEnabled:YES];
+//    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -196,6 +192,14 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     if (self.checkBooksAlert) {
         [self.checkBooksAlert dismissAnimated:NO];
     }
+    
+    [self.view endEditing:YES];
+    [self deregisterForKeyboardNotifications];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
 }
 
 #pragma mark - Button states
@@ -230,15 +234,15 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             break;
     }
     
-    self.downloadDictionaryButton.enabled = enabled;
-    self.downloadDictionaryButton.titleLabel.textAlignment = UITextAlignmentCenter;
+   // self.downloadDictionaryButton.enabled = enabled;
+    //self.downloadDictionaryButton.titleLabel.textAlignment = UITextAlignmentCenter;
 
     BOOL doubleLine = NO;
 
     switch (state) {
         case SCHDictionaryProcessingStateReady:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Remove Dictionary", @"remove dictionary button title")
-                                           forState:UIControlStateNormal];
+          //  [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Remove Dictionary", @"remove dictionary button title")
+              //                             forState:UIControlStateNormal];
 
             break;
         case SCHDictionaryProcessingStateNeedsManifest:
@@ -246,13 +250,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         case SCHDictionaryProcessingStateNeedsDownload:
         {
             if ([[SCHDictionaryDownloadManager sharedDownloadManager] wifiAvailable]) {
-                NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryDownloadPercentage] * 100.0f);
-                [self.downloadDictionaryButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Downloading Dictionary %d%%", @"Downloading dictionary button title"), 
-                                                         progress]
-                                               forState:UIControlStateNormal];
+                //NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryDownloadPercentage] * 100.0f);
+             //   [self.downloadDictionaryButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Downloading Dictionary %d%%", @"Downloading dictionary button title"),
+                                             //            progress]
+                                             //  forState:UIControlStateNormal];
             } else {
-                [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Download Paused.\nWaiting for Wi-Fi.", @"Waiting for Wi-Fi dictionary button title")
-                                               forState:UIControlStateNormal];
+               // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Download Paused.\nWaiting for Wi-Fi.", @"Waiting for Wi-Fi dictionary button title")
+                                             //  forState:UIControlStateNormal];
                 doubleLine = YES;
             }
             break;
@@ -260,86 +264,80 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         case SCHDictionaryProcessingStateNeedsUnzip:
         case SCHDictionaryProcessingStateNeedsParse:
         {
-            NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryProcessingPercentage] * 100.0f);
-            [self.downloadDictionaryButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Installing Dictionary %d%%", @"Installing dictionary button title"), 
-                                                     progress]
-                                           forState:UIControlStateNormal];
+           // NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryProcessingPercentage] * 100.0f);
+            //[self.downloadDictionaryButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Installing Dictionary %d%%", @"Installing dictionary button title"),
+                                             //        progress]
+                                          // forState:UIControlStateNormal];
             break;
         }
         case SCHDictionaryProcessingStateDeleting:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Deleting Dictionary...", @"Deleting dictionary button title")
-                                           forState:UIControlStateNormal];
+            //[self.downloadDictionaryButton setTitle:NSLocalizedString(@"Deleting Dictionary...", @"Deleting dictionary button title")
+               //                            forState:UIControlStateNormal];
             break;   
         case SCHDictionaryProcessingStateError:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nUnknown Error", @"Dictionary error button title for unknown error")
-                                           forState:UIControlStateNormal];
+           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nUnknown Error", @"Dictionary error button title for unknown error")
+            //                               forState:UIControlStateNormal];
             doubleLine = YES;
             break; 
         case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nDownload Interrupted.", @"Dictionary error button title for connection interrupted")
-                                           forState:UIControlStateNormal];
+          //  [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nDownload Interrupted.", @"Dictionary error button title for connection interrupted")
+             //                              forState:UIControlStateNormal];
             doubleLine = YES;
             break; 
         case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nNot Enough Free Space.", @"Dictionary error button title for not enough free space")
-                                           forState:UIControlStateNormal];
+           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nNot Enough Free Space.", @"Dictionary error button title for not enough free space")
+             //                              forState:UIControlStateNormal];
             doubleLine = YES;
             break; 
         case SCHDictionaryProcessingStateDownloadError:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nDownload Failed.", @"Dictionary error button title for download failed")
-                                           forState:UIControlStateNormal];
+           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nDownload Failed.", @"Dictionary error button title for download failed")
+           //                                forState:UIControlStateNormal];
             doubleLine = YES;
             break; 
         case SCHDictionaryProcessingStateUnableToOpenZipError:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nCouldn't Open Zip.", @"Dictionary error button title for Couldn't open zip")
-                                           forState:UIControlStateNormal];
+           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nCouldn't Open Zip.", @"Dictionary error button title for Couldn't open zip")
+            //                               forState:UIControlStateNormal];
             doubleLine = YES;
             break; 
         case SCHDictionaryProcessingStateUnZipFailureError:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nUnzip Failed. Check Disk Space.", @"Dictionary error button title for unzip failed")
-                                           forState:UIControlStateNormal];
+           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nUnzip Failed. Check Disk Space.", @"Dictionary error button title for unzip failed")
+            //                               forState:UIControlStateNormal];
             doubleLine = YES;
             break; 
         case SCHDictionaryProcessingStateParseError:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nParse Failed.", @"Dictionary error button title for parser error")
-                                           forState:UIControlStateNormal];
+           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nParse Failed.", @"Dictionary error button title for parser error")
+             //                              forState:UIControlStateNormal];
             doubleLine = YES;
             break;  
         case SCHDictionaryProcessingStateUserSetup:
         case SCHDictionaryProcessingStateUserDeclined:
-            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
-                                           forState:UIControlStateNormal];
+           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
+            //                               forState:UIControlStateNormal];
 
             break;
     }
     
-    if (doubleLine) {
-        self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:15.0f];
-        } else {
-            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:14.0f];
-        }
-    } else {
-        self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeTailTruncation; 
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:18.0f];
-        } else {
-            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
-        }
-    }
-}
-
-#pragma mark - Dismissal
-
-- (IBAction)dismissModalSettingsController:(id)sender
-{
-    [self close];
+//    if (doubleLine) {
+//        self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+//
+//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:15.0f];
+//        } else {
+//            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:14.0f];
+//        }
+//    } else {
+//        self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeTailTruncation; 
+//        
+//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:18.0f];
+//        } else {
+//            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
+//        }
+//    }
 }
 
 #pragma mark - Actions
+#if 0
 
 - (IBAction)deregisterDevice:(id)sender 
 {
@@ -388,6 +386,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [alert release];
     }
 }
+
+#endif
 
 #define MFMailComposeViewControllerDelegate
 
@@ -464,6 +464,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [alert release];
 }
 
+#if 0
 - (IBAction)manageBooks:(id)sender
 {
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
@@ -554,6 +555,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
 }
 
+#endif
+
 - (void)replaceCheckBooksAlertWithAlert:(LambdaAlert *)alert
 {
     [CATransaction begin];
@@ -577,7 +580,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                               message:NSLocalizedString(@"There was a problem while checking for new eBooks. Please try again.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
-                [self.checkBooksButton setEnabled:YES];
+                //[self.checkBooksButton setEnabled:YES];
             }
         }];
         
@@ -585,7 +588,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [alert release];  
     } else {
         if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
-            [self.checkBooksButton setEnabled:YES];
+           // [self.checkBooksButton setEnabled:YES];
         }
     }
 }
@@ -729,7 +732,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                               message:message];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
-                [self.checkBooksButton setEnabled:YES];
+               // [self.checkBooksButton setEnabled:YES];
             }
         }];
         
@@ -737,7 +740,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [alert release];  
     } else {
         if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
-            [self.checkBooksButton setEnabled:YES];
+          //  [self.checkBooksButton setEnabled:YES];
         }
     }
     
@@ -761,7 +764,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                               message:NSLocalizedString(@"No new eBooks have been assigned to any of your bookshelves.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
-                [self.checkBooksButton setEnabled:YES];
+                //[self.checkBooksButton setEnabled:YES];
             }
         }];
         
@@ -770,7 +773,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         
     } else {
         if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] != NO) {
-            [self.checkBooksButton setEnabled:YES];
+           // [self.checkBooksButton setEnabled:YES];
         }
     }
 }
@@ -781,6 +784,233 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [self deregisterForSyncNotifications];
         [self showAlertForSyncFailure];
     }
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if ([self.bookUpdates areBookUpdatesAvailable]) {
+        return 3;
+    } else {
+        return 2;
+    }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return 1;
+            break;
+        case 1:
+            return 4;
+            break;
+        case 2:
+            return 1;
+            break;
+        default:
+            return 0;
+            break;
+    }
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString * const CellIdentifier = @"Cell";
+    UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+    cell.userInteractionEnabled = YES;
+    
+    SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
+    
+    switch (panel) {
+        case kSCHSettingsPanelReadingManager:
+            cell.textLabel.text = @"SIGN IN TO READING MANAGER";
+            break;
+        case kSCHSettingsPanelAdditionalSettings:
+            cell.textLabel.text = @"ADDITIONAL SETTINGS";
+            cell.userInteractionEnabled = NO;
+            break;
+        case kSCHSettingsPanelDictionaryDownload:
+            cell.textLabel.text = @"Download Dictionary";
+            break;
+        case kSCHSettingsPanelDeregisterDevice:
+            cell.textLabel.text = @"Deregister Device";
+            break;
+        case kSCHSettingsPanelSupport:
+            cell.textLabel.text = @"Support";
+            break;
+        case kSCHSettingsPanelEbookUpdates:
+            cell.textLabel.text = @"EBOOK UPDATES";
+            break;
+        default:
+            break;
+    }
+    
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [aTableView deselectRowAtIndexPath:indexPath animated:NO];
+    SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
+    [self displaySettingsPanel:panel];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.settingsDisplayMask == kSCHSettingsPanelAll) {
+        cell.alpha = 1;
+    } else {
+        SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
+        if (self.settingsDisplayMask & panel) {
+            cell.alpha = 1;
+        } else {
+            cell.alpha = 0;
+        }
+    }
+}
+
+- (SCHSettingsPanel)panelForIndexPath:(NSIndexPath *)indexPath
+{
+    switch ([indexPath section]) {
+        case 0:
+            return kSCHSettingsPanelReadingManager;
+            break;
+        case 1: {
+            switch ([indexPath row]) {
+                case 0:
+                    return kSCHSettingsPanelAdditionalSettings;
+                    break;
+                case 1:
+                    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
+                        return kSCHSettingsPanelDictionaryDelete;
+                    } else {
+                        return kSCHSettingsPanelDictionaryDownload;
+                    }
+                    break;
+                case 2:
+                    return kSCHSettingsPanelDeregisterDevice;
+                    break;
+                case 3:
+                    return kSCHSettingsPanelSupport;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        }
+        case 2:
+            return kSCHSettingsPanelEbookUpdates;
+            break;
+        default:
+            break;
+    }
+    
+    return -1;
+}
+
+- (void)displaySettingsPanel:(SCHSettingsPanel)panel
+{
+    [self.view endEditing:YES];
+    
+    switch (panel) {
+        case kSCHSettingsPanelReadingManager: {
+            SCHReadingManagerAuthorisationViewController *controller = [[[SCHReadingManagerAuthorisationViewController alloc] init] autorelease];
+            controller.appController = self.appController;
+            self.contentViewController = controller;
+        } break;
+        case kSCHSettingsPanelDictionaryDownload: {
+            SCHDownloadDictionaryViewController *controller = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
+            self.contentViewController = controller;
+        } break;
+        case kSCHSettingsPanelDictionaryDelete: {
+            SCHRemoveDictionaryViewController *controller = [[[SCHRemoveDictionaryViewController alloc] init] autorelease];
+            self.contentViewController = controller;
+        } break;
+        case kSCHSettingsPanelDeregisterDevice: {
+            SCHDeregisterDeviceViewController *controller = [[[SCHDeregisterDeviceViewController alloc] init] autorelease];
+            controller.appController = self.appController;
+            self.contentViewController = controller;
+        } break;
+        case kSCHSettingsPanelSupport: {
+            SCHSupportViewController *controller = [[[SCHSupportViewController alloc] init] autorelease];
+            self.contentViewController = controller;
+        } break;
+        case kSCHSettingsPanelEbookUpdates: {
+            SCHUpdateBooksViewController *controller = [[[SCHUpdateBooksViewController alloc] init] autorelease];
+            self.contentViewController = controller;
+        } break;
+        default:
+            break;
+    }
+    
+    [self addContentSubview:self.contentViewController.view];
+}
+
+- (IBAction)close:(id)sender
+{
+    [self.appController presentProfiles];
+}
+
+- (void)addContentSubview:(UIView *)newContentView
+{
+    for (UIView *view in [self.contentView subviews]) {
+        [view removeFromSuperview];
+    }
+    
+    if (newContentView && self.contentView) {
+        newContentView.frame = self.contentView.bounds;
+        [self.contentView addSubview:newContentView];
+    }
+}
+
+#pragma mark - Keyboard
+
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)deregisterForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{    
+    NSDictionary *info = [notification userInfo];
+    NSNumber *duration = [info valueForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [info valueForKey:UIKeyboardAnimationCurveUserInfoKey];
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    self.shadowView.transform = CGAffineTransformMakeTranslation(0, -(self.shadowView.frame.origin.y));
+    [UIView commitAnimations];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+
+    NSDictionary *info = [notification userInfo];
+    NSNumber *duration = [info valueForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [info valueForKey:UIKeyboardAnimationCurveUserInfoKey];
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    self.shadowView.transform = CGAffineTransformIdentity;
+    [UIView commitAnimations];
 }
 
 @end

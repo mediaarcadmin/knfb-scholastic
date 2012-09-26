@@ -11,7 +11,7 @@
 
 @interface SCHSampleBooksManifestOperation : NSOperation  <NSXMLParserDelegate> {}
 
-@property (nonatomic, assign) id<SCHSampleBooksImporterDelegate> processingDelegate;
+//@property (nonatomic, assign) id<SCHSampleBooksImporterDelegate> processingDelegate;
 @property (nonatomic, copy) NSURL *manifestURL;
 @property (nonatomic, readonly) NSArray *sampleEntries;
 

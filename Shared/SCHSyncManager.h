@@ -37,7 +37,7 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication;
 - (void)performFlushSaves;
 - (void)profileSync;
-- (void)bookshelfSync;
+- (void)bookshelfSyncNow:(BOOL)syncNow;
 - (void)openDocumentSync:(SCHBooksAssignment *)booksAssignment
               forProfile:(NSNumber *)profileID;
 - (void)closeDocumentSync:(SCHBooksAssignment *)booksAssignment
@@ -49,5 +49,6 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (void)populateTestSampleStore;
 - (void)populateSampleStore;
 - (BOOL)populateSampleStoreFromManifestEntries:(NSArray *)entries;
+- (BOOL)populateSampleStoreFromImport;
 
 @end

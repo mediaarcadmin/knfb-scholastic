@@ -11,6 +11,7 @@
 #import "SCHAnnotationsContentItem.h"
 #import "SCHReadingStatsContentItem.h"
 #import "SCHBookIdentifier.h"
+#import "SCHProfileItem.h"
 
 // Constants
 NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
@@ -22,6 +23,27 @@ NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
 @dynamic booksAssignment;
 @dynamic AppContentProfileItem;
 @dynamic Rating;
+
+- (NSSet *)ProfileItem
+{
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    NSError *error = nil;
+
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem
+                                        inManagedObjectContext:self.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@",
+                                self.ProfileID]];
+
+
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                               error:&error];
+    if (result == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+
+    return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
+}
+
 
 - (void)deleteAnnotationsForBook:(SCHBookIdentifier *)bookIdentifier
 {

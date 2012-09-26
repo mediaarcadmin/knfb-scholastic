@@ -1,4 +1,22 @@
 <SampleManifest>
+    <Book>
+		<Isbn13>9780545323024</Isbn13>
+		<Title>Clifford's Good Deeds</Title>
+		<Author>Norman Bridwell</Author>
+		<CoverUrl>9780545323024_enr_v6.jpg</CoverUrl>
+		<DownloadUrl>9780545323024_enr_v6.xps</DownloadUrl>
+        <Version>6</Version>
+        <IsEnhanced>true</IsEnhanced>
+	</Book>
+    <Book>
+		<Isbn13>9780545283502</Isbn13>
+		<Title>Goosebumps Night of the Living Dummy</Title>
+		<Author>R. L. Stine</Author>
+		<CoverUrl>9780545283502.jpg</CoverUrl>
+		<DownloadUrl>9780545283502.xps</DownloadUrl>
+        <Version>2</Version>
+        <IsEnhanced>true</IsEnhanced>
+	</Book>
 	<Book>
 		<Isbn13>9780545287012</Isbn13>
 		<Title>Scholastic Reader Level 1: Clifford and the Halloween Parade</Title>

@@ -168,6 +168,15 @@ static SCHRecommendationManager *sharedManager = nil;
     }
 }
 
+- (void)checkStateForRecommendation:(SCHAppRecommendationItem *)recommendationItem
+{
+    NSAssert([NSThread isMainThread], @"checkStateForRecommendation must run on main thread");
+
+    if (recommendationItem != nil && [self recommendationNeedsProcessing:recommendationItem]) {
+        [self processIsbn:recommendationItem.ContentIdentifier];
+    }
+}
+
 - (BOOL)recommendationNeedsProcessing:(SCHAppRecommendationItem *)recommendationItem
 {
     BOOL needsProcessing = NO;
@@ -179,11 +188,11 @@ static SCHRecommendationManager *sharedManager = nil;
                 case kSCHAppRecommendationProcessingStateCachedCoverError:    
                 case kSCHAppRecommendationProcessingStateThumbnailError:      
                 case kSCHAppRecommendationProcessingStateUnspecifiedError:    
-                case kSCHAppRecommendationProcessingStateInvalidRecommendation: 
+                case kSCHAppRecommendationProcessingStateInvalidRecommendation:
+                case kSCHAppRecommendationProcessingStateWaitingOnUserAction:
                 case kSCHAppRecommendationProcessingStateComplete:      
                     needsProcessing = NO;
                     break;
-                case kSCHAppRecommendationProcessingStateCheckValidity:
                 case kSCHAppRecommendationProcessingStateDownloadFailed:     
                 case kSCHAppRecommendationProcessingStateNoMetadata:          
                 case kSCHAppRecommendationProcessingStateNoCover:
@@ -198,7 +207,7 @@ static SCHRecommendationManager *sharedManager = nil;
 
 }
 
-- (BOOL)isbnNeedsProcessing:(NSString *)isbn
+- (BOOL)isbnNeedsProcessing:(NSString *)isbn 
 {
     NSAssert([NSThread isMainThread], @"isbnNeedsProcessing must run on main thread");
     SCHAppRecommendationItem *recommendationItem = [self appRecommendationForIsbn:isbn];
@@ -236,7 +245,9 @@ static SCHRecommendationManager *sharedManager = nil;
     
     if (item != nil) {
         switch ([item processingState]) {
-            case kSCHAppRecommendationProcessingStateCheckValidity:
+            case kSCHAppRecommendationProcessingStateWaitingOnUserAction:
+                // waiting for the user to access recommendations
+                return;
             case kSCHAppRecommendationProcessingStateNoMetadata:
             { 
                 SCHRecommendationURLRequestOperation *urlOp = [[SCHRecommendationURLRequestOperation alloc] init];

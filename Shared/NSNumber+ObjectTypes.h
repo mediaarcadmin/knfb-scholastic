@@ -68,6 +68,12 @@ typedef enum {
 } SCHTopFavoritesTypes;
 
 typedef enum {
+	kSCHTopRatingsTypesNone = 0,
+	kSCHTopRatingsTypeseReaderCategory,
+	kSCHTopRatingsTypeseReaderCategoryClass,
+} SCHTopRatingsTypes;
+
+typedef enum {
 	kSCHDataStoreTypesStandard,
 	kSCHDataStoreTypesSample,
 } SCHDataStoreTypes;
@@ -111,6 +117,10 @@ typedef enum {
 + (NSNumber *)numberWithTopFavoritesType:(SCHTopFavoritesTypes)value;
 - (id)initWithTopFavoritesType:(SCHTopFavoritesTypes)value;
 - (SCHTopFavoritesTypes)topFavoritesTypeValue;
+
++ (NSNumber *)numberWithTopRatingsType:(SCHTopRatingsTypes)value;
+- (id)initWithTopRatingsType:(SCHTopRatingsTypes)value;
+- (SCHTopRatingsTypes)topRatingsTypeValue;
 
 + (NSNumber *)numberWithDataStoreType:(SCHDataStoreTypes)value;
 - (id)initWithDataStoreType:(SCHDataStoreTypes)value;

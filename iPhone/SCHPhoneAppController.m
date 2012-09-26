@@ -25,10 +25,8 @@
 #import "SCHSyncManager.h"
 #import "SCHDrmSession.h"
 #import "SCHAppModel.h"
-#import "SCHParentalToolsWebViewController.h"
 #import "SCHScholasticAuthenticationWebService.h"
-#import "SCHAccountValidationViewController.h"
-#import "SCHSetupBookshelvesViewController.h"
+#import "SCHReadingManagerAuthorisationViewController.h"
 
 @interface SCHPhoneAppController () <SCHProfileSetupDelegate>
 
@@ -95,12 +93,12 @@
         // Check if dictionary needs set up
         if ([self dictionaryDownloadRequired]) {
             SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-            downloadDictionary.completion = ^{
-                [self pushProfileAnimated:NO];
-                [self dismissModalViewControllerAnimated:YES];
+           // downloadDictionary.completion = ^{
+            //    [self pushProfileAnimated:NO];
+             //   [self dismissModalViewControllerAnimated:YES];
                 
-                self.modalContainerView = nil;
-            };
+             //   self.modalContainerView = nil;
+           // };
             
             [self.modalContainerView pushViewController:downloadDictionary animated:YES];
             [downloadDictionary release];
@@ -115,14 +113,24 @@
 }
 
 - (void)presentProfilesSetup
+{
+    [self presentReadingManager];
+}
+
+- (void)presentSettings
+{
+    [self presentReadingManager];
+}
+
+- (void)presentReadingManager
 {    
     if ([self isCurrentlyModal]) {
         // Check if dictionary needs set up
         if ([self dictionaryDownloadRequired]) {
             SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-            downloadDictionary.completion = ^{
-                [self pushProfileSetupAnimated:YES];
-            };
+          //  downloadDictionary.completion = ^{
+          //      [self pushProfileSetupAnimated:YES];
+          //  };
             
             [self.modalContainerView pushViewController:downloadDictionary animated:YES];
             [downloadDictionary release];
@@ -135,28 +143,33 @@
     }
 }
 
-- (void)presentSamplesWithWelcome:(BOOL)welcome
+- (void)presentTour
 {    
     if ([self isCurrentlyModal]) {
         // Check if dictionary needs set up
         if ([self dictionaryDownloadRequired]) {
             SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-            downloadDictionary.completion = ^{
-                [self pushSamplesAnimated:NO showWelcome:welcome];
-                [self dismissModalViewControllerAnimated:YES];
+           // downloadDictionary.completion = ^{
+           //     [self pushSamplesAnimated:NO showWelcome:YES];
+            //    [self dismissModalViewControllerAnimated:YES];
             
-                self.modalContainerView = nil;
-            };
+            //    self.modalContainerView = nil;
+           // };
         
             [self.modalContainerView pushViewController:downloadDictionary animated:YES];        
             [downloadDictionary release];
         } else {
-            [self pushSamplesAnimated:NO showWelcome:welcome];
+            [self pushSamplesAnimated:NO showWelcome:YES];
             [self dismissModalViewControllerAnimated:YES];
         }
     } else {
-        [self pushSamplesAnimated:NO showWelcome:welcome];
+        [self pushSamplesAnimated:NO showWelcome:YES];
     }
+}
+
+- (void)presentSamples
+{
+    [self pushSamplesAnimated:NO showWelcome:YES];
 }
 
 - (void)presentLogin
@@ -165,6 +178,30 @@
     self.modalContainerView = [[[UINavigationController alloc] initWithRootViewController:login] autorelease];
     
     [self presentModalViewController:self.modalContainerView animated:NO];
+}
+
+#pragma mark - Book Presentation Methods
+
+- (void)presentTourBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    
+}
+
+- (void)presentSampleBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    
+}
+
+- (void)presentAccountBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    
+}
+
+#pragma mark - Exit Methods
+
+- (void)exitBookshelf
+{
+    [self popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - Errors
@@ -252,19 +289,19 @@
    
 - (void)pushProfileSetupAnimated:(BOOL)animated
 {    
-    SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
-    setupBookshelves.profileSetupDelegate = self;
-    
-    UIViewController *login = [self loginViewController];
-    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, setupBookshelves, nil];
-
-    if ([self isCurrentlyModal]) {
-        [self.modalContainerView setViewControllers:controllers animated:animated];
-    } else {
-        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
-        [self.modalContainerView setViewControllers:controllers animated:NO];
-        [self presentModalViewController:self.modalContainerView animated:animated];
-    }    
+//    SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
+//    setupBookshelves.profileSetupDelegate = self;
+//    
+//    UIViewController *login = [self loginViewController];
+//    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, setupBookshelves, nil];
+//
+//    if ([self isCurrentlyModal]) {
+//        [self.modalContainerView setViewControllers:controllers animated:animated];
+//    } else {
+//        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
+//        [self.modalContainerView setViewControllers:controllers animated:NO];
+//        [self presentModalViewController:self.modalContainerView animated:animated];
+//    }    
 }
 
 - (void)pushProfileAnimated:(BOOL)animated
@@ -392,46 +429,46 @@
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide
 {
-    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
-    parentalToolsWebViewController.title = title;
-    parentalToolsWebViewController.modalPresenterDelegate = self;
-    parentalToolsWebViewController.pToken = token;
-    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
-        
-    UIViewController *login = [self loginViewController];
-    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, parentalToolsWebViewController, nil];
-    
-    if ([self isCurrentlyModal]) {
-        [self.modalContainerView setViewControllers:controllers animated:YES];
-    } else {
-        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
-        [self.modalContainerView setViewControllers:controllers animated:NO];
-        [self presentModalViewController:self.modalContainerView animated:YES];
-    } 
+//    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+//    parentalToolsWebViewController.title = title;
+//    parentalToolsWebViewController.modalPresenterDelegate = self;
+//    parentalToolsWebViewController.pToken = token;
+//    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
+//        
+//    UIViewController *login = [self loginViewController];
+//    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, parentalToolsWebViewController, nil];
+//    
+//    if ([self isCurrentlyModal]) {
+//        [self.modalContainerView setViewControllers:controllers animated:YES];
+//    } else {
+//        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
+//        [self.modalContainerView setViewControllers:controllers animated:NO];
+//        [self presentModalViewController:self.modalContainerView animated:YES];
+//    }
 }
 
 - (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated
 {    
-    SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
-    setupBookshelves.profileSetupDelegate = self;
-    
-    SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
-    accountValidationViewController.profileSetupDelegate = self;        
-    accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
-    accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
-    
-    UIViewController *login = [self loginViewController];
-    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, setupBookshelves, accountValidationViewController, nil];
-    
-    if ([self isCurrentlyModal]) {
-        [self.modalContainerView setViewControllers:controllers animated:animated];
-    } else {
-        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
-        [self.modalContainerView setViewControllers:controllers animated:NO];
-        [self presentModalViewController:self.modalContainerView animated:animated];
-    } 
-    
-    [self waitingForPassword];
+//    SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
+//    setupBookshelves.profileSetupDelegate = self;
+//    
+//    SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
+//    accountValidationViewController.profileSetupDelegate = self;        
+//    accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+//    accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
+//    
+//    UIViewController *login = [self loginViewController];
+//    NSMutableArray *controllers = [NSMutableArray arrayWithObjects:login, setupBookshelves, accountValidationViewController, nil];
+//    
+//    if ([self isCurrentlyModal]) {
+//        [self.modalContainerView setViewControllers:controllers animated:animated];
+//    } else {
+//        self.modalContainerView = [[[UINavigationController alloc] init] autorelease];
+//        [self.modalContainerView setViewControllers:controllers animated:NO];
+//        [self presentModalViewController:self.modalContainerView animated:animated];
+//    } 
+//    
+//    [self waitingForPassword];
 }
 
 - (void)dismissModalWebParentToolsAnimated:(BOOL)animated
@@ -449,6 +486,11 @@
 
 - (void)waitingForWebParentToolsToComplete
 {
+    [self waitForWebParentToolsToComplete];    
+}
+
+- (void)waitForWebParentToolsToComplete
+{
     AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
     SCHAppModel *appModel = [appDelegate appModel];
     [appModel waitForWebParentToolsToComplete];
@@ -464,7 +506,7 @@
     SCHAppModel *appModel = [appDelegate appModel];
 
     login.previewBlock = ^{
-        [appModel setupPreview];
+        [appModel setupTour];
     };
     
     __block SCHStoriaLoginViewController *weakLoginRef = login;

@@ -22,7 +22,6 @@
 {
     [removeDictionaryButton release], removeDictionaryButton = nil;
     [labels release], labels = nil;
-    [super releaseViewObjects];
 }
 
 - (void)dealloc
@@ -36,7 +35,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setButtonBackground:self.removeDictionaryButton];
     
     self.labels = [self.labels sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [(UIView *)obj1 tag] - [(UIView *)obj2 tag];

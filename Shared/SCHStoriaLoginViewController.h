@@ -14,6 +14,9 @@
 
 @property (nonatomic, copy) void (^loginBlock)(NSString *topFieldString, NSString *bottomFieldString);
 @property (nonatomic, copy) dispatch_block_t previewBlock;
+@property (nonatomic, copy) dispatch_block_t samplesBlock;
+
+@property (nonatomic, assign) BOOL showSamples; // Defaults to NO
 
 @property (nonatomic, retain) IBOutlet UILabel *topFieldLabel;
 @property (nonatomic, retain) IBOutlet UITextField *topField;
@@ -24,8 +27,10 @@
 @property (nonatomic, retain) IBOutlet TTTAttributedLabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
+@property (nonatomic, retain) IBOutlet UIButton *samplesButton;
 
 - (IBAction)loginButtonAction:(id)sender;
 - (IBAction)previewButtonAction:(id)sender;
+- (IBAction)samplesButtonAction:(id)sender;
 
 @end

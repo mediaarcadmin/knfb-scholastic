@@ -12,6 +12,7 @@
 @class SCHAppRecommendationISBN;
 @class SCHAppRecommendationProfile;
 @class SCHAppRecommendationItem;
+@class SCHAppRecommendationTopRating;
 
 // Constants
 extern NSString * const kSCHRecommendationItem;
@@ -30,6 +31,7 @@ extern NSString * const kSCHRecommendationItem;
 @property (nonatomic, retain) SCHAppRecommendationItem *appRecommendationItem;
 @property (nonatomic, retain) SCHAppRecommendationISBN *appRecommendationISBN;
 @property (nonatomic, retain) SCHAppRecommendationProfile *appRecommendationProfile;
+@property (nonatomic, retain) SCHAppRecommendationTopRating *appRecommendationTopRating;
 
 - (NSString *)isbn;
 - (void)assignAppRecommendationItem;
