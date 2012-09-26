@@ -251,6 +251,9 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
 - (void)applicationDidEnterBackground:(UIApplication *)application 
 {
     [self.coreDataHelper saveContext];
+
+    [[SCHSyncManager sharedSyncManager] accountSyncForced:NO
+                              requireDeviceAuthentication:NO];
     [[SCHSyncManager sharedSyncManager] wishListSync:NO];
 }
 
@@ -259,6 +262,9 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     // when we enter the foreground, check to see if the help and dictionary needs updating
     [[SCHHelpManager sharedHelpManager] checkIfHelpUpdateNeeded];
     [[SCHDictionaryDownloadManager sharedDownloadManager] checkIfDictionaryUpdateNeeded];
+
+    [[SCHSyncManager sharedSyncManager] accountSyncForced:NO
+                              requireDeviceAuthentication:NO];
 }
 
 #pragma mark - Application directory functions

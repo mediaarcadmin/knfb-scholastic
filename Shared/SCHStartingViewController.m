@@ -229,7 +229,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
         
         if ([self bookshelfSetupRequired]) {
             // Start the sync in case they have been set up since last sync
-            [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+            [[SCHSyncManager sharedSyncManager] accountSyncForced:YES
+                                      requireDeviceAuthentication:NO];
         }
     } else {
         [self runInitialChoiceSequence];
@@ -491,7 +492,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     
     // Need to also sync here in case the user has has set up a bookshelf in WPT outside teh app
     // We never want to enter WPT not in wizard mode as there is no close button
-    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+    [[SCHSyncManager sharedSyncManager] accountSyncForced:YES
+                              requireDeviceAuthentication:YES];
 }
 
 #pragma mark - Profile view
@@ -535,7 +537,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     if ((self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) ||
         (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForPassword) ||
         (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete)) {
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+        [[SCHSyncManager sharedSyncManager] accountSyncForced:YES
+                                  requireDeviceAuthentication:YES];
     }
 }
 
@@ -946,7 +949,8 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                                                                                         if (credentialsSuccessBlock) {
                                                                                             credentialsSuccessBlock(YES, NO, nil);
                                                                                         }
-                                                                                        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+                                                                                        [[SCHSyncManager sharedSyncManager] accountSyncForced:YES
+                                                                                                                  requireDeviceAuthentication:NO];
                                                                                         completion(nil);
                                                                                     } else { 
                                                                                         NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  

@@ -21,6 +21,8 @@
 @implementation SCHTourStartViewController
 
 @synthesize appController;
+@synthesize backButton;
+@synthesize greyButtons;
 
 - (void)dealloc
 {
@@ -32,7 +34,8 @@
 
 - (void)releaseViewObjects
 {
-    
+    [backButton release], backButton = nil;
+    [greyButtons release], greyButtons = nil;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -50,6 +53,16 @@
     // Do any additional setup after loading the view from its nib.
     
     [self.navigationController setNavigationBarHidden:YES];
+    
+    UIImage *stretchedBackImage = [[UIImage imageNamed:@"bluetourbutton"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
+    
+    [self.backButton setBackgroundImage:stretchedBackImage forState:UIControlStateNormal];
+    
+    UIImage *stretchedGreyImage = [[UIImage imageNamed:@"greytourbutton"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
+    
+    for (UIButton *greyButton in self.greyButtons) {
+        [greyButton setBackgroundImage:stretchedGreyImage forState:UIControlStateNormal];
+    }
 }
 
 - (void)viewDidUnload

@@ -12,6 +12,8 @@
 @interface SCHTourStartViewController : UIViewController
 
 @property (nonatomic, assign) id<SCHAppController> appController;
+@property (retain, nonatomic) IBOutlet UIButton *backButton;
+@property (retain, nonatomic) IBOutletCollection(UIButton) NSArray *greyButtons;
 
 - (IBAction)startReading:(UIButton *)sender;
 

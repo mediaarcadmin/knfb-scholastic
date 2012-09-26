@@ -275,7 +275,8 @@ typedef enum {
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncSucceeded:) name:SCHProfileSyncComponentDidCompleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncFailed:) name:SCHProfileSyncComponentDidFailNotification object:nil];
-    [syncManager firstSync:now requireDeviceAuthentication:authenticate];
+    [syncManager accountSyncForced:now
+       requireDeviceAuthentication:authenticate];
 }
 
 - (BOOL)hasProfilesInManagedObjectContext:(NSManagedObjectContext *)moc

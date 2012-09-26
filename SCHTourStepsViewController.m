@@ -8,6 +8,7 @@
 
 #import "SCHTourStepsViewController.h"
 #import "SCHTourFullScreenImageViewController.h"
+#import <MediaPlayer/MPMoviePlayerController.h>
 
 #define LEFT_TAG 101
 #define RIGHT_TAG 102
@@ -22,6 +23,8 @@
 @property (nonatomic, retain) UIView *leftView;
 @property (nonatomic, retain) UIView *rightView;
 
+@property (nonatomic, retain) MPMoviePlayerController *currentMoviePlayer;
+
 @end
 
 @implementation SCHTourStepsViewController
@@ -33,6 +36,8 @@
 @synthesize currentView;
 @synthesize leftView;
 @synthesize rightView;
+@synthesize currentMoviePlayer;
+@synthesize backButton;
 
 - (void)dealloc
 {
@@ -49,6 +54,8 @@
     [currentView release], currentView = nil;
     [leftView release], leftView = nil;
     [rightView release], rightView = nil;
+    [currentMoviePlayer release], currentMoviePlayer = nil;
+    [backButton release], backButton = nil;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -76,6 +83,25 @@
     [self.pageControl setCurrentPage:self.currentIndex];
     [self setupScrollViewForIndex:self.currentIndex];
     
+    UIImage *stretchedBackImage = [[UIImage imageNamed:@"bluetourbutton"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
+    
+    [self.backButton setBackgroundImage:stretchedBackImage forState:UIControlStateNormal];
+
+    // tinting only supported on iOS 6 and above
+    
+    
+    
+    if (NSProtocolFromString(@"UIAppearance")) {
+        NSLog(@"appearance proxy available");
+        
+        BOOL hasNewMethod = [UIPageControl instancesRespondToSelector:@selector(setPageIndicatorTintColor:)];
+
+        if (hasNewMethod) {
+            [[UIPageControl appearance] setPageIndicatorTintColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.4]];
+            [[UIPageControl appearance] setCurrentPageIndicatorTintColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.8]];
+        }
+    }
+
 }
 
 - (void)viewDidUnload
@@ -95,6 +121,54 @@
 
 - (IBAction)signIn:(UIButton *)sender {
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (IBAction)playCurrentVideo:(UIButton *)sender
+{
+    if (self.currentMoviePlayer) {
+        [self.currentMoviePlayer stop];
+        [self.currentMoviePlayer play];
+        return;
+    }
+    
+    NSURL *movieURL = [NSURL fileURLWithPath:[[NSBundle mainBundle]
+                                              pathForResource:[NSString stringWithFormat:@"tour_video_%d", self.currentIndex]
+                                              ofType:@"m4v"]];
+    
+    self.currentMoviePlayer = [[[MPMoviePlayerController alloc] initWithContentURL:movieURL] autorelease];
+    
+    //            [[NSNotificationCenter defaultCenter] addObserver:self
+    //                                                     selector:@selector(moviePlayerPlaybackStateDidChangeNotification:)
+    //                                                         name:MPMoviePlayerPlaybackStateDidChangeNotification
+    //                                                       object:nil];
+    
+    // container view
+    
+    self.currentMoviePlayer.controlStyle = MPMovieControlStyleNone;
+    self.currentMoviePlayer.shouldAutoplay = NO;
+    [self.currentMoviePlayer.view setFrame:CGRectMake(0, 0, 556, 382)];
+    self.currentMoviePlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
+    UIView *movieContainerView = [[UIView alloc] initWithFrame:CGRectMake(228, 158, 556, 382)];
+    movieContainerView.clipsToBounds = YES;
+    movieContainerView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    movieContainerView.layer.borderWidth = 1;
+    
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:movieContainerView.bounds
+                                                   byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerTopLeft | UIRectCornerTopRight
+                                                         cornerRadii:CGSizeMake(6, 6)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = movieContainerView.bounds;
+    maskLayer.path = maskPath.CGPath;
+    [movieContainerView.layer setMask:maskLayer];
+    [maskLayer release];
+
+    
+    
+    [movieContainerView addSubview:self.currentMoviePlayer.view];
+    [self.currentView addSubview:movieContainerView];
+    
+    [self.currentMoviePlayer play];
 }
 
 - (IBAction)pickedFullScreenImage:(UIButton *)sender
@@ -281,15 +355,16 @@
             [button setBackgroundImage:[[UIImage imageNamed:@"tour-tab-button-bg"] stretchableImageWithLeftCapWidth:8 topCapHeight:0] forState:UIControlStateNormal];
             [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
 
-            [button setFrame:CGRectMake(654, 539, 131, 32)];
+            [button setFrame:CGRectMake(653, 539, 131, 32)];
             [button setTitle:@"Play Read-Aloud" forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(playCurrentVideo:) forControlEvents:UIControlEventTouchUpInside];
+
             // FIXME: styling
-            // FIXME: add target
-            
             // container view
             tourView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
             
             [tourView addSubview:imageView];
+            [tourView addSubview:self.currentMoviePlayer.view];
             [tourView addSubview:button];
             break;
         }
@@ -300,7 +375,14 @@
             // image view
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:scrollImageName]];
             // button
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            
+            UIImage *stretchedBackImage = [[UIImage imageNamed:@"greytourbutton"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+            
+            [button setBackgroundImage:stretchedBackImage forState:UIControlStateNormal];
+            [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
+            [button.titleLabel setTextColor:[UIColor whiteColor]];
+
             [button setFrame:CGRectMake(394, 552, 240, 37)];
             [button setTitle:@"Sign In" forState:UIControlStateNormal];
             // FIXME: styling
@@ -335,6 +417,15 @@
 
 
 #pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    if (self.currentMoviePlayer) {
+        [self.currentMoviePlayer stop];
+        [self.currentMoviePlayer.view removeFromSuperview];
+        self.currentMoviePlayer = nil;
+    }
+}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)sender {
 //    self.currentIndex = sender.contentOffset.x / 1024;
