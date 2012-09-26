@@ -484,7 +484,7 @@ didSelectButtonAnimated:(BOOL)animated
                 if (![[topFieldText substringToIndex:1] isEqualToString:@" "]) {
                     [profileItem setRawPassword:topFieldText];
                     if ([self.managedObjectContext save:nil] == YES) {
-                        [[SCHSyncManager sharedSyncManager] profileSync]; 
+                        [[SCHSyncManager sharedSyncManager] passwordSync];
                     }
                     [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
                     [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];

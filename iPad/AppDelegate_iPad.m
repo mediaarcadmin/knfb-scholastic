@@ -46,8 +46,23 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
         self.appModel = [[[SCHAppModel alloc] initWithAppController:self.appController] autorelease];
         [self.appModel restoreAppState];
     }
-    
-    return(YES);
+
+#if NON_DRM_AUTHENTICATION
+	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
+	if ([authenticationManager isAuthenticated] == YES) {
+#else
+    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
+    if (deviceKey != nil &&
+        [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+#endif
+        double delayInSeconds = kAppDelegate_iPadSyncManagerWakeDelay;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [[SCHSyncManager sharedSyncManager] accountSyncForced:YES requireDeviceAuthentication:NO];
+        });
+    }
+
+        return(YES);
 }
 
 
@@ -57,25 +72,6 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
      */
 }
-
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-#if NON_DRM_AUTHENTICATION
-	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	if ([authenticationManager isAuthenticated] == YES) {
-#else
-    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
-    if (deviceKey != nil &&
-        [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {   
-#endif
-        double delayInSeconds = kAppDelegate_iPadSyncManagerWakeDelay;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
-        });
-    }
-}
-
 
 /**
  Superclass implementation saves changes in the application's managed object context before the application terminates.
