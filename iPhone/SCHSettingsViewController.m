@@ -6,6 +6,7 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "SCHSettingsViewController.h"
 
 #import "SCHSettingsViewController.h"
@@ -40,6 +41,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @property (nonatomic, retain) LambdaAlert *checkBooksAlert;
 @property (nonatomic, retain) Reachability *syncReachability;
 @property (nonatomic, retain) UIViewController *contentViewController;
+@property (nonatomic, assign) SCHSettingsPanel selectedPanel;
+@property (nonatomic, assign) BOOL additionalSettingsVisible;
 
 - (void)updateDictionaryButton;
 - (void)releaseViewObjects;
@@ -52,7 +55,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)showNoInternetConnectionAlert;
 - (void)showWifiRequiredAlert;
 - (void)showAlertForSyncFailure;
-
+- (UIView *)backgroundViewForCellAtIndexPath:(NSIndexPath *)indexPath withSelection:(NSIndexPath *)selectedIndexPath;
+- (void)setAdditionalSettingsVisible:(BOOL)visible completionBlock:(dispatch_block_t)completion;
 - (SCHSettingsPanel)panelForIndexPath:(NSIndexPath *)indexPath;
 
 @end
@@ -64,6 +68,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize checkBooksAlert;
 @synthesize syncReachability;
 @synthesize containerView;
+@synthesize transformableView;
 @synthesize shadowView;
 @synthesize tableView;
 @synthesize contentView;
@@ -72,6 +77,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize settingsDisplayMask;
 @synthesize backButton;
 @synthesize backButtonHidden;
+@synthesize backgroundImageView;
+@synthesize selectedPanel;
+@synthesize additionalSettingsVisible;
 
 #pragma mark - Object lifecycle
 
@@ -82,9 +90,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [checkBooksAlert release], checkBooksAlert = nil;
     [contentView release], contentView = nil;
     [containerView release], containerView = nil;
+    [transformableView release], transformableView = nil;
     [shadowView release], shadowView = nil;
     [tableView release], tableView = nil;
     [backButton release], backButton = nil;
+    [backgroundImageView release], backgroundImageView = nil;
     
 }
 
@@ -107,7 +117,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [super viewDidLoad];
     
     [self addContentSubview:self.contentViewController.view];
+    
+    UIImage *backButtonImage = [[UIImage imageNamed:@"bookshelf_arrow_bttn_UNselected_3part"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
+    [self.backButton setBackgroundImage:backButtonImage forState:UIControlStateNormal];
     [self.backButton setHidden:self.backButtonHidden];
+    [self.backgroundImageView setImage:[UIImage imageNamed:@"storia-tourstepsviewcontroller-static-landscape~ipad.jpg"]];
         
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UIView *whiteView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
@@ -135,6 +149,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                                              selector:@selector(dictionaryStateChanged:)
                                                  name:kSCHDictionaryProcessingPercentageUpdate
                                                object:nil];
+}
+
+- (void)setSelectedPanel:(SCHSettingsPanel)panel
+{
+    selectedPanel = panel;
+    [self.tableView reloadData];
 }
 
 - (void)setSettingsDisplayMask:(NSUInteger)newMask
@@ -790,6 +810,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    return 3;
     if ([self.bookUpdates areBookUpdatesAvailable]) {
         return 3;
     } else {
@@ -804,7 +825,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             return 1;
             break;
         case 1:
-            return 4;
+            return self.additionalSettingsVisible ? 4 : 1;
             break;
         case 2:
             return 1;
@@ -822,37 +843,216 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    cell.userInteractionEnabled = YES;
+    cell.indentationLevel = 0;
+    cell.imageView.image = nil;
+    
+    UIColor *blueText  = [UIColor colorWithRed:0.059 green:0.392 blue:0.596 alpha:1.000];
+    UIColor *darkText  = [UIColor colorWithWhite:0.353 alpha:1.000];
+    UIColor *lightText = [UIColor colorWithWhite:1 alpha:1.000];
+    UIColor *redText   = [UIColor colorWithRed:0.792 green:0.071 blue:0.208 alpha:1.000];
+    UIImage *selectedImage = [UIImage imageNamed:@"cloud_icon_menu_wht"];
     
     SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
+    BOOL isSelected = (panel == self.selectedPanel);
     
     switch (panel) {
         case kSCHSettingsPanelReadingManager:
-            cell.textLabel.text = @"SIGN IN TO READING MANAGER";
+            cell.textLabel.text = @"SIGN IN TO\nREADING MANAGER";
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:13];
+            cell.textLabel.textColor = blueText;
+            cell.textLabel.numberOfLines = 2;
             break;
         case kSCHSettingsPanelAdditionalSettings:
             cell.textLabel.text = @"ADDITIONAL SETTINGS";
-            cell.userInteractionEnabled = NO;
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:13];
+            cell.textLabel.textColor = blueText;
             break;
         case kSCHSettingsPanelDictionaryDownload:
             cell.textLabel.text = @"Download Dictionary";
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
+            if (isSelected) {
+                cell.textLabel.textColor = lightText;
+                cell.imageView.image = selectedImage;
+                cell.indentationLevel = 0;
+            } else {
+                cell.textLabel.textColor = darkText;
+                cell.imageView.image = nil;
+                cell.indentationLevel = 1;
+            }
             break;
         case kSCHSettingsPanelDeregisterDevice:
             cell.textLabel.text = @"Deregister Device";
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
+            if (isSelected) {
+                cell.textLabel.textColor = lightText;
+                cell.imageView.image = selectedImage;
+                cell.indentationLevel = 0;
+            } else {
+                cell.textLabel.textColor = darkText;
+                cell.imageView.image = nil;
+                cell.indentationLevel = 1;
+            }
             break;
         case kSCHSettingsPanelSupport:
             cell.textLabel.text = @"Support";
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
+            if (isSelected) {
+                cell.textLabel.textColor = lightText;
+                cell.imageView.image = selectedImage;
+                cell.indentationLevel = 0;
+            } else {
+                cell.textLabel.textColor = darkText;
+                cell.imageView.image = nil;
+                cell.indentationLevel = 1;
+            }
             break;
         case kSCHSettingsPanelEbookUpdates:
             cell.textLabel.text = @"EBOOK UPDATES";
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:13];
+            cell.textLabel.textColor = redText;
             break;
         default:
             break;
     }
     
+    cell.backgroundView = [self backgroundViewForCellAtIndexPath:indexPath withSelection:[self indexPathForPanel:self.selectedPanel]];
+    
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat ret = 0;
+    
+    SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
+    switch (panel) {
+        case kSCHSettingsPanelReadingManager:
+            ret = 61;
+            break;
+        case kSCHSettingsPanelAdditionalSettings:
+        case kSCHSettingsPanelDictionaryDelete:
+        case kSCHSettingsPanelDeregisterDevice:
+        case kSCHSettingsPanelDictionaryDownload:
+            ret = 42;
+            break;
+        case kSCHSettingsPanelSupport:
+            ret = 44;
+            break;
+        case kSCHSettingsPanelEbookUpdates:
+            ret = 43;
+            break;
+        default:
+            break;
+    }
+    
+    return ret;
+}
+
+- (UIView *)backgroundViewForCellAtIndexPath:(NSIndexPath *)indexPath withSelection:(NSIndexPath *)selectedIndexPath
+{
+    SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
+    BOOL sectionIsSelected = ([indexPath section] == [selectedIndexPath section]);
+    BOOL panelIsSelected   = [indexPath isEqual:selectedIndexPath];
+        
+    UIImage *stretchableImage = nil;
+    
+    if (panelIsSelected) {
+        switch (panel) {
+            case kSCHSettingsPanelReadingManager:
+                stretchableImage = [UIImage imageNamed:@"lg_menu_selector_box_wht_3part"];
+                break;
+            case kSCHSettingsPanelAdditionalSettings:
+                if (self.additionalSettingsVisible) {
+                    stretchableImage = [UIImage imageNamed:@"top_menu_selector_box_wht_3part"];
+                } else {
+                    stretchableImage = [UIImage imageNamed:@"sm_menu_selector_box_wht_3part"];
+                }
+                break;
+            case kSCHSettingsPanelDictionaryDelete:
+            case kSCHSettingsPanelDictionaryDownload:
+            case kSCHSettingsPanelDeregisterDevice:
+                stretchableImage = [UIImage imageNamed:@"mid_menu_selector_box_selected_3part"];
+                break;
+            case kSCHSettingsPanelSupport:
+                stretchableImage = [UIImage imageNamed:@"bottom_menu_selector_box_selected_3part"];
+                break;
+            case kSCHSettingsPanelEbookUpdates:
+                stretchableImage = [UIImage imageNamed:@"sm_menu_selector_box_wht_3part"];
+                break;
+            default:
+                break;
+        }
+    } else if (sectionIsSelected) {
+        switch (panel) {
+            case kSCHSettingsPanelAdditionalSettings:
+                if (self.additionalSettingsVisible) {
+                    stretchableImage = [UIImage imageNamed:@"top_menu_selector_box_wht_3part"];
+                } else {
+                    stretchableImage = [UIImage imageNamed:@"sm_menu_selector_box_wht_3part"];
+                }
+                break;
+            case kSCHSettingsPanelDictionaryDelete:
+            case kSCHSettingsPanelDictionaryDownload:
+                stretchableImage = [UIImage imageNamed:@"mid_menu_selector_box_gry_3part"];
+                break;
+            case kSCHSettingsPanelDeregisterDevice:
+                if (sectionIsSelected && ([selectedIndexPath row] == [indexPath row] - 1)) {
+                    stretchableImage = [UIImage imageNamed:@"mid_menu_selector_box_gry_3part"];
+                } else {
+                    stretchableImage = [UIImage imageNamed:@"mid_menu_selector_box_wht_3part"];
+                }
+                break;
+            case kSCHSettingsPanelSupport:
+                stretchableImage = [UIImage imageNamed:@"bottom_menu_selector_box_gry_3part"];
+                break;
+            default:
+                break;
+        }
+    }
+        
+    if (stretchableImage) {
+         UIImage *backgroundImage = [stretchableImage stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+         return [[[UIImageView alloc] initWithImage:backgroundImage] autorelease];
+    } else {
+        UIView *plain = [[UIView alloc] init];
+        plain.backgroundColor = [UIColor whiteColor];
+        return [plain autorelease];
+    }
+}
+
+- (void)setAdditionalSettingsVisible:(BOOL)visible
+{
+    [self setAdditionalSettingsVisible:visible completionBlock:nil];
+}
+
+- (void)setAdditionalSettingsVisible:(BOOL)visible completionBlock:(dispatch_block_t)completion
+{
+    if (additionalSettingsVisible != visible) {
+        additionalSettingsVisible = visible;
+        [CATransaction begin];
+        [CATransaction setCompletionBlock:^{
+            if (completion) {
+                completion();
+            }
+        }];
+        if (additionalSettingsVisible) {
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:1 inSection:1],
+                                                    [NSIndexPath indexPathForRow:2 inSection:1],
+                                                    [NSIndexPath indexPathForRow:3 inSection:1], nil]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+            
+        } else {
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:1 inSection:1],
+                                                    [NSIndexPath indexPathForRow:2 inSection:1],
+                                                    [NSIndexPath indexPathForRow:3 inSection:1], nil]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        [CATransaction commit];
+    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -861,7 +1061,20 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [aTableView deselectRowAtIndexPath:indexPath animated:NO];
     SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
-    [self displaySettingsPanel:panel];
+    
+    if (panel == kSCHSettingsPanelAdditionalSettings) {
+        if (!self.additionalSettingsVisible) {
+            [self setSelectedPanel:kSCHSettingsPanelAdditionalSettings];
+            [self setAdditionalSettingsVisible:YES completionBlock:^{
+                [self displaySettingsPanel:panel];
+            }];
+        }
+    } else if ([indexPath section] != [[self indexPathForPanel:kSCHSettingsPanelAdditionalSettings] section]) {
+        [self displaySettingsPanel:panel];
+        [self setAdditionalSettingsVisible:NO];
+    } else {
+        [self displaySettingsPanel:panel];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -916,11 +1129,40 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
     return -1;
 }
+    
+- (NSIndexPath *)indexPathForPanel:(SCHSettingsPanel)panel
+{
+    switch (panel) {
+        case kSCHSettingsPanelReadingManager:
+            return [NSIndexPath indexPathForRow:0 inSection:0];
+            break;
+        case kSCHSettingsPanelAdditionalSettings:
+            return [NSIndexPath indexPathForRow:0 inSection:1];
+            break;
+        case kSCHSettingsPanelDictionaryDelete:
+        case kSCHSettingsPanelDictionaryDownload:
+            return [NSIndexPath indexPathForRow:1 inSection:1];
+            break;
+        case kSCHSettingsPanelDeregisterDevice:
+            return [NSIndexPath indexPathForRow:2 inSection:1];
+            break;
+        case kSCHSettingsPanelSupport:
+            return [NSIndexPath indexPathForRow:3 inSection:1];
+            break;
+        case kSCHSettingsPanelEbookUpdates:
+            return [NSIndexPath indexPathForRow:0 inSection:2];
+            break;
+        default:
+            break;
+    }
+    
+    return nil;
+}
 
 - (void)displaySettingsPanel:(SCHSettingsPanel)panel
 {
     [self.view endEditing:YES];
-    
+        
     switch (panel) {
         case kSCHSettingsPanelReadingManager: {
             SCHReadingManagerAuthorisationViewController *controller = [[[SCHReadingManagerAuthorisationViewController alloc] init] autorelease];
@@ -953,6 +1195,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
     
     [self addContentSubview:self.contentViewController.view];
+    [self setSelectedPanel:panel];
 }
 
 - (IBAction)close:(id)sender
@@ -995,7 +1238,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[duration doubleValue]];
     [UIView setAnimationCurve:[curve intValue]];
-    self.shadowView.transform = CGAffineTransformMakeTranslation(0, -(self.shadowView.frame.origin.y));
+    self.transformableView.transform = CGAffineTransformMakeTranslation(0, -(self.transformableView.frame.origin.y));
     [UIView commitAnimations];
 }
 
@@ -1009,7 +1252,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[duration doubleValue]];
     [UIView setAnimationCurve:[curve intValue]];
-    self.shadowView.transform = CGAffineTransformIdentity;
+    self.transformableView.transform = CGAffineTransformIdentity;
     [UIView commitAnimations];
 }
 

@@ -30,11 +30,14 @@ typedef enum {
 @property (nonatomic, assign) id <SCHAppController> appController;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
+@property (nonatomic, retain) IBOutlet UIView *transformableView;
 @property (nonatomic, retain) IBOutlet UIView *shadowView;
 
 @property (nonatomic, retain) IBOutlet UIView *contentView; // iPad only
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundImageView;
+
 @property (nonatomic, assign) NSUInteger settingsDisplayMask; // defaults to kSCHSettingsPanelAll
 @property (nonatomic, assign) BOOL backButtonHidden; // defaults to NO
 

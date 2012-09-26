@@ -38,10 +38,9 @@
 					<object class="IBUIWebView" id="172546319">
 						<reference key="NSNextResponder" ref="847597342"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{650, 370}</string>
+						<string key="NSFrameSize">{641, 370}</string>
 						<reference key="NSSuperview" ref="847597342"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -52,7 +51,7 @@
 						<bool key="IBUIDetectsPhoneNumbers">YES</bool>
 					</object>
 				</array>
-				<string key="NSFrameSize">{650, 370}</string>
+				<string key="NSFrameSize">{641, 370}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="172546319"/>
