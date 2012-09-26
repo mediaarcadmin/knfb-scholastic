@@ -318,11 +318,15 @@ typedef enum
     
     // Always force a sync if we are on the sample bookshelf
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+        [[SCHSyncManager sharedSyncManager] accountSyncForced:YES
+                                  requireDeviceAuthentication:NO];
+        [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:YES];
         self.shouldWaitForCellsToLoad = YES;
         [self reloadDataImmediately:YES];
     } else {
-        [[SCHSyncManager sharedSyncManager] bookshelfSyncNow:forceBookshelfSync];
+        [[SCHSyncManager sharedSyncManager] accountSyncForced:NO
+                                  requireDeviceAuthentication:NO];
+        [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:forceBookshelfSync];
         
         if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
             [[SCHProcessingManager sharedProcessingManager] checkStateForAllBooks];
@@ -538,7 +542,8 @@ typedef enum
     } else {
         [self.appController exitBookshelf];
     }
-    
+
+    [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:NO];
     [[SCHSyncManager sharedSyncManager] wishListSync:NO];                        
 }
 

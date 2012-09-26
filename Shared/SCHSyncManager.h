@@ -34,14 +34,17 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (void)flushSyncQueue;
 - (BOOL)havePerformedFirstSyncUpToBooks;
 
-- (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication;
+- (void)accountSyncForced:(BOOL)syncNow
+requireDeviceAuthentication:(BOOL)requireAuthentication;
 - (void)performFlushSaves;
-- (void)profileSync;
-- (void)bookshelfSyncNow:(BOOL)syncNow;
-- (void)openDocumentSync:(SCHBooksAssignment *)booksAssignment
-              forProfile:(NSNumber *)profileID;
-- (void)closeDocumentSync:(SCHBooksAssignment *)booksAssignment
-               forProfile:(NSNumber *)profileID;
+- (void)passwordSync;
+- (void)bookshelfSyncForced:(BOOL)syncNow;
+- (void)openBookSyncForced:(BOOL)syncNow
+           booksAssignment:(SCHBooksAssignment *)booksAssignment
+                forProfile:(NSNumber *)profileID;
+- (void)closeBookSyncForced:(BOOL)syncNow
+            booksAssignment:(SCHBooksAssignment *)booksAssignment
+                 forProfile:(NSNumber *)profileID;
 - (void)recommendationSync;
 - (void)wishListSync:(BOOL)syncNow;
 

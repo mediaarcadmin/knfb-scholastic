@@ -475,7 +475,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         }
 #endif
         
-        [[SCHSyncManager sharedSyncManager] openDocumentSync:book.ContentMetadataItem.booksAssignment
+        [[SCHSyncManager sharedSyncManager] openBookSyncForced:YES
+                                               booksAssignment:book.ContentMetadataItem.booksAssignment
                                               forProfile:profile.ID];
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -968,8 +969,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         [self save];
         
-        [[SCHSyncManager sharedSyncManager] closeDocumentSync:book.ContentMetadataItem.booksAssignment
-                                               forProfile:self.profile.ID];
+        [[SCHSyncManager sharedSyncManager] closeBookSyncForced:YES
+                                                booksAssignment:book.ContentMetadataItem.booksAssignment
+                                                     forProfile:self.profile.ID];
     }    
 }
 
@@ -987,19 +989,37 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [self updateBookState];
         [self.readingView dismissFollowAlongHighlighter];  
         [self pauseAudioPlayback];
-    } 
+
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier
+                                                           inManagedObjectContext:self.managedObjectContext];
+        [[SCHSyncManager sharedSyncManager] closeBookSyncForced:NO
+                                                booksAssignment:book.ContentMetadataItem.booksAssignment
+                                                     forProfile:self.profile.ID];
+    }
 }
 
 - (void)willTerminateNotification:(NSNotification *)notification
 {
     [self updateBookState];
     [self.bookPackageProvider reportReadingIfRequired];
+
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier
+                                                       inManagedObjectContext:self.managedObjectContext];
+    [[SCHSyncManager sharedSyncManager] closeBookSyncForced:YES
+                                            booksAssignment:book.ContentMetadataItem.booksAssignment
+                                                 forProfile:self.profile.ID];
 }
 
 - (void)willEnterForegroundNotification:(NSNotification *)notification
 {
     self.isInBackground = NO;
     self.bookStatisticsReadingStartTime = [NSDate serverDate];
+
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier
+                                                       inManagedObjectContext:self.managedObjectContext];
+    [[SCHSyncManager sharedSyncManager] openBookSyncForced:NO
+                                           booksAssignment:book.ContentMetadataItem.booksAssignment
+                                                forProfile:self.profile.ID];
 }
 
 #pragma mark - Sync Propagation methods
