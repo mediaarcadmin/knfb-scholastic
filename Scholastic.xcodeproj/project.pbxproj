@@ -4836,6 +4836,10 @@
 		F8A57E771517702000390D56 /* SCHBookShelfWishListController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8A57E711517702000390D56 /* SCHBookShelfWishListController~ipad.xib */; };
 		F8A57E781517702000390D56 /* SCHBookShelfWishListController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8A57E711517702000390D56 /* SCHBookShelfWishListController~ipad.xib */; };
 		F8A57E791517702000390D56 /* SCHBookShelfWishListController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8A57E711517702000390D56 /* SCHBookShelfWishListController~ipad.xib */; };
+		F8AD2B211611F6E700279DC8 /* tour_video_1.m4v in Resources */ = {isa = PBXBuildFile; fileRef = F8AD2B201611F6E600279DC8 /* tour_video_1.m4v */; };
+		F8AD2B221611F6E700279DC8 /* tour_video_1.m4v in Resources */ = {isa = PBXBuildFile; fileRef = F8AD2B201611F6E600279DC8 /* tour_video_1.m4v */; };
+		F8AD2B231611F6E700279DC8 /* tour_video_1.m4v in Resources */ = {isa = PBXBuildFile; fileRef = F8AD2B201611F6E600279DC8 /* tour_video_1.m4v */; };
+		F8AD2B241611F6E700279DC8 /* tour_video_1.m4v in Resources */ = {isa = PBXBuildFile; fileRef = F8AD2B201611F6E600279DC8 /* tour_video_1.m4v */; };
 		F8B1E4DF14AE25670070EFCD /* storia-settings-logo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4DA14AE25670070EFCD /* storia-settings-logo~ipad.png */; };
 		F8B1E4E014AE25670070EFCD /* storia-settings-logo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4DA14AE25670070EFCD /* storia-settings-logo~ipad.png */; };
 		F8B1E4E414AE28CE0070EFCD /* storia-setup-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4E114AE28CE0070EFCD /* storia-setup-logo.png */; };
@@ -7036,6 +7040,7 @@
 		F8A57E6F1517702000390D56 /* SCHBookShelfWishListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfWishListController.h; path = Shared/SCHBookShelfWishListController.h; sourceTree = "<group>"; };
 		F8A57E701517702000390D56 /* SCHBookShelfWishListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfWishListController.m; path = Shared/SCHBookShelfWishListController.m; sourceTree = "<group>"; };
 		F8A57E711517702000390D56 /* SCHBookShelfWishListController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHBookShelfWishListController~ipad.xib"; path = "Shared/SCHBookShelfWishListController~ipad.xib"; sourceTree = "<group>"; };
+		F8AD2B201611F6E600279DC8 /* tour_video_1.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; name = tour_video_1.m4v; path = Resources/UIAssets/tour_video_1.m4v; sourceTree = "<group>"; };
 		F8B1E4DA14AE25670070EFCD /* storia-settings-logo~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-settings-logo~ipad.png"; path = "Resources/UIAssets/storia-settings-logo~ipad.png"; sourceTree = "<group>"; };
 		F8B1E4E114AE28CE0070EFCD /* storia-setup-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-setup-logo.png"; path = "Resources/UIAssets/storia-setup-logo.png"; sourceTree = "<group>"; };
 		F8B1E4E214AE28CE0070EFCD /* storia-setup-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-setup-logo@2x.png"; path = "Resources/UIAssets/storia-setup-logo@2x.png"; sourceTree = "<group>"; };
@@ -10601,6 +10606,7 @@
 		F8E9334D1607410F00F68FCC /* Tour Views */ = {
 			isa = PBXGroup;
 			children = (
+				F8AD2B201611F6E600279DC8 /* tour_video_1.m4v */,
 				F806757E160A2A8F00F5024A /* tour_full_image_1_0.png */,
 				F806757F160A2A8F00F5024A /* tour_full_image_1_0@2x.png */,
 				F8DA8123160A112300387591 /* tour-tab-button-bg.png */,
@@ -11715,6 +11721,7 @@
 				F806757A160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
 				F8067580160A2A8F00F5024A /* tour_full_image_1_0.png in Resources */,
 				F8067584160A2A8F00F5024A /* tour_full_image_1_0@2x.png in Resources */,
+				F8AD2B211611F6E700279DC8 /* tour_video_1.m4v in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12551,6 +12558,7 @@
 				F806757B160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
 				F8067581160A2A8F00F5024A /* tour_full_image_1_0.png in Resources */,
 				F8067585160A2A8F00F5024A /* tour_full_image_1_0@2x.png in Resources */,
+				F8AD2B221611F6E700279DC8 /* tour_video_1.m4v in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13142,6 +13150,7 @@
 				F806757C160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
 				F8067582160A2A8F00F5024A /* tour_full_image_1_0.png in Resources */,
 				F8067586160A2A8F00F5024A /* tour_full_image_1_0@2x.png in Resources */,
+				F8AD2B231611F6E700279DC8 /* tour_video_1.m4v in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13731,6 +13740,7 @@
 				F806757D160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
 				F8067583160A2A8F00F5024A /* tour_full_image_1_0.png in Resources */,
 				F8067587160A2A8F00F5024A /* tour_full_image_1_0@2x.png in Resources */,
+				F8AD2B241611F6E700279DC8 /* tour_video_1.m4v in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
