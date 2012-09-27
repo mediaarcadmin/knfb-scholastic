@@ -24,11 +24,11 @@
 #import "SCHCoreDataHelper.h"
 #import "SCHPopulateDataStore.h"
 #import "SCHAppContentProfileItem.h"
-#import "SCHAuthenticationManager.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHLibreAccessConstants.h"
 #import "NSFileManager+Extensions.h"
-#import "SCHAppProfile.h"
+#import "SCHBooksAssignment.h"
+#import "SCHSyncDelay.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -45,12 +45,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 @interface SCHSyncManager ()
 
-@property (nonatomic, retain) NSDate *lastFirstSyncEnded;
-@property (nonatomic, assign) BOOL firstSyncAfterDelay;
-@property (nonatomic, retain) NSDate *lastBookshelfSyncEnded;
-@property (nonatomic, assign) BOOL bookshelfSyncAfterDelay;
-@property (nonatomic, retain) NSDate *lastWishListSyncEnded;
-@property (nonatomic, assign) BOOL wishListSyncAfterDelay;
+@property (nonatomic, retain) SCHSyncDelay *accountSyncDelay;
+@property (nonatomic, retain) SCHSyncDelay *bookshelfSyncDelay;
+@property (nonatomic, retain) SCHSyncDelay *openBookSyncDelay;
+@property (nonatomic, retain) SCHSyncDelay *closeBookSyncDelay;
+@property (nonatomic, retain) SCHSyncDelay *wishlistSyncDelay;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 @property (nonatomic, assign) BOOL flushSaveMode;
 
@@ -88,12 +87,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 @implementation SCHSyncManager
 
-@synthesize lastFirstSyncEnded;
-@synthesize firstSyncAfterDelay;
-@synthesize lastBookshelfSyncEnded;
-@synthesize bookshelfSyncAfterDelay;
-@synthesize lastWishListSyncEnded;
-@synthesize wishListSyncAfterDelay;
+@synthesize accountSyncDelay;
+@synthesize bookshelfSyncDelay;
+@synthesize openBookSyncDelay;
+@synthesize closeBookSyncDelay;
+@synthesize wishlistSyncDelay;
 @synthesize timer;
 @synthesize queue;
 @synthesize managedObjectContext;
@@ -153,7 +151,12 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         topRatingsSyncComponent.delegate = self;
 #endif
         backgroundTaskIdentifier = UIBackgroundTaskInvalid;	
-        
+
+        accountSyncDelay = [[SCHSyncDelay alloc] init];
+        bookshelfSyncDelay = [[SCHSyncDelay alloc] init];
+        openBookSyncDelay = [[SCHSyncDelay alloc] init];
+        closeBookSyncDelay = [[SCHSyncDelay alloc] init];
+        wishlistSyncDelay = [[SCHSyncDelay alloc] init];
         flushSaveMode = NO;
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -185,10 +188,12 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
     [self endBackgroundTask];
-    
-    [lastFirstSyncEnded release], lastFirstSyncEnded = nil;
-    [lastBookshelfSyncEnded release], lastBookshelfSyncEnded = nil;
-    [lastWishListSyncEnded release], lastWishListSyncEnded = nil;
+
+    [accountSyncDelay release], accountSyncDelay = nil;
+    [bookshelfSyncDelay release], bookshelfSyncDelay = nil;
+    [openBookSyncDelay release], openBookSyncDelay = nil;
+    [closeBookSyncDelay release], closeBookSyncDelay = nil;
+    [wishlistSyncDelay release], wishlistSyncDelay = nil;
 	[timer release], timer = nil;
 	[queue release], queue = nil;
 	[profileSyncComponent release], profileSyncComponent = nil;
@@ -339,12 +344,11 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     [self.topRatingsSyncComponent resetSync];
 #endif
 
-    self.lastFirstSyncEnded = nil;
-    self.firstSyncAfterDelay = NO;
-    self.lastBookshelfSyncEnded = nil;
-    self.bookshelfSyncAfterDelay = NO;
-    self.lastWishListSyncEnded = nil;
-    self.wishListSyncAfterDelay = NO;
+    [self.accountSyncDelay clearSyncDelay];
+    [self.bookshelfSyncDelay clearSyncDelay];
+    [self.openBookSyncDelay clearSyncDelay];
+    [self.closeBookSyncDelay clearSyncDelay];
+    [self.wishlistSyncDelay clearSyncDelay];
     self.suspended = NO;
     
     [self endBackgroundTask];
@@ -373,22 +377,14 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
-    // reset if the date has been changed in a backward motion
-    if (self.lastFirstSyncEnded != nil &&
-        [self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
-        self.lastFirstSyncEnded = nil;
-    }
-    
     if (requireAuthentication) {
         [[SCHAuthenticationManager sharedAuthenticationManager] expireToken];
     }
 
     if ([self shouldSync] == YES) {	        
-        if (syncNow == YES || self.lastFirstSyncEnded == nil || 
-            [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
+        if (syncNow == YES || [self.accountSyncDelay shouldSync] == YES) {
             NSLog(@"Scheduling Account Sync");
-            
-            self.firstSyncAfterDelay = NO;
+            [self.accountSyncDelay syncStarted];
             
             [self addToQueue:self.profileSyncComponent];
 
@@ -396,12 +392,11 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 
             [self kickQueue];	
         } else {
-            self.firstSyncAfterDelay = YES;
+            [self.accountSyncDelay activateDelay];
         }
     } else  {
-        if (syncNow == YES || self.lastFirstSyncEnded == nil || 
-            [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
-            self.lastFirstSyncEnded = [NSDate date];
+        if (syncNow == YES || [self.accountSyncDelay shouldSync] == YES) {
+            [self.accountSyncDelay syncStarted];
     
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
@@ -409,6 +404,8 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
                                                                     object:self];		
             });
+        } else {
+            [self.accountSyncDelay activateDelay];
         }
     }
 }
@@ -500,19 +497,11 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 - (void)bookshelfSyncForced:(BOOL)syncNow
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
-    
-    // reset if the date has been changed in a backward motion
-    if (self.lastBookshelfSyncEnded != nil &&
-        [self.lastBookshelfSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
-        self.lastBookshelfSyncEnded = nil;
-    }
-    
+        
     if ([self shouldSync] == YES) {
-        if (syncNow == YES || self.lastBookshelfSyncEnded == nil ||
-            [self.lastBookshelfSyncEnded timeIntervalSinceNow] < kSCHLastBookshelfSyncInterval) {
+        if (syncNow == YES || [self.bookshelfSyncDelay shouldSync] == YES) {
             NSLog(@"Scheduling Bookshelf Sync");
-            
-            self.bookshelfSyncAfterDelay = NO;
+            [self.bookshelfSyncDelay syncStarted];
 
             [self addToQueue:self.bookshelfSyncComponent];
 
@@ -525,12 +514,11 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 
             [self kickQueue];
         } else {
-            self.bookshelfSyncAfterDelay = YES;
+            [self.bookshelfSyncDelay activateDelay];
         }
     } else {
-        if (syncNow == YES || self.lastBookshelfSyncEnded == nil ||
-            [self.lastBookshelfSyncEnded timeIntervalSinceNow] < kSCHLastBookshelfSyncInterval) {
-            self.lastBookshelfSyncEnded = [NSDate date];
+        if (syncNow == YES || [self.bookshelfSyncDelay shouldSync] == YES) {
+            [self.bookshelfSyncDelay syncStarted];
         
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification
@@ -540,6 +528,8 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification
                                                                     object:nil];
             });
+        } else {
+            [self.bookshelfSyncDelay activateDelay];
         }
     }
 }
@@ -634,24 +624,35 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
-    if ([self shouldSync] == YES) {	
-        NSLog(@"Scheduling Open Book");
-        
-        if (booksAssignment != nil && profileID != nil) {
-            NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment forProfile:profileID];
-            if (annotationContentItem != nil) {
-                [self.annotationSyncComponent addProfile:profileID 
-                                               withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];	
-                [self addToQueue:self.annotationSyncComponent];
-                
-                [self kickQueue];
+    if ([self shouldSync] == YES) {
+        if (syncNow == YES || [self.openBookSyncDelay shouldSync] == YES) {
+            NSLog(@"Scheduling Open Book");
+            [self.openBookSyncDelay syncStarted];
+            
+            if (booksAssignment != nil && profileID != nil) {
+                NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment forProfile:profileID];
+                if (annotationContentItem != nil) {
+                    [self.annotationSyncComponent addProfile:profileID
+                                                   withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
+                    [self addToQueue:self.annotationSyncComponent];
+
+                    [self kickQueue];
+                }
             }
+        } else {
+            [self.openBookSyncDelay activateDelay];
         }
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                                object:self];		        
-        });        
+        if (syncNow == YES || [self.openBookSyncDelay shouldSync] == YES) {
+            [self.openBookSyncDelay syncStarted];
+
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification
+                                                                    object:self];
+            });
+        } else {
+            [self.openBookSyncDelay activateDelay];
+        }
     }
 }
 
@@ -668,34 +669,45 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     } 
     
-    if ([self shouldSync] == YES) {	
-        NSLog(@"Scheduling Close Book");
-        
-        if (booksAssignment != nil && profileID != nil) {
-            NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment forProfile:profileID];
-            if (annotationContentItem != nil) {
-                [self.annotationSyncComponent addProfile:profileID 
-                                               withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];	
-                [self addToQueue:self.annotationSyncComponent];
+    if ([self shouldSync] == YES) {
+        if (syncNow == YES || [self.closeBookSyncDelay shouldSync] == YES) {
+            NSLog(@"Scheduling Close Book");
+            [self.closeBookSyncDelay syncStarted];
 
-                if ([self readingStatsActive] == YES) {
-                    [self addToQueue:self.readingStatsSyncComponent];
-                } else {
-                    NSLog(@"Reading Stats are OFF");
+            if (booksAssignment != nil && profileID != nil) {
+                NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment forProfile:profileID];
+                if (annotationContentItem != nil) {
+                    [self.annotationSyncComponent addProfile:profileID
+                                                   withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
+                    [self addToQueue:self.annotationSyncComponent];
+
+                    if ([self readingStatsActive] == YES) {
+                        [self addToQueue:self.readingStatsSyncComponent];
+                    } else {
+                        NSLog(@"Reading Stats are OFF");
+                    }
+
+                    [self kickQueue];	
                 }
-                
-                [self kickQueue];	
             }
+        } else {
+            [self.closeBookSyncDelay activateDelay];
         }
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
-                                                                object:self];
-            if ([self readingStatsActive] == YES) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
-                                                                    object:nil];
-            }
-        });
+        if (syncNow == YES || [self.closeBookSyncDelay shouldSync] == YES) {
+            [self.closeBookSyncDelay syncStarted];
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification
+                                                                    object:self];
+                if ([self readingStatsActive] == YES) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification
+                                                                        object:nil];
+                }
+            });
+        } else {
+            [self.closeBookSyncDelay activateDelay];
+        }
     }
 }
 
@@ -736,44 +748,37 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     return [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant];
 }
 
-- (void)wishListSync:(BOOL)syncNow
+- (void)wishListSyncForced:(BOOL)syncNow
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
-    
-    // reset if the date has been changed in a backward motion
-    if (self.lastWishListSyncEnded != nil &&
-        [self.lastWishListSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
-        self.lastWishListSyncEnded = nil;
-    }
-    
-//    if ([self wishListSyncActive] == YES) {
+
+    if ([self wishListSyncActive] == YES) {
         if ([self shouldSync] == YES) {
-            if (syncNow == YES || self.lastWishListSyncEnded == nil || 
-                [self.lastWishListSyncEnded timeIntervalSinceNow] < kSCHLastWishListSyncInterval) {
-                NSLog(@"Scheduling Wishlist Sync");  
-                
-                self.wishListSyncAfterDelay = NO;
-                
+            if (syncNow == YES || [self.wishlistSyncDelay shouldSync] == YES) {
+                NSLog(@"Scheduling Wishlist Sync");
+                [self.wishlistSyncDelay syncStarted];
+
                 [self addToQueue:self.wishListSyncComponent];
-                
-                [self kickQueue];	
+
+                [self kickQueue];
             } else {
-                self.wishListSyncAfterDelay = YES;                
+                [self.wishlistSyncDelay activateDelay];
             }
         } else {
-            if (syncNow == YES || self.lastWishListSyncEnded == nil || 
-                [self.lastWishListSyncEnded timeIntervalSinceNow] < kSCHLastWishListSyncInterval) {
-                self.lastWishListSyncEnded = [NSDate date];
-                
+            if (syncNow == YES || [self.wishlistSyncDelay shouldSync] == YES) {
+                [self.wishlistSyncDelay syncStarted];
+
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification 
-                                                                        object:self];		
-                });        
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHWishListSyncComponentDidCompleteNotification
+                                                                        object:self];
+                });
+            } else {
+                [self.wishlistSyncDelay activateDelay];
             }
         }
-//    } else {
-//        NSLog(@"Wishlists are OFF");
-//    }
+    } else {
+        NSLog(@"Wishlists are OFF");
+    }
 }
 
 #pragma mark - SCHComponent Delegate methods
@@ -794,19 +799,6 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 	}
 	
     [self removeFromQueue:(SCHSyncComponent *)component includeDependants:NO];
-
-    // the settings sync is the last component in the firstSync so signal it is complete
-    if ([component isKindOfClass:[SCHSettingsSyncComponent class]] == YES) {
-        self.lastFirstSyncEnded = [NSDate date];
-    }
-
-    if ([component isKindOfClass:[SCHBookshelfSyncComponent class]] == YES) {
-        self.lastBookshelfSyncEnded = [NSDate date];
-    }
-
-    if ([component isKindOfClass:[SCHWishListSyncComponent class]] == YES) {
-        self.lastWishListSyncEnded = [NSDate date];
-    }
 
 	[self kickQueue];
 }
@@ -964,12 +956,16 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 - (void)performDelayedSyncIfRequired
 {
     if (self.flushSaveMode == NO) {
-        if (self.firstSyncAfterDelay == YES) {
+        if (self.accountSyncDelay.delayActive == YES) {
             [self accountSyncForced:NO requireDeviceAuthentication:NO];
-        } else if (self.bookshelfSyncAfterDelay == YES) {
+        } else if (self.bookshelfSyncDelay.delayActive == YES) {
             [self bookshelfSyncForced:NO];
-        } else if (self.wishListSyncAfterDelay == YES) {
-            [self wishListSync:NO];
+        } else if (self.openBookSyncDelay.delayActive == YES) {
+            [self openBookSyncForced:NO booksAssignment:nil forProfile:nil];
+        } else if (self.closeBookSyncDelay.delayActive == YES) {
+            [self closeBookSyncForced:NO booksAssignment:nil forProfile:nil];
+        } else if (self.wishlistSyncDelay.delayActive == YES) {
+            [self wishListSyncForced:NO];
         }
     } 
 }
@@ -986,9 +982,11 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 {
     if (self.flushSaveMode == NO) {
         // force any delayed syncs to perform now
-        self.lastFirstSyncEnded = nil;
-        self.lastBookshelfSyncEnded = nil;
-        self.lastWishListSyncEnded = nil;
+        [self.accountSyncDelay clearLastSyncDate];
+        [self.bookshelfSyncDelay clearLastSyncDate];
+        [self.openBookSyncDelay clearLastSyncDate];
+        [self.closeBookSyncDelay clearLastSyncDate];
+        [self.wishlistSyncDelay clearLastSyncDate];
         
         [self performDelayedSyncIfRequired];
     }

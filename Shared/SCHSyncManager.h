@@ -46,7 +46,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication;
             booksAssignment:(SCHBooksAssignment *)booksAssignment
                  forProfile:(NSNumber *)profileID;
 - (void)recommendationSync;
-- (void)wishListSync:(BOOL)syncNow;
+- (void)wishListSyncForced:(BOOL)syncNow;
 
 // for populating Sample Store
 - (void)populateTestSampleStore;
