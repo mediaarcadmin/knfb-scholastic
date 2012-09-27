@@ -133,7 +133,7 @@
     
     NSURL *movieURL = [NSURL fileURLWithPath:[[NSBundle mainBundle]
                                               pathForResource:[NSString stringWithFormat:@"tour_video_%d", self.currentIndex]
-                                              ofType:@"m4v"]];
+                                              ofType:@"mov"]];
     
     self.currentMoviePlayer = [[[MPMoviePlayerController alloc] initWithContentURL:movieURL] autorelease];
     
@@ -146,7 +146,10 @@
     
     self.currentMoviePlayer.controlStyle = MPMovieControlStyleNone;
     self.currentMoviePlayer.shouldAutoplay = NO;
-    [self.currentMoviePlayer.view setFrame:CGRectMake(0, 0, 556, 382)];
+    //[self.currentMoviePlayer.view setFrame:CGRectMake(0, 0, 556, 382)];
+    CGFloat numViewPixelsToTrim  = 30.0f;
+    
+    [self.currentMoviePlayer.view setFrame:CGRectMake(0, -numViewPixelsToTrim/2.0f, 556, 382 + numViewPixelsToTrim)];
     self.currentMoviePlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     UIView *movieContainerView = [[UIView alloc] initWithFrame:CGRectMake(228, 158, 556, 382)];
