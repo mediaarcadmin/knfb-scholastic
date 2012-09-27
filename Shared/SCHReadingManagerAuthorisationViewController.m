@@ -6,6 +6,7 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "SCHReadingManagerAuthorisationViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "LambdaAlert.h"
@@ -21,7 +22,9 @@
 typedef enum  {
     SCHReadingManagerAlertNone,
     SCHReadingManagerAlertMalformedEmail,
-    SCHReadingManagerAlertAuthenticationFailure
+    SCHReadingManagerAlertAuthenticationFailure,
+    SCHReadingManagerAlertWrongUser,
+    SCHReadingManagerAlertAuthenticationUnavailable
 } SCHReadingManagerAlert;
 
 @interface SCHReadingManagerAuthorisationViewController () <UITextFieldDelegate>
@@ -105,14 +108,26 @@ typedef enum  {
 {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
-    
-    self.messageLabel.alpha = 1;
 
+    self.messageLabel.alpha = 1;
+    
     switch (alert) {
         case SCHReadingManagerAlertNone:
             self.messageLabel.alpha = 0;
             break;
-            
+        case SCHReadingManagerAlertMalformedEmail:
+            self.messageLabel.text = NSLocalizedString(@"Please enter a valid e-mail address.", nil);
+            break;
+        case SCHReadingManagerAlertAuthenticationFailure:
+            self.messageLabel.text = NSLocalizedString(@"The e-mail address or password you entered does not match your account. Please try again.", nil);
+            break;
+        case SCHReadingManagerAlertWrongUser:
+            self.messageLabel.text = NSLocalizedString(@"This e-mail address does not match your account. Please try again.", nil);
+            break;
+        case SCHReadingManagerAlertAuthenticationUnavailable:
+            self.messageLabel.text = NSLocalizedString(@"Password authentication is currently unavailable. Please try again.", nil);
+
+            break;
         default:
             break;
     }
@@ -124,30 +139,21 @@ typedef enum  {
 
 - (IBAction)validate:(id)sender
 {
+    [self setAlert:SCHReadingManagerAlertNone];
+    [self.view endEditing:YES];
+
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else {
-        if ([[usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Incorrect E-mail Address", @"error alert title")
-                                  message:NSLocalizedString(@"Please enter a valid e-mail address.", @"error alert title")];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-            [alert show];
-            [alert release];                
-        } else if ([usernameField.text isValidEmailAddress] == NO) {
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Incorrect E-mail Address", @"error alert title")
-                                  message:NSLocalizedString(@"E-mail address is not valid. Please try again.", @"error alert title")];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-            [alert show];
-            [alert release];
-        } else if ([[passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Incorrect Password", @"error alert title")
-                                  message:NSLocalizedString(@"Please enter the password", @"error alert title")];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-            [alert show];
-            [alert release];                
+        if ([[self.usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+            [self setAlert:SCHReadingManagerAlertMalformedEmail];
+            self.passwordField.text = @"";
+        } else if ([self.usernameField.text isValidEmailAddress] == NO) {
+            [self setAlert:SCHReadingManagerAlertMalformedEmail];
+            self.passwordField.text = @"";
+        } else if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+            [self setAlert:SCHReadingManagerAlertAuthenticationFailure];
+            self.passwordField.text = @"";
         } else if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
@@ -158,8 +164,6 @@ typedef enum  {
         } else {
             [self.spinner startAnimating];
             [self.validateButton setEnabled:NO];
-            [self.view endEditing:YES];
-            self.messageLabel.alpha = 0;
             
             NSString *username = self.usernameField.text;
             
@@ -169,8 +173,9 @@ typedef enum  {
                                                validateBlock:^(NSString *pToken, NSError *error) {
                                                    if (error != nil) {
                                                        self.passwordField.text = @"";
-                                                       self.messageLabel.text = NSLocalizedString(@"The e-mail address or password you entered does not match your account. Please try again.", nil);
-                                                       self.messageLabel.alpha = 1;
+                                                       [self setAlert:SCHReadingManagerAlertAuthenticationFailure];
+                                                       [self.spinner stopAnimating];
+                                                       [self.validateButton setEnabled:YES];
                                                    } else {
                                                        // check this username isnt for a different user
                                                        [self.accountVerifier verifyAccount:pToken
@@ -196,23 +201,19 @@ typedef enum  {
                                                                               [self.appController presentReadingManager];
                                                                           } else {
                                                                               self.passwordField.text = @"";
+                                                                              [self setAlert:SCHReadingManagerAlertWrongUser];
                                                                           }
-                                                                      }];                                                            
+                                                                          
+                                                                          [self.spinner stopAnimating];
+                                                                          [self.validateButton setEnabled:YES];
+                                                                      }];
                                                    }
-                                                   
-                                                   [self.spinner stopAnimating];
-                                                   [self.validateButton setEnabled:YES];
                                                }];
             
             if (!canValidate) {
-                LambdaAlert *alert = [[LambdaAlert alloc]
-                                      initWithTitle:NSLocalizedString(@"Password authentication unavailable", @"")
-                                      message:NSLocalizedString(@"Please try again in a moment.", @"")];
-                [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
-                [alert show];
-                [alert release];
+                [self setAlert:SCHReadingManagerAlertAuthenticationUnavailable];
                 [self.spinner stopAnimating];
-                self.messageLabel.alpha = 0;
+                self.passwordField.text = @"";
                 [self.validateButton setEnabled:YES];
             }
         }            
