@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DDPageControl.h"
+#import "SCHHitTestExtendingView.h"
 
 typedef enum {
     SCHTourStepsViewTypeSingleImage = 0,
@@ -18,7 +20,8 @@ typedef enum {
 @interface SCHTourStepsViewController : UIViewController <UIScrollViewDelegate>
 
 @property (retain, nonatomic) IBOutlet UIScrollView *mainScrollView;
-@property (retain, nonatomic) IBOutlet UIPageControl *pageControl;
 @property (retain, nonatomic) IBOutlet UIButton *backButton;
+@property (retain, nonatomic) DDPageControl *pageControl;
+@property (retain, nonatomic) IBOutlet SCHHitTestExtendingView *forwardingView;
 
 @end

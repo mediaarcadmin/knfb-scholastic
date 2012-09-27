@@ -4784,6 +4784,16 @@
 		F86DEC5413A21F2600053999 /* sfx_win_y.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC2113A21F2600053999 /* sfx_win_y.mp3 */; };
 		F86DEC5613A21F2600053999 /* sfx_winround.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC2213A21F2600053999 /* sfx_winround.mp3 */; };
 		F86DEC5813A21F2600053999 /* sfx_youReveal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC2313A21F2600053999 /* sfx_youReveal.mp3 */; };
+		F875C33616135061008DBBDA /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F875C33516135061008DBBDA /* DDPageControl.m */; };
+		F875C33716135061008DBBDA /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F875C33516135061008DBBDA /* DDPageControl.m */; };
+		F875C33816135061008DBBDA /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F875C33516135061008DBBDA /* DDPageControl.m */; };
+		F875C33916135061008DBBDA /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F875C33516135061008DBBDA /* DDPageControl.m */; };
+		F875C33A16135061008DBBDA /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F875C33516135061008DBBDA /* DDPageControl.m */; };
+		F875C33D16145135008DBBDA /* SCHHitTestExtendingView.m in Sources */ = {isa = PBXBuildFile; fileRef = F875C33C16145135008DBBDA /* SCHHitTestExtendingView.m */; };
+		F875C33E16145135008DBBDA /* SCHHitTestExtendingView.m in Sources */ = {isa = PBXBuildFile; fileRef = F875C33C16145135008DBBDA /* SCHHitTestExtendingView.m */; };
+		F875C33F16145135008DBBDA /* SCHHitTestExtendingView.m in Sources */ = {isa = PBXBuildFile; fileRef = F875C33C16145135008DBBDA /* SCHHitTestExtendingView.m */; };
+		F875C34016145135008DBBDA /* SCHHitTestExtendingView.m in Sources */ = {isa = PBXBuildFile; fileRef = F875C33C16145135008DBBDA /* SCHHitTestExtendingView.m */; };
+		F875C34116145135008DBBDA /* SCHHitTestExtendingView.m in Sources */ = {isa = PBXBuildFile; fileRef = F875C33C16145135008DBBDA /* SCHHitTestExtendingView.m */; };
 		F878D6AC134498FB00DDB98B /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */; };
 		F878D6AE134498FB00DDB98B /* SCHDownloadBookFileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A5134498FB00DDB98B /* SCHDownloadBookFileOperation.m */; };
 		F878D6B0134498FB00DDB98B /* SCHRightsParsingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A7134498FB00DDB98B /* SCHRightsParsingOperation.m */; };
@@ -5144,22 +5154,6 @@
 		F8FE33A016131423005B6AA8 /* bluetourbutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE339A16131423005B6AA8 /* bluetourbutton@2x.png */; };
 		F8FE33A116131423005B6AA8 /* bluetourbutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE339A16131423005B6AA8 /* bluetourbutton@2x.png */; };
 		F8FE33A216131423005B6AA8 /* bluetourbutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE339A16131423005B6AA8 /* bluetourbutton@2x.png */; };
-		F8FE33A7161318E9005B6AA8 /* tourprogressfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A3161318E9005B6AA8 /* tourprogressfilled.png */; };
-		F8FE33A8161318E9005B6AA8 /* tourprogressfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A3161318E9005B6AA8 /* tourprogressfilled.png */; };
-		F8FE33A9161318E9005B6AA8 /* tourprogressfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A3161318E9005B6AA8 /* tourprogressfilled.png */; };
-		F8FE33AA161318E9005B6AA8 /* tourprogressfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A3161318E9005B6AA8 /* tourprogressfilled.png */; };
-		F8FE33AB161318E9005B6AA8 /* tourprogressfilled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A4161318E9005B6AA8 /* tourprogressfilled@2x.png */; };
-		F8FE33AC161318E9005B6AA8 /* tourprogressfilled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A4161318E9005B6AA8 /* tourprogressfilled@2x.png */; };
-		F8FE33AD161318E9005B6AA8 /* tourprogressfilled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A4161318E9005B6AA8 /* tourprogressfilled@2x.png */; };
-		F8FE33AE161318E9005B6AA8 /* tourprogressfilled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A4161318E9005B6AA8 /* tourprogressfilled@2x.png */; };
-		F8FE33AF161318E9005B6AA8 /* tourprogressunfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A5161318E9005B6AA8 /* tourprogressunfilled.png */; };
-		F8FE33B0161318E9005B6AA8 /* tourprogressunfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A5161318E9005B6AA8 /* tourprogressunfilled.png */; };
-		F8FE33B1161318E9005B6AA8 /* tourprogressunfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A5161318E9005B6AA8 /* tourprogressunfilled.png */; };
-		F8FE33B2161318E9005B6AA8 /* tourprogressunfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A5161318E9005B6AA8 /* tourprogressunfilled.png */; };
-		F8FE33B3161318E9005B6AA8 /* tourprogressunfilled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A6161318E9005B6AA8 /* tourprogressunfilled@2x.png */; };
-		F8FE33B4161318E9005B6AA8 /* tourprogressunfilled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A6161318E9005B6AA8 /* tourprogressunfilled@2x.png */; };
-		F8FE33B5161318E9005B6AA8 /* tourprogressunfilled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A6161318E9005B6AA8 /* tourprogressunfilled@2x.png */; };
-		F8FE33B6161318E9005B6AA8 /* tourprogressunfilled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FE33A6161318E9005B6AA8 /* tourprogressunfilled@2x.png */; };
 		F8FF8D81139513B000CD7B73 /* OldDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */; };
 		F8FF8D83139513B000CD7B73 /* YoungDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */; };
 /* End PBXBuildFile section */
@@ -7113,6 +7107,10 @@
 		F86DEC2113A21F2600053999 /* sfx_win_y.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_win_y.mp3; sourceTree = "<group>"; };
 		F86DEC2213A21F2600053999 /* sfx_winround.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_winround.mp3; sourceTree = "<group>"; };
 		F86DEC2313A21F2600053999 /* sfx_youReveal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_youReveal.mp3; sourceTree = "<group>"; };
+		F875C33416135061008DBBDA /* DDPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDPageControl.h; path = Shared/Libraries/Submodules/DDPageControl/Classes/DDPageControl.h; sourceTree = "<group>"; };
+		F875C33516135061008DBBDA /* DDPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDPageControl.m; path = Shared/Libraries/Submodules/DDPageControl/Classes/DDPageControl.m; sourceTree = "<group>"; };
+		F875C33B16145135008DBBDA /* SCHHitTestExtendingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHitTestExtendingView.h; path = Shared/SCHHitTestExtendingView.h; sourceTree = "<group>"; };
+		F875C33C16145135008DBBDA /* SCHHitTestExtendingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHitTestExtendingView.m; path = Shared/SCHHitTestExtendingView.m; sourceTree = "<group>"; };
 		F878D6A2134498FB00DDB98B /* SCHBookURLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookURLRequestOperation.h; path = Shared/SCHBookURLRequestOperation.h; sourceTree = "<group>"; };
 		F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookURLRequestOperation.m; path = Shared/SCHBookURLRequestOperation.m; sourceTree = "<group>"; };
 		F878D6A4134498FB00DDB98B /* SCHDownloadBookFileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDownloadBookFileOperation.h; path = Shared/SCHDownloadBookFileOperation.h; sourceTree = "<group>"; };
@@ -7301,10 +7299,6 @@
 		F8FE33901613107C005B6AA8 /* greytourbutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "greytourbutton@2x.png"; path = "Resources/UIAssets/greytourbutton@2x.png"; sourceTree = "<group>"; };
 		F8FE339916131423005B6AA8 /* bluetourbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bluetourbutton.png; path = Resources/UIAssets/bluetourbutton.png; sourceTree = "<group>"; };
 		F8FE339A16131423005B6AA8 /* bluetourbutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bluetourbutton@2x.png"; path = "Resources/UIAssets/bluetourbutton@2x.png"; sourceTree = "<group>"; };
-		F8FE33A3161318E9005B6AA8 /* tourprogressfilled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tourprogressfilled.png; path = Resources/UIAssets/tourprogressfilled.png; sourceTree = "<group>"; };
-		F8FE33A4161318E9005B6AA8 /* tourprogressfilled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tourprogressfilled@2x.png"; path = "Resources/UIAssets/tourprogressfilled@2x.png"; sourceTree = "<group>"; };
-		F8FE33A5161318E9005B6AA8 /* tourprogressunfilled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tourprogressunfilled.png; path = Resources/UIAssets/tourprogressunfilled.png; sourceTree = "<group>"; };
-		F8FE33A6161318E9005B6AA8 /* tourprogressunfilled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tourprogressunfilled@2x.png"; path = "Resources/UIAssets/tourprogressunfilled@2x.png"; sourceTree = "<group>"; };
 		F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "OldDictionary-additions.css"; path = "Resources/OldDictionary-additions.css"; sourceTree = "<group>"; };
 		F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "YoungDictionary-additions.css"; path = "Resources/YoungDictionary-additions.css"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -8129,6 +8123,8 @@
 				F8067573160A24B000F5024A /* SCHTourFullScreenImageViewController.h */,
 				F8067574160A24B000F5024A /* SCHTourFullScreenImageViewController.m */,
 				F8067575160A24B000F5024A /* SCHTourFullScreenImageViewController.xib */,
+				F875C33B16145135008DBBDA /* SCHHitTestExtendingView.h */,
+				F875C33C16145135008DBBDA /* SCHHitTestExtendingView.m */,
 			);
 			name = "Starting View";
 			sourceTree = "<group>";
@@ -10058,6 +10054,7 @@
 		C9CEF2F11339F77200FB5BE0 /* Submodules */ = {
 			isa = PBXGroup;
 			children = (
+				F875C33316135056008DBBDA /* DDPageControl */,
 				F8E2D3CE13B9CB55001E207B /* TTTAttributedLabel */,
 				C9B08A751344D34F001963D0 /* libKNFBReader */,
 				C96C198315C95C7E002EBEBB /* OCMock.xcodeproj */,
@@ -10509,6 +10506,15 @@
 			path = Resources/Sounds;
 			sourceTree = "<group>";
 		};
+		F875C33316135056008DBBDA /* DDPageControl */ = {
+			isa = PBXGroup;
+			children = (
+				F875C33416135061008DBBDA /* DDPageControl.h */,
+				F875C33516135061008DBBDA /* DDPageControl.m */,
+			);
+			name = DDPageControl;
+			sourceTree = "<group>";
+		};
 		F87FE00715BE93390051C6E8 /* Reading Challenge */ = {
 			isa = PBXGroup;
 			children = (
@@ -10743,10 +10749,6 @@
 		F8E9334D1607410F00F68FCC /* Tour Views */ = {
 			isa = PBXGroup;
 			children = (
-				F8FE33A3161318E9005B6AA8 /* tourprogressfilled.png */,
-				F8FE33A4161318E9005B6AA8 /* tourprogressfilled@2x.png */,
-				F8FE33A5161318E9005B6AA8 /* tourprogressunfilled.png */,
-				F8FE33A6161318E9005B6AA8 /* tourprogressunfilled@2x.png */,
 				F8FE339916131423005B6AA8 /* bluetourbutton.png */,
 				F8FE339A16131423005B6AA8 /* bluetourbutton@2x.png */,
 				F8FE338F1613107C005B6AA8 /* greytourbutton.png */,
@@ -11905,10 +11907,6 @@
 				F8FE33951613107C005B6AA8 /* greytourbutton@2x.png in Resources */,
 				F8FE339B16131423005B6AA8 /* bluetourbutton.png in Resources */,
 				F8FE339F16131423005B6AA8 /* bluetourbutton@2x.png in Resources */,
-				F8FE33A7161318E9005B6AA8 /* tourprogressfilled.png in Resources */,
-				F8FE33AB161318E9005B6AA8 /* tourprogressfilled@2x.png in Resources */,
-				F8FE33AF161318E9005B6AA8 /* tourprogressunfilled.png in Resources */,
-				F8FE33B3161318E9005B6AA8 /* tourprogressunfilled@2x.png in Resources */,
 				C91CA04816145BAA0074A5DA /* tour_video_1.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -12777,10 +12775,6 @@
 				F8FE33961613107C005B6AA8 /* greytourbutton@2x.png in Resources */,
 				F8FE339C16131423005B6AA8 /* bluetourbutton.png in Resources */,
 				F8FE33A016131423005B6AA8 /* bluetourbutton@2x.png in Resources */,
-				F8FE33A8161318E9005B6AA8 /* tourprogressfilled.png in Resources */,
-				F8FE33AC161318E9005B6AA8 /* tourprogressfilled@2x.png in Resources */,
-				F8FE33B0161318E9005B6AA8 /* tourprogressunfilled.png in Resources */,
-				F8FE33B4161318E9005B6AA8 /* tourprogressunfilled@2x.png in Resources */,
 				C91CA04916145BAA0074A5DA /* tour_video_1.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -13404,10 +13398,6 @@
 				F8FE33971613107C005B6AA8 /* greytourbutton@2x.png in Resources */,
 				F8FE339D16131423005B6AA8 /* bluetourbutton.png in Resources */,
 				F8FE33A116131423005B6AA8 /* bluetourbutton@2x.png in Resources */,
-				F8FE33A9161318E9005B6AA8 /* tourprogressfilled.png in Resources */,
-				F8FE33AD161318E9005B6AA8 /* tourprogressfilled@2x.png in Resources */,
-				F8FE33B1161318E9005B6AA8 /* tourprogressunfilled.png in Resources */,
-				F8FE33B5161318E9005B6AA8 /* tourprogressunfilled@2x.png in Resources */,
 				C91CA04A16145BAA0074A5DA /* tour_video_1.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -14029,10 +14019,6 @@
 				F8FE33981613107C005B6AA8 /* greytourbutton@2x.png in Resources */,
 				F8FE339E16131423005B6AA8 /* bluetourbutton.png in Resources */,
 				F8FE33A216131423005B6AA8 /* bluetourbutton@2x.png in Resources */,
-				F8FE33AA161318E9005B6AA8 /* tourprogressfilled.png in Resources */,
-				F8FE33AE161318E9005B6AA8 /* tourprogressfilled@2x.png in Resources */,
-				F8FE33B2161318E9005B6AA8 /* tourprogressunfilled.png in Resources */,
-				F8FE33B6161318E9005B6AA8 /* tourprogressunfilled@2x.png in Resources */,
 				C91CA04B16145BAA0074A5DA /* tour_video_1.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -14488,6 +14474,8 @@
 				F888C3FD16071E6300256F60 /* SCHTourStartViewController.m in Sources */,
 				F83F3D531609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */,
 				F8067576160A24B000F5024A /* SCHTourFullScreenImageViewController.m in Sources */,
+				F875C33616135061008DBBDA /* DDPageControl.m in Sources */,
+				F875C33D16145135008DBBDA /* SCHHitTestExtendingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14914,6 +14902,8 @@
 				527ABDF51607708600DE2893 /* SCHMakeNullNilTests.m in Sources */,
 				527ABDF6160771B200DE2893 /* SCHMakeNullNil.m in Sources */,
 				527ABDF7160771C600DE2893 /* SCHTourStartViewController.m in Sources */,
+				F875C33816135061008DBBDA /* DDPageControl.m in Sources */,
+				F875C33F16145135008DBBDA /* SCHHitTestExtendingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15335,6 +15325,8 @@
 				F83F3D541609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */,
 				F8067577160A24B000F5024A /* SCHTourFullScreenImageViewController.m in Sources */,
 				F86904EC1612F5DD0098E735 /* SCHTopRatingsSyncComponent.m in Sources */,
+				F875C33716135061008DBBDA /* DDPageControl.m in Sources */,
+				F875C33E16145135008DBBDA /* SCHHitTestExtendingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15756,6 +15748,8 @@
 				F83F3D551609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */,
 				F8067578160A24B000F5024A /* SCHTourFullScreenImageViewController.m in Sources */,
 				F86904ED1612F5DE0098E735 /* SCHTopRatingsSyncComponent.m in Sources */,
+				F875C33916135061008DBBDA /* DDPageControl.m in Sources */,
+				F875C34016145135008DBBDA /* SCHHitTestExtendingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16177,6 +16171,8 @@
 				F83F3D561609CF9F00DE35F0 /* SCHTourStepsViewController.m in Sources */,
 				F8067579160A24B100F5024A /* SCHTourFullScreenImageViewController.m in Sources */,
 				F86904EE1612F5DF0098E735 /* SCHTopRatingsSyncComponent.m in Sources */,
+				F875C33A16135061008DBBDA /* DDPageControl.m in Sources */,
+				F875C34116145135008DBBDA /* SCHHitTestExtendingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
