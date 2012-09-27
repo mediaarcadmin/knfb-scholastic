@@ -38,6 +38,7 @@
 @synthesize rightView;
 @synthesize currentMoviePlayer;
 @synthesize backButton;
+@synthesize forwardingView;
 
 - (void)dealloc
 {
@@ -49,6 +50,7 @@
 
 - (void)releaseViewObjects
 {
+    [forwardingView release], forwardingView = nil;
     [pageControl release], pageControl = nil;
     [mainScrollView release], mainScrollView = nil;
     [currentView release], currentView = nil;
@@ -72,6 +74,8 @@
 {
     [super viewDidLoad];
     
+    self.forwardingView.forwardedView = self.mainScrollView;
+    
     self.tourData = [NSArray arrayWithContentsOfFile:
                      [[NSBundle mainBundle] pathForResource:@"TourData"
                                                      ofType:@"plist"]
@@ -79,8 +83,23 @@
     
     
     self.currentIndex = 0;
+    
+    self.pageControl = [[[DDPageControl alloc] initWithType:DDPageControlTypeOnFullOffFull] autorelease];
+    self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
+    
     [self.pageControl setNumberOfPages:self.tourData.count];
     [self.pageControl setCurrentPage:self.currentIndex];
+    
+    [self.pageControl setFrame:CGRectMake(439, 678, 145, 66)];
+    [self.pageControl setOnColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.8]];
+    [self.pageControl setOffColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.4]];
+    [self.pageControl setIndicatorDiameter:7.0f];
+    [self.pageControl setIndicatorSpace:12.0f];
+    [self.pageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+    
+    [self.view addSubview:self.pageControl];
+    
     [self setupScrollViewForIndex:self.currentIndex];
     
     UIImage *stretchedBackImage = [[UIImage imageNamed:@"bluetourbutton"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
@@ -97,8 +116,8 @@
         BOOL hasNewMethod = [UIPageControl instancesRespondToSelector:@selector(setPageIndicatorTintColor:)];
 
         if (hasNewMethod) {
-            //[[UIPageControl appearance] setPageIndicatorTintColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.4]];
-            //[[UIPageControl appearance] setCurrentPageIndicatorTintColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.8]];
+            //[[UIPageControl appearance] setPageIndicatorTintColor:];
+            //[[UIPageControl appearance] setCurrentPageIndicatorTintColor:];
         }
     }
 
@@ -408,7 +427,7 @@
 
 #pragma mark - UIPageControl
 
-- (IBAction)pageControlValueChanged:(UIPageControl *)sender {
+- (IBAction)pageControlValueChanged:(DDPageControl *)sender {
     
     NSLog(@"Setting page to %d", sender.currentPage);
     self.currentIndex = sender.currentPage;
