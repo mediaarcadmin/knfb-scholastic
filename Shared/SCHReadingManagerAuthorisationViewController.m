@@ -18,6 +18,7 @@
 #import "SCHVersionDownloadManager.h"
 #import "NSString+EmailValidation.h"
 #import "SFHFKeychainUtils.h"
+#import "SCHAuthenticationManager.h"
 
 typedef enum  {
     SCHReadingManagerAlertNone,
@@ -167,7 +168,7 @@ typedef enum  {
             
             NSString *username = self.usernameField.text;
             
-            BOOL canValidate = [self.accountValidation validateWithUserName:username
+            BOOL canValidate = [[SCHAuthenticationManager sharedAuthenticationManager] validateWithUserName:username
                                                 withPassword:passwordField.text
                                               updatePassword:NO
                                                validateBlock:^(NSString *pToken, NSError *error) {

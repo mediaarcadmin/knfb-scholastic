@@ -262,6 +262,17 @@ NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
     }
 }
 
+- (BOOL)validateWithUserName:(NSString *)username
+                withPassword:(NSString *)password
+              updatePassword:(BOOL)setUpdatePassword
+               validateBlock:(ValidateBlock)aValidateBlock
+{
+    return [self.accountValidation validateWithUserName:username
+                                           withPassword:password
+                                         updatePassword:setUpdatePassword
+                                          validateBlock:aValidateBlock];
+}
+
 - (BOOL)hasUsernameAndPassword
 {
     BOOL ret = NO;

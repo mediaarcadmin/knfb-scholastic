@@ -62,6 +62,11 @@ extern NSString * const kSCHAuthenticationManagerServiceName;
                 failureBlock:(SCHAuthenticationFailureBlock)failureBlock
  waitUntilVersionCheckIsDone:(BOOL)wait;
 
+- (BOOL)validateWithUserName:(NSString *)username
+                withPassword:(NSString *)password
+              updatePassword:(BOOL)setUpdatePassword
+               validateBlock:(ValidateBlock)aValidateBlock;
+
 // authenticateWithSuccessBlock:failureBlock: is effectively re-entrant
 // success and failure blocks are nested if authentication is already taking place
 - (void)authenticateWithSuccessBlock:(SCHAuthenticationSuccessBlock)successBlock
