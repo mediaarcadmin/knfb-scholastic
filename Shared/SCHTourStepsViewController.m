@@ -399,13 +399,13 @@
             // button
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             
-            UIImage *stretchedBackImage = [[UIImage imageNamed:@"greytourbutton"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+            UIImage *stretchedBackImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
             
             [button setBackgroundImage:stretchedBackImage forState:UIControlStateNormal];
             [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
             [button.titleLabel setTextColor:[UIColor whiteColor]];
 
-            [button setFrame:CGRectMake(394, 552, 240, 37)];
+            [button setFrame:CGRectMake(394, 552, 240, 34)];
             [button setTitle:@"Sign In" forState:UIControlStateNormal];
             // FIXME: styling
             [button addTarget:self action:@selector(signIn:) forControlEvents:UIControlEventTouchUpInside];

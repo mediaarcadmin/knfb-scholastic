@@ -22,7 +22,15 @@
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
-    return self.forwardedView;
+
+    UIView *superView = [super hitTest:point withEvent:event];
+    
+    if (superView == self)
+    {
+        return self.forwardedView;
+    }
+    
+    return superView;
 }
 
 - (void)dealloc
