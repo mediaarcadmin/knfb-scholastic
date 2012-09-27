@@ -99,14 +99,14 @@
     //NSLog(@"Request: %@",request);
     BOOL ret = YES;
     
-        NSDictionary *parameters = [[request URL] queryParameters];
-        NSString *cmd = [parameters objectForKey:@"cmd"];
+        NSString *path = [[request URL] path];
         
-        if ([cmd isEqualToString:@"bookshelfSetupDidCompleteWithSuccess"] == YES) {
+        if ([path isEqualToString:@"/home"]) {
             ret = NO;
             
             [self.appController presentSettings];
-        }    
+        }
+    
     return(ret);
 }
 
