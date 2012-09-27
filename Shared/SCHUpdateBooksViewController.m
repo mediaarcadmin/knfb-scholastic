@@ -41,7 +41,6 @@
     [booksTable release], booksTable = nil;
     [updateBooksButton release], updateBooksButton = nil;
     [estimatedDownloadTimeLabel release], estimatedDownloadTimeLabel = nil;
-    [super releaseViewObjects];
 }
 
 - (void)dealloc
@@ -57,7 +56,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setButtonBackground:self.updateBooksButton];
 
     self.booksTable.layer.cornerRadius = 10;
     self.booksTable.layer.borderWidth = 1;

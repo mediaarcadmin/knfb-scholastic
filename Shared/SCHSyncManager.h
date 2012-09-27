@@ -14,7 +14,7 @@
 // Constants
 extern NSString * const SCHSyncManagerDidCompleteNotification;
 
-@class SCHUserContentItem;
+@class SCHBooksAssignment;
 
 @interface SCHSyncManager : NSObject <SCHComponentDelegate>
 {	
@@ -32,20 +32,26 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 
 - (void)resetSync;
 - (void)flushSyncQueue;
-- (BOOL)havePerformedFirstSyncUpToBooks;
+- (BOOL)havePerformedAccountSync;
 
-- (void)firstSync:(BOOL)syncNow requireDeviceAuthentication:(BOOL)requireAuthentication;
+- (void)accountSyncForced:(BOOL)syncNow
+requireDeviceAuthentication:(BOOL)requireAuthentication;
 - (void)performFlushSaves;
-- (void)profileSync;
-- (void)bookshelfSync;
-- (void)openDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
-- (void)closeDocumentSync:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
+- (void)passwordSync;
+- (void)bookshelfSyncForced:(BOOL)syncNow;
+- (void)openBookSyncForced:(BOOL)syncNow
+           booksAssignment:(SCHBooksAssignment *)booksAssignment
+                forProfile:(NSNumber *)profileID;
+- (void)closeBookSyncForced:(BOOL)syncNow
+            booksAssignment:(SCHBooksAssignment *)booksAssignment
+                 forProfile:(NSNumber *)profileID;
 - (void)recommendationSync;
-- (void)wishListSync:(BOOL)syncNow;
+- (void)wishListSyncForced:(BOOL)syncNow;
 
 // for populating Sample Store
 - (void)populateTestSampleStore;
 - (void)populateSampleStore;
 - (BOOL)populateSampleStoreFromManifestEntries:(NSArray *)entries;
+- (BOOL)populateSampleStoreFromImport;
 
 @end

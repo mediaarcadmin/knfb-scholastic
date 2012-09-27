@@ -36,6 +36,12 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 static NSString* const devCertFilename = @"devcert.dat";
 static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 
+// Constants
+NSString * const kSCHLoginErrorDomain = @"LoginErrorDomain";
+NSInteger const kSCHLoginReachabilityError = 1000;
+NSString * const kSCHSamplesErrorDomain = @"SamplesErrorDomain";
+NSInteger const kSCHSamplesUnspecifiedError = 1000;
+
 @interface AppDelegate_Shared ()
 
 - (void)setupUserDefaults;
@@ -51,7 +57,6 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 @implementation AppDelegate_Shared
 
 @synthesize window;
-@synthesize startingViewController;
 @synthesize coreDataHelper;
 
 #pragma mark - Application lifecycle
@@ -59,7 +64,6 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 - (void)dealloc 
 {    
     [coreDataHelper release], coreDataHelper = nil;
-    [startingViewController release], startingViewController = nil;
     [window release], window = nil;
     [super dealloc];
 }
@@ -207,7 +211,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 - (void)setupUserDefaults
 {
     NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedFirstSyncUpToBooks,
+								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedAccountSync,
                                  [NSNumber numberWithInteger:0], kSCHUserDefaultsWelcomeViewShowCount,
                                  nil];
     
@@ -219,7 +223,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 // this is generally performed after de-registration
 - (NSArray *)clearableUserDefaults
 {
-    return [NSArray arrayWithObjects:kSCHUserDefaultsPerformedFirstSyncUpToBooks,
+    return [NSArray arrayWithObjects:kSCHUserDefaultsPerformedAccountSync,
             kSCHAuthenticationManagerUserKey,
             kSCHAuthenticationManagerDeviceKey,
             kSCHAuthenticationManagerUsername,
@@ -247,7 +251,10 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 - (void)applicationDidEnterBackground:(UIApplication *)application 
 {
     [self.coreDataHelper saveContext];
-    [[SCHSyncManager sharedSyncManager] wishListSync:NO];
+
+    [[SCHSyncManager sharedSyncManager] accountSyncForced:NO
+                              requireDeviceAuthentication:NO];
+    [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application 
@@ -255,6 +262,9 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
     // when we enter the foreground, check to see if the help and dictionary needs updating
     [[SCHHelpManager sharedHelpManager] checkIfHelpUpdateNeeded];
     [[SCHDictionaryDownloadManager sharedDownloadManager] checkIfDictionaryUpdateNeeded];
+
+    [[SCHSyncManager sharedSyncManager] accountSyncForced:NO
+                              requireDeviceAuthentication:NO];
 }
 
 #pragma mark - Application directory functions
@@ -308,7 +318,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
     [self suspendSyncingAndCancelProcessing];
     
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && 
-        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+        [[SCHSyncManager sharedSyncManager] havePerformedAccountSync]) {
         
         LambdaAlert *upgradeAlert = [[[LambdaAlert alloc]
                                       initWithTitle:NSLocalizedString(@"Upgrading, please wait", @"")
@@ -316,7 +326,7 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
         [upgradeAlert setSpinnerHidden:NO];
         [upgradeAlert show];
         
-        // Remove the username key so that the sign-in screen is presented by the startingviewcontroller
+        // Remove the username key so that the sign-in screen is presented after login
         // There should probably be a cleaner way to do this
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUsername];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -422,7 +432,8 @@ static NSString* const binaryDevCertFilename = @"bdevcert.dat";
 		return;
 	}
 	NSURL* supportDir = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-	NSURL* srcWmModelCert = [[[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"DRM"] 
+    NSURL *resourceURL = [[NSBundle mainBundle] resourceURL];
+	NSURL* srcWmModelCert = [[[resourceURL URLByAppendingPathComponent:@"DRM"]
                               URLByAppendingPathComponent:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone?@"iPhone":@"iPad")] 
                              URLByAppendingPathComponent:wmModelCertFilename]; 
 

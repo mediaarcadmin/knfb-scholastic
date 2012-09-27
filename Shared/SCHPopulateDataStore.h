@@ -36,4 +36,6 @@
 - (void)setAppStateForSample;
 - (void)setAppStateForStandard;
 
++ (BOOL)hasBooksToImport;
+
 @end

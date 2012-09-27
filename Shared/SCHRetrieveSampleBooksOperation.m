@@ -10,16 +10,13 @@
 
 #import "SCHRecommendationSyncComponent.h"
 #import "SCHRecommendationWebService.h"
-#import "SCHRecommendationProfile.h"
-#import "SCHRecommendationISBN.h"
 #import "SCHProfileItem.h"
 #import "SCHLibreAccessConstants.h"
 #import "SCHRecommendationConstants.h"
 #import "SCHRecommendationItem.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "BITAPIError.h" 
 #import "SCHContentMetadataItem.h"
-#import "SCHAppRecommendationItem.h"
 #import "SCHBookIdentifier.h"
 #import "SCHProfileSyncComponent.h"
 #import "SCHRetrieveRecommendationsForBooksOperation.h"
@@ -38,7 +35,7 @@
     if ([sampleBooks count] > 0) {
         NSMutableArray *sampleBooksObject = [NSMutableArray arrayWithCapacity:[sampleBooks count]];
         
-        for (SCHUserContentItem *item in sampleBooks) {
+        for (SCHBooksAssignment *item in sampleBooks) {
             SCHContentMetadataItem *contentMetadateItem = [[item ContentMetadataItem] anyObject];
             if (contentMetadateItem != nil) {
                 NSMutableDictionary *currentRecommendation = [NSMutableDictionary dictionary];

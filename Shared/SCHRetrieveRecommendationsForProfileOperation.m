@@ -10,18 +10,19 @@
 
 #import "SCHRecommendationSyncComponent.h"
 #import "SCHRecommendationWebService.h"
-#import "SCHRecommendationProfile.h"
+#import "SCHAppRecommendationProfile.h"
 #import "SCHRecommendationConstants.h"
 #import "BITAPIError.h" 
+#import "SCHMakeNullNil.h"
 
 @interface SCHRetrieveRecommendationsForProfileOperation ()
 
 - (void)syncRecommendationProfiles:(NSArray *)webRecommendationProfiles;
 - (NSArray *)localRecommendationProfiles;
 - (void)syncRecommendationProfile:(NSDictionary *)webRecommendationProfile 
-        withRecommendationProfile:(SCHRecommendationProfile *)localRecommendationProfile
+        withRecommendationProfile:(SCHAppRecommendationProfile *)localRecommendationProfile
                          syncDate:(NSDate *)syncDate;
-- (SCHRecommendationProfile *)recommendationProfile:(NSDictionary *)recommendationProfile
+- (SCHAppRecommendationProfile *)recommendationProfile:(NSDictionary *)recommendationProfile
                                            syncDate:(NSDate *)syncDate;
 
 @end
@@ -30,8 +31,12 @@
 
 - (void)main
 {
+#if !USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    NSAssert(YES, @"Something is very wrong we are using Top Ratings for profile recommendations");
+#endif
+
     @try {
-        NSArray *profiles = [self makeNullNil:[self.result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile]];
+        NSArray *profiles = makeNullNil([self.result objectForKey:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile]);
         if ([profiles count] > 0) {
             [self syncRecommendationProfiles:profiles];                                    
         }
@@ -76,7 +81,7 @@
 	NSEnumerator *localEnumerator = [localRecommendationProfilesArray objectEnumerator];			  			  
     
 	NSDictionary *webItem = [webEnumerator nextObject];
-	SCHRecommendationProfile *localItem = [localEnumerator nextObject];
+	SCHAppRecommendationProfile *localItem = [localEnumerator nextObject];
 	
 	while (webItem != nil || localItem != nil) {		            
         if (webItem == nil) {
@@ -91,10 +96,10 @@
 			break;			
 		}
 		
-        id webItemID =  [self makeNullNil:[webItem valueForKey:kSCHRecommendationWebServiceAge]];
+        id webItemID =  makeNullNil([webItem valueForKey:kSCHRecommendationWebServiceAge]);
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceAge];
 		
-        if (webItemID == nil || [SCHRecommendationProfile isValidAge:webItemID] == NO) {
+        if (webItemID == nil || [SCHAppRecommendationProfile isValidAge:webItemID] == NO) {
             webItem = nil;
         } else if (localItemID == nil) {
             localItem = nil;
@@ -137,7 +142,7 @@
 {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationProfile 
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationProfile
                                         inManagedObjectContext:self.backgroundThreadManagedObjectContext]];	
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHRecommendationWebServiceAge ascending:YES]]];
@@ -154,34 +159,34 @@
 }
 
 - (void)syncRecommendationProfile:(NSDictionary *)webRecommendationProfile 
-        withRecommendationProfile:(SCHRecommendationProfile *)localRecommendationProfile
+        withRecommendationProfile:(SCHAppRecommendationProfile *)localRecommendationProfile
                          syncDate:(NSDate *)syncDate
 {
     if (webRecommendationProfile != nil) {
-        localRecommendationProfile.age = [self makeNullNil:[webRecommendationProfile objectForKey:kSCHRecommendationWebServiceAge]];
+        localRecommendationProfile.age = makeNullNil([webRecommendationProfile objectForKey:kSCHRecommendationWebServiceAge]);
         localRecommendationProfile.fetchDate = syncDate;
         
-        [(SCHRecommendationSyncComponent *)self.syncComponent syncRecommendationItems:[self makeNullNil:[webRecommendationProfile objectForKey:kSCHRecommendationWebServiceItems]] 
+        [(SCHRecommendationSyncComponent *)self.syncComponent syncRecommendationItems:makeNullNil([webRecommendationProfile objectForKey:kSCHRecommendationWebServiceItems])
                                                               withRecommendationItems:localRecommendationProfile.recommendationItems
                                                                            insertInto:localRecommendationProfile
                                                                  managedObjectContext:self.backgroundThreadManagedObjectContext];
     }
 }
 
-- (SCHRecommendationProfile *)recommendationProfile:(NSDictionary *)webRecommendationProfile
-                                           syncDate:(NSDate *)syncDate
+- (SCHAppRecommendationProfile *)recommendationProfile:(NSDictionary *)webRecommendationProfile
+                                              syncDate:(NSDate *)syncDate
 {
-	SCHRecommendationProfile *ret = nil;
-	id recommendationAge =  [self makeNullNil:[webRecommendationProfile valueForKey:kSCHRecommendationWebServiceAge]];
+	SCHAppRecommendationProfile *ret = nil;
+	id recommendationAge =  makeNullNil([webRecommendationProfile valueForKey:kSCHRecommendationWebServiceAge]);
     
-	if (webRecommendationProfile != nil && [SCHRecommendationProfile isValidAge:recommendationAge] == YES) {
-        ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationProfile 
+	if (webRecommendationProfile != nil && [SCHAppRecommendationProfile isValidAge:recommendationAge] == YES) {
+        ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppRecommendationProfile
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];			
         
         ret.age = recommendationAge;
         ret.fetchDate = syncDate;
         
-        [(SCHRecommendationSyncComponent *)self.syncComponent syncRecommendationItems:[self makeNullNil:[webRecommendationProfile objectForKey:kSCHRecommendationWebServiceItems]] 
+        [(SCHRecommendationSyncComponent *)self.syncComponent syncRecommendationItems:makeNullNil([webRecommendationProfile objectForKey:kSCHRecommendationWebServiceItems])
                                                               withRecommendationItems:ret.recommendationItems
                                                                            insertInto:ret
                                                                  managedObjectContext:self.backgroundThreadManagedObjectContext];            

@@ -10,7 +10,6 @@
 
 #import "SCHProfileViewController_iPad.h"
 #import "SCHProfileViewController_iPhone.h"
-#import "SCHSetupBookshelvesViewController.h"
 #import "SCHDownloadDictionaryViewController.h"
 #import "SCHLoginPasswordViewController.h"
 #import "SCHCustomNavigationBar.h"
@@ -31,13 +30,12 @@
 #import "SCHDrmSession.h"
 #import "SCHSampleBooksImporter.h"
 #import "SCHAccountValidation.h"
-#import "SCHParentalToolsWebViewController.h"
 #import "Reachability.h"
 #import "BITModalSheetController.h"
 #import "SCHStoriaLoginViewController.h"
 #import "BITOperationWithBlocks.h"
 #import "SCHVersionDownloadManager.h"
-#import "SCHAccountValidationViewController.h"
+#import "SCHReadingManagerAuthorisationViewController.h"
 #import "NSString+EmailValidation.h"
 #import "BITAPIError.h"
 
@@ -51,12 +49,6 @@ typedef enum {
 
 //static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = 60 * 60 * 24 * 7; // 1 week
 static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (60 * 5) - 1;
-
-// Constants
-NSString * const kSCHLoginErrorDomain = @"LoginErrorDomain";
-NSInteger const kSCHLoginReachabilityError = 1000;
-NSString * const kSCHSamplesErrorDomain = @"SamplesErrorDomain";
-NSInteger const kSCHSamplesUnspecifiedError = 1000;
 
 @interface SCHStartingViewController ()
 
@@ -105,7 +97,7 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
 {
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && 
         [[SCHAuthenticationManager sharedAuthenticationManager] hasDRMInformation] && 
-        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+        [[SCHSyncManager sharedSyncManager] havePerformedAccountSync]) {
         [self runSetupProfileSequenceAnimated:NO pushProfile:YES showValidation:NO];
     } else if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
         [self pushSamplesAnimated:NO showWelcome:NO];
@@ -233,11 +225,12 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] &&
         [[SCHAuthenticationManager sharedAuthenticationManager] hasDRMInformation] && 
-        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+        [[SCHSyncManager sharedSyncManager] havePerformedAccountSync]) {
         
         if ([self bookshelfSetupRequired]) {
             // Start the sync in case they have been set up since last sync
-            [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+            [[SCHSyncManager sharedSyncManager] accountSyncForced:YES
+                                      requireDeviceAuthentication:NO];
         }
     } else {
         [self runInitialChoiceSequence];
@@ -375,101 +368,101 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide 
 {
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:NO];
-    }
-    
-    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
-    parentalToolsWebViewController.title = title;
-    parentalToolsWebViewController.modalPresenterDelegate = self;
-    parentalToolsWebViewController.pToken = token;
-    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        
-        BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:parentalToolsWebViewController];
-        aPopoverController.contentSize = CGSizeMake(540, 620);
-        aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-        self.webParentToolsPopoverController = aPopoverController;
-        [aPopoverController release];
-        
-        __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
-        __block UIViewController *weakSelf = self;
-        __block SCHParentalToolsWebViewController *weakParentTools = parentalToolsWebViewController;
-        
-        [self.webParentToolsPopoverController presentSheetInViewController:[self profileViewController] animated:NO completion:^{
-            weakParentTools.textView.alpha = 0;
-            
-            CGSize expandedSize;
-            
-            if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
-                expandedSize = CGSizeMake(700, 530);
-            } else {
-                expandedSize = CGSizeMake(964, 530);
-            }
-            
-            [weakPopover setContentSize:expandedSize animated:YES completion:^{
-                weakParentTools.textView.alpha = 1;
-            }];
-        }];    
-    } else {
-        [self presentModalViewController:parentalToolsWebViewController animated:YES];        
-    }
-    
-    [CATransaction commit];
+//    [CATransaction begin];
+//    [CATransaction setDisableActions:YES];
+//    
+//    if (self.modalViewController) {
+//        [self dismissModalViewControllerAnimated:NO];
+//    }
+//    
+//    SCHParentalToolsWebViewController *parentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+//    parentalToolsWebViewController.title = title;
+//    parentalToolsWebViewController.modalPresenterDelegate = self;
+//    parentalToolsWebViewController.pToken = token;
+//    parentalToolsWebViewController.shouldHideCloseButton = shouldHide;
+//    
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//        
+//        BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:parentalToolsWebViewController];
+//        aPopoverController.contentSize = CGSizeMake(540, 620);
+//        aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+//        self.webParentToolsPopoverController = aPopoverController;
+//        [aPopoverController release];
+//        
+//        __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
+//        __block UIViewController *weakSelf = self;
+//        __block SCHParentalToolsWebViewController *weakParentTools = parentalToolsWebViewController;
+//        
+//        [self.webParentToolsPopoverController presentSheetInViewController:[self profileViewController] animated:NO completion:^{
+//            weakParentTools.textView.alpha = 0;
+//            
+//            CGSize expandedSize;
+//            
+//            if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
+//                expandedSize = CGSizeMake(700, 530);
+//            } else {
+//                expandedSize = CGSizeMake(964, 530);
+//            }
+//            
+//            [weakPopover setContentSize:expandedSize animated:YES completion:^{
+//                weakParentTools.textView.alpha = 1;
+//            }];
+//        }];    
+//    } else {
+//        [self presentModalViewController:parentalToolsWebViewController animated:YES];        
+//    }
+//    
+//    [CATransaction commit];
 }
 
 - (void)dismissModalWebParentToolsAnimated:(BOOL)animated withSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
 {
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:NO];
-    }
-    
-    SCHStartingViewController *weakSelf = self;
-    
-    dispatch_block_t completion = ^{
-        [weakSelf setWebParentToolsPopoverController:nil];
-        
-        if (showValidation) {
-            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
-        } else {
-            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
-        }
-        
-        [weakSelf runSetupProfileSequenceAnimated:NO pushProfile:NO showValidation:showValidation];
-        
-        if (shouldSync) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
-                weakSelf.checkProfilesAlert = [[[LambdaAlert alloc]
-                                                initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
-                                                message:@"\n"] autorelease];
-                [weakSelf.checkProfilesAlert setSpinnerHidden:NO];
-                [weakSelf.checkProfilesAlert show];
-            });
-        }
-    };
-    
-    if ([self.webParentToolsPopoverController isModalSheetVisible]) {
-        if (animated) {
-            [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
-                [CATransaction begin];
-                [CATransaction setDisableActions:YES];
-                [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
-                    completion();
-                    [CATransaction commit];
-                }];
-            }];
-        } else {
-            [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
-            completion();
-        }
-    } else {
-        completion();
-    }    
+//    if (self.modalViewController) {
+//        [self dismissModalViewControllerAnimated:NO];
+//    }
+//    
+//    SCHStartingViewController *weakSelf = self;
+//    
+//    dispatch_block_t completion = ^{
+//        [weakSelf setWebParentToolsPopoverController:nil];
+//        
+//        if (showValidation) {
+//            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForPassword;
+//        } else {
+//            weakSelf.profileSyncState = kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves;
+//        }
+//        
+//        [weakSelf runSetupProfileSequenceAnimated:NO pushProfile:NO showValidation:showValidation];
+//        
+//        if (shouldSync) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+//                weakSelf.checkProfilesAlert = [[[LambdaAlert alloc]
+//                                                initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+//                                                message:@"\n"] autorelease];
+//                [weakSelf.checkProfilesAlert setSpinnerHidden:NO];
+//                [weakSelf.checkProfilesAlert show];
+//            });
+//        }
+//    };
+//    
+//    if ([self.webParentToolsPopoverController isModalSheetVisible]) {
+//        if (animated) {
+//            [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
+//                [CATransaction begin];
+//                [CATransaction setDisableActions:YES];
+//                [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
+//                    completion();
+//                    [CATransaction commit];
+//                }];
+//            }];
+//        } else {
+//            [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
+//            completion();
+//        }
+//    } else {
+//        completion();
+//    }    
 }
 
 - (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated
@@ -499,7 +492,8 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     
     // Need to also sync here in case the user has has set up a bookshelf in WPT outside teh app
     // We never want to enter WPT not in wizard mode as there is no close button
-    [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+    [[SCHSyncManager sharedSyncManager] accountSyncForced:YES
+                              requireDeviceAuthentication:YES];
 }
 
 #pragma mark - Profile view
@@ -543,7 +537,8 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     if ((self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForBookshelves) ||
         (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForPassword) ||
         (self.profileSyncState == kSCHStartingViewControllerProfileSyncStateWaitingForWebParentToolsToComplete)) {
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+        [[SCHSyncManager sharedSyncManager] accountSyncForced:YES
+                                  requireDeviceAuthentication:YES];
     }
 }
 
@@ -730,19 +725,19 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
         
         AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
         [appDelegate setStoreType:kSCHStoreTypeSampleStore];
-        
-        NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
-        NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
-        
-        [[SCHSampleBooksImporter sharedImporter] importSampleBooksFromRemoteManifest:[NSURL URLWithString:kSCHSampleBooksRemoteManifestURL] 
-                                                                       localManifest:localManifestURL
-                                                                        successBlock:^{
-                                                                            completion(nil);
-                                                                        }
-                                                                        failureBlock:^(NSString * failureReason){
-                                                                            NSError *error = [NSError errorWithDomain:kSCHSamplesErrorDomain code:kSCHSamplesUnspecifiedError userInfo:[NSDictionary dictionaryWithObject:failureReason forKey:@"failureReason"]];
-                                                                            completion(error);
-                                                                        }];
+//        
+//        NSString *localManifest = [[NSBundle mainBundle] pathForResource:kSCHSampleBooksLocalManifestFile ofType:nil];
+//        NSURL *localManifestURL = localManifest ? [NSURL fileURLWithPath:localManifest] : nil;
+//        
+//        [[SCHSampleBooksImporter sharedImporter] importSampleBooksFromRemoteManifest:[NSURL URLWithString:kSCHSampleBooksRemoteManifestURL] 
+//                                                                       localManifest:localManifestURL
+//                                                                        successBlock:^{
+//                                                                            completion(nil);
+//                                                                        }
+//                                                                        failureBlock:^(NSString * failureReason){
+//                                                                            NSError *error = [NSError errorWithDomain:kSCHSamplesErrorDomain code:kSCHSamplesUnspecifiedError userInfo:[NSDictionary dictionaryWithObject:failureReason forKey:@"failureReason"]];
+//                                                                            completion(error);
+//                                                                        }];
     };
     
     setupSequenceImportSamplesOperation.failed = ^(NSError *error){
@@ -763,10 +758,10 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
         
         if ([self dictionaryDownloadRequired]) {
             SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
-            downloadDictionary.completion = ^{
-                [self pushSamplesAnimated:NO showWelcome:YES];
-                completion(nil);
-            };
+            //downloadDictionary.completion = ^{
+               // [self pushSamplesAnimated:NO showWelcome:YES];
+              //  completion(nil);
+            //};
             
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                 [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:downloadDictionary]];
@@ -805,17 +800,17 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
             controllers = [NSMutableArray array];
         }
 
-        SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
-        setupBookshelves.profileSetupDelegate = self;
-        [controllers addObject:setupBookshelves];
+//        SCHSetupBookshelvesViewController *setupBookshelves = [[[SCHSetupBookshelvesViewController alloc] init] autorelease];
+//        setupBookshelves.profileSetupDelegate = self;
+//        [controllers addObject:setupBookshelves];
     }
     
     if (showValidation) {
         if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHAccountValidationViewController")]) {
-            SCHAccountValidationViewController *accountValidationViewController = [[[SCHAccountValidationViewController alloc] init] autorelease];
-            accountValidationViewController.profileSetupDelegate = self;        
-            accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
-            accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
+            SCHReadingManagerAuthorisationViewController *accountValidationViewController = [[[SCHReadingManagerAuthorisationViewController alloc] init] autorelease];
+            //accountValidationViewController.profileSetupDelegate = self;
+            //accountValidationViewController.validatedControllerShouldHideCloseButton = YES;
+            //accountValidationViewController.title = NSLocalizedString(@"Set Up Your Bookshelves", @"");
             [controllers addObject:accountValidationViewController];
         }
     }
@@ -842,12 +837,12 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
 
     if (![[controllers lastObject] isKindOfClass:NSClassFromString(@"SCHDownloadDictionaryViewController")]) {
         SCHDownloadDictionaryViewController *downloadDictionary = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
-        downloadDictionary.profileSetupDelegate = self;
-        downloadDictionary.completion = ^{
-            if (self.modalViewController) {
-                [self dismissModalViewControllerAnimated:YES];
-            }
-        };
+        //downloadDictionary.profileSetupDelegate = self;
+       // downloadDictionary.completion = ^{
+       //     if (self.modalViewController) {
+        //        [self dismissModalViewControllerAnimated:YES];
+       //     }
+       // };
         [controllers addObject:downloadDictionary];
     }
     
@@ -954,7 +949,8 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
                                                                                         if (credentialsSuccessBlock) {
                                                                                             credentialsSuccessBlock(YES, NO, nil);
                                                                                         }
-                                                                                        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+                                                                                        [[SCHSyncManager sharedSyncManager] accountSyncForced:YES
+                                                                                                                  requireDeviceAuthentication:NO];
                                                                                         completion(nil);
                                                                                     } else { 
                                                                                         NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  

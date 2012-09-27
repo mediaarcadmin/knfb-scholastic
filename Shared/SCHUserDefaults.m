@@ -9,7 +9,7 @@
 #import "SCHUserDefaults.h"
 
 // Constants
-NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks = @"PerformedFirstSyncUpToBooks";
+NSString * const kSCHUserDefaultsPerformedAccountSync = @"PerformedAccountSync";
 NSString * const kSCHUserDefaultsWelcomeViewShowCount = @"SCHUserDefaultsWelcomeViewShowCount";
 // This matches the corresponding string in Blio, so as to avoid
 // having two different versions of the PlayReady lib.

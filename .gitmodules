@@ -22,3 +22,6 @@
 [submodule "Shared/Libraries/Submodules/ocmock"]
 	path = Shared/Libraries/Submodules/ocmock
 	url = https://github.com/erikdoe/ocmock
+[submodule "Shared/Libraries/Submodules/DDPageControl"]
+	path = Shared/Libraries/Submodules/DDPageControl
+	url = git://github.com/ddeville/DDPageControl.git

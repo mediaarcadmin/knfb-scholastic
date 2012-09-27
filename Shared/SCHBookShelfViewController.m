@@ -65,8 +65,6 @@ typedef enum
 @property (nonatomic, retain) BITModalSheetController *welcomePopoverController;
 @property (nonatomic, retain) BITModalSheetController *menuPopover;
 
-- (void)showWelcomeView;
-- (void)showWelcomeTwoView;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
 - (CGSize)cellSize;
@@ -108,7 +106,7 @@ typedef enum
 @synthesize backgroundView;
 @synthesize gridViewNeedsRefreshed;
 @synthesize listViewNeedsRefreshed;
-@synthesize profileSetupDelegate;
+@synthesize appController;
 @synthesize loadingView;
 @synthesize shouldShowBookshelfFailedErrorMessage;
 @synthesize shouldWaitForCellsToLoad;
@@ -181,7 +179,7 @@ typedef enum
     [books release], books = nil;
     [profileItem release], profileItem = nil;
     [managedObjectContext release], managedObjectContext = nil;
-    profileSetupDelegate = nil;
+    appController = nil;
     
     [super dealloc];
 }
@@ -272,9 +270,9 @@ typedef enum
                                              selector:@selector(annotationSyncComponentDidComplete:) 
                                                  name:SCHAnnotationSyncComponentDidCompleteNotification
                                                object:nil];
-
+#if 0
     if (!self.showWelcome) {
-        if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
+        if (![[SCHSyncManager sharedSyncManager] havePerformedAccountSync] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Syncing", @"")
                                   message:@"\n\n\n"];
@@ -298,7 +296,8 @@ typedef enum
             [self dismissLoadingView];
         }
     }
-
+#endif
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];              
     
     [self.listTableView setSeparatorColor:[UIColor clearColor]];
@@ -310,20 +309,25 @@ typedef enum
     }
     
     if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        self.navigationItem.title = [self.profileItem bookshelfName:YES];
+        self.navigationItem.title = [self.profileItem displayName];
     } else {
         self.navigationItem.title = NSLocalizedString(@"My eBooks", @"Sample bookshelf title");
     }
+
+    BOOL forceBookshelfSync = self.profileItem.AppProfile.lastEnteredBookshelfDate == nil;
+    self.profileItem.AppProfile.lastEnteredBookshelfDate = [NSDate date];
     
     // Always force a sync if we are on the sample bookshelf
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:NO];
+        [[SCHSyncManager sharedSyncManager] accountSyncForced:YES
+                                  requireDeviceAuthentication:NO];
+        [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:YES];
         self.shouldWaitForCellsToLoad = YES;
         [self reloadDataImmediately:YES];
     } else {
-        if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
-            [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
-        }
+        [[SCHSyncManager sharedSyncManager] accountSyncForced:NO
+                                  requireDeviceAuthentication:NO];
+        [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:forceBookshelfSync];
         
         if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
             [[SCHProcessingManager sharedProcessingManager] checkStateForAllBooks];
@@ -361,74 +365,6 @@ typedef enum
 {
     [super viewDidAppear:animated];
     self.shouldWaitForCellsToLoad = NO;
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSInteger currentWelcomeShowCount = [userDefaults integerForKey:kSCHUserDefaultsWelcomeViewShowCount];
-    
-    if (self.showWelcome) {
-        if (currentWelcomeShowCount == 0) {
-            [self showWelcomeView];        
-        } else {
-            [self showWelcomeTwoView]; 
-        }
-    
-        currentWelcomeShowCount++;
-        
-        [userDefaults setInteger:currentWelcomeShowCount
-                          forKey:kSCHUserDefaultsWelcomeViewShowCount];
-        [userDefaults synchronize];
-        
-        self.showWelcome = NO;
-    }
-}
-
-- (void)showWelcomeView
-{
-    SCHStoriaWelcomeViewController *welcomeVC = [[SCHStoriaWelcomeViewController alloc] init];
-    
-    BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeVC];
-    [aWelcomePopoverController setContentSize:CGSizeMake(577, 241)];
-    [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
-    
-    __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
-    __block SCHBookShelfViewController *weakSelf = self;
-    
-    welcomeVC.closeBlock = ^{
-        [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
-        weakSelf.welcomePopoverController = nil;
-    };
-    
-    [welcomeVC release];
-    
-    [aWelcomePopoverController presentSheetInViewController:self animated:YES completion:nil];
-    
-    self.welcomePopoverController = aWelcomePopoverController;
-    
-    [aWelcomePopoverController release];    
-}
-
-- (void)showWelcomeTwoView
-{
-    SCHStoriaWelcomeViewController *welcomeTwoVC = [[SCHStoriaWelcomeViewController alloc] initWithNibName:@"SCHStoriaWelcomeTwoViewController" bundle:nil];
-    
-    BITModalSheetController *aWelcomePopoverController = [[BITModalSheetController alloc] initWithContentViewController:welcomeTwoVC];
-    [aWelcomePopoverController setContentSize:CGSizeMake(577, 241)];
-    [aWelcomePopoverController setContentOffset:CGPointMake(0, -15)];
-    
-    __block BITModalSheetController *weakWelcomePopoverController = aWelcomePopoverController;
-    __block SCHBookShelfViewController *weakSelf = self;
-    
-    welcomeTwoVC.closeBlock = ^{
-        [weakWelcomePopoverController dismissSheetAnimated:YES completion:nil];
-        weakSelf.welcomePopoverController = nil;
-    };
-    
-    [welcomeTwoVC release];
-    
-    [aWelcomePopoverController presentSheetInViewController:self animated:YES completion:nil];
-    
-    self.welcomePopoverController = aWelcomePopoverController;
-    
-    [aWelcomePopoverController release];    
 }
 
 - (void)reloadData
@@ -602,17 +538,14 @@ typedef enum
         }
         
         [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:kSCHBookSortTypeUser]];
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:nil];
-        } else {
-            [self.navigationController popToRootViewControllerAnimated:NO];  
-        }
+        [self.appController exitBookshelf];
         [[SCHThemeManager sharedThemeManager] resetToDefault];
     } else {
-        [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
+        [self.appController exitBookshelf];
     }
-    
-    [[SCHSyncManager sharedSyncManager] wishListSync:NO];                        
+
+    [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:NO];
+    [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];                        
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 
@@ -682,7 +615,7 @@ typedef enum
     profileItem = newProfileItem;
     
     if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-        self.navigationItem.title = [self.profileItem bookshelfName:YES];
+        self.navigationItem.title = [self.profileItem displayName];
     }
 
 	self.books = [self.profileItem allBookIdentifiers];
@@ -777,12 +710,12 @@ typedef enum
                 }
                 
                 NSString *localizedMessage = [NSString stringWithFormat:
-                                              NSLocalizedString(@"%@ has been removed", nil), [self.profileItem bookshelfName:YES]];  
+                                              NSLocalizedString(@"%@ has been removed", nil), [self.profileItem displayName]];
                 LambdaAlert *alert = [[LambdaAlert alloc]
                                       initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
                                       message:localizedMessage];
                 [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
-                    [self.profileSetupDelegate popToAuthenticatedProfileAnimated:YES];
+                    [self.appController presentProfiles];
                 }];
                 
                 self.profileItem = nil;
@@ -807,7 +740,7 @@ typedef enum
     for (SCHProfileItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
         if (object == self.profileItem) {
             if (![[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
-                self.navigationItem.title = [object bookshelfName:YES];
+                self.navigationItem.title = [object displayName];
             }
         }
     }

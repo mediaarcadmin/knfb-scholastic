@@ -10,7 +10,6 @@
 
 #import "SCHAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
-#import "SCHContentMetadataItem.h"
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHAppBook.h"
@@ -24,10 +23,12 @@ NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
 NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 NSString * const kSCHURLManagerCleared = @"URLManagerCleared";
 static NSUInteger const kSCHURLManagerMaxConnections = 6;
+static NSString * const kURLManagerBookIdentifier = @"URLManagerBookIdentifier";
+static NSString * const kURLManagerVersion = @"URLManagerVersion";
 
 @interface SCHURLManager ()
 
-- (void)requestURLForBookOnMainThread:(SCHBookIdentifier *)bookIdentifier;
+- (void)requestURLForBookOnMainThread:(NSDictionary *)parameters;
 - (void)requestURLForRecommendationOnMainThread:(NSString *)isbn;
 - (void)clearOnMainThread;
 - (void)shakeTable;
@@ -97,8 +98,16 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 }
 
 - (void)requestURLForBook:(SCHBookIdentifier *)bookIdentifier
+                  version:(NSNumber *)version
 {
-    [self performSelectorOnMainThread:@selector(requestURLForBookOnMainThread:) withObject:bookIdentifier waitUntilDone:NO];
+    NSParameterAssert(bookIdentifier);
+    NSParameterAssert(version);
+
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:bookIdentifier, kURLManagerBookIdentifier,
+                                version, kURLManagerVersion,
+                                nil];
+
+    [self performSelectorOnMainThread:@selector(requestURLForBookOnMainThread:) withObject:parameters waitUntilDone:NO];
 }
 
 - (void)requestURLForRecommendation:(NSString *)isbn
@@ -113,9 +122,12 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
 #pragma mark - Private methods
 
-- (void)requestURLForBookOnMainThread:(SCHBookIdentifier *)bookIdentifier
-{	
+- (void)requestURLForBookOnMainThread:(NSDictionary *)parameters
+{
     NSAssert([NSThread isMainThread] == YES, @"SCHURLManager:requestURLForBookOnMainThread MUST be executed on the main thread");
+
+    SCHBookIdentifier *bookIdentifier = [parameters objectForKey:kURLManagerBookIdentifier];
+    NSNumber *version = [parameters objectForKey:kURLManagerVersion];
 
 	if (bookIdentifier != nil) {
         SCHISBNItemObject *isbnItem = [[SCHISBNItemObject alloc] init];
@@ -123,6 +135,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
         isbnItem.ContentIdentifierType = [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
         isbnItem.DRMQualifier = bookIdentifier.DRMQualifier;
         isbnItem.coverURLOnly = NO;
+        isbnItem.Version = version;
         
         [self.table addObject:isbnItem];
         
@@ -142,6 +155,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
         isbnItem.ContentIdentifierType = [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
         isbnItem.DRMQualifier = [NSNumber numberWithInt:kSCHDRMQualifiersFullWithDRM];
         isbnItem.coverURLOnly = YES;
+        isbnItem.Version = [NSNumber numberWithInteger:0];
         
         [self.table addObject:isbnItem];
         

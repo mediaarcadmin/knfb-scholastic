@@ -8,32 +8,40 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
-#import "SCHBaseModalViewController.h"
+#import "SCHAppController.h"
 
 @class SCHCustomToolbar;
 @class SCHCheckbox;
 @class SCHUpdateBooksViewController;
 
-@interface SCHSettingsViewController : SCHBaseModalViewController <UIAlertViewDelegate, MFMailComposeViewControllerDelegate>  
-{}
+typedef enum {
+    kSCHSettingsPanelReadingManager     = 1 << 1,
+    kSCHSettingsPanelAdditionalSettings = 1 << 2,
+    kSCHSettingsPanelDictionaryDownload = 1 << 3,
+    kSCHSettingsPanelDictionaryDelete   = 1 << 4,
+    kSCHSettingsPanelDeregisterDevice   = 1 << 5,
+    kSCHSettingsPanelSupport            = 1 << 6,
+    kSCHSettingsPanelEbookUpdates       = 1 << 7,
+    kSCHSettingsPanelAll                = 0
+} SCHSettingsPanel;
 
-@property (nonatomic, retain) IBOutlet UIScrollView *scrollView; // iPhone only
-@property (nonatomic, retain) IBOutlet UIView *manageBooksGroupView; // iPad only
-@property (nonatomic, retain) IBOutlet UIButton *checkBooksButton;
-@property (nonatomic, retain) IBOutlet UIButton *manageBooksButton;
-@property (nonatomic, retain) IBOutlet UIButton *deregisterDeviceButton;
-@property (nonatomic, retain) IBOutlet UIButton *downloadDictionaryButton;
+@interface SCHSettingsViewController : UIViewController <UIAlertViewDelegate, MFMailComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate> {}
+
+@property (nonatomic, assign) id <SCHAppController> appController;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) IBOutlet UIView *containerView;
+@property (nonatomic, retain) IBOutlet UIView *transformableView;
+@property (nonatomic, retain) IBOutlet UIView *shadowView;
 
-- (IBAction)dismissModalSettingsController:(id)sender;
-- (IBAction)manageBooks:(id)sender;
-- (IBAction)deregisterDevice:(id)sender;
-- (IBAction)checkBooks:(id)sender;
-- (IBAction)downloadDictionary:(id)sender;
-- (IBAction)showAboutView:(id)sender;
-- (IBAction)showPrivacyPolicy:(id)sender;
-- (IBAction)contactCustomerSupport:(id)sender;
+@property (nonatomic, retain) IBOutlet UIView *contentView; // iPad only
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) IBOutlet UIButton *backButton;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundImageView;
 
-- (NSArray *)currentSettingsViewControllers;
+@property (nonatomic, assign) NSUInteger settingsDisplayMask; // defaults to kSCHSettingsPanelAll
+@property (nonatomic, assign) BOOL backButtonHidden; // defaults to NO
+
+- (void)displaySettingsPanel:(SCHSettingsPanel)panel;
+- (IBAction)close:(id)sender;
 
 @end

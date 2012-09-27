@@ -10,7 +10,7 @@
 #import "SCHAppBook.h"
 #import "SCHeReaderCategories.h"
 #import "SCHAnnotationsContentItem.h"
-#import "SCHUserContentItem.h"
+#import "SCHBooksAssignment.h"
 #import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
 #import "SCHProcessingManager.h"
@@ -42,21 +42,32 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 
 @implementation SCHContentMetadataItem
 
+@dynamic appealsToHigh;
+@dynamic appealsToLow;
 @dynamic Author;
-@dynamic Description;
-@dynamic Version;
+@dynamic AverageRating;
 @dynamic ContentURL;
 @dynamic CoverURL;
+@dynamic Description;
+@dynamic eBookLexileLevel;
 @dynamic Enhanced;
-@dynamic Title;
 @dynamic FileSize;
-@dynamic PageNumber;
-@dynamic FileName;
-@dynamic AppBook;
-@dynamic eReaderCategories;
 @dynamic FormatAuthorString;
 @dynamic formatTitleString;
-@dynamic AverageRating;
+@dynamic guidedReadingLevel;
+@dynamic misc2;
+@dynamic misc3;
+@dynamic misc4;
+@dynamic misc5;
+@dynamic numVotes;
+@dynamic PageNumber;
+@dynamic readingLevel;
+@dynamic thumbnailURL;
+@dynamic Title;
+@dynamic Version;
+
+@dynamic AppBook;
+@dynamic eReaderCategories;
 
 - (NSSet *)AnnotationsContentItem
 {
@@ -78,14 +89,14 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
     return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
 }
 
-- (SCHUserContentItem *)UserContentItem
+- (SCHBooksAssignment *)booksAssignment
 {
-    SCHUserContentItem *ret = nil;
+    SCHBooksAssignment *ret = nil;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSError *error = nil;
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", 
                                 self.ContentIdentifier, self.DRMQualifier]];
@@ -103,7 +114,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         ret = [result objectAtIndex:0];
     }
 
-    return(ret);
+    return ret;
 }
 
 - (NSComparisonResult)titleCompare:(SCHContentMetadataItem *)contentMetadataItem

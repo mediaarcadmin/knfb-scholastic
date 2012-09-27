@@ -19,12 +19,10 @@
 #import "SCHBookIdentifier.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHSyncManager.h"
-#import "SCHParentalToolsWebViewController.h"
 #import "LambdaAlert.h"
 #import "Reachability.h"
 #import "SCHProfileSyncComponent.h"
 #import "BITModalSheetController.h"
-#import "SCHNavigationControllerForModalForm.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
@@ -33,7 +31,6 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, retain) BITModalSheetController *webParentToolsPopoverController;
-@property (nonatomic, retain) SCHParentalToolsWebViewController *parentalToolsWebViewController; 
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (void)checkForBookUpdates;
@@ -64,8 +61,8 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 @synthesize updatesBubble;
 @synthesize profileSetupDelegate;
 @synthesize webParentToolsPopoverController;
-@synthesize parentalToolsWebViewController;
 @synthesize simultaneousTapCount;
+@synthesize appController;
 
 #pragma mark - Object lifecycle
 
@@ -105,7 +102,6 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
         [webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
     }
     [webParentToolsPopoverController release], webParentToolsPopoverController = nil;
-    [parentalToolsWebViewController release], parentalToolsWebViewController = nil;
 }
 
 - (void)dealloc 
@@ -128,7 +124,8 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     [managedObjectContext_ release], managedObjectContext_ = nil;
     [bookUpdates release], bookUpdates = nil;
     profileSetupDelegate = nil;
-    
+    appController = nil;
+        
     [super dealloc];
 }
 
@@ -146,7 +143,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     [self.updatesBubble addGestureRecognizer:tap];
     [tap release];
  
-    self.settingsViewController.settingsDelegate = self;
+    //self.settingsViewController.settingsDelegate = self;
     self.settingsViewController.managedObjectContext = self.managedObjectContext; 
 }  
 
@@ -184,8 +181,8 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 - (UINavigationController *)modalNavigationController
 {
     if (!modalNavigationController) {
-        modalNavigationController = [[SCHNavigationControllerForModalForm alloc] init];
-        modalNavigationController.navigationBarHidden = YES;
+        //modalNavigationController = [[SCHNavigationControllerForModalForm alloc] init];
+        //modalNavigationController.navigationBarHidden = YES;
     }
     
     return modalNavigationController;
@@ -265,7 +262,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     
     SCHProfileItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	if (indexPath) {
-        [cell setButtonTitles:[NSArray arrayWithObjects:[managedObject bookshelfName:NO] ? : @"", nil] 
+        [cell setButtonTitles:[NSArray arrayWithObjects:[managedObject displayName] ? : @"", nil] 
                 forIndexPaths:[NSArray arrayWithObjects:indexPath, nil] 
                  forCellStyle:kSCHProfileCellLayoutStyle1Up];
     }
@@ -292,12 +289,12 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     leftIndexPath = [NSIndexPath indexPathForRow:(indexPath.row == 0 ? 0 : indexPath.row * 2)
                                        inSection:indexPath.section];
     profileItem = [self.fetchedResultsController objectAtIndexPath:leftIndexPath]; 
-    leftTitle = [profileItem bookshelfName:NO] ? : @"";
+    leftTitle = [profileItem displayName] ? : @"";
     
     if (leftIndexPath.row + 1 < [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects]) {
         rightIndexPath = [NSIndexPath indexPathForRow:leftIndexPath.row + 1 inSection:indexPath.section];
         profileItem = [self.fetchedResultsController objectAtIndexPath:rightIndexPath]; 
-        rightTitle = [profileItem bookshelfName:NO] ? : @"";
+        rightTitle = [profileItem displayName] ? : @"";
     }
     
     if (leftIndexPath && rightIndexPath) {
@@ -466,7 +463,7 @@ didSelectButtonAnimated:(BOOL)animated
     };
     
     passwordController.controllerType = kSCHControllerPasswordOnlyView;
-    [passwordController.profileLabel setText:[profileItem bookshelfName:YES]];
+    [passwordController.profileLabel setText:[profileItem displayName]];
     
     [self presentModalViewController:passwordController animated:YES];
     [passwordController release];
@@ -487,7 +484,7 @@ didSelectButtonAnimated:(BOOL)animated
                 if (![[topFieldText substringToIndex:1] isEqualToString:@" "]) {
                     [profileItem setRawPassword:topFieldText];
                     if ([self.managedObjectContext save:nil] == YES) {
-                        [[SCHSyncManager sharedSyncManager] profileSync]; 
+                        [[SCHSyncManager sharedSyncManager] passwordSync];
                     }
                     [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
                     [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];
@@ -526,7 +523,7 @@ didSelectButtonAnimated:(BOOL)animated
     };
     
     passwordController.controllerType = kSCHControllerDoublePasswordView;
-    [passwordController.profileLabel setText:[profileItem bookshelfName:YES]];
+    [passwordController.profileLabel setText:[profileItem displayName]];
     [self presentModalViewController:passwordController animated:YES];
     [passwordController release];
 }
@@ -545,7 +542,7 @@ didSelectButtonAnimated:(BOOL)animated
     SCHBookShelfViewController *bookShelfViewController = [[self newBookShelfViewController] autorelease];
     bookShelfViewController.profileItem = profileItem;
     bookShelfViewController.managedObjectContext = self.managedObjectContext;
-    bookShelfViewController.profileSetupDelegate = self.profileSetupDelegate;
+    bookShelfViewController.appController = self.appController;
     bookShelfViewController.showWelcome = welcome;
     
     [viewControllers addObject:bookShelfViewController];
@@ -556,15 +553,14 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
                                         animated:(BOOL)animated
 {
+    // TODO: this all seems overly complex - simplify it
     NSMutableArray *viewControllers = [NSMutableArray array];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        if (self.profileSetupDelegate) {
-            [viewControllers addObject:self.profileSetupDelegate];
-        }
+        [viewControllers addObjectsFromArray:[self.navigationController viewControllers]];
+    } else {
+        [viewControllers addObject:self];
     }
-    
-    [viewControllers addObject:self];
     
     NSArray *profileControllers = [self viewControllersForProfileItem:profileItem showWelcome:NO];
     if (profileControllers) {
@@ -597,13 +593,7 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (void)pushSettingsControllerAnimated:(BOOL)animated
 {
-    NSArray *viewControllers = [self.settingsViewController currentSettingsViewControllers];
-    [self.modalNavigationController setViewControllers:viewControllers];
-    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self.modalNavigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
-    [self presentModalViewController:self.modalNavigationController animated:animated];
-    [self showUpdatesBubble:NO];
+    [self.appController presentSettings];
 }
 
 #pragma mark - SCHSettingsDelegate
@@ -637,8 +627,8 @@ didSelectButtonAnimated:(BOOL)animated
 {
     if (self.modalViewController) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [self dismissModalViewControllerAnimated:animated];
-            [self.profileSetupDelegate popToRootViewControllerAnimated:NO withCompletionHandler:completion];
+            [self dismissModalViewControllerAnimated:NO];
+            [self.profileSetupDelegate popToRootViewControllerAnimated:YES withCompletionHandler:completion];
         } else {
             [CATransaction begin];
             [CATransaction setCompletionBlock:^{
@@ -659,110 +649,151 @@ didSelectButtonAnimated:(BOOL)animated
                                         title:(NSString *)title 
                                    modalStyle:(UIModalPresentationStyle)style 
                         shouldHideCloseButton:(BOOL)shouldHide 
-{    
+{
     
-    SCHParentalToolsWebViewController *aParentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
-    aParentalToolsWebViewController.title = title;
-    aParentalToolsWebViewController.modalPresenterDelegate = self;
-    aParentalToolsWebViewController.pToken = token;
-    aParentalToolsWebViewController.shouldHideCloseButton = shouldHide;
-    self.parentalToolsWebViewController = aParentalToolsWebViewController;
+//#if USE_CODEANDTHEORY
+//    SCHReadingManagerViewController *aReadingManager = [[[SCHReadingManagerViewController alloc] init] autorelease];
+//    aReadingManager.modalPresenterDelegate = self;
+//    aReadingManager.pToken = token;
+//    self.readingManagerController = aReadingManager;
+//
+//    [CATransaction begin];
+//    [CATransaction setDisableActions:YES];
+//    
+//    if (self.modalViewController) {
+//        [self dismissModalViewControllerAnimated:NO];
+//    }
+//    
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//        [self.navigationController pushViewController:self.readingManagerController animated:YES];
+//     } else {
+//        [self presentModalViewController:self.readingManagerController animated:YES];
+//    }
+//    
+//    [CATransaction commit];
+//#else
+//    
+//    SCHParentalToolsWebViewController *aParentalToolsWebViewController = [[[SCHParentalToolsWebViewController alloc] init] autorelease];
+//    aParentalToolsWebViewController.title = title;
+//    aParentalToolsWebViewController.modalPresenterDelegate = self;
+//    aParentalToolsWebViewController.pToken = token;
+//    aParentalToolsWebViewController.shouldHideCloseButton = shouldHide;
+//    self.parentalToolsWebViewController = aParentalToolsWebViewController;
+//    
+//    [CATransaction begin];
+//    [CATransaction setDisableActions:YES];
+//    
+//    if (self.modalViewController) {
+//        [self dismissModalViewControllerAnimated:NO];
+//    }
+//    
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//
+//        BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:aParentalToolsWebViewController];
+//        aPopoverController.contentSize = CGSizeMake(540, 620);
+//        aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+//        self.webParentToolsPopoverController = aPopoverController;
+//        [aPopoverController release];
+//        
+//        __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
+//        __block SCHProfileViewController_Shared *weakSelf = self;
+//        
+//        [self.webParentToolsPopoverController presentSheetInViewController:self animated:NO completion:^{
+//            weakSelf.parentalToolsWebViewController.textView.alpha = 0;
+//            
+//            CGSize expandedSize;
+//            
+//            if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
+//                expandedSize = CGSizeMake(700, 530);
+//            } else {
+//                expandedSize = CGSizeMake(964, 530);
+//            }
+//            
+//            [weakPopover setContentSize:expandedSize animated:YES completion:^{
+//                weakSelf.parentalToolsWebViewController.textView.alpha = 1;
+//            }];
+//        }];
+//        
+//    } else {
+//        [self presentModalViewController:self.parentalToolsWebViewController animated:YES];        
+//    }
+//    
+//    [CATransaction commit];
     
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:NO];
-    }
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-
-        BITModalSheetController *aPopoverController = [[BITModalSheetController alloc] initWithContentViewController:aParentalToolsWebViewController];
-        aPopoverController.contentSize = CGSizeMake(540, 620);
-        aPopoverController.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-        self.webParentToolsPopoverController = aPopoverController;
-        [aPopoverController release];
-        
-        __block BITModalSheetController *weakPopover = self.webParentToolsPopoverController;
-        __block SCHProfileViewController_Shared *weakSelf = self;
-        
-        [self.webParentToolsPopoverController presentSheetInViewController:self animated:NO completion:^{
-            weakSelf.parentalToolsWebViewController.textView.alpha = 0;
-            
-            CGSize expandedSize;
-            
-            if (UIInterfaceOrientationIsPortrait(weakSelf.interfaceOrientation)) {
-                expandedSize = CGSizeMake(700, 530);
-            } else {
-                expandedSize = CGSizeMake(964, 530);
-            }
-            
-            [weakPopover setContentSize:expandedSize animated:YES completion:^{
-                weakSelf.parentalToolsWebViewController.textView.alpha = 1;
-            }];
-        }];
-        
-    } else {
-        [self presentModalViewController:self.parentalToolsWebViewController animated:YES];        
-    }
-    
-    [CATransaction commit];
+//#endif
 }
 
 - (void)dismissModalWebParentToolsAnimated:(BOOL)animated withSync:(BOOL)shouldSync showValidation:(BOOL)showValidation
 {
-    if (self.modalViewController) {
-        [self dismissModalViewControllerAnimated:NO];
-    }
-    
-    __block SCHProfileViewController_Shared *weakSelf = self;
-    
-    dispatch_block_t completion = ^{
-        [weakSelf setWebParentToolsPopoverController:nil];
-        [weakSelf setParentalToolsWebViewController:nil];
-        
-        if ([[weakSelf.modalNavigationController viewControllers] count] == 0) {
-            // The view has been unloaded due to memory pressure
-            // Just push the settings screen, don't bother with re-adding the validation controller
-            [weakSelf pushSettingsControllerAnimated:NO];
-        } else {
-            if (!showValidation) {
-                NSMutableArray *currentControllers = [[[weakSelf.modalNavigationController viewControllers] mutableCopy] autorelease];
-                if ([currentControllers count] > 0) {
-                    [currentControllers removeLastObject];
-                }
-                [weakSelf.modalNavigationController setViewControllers:currentControllers];
-                [weakSelf presentModalViewController:self.modalNavigationController animated:NO];
-            }
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (shouldSync) {
-                [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
-            }
-        });
-    };
-        
-    if ([self.webParentToolsPopoverController isModalSheetVisible]) {
-        
-        self.parentalToolsWebViewController.textView.alpha = 0;
-        
-        if (animated) {
-            [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
-                [CATransaction begin];
-                [CATransaction setDisableActions:YES];
-                [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
-                    completion();
-                    [CATransaction commit];
-                }];
-            }];
-        } else {
-            [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
-            completion();
-        }
-    } else {
-        completion();
-    }  
+//    if (self.modalViewController) {
+//        [self dismissModalViewControllerAnimated:NO];
+//    }
+//    
+//    __block SCHProfileViewController_Shared *weakSelf = self;
+//    
+//    dispatch_block_t completion = ^{
+//        [weakSelf setWebParentToolsPopoverController:nil];
+//        [weakSelf setParentalToolsWebViewController:nil];
+//        
+//        if ([[weakSelf.modalNavigationController viewControllers] count] == 0) {
+//            // The view has been unloaded due to memory pressure
+//            // Just push the settings screen, don't bother with re-adding the validation controller
+//            [weakSelf pushSettingsControllerAnimated:NO];
+//        } else {
+//            if (!showValidation) {
+//                NSMutableArray *currentControllers = [[[weakSelf.modalNavigationController viewControllers] mutableCopy] autorelease];
+//                if ([currentControllers count] > 0) {
+//                    [currentControllers removeLastObject];
+//                }
+//                [weakSelf.modalNavigationController setViewControllers:currentControllers];
+//                [weakSelf presentModalViewController:self.modalNavigationController animated:NO];
+//            }
+//        }
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if (shouldSync) {
+//                [[SCHSyncManager sharedSyncManager] firstSync:YES requireDeviceAuthentication:YES];
+//            }
+//        });
+//    };
+//    
+//#if USE_CODEANDTHEORY
+//    
+//    [CATransaction begin];
+//    [CATransaction setCompletionBlock:^{
+//        completion();
+//    }];
+//    
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//        [self.navigationController popViewControllerAnimated:YES];
+//    } else {
+//        [self presentModalViewController:self.readingManagerController animated:YES];
+//    }
+//    
+//    [CATransaction commit];
+//
+//#else
+//    if ([self.webParentToolsPopoverController isModalSheetVisible]) {
+//        
+//        self.parentalToolsWebViewController.textView.alpha = 0;
+//        
+//        if (animated) {
+//            [self.webParentToolsPopoverController setContentSize:CGSizeMake(540, 620) animated:YES completion:^{
+//                [CATransaction begin];
+//                [CATransaction setDisableActions:YES];
+//                [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:^{
+//                    completion();
+//                    [CATransaction commit];
+//                }];
+//            }];
+//        } else {
+//            [weakSelf.webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
+//            completion();
+//        }
+//    } else {
+//        completion();
+//    }
+//#endif
 }
 
 - (void)popModalWebParentToolsToValidationAnimated:(BOOL)animated

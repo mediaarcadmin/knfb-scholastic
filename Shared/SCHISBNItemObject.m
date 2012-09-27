@@ -14,13 +14,15 @@
 @synthesize ContentIdentifierType;
 @synthesize ContentIdentifier;
 @synthesize coverURLOnly;
+@synthesize Version;
 
 - (void)dealloc
 {
     [DRMQualifier release], DRMQualifier = nil;
     [ContentIdentifierType release], ContentIdentifierType = nil;
     [ContentIdentifier release], ContentIdentifier = nil;
-    
+    [Version release], Version = nil;
+
     [super dealloc];
 }
 

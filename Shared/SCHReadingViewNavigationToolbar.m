@@ -115,8 +115,8 @@
 }
 
 - (id)initWithStyle:(SCHReadingViewNavigationToolbarStyle)aStyle 
-              audio:(BOOL)showAudio 
-               help:(BOOL)showHelp
+    showAudioButton:(BOOL)showAudio
+     showHelpButton:(BOOL)showHelp
         orientation:(UIInterfaceOrientation)orientation
 {
     CGRect bounds = CGRectZero;

@@ -9,7 +9,7 @@
 #import <CoreData/CoreData.h>
 #import "SCHSyncEntity.h"
 
-@class SCHUserContentItem;
+@class SCHBooksAssignment;
 @class SCHAppContentProfileItem;
 @class SCHBookIdentifier;
 
@@ -22,10 +22,11 @@ extern NSString * const kSCHContentProfileItem;
 
 @property (nonatomic, retain) NSNumber * ProfileID;
 @property (nonatomic, retain) NSNumber * LastPageLocation;
-@property (nonatomic, retain) SCHUserContentItem * UserContentItem;
+@property (nonatomic, retain) SCHBooksAssignment *booksAssignment;
 @property (nonatomic, retain) SCHAppContentProfileItem * AppContentProfileItem;
 @property (nonatomic, retain) NSNumber * Rating;
 
+- (NSSet *)ProfileItem;
 - (void)deleteAnnotationsForBook:(SCHBookIdentifier *)bookIdentifier;
 - (void)deleteStatisticsForBook:(SCHBookIdentifier *)bookIdentifier;
 

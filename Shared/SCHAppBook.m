@@ -14,8 +14,8 @@
 #import "SCHRecommendationItem.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHRecommendationConstants.h"
-#import "SCHRecommendationISBN.h"
-#import "SCHUserContentItem.h"
+#import "SCHAppRecommendationISBN.h"
+#import "SCHBooksAssignment.h"
 #import "NSNumber+ObjectTypes.h"
 
 // Constants
@@ -169,17 +169,12 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 	return [self.ContentMetadataItem.PageNumber intValue];
 }
 
-- (NSString *)FileName
-{
-	return self.ContentMetadataItem.FileName;
-}
-
 - (NSNumber *)AverageRating
 {
     NSNumber *averageRating = nil;
-    SCHUserContentItem *userContentItem = self.ContentMetadataItem.UserContentItem;
+    SCHBooksAssignment *booksAssignment = self.ContentMetadataItem.booksAssignment;
     
-    averageRating = userContentItem.AverageRating;
+    averageRating = booksAssignment.averageRating;
     if (averageRating == nil) {
         averageRating = [NSNumber numberWithInteger:0];
     }
@@ -322,10 +317,20 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 	return [[SCHProcessingManager sharedProcessingManager] identifierIsProcessing:[self bookIdentifier]];
 }
 
-//- (void)setProcessing:(BOOL)value
-//{
-//	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forIdentifier:[self bookIdentifier]];
-//}
+- (BOOL)requiresNetworkForProcessing
+{
+    BOOL ret = NO;
+    
+    if (![self bookCoverURLIsBundleURL]) {
+        SCHBookCurrentProcessingState state = [[self State] intValue];
+        if ((state == SCHBookProcessingStateReadyForBookFileDownload) ||
+            (state == SCHBookProcessingStateDownloadPaused)) {
+            ret = YES;
+        }
+    }
+    
+    return ret;
+}
 
 - (NSString *)categoryType
 {
@@ -400,12 +405,12 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     return ret;
 }
 
-- (SCHRecommendationISBN *)recommendationISBN
+- (SCHAppRecommendationISBN *)appRecommendationISBN
 {
-    SCHRecommendationISBN *ret = nil;
+    SCHAppRecommendationISBN *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHRecommendationISBN 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationISBN
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"isbn = %@ AND DRMQualifier = %@", 
                                 self.bookIdentifier.isbn, self.bookIdentifier.DRMQualifier]];
@@ -429,7 +434,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     NSArray *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"DRMQualifier != %@", 
                                 [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersSample]]];
@@ -449,7 +454,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 - (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
-    NSSet *allItems = [[self recommendationISBN] recommendationItems];
+    NSSet *allItems = [[self appRecommendationISBN] recommendationItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.isReady = %d", YES];
     NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations]
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
@@ -462,7 +467,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
         
         if (recommendationDictionary && 
             ([self isSampleBook] ||
-             [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationISBN]] == NO)
+             [purchasedBooks containsObject:[recommendationDictionary objectForKey:kSCHAppRecommendationItemISBN]] == NO)
             ) {
             
             [objectArray addObject:recommendationDictionary];
@@ -470,8 +475,29 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     }
     
     ret = [NSArray arrayWithArray:objectArray];
-    
+
+    [self processUserAction:allItems];
+
     return ret;
+}
+
+- (void)processUserAction:(NSSet *)recommendations
+{
+    for (SCHRecommendationItem *item in recommendations) {
+        [item.appRecommendationItem processUserAction];
+    }
+
+    [self save];
+}
+
+- (void)save
+{
+    NSError *error = nil;
+
+    if ([self.managedObjectContext hasChanges] == YES &&
+        ![self.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
 }
 
 #pragma mark - Directory for Current Book

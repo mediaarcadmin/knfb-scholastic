@@ -20,12 +20,12 @@ NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
 NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad = 140;
 NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 134;
 
-NSString * const kSCHAppRecommendationTitle = @"Title";
-NSString * const kSCHAppRecommendationAuthor = @"Author";
-NSString * const kSCHAppRecommendationISBN = @"ISBN";
-NSString * const kSCHAppRecommendationAverageRating = @"AverageRating";
-NSString * const kSCHAppRecommendationCoverImage = @"CoverImage";
-NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath";
+NSString * const kSCHAppRecommendationItemTitle = @"Title";
+NSString * const kSCHAppRecommendationItemAuthor = @"Author";
+NSString * const kSCHAppRecommendationItemISBN = @"ISBN";
+NSString * const kSCHAppRecommendationItemAverageRating = @"AverageRating";
+NSString * const kSCHAppRecommendationItemCoverImage = @"CoverImage";
+NSString * const kSCHAppRecommendationItemFullCoverImagePath = @"FullCoverImagePath";
 
 @interface SCHAppRecommendationItem()
 
@@ -199,7 +199,7 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
     // we allow the recommendation to be show, even if there was a problem getting the cover URLs, the cover or generating the thumbnails
     switch ([self processingState]) {
         case kSCHAppRecommendationProcessingStateUnspecifiedError:               
-        case kSCHAppRecommendationProcessingStateCheckValidity:  
+        case kSCHAppRecommendationProcessingStateWaitingOnUserAction:  
         case kSCHAppRecommendationProcessingStateInvalidRecommendation:
             isReady = NO;
             break;
@@ -217,6 +217,22 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
     
     return isReady;
 }
+
+- (BOOL)processUserAction
+{
+    BOOL ret = NO;
+
+    if ([self processingState] == kSCHAppRecommendationProcessingStateWaitingOnUserAction) {
+        [self setProcessingState:kSCHAppRecommendationProcessingStateNoMetadata];
+
+        [[SCHRecommendationManager sharedManager] checkStateForRecommendation:self];
+
+        ret = YES;
+    }
+
+    return ret;
+}
+
 
 // when there are no wishlist or recommendation items the appRecommendationItem
 // gets deleted as well as the on disk files
@@ -264,12 +280,12 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
     
     if ([self Title]) {
         [recommendationDict setValue:[self Title] 
-                              forKey:kSCHAppRecommendationTitle];
+                              forKey:kSCHAppRecommendationItemTitle];
     } else {
         for (SCHRecommendationItem *item in [self recommendationItems]) {
             if ([[item name] length] > 0) {
                 [recommendationDict setValue:[item name] 
-                                      forKey:kSCHAppRecommendationTitle];
+                                      forKey:kSCHAppRecommendationItemTitle];
                 break;
             }
         }
@@ -277,17 +293,17 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
     
     if ([self ContentIdentifier]) {
         [recommendationDict setValue:[self ContentIdentifier] 
-                              forKey:kSCHAppRecommendationISBN];
+                              forKey:kSCHAppRecommendationItemISBN];
     }
     
     if ([self Author]) {
         [recommendationDict setValue:[self Author]
-                              forKey:kSCHAppRecommendationAuthor];
+                              forKey:kSCHAppRecommendationItemAuthor];
     } else {
         for (SCHRecommendationItem *item in [self recommendationItems]) {
             if ([[item author] length] > 0) {
                 [recommendationDict setValue:[item author] 
-                                      forKey:kSCHAppRecommendationAuthor];
+                                      forKey:kSCHAppRecommendationItemAuthor];
                 break;
             }
         }
@@ -295,19 +311,19 @@ NSString * const kSCHAppRecommendationFullCoverImagePath = @"FullCoverImagePath"
     
     if ([self AverageRating]) {
         [recommendationDict setValue:[self AverageRating] 
-                              forKey:kSCHAppRecommendationAverageRating];
+                              forKey:kSCHAppRecommendationItemAverageRating];
     }
     
     if ([self coverImagePath]) {
         [recommendationDict setValue:[self coverImagePath] 
-                              forKey:kSCHAppRecommendationFullCoverImagePath];
+                              forKey:kSCHAppRecommendationItemFullCoverImagePath];
     }
     
     UIImage *coverImage = [self bookCover];
     
     if (coverImage) {
         [recommendationDict setValue:coverImage
-                              forKey:kSCHAppRecommendationCoverImage];
+                              forKey:kSCHAppRecommendationItemCoverImage];
     }
     
     return recommendationDict;

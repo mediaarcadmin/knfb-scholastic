@@ -8,19 +8,33 @@
 
 #import <Foundation/Foundation.h>
 
+@class SCHBookIdentifier;
+
 @protocol SCHAppController <NSObject>
 
 @required
 
 // Presentation Methods
-
+- (void)presentLogin;
+- (void)presentTour;
+- (void)presentSamples;
 - (void)presentProfiles;
 - (void)presentProfilesSetup;
-- (void)presentSamplesWithWelcome:(BOOL)welcome;
-- (void)presentLogin;
+- (void)presentReadingManager;
+- (void)presentSettings;
+
+// Book Presentation Methods
+- (void)presentTourBookWithIdentifier:(SCHBookIdentifier *)identifier;
+- (void)presentSampleBookWithIdentifier:(SCHBookIdentifier *)identifier;
+- (void)presentAccountBookWithIdentifier:(SCHBookIdentifier *)identifier;
+
+// Exit Methods
+- (void)exitBookshelf;
+
+// TODO: refactor these
+- (void)waitForWebParentToolsToComplete;
 
 // Failure Methods
-
 - (void)failedSamplesWithError:(NSError *)error;
 - (void)failedLoginWithError:(NSError *)error;
 - (void)failedSyncWithError:(NSError *)error;

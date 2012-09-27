@@ -8,6 +8,8 @@
 
 #import "SCHBookStatistics.h"
 
+#import "SCHLibreAccessConstants.h"
+
 @interface SCHBookStatistics ()
 
 @property (nonatomic, assign) NSUInteger readingDuration;
@@ -22,6 +24,7 @@
 @synthesize pagesRead;
 @synthesize storyInteractions;
 @synthesize dictionaryLookupsList;
+@synthesize quizResultsList;
 
 #pragma mark - Object lifecycle
 
@@ -30,6 +33,7 @@
     self = [super init];
     if (self) {
         dictionaryLookupsList = [[NSMutableSet alloc] init];
+        quizResultsList = [[NSMutableSet alloc] init];
     }
     return(self); 
 }
@@ -37,6 +41,7 @@
 - (void)dealloc 
 {
     [dictionaryLookupsList release], dictionaryLookupsList = nil;
+    [quizResultsList release], quizResultsList = nil;
     
     [super dealloc];
 }
@@ -78,6 +83,16 @@
     if ([[word stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
         [self.dictionaryLookupsList addObject:word];
     }
+}
+
+- (void)addQuizTrialsItemScore:(int)score total:(int)total
+{
+    NSDictionary *quizTrialsItem = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithInteger:score], kSCHLibreAccessWebServiceQuizScore,
+                                    [NSNumber numberWithInteger:total], kSCHLibreAccessWebServiceQuizTotal,
+                                    nil];
+    
+    [self.quizResultsList addObject:quizTrialsItem];
 }
 
 @end

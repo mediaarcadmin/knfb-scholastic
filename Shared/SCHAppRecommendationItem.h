@@ -22,12 +22,12 @@ extern NSString * const kSCHAppRecommendationItemErrorCode;
 extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad;
 extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone;
 
-extern NSString * const kSCHAppRecommendationTitle;
-extern NSString * const kSCHAppRecommendationAuthor;
-extern NSString * const kSCHAppRecommendationISBN;
-extern NSString * const kSCHAppRecommendationAverageRating;
-extern NSString * const kSCHAppRecommendationCoverImage;
-extern NSString * const kSCHAppRecommendationFullCoverImagePath;
+extern NSString * const kSCHAppRecommendationItemTitle;
+extern NSString * const kSCHAppRecommendationItemAuthor;
+extern NSString * const kSCHAppRecommendationItemISBN;
+extern NSString * const kSCHAppRecommendationItemAverageRating;
+extern NSString * const kSCHAppRecommendationItemCoverImage;
+extern NSString * const kSCHAppRecommendationItemFullCoverImagePath;
 
 typedef enum {
     kSCHAppRecommendationProcessingStateInvalidRecommendation   = -6,
@@ -36,7 +36,7 @@ typedef enum {
     kSCHAppRecommendationProcessingStateCachedCoverError        = -3,
     kSCHAppRecommendationProcessingStateThumbnailError          = -2,
 	kSCHAppRecommendationProcessingStateUnspecifiedError        = -1,
-	kSCHAppRecommendationProcessingStateCheckValidity           = 0,
+	kSCHAppRecommendationProcessingStateWaitingOnUserAction     = 0,
 	kSCHAppRecommendationProcessingStateNoMetadata              = 1,
     kSCHAppRecommendationProcessingStateNoCover                 = 2,
     kSCHAppRecommendationProcessingStateNoThumbnails            = 3,
@@ -60,6 +60,7 @@ typedef enum {
 - (UIImage *)bookCover;
 - (BOOL)isInUse;
 - (BOOL)isReady;
+- (BOOL)processUserAction;
 
 - (void)deleteAllFiles;
 

@@ -1,3 +1,5 @@
+// No version information in WSDL
+
 #import "xsd.h"
 #import <libxml/xmlstring.h>
 #if TARGET_OS_IPHONE

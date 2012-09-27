@@ -8,12 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString* const kSCHAppModelErrorDomain;
+extern NSInteger const kSCHAppModelErrorBookDoesntExist;
+extern NSInteger const kSCHAppModelErrorBookRequiresNetworkConnection;
+
 @protocol SCHAppController;
 
 @class SCHAuthenticationManager;
 @class SCHSyncManager;
 @class SCHAppStateManager;
-@class SCHSampleBooksImporter;
+@class SCHBookIdentifier;
 
 @interface SCHAppModel : NSObject
 
@@ -22,15 +26,16 @@
 // Shared Instance Actions
 
 - (void)restoreAppState;
-- (void)setupPreview;
+
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password;
+- (void)setupSamples;
+- (void)setupTour;
 
 // Actions
 
 - (void)restoreAppStateWithAppStateManager:(SCHAppStateManager *)appStateManager
                      authenticationManager:(SCHAuthenticationManager *)authenticationManager
                                syncManager:(SCHSyncManager *)syncManager;
-- (void)setupPreviewWithImporter:(SCHSampleBooksImporter *)importer;
 - (void)loginWithUsername:(NSString *)username 
                  password:(NSString *)password 
               syncManager:(SCHSyncManager *)syncManager
@@ -44,6 +49,15 @@
 
 - (void)waitForBookshelvesWithSyncManager:(SCHSyncManager *)syncManager;
 - (void)waitForWebParentToolsToCompleteWithSyncManager:(SCHSyncManager *)syncManager;
+
+// Interrogate App State
+
+- (BOOL)hasBooksToImport;
+- (BOOL)hasExtraSampleBooks;
+
+// Interrogate Book State
+- (BOOL)canOpenBookWithIdentifier:(SCHBookIdentifier *)identifier error:(NSError **)error;
+- (NSInteger)bookshelfStyleForBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
 // Exposed for testing purposes
 

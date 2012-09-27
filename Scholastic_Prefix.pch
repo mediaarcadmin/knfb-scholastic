@@ -23,6 +23,8 @@
 #define PICTURE_STARTER_CACHE_DISABLED 1
 #define USE_EMAIL_ADDRESS_AS_USERNAME 1
 #define USE_QA2_ENDPOINTS 1
+#define USE_CODEANDTHEORY 1
+#define USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS 1
 
 #define PRODUCTION_ENVIRONMENT 0
 
@@ -33,6 +35,7 @@
 #define GETUSERINFO_SERVER_ENDPOINT GETUSERINFO_SERVER_ENDPOINT_PRODUCTION
 #define RECOMMENDATION_SERVER_ENDPOINT RECOMMENDATION_SERVER_ENDPOINT_PRODUCTION
 #define LIBREDIGITAL_SERVER_ENDPOINT LIBREDIGITAL_SERVER_ENDPOINT_PRODUCTION
+#define ACTIVITY_LOG_SERVER_ENDPOINT ACTIVITY_LOG_SERVER_ENDPOINT_PRODUCTION
 #define DRM_RIGHTSMANAGER_SERVER DRM_RIGHTSMANAGER_SERVER_PRODUCTION
 #define WEB_PARENT_TOOLS_SERVER_PAD WEB_PARENT_TOOLS_SERVER_PAD_PRODUCTION
 #define WEB_PARENT_TOOLS_SERVER_PHONE WEB_PARENT_TOOLS_SERVER_PHONE_PRODUCTION
@@ -52,11 +55,18 @@
 #define GETUSERINFO_SERVER_ENDPOINT GETUSERINFO_SERVER_ENDPOINT_QA
 #endif
 
-#define RECOMMENDATION_SERVER_ENDPOINT RECOMMENDATION_SERVER_ENDPOINT_PRODUCTION
-#define LIBREDIGITAL_SERVER_ENDPOINT LIBREDIGITAL_SERVER_ENDPOINT_UAT
-#define DRM_RIGHTSMANAGER_SERVER DRM_RIGHTSMANAGER_SERVER_UAT
+#if USE_CODEANDTHEORY
+#define WEB_PARENT_TOOLS_SERVER_PAD WEB_PARENT_TOOLS_SERVER_CODEANDTHEORY
+#define WEB_PARENT_TOOLS_SERVER_PHONE WEB_PARENT_TOOLS_SERVER_CODEANDTHEORY
+#else
 #define WEB_PARENT_TOOLS_SERVER_PAD WEB_PARENT_TOOLS_SERVER_PAD_UAT
 #define WEB_PARENT_TOOLS_SERVER_PHONE WEB_PARENT_TOOLS_SERVER_PHONE_UAT
+#endif
+
+#define RECOMMENDATION_SERVER_ENDPOINT RECOMMENDATION_SERVER_ENDPOINT_PRODUCTION
+#define LIBREDIGITAL_SERVER_ENDPOINT LIBREDIGITAL_SERVER_ENDPOINT_UAT
+#define ACTIVITY_LOG_SERVER_ENDPOINT ACTIVITY_LOG_SERVER_ENDPOINT_UAT
+#define DRM_RIGHTSMANAGER_SERVER DRM_RIGHTSMANAGER_SERVER_UAT
 #define UPDATE_MANIFEST UPDATE_MANIFEST_PRODUCTION
 #define VIDEO_MANIFEST  VIDEO_MANIFEST_PRODUCTION
 #define FREE_MANIFEST   FREE_MANIFEST_PRODUCTION
@@ -74,9 +84,14 @@
 #define GETUSERINFO_SERVER_ENDPOINT_PRODUCTION @"https://esvcs.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpsSoap11Endpoint/"
 
 // Libre Digital server EndPoint
-#define LIBREDIGITAL_SERVER_ENDPOINT_DEVINT @"http://laesb.devint.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"
-#define LIBREDIGITAL_SERVER_ENDPOINT_UAT @"http://laesb.uat.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"
-#define LIBREDIGITAL_SERVER_ENDPOINT_PRODUCTION @"http://laesb.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"
+#define LIBREDIGITAL_SERVER_ENDPOINT_DEVINT @"http://laesb.devint.cld.libredigital.com/services/LibreAccessService_1_2_0.LibreAccessService_1_2_0HttpSoap11Endpoint"
+#define LIBREDIGITAL_SERVER_ENDPOINT_UAT @"http://laesb.uat.cld.libredigital.com/services/LibreAccessService_1_2_0.LibreAccessService_1_2_0HttpSoap11Endpoint"
+#define LIBREDIGITAL_SERVER_ENDPOINT_PRODUCTION @"http://laesb.cld.libredigital.com/services/LibreAccessService_1_2_0.LibreAccessService_1_2_0HttpSoap11Endpoint"
+
+// Activity Log server EndPoint
+#define ACTIVITY_LOG_SERVER_ENDPOINT_DEVINT @"http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogOld.LibreAccessActivityLogOldHttpSoap11Endpoint"
+#define ACTIVITY_LOG_SERVER_ENDPOINT_UAT @"http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogOld.LibreAccessActivityLogOldHttpSoap11Endpoint"
+#define ACTIVITY_LOG_SERVER_ENDPOINT_PRODUCTION @"http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogOld.LibreAccessActivityLogOldHttpSoap11Endpoint"
 
 // Wishlist Server EndPoint
 #define WISHLIST_SERVER_ENDPOINT_QA @"https://esvcsqa.scholastic.com/SchWS/services/SPS/WishListService.WishListServiceHttpsSoap11Endpoint/"
@@ -97,6 +112,7 @@
 #define WEB_PARENT_TOOLS_SERVER_PAD_PRODUCTION @"https://ebooks2.scholastic.com/wpt/auth"
 #define WEB_PARENT_TOOLS_SERVER_PHONE_UAT @"https://demomobile.usablenet.com/mt/ebooks2uat.scholastic.com/wpt/auth"
 #define WEB_PARENT_TOOLS_SERVER_PHONE_PRODUCTION @"https://demomobile.usablenet.com/mt/ebooks2uat.scholastic.com/wpt/auth"
+#define WEB_PARENT_TOOLS_SERVER_CODEANDTHEORY @"http://storiaaccount-qa.scholastic.com/wpt/assigneBooks.action"
 
 // Dictionary manifest location
 #define UPDATE_MANIFEST_TEST @"http://bits.blioreader.com/partners/Scholastic/SLInstall/QAStandard/UpdateManifest.xml"

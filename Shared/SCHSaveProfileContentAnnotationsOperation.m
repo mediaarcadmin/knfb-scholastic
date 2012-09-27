@@ -14,6 +14,7 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHSyncEntity.h"
 #import "SCHAnnotation.h"
+#import "SCHMakeNullNil.h"
 
 @interface SCHSaveProfileContentAnnotationsOperation ()
 
@@ -49,7 +50,7 @@
                                                  userInfo:[NSDictionary dictionaryWithObject:[exception reason]
                                                                                       forKey:NSLocalizedDescriptionKey]];
                 
-                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings 
+                [self.syncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceSaveProfileContentAnnotations 
                                                         error:error 
                                                   requestInfo:nil 
                                                        result:self.result 
@@ -115,7 +116,7 @@
                     switch ([[annotation objectForKey:kSCHLibreAccessWebServiceAction] saveActionValue]) {
                         case kSCHSaveActionsCreate:
                         {
-                            NSNumber *annotationID = [self makeNullNil:[annotation objectForKey:kSCHLibreAccessWebServiceID]];
+                            NSNumber *annotationID = makeNullNil([annotation objectForKey:kSCHLibreAccessWebServiceID]);
                             if ([SCHAnnotation isValidAnnotationID:annotationID] == YES) {
                                 updatedID = YES;
                                 [annotationManagedObject setValue:annotationID forKey:kSCHLibreAccessWebServiceID];

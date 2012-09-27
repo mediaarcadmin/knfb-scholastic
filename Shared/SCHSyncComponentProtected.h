@@ -7,7 +7,6 @@
 //
 
 #import "SCHSyncComponent.h"
-#import "SCHComponentProtected.h"
 
 @interface SCHSyncComponent ()
 

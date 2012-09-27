@@ -50,26 +50,23 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
         self.appModel = [[[SCHAppModel alloc] initWithAppController:self.appController] autorelease];
         [self.appModel restoreAppState];
     }
-    
-    return(YES);
-}
 
-- (void)applicationDidBecomeActive:(UIApplication *)application 
-{
 #if NON_DRM_AUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	if ([authenticationManager isAuthenticated] == YES) {
 #else
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
     if (deviceKey != nil &&
-        [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {   
+        [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
 #endif
         double delayInSeconds = kAppDelegate_iPhoneSyncManagerWakeDelay;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [[SCHSyncManager sharedSyncManager] firstSync:NO requireDeviceAuthentication:NO];
+            [[SCHSyncManager sharedSyncManager] accountSyncForced:YES requireDeviceAuthentication:NO];
         });
     }
+
+    return(YES);
 }
 
 #pragma mark - Memory management

@@ -18,6 +18,7 @@
 @property (nonatomic, assign, readonly) NSUInteger pagesRead;
 @property (nonatomic, assign, readonly) NSUInteger storyInteractions;
 @property (nonatomic, retain) NSMutableSet *dictionaryLookupsList;
+@property (nonatomic, assign) NSMutableSet *quizResultsList;
 
 - (BOOL)hasStatistics;
 
@@ -25,5 +26,6 @@
 - (void)increasePagesReadBy:(NSUInteger)pages;
 - (void)increaseStoryInteractionsBy:(NSUInteger)newStoryInteractions;
 - (void)addToDictionaryLookup:(NSString *)word;
+- (void)addQuizTrialsItemScore:(int)score total:(int)total;
 
 @end

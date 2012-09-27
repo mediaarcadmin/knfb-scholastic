@@ -532,7 +532,9 @@ static NSString * const kSCHWishListWebServiceClientID = @"KNFB";
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.profileID = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceProfileID]];
-		intoObject.profileName = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceProfileName]];
+        // to inform the wishlist server of the most current profile name we
+        // always use the most current profile name from schprofileitem
+		intoObject.profileName = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceProfileNameFromProfileItem]];
 		intoObject.timestamp = [self fromObjectTranslate:[object valueForKey:kSCHWishListWebServiceTimestamp]];        
 	}
 }

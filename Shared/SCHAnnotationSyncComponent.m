@@ -207,14 +207,14 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     NSNumber *profileID = [self currentProfile];
     
     if (profileID != nil) {
-        if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings] == NSOrderedSame) {
+        if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {
             SCHSaveProfileContentAnnotationsOperation *operation = [[[SCHSaveProfileContentAnnotationsOperation alloc] initWithSyncComponent:self
                                                                                                                                       result:result
                                                                                                                                     userInfo:userInfo] autorelease];
             operation.profileID = profileID;
             [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
             [self.backgroundProcessingQueue addOperation:operation];
-        } else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotationsForRatings] == NSOrderedSame) {
+        } else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotations] == NSOrderedSame) {
             SCHListProfileContentAnnotationsOperation *operation = [[[SCHListProfileContentAnnotationsOperation alloc] initWithSyncComponent:self
                                                                                                                                       result:result
                                                                                                                                     userInfo:userInfo] autorelease];
@@ -253,7 +253,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
     
     // server error so process the result
     if ([error domain] == kBITAPIErrorDomain &&
-        [method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotationsForRatings] == NSOrderedSame &&	            
+        [method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame &&	            
         profileID != nil) {
         SCHSaveProfileContentAnnotationsOperation *operation = [[[SCHSaveProfileContentAnnotationsOperation alloc] initWithSyncComponent:self
                                                                                                                                   result:result

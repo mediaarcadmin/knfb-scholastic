@@ -15,7 +15,6 @@
 #import "SCHBookManager.h"
 #import "SCHThemeButton.h"
 #import "SCHBookShelfTopTenPopoverTableView.h"
-#import "SCHTopFavoritesComponent.h"
 #import "SCHProfileItem.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHAppProfile.h"
@@ -37,7 +36,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 
 @interface SCHBookShelfViewController_iPad ()
 
-@property (nonatomic, retain) SCHTopFavoritesComponent *topFavoritesComponent;
 @property (nonatomic, retain) NSArray *topTenBooks;
 @property (nonatomic, retain) NSDate *lastTopTenBookRetrieval;
 
@@ -59,7 +57,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 
 @implementation SCHBookShelfViewController_iPad
 
-@synthesize topFavoritesComponent;
 @synthesize topTenBooks;
 @synthesize lastTopTenBookRetrieval;
 @synthesize topTenPicksButton;
@@ -74,7 +71,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     
     [recommendationPopover release], recommendationPopover = nil;
     [ratingButton release], ratingButton = nil;
-    [topFavoritesComponent release], topFavoritesComponent = nil;
     [topTenBooks release], topTenBooks = nil;
     [lastTopTenBookRetrieval release], lastTopTenBookRetrieval = nil;
     [popover release], popover = nil;
@@ -397,12 +393,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     if (!animated) {
         [CATransaction commit];
     }
-}
-
-- (void)authenticationDidSucceed
-{
-    // Re-call top favorites for age now we have authenticated
-    [self.topFavoritesComponent topFavoritesForAge:self.profileItem.age];
 }
 
 - (void)showAppVersionOutdatedAlert

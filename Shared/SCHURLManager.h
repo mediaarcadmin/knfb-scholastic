@@ -23,7 +23,8 @@ extern NSString * const kSCHURLManagerCleared;
 
 + (SCHURLManager *)sharedURLManager;
 
-- (void)requestURLForBook:(SCHBookIdentifier *)bookIdentifier;
+- (void)requestURLForBook:(SCHBookIdentifier *)bookIdentifier
+                  version:(NSNumber *)version;
 - (void)requestURLForRecommendation:(NSString *)isbn;
 - (void)clear;
 

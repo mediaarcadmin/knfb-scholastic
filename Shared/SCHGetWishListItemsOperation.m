@@ -13,6 +13,7 @@
 #import "SCHWishListProfile.h"
 #import "SCHWishListItem.h"
 #import "BITAPIError.h" 
+#import "SCHMakeNullNil.h"
 
 @interface SCHGetWishListItemsOperation ()
 
@@ -35,8 +36,8 @@
 - (void)main
 {
     @try {
-        NSDictionary *wishListItems = [self makeNullNil:[self.result objectForKey:kSCHWishListWebServiceGetWishListItems]];
-        NSArray *profileItems = [self makeNullNil:[wishListItems objectForKey:kSCHWishListWebServiceProfileItemList]];
+        NSDictionary *wishListItems = makeNullNil([self.result objectForKey:kSCHWishListWebServiceGetWishListItems]);
+        NSArray *profileItems = makeNullNil([wishListItems objectForKey:kSCHWishListWebServiceProfileItemList]);
         
         [self syncWishListProfiles:profileItems];
         
@@ -116,8 +117,8 @@
 			break;			
 		}
 		
-        id webProfile = [self makeNullNil:[webItem valueForKey:kSCHWishListWebServiceProfile]];
-        id webItemID =  [self makeNullNil:[webProfile valueForKey:kSCHWishListWebServiceProfileID]];
+        id webProfile = makeNullNil([webItem valueForKey:kSCHWishListWebServiceProfile]);
+        id webItemID =  makeNullNil([webProfile valueForKey:kSCHWishListWebServiceProfileID]);
 		id localItemID = [localItem valueForKey:kSCHWishListWebServiceProfileID];
 		
         if (webItemID == nil || [SCHWishListProfile isValidProfileID:webItemID] == NO) {
@@ -169,21 +170,21 @@
 	SCHWishListProfile *ret = nil;
 	
 	if (wishListProfile != nil) {
-        id webProfile = [self makeNullNil:[wishListProfile valueForKey:kSCHWishListWebServiceProfile]];
-        id wishListProfileID = [self makeNullNil:[webProfile valueForKey:kSCHWishListWebServiceProfileID]];
+        id webProfile = makeNullNil([wishListProfile valueForKey:kSCHWishListWebServiceProfile]);
+        id wishListProfileID = makeNullNil([webProfile valueForKey:kSCHWishListWebServiceProfileID]);
         
         if (webProfile != nil && [SCHWishListProfile isValidProfileID:wishListProfileID] == YES) {            
             ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListProfile 
                                                 inManagedObjectContext:self.backgroundThreadManagedObjectContext];			
             
             // convert timestamp to lastmodified
-            ret.LastModified = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceTimestamp]];
+            ret.LastModified = makeNullNil([webProfile objectForKey:kSCHWishListWebServiceTimestamp]);
             ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
             
             ret.ProfileID = wishListProfileID;
-            ret.ProfileName = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceProfileName]];
+            ret.ProfileName = makeNullNil([webProfile objectForKey:kSCHWishListWebServiceProfileName]);
             
-            [self syncWishListItems:[self makeNullNil:[wishListProfile objectForKey:kSCHWishListWebServiceItemList]] 
+            [self syncWishListItems:makeNullNil([wishListProfile objectForKey:kSCHWishListWebServiceItemList])
                   withWishListItems:[ret ItemList]
                          insertInto:ret];            
         }
@@ -196,16 +197,16 @@
         withWishListProfile:(SCHWishListProfile *)localWishListProfile
 {
     if (webWishListProfile != nil) {
-        id webProfile = [self makeNullNil:[webWishListProfile valueForKey:kSCHWishListWebServiceProfile]];
+        id webProfile = makeNullNil([webWishListProfile valueForKey:kSCHWishListWebServiceProfile]);
         if (webProfile != nil) {                    
             // convert timestamp to lastmodified
-            localWishListProfile.LastModified = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceTimestamp]];
+            localWishListProfile.LastModified = makeNullNil([webProfile objectForKey:kSCHWishListWebServiceTimestamp]);
             localWishListProfile.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
-            
-            localWishListProfile.ProfileID = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceProfileID]];
-            localWishListProfile.ProfileName = [self makeNullNil:[webProfile objectForKey:kSCHWishListWebServiceProfileName]];
-            
-            [self syncWishListItems:[self makeNullNil:[webWishListProfile objectForKey:kSCHWishListWebServiceItemList]] 
+
+            localWishListProfile.ProfileID = makeNullNil([webProfile objectForKey:kSCHWishListWebServiceProfileID]);
+            localWishListProfile.ProfileName = makeNullNil([webProfile objectForKey:kSCHWishListWebServiceProfileName]);
+
+            [self syncWishListItems:makeNullNil([webWishListProfile objectForKey:kSCHWishListWebServiceItemList])
                   withWishListItems:localWishListProfile.ItemList
                          insertInto:localWishListProfile];
         }
@@ -247,7 +248,7 @@
 			break;			
 		}
 		
-		id webItemID =  [self makeNullNil:[webItem valueForKey:kSCHWishListWebServiceISBN]];
+		id webItemID =  makeNullNil([webItem valueForKey:kSCHWishListWebServiceISBN]);
 		id localItemID = [localItem valueForKey:kSCHWishListWebServiceISBN];
 		
         if (webItemID == nil || [SCHWishListItem isValidItemID:webItemID] == NO) {
@@ -314,20 +315,20 @@
 - (SCHWishListItem *)wishListItem:(NSDictionary *)wishListItem
 {
 	SCHWishListItem *ret = nil;
-	id wishListItemID = [self makeNullNil:[wishListItem valueForKey:kSCHWishListWebServiceISBN]];
+	id wishListItemID = makeNullNil([wishListItem valueForKey:kSCHWishListWebServiceISBN]);
     
 	if (wishListItem != nil && [SCHWishListItem isValidItemID:wishListItemID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHWishListItem 
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];			
         
         // convert timestamp to lastmodified
-        ret.LastModified = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceTimestamp]];
+        ret.LastModified = makeNullNil([wishListItem objectForKey:kSCHWishListWebServiceTimestamp]);
         ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
         
-		ret.Author = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceAuthor]];
-		ret.InitiatedBy = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceInitiatedBy]];
+		ret.Author = makeNullNil([wishListItem objectForKey:kSCHWishListWebServiceAuthor]);
+		ret.InitiatedBy = makeNullNil([wishListItem objectForKey:kSCHWishListWebServiceInitiatedBy]);
         ret.ISBN = wishListItemID;
-        ret.Title = [self makeNullNil:[wishListItem objectForKey:kSCHWishListWebServiceTitle]];  
+        ret.Title = makeNullNil([wishListItem objectForKey:kSCHWishListWebServiceTitle]);
         
         [ret assignAppRecommendationItem];
 	}
@@ -340,13 +341,13 @@
 {
     if (webWishListItem != nil) {
         // convert timestamp to lastmodified
-        localWishListItem.LastModified = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceTimestamp]];
+        localWishListItem.LastModified = makeNullNil([webWishListItem objectForKey:kSCHWishListWebServiceTimestamp]);
         localWishListItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
         
-        localWishListItem.Author = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceAuthor]];
-        localWishListItem.InitiatedBy = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceInitiatedBy]];
-        localWishListItem.ISBN = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceISBN]];
-        localWishListItem.Title = [self makeNullNil:[webWishListItem objectForKey:kSCHWishListWebServiceTitle]];
+        localWishListItem.Author = makeNullNil([webWishListItem objectForKey:kSCHWishListWebServiceAuthor]);
+        localWishListItem.InitiatedBy = makeNullNil([webWishListItem objectForKey:kSCHWishListWebServiceInitiatedBy]);
+        localWishListItem.ISBN = makeNullNil([webWishListItem objectForKey:kSCHWishListWebServiceISBN]);
+        localWishListItem.Title = makeNullNil([webWishListItem objectForKey:kSCHWishListWebServiceTitle]);
     }
 }
 
