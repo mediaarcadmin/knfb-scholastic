@@ -112,7 +112,7 @@
 #define WEB_PARENT_TOOLS_SERVER_PAD_PRODUCTION @"https://ebooks2.scholastic.com/wpt/auth"
 #define WEB_PARENT_TOOLS_SERVER_PHONE_UAT @"https://demomobile.usablenet.com/mt/ebooks2uat.scholastic.com/wpt/auth"
 #define WEB_PARENT_TOOLS_SERVER_PHONE_PRODUCTION @"https://demomobile.usablenet.com/mt/ebooks2uat.scholastic.com/wpt/auth"
-#define WEB_PARENT_TOOLS_SERVER_CODEANDTHEORY @"http://storiaaccount-qa.scholastic.com/wpt/assignEbooks.action"
+#define WEB_PARENT_TOOLS_SERVER_CODEANDTHEORY @"http://storiaaccount-qa.scholastic.com/wpt/assigneBooks.action"
 
 // Dictionary manifest location
 #define UPDATE_MANIFEST_TEST @"http://bits.blioreader.com/partners/Scholastic/SLInstall/QAStandard/UpdateManifest.xml"
