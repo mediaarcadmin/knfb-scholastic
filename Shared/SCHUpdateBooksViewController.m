@@ -88,6 +88,9 @@
 
     self.cellControllers = [NSMutableDictionary dictionary];
     self.availableBookUpdates = [self.bookUpdates availableBookUpdates];
+    
+    UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+    [self.updateBooksButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
 
     __block SCHUpdateBooksViewController *weakSelf = self;
     

@@ -54,6 +54,18 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [super dealloc];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    UIImage *stretchedFieldImage = [[UIImage imageNamed:@"textfield_wht_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+    [self.usernameField setBackground:stretchedFieldImage];
+    [self.passwordField setBackground:stretchedFieldImage];
+    
+    UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+    [self.deregisterButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];

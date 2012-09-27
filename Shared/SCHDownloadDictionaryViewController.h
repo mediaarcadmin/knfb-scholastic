@@ -10,6 +10,8 @@
 
 @interface SCHDownloadDictionaryViewController : UIViewController {}
 
+@property (nonatomic, retain) IBOutlet UIButton *downloadButton;
+
 - (IBAction)downloadDictionary:(id)sender;
 
 @end

@@ -17,26 +17,43 @@
 
 @property (nonatomic, copy) dispatch_block_t completion;
 
+- (void)releaseViewObjects;
+
 @end
 
 @implementation SCHDownloadDictionaryViewController
 
 @synthesize completion;
+@synthesize downloadButton;
 
 - (void)dealloc
 {
+    [self releaseViewObjects];
     [completion release], completion = nil;
     [super dealloc];
+}
+
+- (void)releaseViewObjects
+{
+    [downloadButton release], downloadButton = nil;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+    [self.downloadButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+}
+
+- (void)viewWillUnload
+{
+    [self releaseViewObjects];
 }
 
 - (void)downloadDictionary:(id)sender

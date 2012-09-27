@@ -36,6 +36,9 @@
 {
     [super viewDidLoad];
     
+    UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+    [self.removeDictionaryButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+    
     self.labels = [self.labels sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [(UIView *)obj1 tag] - [(UIView *)obj2 tag];
     }];

@@ -884,6 +884,19 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                 cell.indentationLevel = 1;
             }
             break;
+        case kSCHSettingsPanelDictionaryDelete:
+            cell.textLabel.text = @"Remove Dictionary";
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
+            if (isSelected) {
+                cell.textLabel.textColor = lightText;
+                cell.imageView.image = selectedImage;
+                cell.indentationLevel = 0;
+            } else {
+                cell.textLabel.textColor = darkText;
+                cell.imageView.image = nil;
+                cell.indentationLevel = 1;
+            }
+            break;
         case kSCHSettingsPanelDeregisterDevice:
             cell.textLabel.text = @"Deregister Device";
             cell.textLabel.font = [UIFont boldSystemFontOfSize:12];

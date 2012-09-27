@@ -73,6 +73,7 @@ typedef enum  {
     
     UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
     [self.validateButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+    
     [self setAlert:SCHReadingManagerAlertNone];
 }
 - (void)viewDidUnload
