@@ -270,9 +270,9 @@ typedef enum
                                              selector:@selector(annotationSyncComponentDidComplete:) 
                                                  name:SCHAnnotationSyncComponentDidCompleteNotification
                                                object:nil];
-
+#if 0
     if (!self.showWelcome) {
-        if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
+        if (![[SCHSyncManager sharedSyncManager] havePerformedAccountSync] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Syncing", @"")
                                   message:@"\n\n\n"];
@@ -296,7 +296,8 @@ typedef enum
             [self dismissLoadingView];
         }
     }
-
+#endif
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];              
     
     [self.listTableView setSeparatorColor:[UIColor clearColor]];

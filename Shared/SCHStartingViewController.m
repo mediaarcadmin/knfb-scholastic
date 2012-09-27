@@ -97,7 +97,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 {
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && 
         [[SCHAuthenticationManager sharedAuthenticationManager] hasDRMInformation] && 
-        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+        [[SCHSyncManager sharedSyncManager] havePerformedAccountSync]) {
         [self runSetupProfileSequenceAnimated:NO pushProfile:YES showValidation:NO];
     } else if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
         [self pushSamplesAnimated:NO showWelcome:NO];
@@ -225,7 +225,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] &&
         [[SCHAuthenticationManager sharedAuthenticationManager] hasDRMInformation] && 
-        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+        [[SCHSyncManager sharedSyncManager] havePerformedAccountSync]) {
         
         if ([self bookshelfSetupRequired]) {
             // Start the sync in case they have been set up since last sync

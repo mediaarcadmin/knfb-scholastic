@@ -84,7 +84,7 @@ typedef enum {
 {
     if ([authenticationManager hasUsernameAndPassword] && 
         [authenticationManager hasDRMInformation] && 
-        [syncManager havePerformedFirstSyncUpToBooks]) {
+        [syncManager havePerformedAccountSync]) {
         
         if ([self hasProfilesInManagedObjectContext:appStateManager.managedObjectContext]) {
             [self.appController presentProfiles];

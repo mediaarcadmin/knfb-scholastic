@@ -211,7 +211,7 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
 - (void)setupUserDefaults
 {
     NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedFirstSyncUpToBooks,
+								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedAccountSync,
                                  [NSNumber numberWithInteger:0], kSCHUserDefaultsWelcomeViewShowCount,
                                  nil];
     
@@ -223,7 +223,7 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
 // this is generally performed after de-registration
 - (NSArray *)clearableUserDefaults
 {
-    return [NSArray arrayWithObjects:kSCHUserDefaultsPerformedFirstSyncUpToBooks,
+    return [NSArray arrayWithObjects:kSCHUserDefaultsPerformedAccountSync,
             kSCHAuthenticationManagerUserKey,
             kSCHAuthenticationManagerDeviceKey,
             kSCHAuthenticationManagerUsername,
@@ -318,7 +318,7 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     [self suspendSyncingAndCancelProcessing];
     
     if ([[SCHAuthenticationManager sharedAuthenticationManager] hasUsernameAndPassword] && 
-        [[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks]) {
+        [[SCHSyncManager sharedSyncManager] havePerformedAccountSync]) {
         
         LambdaAlert *upgradeAlert = [[[LambdaAlert alloc]
                                       initWithTitle:NSLocalizedString(@"Upgrading, please wait", @"")
