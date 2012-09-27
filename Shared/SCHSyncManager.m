@@ -350,7 +350,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     [self endBackgroundTask];
         
 	[[NSUserDefaults standardUserDefaults] setBool:NO 
-                                            forKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
+                                            forKey:kSCHUserDefaultsPerformedAccountSync];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 }
@@ -363,9 +363,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
     }    
 }
 
-- (BOOL)havePerformedFirstSyncUpToBooks
+- (BOOL)havePerformedAccountSync
 {
-	return [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
+	return [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsPerformedAccountSync];
 }
 
 - (void)accountSyncForced:(BOOL)syncNow
@@ -732,7 +732,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 }
 
 - (BOOL)wishListSyncActive
-{    
+{
     return [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant];
 }
 
@@ -787,9 +787,9 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 
 - (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
 {
-	if ([component isKindOfClass:[SCHBookshelfSyncComponent class]] == YES) {
+	if ([component isKindOfClass:[SCHContentSyncComponent class]] == YES) {
 		[[NSUserDefaults standardUserDefaults] setBool:YES 
-                                                forKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
+                                                forKey:kSCHUserDefaultsPerformedAccountSync];
         [[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	

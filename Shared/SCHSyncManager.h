@@ -32,7 +32,7 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 
 - (void)resetSync;
 - (void)flushSyncQueue;
-- (BOOL)havePerformedFirstSyncUpToBooks;
+- (BOOL)havePerformedAccountSync;
 
 - (void)accountSyncForced:(BOOL)syncNow
 requireDeviceAuthentication:(BOOL)requireAuthentication;

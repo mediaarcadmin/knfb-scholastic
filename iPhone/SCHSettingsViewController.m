@@ -1196,6 +1196,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
     [self addContentSubview:self.contentViewController.view];
     [self setSelectedPanel:panel];
+    
+    if ([[self indexPathForPanel:panel] section] == [[self indexPathForPanel:kSCHSettingsPanelAdditionalSettings] section]) {
+        [self setAdditionalSettingsVisible:YES];
+    } else {
+        [self setAdditionalSettingsVisible:NO];
+    }
 }
 
 - (IBAction)close:(id)sender

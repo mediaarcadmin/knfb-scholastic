@@ -8,7 +8,9 @@
  */
 
 // Constants
-extern NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks;
+#import <Foundation/Foundation.h>
+
+extern NSString * const kSCHUserDefaultsPerformedAccountSync;
 extern NSString * const kSCHUserDefaultsWelcomeViewShowCount;
 extern NSString * const kSCHUserDefaultsDeviceID;
 
