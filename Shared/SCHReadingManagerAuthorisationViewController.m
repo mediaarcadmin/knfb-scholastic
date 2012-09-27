@@ -11,7 +11,6 @@
 #import "SCHAuthenticationManager.h"
 #import "LambdaAlert.h"
 #import "Reachability.h"
-#import "SCHAccountValidation.h"
 #import "SCHAccountVerifier.h"
 #import "SCHUserDefaults.h"
 #import "SCHSyncManager.h"
@@ -30,7 +29,6 @@ typedef enum  {
 
 @interface SCHReadingManagerAuthorisationViewController () <UITextFieldDelegate>
 
-@property (nonatomic, retain) SCHAccountValidation *accountValidation;
 @property (nonatomic, retain) SCHAccountVerifier *accountVerifier;
 
 - (void)showAppVersionOutdatedAlert;
@@ -41,7 +39,6 @@ typedef enum  {
 @implementation SCHReadingManagerAuthorisationViewController
 
 @synthesize appController;
-@synthesize accountValidation;
 @synthesize accountVerifier;
 @synthesize messageLabel;
 @synthesize usernameField;
@@ -62,7 +59,6 @@ typedef enum  {
 {
     [self releaseViewObjects];
     appController = nil;
-    [accountValidation release], accountValidation = nil;
     [accountVerifier release], accountVerifier = nil;
     [super dealloc];
 }
@@ -86,15 +82,6 @@ typedef enum  {
 }
 
 #pragma mark - Accessor methods
-
-- (SCHAccountValidation *)accountValidation
-{
-    if (accountValidation == nil) {
-        accountValidation = [[SCHAccountValidation alloc] init];
-    }
-    
-    return(accountValidation);
-}
 
 - (SCHAccountVerifier *)accountVerifier
 {

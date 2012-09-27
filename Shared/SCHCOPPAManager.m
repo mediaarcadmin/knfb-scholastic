@@ -8,14 +8,12 @@
 
 #import "SCHCOPPAManager.h"
 
-#import "SCHAccountValidation.h"
 #import "SCHScholasticGetUserInfoWebService.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHAppStateManager.h"
 
 @interface SCHCOPPAManager ()
 
-@property (nonatomic, retain) SCHAccountValidation *accountValidation;
 @property (nonatomic, retain) SCHScholasticGetUserInfoWebService *scholasticWebService;
 @property (nonatomic, assign) BOOL waitingOnResponse;
 @property (nonatomic, retain) NSDate *nextRequest;
@@ -26,7 +24,6 @@
 
 @implementation SCHCOPPAManager
 
-@synthesize accountValidation;
 @synthesize scholasticWebService;
 @synthesize waitingOnResponse;
 @synthesize nextRequest;
@@ -65,9 +62,7 @@
 - (void)releaseResources
 {
     scholasticWebService.delegate = nil;
-    [scholasticWebService release], scholasticWebService = nil;
-    
-    [accountValidation release], accountValidation = nil;
+    [scholasticWebService release], scholasticWebService = nil;    
 }
 
 - (void)dealloc 
@@ -92,15 +87,6 @@
     }
     
     return scholasticWebService;
-}
-
-- (SCHAccountValidation *)accountValidation
-{
-    if (accountValidation == nil) {
-        accountValidation = [[SCHAccountValidation alloc] init];
-    }
-    
-    return accountValidation;
 }
 
 #pragma mark - methods

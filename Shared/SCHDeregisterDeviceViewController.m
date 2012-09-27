@@ -11,18 +11,16 @@
 #import "LambdaAlert.h"
 #import "SCHUnderlinedButton.h"
 #import "Reachability.h"
-#import "SCHAccountValidation.h"
 #import "SCHUserDefaults.h"
 #import "SCHDrmSession.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHSyncManager.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHAuthenticationManager.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 @interface SCHDeregisterDeviceViewController () <UITextFieldDelegate> 
-
-@property (nonatomic, retain) SCHAccountValidation *accountValidation;
 
 - (void)deregisterAfterSuccessfulAuthentication;
 - (void)deregisterFailedAuthentication:(NSError *)error 
@@ -38,7 +36,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize passwordField;
 @synthesize deregisterButton;
 @synthesize spinner;
-@synthesize accountValidation;
 @synthesize appController;
 
 - (void)releaseViewObjects
@@ -53,7 +50,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 - (void)dealloc
 {
     [self releaseViewObjects];
-    [accountValidation release], accountValidation = nil;
     appController = nil;
     [super dealloc];
 }
@@ -62,17 +58,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [super viewDidUnload];
     [self releaseViewObjects];
-}
-
-#pragma mark - Accessor methods
-
-- (SCHAccountValidation *)accountValidation
-{
-    if (accountValidation == nil) {
-        accountValidation = [[SCHAccountValidation alloc] init];
-    }
-    
-    return(accountValidation);
 }
 
 #pragma mark - Actions
@@ -110,7 +95,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             __block SCHDeregisterDeviceViewController *weakSelf = self;
             [self.spinner startAnimating];
 //            [self setEnablesUI:NO];
-            [self.accountValidation validateWithUserName:username
+            [[SCHAuthenticationManager sharedAuthenticationManager] validateWithUserName:username
                                             withPassword:self.passwordField.text 
                                           updatePassword:YES
                                            validateBlock:^(NSString *pToken, NSError *error) {
