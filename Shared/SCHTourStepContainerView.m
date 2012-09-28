@@ -92,7 +92,7 @@
         self.titleLabel.font = [UIFont boldSystemFontOfSize:38];
         self.titleLabel.textColor = [UIColor whiteColor];
         self.titleLabel.numberOfLines = 0;
-        self.titleLabel.textAlignment = NSTextAlignmentCenter;
+        self.titleLabel.textAlignment = UITextAlignmentCenter;
 
         [self.topContainer addSubview:self.titleLabel];
         
@@ -108,7 +108,7 @@
         self.subtitleLabel.font = [UIFont systemFontOfSize:14];
         self.subtitleLabel.textColor = [UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:1];
         self.subtitleLabel.numberOfLines = 0;
-        self.subtitleLabel.textAlignment = NSTextAlignmentCenter;
+        self.subtitleLabel.textAlignment = UITextAlignmentCenter;
         
 //        self.subtitleLabel.layer.borderColor = [UIColor purpleColor].CGColor;
 //        self.subtitleLabel.layer.borderWidth = 1;
