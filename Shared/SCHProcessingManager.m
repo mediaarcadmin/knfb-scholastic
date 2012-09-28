@@ -16,6 +16,7 @@
 #import "SCHTextFlowPreParseOperation.h"
 #import "SCHSmartZoomPreParseOperation.h"
 #import "SCHFlowAnalysisOperation.h"
+#import "SCHDownloadReportingOperation.h"
 #import "SCHLicenseAcquisitionOperation.h"
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
@@ -571,7 +572,23 @@ static SCHProcessingManager *sharedManager = nil;
                 }
                 [bookDownloadOp release];
                 return;
-            }	
+            }
+            case SCHBookProcessingStateReadyForDownloadReporting:
+            {
+                SCHDownloadReportingOperation *reportingOp = [[SCHDownloadReportingOperation alloc] init];
+                [reportingOp setMainThreadManagedObjectContext:self.managedObjectContext];
+                reportingOp.identifier = identifier;
+                
+                // the book will be redispatched on completion
+                [reportingOp setNotCancelledCompletionBlock:^{
+                    [self redispatchIdentifier:identifier];
+                }];
+                
+                // add the operation to the local processing queue
+                [self.localProcessingQueue addOperation:reportingOp];
+                [reportingOp release];
+                return;
+            }
                 // *** Book file needs license acquisition ***
             case SCHBookProcessingStateReadyForLicenseAcquisition:
             {
@@ -726,6 +743,7 @@ static SCHProcessingManager *sharedManager = nil;
                 case SCHBookProcessingStateNoURLs:
                 case SCHBookProcessingStateNoCoverImage:
                 case SCHBookProcessingStateDownloadStarted:
+                case SCHBookProcessingStateReadyForDownloadReporting:
                 case SCHBookProcessingStateReadyForLicenseAcquisition:
                 case SCHBookProcessingStateReadyForRightsParsing:
                 case SCHBookProcessingStateReadyForAudioInfoParsing:
@@ -841,6 +859,7 @@ static SCHProcessingManager *sharedManager = nil;
             switch (book.processingState) {
                 case SCHBookProcessingStateNoURLs:
                     case SCHBookProcessingStateNoCoverImage:
+                    case SCHBookProcessingStateReadyForDownloadReporting:
                     case SCHBookProcessingStateReadyForLicenseAcquisition:
                     case SCHBookProcessingStateReadyForRightsParsing:
                     case SCHBookProcessingStateReadyForAudioInfoParsing:

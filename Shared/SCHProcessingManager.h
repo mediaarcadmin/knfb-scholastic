@@ -27,13 +27,14 @@ typedef enum {
 	SCHBookProcessingStateReadyForBookFileDownload   = 2,
 	SCHBookProcessingStateDownloadStarted            = 3,
 	SCHBookProcessingStateDownloadPaused             = 4,
-	SCHBookProcessingStateReadyForLicenseAcquisition = 5,
-	SCHBookProcessingStateReadyForRightsParsing      = 6,
-	SCHBookProcessingStateReadyForAudioInfoParsing   = 7,
-	SCHBookProcessingStateReadyForTextFlowPreParse   = 8,
-    SCHBookProcessingStateReadyForSmartZoomPreParse  = 9,
-	SCHBookProcessingStateReadyForPagination         = 10,
-	SCHBookProcessingStateReadyToRead                = 11,
+    SCHBookProcessingStateReadyForDownloadReporting  = 6,
+	SCHBookProcessingStateReadyForLicenseAcquisition = 7,
+	SCHBookProcessingStateReadyForRightsParsing      = 8,
+	SCHBookProcessingStateReadyForAudioInfoParsing   = 9,
+	SCHBookProcessingStateReadyForTextFlowPreParse   = 10,
+    SCHBookProcessingStateReadyForSmartZoomPreParse  = 11,
+	SCHBookProcessingStateReadyForPagination         = 12,
+	SCHBookProcessingStateReadyToRead                = 13,
 } SCHBookCurrentProcessingState;
 
 // Constants

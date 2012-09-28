@@ -832,6 +832,9 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 		case SCHBookProcessingStateDownloadPaused:
 			status = @"Paused";
 			break;
+        case SCHBookProcessingStateReadyForDownloadReporting:
+            status = @"Download Reporting...";
+            break;
         case SCHBookProcessingStateReadyForLicenseAcquisition:
             status = @"License..";
             break;
