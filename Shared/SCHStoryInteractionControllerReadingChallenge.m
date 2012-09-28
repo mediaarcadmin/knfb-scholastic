@@ -259,7 +259,7 @@
     
     if (score > self.bestScore) {
         self.bestScore = score;
-        // FIXME: In here, send the new score to sync
+        [self.delegate addQuizScore:score total:[[(SCHStoryInteractionReadingChallenge *)self.storyInteraction questions] count]];
     }
 
     [self playSummaryAudio];
