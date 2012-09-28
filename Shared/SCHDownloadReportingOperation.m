@@ -11,6 +11,7 @@
 #import "SCHLibreAccessActivityLogWebService.h"
 #import "SCHUserDefaults.h"
 #import "SCHBookIdentifier.h"
+#import <sys/sysctl.h>
 
 @interface SCHDownloadReportingOperation () <BITAPIProxyDelegate>
 
@@ -87,14 +88,27 @@
     
     NSString *userKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUserKey];
     
-    NSMutableDictionary *logItem = [NSMutableDictionary dictionary];
-    [logItem setValue:@"Unknown" forKey:kSCHLibreAccessActivityLogWebServiceDefinitionName];
-    [logItem setValue:@"1" forKey:kSCHLibreAccessActivityLogWebServiceValue];
+    size_t size;
+    sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+    char *machine = malloc(size);
+    sysctlbyname("hw.machine", machine, &size, NULL, 0);
+    NSString *hardware = [NSString stringWithUTF8String:machine];
+    free(machine);
+    
+    NSString *platform = [NSString stringWithFormat:@"%@ %@ %@", [[UIDevice currentDevice] model], hardware, [[UIDevice currentDevice] systemVersion]];
+    
+    NSMutableDictionary *devicePlatformItem = [NSMutableDictionary dictionary];
+    [devicePlatformItem setValue:@"Device Platform" forKey:kSCHLibreAccessActivityLogWebServiceDefinitionName];
+    [devicePlatformItem setValue:platform forKey:kSCHLibreAccessActivityLogWebServiceValue];
+    
+    NSMutableDictionary *contentIdentifierItem = [NSMutableDictionary dictionary];
+    [contentIdentifierItem setValue:@"Content Identifier" forKey:kSCHLibreAccessActivityLogWebServiceDefinitionName];
+    [contentIdentifierItem setValue:self.identifier.isbn forKey:kSCHLibreAccessActivityLogWebServiceValue];
     
     NSMutableDictionary *logList = [NSMutableDictionary dictionary];
-    [logList setValue:@"iOSDownload" forKey:kSCHLibreAccessActivityLogWebServiceActivityName];
-    [logList setValue:self.identifier.isbn  forKey:kSCHLibreAccessActivityLogWebServiceCorrelationID];
-    [logList setValue:[NSArray arrayWithObject:logItem]  forKey:kSCHLibreAccessActivityLogWebServiceLogItem];
+    [logList setValue:@"eBooks Downloads" forKey:kSCHLibreAccessActivityLogWebServiceActivityName];
+    [logList setValue:@"123"  forKey:kSCHLibreAccessActivityLogWebServiceCorrelationID];
+    [logList setValue:[NSArray arrayWithObjects:devicePlatformItem, contentIdentifierItem, nil]  forKey:kSCHLibreAccessActivityLogWebServiceLogItem];
     [self.activityLogWebService saveActivityLog:[NSArray arrayWithObject:logList] forUserKey:userKey];
 
 }
