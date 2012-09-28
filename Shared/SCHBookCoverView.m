@@ -664,6 +664,7 @@
             [self setErrorBadgeHidden:YES];
             [self.progressView setProgress:[book currentDownloadedPercentage] * 0.8];            
             break;
+        case SCHBookProcessingStateReadyForDownloadReporting:
         case SCHBookProcessingStateReadyForLicenseAcquisition:
         case SCHBookProcessingStateReadyForRightsParsing:
         case SCHBookProcessingStateReadyForAudioInfoParsing:

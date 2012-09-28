@@ -109,6 +109,7 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
         case SCHBookProcessingStateDownloadStarted:
         case SCHBookProcessingStateReadyForAudioInfoParsing:
         case SCHBookProcessingStateReadyForBookFileDownload:
+        case SCHBookProcessingStateReadyForDownloadReporting:
         case SCHBookProcessingStateReadyForLicenseAcquisition:
         case SCHBookProcessingStateReadyForPagination:
         case SCHBookProcessingStateReadyForRightsParsing:
