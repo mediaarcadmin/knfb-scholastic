@@ -287,7 +287,7 @@ typedef enum {
 
     if (moc) {
         
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
         [request setEntity:[NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:moc]];
         [request setIncludesSubentities:NO];
         
