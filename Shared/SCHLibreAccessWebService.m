@@ -510,6 +510,42 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
+- (BOOL)listReadingStatisticsAggregateByTitle:(NSArray *)bookISBNs
+                                   forProfile:(NSNumber *)profileID
+                                 lastReadDate:(NSDate *)lastReadDate
+{
+	BOOL ret = NO;
+
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
+		tns1_ListReadingStatisticsAggregateByTitleRequest *request = [tns1_ListReadingStatisticsAggregateByTitleRequest new];
+
+		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
+        request.profileIdList = [[[tns1_ProfileIdList alloc] init] autorelease];
+        [request.profileIdList addProfileId:profileID];
+        request.bookIdentifierList = [[[tns1_BookIdentifierList alloc] init] autorelease];
+		tns1_BookIdentifier *item = nil;
+		for (id book in bookISBNs) {
+			item = [[tns1_BookIdentifier alloc] init];
+			[self fromObject:book intoObject:item];
+			[request.bookIdentifierList addBookIdentifier:item];
+			[item release], item = nil;
+		}
+        // we have no purpose for this information and do not request it
+        request.maxWordCount = [NSNumber numberWithInt:0];
+        if (lastReadDate != nil) {
+            request.lastReadDate = lastReadDate;
+        }
+
+		[self.binding ListReadingStatisticsAggregateByTitleAsyncUsingParameters:request delegate:self];
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+
+		[request release], request = nil;
+		ret = YES;
+	}
+    
+	return(ret);
+}
+
 #pragma mark - LibreAccessBindingResponse Delegate methods
 
 - (void)operation:(LibreAccessServiceSoap11BindingOperation *)operation completedWithResponse:(LibreAccessServiceSoap11BindingResponse *)response
@@ -676,6 +712,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				  [anObject isKindOfClass:[tns1_ListTopRatingsResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListTopRatings class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListTopRatings;
+		} else if([anObject isKindOfClass:[tns1_ListReadingStatisticsAggregateByTitleRequest class]] == YES ||
+				  [anObject isKindOfClass:[tns1_ListReadingStatisticsAggregateByTitleResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListReadingStatisticsAggregateByTitle class]] == YES) {
+			ret = kSCHLibreAccessWebServiceListReadingStatisticsAggregateByTitle;
 		}
 	}
 
@@ -743,6 +783,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationStatusForRatingsList] AnnotationStatusItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusList];
 		} else if ([anObject isKindOfClass:[tns1_SaveUserSettingsResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject settingStatusList] settingStatusItem]] forKey:kSCHLibreAccessWebServiceUserSettingsStatusList];
+		} else if ([anObject isKindOfClass:[tns1_ListReadingStatisticsAggregateByTitleResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject aggregateByTitleProfileList] aggregateByTitleProfileItem]] forKey:kSCHLibreAccessWebServiceAggregateByTitleProfileList];
 		}
 
 	}
@@ -757,6 +799,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[self fromObject:object intoSaveProfileItem:intoObject];
 		} else if ([intoObject isKindOfClass:[tns1_isbnItem class]] == YES) {
 			[self fromObject:object intoISBNItem:intoObject];
+		} else if ([intoObject isKindOfClass:[tns1_BookIdentifier class]] == YES) {
+			[self fromObject:object intoBookIdentifier:intoObject];
 		} else if ([intoObject isKindOfClass:[tns1_SettingItem class]] == YES) {
 			[self fromObject:object intoSettingItem:intoObject];
 		} else if ([intoObject isKindOfClass:[tns1_AnnotationsRequestContentItem class]] == YES) {
@@ -994,12 +1038,69 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
     if (anObject != nil) {
         NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 
-        [objects setObject:[self objectFromTranslate:anObject.settingName   ] forKey:kSCHLibreAccessWebServiceSettingName];
+        [objects setObject:[self objectFromTranslate:anObject.settingName] forKey:kSCHLibreAccessWebServiceSettingName];
         [objects setObject:[self objectFromTranslate:anObject.statusMessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
 
         ret = objects;
     }
 
+    return(ret);
+}
+
+- (NSDictionary *)objectFromAggregateByTitleProfileItem:(tns1_AggregateByTitleProfileItem *)anObject
+{
+    NSDictionary *ret = nil;
+
+    if (anObject != nil) {
+        NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+
+        [objects setObject:[self objectFromTranslate:anObject.profileID] forKey:kSCHLibreAccessWebServiceProfileID];
+        [objects setObject:[self objectFromTranslate:anObject.aggregateByTitleList.aggregateByTitleItem] forKey:kSCHLibreAccessWebServiceAggregateByTitleList];
+
+        ret = objects;
+    }
+    
+    return(ret);
+}
+
+- (NSDictionary *)objectFromAggregateByTitleItem:(tns1_AggregateByTitleItem *)anObject
+{
+    NSDictionary *ret = nil;
+
+    if (anObject != nil) {
+        NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+
+        [objects setObject:[self objectFromTranslate:anObject.bookIdentifier.contentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
+		[objects setObject:[NSNumber numberWithContentIdentifierType:(SCHContentIdentifierTypes)anObject.bookIdentifier.contentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+        [objects setObject:[self objectFromTranslate:anObject.readingDuration] forKey:kSCHLibreAccessWebServiceReadingDuration];
+        [objects setObject:[self objectFromTranslate:anObject.lastReadTimestamp] forKey:kSCHLibreAccessWebServiceLastReadTimestamp];
+        [objects setObject:[self objectFromTranslate:anObject.pagesRead] forKey:kSCHLibreAccessWebServicePagesRead];
+        [objects setObject:[self objectFromTranslate:anObject.quizItem] forKey:kSCHLibreAccessWebServiceQuizItem];
+        // we have no purpose for this information and do not request it        
+//        [objects setObject:[self objectFromTranslate:anObject.lookupWordList] forKey:kSCHLibreAccessWebServiceLookupWordList];        
+
+        ret = objects;
+    }
+
+    return(ret);
+}
+
+- (NSDictionary *)objectFromQuizItem:(tns1_QuizItem *)anObject
+{
+    NSDictionary *ret = nil;
+
+    if (anObject != nil) {
+        NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+
+        [objects setObject:[self objectFromTranslate:anObject.firstScore] forKey:kSCHLibreAccessWebServiceFirstScore];
+        [objects setObject:[self objectFromTranslate:anObject.bestScore] forKey:kSCHLibreAccessWebServiceBestScore];
+        [objects setObject:[self objectFromTranslate:anObject.total] forKey:kSCHLibreAccessWebServiceTotal];
+        [objects setObject:[self objectFromTranslate:anObject.lastTimestamp] forKey:kSCHLibreAccessWebServiceLastTimestamp];
+        [objects setObject:[self objectFromTranslate:anObject.numberOfTrials] forKey:kSCHLibreAccessWebServiceNumberOfTrials];
+
+        ret = objects;
+    }
+    
     return(ret);
 }
 
@@ -1564,7 +1665,19 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				for (id item in anObject) {
 					[ret addObject:[self objectFromSettingsStatusItem:item]];
 				}
-			}
+			} else if ([firstItem isKindOfClass:[tns1_AggregateByTitleProfileItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromAggregateByTitleProfileItem:item]];
+				}
+            } else if ([firstItem isKindOfClass:[tns1_AggregateByTitleItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromAggregateByTitleItem:item]];
+				}
+            } else if ([firstItem isKindOfClass:[tns1_QuizItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromQuizItem:item]];
+				}
+            }
         }
 	} else if([anObject isKindOfClass:[USBoolean class]] == YES) {
 		ret = [NSNumber numberWithBool:[anObject boolValue]];
@@ -1697,6 +1810,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.IdentifierType = (tns1_ContentIdentifierTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
 		intoObject.Qualifier = (tns1_drmqualifiers)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];
 		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];
+	}
+}
+
+- (void)fromObject:(NSDictionary *)object intoBookIdentifier:(tns1_BookIdentifier *)intoObject
+{
+	if (object != nil && intoObject != nil) {
+		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		intoObject.contentIdentifierType = (tns1_ContentIdentifierTypes)[[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
 	}
 }
 
