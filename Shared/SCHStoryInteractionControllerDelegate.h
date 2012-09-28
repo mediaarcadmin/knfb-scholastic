@@ -49,4 +49,7 @@
 // Has the book been read through completely?
 - (BOOL)bookHasBeenReadThroughCompletely;
 
+// Add the quiz score to the book statistics
+- (void)addQuizScore:(int)score total:(int)total;
+
 @end

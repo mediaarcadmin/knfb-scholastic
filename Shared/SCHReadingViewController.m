@@ -3298,6 +3298,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     return NO;
 }
 
+- (void)addQuizScore:(int)score total:(int)total
+{
+    [bookStatistics addQuizTrialsItemScore:score total:total];
+}
+
 #pragma mark - SCHBookStoryInteractionsDelegate
 
 - (CGSize)sizeOfPageAtIndex:(NSInteger)pageIndex
