@@ -254,7 +254,7 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
 
     [[SCHSyncManager sharedSyncManager] accountSyncForced:NO
                               requireDeviceAuthentication:NO];
-    [[SCHSyncManager sharedSyncManager] wishListSync:NO];
+    [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application 

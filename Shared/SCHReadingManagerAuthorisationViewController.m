@@ -67,8 +67,12 @@ typedef enum  {
 {
     [super viewDidLoad];
     
-    UIImage *stretchedBackImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
-    [self.validateButton setBackgroundImage:stretchedBackImage forState:UIControlStateNormal];
+    UIImage *stretchedFieldImage = [[UIImage imageNamed:@"textfield_wht_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+    [self.usernameField setBackground:stretchedFieldImage];
+    [self.passwordField setBackground:stretchedFieldImage];
+    
+    UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+    [self.validateButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
     [self setAlert:SCHReadingManagerAlertNone];
 }
 - (void)viewDidUnload

@@ -360,6 +360,17 @@
 		521B7AEB1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
 		521B7AEC1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
 		521B7AED1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		521F50DB16143AC80002E83F /* SCHSyncDelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 521F50DA16143AC80002E83F /* SCHSyncDelay.m */; };
+		521F50DC16143AC80002E83F /* SCHSyncDelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 521F50DA16143AC80002E83F /* SCHSyncDelay.m */; };
+		521F50DD16143AC80002E83F /* SCHSyncDelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 521F50DA16143AC80002E83F /* SCHSyncDelay.m */; };
+		521F50DE16143AC80002E83F /* SCHSyncDelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 521F50DA16143AC80002E83F /* SCHSyncDelay.m */; };
+		521F50DF16143AC80002E83F /* SCHSyncDelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 521F50DA16143AC80002E83F /* SCHSyncDelay.m */; };
+		521F50E4161452FF0002E83F /* SCHSyncDelayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 521F50E1161452FF0002E83F /* SCHSyncDelayTests.m */; };
+		521F50E71614561D0002E83F /* SCHTopRatingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5218446215EB82ED0066B14D /* SCHTopRatingsSyncComponent.m */; };
+		521F50E8161456400002E83F /* SCHRetrieveTopRatingsForProfileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52563C3615ED5CD900011E6F /* SCHRetrieveTopRatingsForProfileOperation.m */; };
+		521F50E91614564D0002E83F /* SCHTourStepsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F83F3D511609CF9F00DE35F0 /* SCHTourStepsViewController.m */; };
+		521F50EA161456690002E83F /* SCHRecommendationTopRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 5218446515EB8CD30066B14D /* SCHRecommendationTopRating.m */; };
+		521F50EB161456870002E83F /* SCHTourFullScreenImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8067574160A24B000F5024A /* SCHTourFullScreenImageViewController.m */; };
 		522250F0160235D6003DCB91 /* tns1.m in Sources */ = {isa = PBXBuildFile; fileRef = 520DF6FB15EE64C800C4452F /* tns1.m */; };
 		522250F11602362A003DCB91 /* SCHQuizTrialsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C78C0715F7ACEE003B291C /* SCHQuizTrialsItem.m */; };
 		522250F216023650003DCB91 /* SCHBSBEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C33C69155A903D00C7041F /* SCHBSBEucBook.m */; };
@@ -2550,6 +2561,14 @@
 		C91CA0B51614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA0AF1614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png */; };
 		C91CA0B61614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA0AF1614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png */; };
 		C91CA0B71614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA0AF1614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png */; };
+		C91CA0BA16148EA80074A5DA /* textfield_wht_3part.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA0B816148EA80074A5DA /* textfield_wht_3part.png */; };
+		C91CA0BB16148EA80074A5DA /* textfield_wht_3part.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA0B816148EA80074A5DA /* textfield_wht_3part.png */; };
+		C91CA0BC16148EA80074A5DA /* textfield_wht_3part.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA0B816148EA80074A5DA /* textfield_wht_3part.png */; };
+		C91CA0BD16148EA80074A5DA /* textfield_wht_3part.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA0B816148EA80074A5DA /* textfield_wht_3part.png */; };
+		C91CA0BE16148EA80074A5DA /* textfield_wht_3part@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA0B916148EA80074A5DA /* textfield_wht_3part@2x.png */; };
+		C91CA0BF16148EA80074A5DA /* textfield_wht_3part@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA0B916148EA80074A5DA /* textfield_wht_3part@2x.png */; };
+		C91CA0C016148EA80074A5DA /* textfield_wht_3part@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA0B916148EA80074A5DA /* textfield_wht_3part@2x.png */; };
+		C91CA0C116148EA80074A5DA /* textfield_wht_3part@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA0B916148EA80074A5DA /* textfield_wht_3part@2x.png */; };
 		C91CD8C51475422200226814 /* sbsd-license.html in Resources */ = {isa = PBXBuildFile; fileRef = C91CD8C41475422200226814 /* sbsd-license.html */; };
 		C91CD8C61475422200226814 /* sbsd-license.html in Resources */ = {isa = PBXBuildFile; fileRef = C91CD8C41475422200226814 /* sbsd-license.html */; };
 		C91E99C113F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99B313F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png */; };
@@ -5741,6 +5760,10 @@
 		521B7AE81521D67E00DC0739 /* WishListServiceSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WishListServiceSvc+Binding.h"; sourceTree = "<group>"; };
 		521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WishListServiceSvc+Binding.m"; sourceTree = "<group>"; };
 		521BB6C015207FF00045AC92 /* SCHISBNItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHISBNItem.h; path = Shared/SCHISBNItem.h; sourceTree = "<group>"; };
+		521F50D916143AC80002E83F /* SCHSyncDelay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncDelay.h; path = Shared/SCHSyncDelay.h; sourceTree = "<group>"; };
+		521F50DA16143AC80002E83F /* SCHSyncDelay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncDelay.m; path = Shared/SCHSyncDelay.m; sourceTree = "<group>"; };
+		521F50E0161452FF0002E83F /* SCHSyncDelayTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHSyncDelayTests.h; sourceTree = "<group>"; };
+		521F50E1161452FF0002E83F /* SCHSyncDelayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHSyncDelayTests.m; sourceTree = "<group>"; };
 		522250F816023766003DCB91 /* SCHCoreDataSchemaTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHCoreDataSchemaTests.h; sourceTree = "<group>"; };
 		522250F916023766003DCB91 /* SCHCoreDataSchemaTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHCoreDataSchemaTests.m; sourceTree = "<group>"; };
 		5222F28E158A1C11006040D7 /* SCHSyncComponentOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponentOperation.h; path = Shared/SCHSyncComponentOperation.h; sourceTree = "<group>"; };
@@ -6299,6 +6322,8 @@
 		C91CA00D16132B910074A5DA /* cloud_icon_menu_wht@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cloud_icon_menu_wht@2x.png"; sourceTree = "<group>"; };
 		C91CA0AE1614870B0074A5DA /* lg_bttn_gray_UNselected_3part.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lg_bttn_gray_UNselected_3part.png; sourceTree = "<group>"; };
 		C91CA0AF1614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lg_bttn_gray_UNselected_3part@2x.png"; sourceTree = "<group>"; };
+		C91CA0B816148EA80074A5DA /* textfield_wht_3part.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textfield_wht_3part.png; sourceTree = "<group>"; };
+		C91CA0B916148EA80074A5DA /* textfield_wht_3part@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "textfield_wht_3part@2x.png"; sourceTree = "<group>"; };
 		C91CD8C41475422200226814 /* sbsd-license.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "sbsd-license.html"; path = "Resources/sbsd-license.html"; sourceTree = "<group>"; };
 		C91E99B313F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-flip~ipad.png"; sourceTree = "<group>"; };
 		C91E99B413F930F8004F8062 /* storyinteraction-card-collection-zoom-out~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-zoom-out~ipad.png"; sourceTree = "<group>"; };
@@ -8974,6 +8999,8 @@
 			children = (
 				52A36A6F15B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.h */,
 				52A36A7015B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m */,
+				521F50E0161452FF0002E83F /* SCHSyncDelayTests.h */,
+				521F50E1161452FF0002E83F /* SCHSyncDelayTests.m */,
 			);
 			name = "Sync Tests";
 			sourceTree = "<group>";
@@ -9007,6 +9034,8 @@
 			children = (
 				52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */,
 				52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */,
+				521F50D916143AC80002E83F /* SCHSyncDelay.h */,
+				521F50DA16143AC80002E83F /* SCHSyncDelay.m */,
 				52D6D3831403EC6900962FC6 /* SCHPopulateDataStore.h */,
 				52D6D3841403EC6900962FC6 /* SCHPopulateDataStore.m */,
 				52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */,
@@ -9337,6 +9366,8 @@
 				C91CA00D16132B910074A5DA /* cloud_icon_menu_wht@2x.png */,
 				C91CA0AE1614870B0074A5DA /* lg_bttn_gray_UNselected_3part.png */,
 				C91CA0AF1614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png */,
+				C91CA0B816148EA80074A5DA /* textfield_wht_3part.png */,
+				C91CA0B916148EA80074A5DA /* textfield_wht_3part@2x.png */,
 			);
 			name = "Settings Views";
 			sourceTree = "<group>";
@@ -11946,6 +11977,8 @@
 				F8FE33FA161485E1005B6AA8 /* tour_video_1.mov in Resources */,
 				C91CA0B01614870B0074A5DA /* lg_bttn_gray_UNselected_3part.png in Resources */,
 				C91CA0B41614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png in Resources */,
+				C91CA0BA16148EA80074A5DA /* textfield_wht_3part.png in Resources */,
+				C91CA0BE16148EA80074A5DA /* textfield_wht_3part@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12816,6 +12849,8 @@
 				F8FE33FB161485E1005B6AA8 /* tour_video_1.mov in Resources */,
 				C91CA0B11614870B0074A5DA /* lg_bttn_gray_UNselected_3part.png in Resources */,
 				C91CA0B51614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png in Resources */,
+				C91CA0BB16148EA80074A5DA /* textfield_wht_3part.png in Resources */,
+				C91CA0BF16148EA80074A5DA /* textfield_wht_3part@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13441,6 +13476,8 @@
 				F8FE33FC161485E1005B6AA8 /* tour_video_1.mov in Resources */,
 				C91CA0B21614870B0074A5DA /* lg_bttn_gray_UNselected_3part.png in Resources */,
 				C91CA0B61614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png in Resources */,
+				C91CA0BC16148EA80074A5DA /* textfield_wht_3part.png in Resources */,
+				C91CA0C016148EA80074A5DA /* textfield_wht_3part@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14064,6 +14101,8 @@
 				F8FE33FD161485E1005B6AA8 /* tour_video_1.mov in Resources */,
 				C91CA0B31614870B0074A5DA /* lg_bttn_gray_UNselected_3part.png in Resources */,
 				C91CA0B71614870B0074A5DA /* lg_bttn_gray_UNselected_3part@2x.png in Resources */,
+				C91CA0BD16148EA80074A5DA /* textfield_wht_3part.png in Resources */,
+				C91CA0C116148EA80074A5DA /* textfield_wht_3part@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14519,6 +14558,7 @@
 				F8067576160A24B000F5024A /* SCHTourFullScreenImageViewController.m in Sources */,
 				F875C33616135061008DBBDA /* DDPageControl.m in Sources */,
 				F875C33D16145135008DBBDA /* SCHHitTestExtendingView.m in Sources */,
+				521F50DB16143AC80002E83F /* SCHSyncDelay.m in Sources */,
 				F8FE33EB161484DC005B6AA8 /* SCHTourStepsViewController.m in Sources */,
 				F8FE33F5161484EC005B6AA8 /* SCHTourStepView.m in Sources */,
 				F8FE342C161490E9005B6AA8 /* SCHTourStepContainerView.m in Sources */,
@@ -14950,6 +14990,13 @@
 				527ABDF7160771C600DE2893 /* SCHTourStartViewController.m in Sources */,
 				F875C33816135061008DBBDA /* DDPageControl.m in Sources */,
 				F875C33F16145135008DBBDA /* SCHHitTestExtendingView.m in Sources */,
+				521F50DD16143AC80002E83F /* SCHSyncDelay.m in Sources */,
+				521F50E4161452FF0002E83F /* SCHSyncDelayTests.m in Sources */,
+				521F50E71614561D0002E83F /* SCHTopRatingsSyncComponent.m in Sources */,
+				521F50E8161456400002E83F /* SCHRetrieveTopRatingsForProfileOperation.m in Sources */,
+				521F50E91614564D0002E83F /* SCHTourStepsViewController.m in Sources */,
+				521F50EA161456690002E83F /* SCHRecommendationTopRating.m in Sources */,
+				521F50EB161456870002E83F /* SCHTourFullScreenImageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15372,6 +15419,7 @@
 				F86904EC1612F5DD0098E735 /* SCHTopRatingsSyncComponent.m in Sources */,
 				F875C33716135061008DBBDA /* DDPageControl.m in Sources */,
 				F875C33E16145135008DBBDA /* SCHHitTestExtendingView.m in Sources */,
+				521F50DC16143AC80002E83F /* SCHSyncDelay.m in Sources */,
 				F8FE33EC161484DC005B6AA8 /* SCHTourStepsViewController.m in Sources */,
 				F8FE33F6161484EC005B6AA8 /* SCHTourStepView.m in Sources */,
 				F8FE342D161490E9005B6AA8 /* SCHTourStepContainerView.m in Sources */,
@@ -15797,6 +15845,7 @@
 				F86904ED1612F5DE0098E735 /* SCHTopRatingsSyncComponent.m in Sources */,
 				F875C33916135061008DBBDA /* DDPageControl.m in Sources */,
 				F875C34016145135008DBBDA /* SCHHitTestExtendingView.m in Sources */,
+				521F50DE16143AC80002E83F /* SCHSyncDelay.m in Sources */,
 				F8FE33ED161484DC005B6AA8 /* SCHTourStepsViewController.m in Sources */,
 				F8FE33F7161484EC005B6AA8 /* SCHTourStepView.m in Sources */,
 				F8FE342E161490E9005B6AA8 /* SCHTourStepContainerView.m in Sources */,
@@ -16222,6 +16271,7 @@
 				F86904EE1612F5DF0098E735 /* SCHTopRatingsSyncComponent.m in Sources */,
 				F875C33A16135061008DBBDA /* DDPageControl.m in Sources */,
 				F875C34116145135008DBBDA /* SCHHitTestExtendingView.m in Sources */,
+				521F50DF16143AC80002E83F /* SCHSyncDelay.m in Sources */,
 				F8FE33EE161484DC005B6AA8 /* SCHTourStepsViewController.m in Sources */,
 				F8FE33F8161484EC005B6AA8 /* SCHTourStepView.m in Sources */,
 				F8FE342F161490E9005B6AA8 /* SCHTourStepContainerView.m in Sources */,
