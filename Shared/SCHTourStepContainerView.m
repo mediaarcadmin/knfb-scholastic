@@ -44,8 +44,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        CGFloat topInset = floorf(frame.size.height * 0.05);
-        CGFloat totalHeight = floorf(frame.size.height * 0.9);
+        CGFloat topInset = floorf(frame.size.height * 0.01);
+        CGFloat totalHeight = floorf(frame.size.height * 0.98);
         
         
         self.topContainer = [[[UIView alloc] initWithFrame:
@@ -62,27 +62,19 @@
         
         self.bottomContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
         
-//        self.topContainer.layer.borderColor = [UIColor purpleColor].CGColor;
-//        self.topContainer.layer.borderWidth = 1;
-//        self.bottomContainer.layer.borderColor = [UIColor orangeColor].CGColor;
-//        self.bottomContainer.layer.borderWidth = 1;
-//        self.layer.borderColor = [UIColor greenColor].CGColor;
-//        self.layer.borderWidth = 1;
-
-        
         [self addSubview:self.topContainer];
         [self addSubview:self.bottomContainer];
         
         
         // Initialization code
         
-        CGFloat titleLabelHeight = floorf(self.topContainer.frame.size.height * 0.4);
-        CGFloat subtitleLabelHeight = floorf(self.topContainer.frame.size.height * 0.6);
-        CGFloat labelInset = floorf(frame.size.width * 0.1);
+        CGFloat titleLabelHeight = floorf(self.topContainer.frame.size.height * 0.6);
+        CGFloat subtitleLabelHeight = floorf(self.topContainer.frame.size.height * 0.4);
+        CGFloat labelInset = floorf(frame.size.width * 0.05);
         
         self.titleLabel = [[[UILabel alloc] initWithFrame:
-                            CGRectMake(labelInset, 0,
-                                       (frame.size.width - 2 * labelInset), titleLabelHeight)]
+                            CGRectMake(labelInset * 2, 0,
+                                       (frame.size.width - (labelInset * 4)), titleLabelHeight)]
                            autorelease];
         
         self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -93,6 +85,7 @@
         self.titleLabel.textColor = [UIColor whiteColor];
         self.titleLabel.numberOfLines = 0;
         self.titleLabel.textAlignment = UITextAlignmentCenter;
+        self.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
 
         [self.topContainer addSubview:self.titleLabel];
         

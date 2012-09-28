@@ -16493,6 +16493,7 @@
 				);
 				OTHER_CFLAGS = "-I/usr/include/libxml2";
 				PRODUCT_NAME = Storia;
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -16521,6 +16522,7 @@
 				);
 				PRODUCT_NAME = Storia;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = "Ad Hoc";
 		};
@@ -16549,6 +16551,7 @@
 				);
 				PRODUCT_NAME = Storia;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};

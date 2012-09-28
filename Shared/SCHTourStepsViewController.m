@@ -325,8 +325,11 @@
             SCHTourStepContainerView *container = [[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
             
             // FIXME: text from plist
-            container.containerTitleText = @"Create Personalized Bookshelves";
-            container.containerSubtitleText = @"Using Storia Reading Manager, you can easily assign purchased eBooks to bookshelves for each of your children. Personalize each bookshelf to each child's interests and abilities and ensure age-and-level appropriate reading for the entire family.";
+//            container.containerTitleText = @"Create Personalized Bookshelves";
+//            container.containerSubtitleText = @"Using Storia Reading Manager, you can easily assign purchased eBooks to bookshelves for each of your children. Personalize each bookshelf to each child's interests and abilities and ensure age-and-level appropriate reading for the entire family.";
+            
+            container.containerTitleText = [tourItem objectForKey:@"mainTitle"];
+            container.containerSubtitleText = [tourItem objectForKey:@"bodyText"];
             
             container.mainTourStepView = tourStepView;
             [tourStepView release];

@@ -9,6 +9,8 @@
 #import "SCHTourStepView.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define STANDARD_CORNER_RADIUS 10
+
 @interface SCHTourStepView ()
 
 @property (nonatomic, retain) UIView *contentView;
@@ -37,19 +39,24 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-        
-        // frame is going to be total size, minus a 33 pixel high white bar
-        
+        // content view size is total size minus 33 pixels for the bottom bar
         CGRect mainRect = frame;
         mainRect.size.height -= 33;
         
-        self.bottomView = [[[UIView alloc] initWithFrame:CGRectMake(0, mainRect.size.height, frame.size.width, 33)] autorelease];
+    
+        // ** bottom view first - white background, grey action button
+        
+        self.bottomView = [[[UIView alloc] initWithFrame:CGRectMake(0, mainRect.size.height - 20, frame.size.width, 53)] autorelease];
         self.bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         self.bottomView.backgroundColor = [UIColor whiteColor];
         
+        self.bottomView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        self.bottomView.layer.borderWidth = 1;
+        self.bottomView.layer.cornerRadius = STANDARD_CORNER_RADIUS;
+
+        // action button
         self.actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.actionButton.frame = CGRectMake(mainRect.size.width - 100, -20, 120, 53);
+        self.actionButton.frame = CGRectMake(mainRect.size.width - 100, 0, 120, 53);
         self.actionButton.titleEdgeInsets = UIEdgeInsetsMake(20, 0, 0, 20);
         self.actionButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
         
@@ -59,35 +66,66 @@
         UIImage *stretchedBackImage = [[UIImage imageNamed:@"greytourbutton"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
         
         [self.actionButton setBackgroundImage:stretchedBackImage forState:UIControlStateNormal];
-        
-        // FIXME: styling
         [self.actionButton addTarget:self action:@selector(performButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.bottomView addSubview:self.actionButton];
         [self addSubview:self.bottomView];
         
+        
+        // ** content view
+        
         self.contentView = [[UIView alloc] initWithFrame:mainRect];
         self.contentView.backgroundColor = [UIColor whiteColor];
         
-        self.contentView.layer.cornerRadius = 5;
+        self.contentView.layer.cornerRadius = STANDARD_CORNER_RADIUS;
         
         self.contentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
         self.contentView.layer.borderWidth = 1;
         
         self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
-        self.layer.cornerRadius = 5;
-        
-        self.backgroundColor = [UIColor blackColor];
-        self.layer.borderColor = [UIColor grayColor].CGColor;
-        self.layer.borderWidth = 1;
+        self.backgroundColor = [UIColor clearColor];
         
         [self addSubview:self.contentView];
         
-        self.clipsToBounds = YES;
+        self.contentView.clipsToBounds = YES;
+        self.bottomView.clipsToBounds = YES;
+
         
+        self.layer.shadowColor = [UIColor colorWithWhite:0 alpha:0.6].CGColor;
+        self.layer.shadowOffset = CGSizeMake(2, 2);
+        self.layer.shadowRadius = 2.0f;
+        self.layer.shadowOpacity = 0.6;
+        self.layer.shouldRasterize = YES;
         
-        // action button
+        CAShapeLayer* shadowLayer = [CAShapeLayer layer];
+        shadowLayer.frame = [self.contentView bounds];
+        
+        // ** inner shadow for content view
+        shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
+        shadowLayer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+        shadowLayer.shadowOpacity = 0.6f;
+        shadowLayer.shadowRadius = 2;
+        
+        // Causes the inner region in this example to NOT be filled.
+        shadowLayer.fillRule = kCAFillRuleEvenOdd;
+        
+        // Create the larger rectangle path.
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathAddRect(path, NULL, CGRectInset(self.contentView.bounds, -42, -42));
+            
+        // Add the inner path so it's subtracted from the outer path.
+        CGPathAddPath(path, NULL, [UIBezierPath bezierPathWithRoundedRect:[shadowLayer bounds]
+                                                         byRoundingCorners:UIRectCornerAllCorners
+                                                               cornerRadii:CGSizeMake(STANDARD_CORNER_RADIUS, STANDARD_CORNER_RADIUS)].CGPath);
+        CGPathCloseSubpath(path);
+        
+        [shadowLayer setPath:path];
+        CGPathRelease(path);
+        
+        [[self.contentView layer] addSublayer:shadowLayer];
+        
+        self.contentView.layer.shouldRasterize = YES;
     }
     return self;
 }
@@ -114,6 +152,5 @@
         [self.actionButton setTitle:buttonTitle forState:UIControlStateNormal];
     }
 }
-
 
 @end
