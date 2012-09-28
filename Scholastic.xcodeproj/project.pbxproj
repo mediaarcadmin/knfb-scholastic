@@ -368,7 +368,7 @@
 		521F50E4161452FF0002E83F /* SCHSyncDelayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 521F50E1161452FF0002E83F /* SCHSyncDelayTests.m */; };
 		521F50E71614561D0002E83F /* SCHTopRatingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5218446215EB82ED0066B14D /* SCHTopRatingsSyncComponent.m */; };
 		521F50E8161456400002E83F /* SCHRetrieveTopRatingsForProfileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52563C3615ED5CD900011E6F /* SCHRetrieveTopRatingsForProfileOperation.m */; };
-		521F50E91614564D0002E83F /* SCHTourStepsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F83F3D511609CF9F00DE35F0 /* SCHTourStepsViewController.m */; };
+		521F50E91614564D0002E83F /* (null) in Sources */ = {isa = PBXBuildFile; };
 		521F50EA161456690002E83F /* SCHRecommendationTopRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 5218446515EB8CD30066B14D /* SCHRecommendationTopRating.m */; };
 		521F50EB161456870002E83F /* SCHTourFullScreenImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8067574160A24B000F5024A /* SCHTourFullScreenImageViewController.m */; };
 		522250F0160235D6003DCB91 /* tns1.m in Sources */ = {isa = PBXBuildFile; fileRef = 520DF6FB15EE64C800C4452F /* tns1.m */; };
@@ -14994,7 +14994,7 @@
 				521F50E4161452FF0002E83F /* SCHSyncDelayTests.m in Sources */,
 				521F50E71614561D0002E83F /* SCHTopRatingsSyncComponent.m in Sources */,
 				521F50E8161456400002E83F /* SCHRetrieveTopRatingsForProfileOperation.m in Sources */,
-				521F50E91614564D0002E83F /* SCHTourStepsViewController.m in Sources */,
+				521F50E91614564D0002E83F /* (null) in Sources */,
 				521F50EA161456690002E83F /* SCHRecommendationTopRating.m in Sources */,
 				521F50EB161456870002E83F /* SCHTourFullScreenImageViewController.m in Sources */,
 			);
