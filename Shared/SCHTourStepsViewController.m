@@ -9,6 +9,8 @@
 #import "SCHTourStepsViewController.h"
 #import "SCHTourFullScreenImageViewController.h"
 #import <MediaPlayer/MPMoviePlayerController.h>
+#import "SCHTourStepView.h"
+#import "SCHTourStepContainerView.h"
 
 #define LEFT_TAG 101
 #define RIGHT_TAG 102
@@ -308,25 +310,32 @@
     switch (type) {
         case SCHTourStepsViewTypeSingleImage:
         {
-            NSString *scrollImageName = [NSString stringWithFormat:@"tour_scrolled_image_%d", index];
             
-            // image view
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:scrollImageName]];
-            // button
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            [button setBackgroundImage:[[UIImage imageNamed:@"tour-tab-button-bg"] stretchableImageWithLeftCapWidth:8 topCapHeight:0] forState:UIControlStateNormal];
-            [button setFrame:CGRectMake(697, 539, 92, 32)];
-            [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
-            [button setTitle:@"Full Screen" forState:UIControlStateNormal];
-            
-            [button addTarget:self action:@selector(pickedFullScreenImage:) forControlEvents:UIControlEventTouchUpInside];
-            // FIXME: styling
-            
-            // container view
             tourView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
+
+//            NSString *scrollImageName = [NSString stringWithFormat:@"tour_scrolled_image_%d", index];
             
-            [tourView addSubview:imageView];
-            [tourView addSubview:button];
+            SCHTourStepView *tourStepView = [[SCHTourStepView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
+            [tourStepView setButtonTitle:@"Full Screen"];
+            
+//            tourView.layer.borderWidth = 1;
+//            tourView.layer.borderColor = [UIColor greenColor].CGColor;
+            
+            
+            SCHTourStepContainerView *container = [[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
+            
+            // FIXME: text from plist
+            container.containerTitleText = @"Create Personalized Bookshelves";
+            container.containerSubtitleText = @"Using Storia Reading Manager, you can easily assign purchased eBooks to bookshelves for each of your children. Personalize each bookshelf to each child's interests and abilities and ensure age-and-level appropriate reading for the entire family.";
+            
+            container.mainTourStepView = tourStepView;
+            [tourStepView release];
+
+            [tourView addSubview:container];
+            [container release];
+            
+            [container layoutForCurrentTourStepViews];
+            
             
             break;
         }
