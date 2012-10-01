@@ -45,7 +45,7 @@
 					<object class="IBUILabel" id="555503437">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{52, 69}, {537, 85}}</string>
+						<string key="NSFrame">{{44, 72}, {553, 43}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="487493383"/>
@@ -54,11 +54,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string type="base64-UTF8" key="IBUIText">RGVyZWdpc3RlcmluZyB0aGlzIGRldmljZSBtZWFucyB0aGF0IGl0IGNhbiBubyBsb25nZXIgYmUgdXNl
-ZCB0byByZWFkIHlvdXIgZUJvb2tzLiBJdCB3aWxsIGFsc28gbm8gbG9uZ2VyIGNvdW50IGFnYWluc3Qg
-dGhlIG1heGltdW0gbnVtYmVyIG9mIDQwIGRldmljZXMgdGhhdCB5b3UgY2FuIHVzZSBmb3IgcmVhZGlu
-Zy4gDQ1QbGVhc2UgZW50ZXIgeW91ciBTY2hvbGFzdGljIGFjY291bnQgZS1tYWlsIGFkZHJlc3MgYW5k
-IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
+						<string key="IBUIText">Deregistering this device means that it can no longer be used to read your eBooks. It will also no longer count against the maximum number of 40 devices that you can use for reading.</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC40MTU2ODYyNzk1IDAuNDE1Njg2Mjc5NSAwLjQxNTY4NjI3OTUAA</bytes>
@@ -68,15 +64,41 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUINumberOfLines">4</int>
 						<int key="IBUITextAlignment">1</int>
-						<object class="IBUIFontDescription" key="IBUIFontDescription">
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="876784043">
 							<int key="type">1</int>
 							<double key="pointSize">13</double>
 						</object>
-						<object class="NSFont" key="IBUIFont">
+						<object class="NSFont" key="IBUIFont" id="84416150">
 							<string key="NSName">Helvetica</string>
 							<double key="NSSize">13</double>
 							<int key="NSfFlags">16</int>
 						</object>
+						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
+					</object>
+					<object class="IBUILabel" id="403305063">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">274</int>
+						<string key="NSFrame">{{58, 119}, {539, 28}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="36735792"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<int key="IBUIContentMode">7</int>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<string key="IBUIText">Please enter your Scholastic account e-mail address and password to deregister this device.</string>
+						<object class="NSColor" key="IBUITextColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC40MTU2ODYyNzk1IDAuNDE1Njg2Mjc5NSAwLjQxNTY4NjI3OTUAA</bytes>
+						</object>
+						<nil key="IBUIHighlightedColor"/>
+						<int key="IBUIBaselineAdjustment">1</int>
+						<float key="IBUIMinimumFontSize">10</float>
+						<int key="IBUINumberOfLines">4</int>
+						<int key="IBUITextAlignment">1</int>
+						<reference key="IBUIFontDescription" ref="876784043"/>
+						<reference key="IBUIFont" ref="84416150"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUILabel" id="487493383">
@@ -85,7 +107,7 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 						<string key="NSFrame">{{32, 3}, {591, 82}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="303379209"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -117,7 +139,7 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 						<string key="NSFrame">{{201, 182}, {238, 36}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="36735792"/>
+						<reference key="NSNextKeyView" ref="403305063"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="904842922">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -220,6 +242,7 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 						<string key="NSFrame">{{447, 291}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIStyle">2</int>
@@ -227,12 +250,12 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 					<object class="IBUILabel" id="303379209">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{106, 144}, {443, 44}}</string>
+						<string key="NSFrame">{{106, 130}, {443, 56}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="800494755"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
-						<float key="IBUIAlpha">0.0</float>
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -317,11 +340,27 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">messageLabel</string>
+						<string key="label">promptLabel</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="303379209"/>
 					</object>
-					<int key="connectionID">61</int>
+					<int key="connectionID">62</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">info1Label</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="555503437"/>
+					</object>
+					<int key="connectionID">65</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">info2Label</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="403305063"/>
+					</object>
+					<int key="connectionID">66</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -368,10 +407,11 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 							<reference ref="487493383"/>
 							<reference ref="945201218"/>
 							<reference ref="1010976249"/>
-							<reference ref="555503437"/>
 							<reference ref="303379209"/>
 							<reference ref="800494755"/>
 							<reference ref="36735792"/>
+							<reference ref="555503437"/>
+							<reference ref="403305063"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -421,6 +461,11 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 						<reference key="object" ref="303379209"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">64</int>
+						<reference key="object" ref="403305063"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -440,6 +485,7 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 					<string>55.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>56.IBPluginDependency</string>
 					<string>60.IBPluginDependency</string>
+					<string>64.IBPluginDependency</string>
 				</object>
 				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -456,6 +502,7 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -470,7 +517,7 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">61</int>
+			<int key="maxID">66</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -494,8 +541,10 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>deregisterButton</string>
-							<string>messageLabel</string>
+							<string>info1Label</string>
+							<string>info2Label</string>
 							<string>passwordField</string>
+							<string>promptLabel</string>
 							<string>spinner</string>
 							<string>usernameField</string>
 						</object>
@@ -503,7 +552,9 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIButton</string>
 							<string>UILabel</string>
+							<string>UILabel</string>
 							<string>UITextField</string>
+							<string>UILabel</string>
 							<string>UIActivityIndicatorView</string>
 							<string>UITextField</string>
 						</object>
@@ -513,8 +564,10 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>deregisterButton</string>
-							<string>messageLabel</string>
+							<string>info1Label</string>
+							<string>info2Label</string>
 							<string>passwordField</string>
+							<string>promptLabel</string>
 							<string>spinner</string>
 							<string>usernameField</string>
 						</object>
@@ -525,12 +578,20 @@ IHBhc3N3b3JkIHRvIGRlcmVnaXN0ZXIgdGhpcyBkZXZpY2UuA</string>
 								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">messageLabel</string>
+								<string key="name">info1Label</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">info2Label</string>
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">passwordField</string>
 								<string key="candidateClassName">UITextField</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">promptLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">spinner</string>
