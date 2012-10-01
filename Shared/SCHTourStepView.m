@@ -13,9 +13,9 @@
 
 @interface SCHTourStepView ()
 
-@property (nonatomic, retain) UIView *contentView;
 @property (nonatomic, retain) UIView *bottomView;
 @property (nonatomic, retain) UIButton *actionButton;
+@property (nonatomic, retain) UILabel *topTitleLabel;
 
 @end
 
@@ -25,6 +25,7 @@
 @synthesize contentView;
 @synthesize actionButton;
 @synthesize bottomView;
+@synthesize topTitleLabel;
 
 - (void)dealloc
 {
@@ -32,6 +33,7 @@
     [contentView release], contentView = nil;
     [actionButton release], actionButton = nil;
     [bottomView release], bottomView = nil;
+    [topTitleLabel release], topTitleLabel = nil;
     [super dealloc];
 }
 
@@ -39,11 +41,27 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
         // content view size is total size minus 33 pixels for the bottom bar
         CGRect mainRect = frame;
         mainRect.size.height -= 33;
         
-    
+        // ** Top title first - it appears above the view to simplify calculation
+        self.topTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, -33, frame.size.width, 33)] autorelease];
+        self.topTitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+        self.topTitleLabel.backgroundColor = [UIColor clearColor];
+        
+        [self.topTitleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:21]];
+        [self.topTitleLabel setTextColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:1]];
+
+        self.topTitleLabel.textAlignment = UITextAlignmentCenter;
+
+//        self.topTitleLabel.layer.borderColor = [UIColor orangeColor].CGColor;
+//        self.topTitleLabel.layer.borderWidth = 1;
+        
+        [self addSubview:self.topTitleLabel];
+
+        
         // ** bottom view first - white background, grey action button
         
         self.bottomView = [[[UIView alloc] initWithFrame:CGRectMake(0, mainRect.size.height - 20, frame.size.width, 53)] autorelease];
@@ -71,6 +89,8 @@
         [self.bottomView addSubview:self.actionButton];
         [self addSubview:self.bottomView];
         
+        self.bottomView.hidden = YES;
+        
         
         // ** content view
         
@@ -93,39 +113,39 @@
 
         
         self.layer.shadowColor = [UIColor colorWithWhite:0 alpha:0.6].CGColor;
-        self.layer.shadowOffset = CGSizeMake(2, 2);
-        self.layer.shadowRadius = 2.0f;
-        self.layer.shadowOpacity = 0.6;
+        self.layer.shadowOffset = CGSizeMake(1, 1);
+        self.layer.shadowRadius = 1.0f;
+        self.layer.shadowOpacity = 0.5;
         self.layer.shouldRasterize = YES;
         
-        CAShapeLayer* shadowLayer = [CAShapeLayer layer];
-        shadowLayer.frame = [self.contentView bounds];
-        
-        // ** inner shadow for content view
-        shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
-        shadowLayer.shadowOffset = CGSizeMake(0.0f, 0.0f);
-        shadowLayer.shadowOpacity = 0.6f;
-        shadowLayer.shadowRadius = 2;
-        
-        // Causes the inner region in this example to NOT be filled.
-        shadowLayer.fillRule = kCAFillRuleEvenOdd;
-        
-        // Create the larger rectangle path.
-        CGMutablePathRef path = CGPathCreateMutable();
-        CGPathAddRect(path, NULL, CGRectInset(self.contentView.bounds, -42, -42));
-            
-        // Add the inner path so it's subtracted from the outer path.
-        CGPathAddPath(path, NULL, [UIBezierPath bezierPathWithRoundedRect:[shadowLayer bounds]
-                                                         byRoundingCorners:UIRectCornerAllCorners
-                                                               cornerRadii:CGSizeMake(STANDARD_CORNER_RADIUS, STANDARD_CORNER_RADIUS)].CGPath);
-        CGPathCloseSubpath(path);
-        
-        [shadowLayer setPath:path];
-        CGPathRelease(path);
-        
-        [[self.contentView layer] addSublayer:shadowLayer];
-        
-        self.contentView.layer.shouldRasterize = YES;
+//        CAShapeLayer* shadowLayer = [CAShapeLayer layer];
+//        shadowLayer.frame = [self.contentView bounds];
+//        
+//        // ** inner shadow for content view
+//        shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
+//        shadowLayer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+//        shadowLayer.shadowOpacity = 0.6f;
+//        shadowLayer.shadowRadius = 2;
+//        
+//        // Causes the inner region in this example to NOT be filled.
+//        shadowLayer.fillRule = kCAFillRuleEvenOdd;
+//        
+//        // Create the larger rectangle path.
+//        CGMutablePathRef path = CGPathCreateMutable();
+//        CGPathAddRect(path, NULL, CGRectInset(self.contentView.bounds, -42, -42));
+//            
+//        // Add the inner path so it's subtracted from the outer path.
+//        CGPathAddPath(path, NULL, [UIBezierPath bezierPathWithRoundedRect:[shadowLayer bounds]
+//                                                         byRoundingCorners:UIRectCornerAllCorners
+//                                                               cornerRadii:CGSizeMake(STANDARD_CORNER_RADIUS, STANDARD_CORNER_RADIUS)].CGPath);
+//        CGPathCloseSubpath(path);
+//        
+//        [shadowLayer setPath:path];
+//        CGPathRelease(path);
+//        
+//        [[self.contentView layer] addSublayer:shadowLayer];
+//        
+//        self.contentView.layer.shouldRasterize = YES;
     }
     return self;
 }
@@ -149,7 +169,30 @@
 - (void)setButtonTitle:(NSString *)buttonTitle
 {
     if (self.actionButton) {
+        self.bottomView.hidden = NO;
         [self.actionButton setTitle:buttonTitle forState:UIControlStateNormal];
+        
+        CGRect buttonFrame = self.actionButton.frame;
+        CGSize buttonTextSize = [[self.actionButton titleForState:UIControlStateNormal] sizeWithFont:self.actionButton.titleLabel.font];
+        NSLog(@"Button frame: %@ Size of text: %@", NSStringFromCGRect(buttonFrame), NSStringFromCGSize(buttonTextSize));
+        
+    }
+}
+
+- (NSString *)stepHeaderTitle
+{
+    if (!self.topTitleLabel) {
+        return nil;
+    }
+    
+    return self.topTitleLabel.text;
+}
+
+
+- (void)setStepHeaderTitle:(NSString *)stepHeaderTitle
+{
+    if (self.topTitleLabel) {
+        self.topTitleLabel.text = stepHeaderTitle;
     }
 }
 

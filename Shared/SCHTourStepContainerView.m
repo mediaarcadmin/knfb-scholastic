@@ -7,11 +7,15 @@
 //
 
 #import "SCHTourStepContainerView.h"
+#import "TTTAttributedLabel.h"
+
+#define HEIGHT_WITHOUT_TITLE 412
+#define HEIGHT_WITH_TITLE 379
 
 @interface SCHTourStepContainerView ()
 
 @property (nonatomic, retain) UILabel *titleLabel;
-@property (nonatomic, retain) UILabel *subtitleLabel;
+@property (nonatomic, retain) TTTAttributedLabel *subtitleLabel;
 
 @property (nonatomic, retain) UIView *topContainer;
 @property (nonatomic, retain) UIView *bottomContainer;
@@ -50,7 +54,7 @@
         
         self.topContainer = [[[UIView alloc] initWithFrame:
                               CGRectMake(0, topInset,
-                                         frame.size.width, floorf(totalHeight * 0.25) - floorf(topInset / 2))]
+                                         frame.size.width, floorf(totalHeight * 0.17) - floorf(topInset / 2))]
                              autorelease];
         
         self.topContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -70,7 +74,7 @@
         
         CGFloat titleLabelHeight = floorf(self.topContainer.frame.size.height * 0.6);
         CGFloat subtitleLabelHeight = floorf(self.topContainer.frame.size.height * 0.4);
-        CGFloat labelInset = floorf(frame.size.width * 0.05);
+        CGFloat labelInset = floorf(frame.size.width * 0.035);
         
         self.titleLabel = [[[UILabel alloc] initWithFrame:
                             CGRectMake(labelInset * 2, 0,
@@ -89,7 +93,7 @@
 
         [self.topContainer addSubview:self.titleLabel];
         
-        self.subtitleLabel = [[[UILabel alloc] initWithFrame:
+        self.subtitleLabel = [[[TTTAttributedLabel alloc] initWithFrame:
                             CGRectMake(labelInset * 2, titleLabelHeight,
                                        (frame.size.width - (labelInset * 4)), subtitleLabelHeight)]
                            autorelease];
@@ -98,12 +102,13 @@
         
         self.subtitleLabel.backgroundColor = [UIColor clearColor];
 
-        self.subtitleLabel.font = [UIFont systemFontOfSize:14];
+        self.subtitleLabel.font = [UIFont systemFontOfSize:13];
         self.subtitleLabel.textColor = [UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:1];
         self.subtitleLabel.numberOfLines = 0;
         self.subtitleLabel.textAlignment = UITextAlignmentCenter;
+        self.subtitleLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
         
-//        self.subtitleLabel.layer.borderColor = [UIColor purpleColor].CGColor;
+//        self.subtitleLabel.layer.borderColor = [UIColor orangeColor].CGColor;
 //        self.subtitleLabel.layer.borderWidth = 1;
 //        self.titleLabel.layer.borderColor = [UIColor purpleColor].CGColor;
 //        self.titleLabel.layer.borderWidth = 1;
@@ -124,7 +129,14 @@
         
         NSLog(@"Laying out single view.");
         
-        self.mainTourStepView.frame = CGRectMake(0, 0, 555, 412);
+        [self.mainTourStepView removeFromSuperview];
+        
+        if (self.mainTourStepView.stepHeaderTitle && [self.mainTourStepView.stepHeaderTitle length] > 0) {
+            self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITH_TITLE);
+        } else {
+            self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITHOUT_TITLE);
+        }
+        
         self.mainTourStepView.center = CGPointMake(self.bottomContainer.frame.size.width / 2,
                                                    self.bottomContainer.frame.size.height / 2);
         self.mainTourStepView.frame = CGRectIntegral(self.mainTourStepView.frame);
@@ -133,7 +145,54 @@
         
     } else {
         // two views
+        NSLog(@"Laying out two views.");
+        
+        [self.mainTourStepView removeFromSuperview];
+        
+        if (self.mainTourStepView.stepHeaderTitle && [self.mainTourStepView.stepHeaderTitle length] > 0) {
+            self.mainTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITH_TITLE);
+        } else {
+            self.mainTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITHOUT_TITLE);
+        }
+
+        self.mainTourStepView.center = CGPointMake(self.bottomContainer.frame.size.width / 4,
+                                                   self.bottomContainer.frame.size.height / 2);
+        self.mainTourStepView.frame = CGRectIntegral(self.mainTourStepView.frame);
+        
+        [self.bottomContainer addSubview:self.mainTourStepView];
+        
+        if (self.secondTourStepView.stepHeaderTitle && [self.secondTourStepView.stepHeaderTitle length] > 0) {
+            self.secondTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITH_TITLE);
+        } else {
+            self.secondTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITHOUT_TITLE);
+        }
+        
+        self.secondTourStepView.center = CGPointMake((self.bottomContainer.frame.size.width / 4) * 3,
+                                                   self.bottomContainer.frame.size.height / 2);
+        self.secondTourStepView.frame = CGRectIntegral(self.secondTourStepView.frame);
+        
+        [self.bottomContainer addSubview:self.secondTourStepView];
     }
+    
+    // lay out the header text
+    CGSize requiredTitleSize = [self.titleLabel.text sizeWithFont:self.titleLabel.font
+                                                constrainedToSize:CGSizeMake(self.titleLabel.frame.size.width, CGFLOAT_MAX)
+                                                    lineBreakMode:UILineBreakModeWordWrap];
+    
+    CGSize requiredSubtitleSize = [self.subtitleLabel.text sizeWithFont:self.subtitleLabel.font
+                                                constrainedToSize:CGSizeMake(self.subtitleLabel.frame.size.width, CGFLOAT_MAX)
+                                                    lineBreakMode:UILineBreakModeWordWrap];
+    
+    
+    
+    CGRect titleRect = self.titleLabel.frame;
+    titleRect.size.height = requiredTitleSize.height;
+    self.titleLabel.frame = titleRect;
+    
+    CGRect subtitleRect = self.subtitleLabel.frame;
+    subtitleRect.origin.y = titleRect.origin.y + titleRect.size.height + 5;
+    subtitleRect.size.height = requiredSubtitleSize.height;
+    self.subtitleLabel.frame = subtitleRect;
 }
 
 
@@ -169,6 +228,33 @@
     }
 }
 
+- (void)setMainTourStepView:(SCHTourStepView *)newMainTourStepView
+{
+    SCHTourStepView *oldTourStepView = mainTourStepView;
+    mainTourStepView = [newMainTourStepView retain];
+    [oldTourStepView release];
+    
+    self.mainTourStepView.delegate = self;
+}
 
+- (void)setSecondTourStepView:(SCHTourStepView *)newSecondTourStepView
+{
+    SCHTourStepView *oldTourStepView = secondTourStepView;
+    secondTourStepView = [newSecondTourStepView retain];
+    [oldTourStepView release];
+    
+    self.secondTourStepView.delegate = self;
+}
+
+- (void)tourStepPressedButton:(SCHTourStepView *)tourStepView
+{
+    if (tourStepView == self.mainTourStepView) {
+        [self.delegate tourStepContainer:self pressedButtonAtIndex:0];
+    } else if (tourStepView == self.secondTourStepView) {
+        [self.delegate tourStepContainer:self pressedButtonAtIndex:1];
+    } else {
+        NSLog(@"Warning: got a button press on an unrecognised tour view.");
+    }
+}
 
 @end
