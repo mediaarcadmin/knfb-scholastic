@@ -121,6 +121,10 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)signIn:(UIButton *)sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 - (void)tourStepContainer:(SCHTourStepContainerView *)container pressedButtonAtIndex:(NSUInteger)containerIndex
 {
     // this will be the currently visible view
@@ -171,7 +175,6 @@
         }
         case SCHTourStepsViewTypeBeginTour:
         {
-            [self.navigationController popToRootViewControllerAnimated:YES];
             break;
         }
         default:
@@ -277,9 +280,6 @@
     switch (type) {
         case SCHTourStepsViewTypeSingleImage:
         {
-            
-//            tourView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
-
             SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
             [tourStepImageView setButtonTitle:@"Full Screen"];
             
@@ -305,8 +305,6 @@
         }
         case SCHTourStepsViewTypeDoubleImage:
         {
-//            tourView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
-            
             SCHTourStepImageView *leftTourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
             [leftTourStepImageView setButtonTitle:@"Full Screen"];
             
@@ -337,9 +335,6 @@
             
             container.delegate = self;
             
-//            [tourView addSubview:container];
-//            [container release];
-            
             [container layoutForCurrentTourStepViews];
             
             tourView = container;
@@ -348,8 +343,6 @@
         }
         case SCHTourStepsViewTypeReadthrough:
         {
-            
-//            tourView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
             
             SCHTourStepMovieView *tourStepMovieView = [[SCHTourStepMovieView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
             [tourStepMovieView setButtonTitle:@"Play Readthrough"];
@@ -374,9 +367,6 @@
             
             container.delegate = self;
             
-//            [tourView addSubview:container];
-//            [container release];
-            
             [container layoutForCurrentTourStepViews];
             
             tourView = container;
@@ -384,10 +374,26 @@
         }
         case SCHTourStepsViewTypeBeginTour:
         {
-            NSString *scrollImageName = [NSString stringWithFormat:@"tour_scrolled_image_%d", index];
+            SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
             
-            // image view
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:scrollImageName]];
+            UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 0]];
+            
+            [tourStepImageView setTourImage:tourImage];
+            
+            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)] autorelease];
+            
+            container.containerTitleText = [tourItem objectForKey:@"mainTitle"];
+            container.containerSubtitleText = [tourItem objectForKey:@"bodyText"];
+            
+            container.mainTourStepView = tourStepImageView;
+            [tourStepImageView release];
+            
+            container.delegate = self;
+            
+            [container layoutForCurrentTourStepViews];
+            
+            tourView = container;
+            
             // button
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             
@@ -397,15 +403,12 @@
             [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
             [button.titleLabel setTextColor:[UIColor whiteColor]];
 
-            [button setFrame:CGRectMake(394, 552, 240, 34)];
+            [button setFrame:CGRectMake(394, 547, 240, 34)];
             [button setTitle:@"Sign In" forState:UIControlStateNormal];
-            // FIXME: styling
-//            [button addTarget:self action:@selector(signIn:) forControlEvents:UIControlEventTouchUpInside];
+
+            [button addTarget:self action:@selector(signIn:) forControlEvents:UIControlEventTouchUpInside];
             
             // container view
-            tourView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
-            
-            [tourView addSubview:imageView];
             [tourView addSubview:button];
             
             break;

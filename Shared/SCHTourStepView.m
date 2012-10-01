@@ -89,6 +89,8 @@
         [self.bottomView addSubview:self.actionButton];
         [self addSubview:self.bottomView];
         
+        self.bottomView.hidden = YES;
+        
         
         // ** content view
         
@@ -116,34 +118,34 @@
         self.layer.shadowOpacity = 0.5;
         self.layer.shouldRasterize = YES;
         
-        CAShapeLayer* shadowLayer = [CAShapeLayer layer];
-        shadowLayer.frame = [self.contentView bounds];
-        
-        // ** inner shadow for content view
-        shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
-        shadowLayer.shadowOffset = CGSizeMake(0.0f, 0.0f);
-        shadowLayer.shadowOpacity = 0.6f;
-        shadowLayer.shadowRadius = 2;
-        
-        // Causes the inner region in this example to NOT be filled.
-        shadowLayer.fillRule = kCAFillRuleEvenOdd;
-        
-        // Create the larger rectangle path.
-        CGMutablePathRef path = CGPathCreateMutable();
-        CGPathAddRect(path, NULL, CGRectInset(self.contentView.bounds, -42, -42));
-            
-        // Add the inner path so it's subtracted from the outer path.
-        CGPathAddPath(path, NULL, [UIBezierPath bezierPathWithRoundedRect:[shadowLayer bounds]
-                                                         byRoundingCorners:UIRectCornerAllCorners
-                                                               cornerRadii:CGSizeMake(STANDARD_CORNER_RADIUS, STANDARD_CORNER_RADIUS)].CGPath);
-        CGPathCloseSubpath(path);
-        
-        [shadowLayer setPath:path];
-        CGPathRelease(path);
-        
-        [[self.contentView layer] addSublayer:shadowLayer];
-        
-        self.contentView.layer.shouldRasterize = YES;
+//        CAShapeLayer* shadowLayer = [CAShapeLayer layer];
+//        shadowLayer.frame = [self.contentView bounds];
+//        
+//        // ** inner shadow for content view
+//        shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
+//        shadowLayer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+//        shadowLayer.shadowOpacity = 0.6f;
+//        shadowLayer.shadowRadius = 2;
+//        
+//        // Causes the inner region in this example to NOT be filled.
+//        shadowLayer.fillRule = kCAFillRuleEvenOdd;
+//        
+//        // Create the larger rectangle path.
+//        CGMutablePathRef path = CGPathCreateMutable();
+//        CGPathAddRect(path, NULL, CGRectInset(self.contentView.bounds, -42, -42));
+//            
+//        // Add the inner path so it's subtracted from the outer path.
+//        CGPathAddPath(path, NULL, [UIBezierPath bezierPathWithRoundedRect:[shadowLayer bounds]
+//                                                         byRoundingCorners:UIRectCornerAllCorners
+//                                                               cornerRadii:CGSizeMake(STANDARD_CORNER_RADIUS, STANDARD_CORNER_RADIUS)].CGPath);
+//        CGPathCloseSubpath(path);
+//        
+//        [shadowLayer setPath:path];
+//        CGPathRelease(path);
+//        
+//        [[self.contentView layer] addSublayer:shadowLayer];
+//        
+//        self.contentView.layer.shouldRasterize = YES;
     }
     return self;
 }
@@ -167,6 +169,7 @@
 - (void)setButtonTitle:(NSString *)buttonTitle
 {
     if (self.actionButton) {
+        self.bottomView.hidden = NO;
         [self.actionButton setTitle:buttonTitle forState:UIControlStateNormal];
         
         CGRect buttonFrame = self.actionButton.frame;

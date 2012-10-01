@@ -54,7 +54,7 @@
         
         self.topContainer = [[[UIView alloc] initWithFrame:
                               CGRectMake(0, topInset,
-                                         frame.size.width, floorf(totalHeight * 0.25) - floorf(topInset / 2))]
+                                         frame.size.width, floorf(totalHeight * 0.17) - floorf(topInset / 2))]
                              autorelease];
         
         self.topContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -74,7 +74,7 @@
         
         CGFloat titleLabelHeight = floorf(self.topContainer.frame.size.height * 0.6);
         CGFloat subtitleLabelHeight = floorf(self.topContainer.frame.size.height * 0.4);
-        CGFloat labelInset = floorf(frame.size.width * 0.05);
+        CGFloat labelInset = floorf(frame.size.width * 0.035);
         
         self.titleLabel = [[[UILabel alloc] initWithFrame:
                             CGRectMake(labelInset * 2, 0,
@@ -102,13 +102,13 @@
         
         self.subtitleLabel.backgroundColor = [UIColor clearColor];
 
-        self.subtitleLabel.font = [UIFont systemFontOfSize:14];
+        self.subtitleLabel.font = [UIFont systemFontOfSize:13];
         self.subtitleLabel.textColor = [UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:1];
         self.subtitleLabel.numberOfLines = 0;
         self.subtitleLabel.textAlignment = UITextAlignmentCenter;
         self.subtitleLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
         
-//        self.subtitleLabel.layer.borderColor = [UIColor purpleColor].CGColor;
+//        self.subtitleLabel.layer.borderColor = [UIColor orangeColor].CGColor;
 //        self.subtitleLabel.layer.borderWidth = 1;
 //        self.titleLabel.layer.borderColor = [UIColor purpleColor].CGColor;
 //        self.titleLabel.layer.borderWidth = 1;
@@ -173,6 +173,26 @@
         
         [self.bottomContainer addSubview:self.secondTourStepView];
     }
+    
+    // lay out the header text
+    CGSize requiredTitleSize = [self.titleLabel.text sizeWithFont:self.titleLabel.font
+                                                constrainedToSize:CGSizeMake(self.titleLabel.frame.size.width, CGFLOAT_MAX)
+                                                    lineBreakMode:UILineBreakModeWordWrap];
+    
+    CGSize requiredSubtitleSize = [self.subtitleLabel.text sizeWithFont:self.subtitleLabel.font
+                                                constrainedToSize:CGSizeMake(self.subtitleLabel.frame.size.width, CGFLOAT_MAX)
+                                                    lineBreakMode:UILineBreakModeWordWrap];
+    
+    
+    
+    CGRect titleRect = self.titleLabel.frame;
+    titleRect.size.height = requiredTitleSize.height;
+    self.titleLabel.frame = titleRect;
+    
+    CGRect subtitleRect = self.subtitleLabel.frame;
+    subtitleRect.origin.y = titleRect.origin.y + titleRect.size.height + 5;
+    subtitleRect.size.height = requiredSubtitleSize.height;
+    self.subtitleLabel.frame = subtitleRect;
 }
 
 
