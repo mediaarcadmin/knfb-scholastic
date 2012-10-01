@@ -10,6 +10,7 @@
 
 #import "SCHVersionDownloadManager.h"
 #import "LambdaAlert.h"
+#import <QuartzCore/QuartzCore.h>
 
 static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 
@@ -40,6 +41,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 @synthesize backgroundView;
 @synthesize showSamples;
 @synthesize samplesButton;
+@synthesize containerView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -66,6 +68,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [activeTextField release], activeTextField = nil;
     [scrollView release], scrollView = nil;
     [backgroundView release], backgroundView = nil;
+    [containerView release], containerView = nil;
 }
 
 - (void)dealloc
@@ -98,19 +101,28 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     
     NSMutableDictionary *mutableLinkAttributes = [NSMutableDictionary dictionary];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [mutableLinkAttributes setValue:[NSNumber numberWithBool:YES] forKey:(NSString *)kCTUnderlineStyleAttributeName];
         [mutableLinkAttributes setValue:(id)[[UIColor colorWithRed:0.056 green:0.367 blue:0.577 alpha:1] CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];
-    } else {
-        [mutableLinkAttributes setValue:(id)[[UIColor colorWithRed:0.256 green:0.667 blue:0.877 alpha:1] CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];
     }
     
-    [mutableLinkAttributes setValue:[NSNumber numberWithBool:YES] forKey:(NSString *)kCTUnderlineStyleAttributeName];
     self.promptLabel.linkAttributes = [NSDictionary dictionaryWithDictionary:mutableLinkAttributes];
+    
+    UIImage *stretchedFieldImage = [[UIImage imageNamed:@"textfield_wht_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+    [self.topField setBackground:stretchedFieldImage];
+    [self.bottomField setBackground:stretchedFieldImage];
 
-
-    [self.scrollView setAlwaysBounceVertical:NO];
+    UIImage *stretchedRedButtonImage = [[UIImage imageNamed:@"btn-red"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
+    [self.loginButton setBackgroundImage:stretchedRedButtonImage forState:UIControlStateNormal];
+    
+    UIImage *stretchedGreyButtonImage = [[UIImage imageNamed:@"greytourbutton"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
+    [self.samplesButton setBackgroundImage:stretchedGreyButtonImage forState:UIControlStateNormal];
+    [self.previewButton setBackgroundImage:stretchedGreyButtonImage forState:UIControlStateNormal];
+    
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [[NSNotificationCenter defaultCenter] addObserver:self 
+        [self.scrollView setAlwaysBounceVertical:NO];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:) 
                                                      name:UIKeyboardWillShowNotification
                                                    object:nil];
@@ -267,22 +279,33 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 
 - (void)setDisplayIncorrectCredentialsWarning:(SCHLoginHandlerCredentialsWarning)credentialsWarning
 {
-        NSString *promptText = nil;
-        
-        switch (credentialsWarning) {
-            case kSCHLoginHandlerCredentialsWarningNone:
-                promptText = NSLocalizedString(@"You must have a Scholastic account to sign in.", @"");
-                break;
-            case kSCHLoginHandlerCredentialsWarningMalformedEmail:
-                promptText = NSLocalizedString(@"Please enter a valid E-mail Address.", @"");
-                break;
-            case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:  
-                promptText = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again or contact Scholastic customer service at storia@scholastic.com.", @"");
-                break;
-        }
-    
-        self.promptLabel.text = promptText;
+    NSString *promptText = nil;
+    CGFloat promptAlpha = 0;
+    CGFloat promptHeight = 20;
+    CGAffineTransform containerTransform = CGAffineTransformIdentity;
 
+    switch (credentialsWarning) {
+        case kSCHLoginHandlerCredentialsWarningNone:
+            break;
+        case kSCHLoginHandlerCredentialsWarningMalformedEmail:
+            promptText = NSLocalizedString(@"Please enter a valid E-mail Address.", @"");
+            promptAlpha = 1;
+            break;
+        case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
+            promptText = NSLocalizedString(@"Your e-mail address or password was not recognized. Please try again, or contact Scholastic customer service at storia@scholastic.com.", @"");
+            promptAlpha = 1;
+            promptHeight = 48;
+            containerTransform = CGAffineTransformMakeTranslation(0, 36);
+            break;
+    }
+    
+    self.promptLabel.text = promptText;
+    self.promptLabel.alpha = promptAlpha;
+    
+    CGRect promptFrame = self.promptLabel.frame;
+    promptFrame.size.height = promptHeight;
+    self.promptLabel.frame = promptFrame;
+    self.containerView.transform = containerTransform;
 }
 
 #pragma mark - UITextFieldDelegate

@@ -95,7 +95,7 @@
     NSString *hardware = [NSString stringWithUTF8String:machine];
     free(machine);
     
-    NSString *platform = [NSString stringWithFormat:@"%@ %@ %@", [[UIDevice currentDevice] model], hardware, [[UIDevice currentDevice] systemVersion]];
+    NSString *platform = [NSString stringWithFormat:@"iOS %@ %@ %@", [[UIDevice currentDevice] model], hardware, [[UIDevice currentDevice] systemVersion]];
     
     NSMutableDictionary *devicePlatformItem = [NSMutableDictionary dictionary];
     [devicePlatformItem setValue:@"Device Platform" forKey:kSCHLibreAccessActivityLogWebServiceDefinitionName];
@@ -107,7 +107,7 @@
     
     NSMutableDictionary *logList = [NSMutableDictionary dictionary];
     [logList setValue:@"eBooks Downloads" forKey:kSCHLibreAccessActivityLogWebServiceActivityName];
-    [logList setValue:@"123"  forKey:kSCHLibreAccessActivityLogWebServiceCorrelationID];
+    //[logList setValue:@"123"  forKey:kSCHLibreAccessActivityLogWebServiceCorrelationID];
     [logList setValue:[NSArray arrayWithObjects:devicePlatformItem, contentIdentifierItem, nil]  forKey:kSCHLibreAccessActivityLogWebServiceLogItem];
     [self.activityLogWebService saveActivityLog:[NSArray arrayWithObject:logList] forUserKey:userKey];
 
