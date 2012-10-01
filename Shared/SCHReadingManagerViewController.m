@@ -10,7 +10,6 @@
 #import "SCHAuthenticationManager.h"
 #import "NSURL+Extensions.h"
 #import "SCHReadingManagerAuthorisationViewController.h"
-#import "SCHSyncManager.h"
 #import "LambdaAlert.h"
 
 @interface SCHReadingManagerViewController () <UIWebViewDelegate>
@@ -88,7 +87,7 @@
 
 - (void)back:(id)sender
 {
-    [self.appController presentSettings];
+    [self.appController exitReadingManager];
 }
 
 #pragma mark - UIWebView delegate methods
@@ -104,7 +103,7 @@
         if ([path isEqualToString:@"/home"]) {
             ret = NO;
             
-            [self.appController presentSettings];
+            [self back:nil];
         }
     
     return(ret);

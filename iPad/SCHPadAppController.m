@@ -37,6 +37,7 @@
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
 #import "SCHProfileItem.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SCHPadAppController () <UINavigationControllerDelegate>
 
@@ -151,6 +152,11 @@
 
 - (void)presentSettings
 {
+    if (self.undismissableAlert) {
+        [self.undismissableAlert dismissAnimated:YES];
+        self.undismissableAlert = nil;
+    }
+    
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
     [self pushSettingsAnimated:shouldAnimate];
 }
@@ -241,6 +247,21 @@
 - (void)exitBookshelf
 {
     [self popViewControllerAnimated:YES];
+}
+
+- (void)exitReadingManager
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.undismissableAlert = [[[LambdaAlert alloc]
+                                    initWithTitle:NSLocalizedString(@"Syncing with Your Account", @"")
+                                    message:@"\n"] autorelease];
+        [self.undismissableAlert setSpinnerHidden:NO];
+        [self.undismissableAlert show];
+    });
+    
+    AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
+    SCHAppModel *appModel = [appDelegate appModel];
+    [appModel waitForSettings];
 }
 
 #pragma mark - Errors
@@ -640,10 +661,10 @@
         aReadingManager.appController = self;
         readingManagerViewController = aReadingManager;
 #else
-        SCHParentalToolsWebViewController *aParentalToolsWebViewController = [[SCHParentalToolsWebViewController alloc] init];
-        aParentalToolsWebViewController.modalPresenterDelegate = self;
-        aParentalToolsWebViewController.shouldHideCloseButton = NO;
-        readingManagerViewController = aParentalToolsWebViewController;        
+//        SCHParentalToolsWebViewController *aParentalToolsWebViewController = [[SCHParentalToolsWebViewController alloc] init];
+//        aParentalToolsWebViewController.modalPresenterDelegate = self;
+//        aParentalToolsWebViewController.shouldHideCloseButton = NO;
+//        readingManagerViewController = aParentalToolsWebViewController;        
 #endif
     }
     

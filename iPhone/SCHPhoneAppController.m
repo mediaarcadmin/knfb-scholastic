@@ -204,6 +204,11 @@
     [self popToRootViewControllerAnimated:YES];
 }
 
+- (void)exitReadingManager
+{
+    // TODO
+}
+
 #pragma mark - Errors
 
 - (void)failedSamplesWithError:(NSError *)error
