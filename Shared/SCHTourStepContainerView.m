@@ -94,8 +94,8 @@
         [self.topContainer addSubview:self.titleLabel];
         
         self.subtitleLabel = [[[TTTAttributedLabel alloc] initWithFrame:
-                            CGRectMake(labelInset * 2, titleLabelHeight,
-                                       (frame.size.width - (labelInset * 4)), subtitleLabelHeight)]
+                            CGRectMake(floorf(labelInset * 4), titleLabelHeight,
+                                       (frame.size.width - floorf(labelInset * 8)), subtitleLabelHeight)]
                            autorelease];
         
         self.subtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
