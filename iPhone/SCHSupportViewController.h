@@ -11,5 +11,7 @@
 @interface SCHSupportViewController : UIViewController {}
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
+@property (nonatomic, retain) IBOutlet UIImageView *topBorderImageView;
+@property (nonatomic, retain) IBOutlet UIImageView *bottomBorderImageView;
 
 @end

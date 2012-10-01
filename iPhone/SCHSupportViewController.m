@@ -7,6 +7,7 @@
 //
 
 #import "SCHSupportViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SCHSupportViewController() <UIWebViewDelegate>
 
@@ -21,10 +22,14 @@
 #pragma mark View lifecycle
 
 @synthesize webView;
+@synthesize topBorderImageView;
+@synthesize bottomBorderImageView;
 
 - (void)releaseViewObjects
 {
     [webView release], webView = nil;
+    [topBorderImageView release], topBorderImageView = nil;
+    [bottomBorderImageView release], bottomBorderImageView = nil;
 }
 
 - (void)dealloc
@@ -42,6 +47,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIImage *topImage = [[UIImage imageNamed:@"support-panel-top"] stretchableImageWithLeftCapWidth:12 topCapHeight:12];
+    UIImage *bottomImage = [[UIImage imageNamed:@"support-panel-bottom"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
+    [self.topBorderImageView setImage:topImage];
+    [self.bottomBorderImageView setImage:bottomImage];
     
     // Get the marketing version from Info.plist.
     NSString *version = (NSString*)[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
