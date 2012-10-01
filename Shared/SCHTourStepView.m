@@ -56,9 +56,6 @@
 
         self.topTitleLabel.textAlignment = UITextAlignmentCenter;
 
-//        self.topTitleLabel.layer.borderColor = [UIColor orangeColor].CGColor;
-//        self.topTitleLabel.layer.borderWidth = 1;
-        
         [self addSubview:self.topTitleLabel];
 
         
@@ -174,7 +171,12 @@
         
         CGRect buttonFrame = self.actionButton.frame;
         CGSize buttonTextSize = [[self.actionButton titleForState:UIControlStateNormal] sizeWithFont:self.actionButton.titleLabel.font];
-        NSLog(@"Button frame: %@ Size of text: %@", NSStringFromCGRect(buttonFrame), NSStringFromCGSize(buttonTextSize));
+        
+        // FIXME: this is a naive calculation, uses the fixed position of the initial setup to work
+        // This should be a more dynamic calculation taking into account the current size of the view
+        buttonFrame.size.width = buttonTextSize.width + 50;
+        buttonFrame.origin.x = 1044 - buttonFrame.size.width;
+        self.actionButton.frame = buttonFrame;
         
     }
 }
