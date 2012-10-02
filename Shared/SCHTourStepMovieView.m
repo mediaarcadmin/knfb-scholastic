@@ -23,6 +23,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [movieURL release], movieURL = nil;
     [moviePlayer release], moviePlayer = nil;
     [super dealloc];
@@ -32,10 +33,25 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-//        self.tourImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkMovieStatus:) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
     }
     return self;
+}
+
+- (void)checkMovieStatus:(NSNotification *)note {
+    if (moviePlayer.loadState & (MPMovieLoadStatePlayable | MPMovieLoadStatePlaythroughOK))
+    {
+        [self.contentView addSubview:self.moviePlayer.view];
+        [self.contentView bringSubviewToFront:self.tourImageView];
+        [UIView animateWithDuration:0.1
+                         animations:^{
+                             self.tourImageView.alpha = 0;
+                             self.moviePlayer.view.alpha = 1;
+                         } completion:^(BOOL finished) {
+                             [self.contentView bringSubviewToFront:self.moviePlayer.view];
+                             self.tourImageView.alpha = 1;
+                         }];
+    }
 }
 
 - (void)startVideo
@@ -45,8 +61,8 @@
     }
     
     if (self.moviePlayer) {
+        [self.contentView bringSubviewToFront:self.tourImageView];
         [self.moviePlayer stop];
-        [self.moviePlayer.view setHidden:NO];
         [self.moviePlayer play];
         return;
     }
@@ -54,25 +70,37 @@
     self.moviePlayer = [[[MPMoviePlayerController alloc] initWithContentURL:self.movieURL] autorelease];
     self.moviePlayer.controlStyle = MPMovieControlStyleNone;
     self.moviePlayer.shouldAutoplay = NO;
+    self.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
     
     self.moviePlayer.view.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     
-//    CGFloat numViewPixelsToTrim  = 30.0f;
-//    [self.currentMoviePlayer.view setFrame:CGRectMake(0, -numViewPixelsToTrim/2.0f, 556, 382 + numViewPixelsToTrim)];
+    self.moviePlayer.view.autoresizingMask =
+    UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight |
+    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin |
+    UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
-    self.moviePlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    
-    [self.contentView addSubview:self.moviePlayer.view];
-    
+    // movie player view is added to the view hierarchy after the "is ready to play" notification is sent
+    // this stops a black flicker effect
     [self.moviePlayer play];
 
 }
 
 - (void)stopVideo
 {
+    // animations here to prevent a black flicker when the movie stops
     if (self.moviePlayer) {
-        [self.moviePlayer stop];
-        [self.moviePlayer.view setHidden:YES];
+        self.tourImageView.alpha = 0;
+        [self.contentView bringSubviewToFront:self.tourImageView];
+        [self.moviePlayer pause];
+        [UIView animateWithDuration:0.1
+                         animations:^{
+                             self.moviePlayer.view.alpha = 0;
+                             self.tourImageView.alpha = 1;
+                         } completion:^(BOOL finished) {
+                             self.tourImageView.alpha = 1;
+                             self.moviePlayer.view.alpha = 0;
+                             [self.moviePlayer stop];
+                         }];
     }
 }
 
