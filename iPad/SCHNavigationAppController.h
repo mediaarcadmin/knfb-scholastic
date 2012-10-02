@@ -1,5 +1,5 @@
 //
-//  SCHPadAppController.h
+//  SCHNavigationAppController.h
 //  Scholastic
 //
 //  Created by Matt Farrugia on 14/09/2012.
@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 #import "SCHAppController.h"
 
-@interface SCHPadAppController : UINavigationController <SCHAppController>
+@interface SCHNavigationAppController : UINavigationController <SCHAppController>
 @end

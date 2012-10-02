@@ -1,14 +1,13 @@
 //
-//  SCHPadAppController.m
+//  SCHNavigationAppController.m
 //  Scholastic
 //
 //  Created by Matt Farrugia on 14/09/2012.
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHPadAppController.h"
+#import "SCHNavigationAppController.h"
 
-#import "SCHPhoneAppController.h"
 #import "SCHStoriaLoginViewController.h"
 #import "BITOperationWithBlocks.h"
 #import "SCHDictionaryDownloadManager.h"
@@ -17,7 +16,9 @@
 #import "LambdaAlert.h"
 #import "SCHDownloadDictionaryViewController.h"
 #import "Reachability.h"
+#import "SCHProfileViewController_Shared.h"
 #import "SCHProfileViewController_iPad.h"
+#import "SCHProfileViewController_iPhone.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHProfileSetupDelegate.h"
 #import "SCHAccountValidation.h"
@@ -39,15 +40,14 @@
 #import "SCHProfileItem.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SCHPadAppController () <UINavigationControllerDelegate>
+@interface SCHNavigationAppController () <UINavigationControllerDelegate>
 
-@property (nonatomic, retain) UINavigationController *modalContainerView;
 @property (nonatomic, retain) LambdaAlert *undismissableAlert;
 
 // Cached View Controllers
 @property (nonatomic, retain) SCHStoriaLoginViewController *loginViewController;
-@property (nonatomic, retain) SCHProfileViewController_iPad *profileViewController;
-@property (nonatomic, retain) SCHProfileViewController_iPad *samplesViewController;
+@property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
+@property (nonatomic, retain) SCHProfileViewController_Shared *samplesViewController;
 @property (nonatomic, retain) SCHTourStartViewController *tourViewController;
 @property (nonatomic, retain) SCHSettingsViewController *settingsViewController;
 @property (nonatomic, retain) UIViewController *readingManagerViewController;
@@ -62,9 +62,8 @@
 
 @end
 
-@implementation SCHPadAppController
+@implementation SCHNavigationAppController
 
-@synthesize modalContainerView;
 @synthesize undismissableAlert;
 @synthesize loginViewController;
 @synthesize profileViewController;
@@ -80,7 +79,6 @@
                                                     name:UIApplicationWillEnterForegroundNotification
                                                   object:nil];
     
-    [modalContainerView release], modalContainerView = nil;
     [undismissableAlert release], undismissableAlert = nil;
     [loginViewController release], loginViewController = nil;
     [profileViewController release], profileViewController = nil;
@@ -96,6 +94,7 @@
 {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         [self registerForNotifications];
+        self.delegate = self;
     }
     
     return self;
@@ -105,6 +104,7 @@
 {
     if ((self = [super initWithCoder:aDecoder])) {
         [self registerForNotifications];
+        self.delegate = self;
     }
     
     return self;
@@ -117,19 +117,6 @@
                                              selector:@selector(willEnterForeground:)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    self.delegate = self;
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
 }
 
 #pragma mark - Presentation Methods
@@ -597,11 +584,15 @@
     return loginViewController;
 }
 
-- (SCHProfileViewController_iPad *)profileViewController
+- (SCHProfileViewController_Shared *)profileViewController
 {
     if (!profileViewController) {
         
-        profileViewController = [[SCHProfileViewController_iPad alloc] init];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            profileViewController = [[SCHProfileViewController_iPad alloc] init];
+        } else {
+            profileViewController = [[SCHProfileViewController_iPhone alloc] init];
+        }
     
         // access to the AppDelegate's managedObjectContext is deferred until we know we don't
         // want to use the same database any more
@@ -613,11 +604,15 @@
     return profileViewController;
 }
 
-- (SCHProfileViewController_iPad *)samplesViewController
+- (SCHProfileViewController_Shared *)samplesViewController
 {
     if (!samplesViewController) {
         
-        samplesViewController = [[SCHProfileViewController_iPad alloc] init];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            samplesViewController = [[SCHProfileViewController_iPad alloc] init];
+        } else {
+            samplesViewController = [[SCHProfileViewController_iPhone alloc] init];
+        }
         
         // access to the AppDelegate's managedObjectContext is deferred until we know we don't
         // want to use the same database any more

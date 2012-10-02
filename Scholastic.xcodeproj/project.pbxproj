@@ -4405,11 +4405,11 @@
 		C9E1BFA11603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */; };
 		C9E1BFA21603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */; };
 		C9E1BFA31603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */; };
-		C9E1BFA616035A4300CB8A4E /* SCHPadAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BFA516035A4300CB8A4E /* SCHPadAppController.m */; };
-		C9E1BFA716035A4300CB8A4E /* SCHPadAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BFA516035A4300CB8A4E /* SCHPadAppController.m */; };
-		C9E1BFA816035A4300CB8A4E /* SCHPadAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BFA516035A4300CB8A4E /* SCHPadAppController.m */; };
-		C9E1BFA916035A4300CB8A4E /* SCHPadAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BFA516035A4300CB8A4E /* SCHPadAppController.m */; };
-		C9E1BFAA16035A4300CB8A4E /* SCHPadAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BFA516035A4300CB8A4E /* SCHPadAppController.m */; };
+		C9E1BFA616035A4300CB8A4E /* SCHNavigationAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BFA516035A4300CB8A4E /* SCHNavigationAppController.m */; };
+		C9E1BFA716035A4300CB8A4E /* SCHNavigationAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BFA516035A4300CB8A4E /* SCHNavigationAppController.m */; };
+		C9E1BFA816035A4300CB8A4E /* SCHNavigationAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BFA516035A4300CB8A4E /* SCHNavigationAppController.m */; };
+		C9E1BFA916035A4300CB8A4E /* SCHNavigationAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BFA516035A4300CB8A4E /* SCHNavigationAppController.m */; };
+		C9E1BFAA16035A4300CB8A4E /* SCHNavigationAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BFA516035A4300CB8A4E /* SCHNavigationAppController.m */; };
 		C9E1BFB216036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9E1BFB016036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg */; };
 		C9E1BFB316036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9E1BFB016036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg */; };
 		C9E1BFB416036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9E1BFB016036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg */; };
@@ -6914,8 +6914,8 @@
 		C9DFBBCD160A625C00A02805 /* SCHSupportViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHSupportViewController~ipad.xib"; path = "iPad/SCHSupportViewController~ipad.xib"; sourceTree = "<group>"; };
 		C9E1BF9D1603446400CB8A4E /* SCHReadingManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingManagerViewController.h; path = Shared/SCHReadingManagerViewController.h; sourceTree = "<group>"; };
 		C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingManagerViewController.m; path = Shared/SCHReadingManagerViewController.m; sourceTree = "<group>"; };
-		C9E1BFA416035A4300CB8A4E /* SCHPadAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHPadAppController.h; path = iPad/SCHPadAppController.h; sourceTree = "<group>"; };
-		C9E1BFA516035A4300CB8A4E /* SCHPadAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHPadAppController.m; path = iPad/SCHPadAppController.m; sourceTree = "<group>"; };
+		C9E1BFA416035A4300CB8A4E /* SCHNavigationAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNavigationAppController.h; path = iPad/SCHNavigationAppController.h; sourceTree = "<group>"; };
+		C9E1BFA516035A4300CB8A4E /* SCHNavigationAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNavigationAppController.m; path = iPad/SCHNavigationAppController.m; sourceTree = "<group>"; };
 		C9E1BFB016036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-loginbackground@2x~ipad.jpg"; path = "Resources/UIAssets/storia-loginbackground@2x~ipad.jpg"; sourceTree = "<group>"; };
 		C9E1BFB116036CBC00CB8A4E /* storia-loginbackground~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-loginbackground~ipad.jpg"; path = "Resources/UIAssets/storia-loginbackground~ipad.jpg"; sourceTree = "<group>"; };
 		C9E73AC515EF8A6D00DC7C11 /* SCHBSBProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBProperty.m; path = Shared/SCHBSBProperty.m; sourceTree = "<group>"; };
@@ -8607,8 +8607,8 @@
 				F864333913813DE000BEB8EB /* Bookshelves */,
 				1D3623240D0F684500981E51 /* AppDelegate_iPad.h */,
 				1D3623250D0F684500981E51 /* AppDelegate_iPad.m */,
-				C9E1BFA416035A4300CB8A4E /* SCHPadAppController.h */,
-				C9E1BFA516035A4300CB8A4E /* SCHPadAppController.m */,
+				C9E1BFA416035A4300CB8A4E /* SCHNavigationAppController.h */,
+				C9E1BFA516035A4300CB8A4E /* SCHNavigationAppController.m */,
 				28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */,
 			);
 			name = iPad;
@@ -14606,7 +14606,7 @@
 				C92F0B7115FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
 				C92F0B7815FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 				C9E1BF9F1603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
-				C9E1BFA616035A4300CB8A4E /* SCHPadAppController.m in Sources */,
+				C9E1BFA616035A4300CB8A4E /* SCHNavigationAppController.m in Sources */,
 				F888C3FD16071E6300256F60 /* SCHTourStartViewController.m in Sources */,
 				F8067576160A24B000F5024A /* SCHTourFullScreenImageViewController.m in Sources */,
 				F875C33616135061008DBBDA /* DDPageControl.m in Sources */,
@@ -15040,7 +15040,7 @@
 				C92F0B7315FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
 				C92F0B7A15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 				C9E1BFA11603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
-				C9E1BFA816035A4300CB8A4E /* SCHPadAppController.m in Sources */,
+				C9E1BFA816035A4300CB8A4E /* SCHNavigationAppController.m in Sources */,
 				527ABDF51607708600DE2893 /* SCHMakeNullNilTests.m in Sources */,
 				527ABDF6160771B200DE2893 /* SCHMakeNullNil.m in Sources */,
 				527ABDF7160771C600DE2893 /* SCHTourStartViewController.m in Sources */,
@@ -15470,7 +15470,7 @@
 				C92F0B7215FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
 				C92F0B7915FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 				C9E1BFA01603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
-				C9E1BFA716035A4300CB8A4E /* SCHPadAppController.m in Sources */,
+				C9E1BFA716035A4300CB8A4E /* SCHNavigationAppController.m in Sources */,
 				F888C3FE16071E6300256F60 /* SCHTourStartViewController.m in Sources */,
 				F8067577160A24B000F5024A /* SCHTourFullScreenImageViewController.m in Sources */,
 				F86904EC1612F5DD0098E735 /* SCHTopRatingsSyncComponent.m in Sources */,
@@ -15899,7 +15899,7 @@
 				C92F0B7415FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
 				C92F0B7B15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 				C9E1BFA21603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
-				C9E1BFA916035A4300CB8A4E /* SCHPadAppController.m in Sources */,
+				C9E1BFA916035A4300CB8A4E /* SCHNavigationAppController.m in Sources */,
 				F888C3FF16071E6300256F60 /* SCHTourStartViewController.m in Sources */,
 				F8067578160A24B000F5024A /* SCHTourFullScreenImageViewController.m in Sources */,
 				F86904ED1612F5DE0098E735 /* SCHTopRatingsSyncComponent.m in Sources */,
@@ -16328,7 +16328,7 @@
 				C92F0B7515FE32800036E8BD /* SCHBSBCSSXHTMLTreeNode.m in Sources */,
 				C92F0B7C15FE337E0036E8BD /* SCHBSBCSSXHTMLTree.m in Sources */,
 				C9E1BFA31603446400CB8A4E /* SCHReadingManagerViewController.m in Sources */,
-				C9E1BFAA16035A4300CB8A4E /* SCHPadAppController.m in Sources */,
+				C9E1BFAA16035A4300CB8A4E /* SCHNavigationAppController.m in Sources */,
 				F888C40016071E6300256F60 /* SCHTourStartViewController.m in Sources */,
 				F8067579160A24B100F5024A /* SCHTourFullScreenImageViewController.m in Sources */,
 				F86904EE1612F5DF0098E735 /* SCHTopRatingsSyncComponent.m in Sources */,
