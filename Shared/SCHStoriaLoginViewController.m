@@ -18,7 +18,6 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 
 - (void)releaseViewObjects;
 - (void)showAppVersionOutdatedAlert;
-- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 
 @property (nonatomic, retain) UITextField *activeTextField;
 
@@ -29,16 +28,12 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 @synthesize loginBlock;
 @synthesize previewBlock;
 @synthesize samplesBlock;
-@synthesize topFieldLabel;
 @synthesize topField;
 @synthesize bottomField;
 @synthesize loginButton;
 @synthesize previewButton;
 @synthesize spinner;
 @synthesize promptLabel;
-@synthesize activeTextField;
-@synthesize scrollView;
-@synthesize backgroundView;
 @synthesize showSamples;
 @synthesize samplesButton;
 @synthesize containerView;
@@ -54,20 +49,12 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 
 - (void)releaseViewObjects
 {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
-    
-    [topFieldLabel release], topFieldLabel = nil;
     [topField release], topField = nil;
     [bottomField release], bottomField = nil;
     [loginButton release], loginButton = nil;
     [previewButton release], previewButton = nil;
     [spinner release], spinner = nil;
     [promptLabel release], promptLabel = nil;
-    [activeTextField release], activeTextField = nil;
-    [scrollView release], scrollView = nil;
-    [backgroundView release], backgroundView = nil;
     [containerView release], containerView = nil;
 }
 
@@ -99,11 +86,11 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     self.promptLabel.dataDetectorTypes = UIDataDetectorTypeAll;
     self.promptLabel.delegate = self;
     
+    UIColor *promptColor = [UIColor colorWithWhite:0.202 alpha:1.000];
+    
     NSMutableDictionary *mutableLinkAttributes = [NSMutableDictionary dictionary];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [mutableLinkAttributes setValue:[NSNumber numberWithBool:YES] forKey:(NSString *)kCTUnderlineStyleAttributeName];
-        [mutableLinkAttributes setValue:(id)[[UIColor colorWithRed:0.056 green:0.367 blue:0.577 alpha:1] CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];
-    }
+    [mutableLinkAttributes setValue:[NSNumber numberWithBool:NO] forKey:(NSString *)kCTUnderlineStyleAttributeName];
+    [mutableLinkAttributes setValue:(id)[promptColor CGColor] forKey:(NSString*)kCTForegroundColorAttributeName];
     
     self.promptLabel.linkAttributes = [NSDictionary dictionaryWithDictionary:mutableLinkAttributes];
     
@@ -117,26 +104,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     UIImage *stretchedGreyButtonImage = [[UIImage imageNamed:@"greytourbutton"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
     [self.samplesButton setBackgroundImage:stretchedGreyButtonImage forState:UIControlStateNormal];
     [self.previewButton setBackgroundImage:stretchedGreyButtonImage forState:UIControlStateNormal];
-    
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self.scrollView setAlwaysBounceVertical:NO];
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillShow:) 
-                                                     name:UIKeyboardWillShowNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(keyboardDidShow:) 
-                                                     name:UIKeyboardDidShowNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillHide:)
-                                                     name:UIKeyboardWillHideNotification
-                                                   object:nil];
-    }
 }
 
 - (void)viewDidUnload
@@ -154,7 +122,6 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [self.samplesButton setHidden:!self.showSamples];
     
     [self stopShowingProgress];
-    [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
     
     [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];    
@@ -167,37 +134,6 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     } else {
         return (interfaceOrientation == UIInterfaceOrientationPortrait);
     }
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [CATransaction begin];
-        [CATransaction setAnimationDuration:duration];
-        [self setupContentSizeForOrientation:toInterfaceOrientation];
-        [CATransaction commit];
-    }
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [self.view endEditing:YES];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self setupContentSizeForOrientation:self.interfaceOrientation];
-    }
-}
-
-- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if (UIInterfaceOrientationIsPortrait(orientation)) {
-            self.scrollView.contentSize = CGSizeZero;
-            self.backgroundView.transform = CGAffineTransformIdentity;
-        } else {
-            self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, kSCHStoriaLoginContentHeightLandscape);
-            self.backgroundView.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(1.5f, 1.5f), 0, -76);
-        }
-    }   
 }
 
 - (void)setShowSamples:(BOOL)newShowSamples
@@ -251,7 +187,6 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [self.bottomField setEnabled:NO];
     [self.spinner startAnimating];
     [self.loginButton setEnabled:NO];
-    [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
     [self.previewButton setEnabled:NO];
 }
 
@@ -282,6 +217,8 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     NSString *promptText = nil;
     CGFloat promptAlpha = 0;
     CGFloat promptHeight = 20;
+    CGFloat phoneContainerHeight = 300;
+    
     CGAffineTransform containerTransform = CGAffineTransformIdentity;
 
     switch (credentialsWarning) {
@@ -290,12 +227,20 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
         case kSCHLoginHandlerCredentialsWarningMalformedEmail:
             promptText = NSLocalizedString(@"Please enter a valid E-mail Address.", @"");
             promptAlpha = 1;
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                phoneContainerHeight = 288;
+                promptHeight = 32;
+            }
             break;
         case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
             promptText = NSLocalizedString(@"Your e-mail address or password was not recognized. Please try again, or contact Scholastic customer service at storia@scholastic.com.", @"");
             promptAlpha = 1;
             promptHeight = 48;
-            containerTransform = CGAffineTransformMakeTranslation(0, 36);
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                containerTransform = CGAffineTransformMakeTranslation(0, 36);
+            } else {
+               phoneContainerHeight = 268;
+            }
             break;
     }
     
@@ -306,41 +251,33 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     promptFrame.size.height = promptHeight;
     self.promptLabel.frame = promptFrame;
     self.containerView.transform = containerTransform;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        CGRect containerFrame = self.containerView.frame;
+        containerFrame.size.height = phoneContainerHeight;
+        containerFrame.origin.y = CGRectGetHeight(self.view.frame) - phoneContainerHeight;
+        self.containerView.frame = containerFrame;
+    }
 }
 
 #pragma mark - UITextFieldDelegate
 
-- (void)makeVisibleTextField:(UITextField *)textField
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    CGFloat textFieldCenterY    = CGRectGetMidY(textField.frame);
-    CGFloat scrollViewQuadrantY = CGRectGetMidY(self.scrollView.frame)/2.0f;
-    
-    if (textFieldCenterY > scrollViewQuadrantY) {
-        [self.scrollView setContentOffset:CGPointMake(0, textFieldCenterY - scrollViewQuadrantY) animated:YES];
-    }
-}
+    [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if (self.activeTextField && (self.activeTextField != textField)) {
-            // We have swapped textFields with the keyboard showing
-            [self makeVisibleTextField:textField];
-        }
-        
-        self.activeTextField = textField;
-    }
+    return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == self.topField) {
         [self.bottomField becomeFirstResponder];
-    }
-    
-    if (textField == self.bottomField && [self.topField.text length] > 0 && [self.bottomField.text length] > 0) {
+    } else if (textField == self.bottomField) {
         [self.bottomField resignFirstResponder];
         [self loginButtonAction:nil];
+    } else {
+        [self.view endEditing:YES];
     }
     
     return YES;
@@ -354,30 +291,6 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
     [alert show];
     [alert release];         
-}
-
-#pragma mark - UIKeyboard Notifications
-
-- (void)keyboardDidShow:(NSNotification *) notification
-{
-    if (self.activeTextField) {
-        [self makeVisibleTextField:self.activeTextField];
-    }
-}
-
-- (void)keyboardWillShow:(NSNotification *) notification
-{
-    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, MAX(self.view.frame.size.height, self.scrollView.contentSize.height) * 1.5f)];
-    } else {
-        [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, kSCHStoriaLoginContentHeightLandscape * 1.4)];
-    }
-}
-
-- (void)keyboardWillHide:(NSNotification *) notification
-{
-    self.activeTextField = nil;
-    [self setupContentSizeForOrientation:self.interfaceOrientation];
 }
 
 #pragma mark - TTTAttributedLabelDelegate

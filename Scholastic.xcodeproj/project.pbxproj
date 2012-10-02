@@ -2597,6 +2597,22 @@
 		C91CA2891619DC3B0074A5DA /* support-panel-top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA27B1619DC3B0074A5DA /* support-panel-top@2x.png */; };
 		C91CA28A1619DC3B0074A5DA /* support-panel-top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA27B1619DC3B0074A5DA /* support-panel-top@2x.png */; };
 		C91CA28B1619DC3B0074A5DA /* support-panel-top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C91CA27B1619DC3B0074A5DA /* support-panel-top@2x.png */; };
+		C91CA2BF161AF9440074A5DA /* Storia_Sign-In_Mobile-bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2BD161AF9420074A5DA /* Storia_Sign-In_Mobile-bg.jpg */; };
+		C91CA2C0161AF9440074A5DA /* Storia_Sign-In_Mobile-bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2BD161AF9420074A5DA /* Storia_Sign-In_Mobile-bg.jpg */; };
+		C91CA2C1161AF9440074A5DA /* Storia_Sign-In_Mobile-bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2BD161AF9420074A5DA /* Storia_Sign-In_Mobile-bg.jpg */; };
+		C91CA2C2161AF9440074A5DA /* Storia_Sign-In_Mobile-bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2BD161AF9420074A5DA /* Storia_Sign-In_Mobile-bg.jpg */; };
+		C91CA2C3161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2BE161AF9430074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg */; };
+		C91CA2C4161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2BE161AF9430074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg */; };
+		C91CA2C5161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2BE161AF9430074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg */; };
+		C91CA2C6161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2BE161AF9430074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg */; };
+		C91CA2C9161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2C7161B0EEC0074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg */; };
+		C91CA2CA161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2C7161B0EEC0074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg */; };
+		C91CA2CB161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2C7161B0EEC0074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg */; };
+		C91CA2CC161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2C7161B0EEC0074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg */; };
+		C91CA2CD161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2C8161B0EED0074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg */; };
+		C91CA2CE161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2C8161B0EED0074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg */; };
+		C91CA2CF161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2C8161B0EED0074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg */; };
+		C91CA2D0161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C91CA2C8161B0EED0074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg */; };
 		C91CD8C51475422200226814 /* sbsd-license.html in Resources */ = {isa = PBXBuildFile; fileRef = C91CD8C41475422200226814 /* sbsd-license.html */; };
 		C91CD8C61475422200226814 /* sbsd-license.html in Resources */ = {isa = PBXBuildFile; fileRef = C91CD8C41475422200226814 /* sbsd-license.html */; };
 		C91E99C113F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99B313F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png */; };
@@ -6353,6 +6369,10 @@
 		C91CA2791619DC3B0074A5DA /* support-panel-bottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "support-panel-bottom@2x.png"; sourceTree = "<group>"; };
 		C91CA27A1619DC3B0074A5DA /* support-panel-top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "support-panel-top.png"; sourceTree = "<group>"; };
 		C91CA27B1619DC3B0074A5DA /* support-panel-top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "support-panel-top@2x.png"; sourceTree = "<group>"; };
+		C91CA2BD161AF9420074A5DA /* Storia_Sign-In_Mobile-bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Storia_Sign-In_Mobile-bg.jpg"; sourceTree = "<group>"; };
+		C91CA2BE161AF9430074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Storia_Sign-In_Mobile-bg@2x.jpg"; sourceTree = "<group>"; };
+		C91CA2C7161B0EEC0074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Storia_Sign-In_Mobile-bg-divider@2x.jpg"; sourceTree = "<group>"; };
+		C91CA2C8161B0EED0074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Storia_Sign-In_Mobile-bg-divider.jpg"; sourceTree = "<group>"; };
 		C91CD8C41475422200226814 /* sbsd-license.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "sbsd-license.html"; path = "Resources/sbsd-license.html"; sourceTree = "<group>"; };
 		C91E99B313F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-flip~ipad.png"; sourceTree = "<group>"; };
 		C91E99B413F930F8004F8062 /* storyinteraction-card-collection-zoom-out~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-zoom-out~ipad.png"; sourceTree = "<group>"; };
@@ -8555,6 +8575,8 @@
 				C9F229AA15B82EDD009939D1 /* SCHAppModel.h */,
 				C9F229AB15B82EDD009939D1 /* SCHAppModel.m */,
 				C9F229B115B835B8009939D1 /* SCHAppController.h */,
+				C9E1BFA416035A4300CB8A4E /* SCHNavigationAppController.h */,
+				C9E1BFA516035A4300CB8A4E /* SCHNavigationAppController.m */,
 				F8DCE5C213EC415F00100B6A /* SCHCoreDataHelper.h */,
 				F8DCE5C313EC415F00100B6A /* SCHCoreDataHelper.m */,
 				8D1107310486CEB800E47090 /* Scholastic-Info.plist */,
@@ -8607,8 +8629,6 @@
 				F864333913813DE000BEB8EB /* Bookshelves */,
 				1D3623240D0F684500981E51 /* AppDelegate_iPad.h */,
 				1D3623250D0F684500981E51 /* AppDelegate_iPad.m */,
-				C9E1BFA416035A4300CB8A4E /* SCHNavigationAppController.h */,
-				C9E1BFA516035A4300CB8A4E /* SCHNavigationAppController.m */,
 				28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */,
 			);
 			name = iPad;
@@ -10279,6 +10299,10 @@
 				C9765D49154FFA3100C876F7 /* storia-startviewcontroller-static-portrait@2x~ipad.jpg */,
 				F81CFDF714B4910000F552A9 /* storia-signin-button.png */,
 				C9765A49154B046E00C876F7 /* storia-signin-button@2x.png */,
+				C91CA2BD161AF9420074A5DA /* Storia_Sign-In_Mobile-bg.jpg */,
+				C91CA2BE161AF9430074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg */,
+				C91CA2C7161B0EEC0074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg */,
+				C91CA2C8161B0EED0074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg */,
 				C9E1BFB016036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg */,
 				C9E1BFB116036CBC00CB8A4E /* storia-loginbackground~ipad.jpg */,
 				C9765CE6154EEC1200C876F7 /* storia-loginbackground~iphone.png */,
@@ -12026,6 +12050,10 @@
 				C91CA2801619DC3B0074A5DA /* support-panel-bottom@2x.png in Resources */,
 				C91CA2841619DC3B0074A5DA /* support-panel-top.png in Resources */,
 				C91CA2881619DC3B0074A5DA /* support-panel-top@2x.png in Resources */,
+				C91CA2BF161AF9440074A5DA /* Storia_Sign-In_Mobile-bg.jpg in Resources */,
+				C91CA2C3161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */,
+				C91CA2C9161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */,
+				C91CA2CD161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12900,6 +12928,10 @@
 				C91CA2811619DC3B0074A5DA /* support-panel-bottom@2x.png in Resources */,
 				C91CA2851619DC3B0074A5DA /* support-panel-top.png in Resources */,
 				C91CA2891619DC3B0074A5DA /* support-panel-top@2x.png in Resources */,
+				C91CA2C0161AF9440074A5DA /* Storia_Sign-In_Mobile-bg.jpg in Resources */,
+				C91CA2C4161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */,
+				C91CA2CA161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */,
+				C91CA2CE161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13529,6 +13561,10 @@
 				C91CA2821619DC3B0074A5DA /* support-panel-bottom@2x.png in Resources */,
 				C91CA2861619DC3B0074A5DA /* support-panel-top.png in Resources */,
 				C91CA28A1619DC3B0074A5DA /* support-panel-top@2x.png in Resources */,
+				C91CA2C1161AF9440074A5DA /* Storia_Sign-In_Mobile-bg.jpg in Resources */,
+				C91CA2C5161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */,
+				C91CA2CB161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */,
+				C91CA2CF161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14156,6 +14192,10 @@
 				C91CA2831619DC3B0074A5DA /* support-panel-bottom@2x.png in Resources */,
 				C91CA2871619DC3B0074A5DA /* support-panel-top.png in Resources */,
 				C91CA28B1619DC3B0074A5DA /* support-panel-top@2x.png in Resources */,
+				C91CA2C2161AF9440074A5DA /* Storia_Sign-In_Mobile-bg.jpg in Resources */,
+				C91CA2C6161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */,
+				C91CA2CC161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */,
+				C91CA2D0161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
