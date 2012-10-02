@@ -90,11 +90,18 @@
     [self.pageControl setNumberOfPages:self.tourData.count];
     [self.pageControl setCurrentPage:self.currentIndex];
     
-    [self.pageControl setFrame:CGRectMake(439, 678, 145, 66)];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.pageControl setIndicatorDiameter:7.0f];
+        [self.pageControl setIndicatorSpace:12.0f];
+        [self.pageControl setFrame:CGRectMake(439, 678, 145, 66)];
+    } else {
+        [self.pageControl setFrame:CGRectMake(80, 403, 72, 38)];
+        [self.pageControl setIndicatorDiameter:5.0f];
+        [self.pageControl setIndicatorSpace:9.0f];
+    }
+    
     [self.pageControl setOnColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.8]];
     [self.pageControl setOffColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.4]];
-    [self.pageControl setIndicatorDiameter:7.0f];
-    [self.pageControl setIndicatorSpace:12.0f];
     [self.pageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
     
     [self.view addSubview:self.pageControl];
@@ -116,7 +123,6 @@
 {
 	return YES;
 }
-
 - (IBAction)goBack:(UIButton *)sender {
     [self stopCurrentPlayingVideo];
     [self.navigationController popViewControllerAnimated:YES];

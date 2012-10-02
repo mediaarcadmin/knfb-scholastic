@@ -23,6 +23,7 @@
 @synthesize appController;
 @synthesize backButton;
 @synthesize greyButtons;
+@synthesize iPhoneScrollView;
 
 - (void)dealloc
 {
@@ -34,6 +35,7 @@
 
 - (void)releaseViewObjects
 {
+    [iPhoneScrollView release], iPhoneScrollView = nil;
     [backButton release], backButton = nil;
     [greyButtons release], greyButtons = nil;
 }
@@ -62,6 +64,10 @@
     
     for (UIButton *greyButton in self.greyButtons) {
         [greyButton setBackgroundImage:stretchedGreyImage forState:UIControlStateNormal];
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.iPhoneScrollView.contentSize = CGSizeMake(320, 620);
     }
 }
 
@@ -125,6 +131,5 @@
     [self.navigationController pushViewController:stepsController animated:YES];
     [stepsController release];
 }
-
 
 @end
