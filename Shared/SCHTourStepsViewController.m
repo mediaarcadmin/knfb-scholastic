@@ -118,10 +118,12 @@
 }
 
 - (IBAction)goBack:(UIButton *)sender {
+    [self stopCurrentPlayingVideo];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)signIn:(UIButton *)sender {
+    [self stopCurrentPlayingVideo];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -423,6 +425,18 @@
     return tourView;
 }
 
+- (void)stopCurrentPlayingVideo
+{
+    if ([self.currentView isKindOfClass:[SCHTourStepContainerView class]]) {
+        SCHTourStepView *tourStep = [(SCHTourStepContainerView *)self.currentView mainTourStepView];
+        
+        if ([tourStep isKindOfClass:[SCHTourStepMovieView class]]) {
+            SCHTourStepMovieView *movieView = (SCHTourStepMovieView *)tourStep;
+            [movieView stopVideo];
+        }
+    }
+}
+
 #pragma mark - UIPageControl
 
 - (IBAction)pageControlValueChanged:(DDPageControl *)sender {
@@ -437,16 +451,7 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    if ([self.currentView isKindOfClass:[SCHTourStepContainerView class]]) {
-        SCHTourStepView *tourStep = [(SCHTourStepContainerView *)self.currentView mainTourStepView];
-
-        if ([tourStep isKindOfClass:[SCHTourStepMovieView class]]) {
-            SCHTourStepMovieView *movieView = (SCHTourStepMovieView *)tourStep;
-            [movieView stopVideo];
-        }
-    }
-    
-    
+    [self stopCurrentPlayingVideo];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)sender {
