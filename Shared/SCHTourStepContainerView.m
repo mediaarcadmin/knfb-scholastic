@@ -129,12 +129,26 @@
         
         NSLog(@"Laying out single view.");
         
+        BOOL iPhoneLayout = NO;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            iPhoneLayout = YES;
+        }
+        
         [self.mainTourStepView removeFromSuperview];
         
         if (self.mainTourStepView.stepHeaderTitle && [self.mainTourStepView.stepHeaderTitle length] > 0) {
-            self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITH_TITLE);
+            if (iPhoneLayout) {
+                self.mainTourStepView.frame = CGRectMake(0, 0, 200, HEIGHT_WITH_TITLE);
+            } else {
+                self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITH_TITLE);
+            }
         } else {
-            self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITHOUT_TITLE);
+            if (iPhoneLayout){
+                self.mainTourStepView.frame = CGRectMake(0, 0, 200, HEIGHT_WITHOUT_TITLE);
+            } else {
+                self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITHOUT_TITLE);
+            }
         }
         
         self.mainTourStepView.center = CGPointMake(self.bottomContainer.frame.size.width / 2,

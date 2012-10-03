@@ -4688,10 +4688,10 @@
 		F83F3D621609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D5C1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg */; };
 		F83F3D631609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D5C1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg */; };
 		F83F3D641609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D5C1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg */; };
-		F83F3D661609D4DC00DE35F0 /* TourData.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData.plist */; };
-		F83F3D671609D4DC00DE35F0 /* TourData.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData.plist */; };
-		F83F3D681609D4DC00DE35F0 /* TourData.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData.plist */; };
-		F83F3D691609D4DC00DE35F0 /* TourData.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData.plist */; };
+		F83F3D661609D4DC00DE35F0 /* TourData~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData~ipad.plist */; };
+		F83F3D671609D4DC00DE35F0 /* TourData~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData~ipad.plist */; };
+		F83F3D681609D4DC00DE35F0 /* TourData~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData~ipad.plist */; };
+		F83F3D691609D4DC00DE35F0 /* TourData~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = F83F3D651609D4DC00DE35F0 /* TourData~ipad.plist */; };
 		F844DF3C15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
 		F844DF3D15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
 		F844DF3E15C7D681001D075F /* icon-readingquiz.png in Resources */ = {isa = PBXBuildFile; fileRef = F844DF3A15C7D681001D075F /* icon-readingquiz.png */; };
@@ -4991,6 +4991,10 @@
 		F8AF2236161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8AF2234161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib */; };
 		F8AF2237161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8AF2234161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib */; };
 		F8AF2238161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8AF2234161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib */; };
+		F8AF2265161C7BC500CAD1A9 /* TourData~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8AF2264161C7BC500CAD1A9 /* TourData~iphone.plist */; };
+		F8AF2266161C7BC500CAD1A9 /* TourData~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8AF2264161C7BC500CAD1A9 /* TourData~iphone.plist */; };
+		F8AF2267161C7BC500CAD1A9 /* TourData~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8AF2264161C7BC500CAD1A9 /* TourData~iphone.plist */; };
+		F8AF2268161C7BC500CAD1A9 /* TourData~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8AF2264161C7BC500CAD1A9 /* TourData~iphone.plist */; };
 		F8B1E4DF14AE25670070EFCD /* storia-settings-logo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4DA14AE25670070EFCD /* storia-settings-logo~ipad.png */; };
 		F8B1E4E014AE25670070EFCD /* storia-settings-logo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4DA14AE25670070EFCD /* storia-settings-logo~ipad.png */; };
 		F8B1E4E414AE28CE0070EFCD /* storia-setup-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4E114AE28CE0070EFCD /* storia-setup-logo.png */; };
@@ -7140,7 +7144,7 @@
 		F839EB1F15C813F6000F452E /* storyinteraction-younger-progress-unfilled~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-younger-progress-unfilled~iphone.png"; sourceTree = "<group>"; };
 		F83F3D5B1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg"; path = "Resources/UIAssets/storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg"; sourceTree = "<group>"; };
 		F83F3D5C1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-tourstepsviewcontroller-static-landscape~ipad.jpg"; path = "Resources/UIAssets/storia-tourstepsviewcontroller-static-landscape~ipad.jpg"; sourceTree = "<group>"; };
-		F83F3D651609D4DC00DE35F0 /* TourData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = TourData.plist; path = Resources/TourData.plist; sourceTree = "<group>"; };
+		F83F3D651609D4DC00DE35F0 /* TourData~ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "TourData~ipad.plist"; path = "Resources/TourData~ipad.plist"; sourceTree = "<group>"; };
 		F844DF3A15C7D681001D075F /* icon-readingquiz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz.png"; path = "Resources/icon-readingquiz.png"; sourceTree = "<group>"; };
 		F844DF3B15C7D681001D075F /* icon-readingquiz@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-readingquiz@2x.png"; path = "Resources/icon-readingquiz@2x.png"; sourceTree = "<group>"; };
 		F848F40A152B4F9C00048074 /* BookShelfListRatingBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfListRatingBackground.png; path = Resources/BookShelfListRatingBackground.png; sourceTree = "<group>"; };
@@ -7299,6 +7303,7 @@
 		F8A7F52C1619B62B00E43EDC /* tour_full_image_4_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = tour_full_image_4_1.jpg; path = Resources/UIAssets/tour_full_image_4_1.jpg; sourceTree = "<group>"; };
 		F8A7F52D1619B62B00E43EDC /* tour_full_image_4_1@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "tour_full_image_4_1@2x.jpg"; path = "Resources/UIAssets/tour_full_image_4_1@2x.jpg"; sourceTree = "<group>"; };
 		F8AF2234161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHTourStepsViewController~iphone.xib"; path = "Shared/SCHTourStepsViewController~iphone.xib"; sourceTree = "<group>"; };
+		F8AF2264161C7BC500CAD1A9 /* TourData~iphone.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "TourData~iphone.plist"; path = "Resources/TourData~iphone.plist"; sourceTree = "<group>"; };
 		F8B1E4DA14AE25670070EFCD /* storia-settings-logo~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-settings-logo~ipad.png"; path = "Resources/UIAssets/storia-settings-logo~ipad.png"; sourceTree = "<group>"; };
 		F8B1E4E114AE28CE0070EFCD /* storia-setup-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-setup-logo.png"; path = "Resources/UIAssets/storia-setup-logo.png"; sourceTree = "<group>"; };
 		F8B1E4E214AE28CE0070EFCD /* storia-setup-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-setup-logo@2x.png"; path = "Resources/UIAssets/storia-setup-logo@2x.png"; sourceTree = "<group>"; };
@@ -8904,7 +8909,8 @@
 				289A2B3A13F5140A0047EE45 /* Puzzle-6pc.xaml */,
 				289A2B3B13F5140A0047EE45 /* Puzzle-12pc.xaml */,
 				289A2B3C13F5140A0047EE45 /* Puzzle-20pc.xaml */,
-				F83F3D651609D4DC00DE35F0 /* TourData.plist */,
+				F83F3D651609D4DC00DE35F0 /* TourData~ipad.plist */,
+				F8AF2264161C7BC500CAD1A9 /* TourData~iphone.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -12033,7 +12039,7 @@
 				F856653016089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */,
 				F83F3D5D1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
 				F83F3D611609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */,
-				F83F3D661609D4DC00DE35F0 /* TourData.plist in Resources */,
+				F83F3D661609D4DC00DE35F0 /* TourData~ipad.plist in Resources */,
 				F8DA8125160A112300387591 /* tour-tab-button-bg.png in Resources */,
 				F8DA8129160A112300387591 /* tour-tab-button-bg@2x.png in Resources */,
 				F806757A160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
@@ -12117,6 +12123,7 @@
 				F8BBA82C161C554100D13ABC /* BookCover1@2x.png in Resources */,
 				F8BBA830161C554100D13ABC /* BookCover2.png in Resources */,
 				F8BBA834161C554100D13ABC /* BookCover2@2x.png in Resources */,
+				F8AF2265161C7BC500CAD1A9 /* TourData~iphone.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12920,7 +12927,7 @@
 				F856653116089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */,
 				F83F3D5E1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
 				F83F3D621609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */,
-				F83F3D671609D4DC00DE35F0 /* TourData.plist in Resources */,
+				F83F3D671609D4DC00DE35F0 /* TourData~ipad.plist in Resources */,
 				F8DA8126160A112300387591 /* tour-tab-button-bg.png in Resources */,
 				F8DA812A160A112300387591 /* tour-tab-button-bg@2x.png in Resources */,
 				F806757B160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
@@ -13004,6 +13011,7 @@
 				F8BBA82D161C554100D13ABC /* BookCover1@2x.png in Resources */,
 				F8BBA831161C554100D13ABC /* BookCover2.png in Resources */,
 				F8BBA835161C554100D13ABC /* BookCover2@2x.png in Resources */,
+				F8AF2266161C7BC500CAD1A9 /* TourData~iphone.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13562,7 +13570,7 @@
 				F856653216089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */,
 				F83F3D5F1609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
 				F83F3D631609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */,
-				F83F3D681609D4DC00DE35F0 /* TourData.plist in Resources */,
+				F83F3D681609D4DC00DE35F0 /* TourData~ipad.plist in Resources */,
 				F8DA8127160A112300387591 /* tour-tab-button-bg.png in Resources */,
 				F8DA812B160A112300387591 /* tour-tab-button-bg@2x.png in Resources */,
 				F806757C160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
@@ -13646,6 +13654,7 @@
 				F8BBA82E161C554100D13ABC /* BookCover1@2x.png in Resources */,
 				F8BBA832161C554100D13ABC /* BookCover2.png in Resources */,
 				F8BBA836161C554100D13ABC /* BookCover2@2x.png in Resources */,
+				F8AF2267161C7BC500CAD1A9 /* TourData~iphone.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14202,7 +14211,7 @@
 				F856653316089ADF00EE8E73 /* storia-tourstartviewcontroller-static-landscape~ipad.jpg in Resources */,
 				F83F3D601609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape@2x~ipad.jpg in Resources */,
 				F83F3D641609D0C600DE35F0 /* storia-tourstepsviewcontroller-static-landscape~ipad.jpg in Resources */,
-				F83F3D691609D4DC00DE35F0 /* TourData.plist in Resources */,
+				F83F3D691609D4DC00DE35F0 /* TourData~ipad.plist in Resources */,
 				F8DA8128160A112300387591 /* tour-tab-button-bg.png in Resources */,
 				F8DA812C160A112300387591 /* tour-tab-button-bg@2x.png in Resources */,
 				F806757D160A24B100F5024A /* SCHTourFullScreenImageViewController.xib in Resources */,
@@ -14286,6 +14295,7 @@
 				F8BBA82F161C554100D13ABC /* BookCover1@2x.png in Resources */,
 				F8BBA833161C554100D13ABC /* BookCover2.png in Resources */,
 				F8BBA837161C554100D13ABC /* BookCover2@2x.png in Resources */,
+				F8AF2268161C7BC500CAD1A9 /* TourData~iphone.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
