@@ -9,8 +9,10 @@
 #import "SCHTourStepContainerView.h"
 #import "TTTAttributedLabel.h"
 
-#define HEIGHT_WITHOUT_TITLE 412
-#define HEIGHT_WITH_TITLE 379
+#define HEIGHT_WITHOUT_TITLE_IPAD 412
+#define HEIGHT_WITH_TITLE_IPAD 379
+#define HEIGHT_WITHOUT_TITLE_IPHONE 250
+#define HEIGHT_WITH_TITLE_IPHONE 220
 
 @interface SCHTourStepContainerView ()
 
@@ -50,12 +52,19 @@
         
         CGFloat topInset = floorf(frame.size.height * 0.01);
         CGFloat totalHeight = floorf(frame.size.height * 0.98);
+        CGRect topContainerFrame = CGRectZero;
         
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            topInset = floorf(frame.size.height * 0.03);
+            totalHeight = floorf(frame.size.height * 0.97);
+            topContainerFrame = CGRectMake(0, topInset, frame.size.width, floorf(totalHeight * 0.24) - floorf(topInset / 2));
+        } else {
+            topContainerFrame = CGRectMake(0, topInset, frame.size.width, floorf(totalHeight * 0.17) - floorf(topInset / 2));
+        }
         
-        self.topContainer = [[[UIView alloc] initWithFrame:
-                              CGRectMake(0, topInset,
-                                         frame.size.width, floorf(totalHeight * 0.17) - floorf(topInset / 2))]
-                             autorelease];
+
+        
+        self.topContainer = [[[UIView alloc] initWithFrame:topContainerFrame] autorelease];
         
         self.topContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
         
@@ -76,6 +85,10 @@
         CGFloat subtitleLabelHeight = floorf(self.topContainer.frame.size.height * 0.4);
         CGFloat labelInset = floorf(frame.size.width * 0.035);
         
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            labelInset = 5;
+        }
+        
         self.titleLabel = [[[UILabel alloc] initWithFrame:
                             CGRectMake(labelInset * 2, 0,
                                        (frame.size.width - (labelInset * 4)), titleLabelHeight)]
@@ -85,7 +98,12 @@
         
         self.titleLabel.backgroundColor = [UIColor clearColor];
         
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:38];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.titleLabel.font = [UIFont boldSystemFontOfSize:38];
+        } else {
+            self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
+        }
+        
         self.titleLabel.textColor = [UIColor whiteColor];
         self.titleLabel.numberOfLines = 0;
         self.titleLabel.textAlignment = UITextAlignmentCenter;
@@ -102,20 +120,17 @@
         
         self.subtitleLabel.backgroundColor = [UIColor clearColor];
 
-        self.subtitleLabel.font = [UIFont systemFontOfSize:13];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.subtitleLabel.font = [UIFont systemFontOfSize:13];
+        } else {
+            self.subtitleLabel.font = [UIFont systemFontOfSize:11];
+        }
         self.subtitleLabel.textColor = [UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:1];
         self.subtitleLabel.numberOfLines = 0;
         self.subtitleLabel.textAlignment = UITextAlignmentCenter;
         self.subtitleLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
-        
-//        self.subtitleLabel.layer.borderColor = [UIColor orangeColor].CGColor;
-//        self.subtitleLabel.layer.borderWidth = 1;
-//        self.titleLabel.layer.borderColor = [UIColor purpleColor].CGColor;
-//        self.titleLabel.layer.borderWidth = 1;
-        
 
         [self.topContainer addSubview:self.subtitleLabel];
-        
     }
     return self;
 }
@@ -139,15 +154,15 @@
         
         if (self.mainTourStepView.stepHeaderTitle && [self.mainTourStepView.stepHeaderTitle length] > 0) {
             if (iPhoneLayout) {
-                self.mainTourStepView.frame = CGRectMake(0, 0, 200, HEIGHT_WITH_TITLE);
+                self.mainTourStepView.frame = CGRectMake(0, 0, 260, HEIGHT_WITH_TITLE_IPHONE);
             } else {
-                self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITH_TITLE);
+                self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITH_TITLE_IPAD);
             }
         } else {
             if (iPhoneLayout){
-                self.mainTourStepView.frame = CGRectMake(0, 0, 200, HEIGHT_WITHOUT_TITLE);
+                self.mainTourStepView.frame = CGRectMake(0, 0, 260, HEIGHT_WITHOUT_TITLE_IPHONE);
             } else {
-                self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITHOUT_TITLE);
+                self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITHOUT_TITLE_IPAD);
             }
         }
         
@@ -164,9 +179,9 @@
         [self.mainTourStepView removeFromSuperview];
         
         if (self.mainTourStepView.stepHeaderTitle && [self.mainTourStepView.stepHeaderTitle length] > 0) {
-            self.mainTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITH_TITLE);
+            self.mainTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITH_TITLE_IPAD);
         } else {
-            self.mainTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITHOUT_TITLE);
+            self.mainTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITHOUT_TITLE_IPAD);
         }
 
         self.mainTourStepView.center = CGPointMake(self.bottomContainer.frame.size.width / 4,
@@ -176,9 +191,9 @@
         [self.bottomContainer addSubview:self.mainTourStepView];
         
         if (self.secondTourStepView.stepHeaderTitle && [self.secondTourStepView.stepHeaderTitle length] > 0) {
-            self.secondTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITH_TITLE);
+            self.secondTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITH_TITLE_IPAD);
         } else {
-            self.secondTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITHOUT_TITLE);
+            self.secondTourStepView.frame = CGRectMake(0, 0, 450, HEIGHT_WITHOUT_TITLE_IPAD);
         }
         
         self.secondTourStepView.center = CGPointMake((self.bottomContainer.frame.size.width / 4) * 3,

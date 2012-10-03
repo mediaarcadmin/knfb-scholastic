@@ -50,8 +50,12 @@
         self.topTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, -33, frame.size.width, 33)] autorelease];
         self.topTitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
         self.topTitleLabel.backgroundColor = [UIColor clearColor];
-        
-        [self.topTitleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:21]];
+
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self.topTitleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:21]];
+        } else {
+            [self.topTitleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:15]];
+        }
         [self.topTitleLabel setTextColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:1]];
 
         self.topTitleLabel.textAlignment = UITextAlignmentCenter;
@@ -75,7 +79,11 @@
         self.actionButton.titleEdgeInsets = UIEdgeInsetsMake(20, 0, 0, 20);
         self.actionButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
         
-        [self.actionButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self.actionButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
+        } else {
+            [self.actionButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:11]];
+        }
         [self.actionButton.titleLabel setTextColor:[UIColor whiteColor]];
         
         UIImage *stretchedBackImage = [[UIImage imageNamed:@"greytourbutton"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
@@ -114,6 +122,8 @@
         self.layer.shadowRadius = 1.0f;
         self.layer.shadowOpacity = 0.5;
         self.layer.shouldRasterize = YES;
+        self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
+
         
 //        CAShapeLayer* shadowLayer = [CAShapeLayer layer];
 //        shadowLayer.frame = [self.contentView bounds];
@@ -174,10 +184,15 @@
         
         // FIXME: this is a naive calculation, uses the fixed position of the initial setup to work
         // This should be a more dynamic calculation taking into account the current size of the view
-        buttonFrame.size.width = buttonTextSize.width + 50;
-        buttonFrame.origin.x = 1044 - buttonFrame.size.width;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            buttonFrame.size.width = buttonTextSize.width + 50;
+            buttonFrame.origin.x = 1044 - buttonFrame.size.width;
+        } else {
+            buttonFrame.size.width = buttonTextSize.width + 50;
+            buttonFrame.origin.x = 342 - buttonFrame.size.width;
+        }
         self.actionButton.frame = buttonFrame;
-        
+
     }
 }
 

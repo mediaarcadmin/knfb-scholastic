@@ -6,10 +6,10 @@
 		<key>mainTitle</key>
 		<string>Create Personalized Bookshelves</string>
 		<key>bodyText</key>
-		<string>Personalize each bookshelf to your child's interests and abilities to ensure age-and-level appropriate reading.</string>
+		<string>Personalize each bookshelf to your child&apos;s interests and abilities to ensure age-and-level appropriate reading.</string>
 		<key>type</key>
 		<integer>0</integer>
-		<key>subtitle0</key>
+		<key>fullScreenTitle0</key>
 		<string>Create Personalized Bookshelves</string>
 	</dict>
 	<dict>
@@ -19,8 +19,6 @@
 		<string>Storia eBooks for younger readers feature read-alouds designed to make reading fun. These eBooks include lively music, sound effects, and highlighted text.</string>
 		<key>type</key>
 		<integer>2</integer>
-		<key>subtitle0</key>
-		<string>Support Fluency through Read-Alouds</string>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -30,6 +28,8 @@
 		<key>type</key>
 		<integer>0</integer>
 		<key>subtitle0</key>
+		<string>Younger Dictionary</string>
+		<key>fullScreenTitle0</key>
 		<string>Younger Dictionary</string>
 	</dict>
 	<dict>
@@ -41,8 +41,10 @@
 		<integer>0</integer>
 		<key>subtitle0</key>
 		<string>Older Dictionary</string>
+		<key>fullScreenTitle0</key>
+		<string>Older Dictionary</string>
 	</dict>
-    <dict>
+	<dict>
 		<key>mainTitle</key>
 		<string>Motivate with Learning Activities</string>
 		<key>bodyText</key>
@@ -51,8 +53,10 @@
 		<integer>0</integer>
 		<key>subtitle0</key>
 		<string>Word Match</string>
+		<key>fullScreenTitle0</key>
+		<string>Word Match</string>
 	</dict>
-    <dict>
+	<dict>
 		<key>mainTitle</key>
 		<string>Motivate with Learning Activities</string>
 		<key>bodyText</key>
@@ -60,6 +64,8 @@
 		<key>type</key>
 		<integer>0</integer>
 		<key>subtitle0</key>
+		<string>Who Said It?</string>
+		<key>fullScreenTitle0</key>
 		<string>Who Said It?</string>
 	</dict>
 	<dict>
@@ -71,6 +77,8 @@
 		<integer>0</integer>
 		<key>subtitle0</key>
 		<string>Highlight</string>
+		<key>fullScreenTitle0</key>
+		<string>Highlight</string>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -81,6 +89,8 @@
 		<integer>0</integer>
 		<key>subtitle0</key>
 		<string>Notes</string>
+		<key>fullScreenTitle0</key>
+		<string>Notes</string>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -89,17 +99,17 @@
 		<string>Storia’s Reading Reports allow you to follow your child’s reading habits and interests by keeping track of the titles they’ve read and their time spent with each eBook.</string>
 		<key>type</key>
 		<integer>0</integer>
-		<key>subtitle0</key>
-		<string>Reading Reports</string>
+		<key>fullScreenTitle0</key>
+		<string>Track Progress</string>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
 		<string>Recommendations and Wish Lists</string>
 		<key>bodyText</key>
-		<string>Keep reading confidence growing with eBook recommendations from the reading experts at Scholastic. Your child will also be able to add eBooks to a wish list—letting you know exactly which just-right eBooks will keep them excited about reading.</string>
+		<string>Keep reading confidence growing with eBook recommendations from the reading experts at Scholastic. Your child will be able to add eBooks to a wish list so you can keep them excited about reading.</string>
 		<key>type</key>
 		<integer>0</integer>
-		<key>subtitle0</key>
+		<key>fullScreenTitle0</key>
 		<string>Recommendations and Wish Lists</string>
 	</dict>
 	<dict>

@@ -73,7 +73,7 @@
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             self.viewWidth = 320;
-            self.viewHeight = 300;
+            self.viewHeight = 380;
         } else {
             self.viewWidth = 1024;
             self.viewHeight = 600;
@@ -113,8 +113,8 @@
         [self.pageControl setIndicatorSpace:12.0f];
         [self.pageControl setFrame:CGRectMake(439, 678, 145, 66)];
     } else {
-        [self.pageControl setFrame:CGRectMake(80, 403, 72, 38)];
-        [self.pageControl setIndicatorDiameter:5.0f];
+        [self.pageControl setFrame:CGRectMake(56, 418, 72, 38)];
+        [self.pageControl setIndicatorDiameter:7.0f];
         [self.pageControl setIndicatorSpace:9.0f];
     }
     
@@ -173,8 +173,7 @@
         case SCHTourStepsViewTypeSingleImage:
         case SCHTourStepsViewTypeDoubleImage:
         {
-            NSDictionary *tourItem = [self.tourData objectAtIndex:self.currentIndex];
-            NSString *title = [tourItem objectForKey:[NSString stringWithFormat:@"subtitle%d", containerIndex]];
+            NSString *title = [tourItem objectForKey:[NSString stringWithFormat:@"fullScreenTitle%d", containerIndex]];
 
             SCHTourFullScreenImageViewController *fullScreenController = [[SCHTourFullScreenImageViewController alloc] initWithNibName:nil bundle:nil];
             fullScreenController.imageTitle = title;
@@ -311,6 +310,10 @@
             SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
             [tourStepImageView setButtonTitle:@"Full Screen"];
             
+            if ([tourItem objectForKey:@"subtitle0"]) {
+                [tourStepImageView setStepHeaderTitle:[tourItem objectForKey:@"subtitle0"]];
+            }
+            
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 0]];
             
             [tourStepImageView setTourImage:tourImage];
@@ -431,7 +434,11 @@
             [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
             [button.titleLabel setTextColor:[UIColor whiteColor]];
             
-            [button setFrame:CGRectMake(394, 547, 240, 34)];
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                [button setFrame:CGRectMake(394, 547, 240, 34)];
+            } else {
+                [button setFrame:CGRectMake(40, 340, 240, 34)];
+            }
             [button setTitle:@"Sign In" forState:UIControlStateNormal];
             
             [button addTarget:self action:@selector(signIn:) forControlEvents:UIControlEventTouchUpInside];
