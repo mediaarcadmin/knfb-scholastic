@@ -720,21 +720,26 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if (viewController == self.loginViewController) {
-        AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
-        SCHAppModel *appModel = [appDelegate appModel];
-        loginViewController.showSamples = [appModel hasBooksToImport] || [appModel hasExtraSampleBooks];
-    }
-    
-    if (![viewController shouldAutorotateToInterfaceOrientation:self.interfaceOrientation]) {
-        // Need to force a rotation
-        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-        if ([window.subviews count]) {
-            UIView *aView = [window.subviews objectAtIndex:0];
-            [aView retain];
-            [aView removeFromSuperview];
-            [window addSubview:aView];
-            [aView release];
+    // On iOS 5.0 this is called in viewWillAppear with a nil viewController prior to the app model being created.
+    // To protect against accidental lazy instantiation of teh loginViewController, access it via the ivar rather than the property
+    // TODO: refactor out this brittleness so iOS 5.0 doesnt need to be special-cased
+    if (viewController != nil) {
+        if (viewController == loginViewController) {
+            AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
+            SCHAppModel *appModel = [appDelegate appModel];
+            loginViewController.showSamples = [appModel hasBooksToImport] || [appModel hasExtraSampleBooks];
+        }
+        
+        if (![viewController shouldAutorotateToInterfaceOrientation:self.interfaceOrientation]) {
+            // Need to force a rotation
+            UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+            if ([window.subviews count]) {
+                UIView *aView = [window.subviews objectAtIndex:0];
+                [aView retain];
+                [aView removeFromSuperview];
+                [window addSubview:aView];
+                [aView release];
+            }
         }
     }
 }
