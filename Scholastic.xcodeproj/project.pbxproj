@@ -4987,6 +4987,10 @@
 		F8A7F5331619B62B00E43EDC /* tour_full_image_4_1@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8A7F52D1619B62B00E43EDC /* tour_full_image_4_1@2x.jpg */; };
 		F8A7F5341619B62B00E43EDC /* tour_full_image_4_1@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8A7F52D1619B62B00E43EDC /* tour_full_image_4_1@2x.jpg */; };
 		F8A7F5351619B62B00E43EDC /* tour_full_image_4_1@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8A7F52D1619B62B00E43EDC /* tour_full_image_4_1@2x.jpg */; };
+		F8AF2235161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8AF2234161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib */; };
+		F8AF2236161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8AF2234161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib */; };
+		F8AF2237161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8AF2234161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib */; };
+		F8AF2238161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8AF2234161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib */; };
 		F8B1E4DF14AE25670070EFCD /* storia-settings-logo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4DA14AE25670070EFCD /* storia-settings-logo~ipad.png */; };
 		F8B1E4E014AE25670070EFCD /* storia-settings-logo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4DA14AE25670070EFCD /* storia-settings-logo~ipad.png */; };
 		F8B1E4E414AE28CE0070EFCD /* storia-setup-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F8B1E4E114AE28CE0070EFCD /* storia-setup-logo.png */; };
@@ -5039,6 +5043,38 @@
 		F8B8189B1619CC3900091776 /* tour_full_image_2_1@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8B8188D1619CC3800091776 /* tour_full_image_2_1@2x.jpg */; };
 		F8B8189C1619CC3900091776 /* tour_full_image_2_1@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8B8188D1619CC3800091776 /* tour_full_image_2_1@2x.jpg */; };
 		F8B8189D1619CC3900091776 /* tour_full_image_2_1@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8B8188D1619CC3800091776 /* tour_full_image_2_1@2x.jpg */; };
+		F8BBA812161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA810161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg */; };
+		F8BBA813161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA810161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg */; };
+		F8BBA814161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA810161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg */; };
+		F8BBA815161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA810161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg */; };
+		F8BBA816161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA811161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg */; };
+		F8BBA817161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA811161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg */; };
+		F8BBA818161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA811161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg */; };
+		F8BBA819161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA811161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg */; };
+		F8BBA81C161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA81A161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png */; };
+		F8BBA81D161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA81A161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png */; };
+		F8BBA81E161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA81A161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png */; };
+		F8BBA81F161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA81A161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png */; };
+		F8BBA820161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA81B161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png */; };
+		F8BBA821161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA81B161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png */; };
+		F8BBA822161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA81B161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png */; };
+		F8BBA823161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA81B161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png */; };
+		F8BBA828161C554100D13ABC /* BookCover1.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA824161C554100D13ABC /* BookCover1.png */; };
+		F8BBA829161C554100D13ABC /* BookCover1.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA824161C554100D13ABC /* BookCover1.png */; };
+		F8BBA82A161C554100D13ABC /* BookCover1.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA824161C554100D13ABC /* BookCover1.png */; };
+		F8BBA82B161C554100D13ABC /* BookCover1.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA824161C554100D13ABC /* BookCover1.png */; };
+		F8BBA82C161C554100D13ABC /* BookCover1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA825161C554100D13ABC /* BookCover1@2x.png */; };
+		F8BBA82D161C554100D13ABC /* BookCover1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA825161C554100D13ABC /* BookCover1@2x.png */; };
+		F8BBA82E161C554100D13ABC /* BookCover1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA825161C554100D13ABC /* BookCover1@2x.png */; };
+		F8BBA82F161C554100D13ABC /* BookCover1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA825161C554100D13ABC /* BookCover1@2x.png */; };
+		F8BBA830161C554100D13ABC /* BookCover2.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA826161C554100D13ABC /* BookCover2.png */; };
+		F8BBA831161C554100D13ABC /* BookCover2.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA826161C554100D13ABC /* BookCover2.png */; };
+		F8BBA832161C554100D13ABC /* BookCover2.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA826161C554100D13ABC /* BookCover2.png */; };
+		F8BBA833161C554100D13ABC /* BookCover2.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA826161C554100D13ABC /* BookCover2.png */; };
+		F8BBA834161C554100D13ABC /* BookCover2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA827161C554100D13ABC /* BookCover2@2x.png */; };
+		F8BBA835161C554100D13ABC /* BookCover2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA827161C554100D13ABC /* BookCover2@2x.png */; };
+		F8BBA836161C554100D13ABC /* BookCover2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA827161C554100D13ABC /* BookCover2@2x.png */; };
+		F8BBA837161C554100D13ABC /* BookCover2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8BBA827161C554100D13ABC /* BookCover2@2x.png */; };
 		F8BEE8B01334FD44008B40DA /* SCHAppBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */; };
 		F8C097BA15EB91630056D0D0 /* gen_introductionnotready.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B515EB91630056D0D0 /* gen_introductionnotready.mp3 */; };
 		F8C097BB15EB91630056D0D0 /* gen_introductionnotready.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F8C097B515EB91630056D0D0 /* gen_introductionnotready.mp3 */; };
@@ -7262,6 +7298,7 @@
 		F8A7F5231619AFBD00E43EDC /* tour_full_image_1_0@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "tour_full_image_1_0@2x.jpg"; path = "Resources/UIAssets/tour_full_image_1_0@2x.jpg"; sourceTree = "<group>"; };
 		F8A7F52C1619B62B00E43EDC /* tour_full_image_4_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = tour_full_image_4_1.jpg; path = Resources/UIAssets/tour_full_image_4_1.jpg; sourceTree = "<group>"; };
 		F8A7F52D1619B62B00E43EDC /* tour_full_image_4_1@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "tour_full_image_4_1@2x.jpg"; path = "Resources/UIAssets/tour_full_image_4_1@2x.jpg"; sourceTree = "<group>"; };
+		F8AF2234161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHTourStepsViewController~iphone.xib"; path = "Shared/SCHTourStepsViewController~iphone.xib"; sourceTree = "<group>"; };
 		F8B1E4DA14AE25670070EFCD /* storia-settings-logo~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-settings-logo~ipad.png"; path = "Resources/UIAssets/storia-settings-logo~ipad.png"; sourceTree = "<group>"; };
 		F8B1E4E114AE28CE0070EFCD /* storia-setup-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-setup-logo.png"; path = "Resources/UIAssets/storia-setup-logo.png"; sourceTree = "<group>"; };
 		F8B1E4E214AE28CE0070EFCD /* storia-setup-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-setup-logo@2x.png"; path = "Resources/UIAssets/storia-setup-logo@2x.png"; sourceTree = "<group>"; };
@@ -7284,6 +7321,14 @@
 		F8B8188B1619CC3800091776 /* tour_full_image_2_0@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "tour_full_image_2_0@2x.jpg"; path = "Resources/UIAssets/tour_full_image_2_0@2x.jpg"; sourceTree = "<group>"; };
 		F8B8188C1619CC3800091776 /* tour_full_image_2_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = tour_full_image_2_1.jpg; path = Resources/UIAssets/tour_full_image_2_1.jpg; sourceTree = "<group>"; };
 		F8B8188D1619CC3800091776 /* tour_full_image_2_1@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "tour_full_image_2_1@2x.jpg"; path = "Resources/UIAssets/tour_full_image_2_1@2x.jpg"; sourceTree = "<group>"; };
+		F8BBA810161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-tourstartviewcontroller-static-portrait~iphone.jpg"; path = "Resources/UIAssets/storia-tourstartviewcontroller-static-portrait~iphone.jpg"; sourceTree = "<group>"; };
+		F8BBA811161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg"; path = "Resources/UIAssets/storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg"; sourceTree = "<group>"; };
+		F8BBA81A161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-tourstartviewcontroller-header~iphone.png"; path = "Resources/UIAssets/storia-tourstartviewcontroller-header~iphone.png"; sourceTree = "<group>"; };
+		F8BBA81B161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-tourstartviewcontroller-header~iphone@2x.png"; path = "Resources/UIAssets/storia-tourstartviewcontroller-header~iphone@2x.png"; sourceTree = "<group>"; };
+		F8BBA824161C554100D13ABC /* BookCover1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookCover1.png; path = Resources/UIAssets/BookCover1.png; sourceTree = "<group>"; };
+		F8BBA825161C554100D13ABC /* BookCover1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookCover1@2x.png"; path = "Resources/UIAssets/BookCover1@2x.png"; sourceTree = "<group>"; };
+		F8BBA826161C554100D13ABC /* BookCover2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookCover2.png; path = Resources/UIAssets/BookCover2.png; sourceTree = "<group>"; };
+		F8BBA827161C554100D13ABC /* BookCover2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookCover2@2x.png"; path = "Resources/UIAssets/BookCover2@2x.png"; sourceTree = "<group>"; };
 		F8BEE8AD1334FD44008B40DA /* SCHAppBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppBook.h; path = Shared/SCHAppBook.h; sourceTree = "<group>"; };
 		F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppBook.m; path = Shared/SCHAppBook.m; sourceTree = "<group>"; };
 		F8C097B515EB91630056D0D0 /* gen_introductionnotready.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gen_introductionnotready.mp3; sourceTree = "<group>"; };
@@ -10887,6 +10932,14 @@
 			isa = PBXGroup;
 			children = (
 				F8B8189E1619CC4600091776 /* Main Tour Content */,
+				F8BBA824161C554100D13ABC /* BookCover1.png */,
+				F8BBA825161C554100D13ABC /* BookCover1@2x.png */,
+				F8BBA826161C554100D13ABC /* BookCover2.png */,
+				F8BBA827161C554100D13ABC /* BookCover2@2x.png */,
+				F8BBA81A161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png */,
+				F8BBA81B161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png */,
+				F8BBA810161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg */,
+				F8BBA811161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg */,
 				F8FE339916131423005B6AA8 /* bluetourbutton.png */,
 				F8FE339A16131423005B6AA8 /* bluetourbutton@2x.png */,
 				F8FE338F1613107C005B6AA8 /* greytourbutton.png */,
@@ -10927,6 +10980,7 @@
 				F8FE33E8161484DB005B6AA8 /* SCHTourStepsViewController.h */,
 				F8FE33E9161484DB005B6AA8 /* SCHTourStepsViewController.m */,
 				F8FE33EA161484DB005B6AA8 /* SCHTourStepsViewController~ipad.xib */,
+				F8AF2234161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib */,
 				F8067573160A24B000F5024A /* SCHTourFullScreenImageViewController.h */,
 				F8067574160A24B000F5024A /* SCHTourFullScreenImageViewController.m */,
 				F8067575160A24B000F5024A /* SCHTourFullScreenImageViewController.xib */,
@@ -12054,6 +12108,15 @@
 				C91CA2C3161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */,
 				C91CA2C9161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */,
 				C91CA2CD161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */,
+				F8AF2235161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib in Resources */,
+				F8BBA812161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg in Resources */,
+				F8BBA816161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg in Resources */,
+				F8BBA81C161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png in Resources */,
+				F8BBA820161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png in Resources */,
+				F8BBA828161C554100D13ABC /* BookCover1.png in Resources */,
+				F8BBA82C161C554100D13ABC /* BookCover1@2x.png in Resources */,
+				F8BBA830161C554100D13ABC /* BookCover2.png in Resources */,
+				F8BBA834161C554100D13ABC /* BookCover2@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12932,6 +12995,15 @@
 				C91CA2C4161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */,
 				C91CA2CA161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */,
 				C91CA2CE161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */,
+				F8AF2236161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib in Resources */,
+				F8BBA813161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg in Resources */,
+				F8BBA817161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg in Resources */,
+				F8BBA81D161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png in Resources */,
+				F8BBA821161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png in Resources */,
+				F8BBA829161C554100D13ABC /* BookCover1.png in Resources */,
+				F8BBA82D161C554100D13ABC /* BookCover1@2x.png in Resources */,
+				F8BBA831161C554100D13ABC /* BookCover2.png in Resources */,
+				F8BBA835161C554100D13ABC /* BookCover2@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13565,6 +13637,15 @@
 				C91CA2C5161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */,
 				C91CA2CB161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */,
 				C91CA2CF161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */,
+				F8AF2237161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib in Resources */,
+				F8BBA814161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg in Resources */,
+				F8BBA818161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg in Resources */,
+				F8BBA81E161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png in Resources */,
+				F8BBA822161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png in Resources */,
+				F8BBA82A161C554100D13ABC /* BookCover1.png in Resources */,
+				F8BBA82E161C554100D13ABC /* BookCover1@2x.png in Resources */,
+				F8BBA832161C554100D13ABC /* BookCover2.png in Resources */,
+				F8BBA836161C554100D13ABC /* BookCover2@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14196,6 +14277,15 @@
 				C91CA2C6161AF9440074A5DA /* Storia_Sign-In_Mobile-bg@2x.jpg in Resources */,
 				C91CA2CC161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider@2x.jpg in Resources */,
 				C91CA2D0161B0EF50074A5DA /* Storia_Sign-In_Mobile-bg-divider.jpg in Resources */,
+				F8AF2238161B31D900CAD1A9 /* SCHTourStepsViewController~iphone.xib in Resources */,
+				F8BBA815161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone.jpg in Resources */,
+				F8BBA819161C46F800D13ABC /* storia-tourstartviewcontroller-static-portrait~iphone@2x.jpg in Resources */,
+				F8BBA81F161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone.png in Resources */,
+				F8BBA823161C480100D13ABC /* storia-tourstartviewcontroller-header~iphone@2x.png in Resources */,
+				F8BBA82B161C554100D13ABC /* BookCover1.png in Resources */,
+				F8BBA82F161C554100D13ABC /* BookCover1@2x.png in Resources */,
+				F8BBA833161C554100D13ABC /* BookCover2.png in Resources */,
+				F8BBA837161C554100D13ABC /* BookCover2@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

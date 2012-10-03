@@ -14,6 +14,7 @@
 @property (nonatomic, assign) id<SCHAppController> appController;
 @property (retain, nonatomic) IBOutlet UIButton *backButton;
 @property (retain, nonatomic) IBOutletCollection(UIButton) NSArray *greyButtons;
+@property (retain, nonatomic) IBOutlet UIScrollView *iPhoneScrollView;
 
 - (IBAction)startReading:(UIButton *)sender;
 
