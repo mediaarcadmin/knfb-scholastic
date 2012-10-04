@@ -12,8 +12,8 @@
 #import "SCHTourStepMovieView.h"
 #import "SCHTourStepView.h"
 
-#define LEFT_TAG 101
-#define RIGHT_TAG 102
+//#define LEFT_TAG 101
+//#define RIGHT_TAG 102
 
 @interface SCHTourStepsViewController ()
 
@@ -24,6 +24,9 @@
 @property (nonatomic, retain) UIView *currentView;
 @property (nonatomic, retain) UIView *leftView;
 @property (nonatomic, retain) UIView *rightView;
+
+@property (nonatomic, assign) CGFloat viewWidth;
+@property (nonatomic, assign) CGFloat viewHeight;
 
 
 @end
@@ -39,6 +42,8 @@
 @synthesize rightView;
 @synthesize backButton;
 @synthesize forwardingView;
+@synthesize viewWidth;
+@synthesize viewHeight;
 
 - (void)dealloc
 {
@@ -64,6 +69,15 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     if (self) {
+        
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.viewWidth = 320;
+            self.viewHeight = 300;
+        } else {
+            self.viewWidth = 1024;
+            self.viewHeight = 600;
+        }
     }
     
     return self;
@@ -75,8 +89,12 @@
     
     self.forwardingView.forwardedView = self.mainScrollView;
     
+    BOOL iPhone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone);
+    
+    NSString *plistName = [NSString stringWithFormat:@"TourData~%@", iPhone?@"iphone":@"ipad"];
+    
     self.tourData = [NSArray arrayWithContentsOfFile:
-                     [[NSBundle mainBundle] pathForResource:@"TourData"
+                     [[NSBundle mainBundle] pathForResource:plistName
                                                      ofType:@"plist"]
                      ];
     
@@ -196,73 +214,75 @@
 
 - (void)setupScrollViewForIndex:(NSInteger)index
 {
-        NSInteger visibleViewCount = 0;
-        
-        if ((index - 1) >= 0) {
-            self.leftView = [self tourViewAtIndex:index - 1];
-            visibleViewCount++;
-        } else {
-            self.leftView = nil;
-        }
-        
-        self.currentView = [self tourViewAtIndex:index];
+    NSInteger visibleViewCount = 0;
+    
+    if ((index - 1) >= 0) {
+        self.leftView = [self tourViewAtIndex:index - 1];
         visibleViewCount++;
+    } else {
+        self.leftView = nil;
+    }
+    
+    self.currentView = [self tourViewAtIndex:index];
+    visibleViewCount++;
+    
+    if ((index + 1) < self.tourData.count) {
+        self.rightView = [self tourViewAtIndex:index + 1];
+        visibleViewCount++;
+    } else {
+        self.rightView = nil;
+    }
+    
+    
+    
+    self.mainScrollView.contentSize = CGSizeMake(visibleViewCount * self.viewWidth, self.viewHeight);
+    
+    CGRect leftRect = self.leftView.frame;
+    CGRect currentRect = self.currentView.frame;
+    CGRect rightRect = self.rightView.frame;
+    
+    if (self.leftView && self.rightView) {
+        leftRect.origin.x = 0;
+        currentRect.origin.x = self.viewWidth;
+        rightRect.origin.x = self.viewWidth * 2;
         
-        if ((index + 1) < self.tourData.count) {
-            self.rightView = [self tourViewAtIndex:index + 1];
-            visibleViewCount++;
-        } else {
-            self.rightView = nil;
+        self.mainScrollView.contentOffset = CGPointMake(self.viewWidth,0);
+        
+    } else if (!self.leftView && self.rightView) {
+        currentRect.origin.x = 0;
+        rightRect.origin.x = self.viewWidth;
+        
+        self.mainScrollView.contentOffset = CGPointMake(0,0);
+        
+    } else if (self.leftView && !self.rightView) {
+        leftRect.origin.x = 0;
+        currentRect.origin.x = self.viewWidth;
+        
+        self.mainScrollView.contentOffset = CGPointMake(self.viewWidth,0);
+    }
+    
+    self.leftView.frame = leftRect;
+    self.currentView.frame = currentRect;
+    self.rightView.frame = rightRect;
+    
+    for (UIView *subview in self.mainScrollView.subviews) {
+        if (subview != self.leftView && subview != self.currentView && subview != self.rightView) {
+            [subview removeFromSuperview];
         }
-        
-        self.mainScrollView.contentSize = CGSizeMake(visibleViewCount * 1024, 600);
-        
-        CGRect leftRect = self.leftView.frame;
-        CGRect currentRect = self.currentView.frame;
-        CGRect rightRect = self.rightView.frame;
-        
-        if (self.leftView && self.rightView) {
-            leftRect.origin.x = 0;
-            currentRect.origin.x = 1024;
-            rightRect.origin.x = 2048;
-            
-            self.mainScrollView.contentOffset = CGPointMake(1024,0);
-            
-        } else if (!self.leftView && self.rightView) {
-            currentRect.origin.x = 0;
-            rightRect.origin.x = 1024;
-            
-            self.mainScrollView.contentOffset = CGPointMake(0,0);
-
-        } else if (self.leftView && !self.rightView) {
-            leftRect.origin.x = 0;
-            currentRect.origin.x = 1024;
-            
-            self.mainScrollView.contentOffset = CGPointMake(1024,0);
-        }
-        
-        self.leftView.frame = leftRect;
-        self.currentView.frame = currentRect;
-        self.rightView.frame = rightRect;
-        
-        for (UIView *subview in self.mainScrollView.subviews) {
-            if (subview != self.leftView && subview != self.currentView && subview != self.rightView) {
-                [subview removeFromSuperview];
-            }
-        }
-        
-        if (!self.leftView.superview) {
-            [self.mainScrollView addSubview:self.leftView];
-        }
-        
-        if (!self.currentView.superview) {
-            [self.mainScrollView addSubview:self.currentView];
-        }
-        
-        if (!self.rightView.superview) {
-            [self.mainScrollView addSubview:self.rightView];
-        }
-        
+    }
+    
+    if (!self.leftView.superview) {
+        [self.mainScrollView addSubview:self.leftView];
+    }
+    
+    if (!self.currentView.superview) {
+        [self.mainScrollView addSubview:self.currentView];
+    }
+    
+    if (!self.rightView.superview) {
+        [self.mainScrollView addSubview:self.rightView];
+    }
+    
 }
 
 - (UIView *)tourViewAtIndex:(NSUInteger)index
@@ -280,7 +300,7 @@
     }
     
     NSLog(@"Getting tour view for index %d", index);
-
+    
     SCHTourStepsViewType type = [[tourItem objectForKey:@"type"] intValue];
     
     UIView *tourView = nil;
@@ -288,21 +308,21 @@
     switch (type) {
         case SCHTourStepsViewTypeSingleImage:
         {
-            SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
+            SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
             [tourStepImageView setButtonTitle:@"Full Screen"];
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 0]];
             
             [tourStepImageView setTourImage:tourImage];
-
-            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)] autorelease];
+            
+            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)] autorelease];
             
             container.containerTitleText = [tourItem objectForKey:@"mainTitle"];
             container.containerSubtitleText = [tourItem objectForKey:@"bodyText"];
             
             container.mainTourStepView = tourStepImageView;
             [tourStepImageView release];
-
+            
             container.delegate = self;
             
             [container layoutForCurrentTourStepViews];
@@ -313,7 +333,7 @@
         }
         case SCHTourStepsViewTypeDoubleImage:
         {
-            SCHTourStepImageView *leftTourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
+            SCHTourStepImageView *leftTourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
             [leftTourStepImageView setButtonTitle:@"Full Screen"];
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 0]];
@@ -321,7 +341,7 @@
             [leftTourStepImageView setTourImage:tourImage];
             [leftTourStepImageView setStepHeaderTitle:[tourItem objectForKey:@"subtitle0"]];
             
-            SCHTourStepImageView *rightTourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
+            SCHTourStepImageView *rightTourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
             [rightTourStepImageView setButtonTitle:@"Full Screen"];
             
             tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 1]];
@@ -330,11 +350,11 @@
             [rightTourStepImageView setStepHeaderTitle:[tourItem objectForKey:@"subtitle1"]];
             
             
-            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)] autorelease];
+            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)] autorelease];
             
             container.containerTitleText = [tourItem objectForKey:@"mainTitle"];
             container.containerSubtitleText = [tourItem objectForKey:@"bodyText"];
-
+            
             container.mainTourStepView = leftTourStepImageView;
             container.secondTourStepView = rightTourStepImageView;
             
@@ -352,20 +372,20 @@
         case SCHTourStepsViewTypeReadthrough:
         {
             
-            SCHTourStepMovieView *tourStepMovieView = [[SCHTourStepMovieView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
+            SCHTourStepMovieView *tourStepMovieView = [[SCHTourStepMovieView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
             [tourStepMovieView setButtonTitle:@"Play Readthrough"];
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 0]];
             
             [tourStepMovieView setTourImage:tourImage];
-
+            
             NSURL *movieURL = [NSURL fileURLWithPath:[[NSBundle mainBundle]
                                                       pathForResource:[NSString stringWithFormat:@"tour_video_%d", index]
                                                       ofType:@"mov"]];
             
             tourStepMovieView.movieURL = movieURL;
-
-            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)] autorelease];
+            
+            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)] autorelease];
             
             container.containerTitleText = [tourItem objectForKey:@"mainTitle"];
             container.containerSubtitleText = [tourItem objectForKey:@"bodyText"];
@@ -382,13 +402,13 @@
         }
         case SCHTourStepsViewTypeBeginTour:
         {
-            SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
+            SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 0]];
             
             [tourStepImageView setTourImage:tourImage];
             
-            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)] autorelease];
+            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)] autorelease];
             
             container.containerTitleText = [tourItem objectForKey:@"mainTitle"];
             container.containerSubtitleText = [tourItem objectForKey:@"bodyText"];
@@ -410,10 +430,10 @@
             [button setBackgroundImage:stretchedBackImage forState:UIControlStateNormal];
             [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
             [button.titleLabel setTextColor:[UIColor whiteColor]];
-
+            
             [button setFrame:CGRectMake(394, 547, 240, 34)];
             [button setTitle:@"Sign In" forState:UIControlStateNormal];
-
+            
             [button addTarget:self action:@selector(signIn:) forControlEvents:UIControlEventTouchUpInside];
             
             // container view
@@ -461,11 +481,11 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)sender {
-//    self.currentIndex = sender.contentOffset.x / 1024;
+    //    self.currentIndex = sender.contentOffset.x / 1024;
     
-    NSInteger indexDiff = sender.contentOffset.x  / 1024;
+    NSInteger indexDiff = sender.contentOffset.x  / self.viewWidth;
     NSLog(@"Index diff: %d", indexDiff);
-
+    
     NSInteger savedIndex = self.currentIndex;
     
     if (self.leftView && self.rightView) {
