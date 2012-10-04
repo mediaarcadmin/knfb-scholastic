@@ -132,13 +132,17 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         UIView *whiteView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
         whiteView.backgroundColor = [UIColor whiteColor];
         self.tableView.backgroundView = whiteView;
-        self.shadowView.layer.shadowOpacity = 0.5f;
-        self.shadowView.layer.shadowOffset = CGSizeMake(0, 0);
-        self.shadowView.layer.shadowRadius = 4.0f;
-        self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
-        self.containerView.layer.masksToBounds = YES;
-        self.containerView.layer.cornerRadius = 10.0f;
+    } else {
+        self.tableView.clipsToBounds = NO;
+        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 0, -30);
     }
+    
+    self.shadowView.layer.shadowOpacity = 0.5f;
+    self.shadowView.layer.shadowOffset = CGSizeMake(0, 0);
+    self.shadowView.layer.shadowRadius = 4.0f;
+    self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
+    self.containerView.layer.masksToBounds = YES;
+    self.containerView.layer.cornerRadius = 10.0f;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dictionaryStateChanged:)
@@ -201,14 +205,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [self.navigationController setNavigationBarHidden:YES];
     
     [self registerForKeyboardNotifications];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        CGRect contentRect = CGRectZero;
-        contentRect.size = self.tableView.contentSize;
-        contentRect = CGRectInset(contentRect, 10, 10);
-        contentRect.origin.y += self.tableView.frame.origin.y;
-        self.containerView.frame = contentRect;
-    }
     
 //    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
 //        [self.manageBooksButton setEnabled:NO];
@@ -1419,7 +1415,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        self.containerView.transform = CGAffineTransformMakeTranslation(0, -scrollView.contentOffset.y);
+        self.transformableView.transform = CGAffineTransformMakeTranslation(0, -scrollView.contentOffset.y);
     }
 }
 
