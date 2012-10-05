@@ -177,6 +177,31 @@
     [self setViewControllers:[NSArray arrayWithObject:self.loginViewController] animated:shouldAnimate];
 }
 
+- (void)presentDictionaryDownload
+{
+    
+}
+
+- (void)presentDictionaryDelete
+{
+    
+}
+
+- (void)presentDeregisterDevice
+{
+    
+}
+
+- (void)presentSupport
+{
+    
+}
+
+- (void)presentEbookUpdates
+{
+    
+}
+
 #pragma mark - Book Presentation Methods
 
 - (void)presentTourBookWithIdentifier:(SCHBookIdentifier *)identifier

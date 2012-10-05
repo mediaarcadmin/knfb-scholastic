@@ -22,6 +22,11 @@
 - (void)presentProfilesSetup;
 - (void)presentReadingManager;
 - (void)presentSettings;
+- (void)presentDictionaryDownload;
+- (void)presentDictionaryDelete;
+- (void)presentDeregisterDevice;
+- (void)presentSupport;
+- (void)presentEbookUpdates;
 
 // Book Presentation Methods
 - (void)presentTourBookWithIdentifier:(SCHBookIdentifier *)identifier;

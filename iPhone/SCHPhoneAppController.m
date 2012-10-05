@@ -180,6 +180,31 @@
     [self presentModalViewController:self.modalContainerView animated:NO];
 }
 
+- (void)presentDictionaryDownload
+{
+    
+}
+
+- (void)presentDictionaryDelete
+{
+    
+}
+
+- (void)presentDeregisterDevice
+{
+    
+}
+
+- (void)presentSupport
+{
+    
+}
+
+- (void)presentEbookUpdates
+{
+    
+}
+
 #pragma mark - Book Presentation Methods
 
 - (void)presentTourBookWithIdentifier:(SCHBookIdentifier *)identifier
