@@ -51,6 +51,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize backButton;
 @synthesize containerView;
 @synthesize shadowView;
+@synthesize transformableView;
 
 - (void)releaseViewObjects
 {
@@ -64,6 +65,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [backButton release], backButton = nil;
     [containerView release], containerView = nil;
     [shadowView release], shadowView = nil;
+    [transformableView release], transformableView = nil;
 }
 
 - (void)dealloc
@@ -275,8 +277,17 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 #pragma mark - Text field delegate
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    [self.transformableView setTransform:CGAffineTransformMakeTranslation(0, -176)];
+    [self setAlert:SCHDeregistrationAlertNone];
+    
+    return YES;
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    [self.transformableView setTransform:CGAffineTransformIdentity];
     [self deregister:nil];
     return NO;
 }
@@ -295,22 +306,34 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
-    
-    self.promptLabel.alpha = 0;
-    
+        
     switch (alert) {
         case SCHDeregistrationAlertNone:
             break;
         case SCHDeregistrationAlertMalformedEmail:
             self.promptLabel.text = NSLocalizedString(@"Please enter a valid e-mail address.", nil);
-            self.promptLabel.alpha = 1;
             break;
         case SCHDeregistrationAlertAuthenticationFailure:
             self.promptLabel.text = NSLocalizedString(@"Your e-mail address or password was not recognized. Please try again, or contact Scholastic customer service at storia@scholastic.com.", nil);
-            self.promptLabel.alpha = 1;
             break;
         default:
             break;
+    }
+    
+    if (alert == SCHDeregistrationAlertNone) {
+        self.promptLabel.alpha = 0;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.info1Label.transform = CGAffineTransformIdentity;
+            self.info2Label.transform = CGAffineTransformIdentity;
+        }
+    } else {
+        self.promptLabel.alpha = 1;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            if (alert != SCHDeregistrationAlertMalformedEmail) {
+                self.info1Label.transform = CGAffineTransformMakeTranslation(0, -14);
+                self.info2Label.transform = CGAffineTransformMakeTranslation(0, -20);
+            }
+        }
     }
     
     [CATransaction commit];

@@ -22,6 +22,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
 @property (nonatomic, retain) IBOutlet UIView *shadowView;
+@property (nonatomic, retain) IBOutlet UIView *transformableView;
 
 - (IBAction)deregister:(id)sender;
 - (IBAction)close:(id)sender;

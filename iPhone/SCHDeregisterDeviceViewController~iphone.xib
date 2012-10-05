@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">11E53</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2840</string>
-		<string key="IBDocument.AppKitVersion">1138.47</string>
-		<string key="IBDocument.HIToolboxVersion">569.00</string>
+		<string key="IBDocument.SystemVersion">12A269</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2843</string>
+		<string key="IBDocument.AppKitVersion">1187</string>
+		<string key="IBDocument.HIToolboxVersion">624.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1926</string>
+			<string key="NS.object.0">1929</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -76,7 +76,7 @@
 											<object class="IBUILabel" id="804553762">
 												<reference key="NSNextResponder" ref="602257441"/>
 												<int key="NSvFlags">274</int>
-												<string key="NSFrame">{{-4, 182}, {316, 54}}</string>
+												<string key="NSFrame">{{8, 161}, {292, 65}}</string>
 												<reference key="NSSuperview" ref="602257441"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="141545353"/>
@@ -85,7 +85,7 @@
 												<int key="IBUIContentMode">7</int>
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-												<string key="IBUIText">Your email address or password was not recognized.</string>
+												<string key="IBUIText">Your e-mail address or password was not recognized. Please try again, or contact Scholastic customer service at storia@scholastic.com.</string>
 												<object class="NSColor" key="IBUITextColor">
 													<int key="NSColorSpace">1</int>
 													<bytes key="NSRGB">MC4yMDAwMDAwMDMgMC4yMDAwMDAwMDMgMC4yMDAwMDAwMDMAA</bytes>
@@ -105,7 +105,7 @@
 													<int key="NSfFlags">16</int>
 												</object>
 												<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-												<double key="preferredMaxLayoutWidth">316</double>
+												<double key="preferredMaxLayoutWidth">292</double>
 											</object>
 											<object class="IBUILabel" id="826656640">
 												<reference key="NSNextResponder" ref="602257441"/>
@@ -525,6 +525,14 @@
 					<int key="connectionID">95</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">transformableView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="606606979"/>
+					</object>
+					<int key="connectionID">98</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">close:</string>
 						<reference key="source" ref="644710162"/>
@@ -755,7 +763,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">97</int>
+			<int key="maxID">98</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -808,6 +816,7 @@
 							<string>promptLabel</string>
 							<string>shadowView</string>
 							<string>spinner</string>
+							<string>transformableView</string>
 							<string>usernameField</string>
 						</object>
 						<object class="NSArray" key="dict.values">
@@ -821,6 +830,7 @@
 							<string>UILabel</string>
 							<string>UIView</string>
 							<string>UIActivityIndicatorView</string>
+							<string>UIView</string>
 							<string>UITextField</string>
 						</object>
 					</object>
@@ -837,6 +847,7 @@
 							<string>promptLabel</string>
 							<string>shadowView</string>
 							<string>spinner</string>
+							<string>transformableView</string>
 							<string>usernameField</string>
 						</object>
 						<object class="NSArray" key="dict.values">
@@ -878,6 +889,10 @@
 								<string key="candidateClassName">UIActivityIndicatorView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">transformableView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">usernameField</string>
 								<string key="candidateClassName">UITextField</string>
 							</object>
@@ -915,6 +930,6 @@
 				<string>{320, 480}</string>
 			</object>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">1926</string>
+		<string key="IBCocoaTouchPluginVersion">1929</string>
 	</data>
 </archive>
