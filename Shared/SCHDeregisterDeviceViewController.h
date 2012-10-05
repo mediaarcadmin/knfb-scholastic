@@ -19,7 +19,11 @@
 @property (nonatomic, retain) IBOutlet UITextField *passwordField;
 @property (nonatomic, retain) IBOutlet UIButton *deregisterButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, retain) IBOutlet UIButton *backButton;
+@property (nonatomic, retain) IBOutlet UIView *containerView;
+@property (nonatomic, retain) IBOutlet UIView *shadowView;
 
 - (IBAction)deregister:(id)sender;
+- (IBAction)close:(id)sender;
 
 @end

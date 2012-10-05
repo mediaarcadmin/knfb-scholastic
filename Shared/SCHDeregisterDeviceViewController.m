@@ -48,6 +48,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize deregisterButton;
 @synthesize spinner;
 @synthesize appController;
+@synthesize backButton;
+@synthesize containerView;
+@synthesize shadowView;
 
 - (void)releaseViewObjects
 {
@@ -58,6 +61,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [passwordField release], passwordField = nil;
     [deregisterButton release], deregisterButton = nil;
     [spinner release], spinner = nil;
+    [backButton release], backButton = nil;
+    [containerView release], containerView = nil;
+    [shadowView release], shadowView = nil;
 }
 
 - (void)dealloc
@@ -79,6 +85,16 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     
     UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
     [self.deregisterButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+    
+    UIImage *backButtonImage = [[UIImage imageNamed:@"bookshelf_arrow_bttn_UNselected_3part"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
+    [self.backButton setBackgroundImage:backButtonImage forState:UIControlStateNormal];
+    
+    self.shadowView.layer.shadowOpacity = 0.5f;
+    self.shadowView.layer.shadowOffset = CGSizeMake(0, 0);
+    self.shadowView.layer.shadowRadius = 4.0f;
+    self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
+    self.containerView.layer.masksToBounds = YES;
+    self.containerView.layer.cornerRadius = 10.0f;
 }
 
 - (void)viewDidUnload
@@ -298,6 +314,11 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     }
     
     [CATransaction commit];
+}
+
+- (IBAction)close:(id)sender
+{
+    [self.appController presentSettings];
 }
 
 @end

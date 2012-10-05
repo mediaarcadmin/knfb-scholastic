@@ -39,6 +39,7 @@
 #import "SCHBookManager.h"
 #import "SCHProfileItem.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SCHDeregisterDeviceViewController.h"
 
 @interface SCHNavigationAppController () <UINavigationControllerDelegate>
 
@@ -199,7 +200,12 @@
 
 - (void)presentDeregisterDevice
 {
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
     
+    SCHDeregisterDeviceViewController *controller = [[[SCHDeregisterDeviceViewController alloc] init] autorelease];
+    controller.appController = self;
+    
+    [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, controller, nil] animated:shouldAnimate];
 }
 
 - (void)presentSupport
