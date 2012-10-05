@@ -24,17 +24,25 @@
 @synthesize webView;
 @synthesize topBorderImageView;
 @synthesize bottomBorderImageView;
+@synthesize backButton;
+@synthesize containerView;
+@synthesize shadowView;
+@synthesize appController;
 
 - (void)releaseViewObjects
 {
     [webView release], webView = nil;
     [topBorderImageView release], topBorderImageView = nil;
     [bottomBorderImageView release], bottomBorderImageView = nil;
+    [backButton release], backButton = nil;
+    [containerView release], containerView = nil;
+    [shadowView release], shadowView = nil;
 }
 
 - (void)dealloc
 {
     [self releaseViewObjects];
+    appController = nil;
     [super dealloc];
 }
 
@@ -52,6 +60,16 @@
     UIImage *bottomImage = [[UIImage imageNamed:@"support-panel-bottom"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
     [self.topBorderImageView setImage:topImage];
     [self.bottomBorderImageView setImage:bottomImage];
+    
+    UIImage *backButtonImage = [[UIImage imageNamed:@"bookshelf_arrow_bttn_UNselected_3part"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
+    [self.backButton setBackgroundImage:backButtonImage forState:UIControlStateNormal];
+    
+    self.shadowView.layer.shadowOpacity = 0.5f;
+    self.shadowView.layer.shadowOffset = CGSizeMake(0, 0);
+    self.shadowView.layer.shadowRadius = 4.0f;
+    self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
+    self.containerView.layer.masksToBounds = YES;
+    self.containerView.layer.cornerRadius = 10.0f;
     
     // Get the marketing version from Info.plist.
     NSString *version = (NSString*)[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
@@ -90,6 +108,11 @@
     }
     
     return YES;
+}
+
+- (void)back:(id)sender
+{
+    [self.appController presentSettings];
 }
 
 @end

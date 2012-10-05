@@ -40,6 +40,7 @@
 #import "SCHProfileItem.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCHDeregisterDeviceViewController.h"
+#import "SCHSupportViewController.h"
 
 @interface SCHNavigationAppController () <UINavigationControllerDelegate>
 
@@ -210,7 +211,12 @@
 
 - (void)presentSupport
 {
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
     
+    SCHSupportViewController *controller = [[[SCHSupportViewController alloc] init] autorelease];
+    controller.appController = self;
+    
+    [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, controller, nil] animated:shouldAnimate];
 }
 
 - (void)presentEbookUpdates

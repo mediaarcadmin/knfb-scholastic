@@ -2836,6 +2836,10 @@
 		C949B3AA13963B5F00525C6A /* LineLoupeMask.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A113963B5F00525C6A /* LineLoupeMask.png */; };
 		C949B3AC13963B5F00525C6A /* LineLoupeLow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A213963B5F00525C6A /* LineLoupeLow@2x.png */; };
 		C949B3AE13963B5F00525C6A /* LineLoupeLow.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A313963B5F00525C6A /* LineLoupeLow.png */; };
+		C94CEC12161F7D06005A460A /* SCHSupportViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94CEC11161F7D06005A460A /* SCHSupportViewController~iphone.xib */; };
+		C94CEC13161F7D06005A460A /* SCHSupportViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94CEC11161F7D06005A460A /* SCHSupportViewController~iphone.xib */; };
+		C94CEC14161F7D06005A460A /* SCHSupportViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94CEC11161F7D06005A460A /* SCHSupportViewController~iphone.xib */; };
+		C94CEC15161F7D06005A460A /* SCHSupportViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94CEC11161F7D06005A460A /* SCHSupportViewController~iphone.xib */; };
 		C958DE7615D1143D00E93C09 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C958DE7515D1143D00E93C09 /* libresolv.dylib */; };
 		C958DE7715D1146300E93C09 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C958DE7515D1143D00E93C09 /* libresolv.dylib */; };
 		C958DE7815D1146D00E93C09 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C958DE7515D1143D00E93C09 /* libresolv.dylib */; };
@@ -6717,6 +6721,7 @@
 		C949B3A113963B5F00525C6A /* LineLoupeMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LineLoupeMask.png; sourceTree = "<group>"; };
 		C949B3A213963B5F00525C6A /* LineLoupeLow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LineLoupeLow@2x.png"; sourceTree = "<group>"; };
 		C949B3A313963B5F00525C6A /* LineLoupeLow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LineLoupeLow.png; sourceTree = "<group>"; };
+		C94CEC11161F7D06005A460A /* SCHSupportViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHSupportViewController~iphone.xib"; sourceTree = "<group>"; };
 		C958DE7515D1143D00E93C09 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		C959076A1497D08000E024AF /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+URLEncoding.h"; path = "Shared/NSString+URLEncoding.h"; sourceTree = "<group>"; };
 		C959076B1497D08000E024AF /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+URLEncoding.m"; path = "Shared/NSString+URLEncoding.m"; sourceTree = "<group>"; };
@@ -8381,15 +8386,6 @@
 			name = "Starting View";
 			sourceTree = "<group>";
 		};
-		28C7416713D8A50700EEAB36 /* About Views */ = {
-			isa = PBXGroup;
-			children = (
-				A38CF1FD1374504F00EABF43 /* SCHSupportViewController.h */,
-				A38CF1FE1374504F00EABF43 /* SCHSupportViewController.m */,
-			);
-			name = "About Views";
-			sourceTree = "<group>";
-		};
 		28C9BC4F154851B3006F4B13 /* Picture Starter */ = {
 			isa = PBXGroup;
 			children = (
@@ -8708,7 +8704,6 @@
 				52C62CE614F2A4B500F261DA /* COPPA */,
 				528C616313FAA5D300D033F8 /* Help */,
 				28C3D19D13E2B2BC00931F5C /* Starting View */,
-				28C7416713D8A50700EEAB36 /* About Views */,
 				C97228421392B27E008605E8 /* Settings Controller */,
 				C9F5B74D138FB057009DE113 /* Authentication Controllers */,
 				F8DC5655138C09DB00F27146 /* Reading View Controllers */,
@@ -9971,6 +9966,7 @@
 				284DE23013D98D8B009FE14E /* SCHDownloadDictionaryViewController~iphone.xib */,
 				28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */,
 				284DE1E513D968FB009FE14E /* SCHDeregisterDeviceViewController~iphone.xib */,
+				C94CEC11161F7D06005A460A /* SCHSupportViewController~iphone.xib */,
 				28986DF413DD9BDE0011B148 /* SCHUpdateBooksViewController~iphone.xib */,
 			);
 			name = "Settings Controller";
@@ -9979,6 +9975,8 @@
 		C97228421392B27E008605E8 /* Settings Controller */ = {
 			isa = PBXGroup;
 			children = (
+				A38CF1FD1374504F00EABF43 /* SCHSupportViewController.h */,
+				A38CF1FE1374504F00EABF43 /* SCHSupportViewController.m */,
 				528465ED144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.h */,
 				528465EE144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m */,
 				28C7416813D8A6F400EEAB36 /* SCHModalPresenterDelegate.h */,
@@ -12307,6 +12305,7 @@
 				F8EDAC84161EE7A60004E200 /* tour-fullscreen-toptoolbar~ipad.png in Resources */,
 				F8EDAC98161EF27F0004E200 /* GreyPanelStretch@2x.png in Resources */,
 				F8EDAC9D161EF3240004E200 /* GreyPanel-divider@2x.png in Resources */,
+				C94CEC12161F7D06005A460A /* SCHSupportViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13222,6 +13221,7 @@
 				F8EDAC85161EE7A60004E200 /* tour-fullscreen-toptoolbar~ipad.png in Resources */,
 				F8EDAC99161EF27F0004E200 /* GreyPanelStretch@2x.png in Resources */,
 				F8EDAC9E161EF3240004E200 /* GreyPanel-divider@2x.png in Resources */,
+				C94CEC13161F7D06005A460A /* SCHSupportViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13892,6 +13892,7 @@
 				F8EDAC86161EE7A60004E200 /* tour-fullscreen-toptoolbar~ipad.png in Resources */,
 				F8EDAC9A161EF27F0004E200 /* GreyPanelStretch@2x.png in Resources */,
 				F8EDAC9F161EF3240004E200 /* GreyPanel-divider@2x.png in Resources */,
+				C94CEC14161F7D06005A460A /* SCHSupportViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14538,6 +14539,7 @@
 				F8EDAC87161EE7A60004E200 /* tour-fullscreen-toptoolbar~ipad.png in Resources */,
 				F8EDAC9B161EF27F0004E200 /* GreyPanelStretch@2x.png in Resources */,
 				F8EDACA0161EF3240004E200 /* GreyPanel-divider@2x.png in Resources */,
+				C94CEC15161F7D06005A460A /* SCHSupportViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
