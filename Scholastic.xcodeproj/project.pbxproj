@@ -4481,6 +4481,11 @@
 		C9EB4D761402A55F00DBC3BD /* storyinteraction-picturestarter-save@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9EB4D661402A55F00DBC3BD /* storyinteraction-picturestarter-save@2x~iphone.png */; };
 		C9EB4D781402A55F00DBC3BD /* storyinteraction-picturestarter-done@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9EB4D671402A55F00DBC3BD /* storyinteraction-picturestarter-done@2x~iphone.png */; };
 		C9ED56821343328F00A25486 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56811343328F00A25486 /* libiconv.dylib */; };
+		C9EE59C1161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EE59C0161ED7D8002B8F3E /* SCHSettingsViewCell.m */; };
+		C9EE59C2161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EE59C0161ED7D8002B8F3E /* SCHSettingsViewCell.m */; };
+		C9EE59C3161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EE59C0161ED7D8002B8F3E /* SCHSettingsViewCell.m */; };
+		C9EE59C4161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EE59C0161ED7D8002B8F3E /* SCHSettingsViewCell.m */; };
+		C9EE59C5161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EE59C0161ED7D8002B8F3E /* SCHSettingsViewCell.m */; };
 		C9EFA8E7134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
 		C9EFB177134F4C8E00ADF905 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9EFB176134F4C8E00ADF905 /* libXpsSDKipad.a */; };
 		C9EFB186134F4C9F00ADF905 /* KNFBZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB179134F4C9F00ADF905 /* KNFBZipArchive.m */; };
@@ -7018,6 +7023,8 @@
 		C9EB4D661402A55F00DBC3BD /* storyinteraction-picturestarter-save@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-save@2x~iphone.png"; sourceTree = "<group>"; };
 		C9EB4D671402A55F00DBC3BD /* storyinteraction-picturestarter-done@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-picturestarter-done@2x~iphone.png"; sourceTree = "<group>"; };
 		C9ED56811343328F00A25486 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		C9EE59BF161ED7D7002B8F3E /* SCHSettingsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsViewCell.h; path = Shared/SCHSettingsViewCell.h; sourceTree = "<group>"; };
+		C9EE59C0161ED7D8002B8F3E /* SCHSettingsViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSettingsViewCell.m; path = Shared/SCHSettingsViewCell.m; sourceTree = "<group>"; };
 		C9EFB175134F4C8E00ADF905 /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XpsSdk.h; path = Pagemark/XpsSdk.h; sourceTree = "<group>"; };
 		C9EFB176134F4C8E00ADF905 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXpsSDKipad.a; path = Pagemark/libXpsSDKipad.a; sourceTree = "<group>"; };
 		C9EFB179134F4C9F00ADF905 /* KNFBZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBZipArchive.m; path = XPS/KNFBZipArchive.m; sourceTree = "<group>"; };
@@ -9883,6 +9890,8 @@
 				C9185122144F207500585C6A /* SCHProfileSetupDelegate.h */,
 				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
 				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
+				C9EE59BF161ED7D7002B8F3E /* SCHSettingsViewCell.h */,
+				C9EE59C0161ED7D8002B8F3E /* SCHSettingsViewCell.m */,
 				C9E1BF9D1603446400CB8A4E /* SCHReadingManagerViewController.h */,
 				C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */,
 				28C7416013D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.h */,
@@ -14778,6 +14787,7 @@
 				C91CA1B916159A890074A5DA /* SCHDownloadReportingOperation.m in Sources */,
 				F8A7F50E16199AF200E43EDC /* SCHTourStepImageView.m in Sources */,
 				F8A7F51416199FB200E43EDC /* SCHTourStepMovieView.m in Sources */,
+				C9EE59C1161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15214,6 +15224,7 @@
 				521F50EA161456690002E83F /* SCHRecommendationTopRating.m in Sources */,
 				521F50EB161456870002E83F /* SCHTourFullScreenImageViewController.m in Sources */,
 				C91CA1BB16159A890074A5DA /* SCHDownloadReportingOperation.m in Sources */,
+				C9EE59C3161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15643,6 +15654,7 @@
 				C91CA1BA16159A890074A5DA /* SCHDownloadReportingOperation.m in Sources */,
 				F8A7F50F16199AF200E43EDC /* SCHTourStepImageView.m in Sources */,
 				F8A7F51516199FB200E43EDC /* SCHTourStepMovieView.m in Sources */,
+				C9EE59C2161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16072,6 +16084,7 @@
 				C91CA1BC16159A890074A5DA /* SCHDownloadReportingOperation.m in Sources */,
 				F8A7F51016199AF200E43EDC /* SCHTourStepImageView.m in Sources */,
 				F8A7F51616199FB200E43EDC /* SCHTourStepMovieView.m in Sources */,
+				C9EE59C4161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -16501,6 +16514,7 @@
 				C91CA1BD16159A890074A5DA /* SCHDownloadReportingOperation.m in Sources */,
 				F8A7F51116199AF200E43EDC /* SCHTourStepImageView.m in Sources */,
 				F8A7F51716199FB200E43EDC /* SCHTourStepMovieView.m in Sources */,
+				C9EE59C5161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

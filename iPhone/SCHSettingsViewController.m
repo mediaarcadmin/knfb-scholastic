@@ -32,6 +32,7 @@
 #import "SCHReadingManagerAuthorisationViewController.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHSupportViewController.h"
+#import "SCHSettingsViewCell.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -55,7 +56,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)showNoInternetConnectionAlert;
 - (void)showWifiRequiredAlert;
 - (void)showAlertForSyncFailure;
-- (UIView *)backgroundViewForCellAtIndexPath:(NSIndexPath *)indexPath withSelection:(NSIndexPath *)selectedIndexPath;
+- (UIImage *)backgroundImageForCellAtIndexPath:(NSIndexPath *)indexPath withSelection:(NSIndexPath *)selectedIndexPath;
 - (void)setAdditionalSettingsVisible:(BOOL)visible completionBlock:(dispatch_block_t)completion;
 - (SCHSettingsPanel)panelForIndexPath:(NSIndexPath *)indexPath;
 
@@ -132,9 +133,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         UIView *whiteView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
         whiteView.backgroundColor = [UIColor whiteColor];
         self.tableView.backgroundView = whiteView;
-    } else {
-        self.tableView.clipsToBounds = NO;
-        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 0, -30);
     }
     
     self.shadowView.layer.shadowOpacity = 0.5f;
@@ -224,6 +222,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
     
     [self.view endEditing:YES];
+    
     [self deregisterForKeyboardNotifications];
 }
 
@@ -830,7 +829,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         return 3;
         sectionCount = 2;
     } else {
-        return 2;
+        //return 2;
         sectionCount = 1;
     }
     
@@ -879,9 +878,22 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     static NSString * const CellIdentifier = @"Cell";
     UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[SCHSettingsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        UIImageView *backStyleView = [[[UIImageView alloc] init] autorelease];
+        backStyleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        backStyleView.backgroundColor = [UIColor whiteColor];
+        backStyleView.tag = 300;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            cell.backgroundView = backStyleView;
+        } else {
+            UIView *trans = [[[UIView alloc] init] autorelease];
+            trans.backgroundColor = [UIColor clearColor];
+            cell.backgroundView = trans;
+            backStyleView.frame = cell.contentView.bounds;
+            [cell.contentView insertSubview:backStyleView atIndex:0];
+        }
     }
     
     cell.indentationLevel = 0;
@@ -969,8 +981,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             break;
     }
     
-    cell.backgroundView = [self backgroundViewForCellAtIndexPath:indexPath withSelection:[self indexPathForPanel:self.selectedPanel]];
-        
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        cell.indentationLevel = 0;
+    }
+    
+    UIImageView *backStyleView = (UIImageView *)[cell viewWithTag:300];
+    [backStyleView setImage:[self backgroundImageForCellAtIndexPath:indexPath withSelection:[self indexPathForPanel:self.selectedPanel]]];
+    
     return cell;
 }
 
@@ -1002,7 +1019,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     return ret;
 }
 
-- (UIView *)backgroundViewForCellAtIndexPath:(NSIndexPath *)indexPath withSelection:(NSIndexPath *)selectedIndexPath
+- (UIImage *)backgroundImageForCellAtIndexPath:(NSIndexPath *)indexPath withSelection:(NSIndexPath *)selectedIndexPath
 {
     SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
     BOOL sectionIsSelected;
@@ -1081,12 +1098,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
         
     if (stretchableImage) {
-         UIImage *backgroundImage = [stretchableImage stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-         return [[[UIImageView alloc] initWithImage:backgroundImage] autorelease];
+         return [stretchableImage stretchableImageWithLeftCapWidth:13 topCapHeight:0];
     } else {
-        UIView *plain = [[UIView alloc] init];
-        plain.backgroundColor = [UIColor whiteColor];
-        return [plain autorelease];
+        return nil;
     }
 }
 
@@ -1331,19 +1345,19 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                 [self setSelectedPanel:panel];
             } break;
             case kSCHSettingsPanelDictionaryDownload: {
-                [self.appController presentReadingManager];
+                [self.appController presentDictionaryDownload];
             } break;
             case kSCHSettingsPanelDictionaryDelete: {
-                [self.appController presentReadingManager];
+                [self.appController presentDictionaryDelete];
             } break;
             case kSCHSettingsPanelDeregisterDevice: {
-                [self.appController presentReadingManager];
+                [self.appController presentDeregisterDevice];
             } break;
             case kSCHSettingsPanelSupport: {
-                [self.appController presentReadingManager];
+                [self.appController presentSupport];
             } break;
             case kSCHSettingsPanelEbookUpdates: {
-                [self.appController presentReadingManager];
+                [self.appController presentEbookUpdates];
             } break;
             default:
                 break;
@@ -1373,14 +1387,18 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)registerForKeyboardNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    }
 }
 
 - (void)deregisterForKeyboardNotifications
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    }
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
