@@ -215,7 +215,7 @@
             NSLog(@"Warning: tour view type unknown.");
             break;
         }
-    }
+    }    
 }
 
 
@@ -335,7 +335,8 @@
             
             [tourStepImageView setTourImage:tourImage];
             
-            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)] autorelease];
+            CGFloat textInset = [[tourItem objectForKey:@"textInset"] floatValue];
+            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight) textInset:textInset] autorelease];
             
             container.containerTitleText = [tourItem objectForKey:@"mainTitle"];
             container.containerSubtitleText = [tourItem objectForKey:@"bodyText"];
@@ -370,10 +371,12 @@
             [rightTourStepImageView setStepHeaderTitle:[tourItem objectForKey:@"subtitle1"]];
             
             
-            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)] autorelease];
+            CGFloat textInset = [[tourItem objectForKey:@"textInset"] floatValue];
+            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight) textInset:textInset] autorelease];
             
             container.containerTitleText = [tourItem objectForKey:@"mainTitle"];
             container.containerSubtitleText = [tourItem objectForKey:@"bodyText"];
+            
             
             container.mainTourStepView = leftTourStepImageView;
             container.secondTourStepView = rightTourStepImageView;
@@ -405,7 +408,8 @@
             
             tourStepMovieView.movieURL = movieURL;
             
-            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)] autorelease];
+            CGFloat textInset = [[tourItem objectForKey:@"textInset"] floatValue];
+            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight) textInset:textInset] autorelease];
             
             container.containerTitleText = [tourItem objectForKey:@"mainTitle"];
             container.containerSubtitleText = [tourItem objectForKey:@"bodyText"];
@@ -428,8 +432,9 @@
             
             [tourStepImageView setTourImage:tourImage];
             
-            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)] autorelease];
-            
+            CGFloat textInset = [[tourItem objectForKey:@"textInset"] floatValue];
+            SCHTourStepContainerView *container = [[[SCHTourStepContainerView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight) textInset:textInset] autorelease];
+           
             container.containerTitleText = [tourItem objectForKey:@"mainTitle"];
             container.containerSubtitleText = [tourItem objectForKey:@"bodyText"];
             

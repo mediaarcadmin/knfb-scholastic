@@ -45,7 +45,7 @@
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame textInset:(CGFloat)inset
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -88,6 +88,8 @@
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             labelInset = 5;
         }
+        
+        labelInset += inset;
         
         self.titleLabel = [[[UILabel alloc] initWithFrame:
                             CGRectMake(labelInset * 2, 0,

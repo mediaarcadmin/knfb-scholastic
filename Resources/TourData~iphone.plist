@@ -11,6 +11,8 @@
 		<integer>0</integer>
 		<key>fullScreenTitle0</key>
 		<string>Create Personalized Bookshelves</string>
+		<key>textInset</key>
+		<integer>8</integer>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -19,6 +21,8 @@
 		<string>Storia eBooks for younger readers feature read-alouds designed to make reading fun. These eBooks include lively music, sound effects, and highlighted text.</string>
 		<key>type</key>
 		<integer>2</integer>
+		<key>textInset</key>
+		<integer>8</integer>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -31,6 +35,8 @@
 		<string>Younger Dictionary</string>
 		<key>fullScreenTitle0</key>
 		<string>Younger Dictionary</string>
+		<key>textInset</key>
+		<integer>4</integer>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -43,6 +49,8 @@
 		<string>Older Dictionary</string>
 		<key>fullScreenTitle0</key>
 		<string>Older Dictionary</string>
+		<key>textInset</key>
+		<integer>6</integer>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -55,6 +63,8 @@
 		<string>Word Match</string>
 		<key>fullScreenTitle0</key>
 		<string>Word Match</string>
+		<key>textInset</key>
+		<integer>8</integer>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -67,6 +77,8 @@
 		<string>Who Said It?</string>
 		<key>fullScreenTitle0</key>
 		<string>Who Said It?</string>
+		<key>textInset</key>
+		<integer>4</integer>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -79,6 +91,8 @@
 		<string>Highlight</string>
 		<key>fullScreenTitle0</key>
 		<string>Highlight</string>
+		<key>textInset</key>
+		<integer>4</integer>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -91,6 +105,8 @@
 		<string>Notes</string>
 		<key>fullScreenTitle0</key>
 		<string>Notes</string>
+		<key>textInset</key>
+		<integer>8</integer>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -101,6 +117,8 @@
 		<integer>0</integer>
 		<key>fullScreenTitle0</key>
 		<string>Track Progress</string>
+		<key>textInset</key>
+		<integer>4</integer>
 	</dict>
 	<dict>
 		<key>mainTitle</key>
@@ -119,6 +137,8 @@
 		<string>Register now to get started! After you sign in, your five FREE eBooks will be waiting for you. Just assign your new eBooks to a child&apos;s bookshelf so they can start reading.</string>
 		<key>type</key>
 		<integer>3</integer>
+		<key>textInset</key>
+		<integer>8</integer>
 	</dict>
 </array>
 </plist>

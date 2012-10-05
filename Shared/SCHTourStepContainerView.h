@@ -21,6 +21,7 @@
 @property (nonatomic, retain) SCHTourStepView *mainTourStepView;
 @property (nonatomic, retain) SCHTourStepView *secondTourStepView;
 
+- (id)initWithFrame:(CGRect)frame textInset:(CGFloat)inset;
 - (void)layoutForCurrentTourStepViews;
 
 @end
