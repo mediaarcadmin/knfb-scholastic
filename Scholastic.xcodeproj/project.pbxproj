@@ -262,7 +262,6 @@
 		28D2AA0A13D6E80D00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D2AA0913D6E80D00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib */; };
 		28D2AA0E13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */; };
 		28D67DEB13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */; };
-		28D67DF013D9B30500F715CD /* SCHRemoveDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */; };
 		28D6D5D01451DD6E0094F144 /* rotation.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CE1451DD6E0094F144 /* rotation.png */; };
 		28D6D5D11451DD6E0094F144 /* rotation.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CE1451DD6E0094F144 /* rotation.png */; };
 		28D6D5D21451DD6E0094F144 /* rotation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D6D5CF1451DD6E0094F144 /* rotation@2x.png */; };
@@ -1290,7 +1289,6 @@
 		52488BA61407990500DA9AFA /* SCHDownloadDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */; };
 		52488BA91407990500DA9AFA /* SCHBookCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = F80060FA13D88924001CA881 /* SCHBookCoverView.m */; };
 		52488BAB1407990500DA9AFA /* SCHDeregisterDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */; };
-		52488BAC1407990500DA9AFA /* SCHRemoveDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */; };
 		52488BAD1407990500DA9AFA /* SCHCheckbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DD413DD4F120011B148 /* SCHCheckbox.m */; };
 		52488BAE1407990500DA9AFA /* SCHUpdateBooksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DDC13DD62E30011B148 /* SCHUpdateBooksViewController.m */; };
 		52488BAF1407990500DA9AFA /* SCHUpdateBooksTableViewCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DEA13DD701A0011B148 /* SCHUpdateBooksTableViewCellController.m */; };
@@ -2318,7 +2316,6 @@
 		A3D3F42E14CDDF31004A56A5 /* SCHDownloadDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */; };
 		A3D3F43114CDDF31004A56A5 /* SCHBookCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = F80060FA13D88924001CA881 /* SCHBookCoverView.m */; };
 		A3D3F43314CDDF31004A56A5 /* SCHDeregisterDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */; };
-		A3D3F43414CDDF31004A56A5 /* SCHRemoveDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */; };
 		A3D3F43514CDDF31004A56A5 /* SCHCheckbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DD413DD4F120011B148 /* SCHCheckbox.m */; };
 		A3D3F43614CDDF31004A56A5 /* SCHUpdateBooksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DDC13DD62E30011B148 /* SCHUpdateBooksViewController.m */; };
 		A3D3F43714CDDF31004A56A5 /* SCHUpdateBooksTableViewCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DEA13DD701A0011B148 /* SCHUpdateBooksTableViewCellController.m */; };
@@ -2917,7 +2914,6 @@
 		C96C178115C7F9DD002EBEBB /* SCHReadingManagerAuthorisationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528465EE144DB5F7009DBADD /* SCHReadingManagerAuthorisationViewController.m */; };
 		C96C178315C7F9DD002EBEBB /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
 		C96C178715C7F9DD002EBEBB /* SCHDownloadDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */; };
-		C96C178815C7F9F5002EBEBB /* SCHRemoveDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */; };
 		C96C178A15C7F9F5002EBEBB /* SCHDeregisterDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */; };
 		C96C178B15C7F9F5002EBEBB /* SCHUpdateBooksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DDC13DD62E30011B148 /* SCHUpdateBooksViewController.m */; };
 		C96C178C15C7F9F5002EBEBB /* SCHUpdateBooksTableViewCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DEA13DD701A0011B148 /* SCHUpdateBooksTableViewCellController.m */; };
@@ -4307,7 +4303,6 @@
 		C9D7032F14ED50B100C10006 /* SCHDownloadDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */; };
 		C9D7033214ED50B100C10006 /* SCHBookCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = F80060FA13D88924001CA881 /* SCHBookCoverView.m */; };
 		C9D7033414ED50B100C10006 /* SCHDeregisterDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */; };
-		C9D7033514ED50B100C10006 /* SCHRemoveDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */; };
 		C9D7033614ED50B100C10006 /* SCHCheckbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DD413DD4F120011B148 /* SCHCheckbox.m */; };
 		C9D7033714ED50B100C10006 /* SCHUpdateBooksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DDC13DD62E30011B148 /* SCHUpdateBooksViewController.m */; };
 		C9D7033814ED50B100C10006 /* SCHUpdateBooksTableViewCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DEA13DD701A0011B148 /* SCHUpdateBooksTableViewCellController.m */; };
@@ -5842,8 +5837,6 @@
 		28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDownloadDictionaryViewController.m; path = Shared/SCHDownloadDictionaryViewController.m; sourceTree = "<group>"; };
 		28D59DD51402B5D9002E4831 /* SCHPictureStarterStickerChooserDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPictureStarterStickerChooserDataSource.h; sourceTree = "<group>"; };
 		28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHRemoveDictionaryViewController~iphone.xib"; sourceTree = "<group>"; };
-		28D67DED13D9B30500F715CD /* SCHRemoveDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRemoveDictionaryViewController.h; path = Shared/SCHRemoveDictionaryViewController.h; sourceTree = "<group>"; };
-		28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRemoveDictionaryViewController.m; path = Shared/SCHRemoveDictionaryViewController.m; sourceTree = "<group>"; };
 		28D6D5CE1451DD6E0094F144 /* rotation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rotation.png; sourceTree = "<group>"; };
 		28D6D5CF1451DD6E0094F144 /* rotation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rotation@2x.png"; sourceTree = "<group>"; };
 		28D6D635145579CC0094F144 /* old-lightning-bolt-3@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-3@2x~iphone.png"; sourceTree = "<group>"; };
@@ -10000,8 +9993,6 @@
 				28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */,
 				28D2AA0C13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.h */,
 				28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */,
-				28D67DED13D9B30500F715CD /* SCHRemoveDictionaryViewController.h */,
-				28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */,
 				28986DDB13DD62E30011B148 /* SCHUpdateBooksViewController.h */,
 				28986DDC13DD62E30011B148 /* SCHUpdateBooksViewController.m */,
 				28986DE913DD701A0011B148 /* SCHUpdateBooksTableViewCellController.h */,
@@ -14811,7 +14802,6 @@
 				28D2AA0E13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m in Sources */,
 				F80060FB13D8892D001CA881 /* SCHBookCoverView.m in Sources */,
 				28C7416313D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m in Sources */,
-				28D67DF013D9B30500F715CD /* SCHRemoveDictionaryViewController.m in Sources */,
 				28986DD513DD4F120011B148 /* SCHCheckbox.m in Sources */,
 				28986DDD13DD62E30011B148 /* SCHUpdateBooksViewController.m in Sources */,
 				28986DEB13DD701A0011B148 /* SCHUpdateBooksTableViewCellController.m in Sources */,
@@ -15140,7 +15130,6 @@
 				C96C178115C7F9DD002EBEBB /* SCHReadingManagerAuthorisationViewController.m in Sources */,
 				C96C178315C7F9DD002EBEBB /* SCHSettingsViewController.m in Sources */,
 				C96C178715C7F9DD002EBEBB /* SCHDownloadDictionaryViewController.m in Sources */,
-				C96C178815C7F9F5002EBEBB /* SCHRemoveDictionaryViewController.m in Sources */,
 				C96C178A15C7F9F5002EBEBB /* SCHDeregisterDeviceViewController.m in Sources */,
 				C96C178B15C7F9F5002EBEBB /* SCHUpdateBooksViewController.m in Sources */,
 				C96C178C15C7F9F5002EBEBB /* SCHUpdateBooksTableViewCellController.m in Sources */,
@@ -15678,7 +15667,6 @@
 				52488BA61407990500DA9AFA /* SCHDownloadDictionaryViewController.m in Sources */,
 				52488BA91407990500DA9AFA /* SCHBookCoverView.m in Sources */,
 				52488BAB1407990500DA9AFA /* SCHDeregisterDeviceViewController.m in Sources */,
-				52488BAC1407990500DA9AFA /* SCHRemoveDictionaryViewController.m in Sources */,
 				52488BAD1407990500DA9AFA /* SCHCheckbox.m in Sources */,
 				52488BAE1407990500DA9AFA /* SCHUpdateBooksViewController.m in Sources */,
 				52488BAF1407990500DA9AFA /* SCHUpdateBooksTableViewCellController.m in Sources */,
@@ -16108,7 +16096,6 @@
 				A3D3F42E14CDDF31004A56A5 /* SCHDownloadDictionaryViewController.m in Sources */,
 				A3D3F43114CDDF31004A56A5 /* SCHBookCoverView.m in Sources */,
 				A3D3F43314CDDF31004A56A5 /* SCHDeregisterDeviceViewController.m in Sources */,
-				A3D3F43414CDDF31004A56A5 /* SCHRemoveDictionaryViewController.m in Sources */,
 				A3D3F43514CDDF31004A56A5 /* SCHCheckbox.m in Sources */,
 				A3D3F43614CDDF31004A56A5 /* SCHUpdateBooksViewController.m in Sources */,
 				A3D3F43714CDDF31004A56A5 /* SCHUpdateBooksTableViewCellController.m in Sources */,
@@ -16538,7 +16525,6 @@
 				C9D7032F14ED50B100C10006 /* SCHDownloadDictionaryViewController.m in Sources */,
 				C9D7033214ED50B100C10006 /* SCHBookCoverView.m in Sources */,
 				C9D7033414ED50B100C10006 /* SCHDeregisterDeviceViewController.m in Sources */,
-				C9D7033514ED50B100C10006 /* SCHRemoveDictionaryViewController.m in Sources */,
 				C9D7033614ED50B100C10006 /* SCHCheckbox.m in Sources */,
 				C9D7033714ED50B100C10006 /* SCHUpdateBooksViewController.m in Sources */,
 				C9D7033814ED50B100C10006 /* SCHUpdateBooksTableViewCellController.m in Sources */,

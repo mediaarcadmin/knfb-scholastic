@@ -24,7 +24,7 @@
 @implementation SCHDownloadDictionaryViewController
 
 @synthesize completion;
-@synthesize downloadButton;
+@synthesize actionButton;
 @synthesize containerView;
 @synthesize shadowView;
 @synthesize backButton;
@@ -41,7 +41,7 @@
 
 - (void)releaseViewObjects
 {
-    [downloadButton release], downloadButton = nil;
+    [actionButton release], actionButton = nil;
     [containerView release], containerView = nil;
     [shadowView release], shadowView = nil;
     [backButton release], backButton = nil;
@@ -52,7 +52,7 @@
     [super viewDidLoad];
     
     UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
-    [self.downloadButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+    [self.actionButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
     
     UIImage *backButtonImage = [[UIImage imageNamed:@"bookshelf_arrow_bttn_UNselected_3part"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
     [self.backButton setBackgroundImage:backButtonImage forState:UIControlStateNormal];
@@ -112,6 +112,12 @@
     } else {
         afterDownload();
     }
+}
+
+- (void)removeDictionary:(id)sender
+{
+    [[SCHDictionaryDownloadManager sharedDownloadManager] deleteDictionary];
+    [self.appController presentSettings];
 }
 
 - (IBAction)close:(id)sender

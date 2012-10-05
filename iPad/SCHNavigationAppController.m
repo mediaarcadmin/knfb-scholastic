@@ -189,7 +189,12 @@
 
 - (void)presentDictionaryDelete
 {
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
     
+    SCHDownloadDictionaryViewController *controller = [[[SCHDownloadDictionaryViewController alloc] initWithNibName:@"SCHRemoveDictionaryViewController" bundle:nil] autorelease];
+    controller.appController = self;
+    
+    [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, controller, nil] animated:shouldAnimate];
 }
 
 - (void)presentDeregisterDevice

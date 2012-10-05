@@ -12,7 +12,6 @@
 #import "SCHSettingsViewController.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDownloadDictionaryViewController.h"
-#import "SCHRemoveDictionaryViewController.h"
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHCheckbox.h"
 #import "SCHBookUpdates.h"
@@ -981,10 +980,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             break;
     }
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        cell.indentationLevel = 0;
-    }
-    
     UIImageView *backStyleView = (UIImageView *)[cell viewWithTag:300];
     [backStyleView setImage:[self backgroundImageForCellAtIndexPath:indexPath withSelection:[self indexPathForPanel:self.selectedPanel]]];
     
@@ -1305,7 +1300,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                 self.contentViewController = controller;
             } break;
             case kSCHSettingsPanelDictionaryDelete: {
-                SCHRemoveDictionaryViewController *controller = [[[SCHRemoveDictionaryViewController alloc] init] autorelease];
+                SCHDownloadDictionaryViewController *controller = [[[SCHDownloadDictionaryViewController alloc] initWithNibName:@"SCHRemoveDictionaryViewController" bundle:nil] autorelease];
                 self.contentViewController = controller;
             } break;
             case kSCHSettingsPanelDeregisterDevice: {
