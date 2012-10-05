@@ -44,6 +44,7 @@
 @synthesize forwardingView;
 @synthesize viewWidth;
 @synthesize viewHeight;
+@synthesize titleView;
 
 - (void)dealloc
 {
@@ -55,6 +56,7 @@
 
 - (void)releaseViewObjects
 {
+    [titleView release], titleView = nil;
     [forwardingView release], forwardingView = nil;
     [pageControl release], pageControl = nil;
     [mainScrollView release], mainScrollView = nil;
@@ -88,6 +90,12 @@
     [super viewDidLoad];
     
     self.forwardingView.forwardedView = self.mainScrollView;
+    
+    if (self.titleView) {
+        self.titleView.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.titleView.layer.shadowOffset = CGSizeMake(0, -2);
+        self.titleView.layer.shadowOpacity = 0.6;
+    }
     
     BOOL iPhone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone);
     
@@ -302,6 +310,13 @@
     
     SCHTourStepsViewType type = [[tourItem objectForKey:@"type"] intValue];
     
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    BOOL retina = ([[UIScreen mainScreen] scale] == 2);
+    
+    NSString *imagePostfix = [NSString stringWithFormat:@"%@~%@",
+                              retina?@"@2x":@"",
+                              iPad?@"ipad":@"iphone"];
+    
     UIView *tourView = nil;
     
     switch (type) {
@@ -314,7 +329,9 @@
                 [tourStepImageView setStepHeaderTitle:[tourItem objectForKey:@"subtitle0"]];
             }
             
-            UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 0]];
+            NSLog(@"Loading image: %@", [NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]);
+            
+            UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
             
             [tourStepImageView setTourImage:tourImage];
             
@@ -339,7 +356,7 @@
             SCHTourStepImageView *leftTourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
             [leftTourStepImageView setButtonTitle:@"Full Screen"];
             
-            UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 0]];
+            UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
             
             [leftTourStepImageView setTourImage:tourImage];
             [leftTourStepImageView setStepHeaderTitle:[tourItem objectForKey:@"subtitle0"]];
@@ -347,7 +364,7 @@
             SCHTourStepImageView *rightTourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
             [rightTourStepImageView setButtonTitle:@"Full Screen"];
             
-            tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 1]];
+            tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 1, imagePostfix]];
             
             [rightTourStepImageView setTourImage:tourImage];
             [rightTourStepImageView setStepHeaderTitle:[tourItem objectForKey:@"subtitle1"]];
@@ -378,7 +395,7 @@
             SCHTourStepMovieView *tourStepMovieView = [[SCHTourStepMovieView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
             [tourStepMovieView setButtonTitle:@"Play Readthrough"];
             
-            UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 0]];
+            UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
             
             [tourStepMovieView setTourImage:tourImage];
             
@@ -407,7 +424,7 @@
         {
             SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
             
-            UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", index, 0]];
+            UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
             
             [tourStepImageView setTourImage:tourImage];
             
@@ -437,7 +454,7 @@
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                 [button setFrame:CGRectMake(394, 547, 240, 34)];
             } else {
-                [button setFrame:CGRectMake(40, 340, 240, 34)];
+                [button setFrame:CGRectMake(40, 346, 240, 34)];
             }
             [button setTitle:@"Sign In" forState:UIControlStateNormal];
             

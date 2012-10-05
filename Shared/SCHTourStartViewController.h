@@ -15,6 +15,10 @@
 @property (retain, nonatomic) IBOutlet UIButton *backButton;
 @property (retain, nonatomic) IBOutletCollection(UIButton) NSArray *greyButtons;
 @property (retain, nonatomic) IBOutlet UIScrollView *iPhoneScrollView;
+@property (retain, nonatomic) IBOutlet UIView *titleView;
+
+@property (retain, nonatomic) IBOutlet UIImageView *iPhoneTopImageView;
+
 
 - (IBAction)startReading:(UIButton *)sender;
 

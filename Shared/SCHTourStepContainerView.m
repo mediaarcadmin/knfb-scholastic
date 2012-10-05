@@ -11,8 +11,8 @@
 
 #define HEIGHT_WITHOUT_TITLE_IPAD 412
 #define HEIGHT_WITH_TITLE_IPAD 379
-#define HEIGHT_WITHOUT_TITLE_IPHONE 250
-#define HEIGHT_WITH_TITLE_IPHONE 220
+#define HEIGHT_WITHOUT_TITLE_IPHONE 260
+#define HEIGHT_WITH_TITLE_IPHONE 230
 
 @interface SCHTourStepContainerView ()
 
@@ -154,13 +154,13 @@
         
         if (self.mainTourStepView.stepHeaderTitle && [self.mainTourStepView.stepHeaderTitle length] > 0) {
             if (iPhoneLayout) {
-                self.mainTourStepView.frame = CGRectMake(0, 0, 260, HEIGHT_WITH_TITLE_IPHONE);
+                self.mainTourStepView.frame = CGRectMake(0, 0, 280, HEIGHT_WITH_TITLE_IPHONE);
             } else {
                 self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITH_TITLE_IPAD);
             }
         } else {
             if (iPhoneLayout){
-                self.mainTourStepView.frame = CGRectMake(0, 0, 260, HEIGHT_WITHOUT_TITLE_IPHONE);
+                self.mainTourStepView.frame = CGRectMake(0, 0, 280, HEIGHT_WITHOUT_TITLE_IPHONE);
             } else {
                 self.mainTourStepView.frame = CGRectMake(0, 0, 555, HEIGHT_WITHOUT_TITLE_IPAD);
             }

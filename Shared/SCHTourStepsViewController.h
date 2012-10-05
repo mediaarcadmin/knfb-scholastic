@@ -24,5 +24,6 @@ typedef enum {
 @property (retain, nonatomic) IBOutlet UIButton *backButton;
 @property (retain, nonatomic) DDPageControl *pageControl;
 @property (retain, nonatomic) IBOutlet SCHHitTestExtendingView *forwardingView;
+@property (retain, nonatomic) IBOutlet UIView *titleView;
 
 @end

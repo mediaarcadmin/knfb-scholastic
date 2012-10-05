@@ -63,6 +63,10 @@
     self.mainImageView.image = [UIImage imageNamed:self.imageName];
     self.titleLabel.text = self.imageTitle;
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.titleLabel.font = [UIFont boldSystemFontOfSize:11];
+    }
+    
     [self.closeButton setBackgroundImage:[[UIImage imageNamed:@"tour-tab-button-bg"] stretchableImageWithLeftCapWidth:8 topCapHeight:0] forState:UIControlStateNormal];
 
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bottomView.bounds
