@@ -137,8 +137,6 @@
 
 - (void)layoutForCurrentTourStepViews
 {
-    // FIXME: this needs to handle the case where there are two views
-    
     if (self.mainTourStepView && !self.secondTourStepView) {
         // one view only
         
@@ -166,8 +164,14 @@
             }
         }
         
+        CGFloat topOffset = 0;
+        
+        if (iPhoneLayout && self.mainTourStepView.stepHeaderTitle && [self.mainTourStepView.stepHeaderTitle length] > 0) {
+            topOffset = 15;
+        }
+        
         self.mainTourStepView.center = CGPointMake(self.bottomContainer.frame.size.width / 2,
-                                                   self.bottomContainer.frame.size.height / 2);
+                                                   (self.bottomContainer.frame.size.height / 2) + topOffset);
         self.mainTourStepView.frame = CGRectIntegral(self.mainTourStepView.frame);
         
         [self.bottomContainer addSubview:self.mainTourStepView];
