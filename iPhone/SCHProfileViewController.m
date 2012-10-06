@@ -6,7 +6,7 @@
 //  Copyright 2010 BitWink Limited. All rights reserved.
 //
 
-#import "SCHProfileViewController_Shared.h"
+#import "SCHProfileViewController.h"
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHLoginPasswordViewController.h"
@@ -27,12 +27,13 @@
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 
-@interface SCHProfileViewController_Shared()  
+@interface SCHProfileViewController()  
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
-@property (nonatomic, retain) BITModalSheetController *webParentToolsPopoverController;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
 
+- (void)releaseViewObjects;
+- (void)pushSettingsController;
 - (void)checkForBookUpdates;
 - (void)checkForBookshelves;
 - (void)showUpdatesBubble:(BOOL)show;
@@ -47,20 +48,18 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 
 @end
 
-@implementation SCHProfileViewController_Shared
+@implementation SCHProfileViewController
 
-@synthesize tableView;
-@synthesize backgroundView;
-@synthesize headerView;
-@synthesize headerLabel;
+@synthesize scrollView;
+@synthesize parentButton;
+@synthesize pageControl;
+@synthesize forwardingView;
+
 @synthesize fetchedResultsController=fetchedResultsController_;
 @synthesize managedObjectContext=managedObjectContext_;
-@synthesize modalNavigationController;
-@synthesize settingsViewController;
 @synthesize bookUpdates;
 @synthesize updatesBubble;
 @synthesize profileSetupDelegate;
-@synthesize webParentToolsPopoverController;
 @synthesize simultaneousTapCount;
 @synthesize appController;
 
@@ -89,19 +88,13 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 }
 
 - (void)releaseViewObjects
-{    
-    [tableView release], tableView = nil;
-    [backgroundView release], backgroundView = nil;
-    [headerView release], headerView = nil;
-    [headerLabel release], headerLabel = nil;
-    [modalNavigationController release], modalNavigationController = nil;
-    [settingsViewController release], settingsViewController = nil;
+{
+    [scrollView release], scrollView = nil;
+    [parentButton release], parentButton = nil;
+    [pageControl release], pageControl = nil;
+    [forwardingView release], forwardingView = nil;
     [updatesBubble release], updatesBubble = nil;
     
-    if ([webParentToolsPopoverController isModalSheetVisible]) {
-        [webParentToolsPopoverController dismissSheetAnimated:NO completion:nil];
-    }
-    [webParentToolsPopoverController release], webParentToolsPopoverController = nil;
 }
 
 - (void)dealloc 
@@ -135,16 +128,11 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 {
     [super viewDidLoad];
     
-    [self.tableView setAlwaysBounceVertical:NO];
-    
     [self.updatesBubble setAlpha:0];
     [self.updatesBubble setUserInteractionEnabled:YES];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(updatesBubbleTapped:)];
     [self.updatesBubble addGestureRecognizer:tap];
     [tap release];
- 
-    //self.settingsViewController.settingsDelegate = self;
-    self.settingsViewController.managedObjectContext = self.managedObjectContext; 
 }  
 
 - (void)viewDidUnload
@@ -156,36 +144,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // get rid of the back button; the only way back from here is via deregistration
-    UIView *empty = [[UIView alloc] initWithFrame:CGRectZero];
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:empty] autorelease];
-    [empty release];
-    
-    [self.navigationController setNavigationBarHidden:NO];
     [self checkForBookUpdates];
-    
-    // Reload the iPhone in case it has been rotated
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self.tableView reloadData];
-    }
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self.tableView reloadData];
-    }
-}
-
-- (UINavigationController *)modalNavigationController
-{
-    if (!modalNavigationController) {
-        //modalNavigationController = [[SCHNavigationControllerForModalForm alloc] init];
-        //modalNavigationController.navigationBarHidden = YES;
-    }
-    
-    return modalNavigationController;
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification
@@ -194,15 +153,12 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 {
     self.managedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
    
-	 if (self.settingsViewController != nil) {
-        self.settingsViewController.managedObjectContext = self.managedObjectContext;
-    }
     if (self.bookUpdates != nil) {
         self.bookUpdates.managedObjectContext = self.managedObjectContext;
     }    
 
     self.fetchedResultsController = nil;
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -331,7 +287,7 @@ didSelectButtonAnimated:(BOOL)animated
     // only trigger if there are no other simultaneous taps 
     if (self.simultaneousTapCount == 0) {    
         self.simultaneousTapCount++;
-        SCHProfileViewController_Shared *weakSelf = self;
+        SCHProfileViewController *weakSelf = self;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHProfileViewControllerMinimumDistinguishedTapDelay * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             weakSelf.simultaneousTapCount = 0;
@@ -405,29 +361,13 @@ didSelectButtonAnimated:(BOOL)animated
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
     
-    if ([[fetchedResultsController_ fetchedObjects] count] > 0) {
-        [self.headerLabel setText:NSLocalizedString(@"Choose Your Bookshelf", @"Profile header text for > 0 bookshelves")];
-        [self.headerLabel setNumberOfLines:1];
-    } else {
-        [self.headerLabel setText:NSLocalizedString(@"Please go to the Parent Tools menu to create bookshelves.", @"Profile header text for 0 bookshelves")];
-        [self.headerLabel setNumberOfLines:2];        
-        
-        NSInteger fontSize = 18;
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            fontSize = 15;
-        }
-        
-        [self.headerLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:fontSize]];
-    }
-    
     return fetchedResultsController_;
 }    
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller 
 {
     // In the simplest, most efficient, case, reload the table view.
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
 }
 
 
@@ -581,7 +521,7 @@ didSelectButtonAnimated:(BOOL)animated
     // only trigger if there are no other simultaneous taps    
     if (self.simultaneousTapCount == 0) {    
         self.simultaneousTapCount++;
-        SCHProfileViewController_Shared *weakSelf = self;
+        SCHProfileViewController *weakSelf = self;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHProfileViewControllerMinimumDistinguishedTapDelay * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             weakSelf.simultaneousTapCount = 0;
@@ -601,7 +541,7 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
 {
     
-    SCHProfileViewController_Shared *weakSelf = self;
+    SCHProfileViewController *weakSelf = self;
     
     dispatch_block_t afterDismiss = ^{
         if (completion) {
@@ -862,7 +802,7 @@ didSelectButtonAnimated:(BOOL)animated
 {
     if ([[self.fetchedResultsController fetchedObjects] count] == 0) {
                 
-        __block SCHProfileViewController_Shared *weakSelf = self;
+        __block SCHProfileViewController *weakSelf = self;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.profileSetupDelegate waitingForBookshelves];
@@ -873,7 +813,7 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)profileSyncDidComplete:(NSNotification *)notification
 {
     self.fetchedResultsController = nil;
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
 }
 
 @end

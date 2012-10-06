@@ -8,8 +8,7 @@
 
 #import "SCHStartingViewController.h"
 
-#import "SCHProfileViewController_iPad.h"
-#import "SCHProfileViewController_iPhone.h"
+#import "SCHProfileViewController.h"
 #import "SCHDownloadDictionaryViewController.h"
 #import "SCHLoginPasswordViewController.h"
 #import "SCHCustomNavigationBar.h"
@@ -52,7 +51,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 @interface SCHStartingViewController ()
 
-@property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
+@property (nonatomic, retain) SCHProfileViewController *profileViewController;
 @property (nonatomic, assign) SCHStartingViewControllerProfileSyncState profileSyncState;
 @property (nonatomic, retain) LambdaAlert *checkProfilesAlert;
 @property (nonatomic, retain) BITModalSheetController *loginPopoverController;
@@ -76,7 +75,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 - (BOOL)dictionaryDownloadRequired;
 - (BOOL)bookshelfSetupRequired;
 - (void)replaceCheckProfilesAlertWithAlert:(LambdaAlert *)alert;
-- (SCHProfileViewController_Shared *)profileViewController;
+- (SCHProfileViewController *)profileViewController;
 - (void)checkState;
 
 @end
@@ -345,7 +344,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
     }
     
     BOOL alreadyInUse = NO;
-    SCHProfileViewController_Shared *profile = [self profileViewController];
+    SCHProfileViewController *profile = [self profileViewController];
     
     for (UIViewController *vc in self.navigationController.viewControllers) {
         if (vc == profile) {
@@ -498,14 +497,10 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 #pragma mark - Profile view
 
-- (SCHProfileViewController_Shared *)profileViewController
+- (SCHProfileViewController *)profileViewController
 {
     if (!profileViewController) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            profileViewController = [[SCHProfileViewController_iPad alloc] init];
-        } else {
-            profileViewController = [[SCHProfileViewController_iPhone alloc] init];
-        }
+            profileViewController = [[SCHProfileViewController alloc] init];
         
         // access to the AppDelegate's managedObjectContext is deferred until we know we don't
         // want to use the same database any more
@@ -612,7 +607,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
 
 - (BOOL)bookshelfSetupRequired;
 {
-    SCHProfileViewController_Shared *profile = [self profileViewController];
+    SCHProfileViewController *profile = [self profileViewController];
     BOOL setupRequired = (([[profile.fetchedResultsController sections] count] == 0) ||
                           ([[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0));
     
@@ -1047,7 +1042,7 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
             [[SCHSyncManager sharedSyncManager] setSuspended:NO];
         }
         
-        SCHProfileViewController_Shared *profile = [self profileViewController];
+        SCHProfileViewController *profile = [self profileViewController];
         SCHProfileItem *profileItem = [[profile profileItems] lastObject]; // Only one sample bookshelf so any result will do
         
         if (profileItem) {

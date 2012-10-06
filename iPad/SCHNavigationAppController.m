@@ -16,9 +16,7 @@
 #import "LambdaAlert.h"
 #import "SCHDownloadDictionaryViewController.h"
 #import "Reachability.h"
-#import "SCHProfileViewController_Shared.h"
-#import "SCHProfileViewController_iPad.h"
-#import "SCHProfileViewController_iPhone.h"
+#import "SCHProfileViewController.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHProfileSetupDelegate.h"
 #import "SCHAccountValidation.h"
@@ -48,8 +46,8 @@
 
 // Cached View Controllers
 @property (nonatomic, retain) SCHStoriaLoginViewController *loginViewController;
-@property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
-@property (nonatomic, retain) SCHProfileViewController_Shared *samplesViewController;
+@property (nonatomic, retain) SCHProfileViewController *profileViewController;
+@property (nonatomic, retain) SCHProfileViewController *samplesViewController;
 @property (nonatomic, retain) SCHTourStartViewController *tourViewController;
 @property (nonatomic, retain) SCHSettingsViewController *settingsViewController;
 @property (nonatomic, retain) UIViewController *readingManagerViewController;
@@ -631,15 +629,11 @@
     return loginViewController;
 }
 
-- (SCHProfileViewController_Shared *)profileViewController
+- (SCHProfileViewController *)profileViewController
 {
     if (!profileViewController) {
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            profileViewController = [[SCHProfileViewController_iPad alloc] init];
-        } else {
-            profileViewController = [[SCHProfileViewController_iPhone alloc] init];
-        }
+        profileViewController = [[SCHProfileViewController alloc] init];
     
         // access to the AppDelegate's managedObjectContext is deferred until we know we don't
         // want to use the same database any more
@@ -651,15 +645,11 @@
     return profileViewController;
 }
 
-- (SCHProfileViewController_Shared *)samplesViewController
+- (SCHProfileViewController *)samplesViewController
 {
     if (!samplesViewController) {
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            samplesViewController = [[SCHProfileViewController_iPad alloc] init];
-        } else {
-            samplesViewController = [[SCHProfileViewController_iPhone alloc] init];
-        }
+        samplesViewController = [[SCHProfileViewController alloc] init];
         
         // access to the AppDelegate's managedObjectContext is deferred until we know we don't
         // want to use the same database any more

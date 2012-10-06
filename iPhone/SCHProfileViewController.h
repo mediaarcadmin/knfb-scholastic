@@ -11,19 +11,19 @@
 #import "SCHProfileViewCell.h"
 #import "SCHProfileSetupDelegate.h"
 #import "SCHAppController.h"
+#import "DDPageControl.h"
+#import "SCHHitTestExtendingView.h"
 
 @class SCHSettingsViewController;
 @class SCHProfileItem;
 @class SCHBookShelfViewController;
 
-@interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate> {}
+@interface SCHProfileViewController : UIViewController <UIScrollViewDelegate, NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate> {}
 
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
-@property (nonatomic, retain) IBOutlet UIView *headerView;
-@property (nonatomic, retain) IBOutlet UILabel *headerLabel;
-@property (nonatomic, retain) UINavigationController *modalNavigationController;
-@property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsViewController;
+@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, retain) IBOutlet UIButton *parentButton;
+@property (nonatomic, retain) IBOutlet DDPageControl *pageControl;
+@property (nonatomic, retain) IBOutlet SCHHitTestExtendingView *forwardingView;
 @property (nonatomic, retain) IBOutlet UIImageView *updatesBubble;
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
@@ -33,10 +33,6 @@
 
 - (NSArray *)profileItems;
 - (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem showWelcome:(BOOL)welcome;
-
-// for use by subclass
-- (void)releaseViewObjects;
-- (void)pushSettingsController;
 
 - (SCHBookShelfViewController *)newBookShelfViewController;
 

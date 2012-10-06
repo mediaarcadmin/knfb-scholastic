@@ -8,7 +8,6 @@
 
 #import "AppDelegate_iPad.h"
 #import "AppDelegate_Private.h"
-#import "SCHProfileViewController_iPad.h"
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHAppStateManager.h"
