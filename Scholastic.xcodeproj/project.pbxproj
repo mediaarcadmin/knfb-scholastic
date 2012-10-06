@@ -8676,6 +8676,7 @@
 			isa = PBXGroup;
 			children = (
 				F88F6FCD152089ED00572E7C /* Bookshelf Menu */,
+				F8844BF1137D6416003D3014 /* Profile View Controller */,
 				C9B2F5AD151A25F40044BBCC /* Recommendation Processing */,
 				F81B00D515109783002DEE25 /* Recommendation Views */,
 				52C62CE614F2A4B500F261DA /* COPPA */,
@@ -9305,7 +9306,6 @@
 			children = (
 				C979C6AC138C2D3500581F7F /* Utility Views */,
 				F8EDE53F138561230079BFD8 /* Notes */,
-				F8844BF1137D6416003D3014 /* Profile View Controller */,
 				5204B85D135C1F6E00FCBD90 /* Themes */,
 				C9CEF429133A1BF300FB5BE0 /* Book Reading */,
 				F8E29664130583A0009BD30D /* Image Processing */,

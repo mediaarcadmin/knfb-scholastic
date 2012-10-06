@@ -32,8 +32,10 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
 
+@property (nonatomic, assign) NSUInteger currentIndex;
+@property (nonatomic, retain) NSArray *pagingViewControllers;
+
 - (void)releaseViewObjects;
-- (void)pushSettingsController;
 - (void)checkForBookUpdates;
 - (void)checkForBookshelves;
 - (void)showUpdatesBubble:(BOOL)show;
@@ -54,6 +56,9 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 @synthesize parentButton;
 @synthesize pageControl;
 @synthesize forwardingView;
+
+@synthesize currentIndex;
+@synthesize pagingViewControllers;
 
 @synthesize fetchedResultsController=fetchedResultsController_;
 @synthesize managedObjectContext=managedObjectContext_;
@@ -94,7 +99,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     [pageControl release], pageControl = nil;
     [forwardingView release], forwardingView = nil;
     [updatesBubble release], updatesBubble = nil;
-    
+    [pagingViewControllers release], pagingViewControllers = nil;
 }
 
 - (void)dealloc 
@@ -128,6 +133,26 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 {
     [super viewDidLoad];
     
+    self.forwardingView.forwardedView = self.scrollView;
+    
+    NSMutableArray *anArray = [NSMutableArray array];
+    for (int i = 0; i < 10; i++) {
+        UITableViewController *vc = [[[UITableViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
+        vc.tableView.backgroundColor = [UIColor clearColor];
+        vc.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        vc.tableView.scrollEnabled = NO;
+        vc.tableView.rowHeight = 62;
+        vc.tableView.delegate = self;
+        vc.tableView.dataSource = self;
+        
+        [anArray addObject:vc];
+    }
+    
+    self.pagingViewControllers = anArray;
+    
+    self.currentIndex = 0;
+    [self setupScrollViewForIndex:self.currentIndex];
+    
     [self.updatesBubble setAlpha:0];
     [self.updatesBubble setUserInteractionEnabled:YES];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(updatesBubbleTapped:)];
@@ -144,6 +169,8 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES];
     [self checkForBookUpdates];
 }
 
@@ -512,11 +539,11 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (SCHBookShelfViewController *)newBookShelfViewController
 {
-    NSLog(@"WARNING: must override newBookShelfViewController");
-    return nil;
+    SCHBookShelfViewController *bookshelfViewController = [[SCHBookShelfViewController alloc] init];
+    return bookshelfViewController;
 }
 
-- (void)pushSettingsController
+- (IBAction)settings:(id)sender
 {
     // only trigger if there are no other simultaneous taps    
     if (self.simultaneousTapCount == 0) {    
@@ -779,7 +806,7 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr
 {
-    [self pushSettingsController];
+    [self settings:nil];
 }
 
 - (void)deviceDeregistered:(NSNotification *)notification
@@ -814,6 +841,58 @@ didSelectButtonAnimated:(BOOL)animated
 {
     self.fetchedResultsController = nil;
     //[self.tableView reloadData];
+}
+
+- (void)setupScrollViewForIndex:(NSInteger)index
+{
+   // NSUInteger count = 10;
+    NSRange visibleRange = NSMakeRange(index, 3);
+    //visibleRange = NSIntersectionRange(visibleRange, NSMakeRange(0, count));
+    
+    
+    self.scrollView.contentSize = CGSizeMake(visibleRange.length * self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+    
+    CGRect leftRect = self.scrollView.bounds;
+    CGRect currentRect = self.scrollView.bounds;
+    CGRect rightRect = self.scrollView.bounds;
+    
+    if (visibleRange.length == 3) {
+        leftRect.origin.x = 0;
+        currentRect.origin.x = self.scrollView.frame.size.width;
+        rightRect.origin.x = self.scrollView.frame.size.width * 2;
+        
+        self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width,0);
+        
+    } else if (visibleRange.location == 0) {
+        currentRect.origin.x = 0;
+        rightRect.origin.x = self.scrollView.frame.size.width;
+        
+        self.scrollView.contentOffset = CGPointMake(0,0);
+        
+    } else {
+        leftRect.origin.x = 0;
+        currentRect.origin.x = self.scrollView.frame.size.width;
+        
+        self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width,0);
+    }
+    
+    for (UIView *subview in self.scrollView.subviews) {
+        [subview removeFromSuperview];
+    }
+    
+    for (int i = 0; i < visibleRange.length; i++) {
+        UIView *view = [[self.pagingViewControllers objectAtIndex:visibleRange.location + i] view];
+        
+        if (i == 0) {
+            view.frame = leftRect;
+        } else if (i == 1) {
+            view.frame = currentRect;
+        } else {
+            view.frame = rightRect;
+        }
+        
+        [self.scrollView addSubview:view];
+    }
 }
 
 @end

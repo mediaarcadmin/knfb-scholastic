@@ -35,5 +35,6 @@
 - (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem showWelcome:(BOOL)welcome;
 
 - (SCHBookShelfViewController *)newBookShelfViewController;
+- (IBAction)settings:(id)sender;
 
 @end
