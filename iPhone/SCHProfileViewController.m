@@ -522,7 +522,7 @@ didSelectButtonAnimated:(BOOL)animated
     SCHBookShelfViewController *bookshelfViewController = nil;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        bookshelfViewController = [[SCHBookShelfViewController_iPad alloc] initWithNibName:@"SCHBookShelfViewController" bundle:nil];
+        bookshelfViewController = [[SCHBookShelfViewController_iPad alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
     } else {
         bookshelfViewController = [[SCHBookShelfViewController alloc] init];
     }
