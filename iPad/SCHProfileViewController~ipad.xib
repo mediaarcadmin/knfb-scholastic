@@ -64,7 +64,7 @@
 							<object class="IBUIScrollView" id="693487083">
 								<reference key="NSNextResponder" ref="115961674"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{0, 235}, {1024, 371}}</string>
+								<string key="NSFrame">{{0, 213}, {1024, 314}}</string>
 								<reference key="NSSuperview" ref="115961674"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
@@ -79,7 +79,7 @@
 							<object class="IBUIButton" id="667711219">
 								<reference key="NSNextResponder" ref="115961674"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{453, 135}, {118, 44}}</string>
+								<string key="NSFrame">{{437, 148}, {150, 44}}</string>
 								<reference key="NSSuperview" ref="115961674"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="533451443"/>

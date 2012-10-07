@@ -12,9 +12,8 @@
 
 typedef enum {
     kSCHProfileCellLayoutStyle1Up = 0,
-    kSCHProfileCellLayoutStyle2UpSideBySide,
-    kSCHProfileCellLayoutStyle2UpCentered
-    
+    kSCHProfileCellLayoutStyle2Up,
+    kSCHProfileCellLayoutStyle3Up
 } SCHProfileCellLayoutStyle;
 
 @interface SCHProfileViewCell : UITableViewCell 

@@ -45,8 +45,6 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
                                         animated:(BOOL)animated;
 - (void)pushSettingsControllerAnimated:(BOOL)animated;
-- (UITableViewCell *)tableView:(UITableView *)aTableView singleColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath; 
-- (UITableViewCell *)tableView:(UITableView *)aTableView dualColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -141,7 +139,13 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
         vc.tableView.backgroundColor = [UIColor clearColor];
         vc.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         vc.tableView.scrollEnabled = NO;
-        vc.tableView.rowHeight = 62;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            vc.tableView.rowHeight = 100;
+        } else {
+            vc.tableView.rowHeight = 60;
+        }
+        
         vc.tableView.delegate = self;
         vc.tableView.dataSource = self;
         
@@ -185,14 +189,16 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     }    
 
     self.fetchedResultsController = nil;
-//    [self.tableView reloadData];
+    for (UITableViewController *vc in self.pagingViewControllers) {
+        [vc.tableView reloadData];
+    }
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-    return(1);
+    return 1;
 }
 
 #pragma mark - Table view data source
@@ -202,95 +208,82 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 	NSInteger ret = 0;
 	id <NSFetchedResultsSectionInfo> sectionInfo = nil;
 	
+    NSUInteger resultsPerRow = 0;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        resultsPerRow = 2;
+    } else {
+        resultsPerRow = 3;
+    }
+    
 	switch (section) {
 		case 0:
 			sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
             NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
-            if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) &&
-                UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-                ret = numberOfObjects;
-            } else {
-                ret = (numberOfObjects > 0 ? numberOfObjects / 2 : numberOfObjects);
-                // if we have an odd number of profiles add an extra row
-                if (numberOfObjects % 2 > 0) {
-                    ret++;
-                }
+            ret = (numberOfObjects > 0 ? numberOfObjects / resultsPerRow : numberOfObjects);
+            if (numberOfObjects % resultsPerRow > 0) {
+                ret++;
             }
-			break;
+            
+            break;
+        default:
+            break;
 	}
 	
-	return(ret);
+	return ret;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
-{  
-    if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) &&
-        UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        return [self tableView:aTableView singleColumnCellForRowAtIndexPath:indexPath];
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    SCHProfileViewCell *cell = (SCHProfileViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                          reuseIdentifier:CellIdentifier] autorelease];
+        cell.delegate = self;
+    }
+    
+    NSUInteger resultsPerRow = 0;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        resultsPerRow = 2;
     } else {
-        return [self tableView:aTableView dualColumnCellForRowAtIndexPath:indexPath];
+        resultsPerRow = 3;
     }
-}
+    
+    NSUInteger resultsThisRow = MIN(resultsPerRow, [[self.fetchedResultsController fetchedObjects] count] - indexPath.row * resultsPerRow);
+    
+    NSRange resultsRange = NSMakeRange(indexPath.row * resultsPerRow, resultsThisRow);
 
-- (UITableViewCell *)tableView:(UITableView *)aTableView singleColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath 
-{    
-    static NSString *CellIdentifier = @"Cell";
+    NSMutableArray *titles = [NSMutableArray array];
+    NSMutableArray *indexPaths = [NSMutableArray array];
     
-    SCHProfileViewCell *cell = (SCHProfileViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
-                                          reuseIdentifier:CellIdentifier] autorelease];
-        cell.delegate = self;
+    for (int i = 0; i < resultsRange.length; i++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:resultsRange.location + i inSection:0];
+        SCHProfileItem *profileItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        NSString *title = [profileItem displayName] ? : @"";
+        [titles addObject:title];
+        [indexPaths addObject:indexPath];
     }
     
-    SCHProfileItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	if (indexPath) {
-        [cell setButtonTitles:[NSArray arrayWithObjects:[managedObject displayName] ? : @"", nil] 
-                forIndexPaths:[NSArray arrayWithObjects:indexPath, nil] 
-                 forCellStyle:kSCHProfileCellLayoutStyle1Up];
-    }
+    SCHProfileCellLayoutStyle style;
     
-    return(cell);
-}
+    switch (resultsThisRow) {
+        case 3:
+            style = kSCHProfileCellLayoutStyle3Up;
+            break;
+        case 2:
+            style = kSCHProfileCellLayoutStyle2Up;
+            break;
+        default:
+            style = kSCHProfileCellLayoutStyle1Up;
+            break;
+    }
 
-- (UITableViewCell *)tableView:(UITableView *)aTableView dualColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath 
-{    
-    static NSString *CellIdentifier = @"Cell";
-    NSString *leftTitle = nil;
-    NSIndexPath *leftIndexPath = nil;
-    NSString *rightTitle = nil;
-    NSIndexPath *rightIndexPath = nil;
-    SCHProfileItem *profileItem = nil;
-    
-    SCHProfileViewCell *cell = (SCHProfileViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
-                                          reuseIdentifier:CellIdentifier] autorelease];
-        cell.delegate = self;
-    }
-    
-    leftIndexPath = [NSIndexPath indexPathForRow:(indexPath.row == 0 ? 0 : indexPath.row * 2)
-                                       inSection:indexPath.section];
-    profileItem = [self.fetchedResultsController objectAtIndexPath:leftIndexPath]; 
-    leftTitle = [profileItem displayName] ? : @"";
-    
-    if (leftIndexPath.row + 1 < [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects]) {
-        rightIndexPath = [NSIndexPath indexPathForRow:leftIndexPath.row + 1 inSection:indexPath.section];
-        profileItem = [self.fetchedResultsController objectAtIndexPath:rightIndexPath]; 
-        rightTitle = [profileItem displayName] ? : @"";
-    }
-    
-    if (leftIndexPath && rightIndexPath) {
-        [cell setButtonTitles:[NSArray arrayWithObjects:leftTitle, rightTitle, nil] 
-                forIndexPaths:[NSArray arrayWithObjects:leftIndexPath, rightIndexPath, nil] 
-                 forCellStyle:kSCHProfileCellLayoutStyle2UpSideBySide];
-    } else if (leftIndexPath) {
-        [cell setButtonTitles:[NSArray arrayWithObjects:leftTitle, nil] 
-                forIndexPaths:[NSArray arrayWithObjects:leftIndexPath, nil] 
-                 forCellStyle:kSCHProfileCellLayoutStyle2UpCentered];
-    }
+    [cell setButtonTitles:titles
+            forIndexPaths:indexPaths
+             forCellStyle:style];
        
-    return(cell);
+    return cell;
 }
 
 #pragma mark - scroll view delegate
@@ -394,7 +387,9 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller 
 {
     // In the simplest, most efficient, case, reload the table view.
-    //[self.tableView reloadData];
+    for (UITableViewController *vc in self.pagingViewControllers) {
+        [vc.tableView reloadData];
+    }
 }
 
 
@@ -840,7 +835,9 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)profileSyncDidComplete:(NSNotification *)notification
 {
     self.fetchedResultsController = nil;
-    //[self.tableView reloadData];
+    for (UITableViewController *vc in self.pagingViewControllers) {
+        [vc.tableView reloadData];
+    }
 }
 
 - (void)setupScrollViewForIndex:(NSInteger)index
