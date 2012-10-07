@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class SCHBookIdentifier;
+@class SCHProfileItem;
 
 @protocol SCHAppController <NSObject>
 
@@ -20,6 +21,7 @@
 - (void)presentSamples;
 - (void)presentProfiles;
 - (void)presentProfilesSetup;
+- (void)presentBookshelfForProfile:(SCHProfileItem *)profileItem;
 - (void)presentReadingManager;
 - (void)presentSettings;
 - (void)presentDictionaryDownload;

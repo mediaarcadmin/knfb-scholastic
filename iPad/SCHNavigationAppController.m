@@ -54,6 +54,7 @@
 
 - (void)pushSamplesAnimated:(BOOL)animated;
 - (void)pushProfileAnimated:(BOOL)animated;
+- (void)pushBookshelfAnimated:(BOOL)animated forProfileItem:(SCHProfileItem *)profileItem;
 - (void)pushReadingManagerAnimated:(BOOL)animated;
 - (void)pushBookWithIdentifier:(SCHBookIdentifier *)identifier profileItem:(SCHProfileItem *)profileItem viewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
 - (BOOL)isCurrentlyModal;
@@ -169,6 +170,12 @@
 {
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
     [self pushSamplesAnimated:shouldAnimate];
+}
+
+- (void)presentBookshelfForProfile:(SCHProfileItem *)profileItem
+{
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
+    [self pushBookshelfAnimated:shouldAnimate forProfileItem:profileItem];
 }
 
 - (void)presentLogin
@@ -457,6 +464,13 @@
         [alert release];
     }
     
+}
+
+- (void)pushBookshelfAnimated:(BOOL)animated forProfileItem:(SCHProfileItem *)profileItem
+{
+    // TODO, this reliance on using a profile view controller to get at a bookshelf should be refactored
+    UIViewController *bookshelfViewController = [[self.profileViewController viewControllersForProfileItem:profileItem showWelcome:NO] lastObject];
+    [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, bookshelfViewController, nil] animated:animated];
 }
 
 - (void)pushTourAnimated:(BOOL)animated

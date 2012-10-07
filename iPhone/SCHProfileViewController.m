@@ -9,6 +9,7 @@
 #import "SCHProfileViewController.h"
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
+#import "SCHBookShelfViewController_iPad.h"
 #import "SCHLoginPasswordViewController.h"
 #import "SCHLibreAccessConstants.h"
 #import "SCHProfileItem.h"
@@ -42,8 +43,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr;
 - (void)obtainPasswordThenPushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)queryPasswordBeforePushingBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
-- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
-                                        animated:(BOOL)animated;
+- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)pushSettingsControllerAnimated:(BOOL)animated;
 
 @end
@@ -314,7 +314,7 @@ didSelectButtonAnimated:(BOOL)animated
             
             SCHProfileItem *profileItem = [[weakSelf fetchedResultsController] objectAtIndexPath:indexPath];
             if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
-                [weakSelf pushBookshelvesControllerWithProfileItem:profileItem animated:YES];            
+                [weakSelf pushBookshelvesControllerWithProfileItem:profileItem];
             } else if (![profileItem hasPassword]) {
                 [weakSelf obtainPasswordThenPushBookshelvesControllerWithProfileItem:profileItem];
             } else {
@@ -418,7 +418,7 @@ didSelectButtonAnimated:(BOOL)animated
             return NO;
         } else {
             [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-            [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];            
+            [self pushBookshelvesControllerWithProfileItem:profileItem];
             [self dismissModalViewControllerAnimated:YES];
             return YES;
         }	
@@ -449,7 +449,7 @@ didSelectButtonAnimated:(BOOL)animated
                         [[SCHSyncManager sharedSyncManager] passwordSync];
                     }
                     [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-                    [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];
+                    [self pushBookshelvesControllerWithProfileItem:profileItem];
                     [self dismissModalViewControllerAnimated:YES];
                     return YES;
                 } else {
@@ -512,29 +512,21 @@ didSelectButtonAnimated:(BOOL)animated
     return viewControllers;
 }
 
-- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
-                                        animated:(BOOL)animated
+- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
 {
-    // TODO: this all seems overly complex - simplify it
-    NSMutableArray *viewControllers = [NSMutableArray array];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [viewControllers addObjectsFromArray:[self.navigationController viewControllers]];
-    } else {
-        [viewControllers addObject:self];
-    }
-    
-    NSArray *profileControllers = [self viewControllersForProfileItem:profileItem showWelcome:NO];
-    if (profileControllers) {
-        [viewControllers addObjectsFromArray:profileControllers];
-    }
-    
-    [self.navigationController setViewControllers:viewControllers animated:animated];
+    [self.appController presentBookshelfForProfile:profileItem];
 }
 
 - (SCHBookShelfViewController *)newBookShelfViewController
 {
-    SCHBookShelfViewController *bookshelfViewController = [[SCHBookShelfViewController alloc] init];
+    SCHBookShelfViewController *bookshelfViewController = nil;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        bookshelfViewController = [[SCHBookShelfViewController_iPad alloc] initWithNibName:@"SCHBookShelfViewController" bundle:nil];
+    } else {
+        bookshelfViewController = [[SCHBookShelfViewController alloc] init];
+    }
+    
     return bookshelfViewController;
 }
 
