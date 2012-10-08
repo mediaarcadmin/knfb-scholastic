@@ -550,6 +550,15 @@ didSelectButtonAnimated:(BOOL)animated
     [self.appController presentSettings];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+    } else {
+        return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+    }
+}
+
 #pragma mark - SCHSettingsDelegate
 
 - (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
