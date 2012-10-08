@@ -954,8 +954,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     if (self.bookIdentifier != nil) {
  
         [self commitWishListChanges];
-        
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
 
         if ([self.bookStatistics hasStatistics] == YES) {
             NSTimeInterval readingDuration = [[NSDate serverDate] timeIntervalSinceDate:self.bookStatisticsReadingStartTime];
@@ -967,12 +965,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         [self saveLastPageLocation];
         
-        [self save];
-        
-        [[SCHSyncManager sharedSyncManager] closeBookSyncForced:YES
-                                                booksAssignment:book.ContentMetadataItem.booksAssignment
-                                                     forProfile:self.profile.ID];
-    }    
+        [self save];        
+    }
 }
 
 #pragma mark - Notification methods
@@ -1231,6 +1225,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [self toolbarButtonPressed];
     
     [self updateBookState];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier
+                                                       inManagedObjectContext:self.managedObjectContext];
+    [[SCHSyncManager sharedSyncManager] closeBookSyncForced:YES
+                                            booksAssignment:book.ContentMetadataItem.booksAssignment
+                                                 forProfile:self.profile.ID];
     [self.bookPackageProvider reportReadingIfRequired];
     [self.audioBookPlayer cleanAudio];
     
