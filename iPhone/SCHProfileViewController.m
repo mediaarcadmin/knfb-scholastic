@@ -24,6 +24,7 @@
 #import "Reachability.h"
 #import "SCHProfileSyncComponent.h"
 #import "BITModalSheetController.h"
+#import "DDPageControl.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
@@ -144,11 +145,24 @@ static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
     [super viewDidLoad];
     
     self.forwardingView.forwardedView = self.scrollView;
-    
-    self.currentIndex = 0;
-    [self reloadPages];
+    self.pageControl.type = DDPageControlTypeOnFullOffFull;
 
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.pageControl setIndicatorDiameter:7.0f];
+        [self.pageControl setIndicatorSpace:12.0f];
+    } else {
+        [self.pageControl setIndicatorDiameter:7.0f];
+        [self.pageControl setIndicatorSpace:9.0f];
+    }
+    
+    [self.pageControl setOnColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.8]];
+    [self.pageControl setOffColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.4]];
+    
     self.scrollView.delegate = self;
+
+    self.currentIndex = 0;
+    [self.pageControl setCurrentPage:self.currentIndex];
+    [self reloadPages];
     
     [self.updatesBubble setAlpha:0];
     [self.updatesBubble setUserInteractionEnabled:YES];
@@ -230,7 +244,7 @@ didSelectButtonAnimated:(BOOL)animated
     }
 
     // only trigger if there are no other simultaneous taps 
-    if (self.simultaneousTapCount == 0) {    
+    if (self.simultaneousTapCount == 0) {
         self.simultaneousTapCount++;
         SCHProfileViewController *weakSelf = self;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHProfileViewControllerMinimumDistinguishedTapDelay * NSEC_PER_SEC);
@@ -785,7 +799,9 @@ didSelectButtonAnimated:(BOOL)animated
     }
     
     self.pagingViewControllers = anArray;
-    
+    [self.pageControl setNumberOfPages:numPages];
+    [self.pageControl setCenter:CGPointMake(CGRectGetMidX(self.view.bounds), self.pageControl.center.y)];
+
     self.scrollView.contentSize = CGSizeMake(numPages * self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     [self setupScrollViewForIndex:self.currentIndex];
 }
@@ -834,7 +850,7 @@ didSelectButtonAnimated:(BOOL)animated
     if (self.currentIndex != newIndex) {
         self.currentIndex = newIndex;
         [self setupScrollViewForIndex:self.currentIndex];
-        //[self.pageControl setCurrentPage:self.currentIndex];
+        [self.pageControl setCurrentPage:self.currentIndex];
     }
 }
 
@@ -975,6 +991,11 @@ didSelectButtonAnimated:(BOOL)animated
              forCellStyle:style];
     
     return cell;
+}
+
+- (IBAction)pageControlValueChanged:(id)sender
+{
+    [self.scrollView setContentOffset:CGPointMake(CGRectGetWidth(self.scrollView.bounds) * [(DDPageControl *)sender currentPage], 0) animated:YES];
 }
 
 @end
