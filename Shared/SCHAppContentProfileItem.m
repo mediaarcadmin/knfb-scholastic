@@ -28,6 +28,7 @@ NSString * const kSCHAppContentProfileItemOrder = @"Order";
 @dynamic IsNewBook;
 @dynamic Order;
 @dynamic pageRead;
+@dynamic bestScore;
 @dynamic LastBookmarkAnnotationSync;
 @dynamic LastHighlightAnnotationSync;
 @dynamic LastNoteAnnotationSync;

@@ -31,6 +31,9 @@ extern NSString * const kSCHAppContentProfileItemOrder;
 // pageRead is the furthest layout page read in the book
 @property (nonatomic, retain) NSNumber * pageRead;
 
+// the best quiz score for this book taken from SCHListReadingStatisticsSyncComponent
+@property (nonatomic, retain) NSNumber * bestScore;
+
 @property (nonatomic, retain) NSDate * LastBookmarkAnnotationSync;
 @property (nonatomic, retain) NSDate * LastHighlightAnnotationSync;
 @property (nonatomic, retain) NSDate * LastNoteAnnotationSync;
