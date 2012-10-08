@@ -9,7 +9,7 @@
 #import "SCHProfileViewCell.h"
 #import <QuartzCore/QuartzCore.h>
 
-static const CGFloat kProfileViewCellButtonWidthPad = 150.0f;
+static const CGFloat kProfileViewCellButtonWidthPad = 141.0f;
 static const CGFloat kProfileViewCellButtonWidthPhone = 136.0f;
 static const CGFloat kProfileViewCellButtonEdgePad = 124.0f;
 static const CGFloat kProfileViewCellButtonEdgePhone = 10.0f;
@@ -48,7 +48,7 @@ static const CGFloat kProfileViewCellButtonEdgePhone = 10.0f;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        UIImage *buttonBackgroundImage = [UIImage imageNamed:@"button-blue"];
+        UIImage *buttonBackgroundImage = [UIImage imageNamed:@"sm_bttn_blue_UNselected_3part"];
         buttonImageSize = [buttonBackgroundImage size];
         leftCellButton = [[self addButtonWithBackground:buttonBackgroundImage] retain];
         [self.contentView addSubview:leftCellButton];
@@ -91,11 +91,9 @@ static const CGFloat kProfileViewCellButtonEdgePhone = 10.0f;
          forControlEvents:UIControlEventTouchDown];
     
     [cellButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [cellButton setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.5f] forState:UIControlStateNormal];
     
-    cellButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:26.0f];
-    cellButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-    cellButton.titleLabel.minimumFontSize = 14;
+    cellButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+    cellButton.titleLabel.minimumFontSize = 10;
     cellButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     cellButton.titleLabel.textAlignment = UITextAlignmentCenter;
     

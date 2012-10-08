@@ -37,5 +37,6 @@
 - (SCHBookShelfViewController *)newBookShelfViewController;
 - (IBAction)settings:(id)sender;
 - (IBAction)pageControlValueChanged:(id)sender;
+- (IBAction)tooltips:(id)sender;
 
 @end

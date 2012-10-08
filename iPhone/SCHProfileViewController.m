@@ -149,7 +149,7 @@ static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.pageControl setIndicatorDiameter:7.0f];
-        [self.pageControl setIndicatorSpace:12.0f];
+        [self.pageControl setIndicatorSpace:13.0f];
     } else {
         [self.pageControl setIndicatorDiameter:7.0f];
         [self.pageControl setIndicatorSpace:9.0f];
@@ -163,6 +163,10 @@ static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
     self.currentIndex = 0;
     [self.pageControl setCurrentPage:self.currentIndex];
     [self reloadPages];
+    
+    UIImage *parentButtonImage = [[UIImage imageNamed:@"sm_bttn_red_UNselected_3part"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+    [self.parentButton setBackgroundImage:parentButtonImage forState:UIControlStateNormal];
+    [self.parentButton.titleLabel setMinimumFontSize:10.0f];
     
     [self.updatesBubble setAlpha:0];
     [self.updatesBubble setUserInteractionEnabled:YES];
@@ -968,7 +972,7 @@ didSelectButtonAnimated:(BOOL)animated
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:resultsRange.location + i inSection:0];
         SCHProfileItem *profileItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
         NSString *title = [profileItem displayName] ? : @"";
-        [titles addObject:title];
+        [titles addObject:[title uppercaseString]];
         [indexPaths addObject:indexPath];
     }
     
@@ -996,6 +1000,11 @@ didSelectButtonAnimated:(BOOL)animated
 - (IBAction)pageControlValueChanged:(id)sender
 {
     [self.scrollView setContentOffset:CGPointMake(CGRectGetWidth(self.scrollView.bounds) * [(DDPageControl *)sender currentPage], 0) animated:YES];
+}
+
+- (IBAction)tooltips:(id)sender
+{
+    NSLog(@"Show tooltips");
 }
 
 @end
