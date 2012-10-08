@@ -38,7 +38,6 @@
 - (BOOL)saveContentProfileAssignment:(NSArray *)contentProfileAssignments;
 - (BOOL)saveReadingStatisticsDetailed:(NSArray *)readingStatsDetailList;
 - (BOOL)listReadingStatisticsAggregateByTitle:(NSArray *)bookISBNs
-                                   forProfile:(NSNumber *)profileID
-                                 lastReadDate:(NSDate *)lastReadDate;
+                                   forProfile:(NSNumber *)profileID;
 
 @end

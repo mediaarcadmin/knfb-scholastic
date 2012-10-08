@@ -80,6 +80,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
                 ret = NO;			
             }		            
         } else {
+            ret = NO;
             [self completeWithSuccessMethod:nil 
                                      result:nil 
                                    userInfo:nil 

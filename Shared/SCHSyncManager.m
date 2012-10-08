@@ -13,6 +13,7 @@
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHAnnotationSyncComponent.h"
 #import "SCHReadingStatsSyncComponent.h"
+#import "SCHListReadingStatisticsSyncComponent.h"
 #import "SCHSettingsSyncComponent.h"
 #import "SCHWishListSyncComponent.h"
 #import "SCHRecommendationSyncComponent.h"
@@ -78,6 +79,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @property (retain, nonatomic) SCHBookshelfSyncComponent *bookshelfSyncComponent;
 @property (retain, nonatomic) SCHAnnotationSyncComponent *annotationSyncComponent;
 @property (retain, nonatomic) SCHReadingStatsSyncComponent *readingStatsSyncComponent;
+@property (retain, nonatomic) SCHListReadingStatisticsSyncComponent *listReadingStatisticsSyncComponent;
 @property (retain, nonatomic) SCHSettingsSyncComponent *settingsSyncComponent;
 @property (retain, nonatomic) SCHWishListSyncComponent *wishListSyncComponent;
 @property (retain, nonatomic) SCHRecommendationSyncComponent *recommendationSyncComponent;
@@ -100,6 +102,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 @synthesize bookshelfSyncComponent;
 @synthesize annotationSyncComponent;
 @synthesize readingStatsSyncComponent;
+@synthesize listReadingStatisticsSyncComponent;
 @synthesize settingsSyncComponent;
 @synthesize wishListSyncComponent;
 @synthesize recommendationSyncComponent;
@@ -139,7 +142,9 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 		annotationSyncComponent = [[SCHAnnotationSyncComponent alloc] init];
 		annotationSyncComponent.delegate = self;		
 		readingStatsSyncComponent = [[SCHReadingStatsSyncComponent alloc] init];
-		readingStatsSyncComponent.delegate = self;		
+		readingStatsSyncComponent.delegate = self;
+        listReadingStatisticsSyncComponent = [[SCHListReadingStatisticsSyncComponent alloc] init];
+        listReadingStatisticsSyncComponent.delegate = self;
 		settingsSyncComponent = [[SCHSettingsSyncComponent alloc] init];		
 		settingsSyncComponent.delegate = self;	
 		wishListSyncComponent = [[SCHWishListSyncComponent alloc] init];
@@ -201,6 +206,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[bookshelfSyncComponent release], bookshelfSyncComponent = nil;
 	[annotationSyncComponent release], annotationSyncComponent = nil;
 	[readingStatsSyncComponent release], readingStatsSyncComponent = nil;
+    [listReadingStatisticsSyncComponent release], listReadingStatisticsSyncComponent = nil;
 	[settingsSyncComponent release], settingsSyncComponent = nil;
     [wishListSyncComponent release], wishListSyncComponent = nil;
     [recommendationSyncComponent release], recommendationSyncComponent = nil;
@@ -221,7 +227,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	self.contentSyncComponent.managedObjectContext = newManagedObjectContext;		
 	self.bookshelfSyncComponent.managedObjectContext = newManagedObjectContext;
 	self.annotationSyncComponent.managedObjectContext = newManagedObjectContext;		
-	self.readingStatsSyncComponent.managedObjectContext = newManagedObjectContext;		
+	self.readingStatsSyncComponent.managedObjectContext = newManagedObjectContext;
+    self.listReadingStatisticsSyncComponent.managedObjectContext = newManagedObjectContext;
 	self.settingsSyncComponent.managedObjectContext = newManagedObjectContext;	
     self.wishListSyncComponent.managedObjectContext = newManagedObjectContext;
     self.recommendationSyncComponent.managedObjectContext = newManagedObjectContext;
@@ -257,6 +264,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
         self.bookshelfSyncComponent.saveOnly = flushSaveMode;
         self.annotationSyncComponent.saveOnly = flushSaveMode;
         self.readingStatsSyncComponent.saveOnly = flushSaveMode;
+        self.listReadingStatisticsSyncComponent.saveOnly = flushSaveMode;
         self.settingsSyncComponent.saveOnly = flushSaveMode;
         self.wishListSyncComponent.saveOnly = flushSaveMode;
         self.recommendationSyncComponent.saveOnly = flushSaveMode;
@@ -336,7 +344,8 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 	[self.contentSyncComponent resetSync];	
 	[self.bookshelfSyncComponent resetSync];
 	[self.annotationSyncComponent resetSync];	
-	[self.readingStatsSyncComponent resetSync];	
+	[self.readingStatsSyncComponent resetSync];
+    [self.listReadingStatisticsSyncComponent resetSync];
 	[self.settingsSyncComponent resetSync];	
 	[self.wishListSyncComponent resetSync];	
     [self.recommendationSyncComponent resetSync];
@@ -419,11 +428,16 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         if (userInfo != nil ) {
             for (NSNumber *profileID in [userInfo allKeys]) {
                 [self.annotationSyncComponent removeProfile:profileID withBooks:[userInfo objectForKey:profileID]];
+                [self.listReadingStatisticsSyncComponent removeProfile:profileID withBooks:[userInfo objectForKey:profileID]];
             }
             
             if ([self.annotationSyncComponent haveProfiles] == NO) {
                 [self removeFromQueue:self.annotationSyncComponent includeDependants:YES];
-            }        
+            }
+            if ([self.listReadingStatisticsSyncComponent haveProfiles] == NO) {
+                [self removeFromQueue:self.listReadingStatisticsSyncComponent includeDependants:YES];
+            }
+            
         }
     }
 }
@@ -621,6 +635,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 - (void)openBookSyncForced:(BOOL)syncNow
            booksAssignment:(SCHBooksAssignment *)booksAssignment
                 forProfile:(NSNumber *)profileID
+       requestReadingStats:(BOOL)requestReadingStats
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
@@ -636,6 +651,12 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
                                                    withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
                     [self addToQueue:self.annotationSyncComponent];
 
+                    if (requestReadingStats == YES) {
+                        [self.listReadingStatisticsSyncComponent addProfile:profileID
+                                                                  withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
+                        [self addToQueue:self.listReadingStatisticsSyncComponent];
+                    }
+
                     [self kickQueue];
                 }
             }
@@ -649,6 +670,10 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification
                                                                     object:self];
+                if (requestReadingStats == YES) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHListReadingStatisticsSyncComponentDidCompleteNotification
+                                                                        object:self];
+                }
             });
         } else {
             [self.openBookSyncDelay activateDelay];
@@ -812,12 +837,18 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         NSLog(@"%@ failed, moving to the end of the sync manager queue", [component class]);
         [self moveToEndOfQueue:syncComponent];
     } else {
-        if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] && 
+        if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] &&
             [(SCHAnnotationSyncComponent *)component nextProfile] == YES) {
             // try the next profile
-            NSLog(@"%@ failed %d times, removing the current profile from the sync", 
+            NSLog(@"%@ failed %d times, removing the current profile from the sync",
                   [syncComponent class],
-                  kSCHSyncManagerMaximumFailureRetries);            
+                  kSCHSyncManagerMaximumFailureRetries);
+        } else if ([component isKindOfClass:[SCHListReadingStatisticsSyncComponent class]] &&
+                   [(SCHListReadingStatisticsSyncComponent *)component nextProfile] == YES) {
+            // try the next profile
+            NSLog(@"%@ failed %d times, removing the current profile from the sync",
+                  [syncComponent class],
+                  kSCHSyncManagerMaximumFailureRetries);
         } else {
             // remove from the queue when we have exhausted the retries
             NSLog(@"%@ failed %d times, removing from the sync manager queue", 
@@ -896,9 +927,12 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 
 - (void)removeFromQueue:(SCHSyncComponent *)component includeDependants:(BOOL)includeDependants
 {
-    if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES && 
+    if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES &&
         [(SCHAnnotationSyncComponent *)component haveProfiles] == YES) {
         NSLog(@"Next annotation profile");
+    } else if ([component isKindOfClass:[SCHListReadingStatisticsSyncComponent class]] == YES &&
+               [(SCHListReadingStatisticsSyncComponent *)component haveProfiles] == YES) {
+        NSLog(@"Next list reading statistics profile");
     } else if ([self.queue containsObject:component] == YES) {
 		NSLog(@"Removing %@ from the sync manager queue", [component class]);
         [self.queue removeObject:component];
@@ -906,7 +940,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         if (includeDependants) {
             NSMutableArray *removeFromQueue = [NSMutableArray array];
             // if we have a content sync make then remove it too as it's dependant
-            if ([component isKindOfClass:[SCHProfileSyncComponent class]] == YES) {            
+            if ([component isKindOfClass:[SCHProfileSyncComponent class]] == YES) {
                 for (SCHComponent *comp in self.queue) {
                     if ([comp isKindOfClass:[SCHContentSyncComponent class]] == YES) {
                         [removeFromQueue addObject:comp];
@@ -961,7 +995,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         } else if (self.bookshelfSyncDelay.delayActive == YES) {
             [self bookshelfSyncForced:NO];
         } else if (self.openBookSyncDelay.delayActive == YES) {
-            [self openBookSyncForced:NO booksAssignment:nil forProfile:nil];
+            [self openBookSyncForced:NO booksAssignment:nil forProfile:nil requestReadingStats:NO];
         } else if (self.closeBookSyncDelay.delayActive == YES) {
             [self closeBookSyncForced:NO booksAssignment:nil forProfile:nil];
         } else if (self.wishlistSyncDelay.delayActive == YES) {

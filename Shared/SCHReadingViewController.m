@@ -162,6 +162,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (SCHBookPoint *)lastPageLocation;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated; 
 - (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
+- (BOOL)bookHasReadingChallenge;
 
 - (void)presentHelpAnimated:(BOOL)animated;
 
@@ -477,7 +478,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         [[SCHSyncManager sharedSyncManager] openBookSyncForced:YES
                                                booksAssignment:book.ContentMetadataItem.booksAssignment
-                                              forProfile:profile.ID];
+                                              forProfile:profile.ID
+                                           requestReadingStats:[self bookHasReadingChallenge]];
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(didEnterBackgroundNotification:) 
@@ -656,12 +658,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         pictureStarter = YES;
     }
     
-    BOOL readingChallenge = NO;
-    
-    if ([[self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionReadingChallenge class]] count]) {
-        readingChallenge = YES;
-    }
-    
+    BOOL readingChallenge = [self bookHasReadingChallenge];
+        
     SCHReadingViewNavigationToolbarStyle style = 0;
     
     if (self.youngerMode) {
@@ -1019,7 +1017,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                        inManagedObjectContext:self.managedObjectContext];
     [[SCHSyncManager sharedSyncManager] openBookSyncForced:NO
                                            booksAssignment:book.ContentMetadataItem.booksAssignment
-                                                forProfile:self.profile.ID];
+                                                forProfile:self.profile.ID
+                                       requestReadingStats:[self bookHasReadingChallenge]];
 }
 
 #pragma mark - Sync Propagation methods
@@ -1222,6 +1221,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         }
         [self.readingView jumpToPageAtIndex:self.currentPageIndex animated:YES];
     }
+}
+
+- (BOOL)bookHasReadingChallenge
+{
+    return [[self.bookStoryInteractions storyInteractionsOfClass:[SCHStoryInteractionReadingChallenge class]] count];
 }
 
 #pragma mark - SCHReadingViewNavigationToolbarDelegate
@@ -3301,6 +3305,13 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)addQuizScore:(int)score total:(int)total
 {
     [bookStatistics addQuizTrialsItemScore:score total:total];
+}
+
+- (NSNumber *)bestQuizScore
+{
+    SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+    
+    return appContentProfileItem.bestScore;
 }
 
 #pragma mark - SCHBookStoryInteractionsDelegate

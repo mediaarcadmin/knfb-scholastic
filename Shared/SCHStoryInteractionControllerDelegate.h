@@ -51,5 +51,7 @@
 
 // Add the quiz score to the book statistics
 - (void)addQuizScore:(int)score total:(int)total;
+// get the best quiz score
+- (NSNumber *)bestQuizScore;
 
 @end
