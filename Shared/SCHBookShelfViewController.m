@@ -545,7 +545,6 @@ typedef enum
     }
 
     [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:NO];
-    [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];                        
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 

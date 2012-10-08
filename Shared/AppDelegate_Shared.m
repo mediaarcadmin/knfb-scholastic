@@ -246,6 +246,8 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
 - (void)applicationWillTerminate:(UIApplication *)application 
 {
     [self.coreDataHelper saveContext];
+
+    [[SCHSyncManager sharedSyncManager] wishListSyncForced:YES];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application 
@@ -254,7 +256,6 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
 
     [[SCHSyncManager sharedSyncManager] accountSyncForced:NO
                               requireDeviceAuthentication:NO];
-    [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application 
