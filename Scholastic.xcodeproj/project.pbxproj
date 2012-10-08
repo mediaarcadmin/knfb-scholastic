@@ -3296,6 +3296,160 @@
 			remoteGlobalIDString = 030EF0DC14632FF700B04273;
 			remoteInfo = OCMockLib;
 		};
+		C9915D231622E1050041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D2341971149614F00C318E7;
+			remoteInfo = libEucalyptusCSS;
+		};
+		C9915D251622E1440041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D5FBFB41403D61B009D2229;
+			remoteInfo = libEucalyptusModel;
+		};
+		C9915D271622E1440041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D9AA9C8114A8F6A0055C381;
+			remoteInfo = libEucalyptusEPub;
+		};
+		C9915D291622E1440041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D3F4BF611EF29600065A5F7;
+			remoteInfo = libEucalyptusBase;
+		};
+		C9915D2B1622E1440041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7DB4BA8714E04C4F004B4511;
+			remoteInfo = libots;
+		};
+		C9915D2D1622E1440041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D5171BC1028B6AE005F3C46;
+			remoteInfo = expat;
+		};
+		C9915D2F1622E1440041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D5170771028AD1B005F3C46;
+			remoteInfo = libhyphenate;
+		};
+		C9915D311622E1440041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D1900971149490E00375803;
+			remoteInfo = libwapcaplet;
+		};
+		C9915D331622E1440041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D1900CC11494A0C00375803;
+			remoteInfo = libparserutils;
+		};
+		C9915D351622E1440041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D19025111494BE800375803;
+			remoteInfo = libcss;
+		};
+		C9915D371622E1440041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D229E0912F98AAF0037D93D;
+			remoteInfo = libminiunzip;
+		};
+		C9915D391622E1880041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D5FBFB41403D61B009D2229;
+			remoteInfo = libEucalyptusModel;
+		};
+		C9915D3B1622E1880041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D9AA9C8114A8F6A0055C381;
+			remoteInfo = libEucalyptusEPub;
+		};
+		C9915D3D1622E1880041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D2341971149614F00C318E7;
+			remoteInfo = libEucalyptusCSS;
+		};
+		C9915D3F1622E1880041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D3F4BF611EF29600065A5F7;
+			remoteInfo = libEucalyptusBase;
+		};
+		C9915D411622E1880041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7DB4BA8714E04C4F004B4511;
+			remoteInfo = libots;
+		};
+		C9915D431622E1880041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D5171BC1028B6AE005F3C46;
+			remoteInfo = expat;
+		};
+		C9915D451622E1880041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D5170771028AD1B005F3C46;
+			remoteInfo = libhyphenate;
+		};
+		C9915D471622E1880041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D1900971149490E00375803;
+			remoteInfo = libwapcaplet;
+		};
+		C9915D491622E1880041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D1900CC11494A0C00375803;
+			remoteInfo = libparserutils;
+		};
+		C9915D4B1622E1880041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D19025111494BE800375803;
+			remoteInfo = libcss;
+		};
+		C9915D4D1622E1880041A114 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7D229E0912F98AAF0037D93D;
+			remoteInfo = libminiunzip;
+		};
 		C9AC7D9E14BDDDE2009137BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
@@ -8854,6 +9008,17 @@
 			buildRules = (
 			);
 			dependencies = (
+				C9915D261622E1440041A114 /* PBXTargetDependency */,
+				C9915D281622E1440041A114 /* PBXTargetDependency */,
+				C9915D2A1622E1440041A114 /* PBXTargetDependency */,
+				C9915D2C1622E1440041A114 /* PBXTargetDependency */,
+				C9915D2E1622E1440041A114 /* PBXTargetDependency */,
+				C9915D301622E1440041A114 /* PBXTargetDependency */,
+				C9915D321622E1440041A114 /* PBXTargetDependency */,
+				C9915D341622E1440041A114 /* PBXTargetDependency */,
+				C9915D361622E1440041A114 /* PBXTargetDependency */,
+				C9915D381622E1440041A114 /* PBXTargetDependency */,
+				C9915D241622E1050041A114 /* PBXTargetDependency */,
 				C952321E1622D57000074D95 /* PBXTargetDependency */,
 				C952321C1622D56C00074D95 /* PBXTargetDependency */,
 				C952321A1622D56600074D95 /* PBXTargetDependency */,
@@ -8893,6 +9058,17 @@
 			buildRules = (
 			);
 			dependencies = (
+				C9915D3A1622E1880041A114 /* PBXTargetDependency */,
+				C9915D3C1622E1880041A114 /* PBXTargetDependency */,
+				C9915D3E1622E1880041A114 /* PBXTargetDependency */,
+				C9915D401622E1880041A114 /* PBXTargetDependency */,
+				C9915D421622E1880041A114 /* PBXTargetDependency */,
+				C9915D441622E1880041A114 /* PBXTargetDependency */,
+				C9915D461622E1880041A114 /* PBXTargetDependency */,
+				C9915D481622E1880041A114 /* PBXTargetDependency */,
+				C9915D4A1622E1880041A114 /* PBXTargetDependency */,
+				C9915D4C1622E1880041A114 /* PBXTargetDependency */,
+				C9915D4E1622E1880041A114 /* PBXTargetDependency */,
 				C95232241622D70D00074D95 /* PBXTargetDependency */,
 				C95232221622D70200074D95 /* PBXTargetDependency */,
 				C95232201622D6FD00074D95 /* PBXTargetDependency */,
@@ -12224,6 +12400,116 @@
 			isa = PBXTargetDependency;
 			name = libEucalyptusIOSUI;
 			targetProxy = C95232231622D70D00074D95 /* PBXContainerItemProxy */;
+		};
+		C9915D241622E1050041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libEucalyptusCSS;
+			targetProxy = C9915D231622E1050041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D261622E1440041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libEucalyptusModel;
+			targetProxy = C9915D251622E1440041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D281622E1440041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libEucalyptusEPub;
+			targetProxy = C9915D271622E1440041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D2A1622E1440041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libEucalyptusBase;
+			targetProxy = C9915D291622E1440041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D2C1622E1440041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libots;
+			targetProxy = C9915D2B1622E1440041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D2E1622E1440041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = expat;
+			targetProxy = C9915D2D1622E1440041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D301622E1440041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libhyphenate;
+			targetProxy = C9915D2F1622E1440041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D321622E1440041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libwapcaplet;
+			targetProxy = C9915D311622E1440041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D341622E1440041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libparserutils;
+			targetProxy = C9915D331622E1440041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D361622E1440041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libcss;
+			targetProxy = C9915D351622E1440041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D381622E1440041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libminiunzip;
+			targetProxy = C9915D371622E1440041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D3A1622E1880041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libEucalyptusModel;
+			targetProxy = C9915D391622E1880041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D3C1622E1880041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libEucalyptusEPub;
+			targetProxy = C9915D3B1622E1880041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D3E1622E1880041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libEucalyptusCSS;
+			targetProxy = C9915D3D1622E1880041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D401622E1880041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libEucalyptusBase;
+			targetProxy = C9915D3F1622E1880041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D421622E1880041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libots;
+			targetProxy = C9915D411622E1880041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D441622E1880041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = expat;
+			targetProxy = C9915D431622E1880041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D461622E1880041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libhyphenate;
+			targetProxy = C9915D451622E1880041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D481622E1880041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libwapcaplet;
+			targetProxy = C9915D471622E1880041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D4A1622E1880041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libparserutils;
+			targetProxy = C9915D491622E1880041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D4C1622E1880041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libcss;
+			targetProxy = C9915D4B1622E1880041A114 /* PBXContainerItemProxy */;
+		};
+		C9915D4E1622E1880041A114 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libminiunzip;
+			targetProxy = C9915D4D1622E1880041A114 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
