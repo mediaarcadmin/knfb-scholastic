@@ -478,6 +478,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [[SCHSyncManager sharedSyncManager] openBookSyncForced:YES
                                                booksAssignment:book.ContentMetadataItem.booksAssignment
                                               forProfile:profile.ID];
+        [[SCHSyncManager sharedSyncManager] backOfBookRecommendationSync];
         [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
 
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -1016,6 +1017,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [[SCHSyncManager sharedSyncManager] openBookSyncForced:NO
                                            booksAssignment:book.ContentMetadataItem.booksAssignment
                                                 forProfile:self.profile.ID];
+    [[SCHSyncManager sharedSyncManager] backOfBookRecommendationSync];
     [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
 }
 
