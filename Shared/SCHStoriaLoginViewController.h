@@ -18,16 +18,14 @@
 
 @property (nonatomic, assign) BOOL showSamples; // Defaults to NO
 
-@property (nonatomic, retain) IBOutlet UILabel *topFieldLabel;
 @property (nonatomic, retain) IBOutlet UITextField *topField;
 @property (nonatomic, retain) IBOutlet UITextField *bottomField;
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
 @property (nonatomic, retain) IBOutlet UIButton *previewButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet TTTAttributedLabel *promptLabel;
-@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain) IBOutlet UIButton *samplesButton;
+@property (nonatomic, retain) IBOutlet UIView *containerView;
 
 - (IBAction)loginButtonAction:(id)sender;
 - (IBAction)previewButtonAction:(id)sender;

@@ -23,6 +23,9 @@
 @synthesize appController;
 @synthesize backButton;
 @synthesize greyButtons;
+@synthesize iPhoneScrollView;
+@synthesize iPhoneTopImageView;
+@synthesize titleView;
 
 - (void)dealloc
 {
@@ -34,8 +37,11 @@
 
 - (void)releaseViewObjects
 {
+    [iPhoneScrollView release], iPhoneScrollView = nil;
     [backButton release], backButton = nil;
     [greyButtons release], greyButtons = nil;
+    [iPhoneTopImageView release], iPhoneTopImageView = nil;
+    [titleView release], titleView = nil;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -54,6 +60,12 @@
     
     [self.navigationController setNavigationBarHidden:YES];
     
+    if (self.titleView) {
+        self.titleView.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.titleView.layer.shadowOffset = CGSizeMake(0, -2);
+        self.titleView.layer.shadowOpacity = 0.6;
+    }
+
     UIImage *stretchedBackImage = [[UIImage imageNamed:@"bluetourbutton"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
     
     [self.backButton setBackgroundImage:stretchedBackImage forState:UIControlStateNormal];
@@ -62,6 +74,15 @@
     
     for (UIButton *greyButton in self.greyButtons) {
         [greyButton setBackgroundImage:stretchedGreyImage forState:UIControlStateNormal];
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.iPhoneScrollView.contentSize = CGSizeMake(320, 520);
+
+        UIImage *stretchedTopImage = [[UIImage imageNamed:@"GreyPanelStretch"] stretchableImageWithLeftCapWidth:0 topCapHeight:10];
+        
+        self.iPhoneTopImageView.image = stretchedTopImage;
+        
     }
 }
 
@@ -125,6 +146,5 @@
     [self.navigationController pushViewController:stepsController animated:YES];
     [stepsController release];
 }
-
 
 @end

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>mainTitle</key>
+		<string>Create Personalized Bookshelves</string>
+		<key>bodyText</key>
+		<string>Using Storia Reading Manager, you can easily assign purchased eBooks to bookshelves for each of your children. Personalize each bookshelf to each child&apos;s interests and abilities and ensure age-and-level appropriate reading for the entire family.</string>
+		<key>type</key>
+		<integer>0</integer>
+		<key>fullScreenTitle0</key>
+		<string>Create Personalized Bookshelves</string>
+	</dict>
+	<dict>
+		<key>mainTitle</key>
+		<string>Support Fluency through Read-Alouds</string>
+		<key>bodyText</key>
+		<string>Most Storia eBooks for younger readers feature expressive read-alouds designed to make reading fun for your child. These Read-to-Me eBooks include lively music, sound effects, and highlighted text your child can follow—for an engaging experience that helps build reading confidence as it entertains.</string>
+		<key>type</key>
+		<integer>2</integer>
+	</dict>
+	<dict>
+		<key>mainTitle</key>
+		<string>Build Vocabulary with the Storia Dictionary</string>
+		<key>bodyText</key>
+		<string>The Storia Dictionary helps your child understand bigger words without interrupting the story. Touch or highlight a word while reading and the Storia Dictionary instantly offers age-appropriate definitions using words, pictures, and an optional natural-voice read-aloud.</string>
+		<key>type</key>
+		<integer>1</integer>
+		<key>subtitle0</key>
+		<string>Younger Dictionary</string>
+		<key>subtitle1</key>
+		<string>Older Dictionary</string>
+		<key>fullScreenTitle0</key>
+		<string>Younger Dictionary</string>
+		<key>fullScreenTitle1</key>
+		<string>Older Dictionary</string>
+	</dict>
+	<dict>
+		<key>mainTitle</key>
+		<string>Utilize Handy Reading Tools</string>
+		<key>bodyText</key>
+		<string>Your older child can highlight text and passages to revisit later, just like in a paper book. Storia&apos;s note-taking feature also allows them to jot down their thoughts and have their notes automatically saved to the eBook they&apos;re reading. The notes can be viewed later and even exported for use outside of Storia—giving a big help to homework or book reports.</string>
+		<key>type</key>
+		<integer>1</integer>
+		<key>subtitle0</key>
+		<string>Highlight</string>
+		<key>subtitle1</key>
+		<string>Notes</string>
+		<key>fullScreenTitle0</key>
+		<string>Highlight</string>
+		<key>fullScreenTitle1</key>
+		<string>Notes</string>
+	</dict>
+	<dict>
+		<key>mainTitle</key>
+		<string>Motivate Readers with Fun Learning Activities</string>
+		<key>bodyText</key>
+		<string>Storia&apos;s select Enriched eBooks, designated by the lightning bolt icon, offer fun and age-appropriate learning activities—from image games and word puzzles to quizzes and exclusive author interviews. Enriched Storia eBooks help build comprehension, retention, and reading confidence.</string>
+		<key>type</key>
+		<integer>1</integer>
+		<key>subtitle0</key>
+		<string>Word Match</string>
+		<key>subtitle1</key>
+		<string>Who Said It?</string>
+		<key>fullScreenTitle0</key>
+		<string>Word Match</string>
+		<key>fullScreenTitle1</key>
+		<string>Who Said It?</string>
+	</dict>
+	<dict>
+		<key>mainTitle</key>
+		<string>Track Progress Easily with Reading Reports</string>
+		<key>bodyText</key>
+		<string>Storia’s Reading Reports allow you to follow your child’s reading habits and interests by keeping track of the titles they’ve read and their time spent with each eBook. You’ll also find the last 25 words your child looks up in the Storia Dictionary as they build their growing vocabulary. And since the Reading Reports feature requires your password, it’s for grown-ups’ eyes only.</string>
+		<key>type</key>
+		<integer>0</integer>
+		<key>fullScreenTitle0</key>
+		<string>Reading Reports</string>
+	</dict>
+	<dict>
+		<key>mainTitle</key>
+		<string>Find Just-Right Titles through Recommendations and Wish Lists</string>
+		<key>bodyText</key>
+		<string>Keep reading confidence growing with eBook recommendations from the reading experts at Scholastic. Your child will also be able to add eBooks to a wish list—letting you know exactly which just-right eBooks will keep them excited about reading.</string>
+		<key>type</key>
+		<integer>0</integer>
+		<key>fullScreenTitle0</key>
+		<string>Recommendations and Wish Lists</string>
+	</dict>
+	<dict>
+		<key>mainTitle</key>
+		<string>Start Your Storia Journey!</string>
+		<key>bodyText</key>
+		<string>Now that you&apos;ve seen all that Storia has to offer, register to get started! After you sign in, your five FREE eBooks will be waiting for you, with thousands more titles waiting to be discovered. Just assign your new eBooks to a child&apos;s bookshelf so they can start reading.</string>
+		<key>type</key>
+		<integer>3</integer>
+	</dict>
+</array>
+</plist>

@@ -17,11 +17,20 @@
 #import "SCHSyncManager.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHAuthenticationManager.h"
+#import <QuartzCore/QuartzCore.h>
+#import "NSString+EmailValidation.h"
+
+typedef enum  {
+    SCHDeregistrationAlertNone,
+    SCHDeregistrationAlertMalformedEmail,
+    SCHDeregistrationAlertAuthenticationFailure
+} SCHDeregistrationAlert;
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
-@interface SCHDeregisterDeviceViewController () <UITextFieldDelegate> 
+@interface SCHDeregisterDeviceViewController () <UITextFieldDelegate>
 
+- (void)setAlert:(SCHDeregistrationAlert)alert;
 - (void)deregisterAfterSuccessfulAuthentication;
 - (void)deregisterFailedAuthentication:(NSError *)error 
               offerForceDeregistration:(BOOL)offerForceDeregistration;
@@ -31,20 +40,32 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 @implementation SCHDeregisterDeviceViewController
 
-@synthesize messageLabel;
+@synthesize promptLabel;
+@synthesize info1Label;
+@synthesize info2Label;
 @synthesize usernameField;
 @synthesize passwordField;
 @synthesize deregisterButton;
 @synthesize spinner;
 @synthesize appController;
+@synthesize backButton;
+@synthesize containerView;
+@synthesize shadowView;
+@synthesize transformableView;
 
 - (void)releaseViewObjects
 {
-    [messageLabel release], messageLabel = nil;
+    [promptLabel release], promptLabel = nil;
+    [info1Label release], info1Label = nil;
+    [info2Label release], info2Label = nil;
     [usernameField release], usernameField = nil;
     [passwordField release], passwordField = nil;
     [deregisterButton release], deregisterButton = nil;
     [spinner release], spinner = nil;
+    [backButton release], backButton = nil;
+    [containerView release], containerView = nil;
+    [shadowView release], shadowView = nil;
+    [transformableView release], transformableView = nil;
 }
 
 - (void)dealloc
@@ -58,12 +79,24 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [super viewDidLoad];
     
+    [self setAlert:SCHDeregistrationAlertNone];
+    
     UIImage *stretchedFieldImage = [[UIImage imageNamed:@"textfield_wht_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
     [self.usernameField setBackground:stretchedFieldImage];
     [self.passwordField setBackground:stretchedFieldImage];
     
     UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
     [self.deregisterButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+    
+    UIImage *backButtonImage = [[UIImage imageNamed:@"bookshelf_arrow_bttn_UNselected_3part"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
+    [self.backButton setBackgroundImage:backButtonImage forState:UIControlStateNormal];
+    
+    self.shadowView.layer.shadowOpacity = 0.5f;
+    self.shadowView.layer.shadowOffset = CGSizeMake(0, 0);
+    self.shadowView.layer.shadowRadius = 4.0f;
+    self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
+    self.containerView.layer.masksToBounds = YES;
+    self.containerView.layer.cornerRadius = 10.0f;
 }
 
 - (void)viewDidUnload
@@ -76,35 +109,33 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)deregister:(id)sender
 {
+    [self setAlert:SCHDeregistrationAlertNone];
     [self.view endEditing:YES];
     
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
-    } else {
-        [self.deregisterButton setEnabled:NO];
-        
+    } else {        
         NSString *username = [self.usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         
-        if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
-            LambdaAlert *alert = [[LambdaAlert alloc]
-                                  initWithTitle:NSLocalizedString(@"Incorrect Password", @"")
-                                  message:NSLocalizedString(@"Please enter the password", @"")];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-                [self.deregisterButton setEnabled:YES];
-            }];
-            [alert show];
-            [alert release];                
+        if ([[self.usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+            [self setAlert:SCHDeregistrationAlertMalformedEmail];
+            self.passwordField.text = @"";
+        } else if ([self.usernameField.text isValidEmailAddress] == NO) {
+            [self setAlert:SCHDeregistrationAlertMalformedEmail];
+            self.passwordField.text = @"";
+        } else if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+            [self setAlert:SCHDeregistrationAlertAuthenticationFailure];
+            self.passwordField.text = @"";
         } else if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"No Internet Connection", @"")
                                   message:NSLocalizedString(@"This function requires an Internet connection. Please connect to the internet and then try again.", @"")];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-                [self.deregisterButton setEnabled:YES];
-            }];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
             [alert show];
-            [alert release];                
+            [alert release];
         } else {
             __block SCHDeregisterDeviceViewController *weakSelf = self;
+            [self.deregisterButton setEnabled:NO];
             [self.spinner startAnimating];
 //            [self setEnablesUI:NO];
             [[SCHAuthenticationManager sharedAuthenticationManager] validateWithUserName:username
@@ -112,16 +143,11 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                           updatePassword:YES
                                            validateBlock:^(NSString *pToken, NSError *error) {
                 if (error != nil) {
-                    LambdaAlert *alert = [[LambdaAlert alloc]
-                                          initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                          message:[error localizedDescription]];
-                    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
-                        [weakSelf.deregisterButton setEnabled:YES];
-                        [weakSelf.spinner stopAnimating];
+                    self.passwordField.text = @"";
+                    [self setAlert:SCHDeregistrationAlertAuthenticationFailure];
+                    [self.spinner stopAnimating];
+                    [self.deregisterButton setEnabled:YES];
 //                        [weakSelf setEnablesUI:YES];                                    
-                    }];
-                    [alert show];
-                    [alert release]; 
                 } else {
                     if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
                         [weakSelf deregisterAfterSuccessfulAuthentication];
@@ -251,8 +277,17 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 #pragma mark - Text field delegate
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    [self.transformableView setTransform:CGAffineTransformMakeTranslation(0, -176)];
+    [self setAlert:SCHDeregistrationAlertNone];
+    
+    return YES;
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    [self.transformableView setTransform:CGAffineTransformIdentity];
     [self deregister:nil];
     return NO;
 }
@@ -265,6 +300,48 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
     [alert show];
     [alert release];         
+}
+
+- (void)setAlert:(SCHDeregistrationAlert)alert
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+        
+    switch (alert) {
+        case SCHDeregistrationAlertNone:
+            break;
+        case SCHDeregistrationAlertMalformedEmail:
+            self.promptLabel.text = NSLocalizedString(@"Please enter a valid e-mail address.", nil);
+            break;
+        case SCHDeregistrationAlertAuthenticationFailure:
+            self.promptLabel.text = NSLocalizedString(@"Your e-mail address or password was not recognized. Please try again, or contact Scholastic customer service at storia@scholastic.com.", nil);
+            break;
+        default:
+            break;
+    }
+    
+    if (alert == SCHDeregistrationAlertNone) {
+        self.promptLabel.alpha = 0;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.info1Label.transform = CGAffineTransformIdentity;
+            self.info2Label.transform = CGAffineTransformIdentity;
+        }
+    } else {
+        self.promptLabel.alpha = 1;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            if (alert != SCHDeregistrationAlertMalformedEmail) {
+                self.info1Label.transform = CGAffineTransformMakeTranslation(0, -14);
+                self.info2Label.transform = CGAffineTransformMakeTranslation(0, -20);
+            }
+        }
+    }
+    
+    [CATransaction commit];
+}
+
+- (IBAction)close:(id)sender
+{
+    [self.appController presentSettings];
 }
 
 @end

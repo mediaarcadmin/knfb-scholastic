@@ -442,7 +442,7 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
             }];
             
             [self resetDownloadFailedState];
-            [self setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
+            [self setProcessingState:SCHBookProcessingStateReadyForDownloadReporting];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                       [NSNumber numberWithFloat:1.0], @"currentPercentage",
                                       (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",

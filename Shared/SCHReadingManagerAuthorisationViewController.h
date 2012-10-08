@@ -12,7 +12,10 @@
 @interface SCHReadingManagerAuthorisationViewController : UIViewController {}
 
 @property (nonatomic, assign) id <SCHAppController> appController;
-@property (nonatomic, retain) IBOutlet UILabel *messageLabel;
+@property (nonatomic, retain) IBOutlet UILabel *promptLabel;
+@property (nonatomic, retain) IBOutlet UILabel *info1Label;
+@property (nonatomic, retain) IBOutlet UILabel *info2Label;
+@property (nonatomic, retain) IBOutlet UIView *textFieldContainer;
 @property (nonatomic, retain) IBOutlet UITextField *usernameField;
 @property (nonatomic, retain) IBOutlet UITextField *passwordField;
 @property (nonatomic, retain) IBOutlet UIButton *validateButton;

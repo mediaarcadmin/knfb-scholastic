@@ -14,6 +14,9 @@
 
 @property (nonatomic, assign) id <SCHTourStepViewDelegate> delegate;
 @property (nonatomic, assign) NSString *buttonTitle;
+@property (nonatomic, assign) NSString *stepHeaderTitle;
+
+@property (nonatomic, retain) UIView *contentView;
 
 @end
 

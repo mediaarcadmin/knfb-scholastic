@@ -40,7 +40,10 @@ typedef enum  {
 
 @synthesize appController;
 @synthesize accountVerifier;
-@synthesize messageLabel;
+@synthesize promptLabel;
+@synthesize info1Label;
+@synthesize info2Label;
+@synthesize textFieldContainer;
 @synthesize usernameField;
 @synthesize passwordField;
 @synthesize validateButton;
@@ -48,7 +51,10 @@ typedef enum  {
 
 - (void)releaseViewObjects
 {    
-    [messageLabel release], messageLabel = nil;
+    [promptLabel release], promptLabel = nil;
+    [info1Label release], info1Label = nil;
+    [info2Label release], info2Label = nil;
+    [textFieldContainer release], textFieldContainer = nil;
     [usernameField release], usernameField = nil;
     [passwordField release], passwordField = nil;
     [validateButton release], validateButton = nil;
@@ -97,28 +103,48 @@ typedef enum  {
 {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
-
-    self.messageLabel.alpha = 1;
     
     switch (alert) {
-        case SCHReadingManagerAlertNone:
-            self.messageLabel.alpha = 0;
-            break;
         case SCHReadingManagerAlertMalformedEmail:
-            self.messageLabel.text = NSLocalizedString(@"Please enter a valid e-mail address.", nil);
+            self.promptLabel.text = NSLocalizedString(@"Please enter a valid e-mail address.", nil);
             break;
         case SCHReadingManagerAlertAuthenticationFailure:
-            self.messageLabel.text = NSLocalizedString(@"The e-mail address or password you entered does not match your account. Please try again.", nil);
+            self.promptLabel.text = NSLocalizedString(@"Your e-mail address or password was not recognized. Please try again, or contact Scholastic customer service at storia@scholastic.com.", nil);
             break;
         case SCHReadingManagerAlertWrongUser:
-            self.messageLabel.text = NSLocalizedString(@"This e-mail address does not match your account. Please try again.", nil);
+            self.promptLabel.text = NSLocalizedString(@"This e-mail address does not match your account. Please try again, or contact Scholastic customer service at storia@scholastic.com.", nil);
             break;
         case SCHReadingManagerAlertAuthenticationUnavailable:
-            self.messageLabel.text = NSLocalizedString(@"Password authentication is currently unavailable. Please try again.", nil);
-
+            self.promptLabel.text = NSLocalizedString(@"Password authentication is currently unavailable. Please try again.", nil);
             break;
         default:
             break;
+    }
+    
+    if (alert == SCHReadingManagerAlertNone) {
+        self.promptLabel.alpha = 0;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.info1Label.alpha = 1;
+            self.info2Label.transform = CGAffineTransformIdentity;
+        } else {
+            self.info1Label.transform = CGAffineTransformIdentity;
+            self.info2Label.transform = CGAffineTransformIdentity;
+            self.textFieldContainer.transform = CGAffineTransformIdentity;
+        }
+    } else {
+        self.promptLabel.alpha = 1;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.info1Label.alpha = 0;
+            self.info2Label.transform = CGAffineTransformMakeTranslation(0, -48);
+        } else {
+            if (alert == SCHReadingManagerAlertMalformedEmail) {
+                self.textFieldContainer.transform = CGAffineTransformMakeTranslation(0, 10);
+            } else {
+                self.info1Label.transform = CGAffineTransformMakeTranslation(0, -14);
+                self.info2Label.transform = CGAffineTransformMakeTranslation(0, -14);
+                self.textFieldContainer.transform = CGAffineTransformMakeTranslation(0, 30);
+            }
+        }
     }
     
     [CATransaction commit];
@@ -220,6 +246,13 @@ typedef enum  {
 }
 
 #pragma mark - Text field delegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self setAlert:SCHReadingManagerAlertNone];
+    }
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

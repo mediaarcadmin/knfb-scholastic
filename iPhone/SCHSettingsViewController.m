@@ -12,7 +12,6 @@
 #import "SCHSettingsViewController.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDownloadDictionaryViewController.h"
-#import "SCHRemoveDictionaryViewController.h"
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHCheckbox.h"
 #import "SCHBookUpdates.h"
@@ -32,6 +31,7 @@
 #import "SCHReadingManagerAuthorisationViewController.h"
 #import "SCHVersionDownloadManager.h"
 #import "SCHSupportViewController.h"
+#import "SCHSettingsViewCell.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -55,7 +55,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)showNoInternetConnectionAlert;
 - (void)showWifiRequiredAlert;
 - (void)showAlertForSyncFailure;
-- (UIView *)backgroundViewForCellAtIndexPath:(NSIndexPath *)indexPath withSelection:(NSIndexPath *)selectedIndexPath;
+- (UIImage *)backgroundImageForCellAtIndexPath:(NSIndexPath *)indexPath withSelection:(NSIndexPath *)selectedIndexPath;
 - (void)setAdditionalSettingsVisible:(BOOL)visible completionBlock:(dispatch_block_t)completion;
 - (SCHSettingsPanel)panelForIndexPath:(NSIndexPath *)indexPath;
 
@@ -116,6 +116,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [super viewDidLoad];
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        additionalSettingsVisible = YES;
+        self.tableView.tableHeaderView.backgroundColor = [UIColor clearColor];
+    }
+    
     [self addContentSubview:self.contentViewController.view];
     
     UIImage *backButtonImage = [[UIImage imageNamed:@"bookshelf_arrow_bttn_UNselected_3part"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
@@ -127,13 +132,14 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         UIView *whiteView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
         whiteView.backgroundColor = [UIColor whiteColor];
         self.tableView.backgroundView = whiteView;
-        self.shadowView.layer.shadowOpacity = 0.5f;
-        self.shadowView.layer.shadowOffset = CGSizeMake(0, 0);
-        self.shadowView.layer.shadowRadius = 4.0f;
-        self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
-        self.containerView.layer.masksToBounds = YES;
-        self.containerView.layer.cornerRadius = 10.0f;
     }
+    
+    self.shadowView.layer.shadowOpacity = 0.5f;
+    self.shadowView.layer.shadowOffset = CGSizeMake(0, 0);
+    self.shadowView.layer.shadowRadius = 4.0f;
+    self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
+    self.containerView.layer.masksToBounds = YES;
+    self.containerView.layer.cornerRadius = 10.0f;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dictionaryStateChanged:)
@@ -196,6 +202,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [self.navigationController setNavigationBarHidden:YES];
     
     [self registerForKeyboardNotifications];
+    
 //    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
 //        [self.manageBooksButton setEnabled:NO];
 //        [self.checkBooksButton setEnabled:NO];
@@ -214,12 +221,17 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
     
     [self.view endEditing:YES];
+    
     [self deregisterForKeyboardNotifications];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+    } else {
+        return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+    }
 }
 
 #pragma mark - Button states
@@ -810,29 +822,52 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
-    if ([self.bookUpdates areBookUpdatesAvailable]) {
+    NSInteger sectionCount = 0;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         return 3;
+        sectionCount = 2;
     } else {
-        return 2;
+        //return 2;
+        sectionCount = 1;
     }
+    
+    if ([self.bookUpdates areBookUpdatesAvailable]) {
+        sectionCount++;
+    }
+    
+    return sectionCount;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (section) {
-        case 0:
-            return 1;
-            break;
-        case 1:
-            return self.additionalSettingsVisible ? 4 : 1;
-            break;
-        case 2:
-            return 1;
-            break;
-        default:
-            return 0;
-            break;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        switch (section) {
+            case 0:
+                return 1;
+                break;
+            case 1:
+                return self.additionalSettingsVisible ? 4 : 1;
+                break;
+            case 2:
+                return 1;
+                break;
+            default:
+                return 0;
+                break;
+        }
+    } else {
+        switch (section) {
+            case 0:
+                return [self numberOfSectionsInTableView:aTableView] > 1 ? 1 : 3;
+                break;
+            case 1:
+                return 3;
+                break;
+            default:
+                return 0;
+                break;
+        }
     }
 }
 
@@ -842,9 +877,22 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     static NSString * const CellIdentifier = @"Cell";
     UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[SCHSettingsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        UIImageView *backStyleView = [[[UIImageView alloc] init] autorelease];
+        backStyleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        backStyleView.backgroundColor = [UIColor whiteColor];
+        backStyleView.tag = 300;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            cell.backgroundView = backStyleView;
+        } else {
+            UIView *trans = [[[UIView alloc] init] autorelease];
+            trans.backgroundColor = [UIColor clearColor];
+            cell.backgroundView = trans;
+            backStyleView.frame = cell.contentView.bounds;
+            [cell.contentView insertSubview:backStyleView atIndex:0];
+        }
     }
     
     cell.indentationLevel = 0;
@@ -932,7 +980,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             break;
     }
     
-    cell.backgroundView = [self backgroundViewForCellAtIndexPath:indexPath withSelection:[self indexPathForPanel:self.selectedPanel]];
+    UIImageView *backStyleView = (UIImageView *)[cell viewWithTag:300];
+    [backStyleView setImage:[self backgroundImageForCellAtIndexPath:indexPath withSelection:[self indexPathForPanel:self.selectedPanel]]];
     
     return cell;
 }
@@ -965,11 +1014,19 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     return ret;
 }
 
-- (UIView *)backgroundViewForCellAtIndexPath:(NSIndexPath *)indexPath withSelection:(NSIndexPath *)selectedIndexPath
+- (UIImage *)backgroundImageForCellAtIndexPath:(NSIndexPath *)indexPath withSelection:(NSIndexPath *)selectedIndexPath
 {
     SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
-    BOOL sectionIsSelected = ([indexPath section] == [selectedIndexPath section]);
-    BOOL panelIsSelected   = [indexPath isEqual:selectedIndexPath];
+    BOOL sectionIsSelected;
+    BOOL panelIsSelected;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        sectionIsSelected = YES;
+        panelIsSelected = NO;
+    } else {
+        sectionIsSelected = ([indexPath section] == [selectedIndexPath section]);
+        panelIsSelected   = [indexPath isEqual:selectedIndexPath];
+    }
         
     UIImage *stretchableImage = nil;
     
@@ -1010,7 +1067,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                 break;
             case kSCHSettingsPanelDictionaryDelete:
             case kSCHSettingsPanelDictionaryDownload:
-                stretchableImage = [UIImage imageNamed:@"mid_menu_selector_box_gry_3part"];
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                    stretchableImage = [UIImage imageNamed:@"top_menu_selector_box_wht_3part"];
+                } else {
+                    stretchableImage = [UIImage imageNamed:@"mid_menu_selector_box_gry_3part"];
+                }
+                break;
                 break;
             case kSCHSettingsPanelDeregisterDevice:
                 if (sectionIsSelected && ([selectedIndexPath row] == [indexPath row] - 1)) {
@@ -1022,18 +1084,18 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             case kSCHSettingsPanelSupport:
                 stretchableImage = [UIImage imageNamed:@"bottom_menu_selector_box_gry_3part"];
                 break;
+            case kSCHSettingsPanelEbookUpdates:
+                stretchableImage = [UIImage imageNamed:@"sm_menu_selector_box_wht_3part"];
+                break;
             default:
                 break;
         }
     }
         
     if (stretchableImage) {
-         UIImage *backgroundImage = [stretchableImage stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-         return [[[UIImageView alloc] initWithImage:backgroundImage] autorelease];
+         return [stretchableImage stretchableImageWithLeftCapWidth:13 topCapHeight:0];
     } else {
-        UIView *plain = [[UIView alloc] init];
-        plain.backgroundColor = [UIColor whiteColor];
-        return [plain autorelease];
+        return nil;
     }
 }
 
@@ -1075,18 +1137,22 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [aTableView deselectRowAtIndexPath:indexPath animated:NO];
     SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
     
-    if (panel == kSCHSettingsPanelAdditionalSettings) {
-        if (!self.additionalSettingsVisible) {
-            [self setSelectedPanel:kSCHSettingsPanelAdditionalSettings];
-            [self setAdditionalSettingsVisible:YES completionBlock:^{
-                [self displaySettingsPanel:panel];
-            }];
-        }
-    } else if ([indexPath section] != [[self indexPathForPanel:kSCHSettingsPanelAdditionalSettings] section]) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self displaySettingsPanel:panel];
-        [self setAdditionalSettingsVisible:NO];
     } else {
-        [self displaySettingsPanel:panel];
+        if (panel == kSCHSettingsPanelAdditionalSettings) {
+            if (!self.additionalSettingsVisible) {
+                [self setSelectedPanel:kSCHSettingsPanelAdditionalSettings];
+                [self setAdditionalSettingsVisible:YES completionBlock:^{
+                    [self displaySettingsPanel:panel];
+                }];
+            }
+        } else if ([indexPath section] != [[self indexPathForPanel:kSCHSettingsPanelAdditionalSettings] section]) {
+            [self displaySettingsPanel:panel];
+            [self setAdditionalSettingsVisible:NO];
+        } else {
+            [self displaySettingsPanel:panel];
+        }
     }
 }
 
@@ -1106,38 +1172,63 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (SCHSettingsPanel)panelForIndexPath:(NSIndexPath *)indexPath
 {
-    switch ([indexPath section]) {
-        case 0:
-            return kSCHSettingsPanelReadingManager;
-            break;
-        case 1: {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        switch ([indexPath section]) {
+            case 0:
+                return kSCHSettingsPanelReadingManager;
+                break;
+            case 1: {
+                switch ([indexPath row]) {
+                    case 0:
+                        return kSCHSettingsPanelAdditionalSettings;
+                        break;
+                    case 1:
+                        if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
+                            return kSCHSettingsPanelDictionaryDelete;
+                        } else {
+                            return kSCHSettingsPanelDictionaryDownload;
+                        }
+                        break;
+                    case 2:
+                        return kSCHSettingsPanelDeregisterDevice;
+                        break;
+                    case 3:
+                        return kSCHSettingsPanelSupport;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+            case 2:
+                return kSCHSettingsPanelEbookUpdates;
+                break;
+            default:
+                break;
+        }
+    } else {
+        if (([self numberOfSectionsInTableView:self.tableView] > 1) &&
+            ([indexPath section] == 0)) {
+            return kSCHSettingsPanelEbookUpdates;
+        } else {
             switch ([indexPath row]) {
                 case 0:
-                    return kSCHSettingsPanelAdditionalSettings;
-                    break;
-                case 1:
                     if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
                         return kSCHSettingsPanelDictionaryDelete;
                     } else {
                         return kSCHSettingsPanelDictionaryDownload;
                     }
                     break;
-                case 2:
+                case 1:
                     return kSCHSettingsPanelDeregisterDevice;
                     break;
-                case 3:
+                case 2:
                     return kSCHSettingsPanelSupport;
                     break;
                 default:
                     break;
             }
-            break;
         }
-        case 2:
-            return kSCHSettingsPanelEbookUpdates;
-            break;
-        default:
-            break;
     }
     
     return -1;
@@ -1145,28 +1236,49 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
 - (NSIndexPath *)indexPathForPanel:(SCHSettingsPanel)panel
 {
-    switch (panel) {
-        case kSCHSettingsPanelReadingManager:
-            return [NSIndexPath indexPathForRow:0 inSection:0];
-            break;
-        case kSCHSettingsPanelAdditionalSettings:
-            return [NSIndexPath indexPathForRow:0 inSection:1];
-            break;
-        case kSCHSettingsPanelDictionaryDelete:
-        case kSCHSettingsPanelDictionaryDownload:
-            return [NSIndexPath indexPathForRow:1 inSection:1];
-            break;
-        case kSCHSettingsPanelDeregisterDevice:
-            return [NSIndexPath indexPathForRow:2 inSection:1];
-            break;
-        case kSCHSettingsPanelSupport:
-            return [NSIndexPath indexPathForRow:3 inSection:1];
-            break;
-        case kSCHSettingsPanelEbookUpdates:
-            return [NSIndexPath indexPathForRow:0 inSection:2];
-            break;
-        default:
-            break;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        switch (panel) {
+            case kSCHSettingsPanelReadingManager:
+                return [NSIndexPath indexPathForRow:0 inSection:0];
+                break;
+            case kSCHSettingsPanelAdditionalSettings:
+                return [NSIndexPath indexPathForRow:0 inSection:1];
+                break;
+            case kSCHSettingsPanelDictionaryDelete:
+            case kSCHSettingsPanelDictionaryDownload:
+                return [NSIndexPath indexPathForRow:1 inSection:1];
+                break;
+            case kSCHSettingsPanelDeregisterDevice:
+                return [NSIndexPath indexPathForRow:2 inSection:1];
+                break;
+            case kSCHSettingsPanelSupport:
+                return [NSIndexPath indexPathForRow:3 inSection:1];
+                break;
+            case kSCHSettingsPanelEbookUpdates:
+                return [NSIndexPath indexPathForRow:0 inSection:2];
+                break;
+            default:
+                break;
+        }
+    } else {
+        NSInteger additionalSettingsSection = [self numberOfSectionsInTableView:self.tableView] > 1 ? 1 : 0;
+        switch (panel) {
+            case kSCHSettingsPanelDictionaryDelete:
+            case kSCHSettingsPanelDictionaryDownload:
+                return [NSIndexPath indexPathForRow:0 inSection:additionalSettingsSection];
+                break;
+            case kSCHSettingsPanelDeregisterDevice:
+                return [NSIndexPath indexPathForRow:1 inSection:additionalSettingsSection];
+                break;
+            case kSCHSettingsPanelSupport:
+                return [NSIndexPath indexPathForRow:2 inSection:additionalSettingsSection];
+                break;
+            case kSCHSettingsPanelEbookUpdates:
+                return [NSIndexPath indexPathForRow:0 inSection:1];
+                break;
+            default:
+                break;
+        }
     }
     
     return nil;
@@ -1175,45 +1287,77 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)displaySettingsPanel:(SCHSettingsPanel)panel
 {
     [self.view endEditing:YES];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        switch (panel) {
+            case kSCHSettingsPanelReadingManager: {
+                SCHReadingManagerAuthorisationViewController *controller = [[[SCHReadingManagerAuthorisationViewController alloc] init] autorelease];
+                controller.appController = self.appController;
+                self.contentViewController = controller;
+            } break;
+            case kSCHSettingsPanelDictionaryDownload: {
+                SCHDownloadDictionaryViewController *controller = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
+                self.contentViewController = controller;
+            } break;
+            case kSCHSettingsPanelDictionaryDelete: {
+                SCHDownloadDictionaryViewController *controller = [[[SCHDownloadDictionaryViewController alloc] initWithNibName:@"SCHRemoveDictionaryViewController" bundle:nil] autorelease];
+                self.contentViewController = controller;
+            } break;
+            case kSCHSettingsPanelDeregisterDevice: {
+                SCHDeregisterDeviceViewController *controller = [[[SCHDeregisterDeviceViewController alloc] init] autorelease];
+                controller.appController = self.appController;
+                self.contentViewController = controller;
+            } break;
+            case kSCHSettingsPanelSupport: {
+                SCHSupportViewController *controller = [[[SCHSupportViewController alloc] init] autorelease];
+                self.contentViewController = controller;
+            } break;
+            case kSCHSettingsPanelEbookUpdates: {
+                SCHUpdateBooksViewController *controller = [[[SCHUpdateBooksViewController alloc] init] autorelease];
+                self.contentViewController = controller;
+            } break;
+            default:
+                break;
+        }
         
-    switch (panel) {
-        case kSCHSettingsPanelReadingManager: {
-            SCHReadingManagerAuthorisationViewController *controller = [[[SCHReadingManagerAuthorisationViewController alloc] init] autorelease];
-            controller.appController = self.appController;
-            self.contentViewController = controller;
-        } break;
-        case kSCHSettingsPanelDictionaryDownload: {
-            SCHDownloadDictionaryViewController *controller = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
-            self.contentViewController = controller;
-        } break;
-        case kSCHSettingsPanelDictionaryDelete: {
-            SCHRemoveDictionaryViewController *controller = [[[SCHRemoveDictionaryViewController alloc] init] autorelease];
-            self.contentViewController = controller;
-        } break;
-        case kSCHSettingsPanelDeregisterDevice: {
-            SCHDeregisterDeviceViewController *controller = [[[SCHDeregisterDeviceViewController alloc] init] autorelease];
-            controller.appController = self.appController;
-            self.contentViewController = controller;
-        } break;
-        case kSCHSettingsPanelSupport: {
-            SCHSupportViewController *controller = [[[SCHSupportViewController alloc] init] autorelease];
-            self.contentViewController = controller;
-        } break;
-        case kSCHSettingsPanelEbookUpdates: {
-            SCHUpdateBooksViewController *controller = [[[SCHUpdateBooksViewController alloc] init] autorelease];
-            self.contentViewController = controller;
-        } break;
-        default:
-            break;
-    }
-    
-    [self addContentSubview:self.contentViewController.view];
-    [self setSelectedPanel:panel];
-    
-    if ([[self indexPathForPanel:panel] section] == [[self indexPathForPanel:kSCHSettingsPanelAdditionalSettings] section]) {
-        [self setAdditionalSettingsVisible:YES];
+        [self addContentSubview:self.contentViewController.view];
+        [self setSelectedPanel:panel];
+        
+        
+        if ([[self indexPathForPanel:panel] section] == [[self indexPathForPanel:kSCHSettingsPanelAdditionalSettings] section]) {
+            [self setAdditionalSettingsVisible:YES];
+        } else {
+            [self setAdditionalSettingsVisible:NO];
+        }
     } else {
-        [self setAdditionalSettingsVisible:NO];
+        switch (panel) {
+            case kSCHSettingsPanelReadingManager: {
+                SCHReadingManagerAuthorisationViewController *controller = [[[SCHReadingManagerAuthorisationViewController alloc] init] autorelease];
+                controller.appController = self.appController;
+                self.contentViewController = controller;
+                
+                [self addContentSubview:self.contentViewController.view];
+                [self setSelectedPanel:panel];
+            } break;
+            case kSCHSettingsPanelDictionaryDownload: {
+                [self.appController presentDictionaryDownload];
+            } break;
+            case kSCHSettingsPanelDictionaryDelete: {
+                [self.appController presentDictionaryDelete];
+            } break;
+            case kSCHSettingsPanelDeregisterDevice: {
+                [self.appController presentDeregisterDevice];
+            } break;
+            case kSCHSettingsPanelSupport: {
+                [self.appController presentSupport];
+            } break;
+            case kSCHSettingsPanelEbookUpdates: {
+                [self.appController presentEbookUpdates];
+            } break;
+            default:
+                break;
+        }
+        
     }
 }
 
@@ -1238,14 +1382,18 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)registerForKeyboardNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    }
 }
 
 - (void)deregisterForKeyboardNotifications
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    }
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -1273,6 +1421,15 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [UIView setAnimationCurve:[curve intValue]];
     self.transformableView.transform = CGAffineTransformIdentity;
     [UIView commitAnimations];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.transformableView.transform = CGAffineTransformMakeTranslation(0, -scrollView.contentOffset.y);
+    }
 }
 
 @end

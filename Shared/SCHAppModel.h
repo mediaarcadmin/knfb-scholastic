@@ -41,12 +41,14 @@ extern NSInteger const kSCHAppModelErrorBookRequiresNetworkConnection;
               syncManager:(SCHSyncManager *)syncManager
     authenticationManager:(SCHAuthenticationManager *)authenticationManager;
 
-// Temp State methods TODO: remove
+// Temp State methods TODO: remove these and replace with sync-centric methods
 
 - (void)waitForPassword;
+- (void)waitForSettings;
 - (void)waitForBookshelves;
 - (void)waitForWebParentToolsToComplete;
 
+- (void)waitForSettingsWithSyncManager:(SCHSyncManager *)syncManager;
 - (void)waitForBookshelvesWithSyncManager:(SCHSyncManager *)syncManager;
 - (void)waitForWebParentToolsToCompleteWithSyncManager:(SCHSyncManager *)syncManager;
 

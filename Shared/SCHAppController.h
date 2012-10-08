@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class SCHBookIdentifier;
+@class SCHProfileItem;
 
 @protocol SCHAppController <NSObject>
 
@@ -20,8 +21,14 @@
 - (void)presentSamples;
 - (void)presentProfiles;
 - (void)presentProfilesSetup;
+- (void)presentBookshelfForProfile:(SCHProfileItem *)profileItem;
 - (void)presentReadingManager;
 - (void)presentSettings;
+- (void)presentDictionaryDownload;
+- (void)presentDictionaryDelete;
+- (void)presentDeregisterDevice;
+- (void)presentSupport;
+- (void)presentEbookUpdates;
 
 // Book Presentation Methods
 - (void)presentTourBookWithIdentifier:(SCHBookIdentifier *)identifier;
@@ -30,6 +37,7 @@
 
 // Exit Methods
 - (void)exitBookshelf;
+- (void)exitReadingManager;
 
 // TODO: refactor these
 - (void)waitForWebParentToolsToComplete;

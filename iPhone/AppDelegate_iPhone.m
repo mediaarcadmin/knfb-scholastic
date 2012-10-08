@@ -9,17 +9,16 @@
 #import "AppDelegate_iPhone.h"
 #import "AppDelegate_Private.h"
 
-#import "SCHProfileViewController_iPhone.h"
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHThemeManager.h"
 #import "SCHAppStateManager.h"
 #import "SCHAppModel.h"
-#import "SCHPhoneAppController.h"
+#import "SCHNavigationAppController.h"
 
 @interface AppDelegate_iPhone()
 
-@property (nonatomic, retain) SCHPhoneAppController *appController;
+@property (nonatomic, retain) SCHNavigationAppController *appController;
 
 @end
 
@@ -46,7 +45,7 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
     [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
     
     if (success) {
-        self.appController = (SCHPhoneAppController *)self.navigationController;
+        self.appController = (SCHNavigationAppController *)self.navigationController;
         self.appModel = [[[SCHAppModel alloc] initWithAppController:self.appController] autorelease];
         [self.appModel restoreAppState];
     }

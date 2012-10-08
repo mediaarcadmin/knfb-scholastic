@@ -8,11 +8,10 @@
 
 #import "AppDelegate_iPad.h"
 #import "AppDelegate_Private.h"
-#import "SCHProfileViewController_iPad.h"
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHAppStateManager.h"
-#import "SCHPadAppController.h"
+#import "SCHNavigationAppController.h"
 #import "SCHAppModel.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
@@ -21,7 +20,7 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
 
 @interface AppDelegate_iPad()
 
-@property (nonatomic, retain) SCHPadAppController *appController;
+@property (nonatomic, retain) SCHNavigationAppController *appController;
 
 @end
 
@@ -42,7 +41,7 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
     [self.window makeKeyAndVisible];
     
     if (success) {
-        self.appController = (SCHPadAppController *)self.navigationController;
+        self.appController = (SCHNavigationAppController *)self.navigationController;
         self.appModel = [[[SCHAppModel alloc] initWithAppController:self.appController] autorelease];
         [self.appModel restoreAppState];
     }
