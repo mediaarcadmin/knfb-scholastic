@@ -68,4 +68,10 @@ static NSTimeInterval const kSCHSyncDelayInterval = -300.0;
             [self.lastSyncDate timeIntervalSinceNow] < kSCHSyncDelayInterval);
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"lastSyncDate: %@ delayActive: %@",
+            self.lastSyncDate, (self.delayActive == YES ? @"YES" : @"NO")];
+}
+
 @end
