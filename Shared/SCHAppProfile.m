@@ -217,11 +217,24 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
         }
         
         ret = [NSArray arrayWithArray:objectArray];
+        
+        [self processWishlistItems:result];
     }
     
     [fetchRequest release], fetchRequest = nil;        
     
     return ret;
+}
+
+- (void)processWishlistItems:(NSArray *)wishlists
+{
+    if ([wishlists count] > 0) {
+        for (SCHWishListItem *item in wishlists) {
+            [item.appRecommendationItem processUserAction];
+        }
+
+        [self save];
+    }
 }
 
 - (void)addToWishList:(NSDictionary *)wishListItem

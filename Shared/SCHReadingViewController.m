@@ -478,7 +478,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [[SCHSyncManager sharedSyncManager] openBookSyncForced:YES
                                                booksAssignment:book.ContentMetadataItem.booksAssignment
                                               forProfile:profile.ID];
-        
+        [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
+
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(didEnterBackgroundNotification:) 
                                                      name:UIApplicationDidEnterBackgroundNotification
@@ -989,6 +990,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [[SCHSyncManager sharedSyncManager] closeBookSyncForced:NO
                                                 booksAssignment:book.ContentMetadataItem.booksAssignment
                                                      forProfile:self.profile.ID];
+        [[SCHSyncManager sharedSyncManager] wishListSyncForced:YES];
     }
 }
 
@@ -1014,6 +1016,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [[SCHSyncManager sharedSyncManager] openBookSyncForced:NO
                                            booksAssignment:book.ContentMetadataItem.booksAssignment
                                                 forProfile:self.profile.ID];
+    [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
 }
 
 #pragma mark - Sync Propagation methods
@@ -1230,6 +1233,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [[SCHSyncManager sharedSyncManager] closeBookSyncForced:YES
                                             booksAssignment:book.ContentMetadataItem.booksAssignment
                                                  forProfile:self.profile.ID];
+    [[SCHSyncManager sharedSyncManager] wishListSyncForced:YES];
     [self.bookPackageProvider reportReadingIfRequired];
     [self.audioBookPlayer cleanAudio];
     

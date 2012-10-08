@@ -14,6 +14,7 @@
 #import "SCHRecommendationThumbnailOperation.h"
 #import "SCHAppRecommendationItem.h"
 #import "SCHRecommendationSyncComponent.h"
+#import "SCHWishListSyncComponent.h"
 #import "NSURL+Extensions.h"
 #import "NSDate+ServerDate.h"
 
@@ -460,6 +461,12 @@ static SCHRecommendationManager *sharedManager = nil;
 												 selector:@selector(recommendationSyncDidComplete:) 
 													 name:SCHRecommendationSyncComponentDidCompleteNotification 
 												   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:sharedManager
+												 selector:@selector(recommendationSyncDidComplete:)
+													 name:SCHWishListSyncComponentDidCompleteNotification
+												   object:nil];
+
     }); 
 	
 	return sharedManager;
