@@ -95,7 +95,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 #if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
     return [[self appRecommendationTopRating] recommendationItems];
 #else
-    return [[self recommendationProfile] recommendationItems];
+    return [[self appRecommendationProfile] recommendationItems];
 #endif
 }
 
@@ -125,7 +125,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 - (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
-    NSSet *allItems = [[self appRecommendationProfile] recommendationItems];
+    NSSet *allItems = [self recommendationItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.isReady = %d", YES];
     NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations] 
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];

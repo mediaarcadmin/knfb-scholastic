@@ -718,29 +718,42 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     return [settingValue boolValue];
 }
 
-- (void)recommendationSync
+- (void)backOfBookRecommendationSync
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
     if ([self shouldSync] == YES) {	 
-        NSLog(@"Scheduling Recommendation Sync");  
+        NSLog(@"Scheduling Back of Book Recommendation Sync");
         
         [self addToQueue:self.recommendationSyncComponent];
-#if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
-        [self addToQueue:self.topRatingsSyncComponent];
-#endif
-        
+
         [self kickQueue];	
     } else {
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationSyncComponentDidCompleteNotification
                                                                 object:self];
+        });
+    }
+}
+
+- (void)topRatingsSync
+{
+    NSAssert([NSThread isMainThread], @"Must be called on main thread");
+    
 #if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
+    if ([self shouldSync] == YES) {
+        NSLog(@"Scheduling Top Ratings Sync");
+
+        [self addToQueue:self.topRatingsSyncComponent];
+
+        [self kickQueue];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SCHTopRatingsSyncComponentDidCompleteNotification
                                                                 object:self];
-#endif            
-        });        
+        });
     }
+#endif
 }
 
 - (BOOL)wishListSyncActive
