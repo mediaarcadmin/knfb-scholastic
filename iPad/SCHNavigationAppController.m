@@ -156,6 +156,7 @@
         self.undismissableAlert = nil;
     }
     
+    self.readingManagerViewController = nil; // Reading Manager should not be cached in between invocations
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
     [self pushReadingManagerAnimated:shouldAnimate];
 }
