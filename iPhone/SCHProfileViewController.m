@@ -187,6 +187,7 @@ static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
     
     [self.navigationController setNavigationBarHidden:YES];
     [self checkForBookUpdates];
+    [self reloadPages];
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification
