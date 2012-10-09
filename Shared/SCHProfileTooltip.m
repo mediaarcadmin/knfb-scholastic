@@ -208,10 +208,10 @@
         self.closeButton.layer.shadowOpacity = 0.6;
 
         
-        self.layer.shadowColor = [UIColor colorWithWhite:0 alpha:0.6].CGColor;
-        self.layer.shadowOffset = CGSizeMake(2, 2);
-        self.layer.shadowRadius = 1.0f;
-        self.layer.shadowOpacity = 0.6;
+        self.layer.shadowColor = [UIColor colorWithWhite:0 alpha:0.8].CGColor;
+        self.layer.shadowOffset = CGSizeMake(0, 0);
+        self.layer.shadowRadius = 3.0f;
+        self.layer.shadowOpacity = 0.7;
         self.layer.shouldRasterize = YES;
         self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
 

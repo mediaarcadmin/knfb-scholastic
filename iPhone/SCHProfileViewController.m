@@ -1031,8 +1031,8 @@ didSelectButtonAnimated:(BOOL)animated
         [self.tooltipContainer addHighlightAtLocation:CGPointMake(160, 160)];
         [self.tooltipContainer addHighlightAtLocation:CGPointMake(86, 239)];
     } else {
-        [self.tooltipContainer addHighlightAtLocation:CGPointMake(512, 250)];
-        [self.tooltipContainer addHighlightAtLocation:CGPointMake(246, 358)];
+        [self.tooltipContainer addHighlightAtLocation:CGPointMake(514, 250)];
+        [self.tooltipContainer addHighlightAtLocation:CGPointMake(248, 358)];
     }
 
     
