@@ -463,6 +463,17 @@
     }];
 }
 
+- (NSString *)accountScreenName
+{
+    NSString *screenName = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemSCREEN_NAME];
+    
+    if (![screenName length]) {
+        screenName = @"PARENT";
+    }
+    
+    return screenName;
+}
+
 #pragma mark - Thread safe access to AppState
 
 - (void)performWithAppState:(void (^)(SCHAppState *appState))block

@@ -52,6 +52,7 @@
 - (SCHScholasticAuthenticationWebServiceErrorCode)lastScholasticAuthenticationErrorCode;
 - (void)setLastScholasticAuthenticationErrorCode:(SCHScholasticAuthenticationWebServiceErrorCode)errorCode;
 
+- (NSString *)accountScreenName;
 - (NSString *)settingNamed:(NSString *)settingName;
 
 @end

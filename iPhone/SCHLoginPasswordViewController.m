@@ -20,8 +20,6 @@ static const CGFloat kContentHeightLandscape = 380;
 @property (nonatomic, retain) UITextField *activeTextField;
 
 - (void)releaseViewObjects;
-- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
-- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 - (void)setupAccessibility;
 - (void)makeVisibleTextField:(UITextField *)textField;
 
@@ -39,10 +37,7 @@ static const CGFloat kContentHeightLandscape = 380;
 @synthesize topField;
 @synthesize bottomField;
 @synthesize spinner;
-@synthesize topBar;
-@synthesize barSpacer;
 @synthesize closeButton;
-@synthesize goButton;
 @synthesize profileLabel;
 @synthesize containerView;
 @synthesize scrollView;
@@ -63,10 +58,7 @@ static const CGFloat kContentHeightLandscape = 380;
 	[topField release], topField = nil;
 	[bottomField release], bottomField = nil;
 	[spinner release], spinner = nil;
-    [topBar release], topBar = nil;
-    [barSpacer release], barSpacer = nil;
     [closeButton release], closeButton = nil;
-    [goButton release], goButton = nil;
     [profileLabel release], profileLabel = nil;
     [containerView release], containerView = nil;
     [scrollView release], scrollView = nil;
@@ -100,7 +92,6 @@ static const CGFloat kContentHeightLandscape = 380;
 {
     [super viewDidLoad];
     
-    [self.scrollView setAlwaysBounceVertical:NO];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -119,54 +110,34 @@ static const CGFloat kContentHeightLandscape = 380;
                                                    object:nil];
     }
     
-    UIView *fillerView = nil;
-    UIImage *bgImage;
+    UIImage *stretchedFieldImage = [[UIImage imageNamed:@"textfield_wht_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+    [self.topField setBackground:stretchedFieldImage];
+    [self.bottomField setBackground:stretchedFieldImage];
     
-    if (self.controllerType == kSCHControllerParentToolsView) {
-        bgImage = [UIImage imageNamed:@"button-field-red"];
-    } else {
-        bgImage = [UIImage imageNamed:@"button-field"];
-    }
+    UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+    [self.loginButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+    [self.closeButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+//    UIView *fillerView = nil;
+
     
-    UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+//    UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     
-    if (self.topField) {
-        self.topField.background = cellBGImage;
-        self.topField.leftViewMode = UITextFieldViewModeAlways;
-        fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 8)];
-        self.topField.leftView = fillerView;
-        [fillerView release];
-    }
+//    if (self.topField) {
+//        self.topField.background = cellBGImage;
+//        self.topField.leftViewMode = UITextFieldViewModeAlways;
+//        fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 8)];
+//        self.topField.leftView = fillerView;
+//        [fillerView release];
+//    }
+//    
+//    if (self.bottomField) {
+//        self.bottomField.background = cellBGImage;
+//        self.bottomField.leftViewMode = UITextFieldViewModeAlways;
+//        fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 8)];
+//        self.bottomField.leftView = fillerView;
+//        [fillerView release];
+//    }
     
-    if (self.bottomField) {
-        self.bottomField.background = cellBGImage;
-        self.bottomField.leftViewMode = UITextFieldViewModeAlways;
-        fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 8)];
-        self.bottomField.leftView = fillerView;
-        [fillerView release];
-    }
-    
-    if (self.loginButton) {
-        if (self.controllerType == kSCHControllerParentToolsView) {
-             bgImage = [UIImage imageNamed:@"button-login-red"];
-        } else {
-            bgImage = [UIImage imageNamed:@"button-login"];
-        }
-        cellBGImage = [bgImage stretchableImageWithLeftCapWidth:11 topCapHeight:0];
-        [self.loginButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
-    }
-    
-    // if we have a "Go" button (on the create profile password and enter 
-    // profile password views), then style the button appropriately
-    if (self.goButton) {
-        if (self.controllerType == kSCHControllerParentToolsView) {
-            bgImage = [UIImage imageNamed:@"button-login-red"];
-        } else {
-            bgImage = [UIImage imageNamed:@"button-login"];
-        }
-        cellBGImage = [bgImage stretchableImageWithLeftCapWidth:11 topCapHeight:0];
-        [self.goButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
-    }
     
     [self setupAccessibility];
 }
@@ -175,28 +146,12 @@ static const CGFloat kContentHeightLandscape = 380;
 {
     [super viewWillAppear:animated];
     [self stopShowingProgress];
-    [self setupAssetsForOrientation:self.interfaceOrientation];
-    [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
     [self setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningNone];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        UIColor *borderColor;
-        if (self.controllerType == kSCHControllerParentToolsView) {
-            borderColor = [UIColor SCHRed2Color];
-        } else {
-            borderColor = [UIColor SCHBlue3Color];
-        }
-        [self.navigationController.view.layer setBorderColor:borderColor.CGColor];
-        [self.navigationController.view.layer setBorderWidth:2.0f];
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.topField ?: self.bottomField becomeFirstResponder];
+        [self.view.layer setCornerRadius:10];
+        [self.view setClipsToBounds:YES];
     }
 }
 
@@ -205,18 +160,16 @@ static const CGFloat kContentHeightLandscape = 380;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return YES;
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [self setupAssetsForOrientation:toInterfaceOrientation];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return (UIInterfaceOrientationIsLandscape(interfaceOrientation));
+    } else {
+        return (UIInterfaceOrientationIsPortrait(interfaceOrientation));
+    }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    [self.view endEditing:YES];
-    [self setupContentSizeForOrientation:self.interfaceOrientation];
+//    [self.view endEditing:YES];
 }
 
 - (void)setupAccessibility
@@ -233,80 +186,6 @@ static const CGFloat kContentHeightLandscape = 380;
             self.scrollView.accessibilityLabel = nil;
             break;
     }
-}
-
-- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if (UIInterfaceOrientationIsPortrait(orientation)) {
-            self.scrollView.contentSize = CGSizeZero;
-        } else {
-            self.scrollView.contentSize = CGSizeMake(self.containerView.bounds.size.width, kContentHeightLandscape);
-        }
-    } else {
-        self.scrollView.contentSize = CGSizeZero;
-    }    
-}
-
-- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
-{
-    CGRect barFrame       = self.topBar.frame;
-    UIImage *toolbarImage = nil;
-    UIColor *borderColor  = nil;
-    
-    barFrame.origin = CGPointZero;
-    barFrame.size.width = CGRectGetWidth(self.view.bounds);
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        barFrame.size.height = 44;
-        
-        switch (self.controllerType) {
-            case kSCHControllerPasswordOnlyView:
-            case kSCHControllerDoublePasswordView:
-            case kSCHControllerLoginView:
-                toolbarImage = [UIImage imageNamed:@"login-ipad-top-toolbar.png"];
-                borderColor  = [UIColor SCHBlue1Color];
-                break;
-            default:
-                toolbarImage = [UIImage imageNamed:@"settings-ipad-top-toolbar.png"];
-                borderColor  = [UIColor SCHRed3Color];
-                break;
-        }
-        
-        [self.view.layer setBorderColor:borderColor.CGColor];
-        [self.view.layer setBorderWidth:2.0f];
-    } else {
-        if (UIInterfaceOrientationIsPortrait(orientation)) {
-            toolbarImage = [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"];
-            barFrame.size.height = 44;
-            [self.barSpacer setWidth:0];
-        } else {
-            toolbarImage = [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"];
-            barFrame.size.height = 32;
-            switch (self.controllerType) {
-                case kSCHControllerLoginView:
-                case kSCHControllerPasswordOnlyView:
-                case kSCHControllerDoublePasswordView:
-                case kSCHControllerParentToolsView:
-                    [self.barSpacer setWidth:38];
-                    break;
-                default:
-                    [self.barSpacer setWidth:0];
-                    break;
-            }
-        }
-    }
-
-    [self.topBar setBackgroundImage:toolbarImage];
-    
-    CGRect containerFrame = self.containerView.frame;
-    CGFloat containerMaxY = CGRectGetMaxY(containerFrame);
-    containerFrame.origin.y = CGRectGetMaxY(barFrame);
-    containerFrame.size.height = containerMaxY - containerFrame.origin.y;
-    self.topBar.frame = barFrame;
-    self.containerView.frame = containerFrame;    
-    
-    self.scrollView.contentSize = containerFrame.size;
 }
 
 #pragma mark - Username and Password accessors
@@ -361,19 +240,17 @@ static const CGFloat kContentHeightLandscape = 380;
 
 - (void)setDisplayIncorrectCredentialsWarning:(SCHLoginHandlerCredentialsWarning)credentialsWarning
 {
+    self.promptLabel.alpha = 1;
     switch (credentialsWarning) {
         case kSCHLoginHandlerCredentialsWarningNone:
+            self.promptLabel.alpha = 0;
             self.promptLabel.text = NSLocalizedString(@"To start reading your eBooks, enter your Scholastic User Name and Password.", @"");
             break;
         case kSCHLoginHandlerCredentialsWarningMalformedEmail:
             self.promptLabel.text = NSLocalizedString(@"Please enter a valid e-mail address.", @"");
             break;
         case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
-#if USE_EMAIL_ADDRESS_AS_USERNAME            
-            self.promptLabel.text = NSLocalizedString(@"Your E-mail Address or Password was not recognized. Please try again or contact Scholastic customer service at storia@scholastic.com.", @"");
-#else 
-            self.promptLabel.text = NSLocalizedString(@"Your User Name or Password was not recognized. Please try again.", @"");            
-#endif     
+            self.promptLabel.text = NSLocalizedString(@"The password you entered is not correct. If you have forgotten your password, you can ask your parent to reset it using Parent Tools.", @"");
             break;
     }
 }
@@ -384,20 +261,28 @@ static const CGFloat kContentHeightLandscape = 380;
 {
     NSAssert(self.actionBlock != nil || self.retainLoopSafeActionBlock != nil, @"Action block must be set!");
     
+    
+    
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+    
     if (self.actionBlock) {
-        [self.view endEditing:YES];
+        
         self.actionBlock();
     } else if (self.retainLoopSafeActionBlock) {
+        
         BOOL good = self.retainLoopSafeActionBlock(self.topField ? [NSString stringWithString:self.topField.text] : nil,
                                                     self.bottomField ? [NSString stringWithString:self.bottomField.text] : nil);
         if (good) {
-            [self.view endEditing:YES];
             [self startShowingProgress];
         } else {
             [self clearFields];
-            [self.topField ?: self.bottomField becomeFirstResponder];
         }
     }
+    }];
+    
+    [self.view endEditing:YES];
+    [CATransaction commit];
 }
 
 - (IBAction)cancelButtonAction:(id)sender
@@ -509,7 +394,6 @@ static const CGFloat kContentHeightLandscape = 380;
 - (void)keyboardWillHide:(NSNotification *) notification
 {
     self.activeTextField = nil;
-    [self setupContentSizeForOrientation:self.interfaceOrientation];
 }
 
 @end

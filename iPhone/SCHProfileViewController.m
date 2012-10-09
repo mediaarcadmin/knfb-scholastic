@@ -25,6 +25,8 @@
 #import "SCHProfileSyncComponent.h"
 #import "BITModalSheetController.h"
 #import "DDPageControl.h"
+#import "SCHAppStateManager.h"
+#import "BITModalSheetController.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
@@ -166,7 +168,6 @@ static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
 
     self.currentIndex = 0;
     [self.pageControl setCurrentPage:self.currentIndex];
-    [self reloadPages];
     
     UIImage *parentButtonImage = [[UIImage imageNamed:@"sm_bttn_red_UNselected_3part"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     [self.parentButton setBackgroundImage:parentButtonImage forState:UIControlStateNormal];
@@ -342,38 +343,36 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (void)queryPasswordBeforePushingBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
 {
-    SCHLoginPasswordViewController *passwordController = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHProfilePasswordView" bundle:nil];
-    
-    [passwordController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [passwordController setModalPresentationStyle:UIModalPresentationFormSheet];
-
-    passwordController.cancelBlock = ^{
-        [self dismissModalViewControllerAnimated:YES];
-    };
-    
-    passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldString, NSString *bottomFieldString) {
-        if ([profileItem validatePasswordWith:bottomFieldString] == NO) {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Incorrect Password", @"") 
-                                                                 message:NSLocalizedString(@"The password you entered is not correct. If you have forgotten your password, you can ask your parent to reset it using Parent Tools.", @"")
-                                                                delegate:nil 
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                       otherButtonTitles:nil]; 
-            [errorAlert show]; 
-            [errorAlert release];
-            return NO;
-        } else {
-            [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-            [self pushBookshelvesControllerWithProfileItem:profileItem];
-            [self dismissModalViewControllerAnimated:YES];
-            return YES;
-        }	
-    };
-    
+    SCHLoginPasswordViewController *passwordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHProfilePasswordView" bundle:nil] autorelease];
     passwordController.controllerType = kSCHControllerPasswordOnlyView;
     [passwordController.profileLabel setText:[profileItem displayName]];
     
-    [self presentModalViewController:passwordController animated:YES];
-    [passwordController release];
+    BITModalSheetController *modalSheet = [[BITModalSheetController alloc] initWithContentViewController:passwordController];
+    [modalSheet setContentSize:CGSizeMake(525,226)];
+    modalSheet.offsetForLandscapeKeyboard = 91;
+    
+    passwordController.cancelBlock = ^{
+        [modalSheet dismissSheetAnimated:YES completion:nil];
+    };
+    
+    passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldString, NSString *bottomFieldString) {
+        
+            if ([profileItem validatePasswordWith:bottomFieldString] == NO) {
+                [modalSheet setContentSize:CGSizeMake(525,262) animated:YES completion:^{
+                    [passwordController setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningAuthenticationFailure];
+                }];
+                return NO;
+            } else {
+                [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
+                [modalSheet dismissSheetAnimated:YES completion:^{
+                    [self pushBookshelvesControllerWithProfileItem:profileItem];
+                }];
+                return YES;
+            }
+    
+    };
+
+    [modalSheet presentSheetInViewController:self animated:YES completion:nil];
 }
 
 - (void)obtainPasswordThenPushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
@@ -813,6 +812,11 @@ didSelectButtonAnimated:(BOOL)animated
 
     self.scrollView.contentSize = CGSizeMake(numPages * self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     [self setupScrollViewForIndex:self.currentIndex];
+    
+    NSString *screenName = [[SCHAppStateManager sharedAppStateManager] accountScreenName];
+    if ([screenName length]) {
+        [self.parentButton setTitle:[screenName uppercaseString] forState:UIControlStateNormal];
+    }
 }
 
 - (void)setupScrollViewForIndex:(NSInteger)index
@@ -887,7 +891,7 @@ didSelectButtonAnimated:(BOOL)animated
         rowHeight = kSCHProfileViewControllerRowHeightPhone;
     }
     
-    return floorf(CGRectGetHeight(self.scrollView.bounds)/rowHeight);
+    return MAX(1, floorf(CGRectGetHeight(self.scrollView.bounds)/rowHeight));
 }
 
 - (NSInteger)numberOfPages
