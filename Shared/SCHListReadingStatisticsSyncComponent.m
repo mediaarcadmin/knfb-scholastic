@@ -172,7 +172,9 @@ NSString * const SCHListReadingStatisticsSyncComponentDidFailNotification = @"SC
                     ret = NO;
                 }
             } else {
-                ret = NO;
+                // remove the profile if there are no books
+                [self.statisticsForProfilesWithBooks removeObjectForKey:profileID];
+
                 [self completeWithSuccessMethod:nil
                                          result:nil
                                        userInfo:nil
@@ -180,7 +182,6 @@ NSString * const SCHListReadingStatisticsSyncComponentDidFailNotification = @"SC
                            notificationUserInfo:nil];
             }
         } else {
-            ret = NO;
             [self completeWithSuccessMethod:nil
                                      result:nil
                                    userInfo:nil
