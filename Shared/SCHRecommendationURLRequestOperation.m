@@ -12,6 +12,9 @@
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHBookIdentifier.h"
 
+// Constants
+NSString * const SCHRecommendationURLRequestOperationDidUpdateNotification = @"SCHRecommendationURLRequestOperationDidUpdateNotification";
+
 @implementation SCHRecommendationURLRequestOperation
 
 - (void)dealloc
@@ -103,11 +106,19 @@
                     // combine resetCoverURLExpiredState and setProcessingState:kSCHAppRecommendationProcessingStateNoCover into this one save
                     [item setState:[NSNumber numberWithInt:kSCHAppRecommendationProcessingStateNoCover]];
                     [item setCoverURLExpiredCount:[NSNumber numberWithInteger:0]];
+
+                    NSDictionary *recommendationItemDictionary = [item dictionary];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (self.isCancelled == NO) {
+                            [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                                                                object:self
+                                                                              userInfo:recommendationItemDictionary];
+                        }
+                    });
                 }];
-                
             }
         }
-        
+
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         [self endOperation];        
 	}

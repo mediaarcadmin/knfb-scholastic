@@ -8,6 +8,9 @@
 
 #import "SCHRecommendationOperation.h"
 
+// Constants
+extern NSString * const SCHRecommendationURLRequestOperationDidUpdateNotification;
+
 @interface SCHRecommendationURLRequestOperation : SCHRecommendationOperation
 
 @end
