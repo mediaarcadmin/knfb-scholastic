@@ -150,6 +150,13 @@
         [self addSubview:self.closeButton];
         
 
+        self.layer.shadowColor = [UIColor colorWithWhite:0 alpha:0.6].CGColor;
+        self.layer.shadowOffset = CGSizeMake(2, 2);
+        self.layer.shadowRadius = 1.0f;
+        self.layer.shadowOpacity = 0.6;
+        self.layer.shouldRasterize = YES;
+        self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
+
         
 //        self.topTextContainerView.layer.borderColor = [UIColor purpleColor].CGColor;
 //        self.topTextContainerView.layer.borderWidth = 1;

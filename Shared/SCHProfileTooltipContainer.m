@@ -15,6 +15,8 @@
 @property (nonatomic, retain) SCHProfileTooltip *bottomTooltip;
 @property (nonatomic, retain) NSMutableArray *highlightViews;
 
+@property (nonatomic, retain) UIImage *cachedSuperviewImage;
+
 @end
 
 @implementation SCHProfileTooltipContainer
@@ -24,6 +26,7 @@
 @synthesize topTooltip;
 @synthesize bottomTooltip;
 @synthesize highlightViews;
+@synthesize cachedSuperviewImage;
 
 - (void)dealloc
 {
@@ -70,21 +73,23 @@
         self.bottomTooltip.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         [self addSubview:self.bottomTooltip];
         
-        [self addHighlightAtLocation:CGPointMake(160, 160)];
-        [self addHighlightAtLocation:CGPointMake(86, 239)];
-        
     }
     return self;
 }
 
 - (void)addHighlightAtLocation:(CGPoint)location
 {
-    UIView *highlightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+    UIView *highlightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 77, 77)];
     highlightView.center = location;
     highlightView.frame = CGRectIntegral(highlightView.frame);
+    
     highlightView.backgroundColor = [UIColor clearColor];
-    highlightView.layer.borderColor = [UIColor greenColor].CGColor;
-    highlightView.layer.borderWidth = 1;
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TooltipHighlight"]];
+    imageView.frame = CGRectMake(0, 0, 77, 77);
+    imageView.backgroundColor = [UIColor clearColor];
+    [highlightView addSubview:imageView];
+    [imageView release];
     
     [self.highlightViews addObject:highlightView];
     [self addSubview:highlightView];
