@@ -349,7 +349,7 @@ didSelectButtonAnimated:(BOOL)animated
     BITModalSheetController *modalSheet = nil;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        BITModalSheetController *modalSheet = [[BITModalSheetController alloc] initWithContentViewController:passwordController];
+        modalSheet = [[[BITModalSheetController alloc] initWithContentViewController:passwordController] autorelease];
         [modalSheet setContentSize:CGSizeMake(525,226)];
         modalSheet.offsetForLandscapeKeyboard = 92;
     }
@@ -402,7 +402,7 @@ didSelectButtonAnimated:(BOOL)animated
     BITModalSheetController *modalSheet = nil;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        BITModalSheetController *modalSheet = [[BITModalSheetController alloc] initWithContentViewController:passwordController];
+        modalSheet = [[[BITModalSheetController alloc] initWithContentViewController:passwordController] autorelease];
         [modalSheet setContentSize:CGSizeMake(525,277)];
         modalSheet.offsetForLandscapeKeyboard = 117;
     }
