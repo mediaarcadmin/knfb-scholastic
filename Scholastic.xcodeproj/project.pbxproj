@@ -1419,6 +1419,12 @@
 		52A36A6C15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A36A6915B444D200162753 /* SCHXPSKNFBMetadataFileParser.m */; };
 		52A36A7115B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A36A7015B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m */; };
 		52A6763113AF3744007A7FE6 /* UIColor+Scholastic.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */; };
+		52AA3F631615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */; };
+		52AA3F641615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */; };
+		52AA3F651615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */; };
+		52AA3F6A1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F691618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m */; };
+		52AA3F6B1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F691618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m */; };
+		52AA3F6C1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F691618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m */; };
 		52AD966E12F9B1B40099FB88 /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */; };
 		52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
 		52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
@@ -4156,6 +4162,10 @@
 		52A3EA9F140FE01D00D69935 /* KIFTestStep+EXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KIFTestStep+EXAdditions.m"; path = "KIF/KIFTestStep+EXAdditions.m"; sourceTree = "<group>"; };
 		52A6762F13AF3744007A7FE6 /* UIColor+Scholastic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Scholastic.h"; path = "Shared/UIColor+Scholastic.h"; sourceTree = "<group>"; };
 		52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Scholastic.m"; path = "Shared/UIColor+Scholastic.m"; sourceTree = "<group>"; };
+		52AA3F611615E68300297C01 /* SCHListReadingStatisticsSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListReadingStatisticsSyncComponent.h; path = Shared/SCHListReadingStatisticsSyncComponent.h; sourceTree = "<group>"; };
+		52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHListReadingStatisticsSyncComponent.m; path = Shared/SCHListReadingStatisticsSyncComponent.m; sourceTree = "<group>"; };
+		52AA3F681618F79900297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListReadingStatisticsAggregateByTitleRequestOperation.h; path = Shared/SCHListReadingStatisticsAggregateByTitleRequestOperation.h; sourceTree = "<group>"; };
+		52AA3F691618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHListReadingStatisticsAggregateByTitleRequestOperation.m; path = Shared/SCHListReadingStatisticsAggregateByTitleRequestOperation.m; sourceTree = "<group>"; };
 		52AD966512F9B1B40099FB88 /* SCHAnnotationsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsItem.h; path = Shared/SCHAnnotationsItem.h; sourceTree = "<group>"; };
 		52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsItem.m; path = Shared/SCHAnnotationsItem.m; sourceTree = "<group>"; };
 		52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncManager.h; path = Shared/SCHSyncManager.h; sourceTree = "<group>"; };
@@ -7198,6 +7208,10 @@
 				52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */,
 				520E14C9158FDE61003773E3 /* SCHSaveReadingStatisticsDetailedOperation.h */,
 				520E14CA158FDE62003773E3 /* SCHSaveReadingStatisticsDetailedOperation.m */,
+				52AA3F611615E68300297C01 /* SCHListReadingStatisticsSyncComponent.h */,
+				52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */,
+				52AA3F681618F79900297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.h */,
+				52AA3F691618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m */,
 				52AD9D6D130000570099FB88 /* SCHSettingsSyncComponent.h */,
 				52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */,
 				520E14C3158F883B003773E3 /* SCHListUserSettingsOperation.h */,
@@ -11666,6 +11680,8 @@
 				C9EE59C1161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */,
 				F84A4F2C1623EB49000FA943 /* SCHProfileTooltip.m in Sources */,
 				F84A4F491623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */,
+				52AA3F631615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */,
+				52AA3F6A1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12101,6 +12117,8 @@
 				C9EE59C3161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */,
 				F84A4F2E1623EB49000FA943 /* SCHProfileTooltip.m in Sources */,
 				F84A4F4B1623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */,
+				52AA3F651615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */,
+				52AA3F6C1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12529,6 +12547,8 @@
 				C9EE59C2161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */,
 				F84A4F2D1623EB49000FA943 /* SCHProfileTooltip.m in Sources */,
 				F84A4F4A1623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */,
+				52AA3F641615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */,
+				52AA3F6B1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

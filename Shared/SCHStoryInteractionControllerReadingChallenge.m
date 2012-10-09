@@ -161,8 +161,8 @@
 
 - (void)setupStartView
 {
-    // FIXME: in here, grab the best score from the sync
-//    self.bestScore = syncscore;
+    NSNumber *bestQuizScore = [self.delegate bestQuizScore];
+    self.bestScore = (bestQuizScore == nil ? -1 : [bestQuizScore integerValue]);
 
     self.completedReadthrough = [self.delegate bookHasBeenReadThroughCompletely];
     
