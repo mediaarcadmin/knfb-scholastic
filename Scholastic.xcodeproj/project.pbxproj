@@ -2711,6 +2711,30 @@
 		F849155614FFA54D000D064B /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
 		F849155714FFA54D000D064B /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
 		F849155814FFA54D000D064B /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F849155514FFA54D000D064B /* RateView.m */; };
+		F84A4F2C1623EB49000FA943 /* SCHProfileTooltip.m in Sources */ = {isa = PBXBuildFile; fileRef = F84A4F2B1623EB49000FA943 /* SCHProfileTooltip.m */; };
+		F84A4F2D1623EB49000FA943 /* SCHProfileTooltip.m in Sources */ = {isa = PBXBuildFile; fileRef = F84A4F2B1623EB49000FA943 /* SCHProfileTooltip.m */; };
+		F84A4F2E1623EB49000FA943 /* SCHProfileTooltip.m in Sources */ = {isa = PBXBuildFile; fileRef = F84A4F2B1623EB49000FA943 /* SCHProfileTooltip.m */; };
+		F84A4F351623F248000FA943 /* TooltipBottomBackground@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F2F1623F248000FA943 /* TooltipBottomBackground@2x~iphone.png */; };
+		F84A4F361623F248000FA943 /* TooltipBottomBackground@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F2F1623F248000FA943 /* TooltipBottomBackground@2x~iphone.png */; };
+		F84A4F371623F248000FA943 /* TooltipBottomBackground@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F2F1623F248000FA943 /* TooltipBottomBackground@2x~iphone.png */; };
+		F84A4F381623F248000FA943 /* TooltipBottomBackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F301623F248000FA943 /* TooltipBottomBackground~iphone.png */; };
+		F84A4F391623F248000FA943 /* TooltipBottomBackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F301623F248000FA943 /* TooltipBottomBackground~iphone.png */; };
+		F84A4F3A1623F248000FA943 /* TooltipBottomBackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F301623F248000FA943 /* TooltipBottomBackground~iphone.png */; };
+		F84A4F3B1623F248000FA943 /* TooltipCloseButton.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F311623F248000FA943 /* TooltipCloseButton.png */; };
+		F84A4F3C1623F248000FA943 /* TooltipCloseButton.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F311623F248000FA943 /* TooltipCloseButton.png */; };
+		F84A4F3D1623F248000FA943 /* TooltipCloseButton.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F311623F248000FA943 /* TooltipCloseButton.png */; };
+		F84A4F3E1623F248000FA943 /* TooltipCloseButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F321623F248000FA943 /* TooltipCloseButton@2x.png */; };
+		F84A4F3F1623F248000FA943 /* TooltipCloseButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F321623F248000FA943 /* TooltipCloseButton@2x.png */; };
+		F84A4F401623F248000FA943 /* TooltipCloseButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F321623F248000FA943 /* TooltipCloseButton@2x.png */; };
+		F84A4F411623F248000FA943 /* TooltipTopBackground@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F331623F248000FA943 /* TooltipTopBackground@2x~iphone.png */; };
+		F84A4F421623F248000FA943 /* TooltipTopBackground@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F331623F248000FA943 /* TooltipTopBackground@2x~iphone.png */; };
+		F84A4F431623F248000FA943 /* TooltipTopBackground@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F331623F248000FA943 /* TooltipTopBackground@2x~iphone.png */; };
+		F84A4F441623F248000FA943 /* TooltipTopBackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F341623F248000FA943 /* TooltipTopBackground~iphone.png */; };
+		F84A4F451623F248000FA943 /* TooltipTopBackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F341623F248000FA943 /* TooltipTopBackground~iphone.png */; };
+		F84A4F461623F248000FA943 /* TooltipTopBackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = F84A4F341623F248000FA943 /* TooltipTopBackground~iphone.png */; };
+		F84A4F491623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F84A4F481623F27D000FA943 /* SCHProfileTooltipContainer.m */; };
+		F84A4F4A1623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F84A4F481623F27D000FA943 /* SCHProfileTooltipContainer.m */; };
+		F84A4F4B1623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F84A4F481623F27D000FA943 /* SCHProfileTooltipContainer.m */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F84DB7591520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
 		F84DB75A1520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F84DB7581520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.m */; };
@@ -5174,6 +5198,16 @@
 		F848F411152B50A400048074 /* storiaStarHalfFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = storiaStarHalfFull.png; path = Resources/storiaStarHalfFull.png; sourceTree = "<group>"; };
 		F849155414FFA54D000D064B /* RateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RateView.h; sourceTree = "<group>"; };
 		F849155514FFA54D000D064B /* RateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RateView.m; sourceTree = "<group>"; };
+		F84A4F2A1623EB49000FA943 /* SCHProfileTooltip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileTooltip.h; path = Shared/SCHProfileTooltip.h; sourceTree = "<group>"; };
+		F84A4F2B1623EB49000FA943 /* SCHProfileTooltip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileTooltip.m; path = Shared/SCHProfileTooltip.m; sourceTree = "<group>"; };
+		F84A4F2F1623F248000FA943 /* TooltipBottomBackground@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipBottomBackground@2x~iphone.png"; path = "Resources/UIAssets/TooltipBottomBackground@2x~iphone.png"; sourceTree = "<group>"; };
+		F84A4F301623F248000FA943 /* TooltipBottomBackground~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipBottomBackground~iphone.png"; path = "Resources/UIAssets/TooltipBottomBackground~iphone.png"; sourceTree = "<group>"; };
+		F84A4F311623F248000FA943 /* TooltipCloseButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TooltipCloseButton.png; path = Resources/UIAssets/TooltipCloseButton.png; sourceTree = "<group>"; };
+		F84A4F321623F248000FA943 /* TooltipCloseButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipCloseButton@2x.png"; path = "Resources/UIAssets/TooltipCloseButton@2x.png"; sourceTree = "<group>"; };
+		F84A4F331623F248000FA943 /* TooltipTopBackground@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipTopBackground@2x~iphone.png"; path = "Resources/UIAssets/TooltipTopBackground@2x~iphone.png"; sourceTree = "<group>"; };
+		F84A4F341623F248000FA943 /* TooltipTopBackground~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipTopBackground~iphone.png"; path = "Resources/UIAssets/TooltipTopBackground~iphone.png"; sourceTree = "<group>"; };
+		F84A4F471623F27D000FA943 /* SCHProfileTooltipContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileTooltipContainer.h; path = Shared/SCHProfileTooltipContainer.h; sourceTree = "<group>"; };
+		F84A4F481623F27D000FA943 /* SCHProfileTooltipContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileTooltipContainer.m; path = Shared/SCHProfileTooltipContainer.m; sourceTree = "<group>"; };
 		F84CE154134C691D0044729E /* SCHNonDRMAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNonDRMAuthenticationManager.h; path = Shared/SCHNonDRMAuthenticationManager.h; sourceTree = "<group>"; };
 		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
 		F84DB7571520B9F10025BFCF /* SCHBookShelfMenuPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfMenuPopoverBackgroundView.h; path = iPad/SCHBookShelfMenuPopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -7518,6 +7552,12 @@
 		C920DDED138A69B400F1583D /* Profile and Admin Views */ = {
 			isa = PBXGroup;
 			children = (
+				F84A4F2F1623F248000FA943 /* TooltipBottomBackground@2x~iphone.png */,
+				F84A4F301623F248000FA943 /* TooltipBottomBackground~iphone.png */,
+				F84A4F311623F248000FA943 /* TooltipCloseButton.png */,
+				F84A4F321623F248000FA943 /* TooltipCloseButton@2x.png */,
+				F84A4F331623F248000FA943 /* TooltipTopBackground@2x~iphone.png */,
+				F84A4F341623F248000FA943 /* TooltipTopBackground~iphone.png */,
 				F8B1E4E114AE28CE0070EFCD /* storia-setup-logo.png */,
 				F8B1E4E214AE28CE0070EFCD /* storia-setup-logo@2x.png */,
 				F8B1E4E314AE28CE0070EFCD /* storia-setup-logo~ipad.png */,
@@ -8644,6 +8684,10 @@
 				F8898901135877B100D236ED /* SCHProfileViewCell.h */,
 				F8898902135877B100D236ED /* SCHProfileViewCell.m */,
 				52D0CD0E14A3306C0031D547 /* SCHProfileViewCellDelegate.h */,
+				F84A4F2A1623EB49000FA943 /* SCHProfileTooltip.h */,
+				F84A4F2B1623EB49000FA943 /* SCHProfileTooltip.m */,
+				F84A4F471623F27D000FA943 /* SCHProfileTooltipContainer.h */,
+				F84A4F481623F27D000FA943 /* SCHProfileTooltipContainer.m */,
 			);
 			name = "Profile View Controller";
 			sourceTree = "<group>";
@@ -10131,6 +10175,12 @@
 				F8EDAC98161EF27F0004E200 /* GreyPanelStretch@2x.png in Resources */,
 				F8EDAC9D161EF3240004E200 /* GreyPanel-divider@2x.png in Resources */,
 				C94CEC12161F7D06005A460A /* SCHSupportViewController~iphone.xib in Resources */,
+				F84A4F351623F248000FA943 /* TooltipBottomBackground@2x~iphone.png in Resources */,
+				F84A4F381623F248000FA943 /* TooltipBottomBackground~iphone.png in Resources */,
+				F84A4F3B1623F248000FA943 /* TooltipCloseButton.png in Resources */,
+				F84A4F3E1623F248000FA943 /* TooltipCloseButton@2x.png in Resources */,
+				F84A4F411623F248000FA943 /* TooltipTopBackground@2x~iphone.png in Resources */,
+				F84A4F441623F248000FA943 /* TooltipTopBackground~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10178,6 +10228,12 @@
 				C9E1BFB416036CBC00CB8A4E /* storia-loginbackground@2x~ipad.jpg in Resources */,
 				C9E1BFB816036CBC00CB8A4E /* storia-loginbackground~ipad.jpg in Resources */,
 				C9DFBBD0160A625C00A02805 /* SCHSupportViewController~ipad.xib in Resources */,
+				F84A4F371623F248000FA943 /* TooltipBottomBackground@2x~iphone.png in Resources */,
+				F84A4F3A1623F248000FA943 /* TooltipBottomBackground~iphone.png in Resources */,
+				F84A4F3D1623F248000FA943 /* TooltipCloseButton.png in Resources */,
+				F84A4F401623F248000FA943 /* TooltipCloseButton@2x.png in Resources */,
+				F84A4F431623F248000FA943 /* TooltipTopBackground@2x~iphone.png in Resources */,
+				F84A4F461623F248000FA943 /* TooltipTopBackground~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11047,6 +11103,12 @@
 				F8EDAC99161EF27F0004E200 /* GreyPanelStretch@2x.png in Resources */,
 				F8EDAC9E161EF3240004E200 /* GreyPanel-divider@2x.png in Resources */,
 				C94CEC13161F7D06005A460A /* SCHSupportViewController~iphone.xib in Resources */,
+				F84A4F361623F248000FA943 /* TooltipBottomBackground@2x~iphone.png in Resources */,
+				F84A4F391623F248000FA943 /* TooltipBottomBackground~iphone.png in Resources */,
+				F84A4F3C1623F248000FA943 /* TooltipCloseButton.png in Resources */,
+				F84A4F3F1623F248000FA943 /* TooltipCloseButton@2x.png in Resources */,
+				F84A4F421623F248000FA943 /* TooltipTopBackground@2x~iphone.png in Resources */,
+				F84A4F451623F248000FA943 /* TooltipTopBackground~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11506,6 +11568,8 @@
 				F8A7F50E16199AF200E43EDC /* SCHTourStepImageView.m in Sources */,
 				F8A7F51416199FB200E43EDC /* SCHTourStepMovieView.m in Sources */,
 				C9EE59C1161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */,
+				F84A4F2C1623EB49000FA943 /* SCHProfileTooltip.m in Sources */,
+				F84A4F491623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11939,6 +12003,8 @@
 				521F50EB161456870002E83F /* SCHTourFullScreenImageViewController.m in Sources */,
 				C91CA1BB16159A890074A5DA /* SCHDownloadReportingOperation.m in Sources */,
 				C9EE59C3161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */,
+				F84A4F2E1623EB49000FA943 /* SCHProfileTooltip.m in Sources */,
+				F84A4F4B1623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12365,6 +12431,8 @@
 				F8A7F50F16199AF200E43EDC /* SCHTourStepImageView.m in Sources */,
 				F8A7F51516199FB200E43EDC /* SCHTourStepMovieView.m in Sources */,
 				C9EE59C2161ED7D8002B8F3E /* SCHSettingsViewCell.m in Sources */,
+				F84A4F2D1623EB49000FA943 /* SCHProfileTooltip.m in Sources */,
+				F84A4F4A1623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
