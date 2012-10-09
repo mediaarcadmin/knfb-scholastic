@@ -36,6 +36,8 @@ static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
 
+@property (nonatomic, retain) SCHProfileTooltipContainer *tooltipContainer;
+
 @property (nonatomic, assign) NSUInteger currentIndex;
 @property (nonatomic, retain) NSArray *pagingViewControllers;
 
@@ -78,6 +80,7 @@ static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
 @synthesize profileSetupDelegate;
 @synthesize simultaneousTapCount;
 @synthesize appController;
+@synthesize tooltipContainer;
 
 #pragma mark - Object lifecycle
 
@@ -105,6 +108,7 @@ static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
 
 - (void)releaseViewObjects
 {
+    [tooltipContainer release], tooltipContainer = nil;
     [scrollView release], scrollView = nil;
     [parentButton release], parentButton = nil;
     [pageControl release], pageControl = nil;
@@ -1006,6 +1010,19 @@ didSelectButtonAnimated:(BOOL)animated
 - (IBAction)tooltips:(id)sender
 {
     NSLog(@"Show tooltips");
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.tooltipContainer = [[[SCHProfileTooltipContainer alloc] initWithFrame:self.view.frame] autorelease];
+        self.tooltipContainer.delegate = self;
+        [self.view addSubview:self.tooltipContainer];
+    
+    }
+}
+
+- (void)profileTooltipContainerSelectedClose:(SCHProfileTooltipContainer *)container
+{
+    [self.tooltipContainer removeFromSuperview];
+    self.tooltipContainer = nil;
 }
 
 @end

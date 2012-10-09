@@ -15,6 +15,8 @@
 
 @property (nonatomic, assign) id <SCHProfileTooltipContainerDelegate> delegate;
 
+- (void)addHighlightAtLocation:(CGPoint)location;
+
 @end
 
 

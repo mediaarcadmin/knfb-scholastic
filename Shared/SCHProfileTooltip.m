@@ -7,6 +7,10 @@
 //
 
 #import "SCHProfileTooltip.h"
+#import <QuartzCore/QuartzCore.h>
+
+#define TEXT_X_INSET 25
+#define TEXT_Y_INSET 10
 
 @interface SCHProfileTooltip ()
 
@@ -54,43 +58,51 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+//        self.layer.borderWidth = 1;
+//        self.layer.borderColor = [UIColor yellowColor].CGColor;
+
         // background image
-        self.backgroundImageView = [[[UIImageView alloc] initWithFrame:frame] autorelease];
+        self.backgroundImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)] autorelease];
         self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        self.backgroundImageView.contentMode = UIViewContentModeCenter;
+//        self.backgroundImageView.layer.borderWidth = 1;
+//        self.backgroundImageView.layer.borderColor = [UIColor orangeColor].CGColor;
         
         [self addSubview:self.backgroundImageView];
         
-        // close button
-        self.closeButton = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)] autorelease];
-        [self.closeButton setImage:[UIImage imageNamed:@"TooltipCloseButton"] forState:UIControlStateNormal];
-        self.closeButton.center = CGPointMake(frame.origin.x + frame.size.width, frame.origin.y);
-        self.closeButton.frame = CGRectIntegral(self.closeButton.frame);
-        self.closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
-        
-        [self.closeButton addTarget:self action:@selector(pressedCloseButton:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [self addSubview:self.closeButton];
-        
         // title text
-        self.topTextContainerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, floorf(frame.size.height / 2))] autorelease];
+        
+        CGRect topTextContainerFrame = CGRectMake(0, 0, frame.size.width, floorf(frame.size.height / 2));
+        topTextContainerFrame = CGRectInset(topTextContainerFrame, TEXT_X_INSET, TEXT_Y_INSET);
+        
+        self.topTextContainerView = [[[UIView alloc] initWithFrame:topTextContainerFrame] autorelease];
         self.topTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
         
-        self.bottomTextContainerView = [[[UIView alloc] initWithFrame:CGRectMake(0, floorf(frame.size.height / 2), frame.size.width, floorf(frame.size.height / 2))] autorelease];
+        CGRect bottomTextContainerFrame = CGRectMake(0, floorf(frame.size.height / 2), frame.size.width, floorf(frame.size.height / 2));
+        bottomTextContainerFrame = CGRectInset(bottomTextContainerFrame, TEXT_X_INSET, TEXT_Y_INSET);
+
+        self.bottomTextContainerView = [[[UIView alloc] initWithFrame:bottomTextContainerFrame] autorelease];
         self.bottomTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
         
         
         self.titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.topTextContainerView.frame.size.width, floorf(self.topTextContainerView.frame.size.height * 0.33))] autorelease];
-        self.titleLabel.font = [UIFont systemFontOfSize:16];
+        self.titleLabel.font = [UIFont boldSystemFontOfSize:16];
         self.titleLabel.textColor = [UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:1];
         self.titleLabel.backgroundColor = [UIColor clearColor];
+        self.titleLabel.textAlignment = UITextAlignmentCenter;
         self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
 
         
         
         self.subtitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, self.titleLabel.frame.size.height, self.topTextContainerView.frame.size.width, floorf(self.topTextContainerView.frame.size.height - self.titleLabel.frame.size.height))] autorelease];
         self.subtitleLabel.textColor = [UIColor darkGrayColor];
-        self.subtitleLabel.font = [UIFont systemFontOfSize:11];
+        self.subtitleLabel.font = [UIFont systemFontOfSize:12];
         self.subtitleLabel.backgroundColor = [UIColor clearColor];
+        self.subtitleLabel.numberOfLines = 0;
+        self.subtitleLabel.lineBreakMode = UILineBreakModeWordWrap;
+        self.subtitleLabel.textAlignment = UITextAlignmentCenter;
+
         self.subtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
 
 
@@ -99,17 +111,23 @@
         
 
         self.secondTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bottomTextContainerView.frame.size.width, floorf(self.bottomTextContainerView.frame.size.height * 0.33))] autorelease];
-        self.secondTitleLabel.font = [UIFont systemFontOfSize:16];
+        self.secondTitleLabel.font = [UIFont boldSystemFontOfSize:16];
         self.secondTitleLabel.textColor = [UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:1];
         self.secondTitleLabel.backgroundColor = [UIColor clearColor];
+        self.secondTitleLabel.textAlignment = UITextAlignmentCenter;
+
         self.secondTitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
         
         
         
         self.secondSubtitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, self.secondTitleLabel.frame.size.height, self.bottomTextContainerView.frame.size.width, floorf(self.bottomTextContainerView.frame.size.height - self.secondTitleLabel.frame.size.height))] autorelease];
         self.secondSubtitleLabel.textColor = [UIColor darkGrayColor];
-        self.secondSubtitleLabel.font = [UIFont systemFontOfSize:11];
+        self.secondSubtitleLabel.font = [UIFont systemFontOfSize:12];
         self.secondSubtitleLabel.backgroundColor = [UIColor clearColor];
+        self.secondSubtitleLabel.numberOfLines = 0;
+        self.secondSubtitleLabel.lineBreakMode = UILineBreakModeWordWrap;
+        self.secondSubtitleLabel.textAlignment = UITextAlignmentCenter;
+
         self.secondSubtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
 
         
@@ -119,6 +137,24 @@
         
         [self addSubview:self.topTextContainerView];
         [self addSubview:self.bottomTextContainerView];
+        
+        // close button
+        self.closeButton = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)] autorelease];
+        [self.closeButton setImage:[UIImage imageNamed:@"TooltipCloseButton"] forState:UIControlStateNormal];
+        self.closeButton.center = CGPointMake(self.backgroundImageView.frame.origin.x + self.backgroundImageView.frame.size.width - 20, self.backgroundImageView.frame.origin.y + floorf(TEXT_Y_INSET / 2));
+        //        self.closeButton.frame = CGRectIntegral(self.closeButton.frame);
+        self.closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+        
+        [self.closeButton addTarget:self action:@selector(pressedCloseButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self addSubview:self.closeButton];
+        
+
+        
+//        self.topTextContainerView.layer.borderColor = [UIColor purpleColor].CGColor;
+//        self.topTextContainerView.layer.borderWidth = 1;
+//        self.bottomTextContainerView.layer.borderColor = [UIColor greenColor].CGColor;
+//        self.bottomTextContainerView.layer.borderWidth = 1;
         
         
     }
@@ -144,16 +180,16 @@
 - (void)setUsesCloseButton:(BOOL)closeButtonVisible
 {
     if (self.closeButton) {
-        self.closeButton.hidden = closeButtonVisible;
+        self.closeButton.hidden = !closeButtonVisible;
+    } else {
+        self.closeButton.hidden = YES;
     }
-    
-    self.closeButton.hidden = YES;
 }
 
 - (BOOL)usesCloseButton
 {
     if (self.closeButton) {
-        return self.closeButton.hidden;
+        return !self.closeButton.hidden;
     }
     
     return NO;
