@@ -15,6 +15,8 @@
 @property (nonatomic, retain) SCHProfileTooltip *bottomTooltip;
 @property (nonatomic, retain) NSMutableArray *highlightViews;
 
+@property (nonatomic, retain) UIImage *cachedSuperviewImage;
+
 @end
 
 @implementation SCHProfileTooltipContainer
@@ -24,6 +26,7 @@
 @synthesize topTooltip;
 @synthesize bottomTooltip;
 @synthesize highlightViews;
+@synthesize cachedSuperviewImage;
 
 - (void)dealloc
 {
@@ -49,45 +52,67 @@
         [self.clearBackgroundButton addTarget:self action:@selector(closeView:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.clearBackgroundButton];
         
-
-        self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(0, 14, 320, 100)] autorelease];
-        [self.topTooltip setTitle:@"Welcome to your Bookshelves!"
-                         bodyText:@"Manage individual bookshelves for your children. You’ll need to assign each eBook to a bookshelf before they can be read."];
-        self.topTooltip.usesCloseButton = YES;
-        self.topTooltip.delegate = self;
-        self.topTooltip.backgroundImage = [UIImage imageNamed:@"TooltipTopBackground"];
-        self.topTooltip.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
-        [self addSubview:self.topTooltip];
-        
-
-        self.bottomTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(0, 290, 320, 160)] autorelease];
-        [self.bottomTooltip setFirstTitle:@"Reading Manager"
-                            firstBodyText:@"Go here to assign new eBooks and monitor reading progress."
-                              secondTitle:@"Child's Bookshelf"
-                           secondBodyText:@"Your child can start reading by selecting their name. Their eBooks will be waiting for them!"];
-        self.bottomTooltip.usesCloseButton = NO;
-        self.bottomTooltip.backgroundImage = [UIImage imageNamed:@"TooltipBottomBackground"];
-        self.bottomTooltip.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-        [self addSubview:self.bottomTooltip];
-        
-        [self addHighlightAtLocation:CGPointMake(160, 160)];
-        [self addHighlightAtLocation:CGPointMake(86, 239)];
-        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(0, 14, 320, 100)] autorelease];
+            [self.topTooltip setTitle:@"Welcome to your Bookshelves!"
+                             bodyText:@"Manage individual bookshelves for your children. You’ll need to assign each eBook to a bookshelf before they can be read."];
+            self.topTooltip.usesCloseButton = YES;
+            self.topTooltip.delegate = self;
+            self.topTooltip.backgroundImage = [UIImage imageNamed:@"TooltipTopBackground"];
+            self.topTooltip.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+            [self addSubview:self.topTooltip];
+            
+            
+            self.bottomTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(0, 290, 320, 160)] autorelease];
+            [self.bottomTooltip setFirstTitle:@"Reading Manager"
+                                firstBodyText:@"Go here to assign new eBooks and monitor reading progress."
+                                  secondTitle:@"Child's Bookshelf"
+                               secondBodyText:@"Your child can start reading by selecting their name. Their eBooks will be waiting for them!"];
+            self.bottomTooltip.usesCloseButton = NO;
+            self.bottomTooltip.backgroundImage = [UIImage imageNamed:@"TooltipBottomBackground"];
+            self.bottomTooltip.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+            [self addSubview:self.bottomTooltip];
+        } else {
+            self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(584, 192, 315, 119) edgeInsets:UIEdgeInsetsMake(-5, 20, 0, 0)] autorelease];
+            [self.topTooltip setTitle:@"Reading Manager"
+                             bodyText:@"Go here to assign new eBooks and monitor reading progress. This area is password protected and only accessible to grown-ups."];
+            self.topTooltip.usesCloseButton = YES;
+            self.topTooltip.delegate = self;
+            self.topTooltip.backgroundImage = [UIImage imageNamed:@"TooltipTopBackground"];
+            self.topTooltip.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+            [self addSubview:self.topTooltip];
+            
+            
+            self.bottomTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(102, 388, 301, 132)
+                                   edgeInsets:UIEdgeInsetsMake(20, 0, 0, 0)] autorelease];
+            [self.bottomTooltip setTitle:@"Child's Bookshelf"
+                             bodyText:@"Your child can start reading by selecting their name. The eBooks you have assigned are waiting for them!"];
+            self.bottomTooltip.usesCloseButton = NO;
+            self.bottomTooltip.backgroundImage = [UIImage imageNamed:@"TooltipBottomBackground"];
+            self.bottomTooltip.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+            [self addSubview:self.bottomTooltip];
+        }
     }
     return self;
 }
 
 - (void)addHighlightAtLocation:(CGPoint)location
 {
-    UIView *highlightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+    UIView *highlightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 77, 77)];
     highlightView.center = location;
     highlightView.frame = CGRectIntegral(highlightView.frame);
+    
     highlightView.backgroundColor = [UIColor clearColor];
-    highlightView.layer.borderColor = [UIColor greenColor].CGColor;
-    highlightView.layer.borderWidth = 1;
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TooltipHighlight"]];
+    imageView.frame = CGRectMake(0, 0, 77, 77);
+    imageView.backgroundColor = [UIColor clearColor];
+    [highlightView addSubview:imageView];
+    [imageView release];
     
     [self.highlightViews addObject:highlightView];
     [self addSubview:highlightView];
+    [self sendSubviewToBack:highlightView];
     [highlightView release];
 }
 

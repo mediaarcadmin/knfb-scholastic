@@ -3135,6 +3135,24 @@
 		F8F726901524722400250724 /* storiaStarHalfFull~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726861524722400250724 /* storiaStarHalfFull~ipad.png */; };
 		F8F726941524875F00250724 /* BookShelfListWhiteGradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */; };
 		F8F726951524875F00250724 /* BookShelfListWhiteGradientBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */; };
+		F8FA46091624101400CC6D39 /* TooltipHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA46071624101400CC6D39 /* TooltipHighlight.png */; };
+		F8FA460A1624101400CC6D39 /* TooltipHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA46071624101400CC6D39 /* TooltipHighlight.png */; };
+		F8FA460B1624101400CC6D39 /* TooltipHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA46071624101400CC6D39 /* TooltipHighlight.png */; };
+		F8FA460C1624101400CC6D39 /* TooltipHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA46081624101400CC6D39 /* TooltipHighlight@2x.png */; };
+		F8FA460D1624101400CC6D39 /* TooltipHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA46081624101400CC6D39 /* TooltipHighlight@2x.png */; };
+		F8FA460E1624101400CC6D39 /* TooltipHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA46081624101400CC6D39 /* TooltipHighlight@2x.png */; };
+		F8FA4613162425BE00CC6D39 /* TooltipBottomBackground@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA460F162425BE00CC6D39 /* TooltipBottomBackground@2x~ipad.png */; };
+		F8FA4614162425BE00CC6D39 /* TooltipBottomBackground@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA460F162425BE00CC6D39 /* TooltipBottomBackground@2x~ipad.png */; };
+		F8FA4615162425BE00CC6D39 /* TooltipBottomBackground@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA460F162425BE00CC6D39 /* TooltipBottomBackground@2x~ipad.png */; };
+		F8FA4616162425BE00CC6D39 /* TooltipBottomBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA4610162425BE00CC6D39 /* TooltipBottomBackground~ipad.png */; };
+		F8FA4617162425BE00CC6D39 /* TooltipBottomBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA4610162425BE00CC6D39 /* TooltipBottomBackground~ipad.png */; };
+		F8FA4618162425BE00CC6D39 /* TooltipBottomBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA4610162425BE00CC6D39 /* TooltipBottomBackground~ipad.png */; };
+		F8FA4619162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA4611162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png */; };
+		F8FA461A162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA4611162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png */; };
+		F8FA461B162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA4611162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png */; };
+		F8FA461C162425BE00CC6D39 /* TooltipTopBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA4612162425BE00CC6D39 /* TooltipTopBackground~ipad.png */; };
+		F8FA461D162425BE00CC6D39 /* TooltipTopBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA4612162425BE00CC6D39 /* TooltipTopBackground~ipad.png */; };
+		F8FA461E162425BE00CC6D39 /* TooltipTopBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8FA4612162425BE00CC6D39 /* TooltipTopBackground~ipad.png */; };
 		F8FAF2F313F12F20009C7E9F /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
 		F8FB038F15EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FB038E15EE1B9F001DADFF /* TTTAttributedLabel.m */; };
 		F8FB039015EE1B9F001DADFF /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FB038E15EE1B9F001DADFF /* TTTAttributedLabel.m */; };
@@ -5534,6 +5552,12 @@
 		F8F726851524722400250724 /* storiaStarFull~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarFull~ipad.png"; path = "Resources/storiaStarFull~ipad.png"; sourceTree = "<group>"; };
 		F8F726861524722400250724 /* storiaStarHalfFull~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storiaStarHalfFull~ipad.png"; path = "Resources/storiaStarHalfFull~ipad.png"; sourceTree = "<group>"; };
 		F8F726931524875F00250724 /* BookShelfListWhiteGradientBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfListWhiteGradientBackground.png; path = Resources/BookShelfListWhiteGradientBackground.png; sourceTree = "<group>"; };
+		F8FA46071624101400CC6D39 /* TooltipHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TooltipHighlight.png; path = Resources/UIAssets/TooltipHighlight.png; sourceTree = "<group>"; };
+		F8FA46081624101400CC6D39 /* TooltipHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipHighlight@2x.png"; path = "Resources/UIAssets/TooltipHighlight@2x.png"; sourceTree = "<group>"; };
+		F8FA460F162425BE00CC6D39 /* TooltipBottomBackground@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipBottomBackground@2x~ipad.png"; path = "Resources/UIAssets/TooltipBottomBackground@2x~ipad.png"; sourceTree = "<group>"; };
+		F8FA4610162425BE00CC6D39 /* TooltipBottomBackground~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipBottomBackground~ipad.png"; path = "Resources/UIAssets/TooltipBottomBackground~ipad.png"; sourceTree = "<group>"; };
+		F8FA4611162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipTopBackground@2x~ipad.png"; path = "Resources/UIAssets/TooltipTopBackground@2x~ipad.png"; sourceTree = "<group>"; };
+		F8FA4612162425BE00CC6D39 /* TooltipTopBackground~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipTopBackground~ipad.png"; path = "Resources/UIAssets/TooltipTopBackground~ipad.png"; sourceTree = "<group>"; };
 		F8FAF2F113F12F20009C7E9F /* SCHAppStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppStateManager.h; path = Shared/SCHAppStateManager.h; sourceTree = "<group>"; };
 		F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppStateManager.m; path = Shared/SCHAppStateManager.m; sourceTree = "<group>"; };
 		F8FB038D15EE1B9F001DADFF /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTTAttributedLabel.h; path = Shared/Libraries/Submodules/TTTAttributedLabel/TTTAttributedLabel.h; sourceTree = "<group>"; };
@@ -7584,6 +7608,12 @@
 				C9915D6C162378500041A114 /* tooltips_bttn_blue_sm_UNselected@2x.png */,
 				C9915D59162362D60041A114 /* tooltips_bttn_blue_UNselected.png */,
 				C9915D5A162362D60041A114 /* tooltips_bttn_blue_UNselected@2x.png */,
+				F8FA46071624101400CC6D39 /* TooltipHighlight.png */,
+				F8FA46081624101400CC6D39 /* TooltipHighlight@2x.png */,
+				F8FA460F162425BE00CC6D39 /* TooltipBottomBackground@2x~ipad.png */,
+				F8FA4610162425BE00CC6D39 /* TooltipBottomBackground~ipad.png */,
+				F8FA4611162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png */,
+				F8FA4612162425BE00CC6D39 /* TooltipTopBackground~ipad.png */,
 				F84A4F2F1623F248000FA943 /* TooltipBottomBackground@2x~iphone.png */,
 				F84A4F301623F248000FA943 /* TooltipBottomBackground~iphone.png */,
 				F84A4F311623F248000FA943 /* TooltipCloseButton.png */,
@@ -10221,6 +10251,12 @@
 				F84A4F3E1623F248000FA943 /* TooltipCloseButton@2x.png in Resources */,
 				F84A4F411623F248000FA943 /* TooltipTopBackground@2x~iphone.png in Resources */,
 				F84A4F441623F248000FA943 /* TooltipTopBackground~iphone.png in Resources */,
+				F8FA46091624101400CC6D39 /* TooltipHighlight.png in Resources */,
+				F8FA460C1624101400CC6D39 /* TooltipHighlight@2x.png in Resources */,
+				F8FA4613162425BE00CC6D39 /* TooltipBottomBackground@2x~ipad.png in Resources */,
+				F8FA4616162425BE00CC6D39 /* TooltipBottomBackground~ipad.png in Resources */,
+				F8FA4619162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png in Resources */,
+				F8FA461C162425BE00CC6D39 /* TooltipTopBackground~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10274,6 +10310,12 @@
 				F84A4F401623F248000FA943 /* TooltipCloseButton@2x.png in Resources */,
 				F84A4F431623F248000FA943 /* TooltipTopBackground@2x~iphone.png in Resources */,
 				F84A4F461623F248000FA943 /* TooltipTopBackground~iphone.png in Resources */,
+				F8FA460B1624101400CC6D39 /* TooltipHighlight.png in Resources */,
+				F8FA460E1624101400CC6D39 /* TooltipHighlight@2x.png in Resources */,
+				F8FA4615162425BE00CC6D39 /* TooltipBottomBackground@2x~ipad.png in Resources */,
+				F8FA4618162425BE00CC6D39 /* TooltipBottomBackground~ipad.png in Resources */,
+				F8FA461B162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png in Resources */,
+				F8FA461E162425BE00CC6D39 /* TooltipTopBackground~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11157,6 +11199,12 @@
 				F84A4F3F1623F248000FA943 /* TooltipCloseButton@2x.png in Resources */,
 				F84A4F421623F248000FA943 /* TooltipTopBackground@2x~iphone.png in Resources */,
 				F84A4F451623F248000FA943 /* TooltipTopBackground~iphone.png in Resources */,
+				F8FA460A1624101400CC6D39 /* TooltipHighlight.png in Resources */,
+				F8FA460D1624101400CC6D39 /* TooltipHighlight@2x.png in Resources */,
+				F8FA4614162425BE00CC6D39 /* TooltipBottomBackground@2x~ipad.png in Resources */,
+				F8FA4617162425BE00CC6D39 /* TooltipBottomBackground~ipad.png in Resources */,
+				F8FA461A162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png in Resources */,
+				F8FA461D162425BE00CC6D39 /* TooltipTopBackground~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

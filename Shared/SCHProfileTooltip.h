@@ -17,6 +17,8 @@
 @property (nonatomic, retain) UIImage *backgroundImage;
 @property (nonatomic, assign) BOOL usesCloseButton;
 
+- (id)initWithFrame:(CGRect)frame edgeInsets:(UIEdgeInsets)insets;
+
 - (void)setTitle:(NSString *)title bodyText:(NSString *)bodyText;
 - (void)setFirstTitle:(NSString *)title firstBodyText:(NSString *)bodyText secondTitle:(NSString *)secondTitle secondBodyText:(NSString *)secondBodyText;
 

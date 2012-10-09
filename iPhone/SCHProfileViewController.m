@@ -1023,18 +1023,43 @@ didSelectButtonAnimated:(BOOL)animated
 {
     NSLog(@"Show tooltips");
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        self.tooltipContainer = [[[SCHProfileTooltipContainer alloc] initWithFrame:self.view.frame] autorelease];
-        self.tooltipContainer.delegate = self;
-        [self.view addSubview:self.tooltipContainer];
+    self.tooltipContainer = [[[SCHProfileTooltipContainer alloc] initWithFrame:self.view.frame] autorelease];
+    self.tooltipContainer.delegate = self;
+    self.tooltipContainer.alpha = 0;
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.tooltipContainer addHighlightAtLocation:CGPointMake(160, 160)];
+        [self.tooltipContainer addHighlightAtLocation:CGPointMake(86, 239)];
+    } else {
+        [self.tooltipContainer addHighlightAtLocation:CGPointMake(512, 250)];
+        [self.tooltipContainer addHighlightAtLocation:CGPointMake(246, 358)];
     }
+
+    
+    [self.view addSubview:self.tooltipContainer];
+    
+    
+    [UIView animateWithDuration:0.2
+                          delay:0
+                        options:UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.tooltipContainer.alpha = 1;
+                     }
+                     completion:nil];
 }
 
 - (void)profileTooltipContainerSelectedClose:(SCHProfileTooltipContainer *)container
 {
-    [self.tooltipContainer removeFromSuperview];
-    self.tooltipContainer = nil;
+    [UIView animateWithDuration:0.2
+                          delay:0
+                        options:UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.tooltipContainer.alpha = 0;
+                     }
+                     completion:^(BOOL finished) {
+                         [self.tooltipContainer removeFromSuperview];
+                         self.tooltipContainer = nil;
+                     }];
 }
 
 @end
