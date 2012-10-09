@@ -512,7 +512,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 - (BOOL)listReadingStatisticsAggregateByTitle:(NSArray *)bookISBNs
                                    forProfile:(NSNumber *)profileID
-                                 lastReadDate:(NSDate *)lastReadDate
 {
 	BOOL ret = NO;
 
@@ -532,9 +531,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		}
         // we have no purpose for this information and do not request it
         request.maxWordCount = [NSNumber numberWithInt:0];
-        if (lastReadDate != nil) {
-            request.lastReadDate = lastReadDate;
-        }
+        request.lastReadDate = [NSDate distantPast];
 
 		[self.binding ListReadingStatisticsAggregateByTitleAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
@@ -1701,6 +1698,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         ret = [self objectFromLastPage:anObject];
     } else if ([anObject isKindOfClass:[tns1_Rating class]] == YES) {
         ret = [self objectFromRating:anObject];
+    } else if ([anObject isKindOfClass:[tns1_QuizItem class]] == YES) {
+        ret = [self objectFromQuizItem:anObject];
 	} else {
 		ret = anObject;
 	}
