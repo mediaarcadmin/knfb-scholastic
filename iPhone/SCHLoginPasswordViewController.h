@@ -64,6 +64,7 @@ typedef void(^SCHActionBlock)(void);
 @property (nonatomic, retain) IBOutlet UILabel *profileLabel;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
+@property (nonatomic, retain) IBOutlet UIView *shadowView;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 
@@ -73,6 +74,7 @@ typedef void(^SCHActionBlock)(void);
 @property (nonatomic, retain) IBOutlet SCHUnderlinedButton *accountURL;
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
 @property (nonatomic, retain) IBOutlet UIButton *closeButton;
+@property (nonatomic, retain) IBOutlet UIButton *backButton;
 
 - (IBAction)actionButtonAction:(id)sender;
 - (IBAction)cancelButtonAction:(id)sender;

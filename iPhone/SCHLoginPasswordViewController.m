@@ -38,8 +38,10 @@ static const CGFloat kContentHeightLandscape = 380;
 @synthesize bottomField;
 @synthesize spinner;
 @synthesize closeButton;
+@synthesize backButton;
 @synthesize profileLabel;
 @synthesize containerView;
+@synthesize shadowView;
 @synthesize scrollView;
 @synthesize forgotUsernamePasswordURL;
 @synthesize accountURL;
@@ -61,12 +63,14 @@ static const CGFloat kContentHeightLandscape = 380;
     [closeButton release], closeButton = nil;
     [profileLabel release], profileLabel = nil;
     [containerView release], containerView = nil;
+    [shadowView release], shadowView = nil;
     [scrollView release], scrollView = nil;
     [forgotUsernamePasswordURL release], forgotUsernamePasswordURL = nil;
     [accountURL release], accountURL = nil;
     [loginButton release], loginButton = nil;
     [activeTextField release], activeTextField = nil;
     [promptLabel release], promptLabel = nil;
+    [backButton release], backButton = nil;
 }
 
 - (void)dealloc 
@@ -117,6 +121,17 @@ static const CGFloat kContentHeightLandscape = 380;
     UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
     [self.loginButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
     [self.closeButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+    
+    UIImage *backButtonImage = [[UIImage imageNamed:@"bookshelf_arrow_bttn_UNselected_3part"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
+    [self.backButton setBackgroundImage:backButtonImage forState:UIControlStateNormal];
+    
+    self.shadowView.layer.shadowOpacity = 0.5f;
+    self.shadowView.layer.shadowOffset = CGSizeMake(0, 0);
+    self.shadowView.layer.shadowRadius = 4.0f;
+    self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
+    self.containerView.layer.masksToBounds = YES;
+    self.containerView.layer.cornerRadius = 10.0f;
+    
 //    UIView *fillerView = nil;
 
     

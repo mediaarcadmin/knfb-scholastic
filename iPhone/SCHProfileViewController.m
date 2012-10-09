@@ -346,12 +346,20 @@ didSelectButtonAnimated:(BOOL)animated
     SCHLoginPasswordViewController *passwordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHProfilePasswordView" bundle:nil] autorelease];
     passwordController.controllerType = kSCHControllerPasswordOnlyView;
 
-    BITModalSheetController *modalSheet = [[BITModalSheetController alloc] initWithContentViewController:passwordController];
-    [modalSheet setContentSize:CGSizeMake(525,226)];
-    modalSheet.offsetForLandscapeKeyboard = 92;
+    BITModalSheetController *modalSheet = nil;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        BITModalSheetController *modalSheet = [[BITModalSheetController alloc] initWithContentViewController:passwordController];
+        [modalSheet setContentSize:CGSizeMake(525,226)];
+        modalSheet.offsetForLandscapeKeyboard = 92;
+    }
     
     passwordController.cancelBlock = ^{
-        [modalSheet dismissSheetAnimated:YES completion:nil];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [modalSheet dismissSheetAnimated:YES completion:nil];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     };
     
     passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldString, NSString *bottomFieldString) {
@@ -363,15 +371,23 @@ didSelectButtonAnimated:(BOOL)animated
                 return NO;
             } else {
                 [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-                [modalSheet dismissSheetAnimated:YES completion:^{
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    [modalSheet dismissSheetAnimated:YES completion:^{
+                        [self pushBookshelvesControllerWithProfileItem:profileItem];
+                    }];
+                } else {
                     [self pushBookshelvesControllerWithProfileItem:profileItem];
-                }];
+                }
                 return YES;
             }
     
     };
 
-    [modalSheet presentSheetInViewController:self animated:YES completion:nil];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [modalSheet presentSheetInViewController:self animated:YES completion:nil];
+    } else {
+        [self.navigationController pushViewController:passwordController animated:YES];
+    }
 }
 
 - (void)obtainPasswordThenPushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
@@ -379,12 +395,20 @@ didSelectButtonAnimated:(BOOL)animated
     SCHLoginPasswordViewController *passwordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHSetProfilePasswordView" bundle:nil] autorelease];
     passwordController.controllerType = kSCHControllerDoublePasswordView;
 
-    BITModalSheetController *modalSheet = [[BITModalSheetController alloc] initWithContentViewController:passwordController];
-    [modalSheet setContentSize:CGSizeMake(525,277)];
-    modalSheet.offsetForLandscapeKeyboard = 117;
+    BITModalSheetController *modalSheet = nil;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        BITModalSheetController *modalSheet = [[BITModalSheetController alloc] initWithContentViewController:passwordController];
+        [modalSheet setContentSize:CGSizeMake(525,277)];
+        modalSheet.offsetForLandscapeKeyboard = 117;
+    }
 
     passwordController.cancelBlock = ^{
-        [modalSheet dismissSheetAnimated:YES completion:nil];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [modalSheet dismissSheetAnimated:YES completion:nil];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     };
 
     passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldText, NSString *bottomFieldText) {
@@ -398,9 +422,13 @@ didSelectButtonAnimated:(BOOL)animated
                         [[SCHSyncManager sharedSyncManager] passwordSync];
                     }
                     [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-                    [modalSheet dismissSheetAnimated:YES completion:^{
+                    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                        [modalSheet dismissSheetAnimated:YES completion:^{
+                            [self pushBookshelvesControllerWithProfileItem:profileItem];
+                        }];
+                    } else {
                         [self pushBookshelvesControllerWithProfileItem:profileItem];
-                    }];
+                    }
                     return YES;
                 } else {
                     [passwordController setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningPasswordLeadingSpaces];
@@ -416,7 +444,11 @@ didSelectButtonAnimated:(BOOL)animated
         }
     };
     
-    [modalSheet presentSheetInViewController:self animated:YES completion:nil];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [modalSheet presentSheetInViewController:self animated:YES completion:nil];
+    } else {
+        [self.navigationController pushViewController:passwordController animated:YES];
+    }
 }
 
 - (NSArray *)profileItems
