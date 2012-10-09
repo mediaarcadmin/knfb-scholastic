@@ -365,9 +365,13 @@ didSelectButtonAnimated:(BOOL)animated
     passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldString, NSString *bottomFieldString) {
         
             if ([profileItem validatePasswordWith:bottomFieldString] == NO) {
-                [modalSheet setContentSize:CGSizeMake(525,262) animated:YES completion:^{
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    [modalSheet setContentSize:CGSizeMake(525,262) animated:YES completion:^{
+                        [passwordController setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningAuthenticationFailure];
+                    }];
+                } else {
                     [passwordController setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningAuthenticationFailure];
-                }];
+                }
                 return NO;
             } else {
                 [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;

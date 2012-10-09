@@ -265,7 +265,11 @@ static const CGFloat kContentHeightLandscape = 380;
             self.promptLabel.text = NSLocalizedString(@"Please enter a valid e-mail address.", @"");
             break;
         case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
-            self.promptLabel.text = NSLocalizedString(@"The password you entered is not correct. If you have forgotten your password, you can ask your parent to reset it using Parent Tools.", @"");
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                self.promptLabel.text = NSLocalizedString(@"The password you entered is not correct. If you have forgotten your password, you can ask your parent to reset it using Parent Tools.", @"");
+            } else {
+                self.promptLabel.text = NSLocalizedString(@"Your password was incorrect. Ask your parent or teacher to reset your password.", @"");
+            }
             break;
         case kSCHLoginHandlerCredentialsWarningPasswordLeadingSpaces:
             self.promptLabel.text = NSLocalizedString(@"You cannot use spaces at the beginning of your password.", @"");
