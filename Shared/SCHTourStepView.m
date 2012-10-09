@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define STANDARD_CORNER_RADIUS 10
+#define FULL_SCREEN_DISABLED 1
 
 @interface SCHTourStepView ()
 
@@ -175,12 +176,29 @@
 
 - (void)setButtonTitle:(NSString *)buttonTitle
 {
+    BOOL disableButton = NO;
+    
+#if FULL_SCREEN_DISABLED
+    if ([buttonTitle isEqualToString:@"Full Screen"]) {
+        disableButton = YES;
+    }
+    
+#endif
+    
     if (self.actionButton) {
         self.bottomView.hidden = NO;
-        [self.actionButton setTitle:buttonTitle forState:UIControlStateNormal];
+        
+        if (disableButton) {
+            [self.actionButton setTitle:nil forState:UIControlStateNormal];
+            [self.actionButton setUserInteractionEnabled:NO];
+        } else {
+            [self.actionButton setTitle:buttonTitle forState:UIControlStateNormal];
+            [self.actionButton setUserInteractionEnabled:YES];
+        }
+        
         
         CGRect buttonFrame = self.actionButton.frame;
-        CGSize buttonTextSize = [[self.actionButton titleForState:UIControlStateNormal] sizeWithFont:self.actionButton.titleLabel.font];
+        CGSize buttonTextSize = [buttonTitle sizeWithFont:self.actionButton.titleLabel.font];
         
         // FIXME: this is a naive calculation, uses the fixed position of the initial setup to work
         // This should be a more dynamic calculation taking into account the current size of the view
