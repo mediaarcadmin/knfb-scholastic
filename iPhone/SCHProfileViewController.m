@@ -928,6 +928,10 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (NSInteger)numberOfRowsInPage:(NSInteger)page
 {
+    if (page == NSNotFound) {
+        return 0;
+    }
+    
     NSInteger resultsInPage = [self numberOfResultsInPage:page];
     NSInteger resultsPerRow = [self resultsPerRow];
     
@@ -958,6 +962,10 @@ didSelectButtonAnimated:(BOOL)animated
 - (UITableViewCell *)tableView:(UITableView *)aTableView pageCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
+    
+    if (indexPath.section == NSNotFound) {
+        return nil;
+    }
     
     SCHProfileViewCell *cell = (SCHProfileViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
