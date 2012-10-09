@@ -242,6 +242,8 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
                phoneContainerHeight = 268;
             }
             break;
+        default:
+            break;
     }
     
     self.promptLabel.text = promptText;

@@ -252,6 +252,15 @@ static const CGFloat kContentHeightLandscape = 380;
         case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
             self.promptLabel.text = NSLocalizedString(@"The password you entered is not correct. If you have forgotten your password, you can ask your parent to reset it using Parent Tools.", @"");
             break;
+        case kSCHLoginHandlerCredentialsWarningPasswordLeadingSpaces:
+            self.promptLabel.text = NSLocalizedString(@"You cannot use spaces at the beginning of your password.", @"");
+            break;
+        case kSCHLoginHandlerCredentialsWarningPasswordMismatch:
+            self.promptLabel.text = NSLocalizedString(@"The passwords do not match.", @"");
+            break;
+        case kSCHLoginHandlerCredentialsWarningPasswordBlank:
+            self.promptLabel.text = NSLocalizedString(@"The password cannot be blank.", @"");
+            break;
     }
 }
 
