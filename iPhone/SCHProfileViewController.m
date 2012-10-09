@@ -24,11 +24,14 @@
 #import "Reachability.h"
 #import "SCHProfileSyncComponent.h"
 #import "BITModalSheetController.h"
+#import "DDPageControl.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
+static const CGFloat kSCHProfileViewControllerRowHeightPad = 100.0f;
+static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
 
-@interface SCHProfileViewController()  
+@interface SCHProfileViewController() <UIScrollViewDelegate, NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate>
 
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
@@ -45,6 +48,16 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 - (void)queryPasswordBeforePushingBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)pushSettingsControllerAnimated:(BOOL)animated;
+
+// Paged TableView content
+- (void)reloadPages;
+- (NSInteger)numberOfPages;
+- (NSInteger)resultsPerRow;
+- (NSInteger)rowsPerPage;
+- (NSInteger)numberOfResultsInPage:(NSInteger)page;
+- (NSInteger)numberOfRowsInPage:(NSInteger)page;
+- (NSInteger)pageForTableView:(UITableView *)aTableView;
+- (UITableViewCell *)tableView:(UITableView *)tableView pageCellForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -132,30 +145,28 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     [super viewDidLoad];
     
     self.forwardingView.forwardedView = self.scrollView;
-    
-    NSMutableArray *anArray = [NSMutableArray array];
-    for (int i = 0; i < 10; i++) {
-        UITableViewController *vc = [[[UITableViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
-        vc.tableView.backgroundColor = [UIColor clearColor];
-        vc.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        vc.tableView.scrollEnabled = NO;
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            vc.tableView.rowHeight = 100;
-        } else {
-            vc.tableView.rowHeight = 60;
-        }
-        
-        vc.tableView.delegate = self;
-        vc.tableView.dataSource = self;
-        
-        [anArray addObject:vc];
+    self.pageControl.type = DDPageControlTypeOnFullOffFull;
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.pageControl setIndicatorDiameter:7.0f];
+        [self.pageControl setIndicatorSpace:13.0f];
+    } else {
+        [self.pageControl setIndicatorDiameter:7.0f];
+        [self.pageControl setIndicatorSpace:9.0f];
     }
     
-    self.pagingViewControllers = anArray;
+    [self.pageControl setOnColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.8]];
+    [self.pageControl setOffColor:[UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:0.4]];
     
+    self.scrollView.delegate = self;
+
     self.currentIndex = 0;
-    [self setupScrollViewForIndex:self.currentIndex];
+    [self.pageControl setCurrentPage:self.currentIndex];
+    [self reloadPages];
+    
+    UIImage *parentButtonImage = [[UIImage imageNamed:@"sm_bttn_red_UNselected_3part"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+    [self.parentButton setBackgroundImage:parentButtonImage forState:UIControlStateNormal];
+    [self.parentButton.titleLabel setMinimumFontSize:10.0f];
     
     [self.updatesBubble setAlpha:0];
     [self.updatesBubble setUserInteractionEnabled:YES];
@@ -176,6 +187,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     
     [self.navigationController setNavigationBarHidden:YES];
     [self checkForBookUpdates];
+    [self reloadPages];
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification
@@ -189,9 +201,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
     }    
 
     self.fetchedResultsController = nil;
-    for (UITableViewController *vc in self.pagingViewControllers) {
-        [vc.tableView reloadData];
-    }
+    [self reloadPages];
 }
 
 #pragma mark - Table view data source
@@ -203,28 +213,15 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 
 #pragma mark - Table view data source
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section 
 {
 	NSInteger ret = 0;
-	id <NSFetchedResultsSectionInfo> sectionInfo = nil;
-	
-    NSUInteger resultsPerRow = 0;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        resultsPerRow = 2;
-    } else {
-        resultsPerRow = 3;
-    }
-    
+	    
 	switch (section) {
-		case 0:
-			sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-            NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
-            ret = (numberOfObjects > 0 ? numberOfObjects / resultsPerRow : numberOfObjects);
-            if (numberOfObjects % resultsPerRow > 0) {
-                ret++;
-            }
-            
-            break;
+		case 0: {
+            NSInteger page = [self pageForTableView:aTableView];
+            ret = [self numberOfRowsInPage:page];
+        } break;
         default:
             break;
 	}
@@ -234,65 +231,12 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    static NSString *CellIdentifier = @"Cell";
     
-    SCHProfileViewCell *cell = (SCHProfileViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                          reuseIdentifier:CellIdentifier] autorelease];
-        cell.delegate = self;
-    }
+    NSInteger page = [self pageForTableView:aTableView];
+    NSIndexPath *pageCellIndex = [NSIndexPath indexPathForRow:indexPath.row inSection:page];
     
-    NSUInteger resultsPerRow = 0;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        resultsPerRow = 2;
-    } else {
-        resultsPerRow = 3;
-    }
-    
-    NSUInteger resultsThisRow = MIN(resultsPerRow, [[self.fetchedResultsController fetchedObjects] count] - indexPath.row * resultsPerRow);
-    
-    NSRange resultsRange = NSMakeRange(indexPath.row * resultsPerRow, resultsThisRow);
-
-    NSMutableArray *titles = [NSMutableArray array];
-    NSMutableArray *indexPaths = [NSMutableArray array];
-    
-    for (int i = 0; i < resultsRange.length; i++) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:resultsRange.location + i inSection:0];
-        SCHProfileItem *profileItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        NSString *title = [profileItem displayName] ? : @"";
-        [titles addObject:title];
-        [indexPaths addObject:indexPath];
-    }
-    
-    SCHProfileCellLayoutStyle style;
-    
-    switch (resultsThisRow) {
-        case 3:
-            style = kSCHProfileCellLayoutStyle3Up;
-            break;
-        case 2:
-            style = kSCHProfileCellLayoutStyle2Up;
-            break;
-        default:
-            style = kSCHProfileCellLayoutStyle1Up;
-            break;
-    }
-
-    [cell setButtonTitles:titles
-            forIndexPaths:indexPaths
-             forCellStyle:style];
-       
-    return cell;
+    return [self tableView:aTableView pageCellForRowAtIndexPath:pageCellIndex];
 }
-
-#pragma mark - scroll view delegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [self showUpdatesBubble:NO];
-}
-
 
 #pragma mark - SCHProfileViewCellDelegate
 
@@ -305,7 +249,7 @@ didSelectButtonAnimated:(BOOL)animated
     }
 
     // only trigger if there are no other simultaneous taps 
-    if (self.simultaneousTapCount == 0) {    
+    if (self.simultaneousTapCount == 0) {
         self.simultaneousTapCount++;
         SCHProfileViewController *weakSelf = self;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHProfileViewControllerMinimumDistinguishedTapDelay * NSEC_PER_SEC);
@@ -386,10 +330,7 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller 
 {
-    // In the simplest, most efficient, case, reload the table view.
-    for (UITableViewController *vc in self.pagingViewControllers) {
-        [vc.tableView reloadData];
-    }
+    [self reloadPages];
 }
 
 
@@ -548,6 +489,15 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)pushSettingsControllerAnimated:(BOOL)animated
 {
     [self.appController presentSettings];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+    } else {
+        return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+    }
 }
 
 #pragma mark - SCHSettingsDelegate
@@ -827,61 +777,235 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)profileSyncDidComplete:(NSNotification *)notification
 {
     self.fetchedResultsController = nil;
-    for (UITableViewController *vc in self.pagingViewControllers) {
-        [vc.tableView reloadData];
+    [self reloadPages];
+}
+
+- (void)reloadPages
+{
+    NSUInteger numPages = [self numberOfPages];
+    
+    NSMutableArray *anArray = [NSMutableArray array];
+    for (int i = 0; i < numPages; i++) {
+        UITableViewController *vc = [[[UITableViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
+        vc.tableView.backgroundColor = [UIColor clearColor];
+        vc.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        vc.tableView.scrollEnabled = NO;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            vc.tableView.rowHeight = kSCHProfileViewControllerRowHeightPad;
+        } else {
+            vc.tableView.rowHeight = kSCHProfileViewControllerRowHeightPhone;
+        }
+        
+        vc.tableView.delegate = self;
+        vc.tableView.dataSource = self;
+        
+        [anArray addObject:vc];
     }
+    
+    self.pagingViewControllers = anArray;
+    [self.pageControl setNumberOfPages:numPages];
+    [self.pageControl setCenter:CGPointMake(CGRectGetMidX(self.view.bounds), self.pageControl.center.y)];
+
+    self.scrollView.contentSize = CGSizeMake(numPages * self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+    [self setupScrollViewForIndex:self.currentIndex];
 }
 
 - (void)setupScrollViewForIndex:(NSInteger)index
 {
-   // NSUInteger count = 10;
-    NSRange visibleRange = NSMakeRange(index, 3);
-    //visibleRange = NSIntersectionRange(visibleRange, NSMakeRange(0, count));
+    NSInteger min = MAX(0, index - 1);
+    NSInteger max = MIN([self numberOfPages] - 1, index + 1);
     
+    NSRange visibleRange = NSMakeRange(min, max - min + 1);
     
-    self.scrollView.contentSize = CGSizeMake(visibleRange.length * self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-    
-    CGRect leftRect = self.scrollView.bounds;
-    CGRect currentRect = self.scrollView.bounds;
-    CGRect rightRect = self.scrollView.bounds;
-    
-    if (visibleRange.length == 3) {
-        leftRect.origin.x = 0;
-        currentRect.origin.x = self.scrollView.frame.size.width;
-        rightRect.origin.x = self.scrollView.frame.size.width * 2;
-        
-        self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width,0);
-        
-    } else if (visibleRange.location == 0) {
-        currentRect.origin.x = 0;
-        rightRect.origin.x = self.scrollView.frame.size.width;
-        
-        self.scrollView.contentOffset = CGPointMake(0,0);
-        
-    } else {
-        leftRect.origin.x = 0;
-        currentRect.origin.x = self.scrollView.frame.size.width;
-        
-        self.scrollView.contentOffset = CGPointMake(self.scrollView.frame.size.width,0);
-    }
-    
-    for (UIView *subview in self.scrollView.subviews) {
-        [subview removeFromSuperview];
-    }
+    NSMutableArray *viewsToRemove = [[self.scrollView subviews] mutableCopy];
     
     for (int i = 0; i < visibleRange.length; i++) {
-        UIView *view = [[self.pagingViewControllers objectAtIndex:visibleRange.location + i] view];
+        NSInteger page = visibleRange.location + i;
+        UIView *view = [[self.pagingViewControllers objectAtIndex:page] view];
         
-        if (i == 0) {
-            view.frame = leftRect;
-        } else if (i == 1) {
-            view.frame = currentRect;
-        } else {
-            view.frame = rightRect;
+        if (![view superview]) {
+            CGRect frame = self.scrollView.bounds;
+            frame.origin.x = frame.size.width * page;
+            view.frame = frame;
+        
+            [self.scrollView addSubview:view];
         }
         
-        [self.scrollView addSubview:view];
+        [viewsToRemove removeObject:view];
     }
+    
+    for (UIView *view in viewsToRemove) {
+        if ([view superview]) {
+            [view removeFromSuperview];
+        }
+    }}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self showUpdatesBubble:NO];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)aScrollView
+{
+    NSInteger newIndex = aScrollView.contentOffset.x / aScrollView.frame.size.width;
+    
+    if (self.currentIndex != newIndex) {
+        self.currentIndex = newIndex;
+        [self setupScrollViewForIndex:self.currentIndex];
+        [self.pageControl setCurrentPage:self.currentIndex];
+    }
+}
+
+#pragma mark - Paged TableView content
+
+- (NSInteger)resultsPerRow
+{
+    NSUInteger resultsPerRow = 0;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        resultsPerRow = 2;
+    } else {
+        resultsPerRow = 3;
+    }
+    
+    return resultsPerRow;
+}
+
+- (NSInteger)rowsPerPage
+{
+    CGFloat rowHeight = 1;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        rowHeight = kSCHProfileViewControllerRowHeightPad;
+    } else {
+        rowHeight = kSCHProfileViewControllerRowHeightPhone;
+    }
+    
+    return floorf(CGRectGetHeight(self.scrollView.bounds)/rowHeight);
+}
+
+- (NSInteger)numberOfPages
+{	
+    NSInteger resultsPerRow = [self resultsPerRow];
+    NSInteger rowsPerPage = [self rowsPerPage];
+    NSInteger resultsPerPage = resultsPerRow * rowsPerPage;
+    
+    NSUInteger numberOfObjects = [[self.fetchedResultsController fetchedObjects] count];
+    NSInteger ret = (numberOfObjects > 0 ? numberOfObjects / resultsPerPage : numberOfObjects);
+    
+    if (numberOfObjects % resultsPerPage > 0) {
+        ret++;
+    }
+    
+	return ret;
+}
+
+- (NSInteger)numberOfResultsInPage:(NSInteger)page
+{
+    NSInteger resultsPerRow = [self resultsPerRow];
+    NSInteger rowsPerPage = [self rowsPerPage];
+    NSInteger resultsPerPage = resultsPerRow * rowsPerPage;
+    NSUInteger numberOfObjects = [[self.fetchedResultsController fetchedObjects] count];
+    
+    NSInteger wholePages = numberOfObjects / resultsPerPage;
+    
+    if ((page + 1) <= wholePages) {
+        return resultsPerPage;
+    } else {
+        return numberOfObjects - (wholePages * resultsPerPage);
+    }
+}
+
+- (NSInteger)numberOfRowsInPage:(NSInteger)page
+{
+    NSInteger resultsInPage = [self numberOfResultsInPage:page];
+    NSInteger resultsPerRow = [self resultsPerRow];
+    
+    NSInteger ret = (resultsInPage > 0 ? resultsInPage / resultsPerRow : resultsInPage);
+    
+    if (resultsInPage % resultsPerRow > 0) {
+        ret++;
+    }
+    
+    return ret;
+    
+}
+
+- (NSInteger)pageForTableView:(UITableView *)aTableView
+{
+    NSUInteger page = NSNotFound;
+    
+    for (UITableViewController *vc in self.pagingViewControllers) {
+        if (aTableView == vc.tableView) {
+            page = [self.pagingViewControllers indexOfObject:vc];
+            break;
+        }
+    }
+    
+    return page;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)aTableView pageCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    SCHProfileViewCell *cell = (SCHProfileViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                          reuseIdentifier:CellIdentifier] autorelease];
+        cell.delegate = self;
+    }
+    
+    NSInteger resultsPerRow = [self resultsPerRow];
+    NSInteger rowsPerPage = [self rowsPerPage];
+    NSInteger resultsPerPage = resultsPerRow * rowsPerPage;
+    NSInteger resultsInPage = [self numberOfResultsInPage:indexPath.section];
+
+    NSUInteger resultsThisRow = MIN(resultsPerRow, resultsInPage - indexPath.row * resultsPerRow);
+    NSRange resultsRange = NSMakeRange((resultsPerPage * indexPath.section) + (indexPath.row * resultsPerRow), resultsThisRow);
+    
+    NSMutableArray *titles = [NSMutableArray array];
+    NSMutableArray *indexPaths = [NSMutableArray array];
+    
+    for (int i = 0; i < resultsRange.length; i++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:resultsRange.location + i inSection:0];
+        SCHProfileItem *profileItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        NSString *title = [profileItem displayName] ? : @"";
+        [titles addObject:[title uppercaseString]];
+        [indexPaths addObject:indexPath];
+    }
+    
+    SCHProfileCellLayoutStyle style;
+    
+    switch (resultsThisRow) {
+        case 3:
+            style = kSCHProfileCellLayoutStyle3Up;
+            break;
+        case 2:
+            style = kSCHProfileCellLayoutStyle2Up;
+            break;
+        default:
+            style = kSCHProfileCellLayoutStyle1Up;
+            break;
+    }
+    
+    [cell setButtonTitles:titles
+            forIndexPaths:indexPaths
+             forCellStyle:style];
+    
+    return cell;
+}
+
+- (IBAction)pageControlValueChanged:(id)sender
+{
+    [self.scrollView setContentOffset:CGPointMake(CGRectGetWidth(self.scrollView.bounds) * [(DDPageControl *)sender currentPage], 0) animated:YES];
+}
+
+- (IBAction)tooltips:(id)sender
+{
+    NSLog(@"Show tooltips");
 }
 
 @end

@@ -9,6 +9,8 @@
 #import "SCHBookShelfWishListController.h"
 #import "SCHThemeManager.h"
 
+#import "SCHSyncManager.h"
+
 @interface SCHBookShelfWishListController ()
 
 - (void)releaseViewObjects;
@@ -71,6 +73,8 @@
         // Custom initialization
         self.wishListItemsToRemove = [NSMutableArray array];
         self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
+
+        [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
     }
     return self;
 }
@@ -144,6 +148,8 @@
 {
     // commit wish list deletion on close - iPad only
     [self commitWishListDeletions];
+
+    [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
 
     if (closeBlock) {
         closeBlock();

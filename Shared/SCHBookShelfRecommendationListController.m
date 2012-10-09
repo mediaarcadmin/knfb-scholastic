@@ -10,6 +10,7 @@
 #import "SCHAppRecommendationItem.h"
 #import "SCHThemeManager.h"
 #import "SCHAppStateManager.h"
+#import "SCHSyncManager.h"
 
 @interface SCHBookShelfRecommendationListController ()
 
@@ -79,6 +80,7 @@
         self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
         self.shouldShowWishList = YES;
 
+        [[SCHSyncManager sharedSyncManager] topRatingsSync];
     }
     return self;
 }

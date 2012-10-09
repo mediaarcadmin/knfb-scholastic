@@ -18,7 +18,7 @@
 @class SCHProfileItem;
 @class SCHBookShelfViewController;
 
-@interface SCHProfileViewController : UIViewController <UIScrollViewDelegate, NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate> {}
+@interface SCHProfileViewController : UIViewController {}
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIButton *parentButton;
@@ -36,5 +36,7 @@
 
 - (SCHBookShelfViewController *)newBookShelfViewController;
 - (IBAction)settings:(id)sender;
+- (IBAction)pageControlValueChanged:(id)sender;
+- (IBAction)tooltips:(id)sender;
 
 @end
