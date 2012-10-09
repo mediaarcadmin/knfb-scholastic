@@ -98,14 +98,19 @@
 
 - (void)addHighlightAtLocation:(CGPoint)location
 {
-    UIView *highlightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 77, 77)];
+    CGRect highlightFrame = CGRectMake(0, 0, 77, 77);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        highlightFrame = CGRectMake(0, 0, 110, 110);
+    }
+    
+    UIView *highlightView = [[UIView alloc] initWithFrame:highlightFrame];
     highlightView.center = location;
     highlightView.frame = CGRectIntegral(highlightView.frame);
     
     highlightView.backgroundColor = [UIColor clearColor];
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TooltipHighlight"]];
-    imageView.frame = CGRectMake(0, 0, 77, 77);
+    imageView.frame = highlightFrame;
     imageView.backgroundColor = [UIColor clearColor];
     [highlightView addSubview:imageView];
     [imageView release];
