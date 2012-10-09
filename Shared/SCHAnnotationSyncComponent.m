@@ -141,7 +141,7 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
 {
     NSNumber *ret = nil;
     
-    if ([self haveProfiles] == YES && [self.annotations count] > 0) {
+    if ([self haveProfiles] == YES) {
         ret = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];    
     }
     

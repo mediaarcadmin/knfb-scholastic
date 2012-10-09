@@ -41,7 +41,8 @@ requireDeviceAuthentication:(BOOL)requireAuthentication;
 - (void)bookshelfSyncForced:(BOOL)syncNow;
 - (void)openBookSyncForced:(BOOL)syncNow
            booksAssignment:(SCHBooksAssignment *)booksAssignment
-                forProfile:(NSNumber *)profileID;
+                forProfile:(NSNumber *)profileID
+       requestReadingStats:(BOOL)requestReadingStats;
 - (void)closeBookSyncForced:(BOOL)syncNow
             booksAssignment:(SCHBooksAssignment *)booksAssignment
                  forProfile:(NSNumber *)profileID;
