@@ -1698,6 +1698,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         ret = [self objectFromLastPage:anObject];
     } else if ([anObject isKindOfClass:[tns1_Rating class]] == YES) {
         ret = [self objectFromRating:anObject];
+    } else if ([anObject isKindOfClass:[tns1_QuizItem class]] == YES) {
+        ret = [self objectFromQuizItem:anObject];
 	} else {
 		ret = anObject;
 	}

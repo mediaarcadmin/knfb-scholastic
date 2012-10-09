@@ -125,7 +125,7 @@ NSString * const SCHListReadingStatisticsSyncComponentDidFailNotification = @"SC
 {
     NSNumber *ret = nil;
     
-    if ([self haveProfiles] == YES && [self.statisticsForProfilesWithBooks count] > 0) {
+    if ([self haveProfiles] == YES) {
         ret = [[[self.statisticsForProfilesWithBooks allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
     }
     
