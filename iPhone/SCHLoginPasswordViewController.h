@@ -61,9 +61,6 @@ typedef void(^SCHActionBlock)(void);
 #pragma mark - Interface Builder
 
 // Interface Builder
-@property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *barSpacer;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *closeButton;
 @property (nonatomic, retain) IBOutlet UILabel *profileLabel;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
@@ -75,15 +72,9 @@ typedef void(^SCHActionBlock)(void);
 @property (nonatomic, retain) IBOutlet SCHUnderlinedButton *forgotUsernamePasswordURL;
 @property (nonatomic, retain) IBOutlet SCHUnderlinedButton *accountURL;
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
-@property (nonatomic, retain) IBOutlet UIButton *goButton;
+@property (nonatomic, retain) IBOutlet UIButton *closeButton;
 
-// IBAction - the "Login" or "Go" button action
 - (IBAction)actionButtonAction:(id)sender;
-
-// IBAction - the Cancel action
 - (IBAction)cancelButtonAction:(id)sender;
-
-- (IBAction)openScholasticUsernamePasswordURLInSafari:(id)sender;
-- (IBAction)openScholasticAccountURLInSafari:(id)sender;
 
 @end
