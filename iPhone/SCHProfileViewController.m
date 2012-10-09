@@ -1011,14 +1011,20 @@ didSelectButtonAnimated:(BOOL)animated
 {
     NSLog(@"Show tooltips");
     
+    self.tooltipContainer = [[[SCHProfileTooltipContainer alloc] initWithFrame:self.view.frame] autorelease];
+    self.tooltipContainer.delegate = self;
+    self.tooltipContainer.alpha = 0;
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        self.tooltipContainer = [[[SCHProfileTooltipContainer alloc] initWithFrame:self.view.frame] autorelease];
-        self.tooltipContainer.delegate = self;
         [self.tooltipContainer addHighlightAtLocation:CGPointMake(160, 160)];
         [self.tooltipContainer addHighlightAtLocation:CGPointMake(86, 239)];
-        self.tooltipContainer.alpha = 0;
-        [self.view addSubview:self.tooltipContainer];
+    } else {
+        [self.tooltipContainer addHighlightAtLocation:CGPointMake(512, 250)];
+        [self.tooltipContainer addHighlightAtLocation:CGPointMake(246, 358)];
     }
+
+    
+    [self.view addSubview:self.tooltipContainer];
     
     
     [UIView animateWithDuration:0.2

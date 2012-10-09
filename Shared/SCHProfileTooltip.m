@@ -8,9 +8,11 @@
 
 #import "SCHProfileTooltip.h"
 #import <QuartzCore/QuartzCore.h>
+#import "TTTAttributedLabel.h"
 
 #define TEXT_X_INSET 25
 #define TEXT_Y_INSET 10
+#define TITLE_SUBTITLE_GAP 2
 
 @interface SCHProfileTooltip ()
 
@@ -19,11 +21,12 @@
 
 @property (nonatomic, retain) UIView *topTextContainerView;
 @property (nonatomic, retain) UIView *bottomTextContainerView;
+@property (nonatomic, retain) UIView *insetContainerView;
 
-@property (nonatomic, retain) UILabel *titleLabel;
-@property (nonatomic, retain) UILabel *subtitleLabel;
-@property (nonatomic, retain) UILabel *secondTitleLabel;
-@property (nonatomic, retain) UILabel *secondSubtitleLabel;
+@property (nonatomic, retain) TTTAttributedLabel *titleLabel;
+@property (nonatomic, retain) TTTAttributedLabel *subtitleLabel;
+@property (nonatomic, retain) TTTAttributedLabel *secondTitleLabel;
+@property (nonatomic, retain) TTTAttributedLabel *secondSubtitleLabel;
 
 
 @end
@@ -39,10 +42,12 @@
 @synthesize secondSubtitleLabel;
 @synthesize topTextContainerView;
 @synthesize bottomTextContainerView;
+@synthesize insetContainerView;
 
 - (void)dealloc
 {
     delegate = nil;
+    [insetContainerView release], insetContainerView = nil;
     [backgroundImageView release], backgroundImageView = nil;
     [closeButton release], closeButton = nil;
     [titleLabel release], titleLabel = nil;
@@ -56,93 +61,140 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
+    self = [self initWithFrame:frame edgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame edgeInsets:(UIEdgeInsets)insets
+{
     self = [super initWithFrame:frame];
     if (self) {
         
-//        self.layer.borderWidth = 1;
-//        self.layer.borderColor = [UIColor yellowColor].CGColor;
-
         // background image
         self.backgroundImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)] autorelease];
         self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        
         self.backgroundImageView.contentMode = UIViewContentModeCenter;
-//        self.backgroundImageView.layer.borderWidth = 1;
-//        self.backgroundImageView.layer.borderColor = [UIColor orangeColor].CGColor;
         
         [self addSubview:self.backgroundImageView];
+
+        // inset calculation view
+        self.insetContainerView = [[[UIView alloc] initWithFrame:CGRectInset(CGRectMake(0, 0, frame.size.width, frame.size.height), TEXT_X_INSET, TEXT_Y_INSET)] autorelease];
         
-        // title text
+        CGRect insetContainerFrame = self.insetContainerView.frame;
+        insetContainerFrame.origin.x = insetContainerFrame.origin.x + insets.left;
+        insetContainerFrame.size.width = insetContainerFrame.size.width - insets.left - insets.right;
+        insetContainerFrame.origin.y = insetContainerFrame.origin.y + insets.top;
+        insetContainerFrame.size.height = insetContainerFrame.size.height - insets.top - insets.bottom;
+        self.insetContainerView.frame = insetContainerFrame;
         
-        CGRect topTextContainerFrame = CGRectMake(0, 0, frame.size.width, floorf(frame.size.height / 2));
-        topTextContainerFrame = CGRectInset(topTextContainerFrame, TEXT_X_INSET, TEXT_Y_INSET);
+        self.insetContainerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        
+        CGFloat totalHeight = insetContainerView.frame.size.height;
+        CGFloat totalWidth = insetContainerView.frame.size.width;
+        
+
+        CGRect topTextContainerFrame = CGRectMake(0, 0, totalWidth, floorf(totalHeight / 2));
         
         self.topTextContainerView = [[[UIView alloc] initWithFrame:topTextContainerFrame] autorelease];
         self.topTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
         
-        CGRect bottomTextContainerFrame = CGRectMake(0, floorf(frame.size.height / 2), frame.size.width, floorf(frame.size.height / 2));
-        bottomTextContainerFrame = CGRectInset(bottomTextContainerFrame, TEXT_X_INSET, TEXT_Y_INSET);
-
+        CGRect bottomTextContainerFrame = CGRectMake(0, topTextContainerFrame.origin.y + topTextContainerFrame.size.height, totalWidth, topTextContainerFrame.size.height);
+        
         self.bottomTextContainerView = [[[UIView alloc] initWithFrame:bottomTextContainerFrame] autorelease];
-        self.bottomTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
+        self.bottomTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
         
-        self.titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.topTextContainerView.frame.size.width, floorf(self.topTextContainerView.frame.size.height * 0.33))] autorelease];
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        self.titleLabel = [[[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.topTextContainerView.frame.size.width, floorf(self.topTextContainerView.frame.size.height * 0.33) - (TITLE_SUBTITLE_GAP / 2))] autorelease];
         self.titleLabel.textColor = [UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:1];
         self.titleLabel.backgroundColor = [UIColor clearColor];
-        self.titleLabel.textAlignment = UITextAlignmentCenter;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.titleLabel.textAlignment = UITextAlignmentCenter;
+            self.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        } else {
+            self.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+        }
         self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-
+        self.titleLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentBottom;
         
         
-        self.subtitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, self.titleLabel.frame.size.height, self.topTextContainerView.frame.size.width, floorf(self.topTextContainerView.frame.size.height - self.titleLabel.frame.size.height))] autorelease];
+        
+        self.subtitleLabel = [[[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, self.titleLabel.frame.size.height + TITLE_SUBTITLE_GAP, self.topTextContainerView.frame.size.width, floorf(self.topTextContainerView.frame.size.height - self.titleLabel.frame.size.height))] autorelease];
         self.subtitleLabel.textColor = [UIColor darkGrayColor];
-        self.subtitleLabel.font = [UIFont systemFontOfSize:12];
         self.subtitleLabel.backgroundColor = [UIColor clearColor];
         self.subtitleLabel.numberOfLines = 0;
         self.subtitleLabel.lineBreakMode = UILineBreakModeWordWrap;
-        self.subtitleLabel.textAlignment = UITextAlignmentCenter;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.subtitleLabel.textAlignment = UITextAlignmentCenter;
+            self.subtitleLabel.font = [UIFont systemFontOfSize:12];
+        } else {
+            self.subtitleLabel.font = [UIFont systemFontOfSize:13];
+        }
 
-        self.subtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+        self.subtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+        self.subtitleLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
 
-
+        
         [self.topTextContainerView addSubview:self.titleLabel];
         [self.topTextContainerView addSubview:self.subtitleLabel];
         
 
-        self.secondTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bottomTextContainerView.frame.size.width, floorf(self.bottomTextContainerView.frame.size.height * 0.33))] autorelease];
+        self.secondTitleLabel = [[[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.bottomTextContainerView.frame.size.width, floorf(self.bottomTextContainerView.frame.size.height * 0.33) - (TITLE_SUBTITLE_GAP/2))] autorelease];
         self.secondTitleLabel.font = [UIFont boldSystemFontOfSize:16];
         self.secondTitleLabel.textColor = [UIColor colorWithRed:0.082 green:0.388 blue:0.596 alpha:1];
         self.secondTitleLabel.backgroundColor = [UIColor clearColor];
-        self.secondTitleLabel.textAlignment = UITextAlignmentCenter;
+
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.secondTitleLabel.textAlignment = UITextAlignmentCenter;
+        }
 
         self.secondTitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
         
+        self.secondTitleLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentBottom;
+
         
-        
-        self.secondSubtitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, self.secondTitleLabel.frame.size.height, self.bottomTextContainerView.frame.size.width, floorf(self.bottomTextContainerView.frame.size.height - self.secondTitleLabel.frame.size.height))] autorelease];
+        self.secondSubtitleLabel = [[[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, self.secondTitleLabel.frame.size.height + TITLE_SUBTITLE_GAP, self.bottomTextContainerView.frame.size.width, floorf(self.bottomTextContainerView.frame.size.height - self.secondTitleLabel.frame.size.height))] autorelease];
         self.secondSubtitleLabel.textColor = [UIColor darkGrayColor];
         self.secondSubtitleLabel.font = [UIFont systemFontOfSize:12];
         self.secondSubtitleLabel.backgroundColor = [UIColor clearColor];
         self.secondSubtitleLabel.numberOfLines = 0;
         self.secondSubtitleLabel.lineBreakMode = UILineBreakModeWordWrap;
-        self.secondSubtitleLabel.textAlignment = UITextAlignmentCenter;
+
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.secondSubtitleLabel.textAlignment = UITextAlignmentCenter;
+        }
 
         self.secondSubtitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
 
+        self.secondSubtitleLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
         
         [self.bottomTextContainerView addSubview:self.secondTitleLabel];
         [self.bottomTextContainerView addSubview:self.secondSubtitleLabel];
         
         
-        [self addSubview:self.topTextContainerView];
-        [self addSubview:self.bottomTextContainerView];
+        [self.insetContainerView addSubview:self.topTextContainerView];
+        [self.insetContainerView addSubview:self.bottomTextContainerView];
+        
+        [self addSubview:self.insetContainerView];
         
         // close button
         self.closeButton = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)] autorelease];
         [self.closeButton setImage:[UIImage imageNamed:@"TooltipCloseButton"] forState:UIControlStateNormal];
-        self.closeButton.center = CGPointMake(self.backgroundImageView.frame.origin.x + self.backgroundImageView.frame.size.width - 20, self.backgroundImageView.frame.origin.y + floorf(TEXT_Y_INSET / 2));
-        //        self.closeButton.frame = CGRectIntegral(self.closeButton.frame);
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        
+            self.closeButton.center = CGPointMake(self.frame.size.width - (self.closeButton.frame.size.width / 2) - 5,
+                                                  self.backgroundImageView.frame.origin.y + floorf(TEXT_Y_INSET / 2));
+        } else {
+            self.closeButton.center = CGPointMake(self.backgroundImageView.frame.origin.x + self.backgroundImageView.frame.size.width - 10, self.backgroundImageView.frame.origin.y + floorf(TEXT_Y_INSET / 2));
+        }
+        
+//        if (self.closeButton.center.x > self.frame.size.width - (self.closeButton.frame.size.width / 2)) {
+//            self.closeButton.center = CGPointMake(floorf(self.frame.size.width - (self.closeButton.frame.size.width / 2)), self.closeButton.center.y);
+//        }
+        
+        self.closeButton.frame = CGRectIntegral(self.closeButton.frame);
         self.closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
         
         [self.closeButton addTarget:self action:@selector(pressedCloseButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -150,6 +202,12 @@
         [self addSubview:self.closeButton];
         
 
+        self.closeButton.layer.shadowColor = [UIColor colorWithWhite:0 alpha:0.6].CGColor;
+        self.closeButton.layer.shadowOffset = CGSizeMake(2, 2);
+        self.closeButton.layer.shadowRadius = 1.0f;
+        self.closeButton.layer.shadowOpacity = 0.6;
+
+        
         self.layer.shadowColor = [UIColor colorWithWhite:0 alpha:0.6].CGColor;
         self.layer.shadowOffset = CGSizeMake(2, 2);
         self.layer.shadowRadius = 1.0f;
@@ -158,6 +216,17 @@
         self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
 
         
+//        self.titleLabel.layer.borderColor = [UIColor orangeColor].CGColor;
+//        self.titleLabel.layer.borderWidth = 1;
+//        self.subtitleLabel.layer.borderColor = [UIColor greenColor].CGColor;
+//        self.subtitleLabel.layer.borderWidth = 1;
+//        
+//        self.secondSubtitleLabel.layer.borderColor = [UIColor purpleColor].CGColor;
+//        self.secondSubtitleLabel.layer.borderWidth = 1;
+//        self.secondTitleLabel.layer.borderColor = [UIColor blueColor].CGColor;
+//        self.secondTitleLabel.layer.borderWidth = 1;
+        
+
 //        self.topTextContainerView.layer.borderColor = [UIColor purpleColor].CGColor;
 //        self.topTextContainerView.layer.borderWidth = 1;
 //        self.bottomTextContainerView.layer.borderColor = [UIColor greenColor].CGColor;
@@ -211,8 +280,9 @@
     
     // set the top label to fill the entire view
     CGRect topFrame = self.topTextContainerView.frame;
-    topFrame.size.height = self.frame.size.height;
+    topFrame.size.height = self.insetContainerView.frame.size.height;
     self.topTextContainerView.frame = topFrame;
+    
 }
 - (void)setFirstTitle:(NSString *)title firstBodyText:(NSString *)bodyText secondTitle:(NSString *)secondTitle secondBodyText:(NSString *)secondBodyText
 {
@@ -225,7 +295,7 @@
     
     // set the top label to fill half the view
     CGRect topFrame = self.topTextContainerView.frame;
-    topFrame.size.height = floorf(self.frame.size.height / 2);
+    topFrame.size.height = floorf(self.insetContainerView.frame.size.height / 2);
     self.topTextContainerView.frame = topFrame;
 }
 

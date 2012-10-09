@@ -52,27 +52,46 @@
         [self.clearBackgroundButton addTarget:self action:@selector(closeView:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.clearBackgroundButton];
         
-
-        self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(0, 14, 320, 100)] autorelease];
-        [self.topTooltip setTitle:@"Welcome to your Bookshelves!"
-                         bodyText:@"Manage individual bookshelves for your children. You’ll need to assign each eBook to a bookshelf before they can be read."];
-        self.topTooltip.usesCloseButton = YES;
-        self.topTooltip.delegate = self;
-        self.topTooltip.backgroundImage = [UIImage imageNamed:@"TooltipTopBackground"];
-        self.topTooltip.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
-        [self addSubview:self.topTooltip];
-        
-
-        self.bottomTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(0, 290, 320, 160)] autorelease];
-        [self.bottomTooltip setFirstTitle:@"Reading Manager"
-                            firstBodyText:@"Go here to assign new eBooks and monitor reading progress."
-                              secondTitle:@"Child's Bookshelf"
-                           secondBodyText:@"Your child can start reading by selecting their name. Their eBooks will be waiting for them!"];
-        self.bottomTooltip.usesCloseButton = NO;
-        self.bottomTooltip.backgroundImage = [UIImage imageNamed:@"TooltipBottomBackground"];
-        self.bottomTooltip.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-        [self addSubview:self.bottomTooltip];
-        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(0, 14, 320, 100)] autorelease];
+            [self.topTooltip setTitle:@"Welcome to your Bookshelves!"
+                             bodyText:@"Manage individual bookshelves for your children. You’ll need to assign each eBook to a bookshelf before they can be read."];
+            self.topTooltip.usesCloseButton = YES;
+            self.topTooltip.delegate = self;
+            self.topTooltip.backgroundImage = [UIImage imageNamed:@"TooltipTopBackground"];
+            self.topTooltip.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+            [self addSubview:self.topTooltip];
+            
+            
+            self.bottomTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(0, 290, 320, 160)] autorelease];
+            [self.bottomTooltip setFirstTitle:@"Reading Manager"
+                                firstBodyText:@"Go here to assign new eBooks and monitor reading progress."
+                                  secondTitle:@"Child's Bookshelf"
+                               secondBodyText:@"Your child can start reading by selecting their name. Their eBooks will be waiting for them!"];
+            self.bottomTooltip.usesCloseButton = NO;
+            self.bottomTooltip.backgroundImage = [UIImage imageNamed:@"TooltipBottomBackground"];
+            self.bottomTooltip.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+            [self addSubview:self.bottomTooltip];
+        } else {
+            self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(584, 192, 315, 119) edgeInsets:UIEdgeInsetsMake(-5, 20, 0, 0)] autorelease];
+            [self.topTooltip setTitle:@"Reading Manager"
+                             bodyText:@"Go here to assign new eBooks and monitor reading progress. This area is password protected and only accessible to grown-ups."];
+            self.topTooltip.usesCloseButton = YES;
+            self.topTooltip.delegate = self;
+            self.topTooltip.backgroundImage = [UIImage imageNamed:@"TooltipTopBackground"];
+            self.topTooltip.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+            [self addSubview:self.topTooltip];
+            
+            
+            self.bottomTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(102, 388, 301, 132)
+                                   edgeInsets:UIEdgeInsetsMake(20, 0, 0, 0)] autorelease];
+            [self.bottomTooltip setTitle:@"Child's Bookshelf"
+                             bodyText:@"Your child can start reading by selecting their name. The eBooks you have assigned are waiting for them!"];
+            self.bottomTooltip.usesCloseButton = NO;
+            self.bottomTooltip.backgroundImage = [UIImage imageNamed:@"TooltipBottomBackground"];
+            self.bottomTooltip.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+            [self addSubview:self.bottomTooltip];
+        }
     }
     return self;
 }
@@ -93,6 +112,7 @@
     
     [self.highlightViews addObject:highlightView];
     [self addSubview:highlightView];
+    [self sendSubviewToBack:highlightView];
     [highlightView release];
 }
 
