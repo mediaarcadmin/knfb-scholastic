@@ -1117,7 +1117,7 @@ deregistrationDidFailWithError:(NSError *)error
                ([error code] == kSCHAccountValidationCredentialsMissingError)) {
         localizedMessage = NSLocalizedString(@"Your e-mail address or password was not recognized. Please try again.", nil);
     } else if ([error code] == kSCHDrmDeviceLimitError) {
-        localizedMessage = NSLocalizedString(@"Storia is already installed on five devices, which is the maximum allowed. Before installing it on this device, you need to deregister Storia on one of your current devices.", nil);
+        localizedMessage = NSLocalizedString(@"Storia is already installed on forty devices, which is the maximum allowed. Before installing it on this device, you need to deregister Storia on one of your current devices.", nil);
     } else if (([error code] == kSCHDrmDeviceRegisteredToAnotherDevice) ||
                ([error code] == kSCHDrmDeviceUnableToAssign)) {
         localizedMessage = NSLocalizedString(@"This device is registered to another Scholastic account. The owner of that account needs to deregister this device before it can be registered to a new account.", nil);

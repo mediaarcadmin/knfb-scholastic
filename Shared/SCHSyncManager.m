@@ -386,6 +386,8 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             NSLog(@"Scheduling Account Sync");
             [self.accountSyncDelay syncStarted];
             
+            [self addToQueue:self.settingsSyncComponent];
+            
             [self addToQueue:self.profileSyncComponent];
 
             [self addToQueue:self.contentSyncComponent];
@@ -509,8 +511,6 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             if ([self.annotationSyncComponent haveProfiles] == YES) {
                 [self addToQueue:self.annotationSyncComponent];
             }
-
-            [self addToQueue:self.settingsSyncComponent];
 
             [self kickQueue];
         } else {

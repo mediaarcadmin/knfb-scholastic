@@ -25,6 +25,7 @@
 #import "SCHProfileSyncComponent.h"
 #import "BITModalSheetController.h"
 #import "DDPageControl.h"
+#import "SCHAppStateManager.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
@@ -162,7 +163,6 @@ static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
 
     self.currentIndex = 0;
     [self.pageControl setCurrentPage:self.currentIndex];
-    [self reloadPages];
     
     UIImage *parentButtonImage = [[UIImage imageNamed:@"sm_bttn_red_UNselected_3part"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     [self.parentButton setBackgroundImage:parentButtonImage forState:UIControlStateNormal];
@@ -809,6 +809,11 @@ didSelectButtonAnimated:(BOOL)animated
 
     self.scrollView.contentSize = CGSizeMake(numPages * self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     [self setupScrollViewForIndex:self.currentIndex];
+    
+    NSString *screenName = [[SCHAppStateManager sharedAppStateManager] accountScreenName];
+    if ([screenName length]) {
+        [self.parentButton setTitle:[screenName uppercaseString] forState:UIControlStateNormal];
+    }
 }
 
 - (void)setupScrollViewForIndex:(NSInteger)index
@@ -883,7 +888,7 @@ didSelectButtonAnimated:(BOOL)animated
         rowHeight = kSCHProfileViewControllerRowHeightPhone;
     }
     
-    return floorf(CGRectGetHeight(self.scrollView.bounds)/rowHeight);
+    return MAX(1, floorf(CGRectGetHeight(self.scrollView.bounds)/rowHeight));
 }
 
 - (NSInteger)numberOfPages

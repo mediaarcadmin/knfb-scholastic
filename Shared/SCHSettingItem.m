@@ -14,7 +14,7 @@ NSString * const kSCHSettingItem = @"SCHSettingItem";
 NSString * const kSCHSettingItemSTORE_READ_STAT = @"STORE_READ_STAT";
 NSString * const kSCHSettingItemDISABLE_AUTOASSIGN = @"DISABLE_AUTOASSIGN";
 NSString * const kSCHSettingItemRECOMMENDATIONS_ON = @"RECOMMENDATIONS_ON";
-NSString * const kSCHSettingItemSCREEN_NAME = @"SettingName";
+NSString * const kSCHSettingItemSCREEN_NAME = @"SCREEN_NAME";
 NSString * const kSCHSettingItemNOTIFICATIONS_ON = @"NOTIFICATIONS_ON";
 
 @implementation SCHSettingItem 
