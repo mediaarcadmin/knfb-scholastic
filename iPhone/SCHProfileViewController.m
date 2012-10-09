@@ -345,11 +345,10 @@ didSelectButtonAnimated:(BOOL)animated
 {
     SCHLoginPasswordViewController *passwordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHProfilePasswordView" bundle:nil] autorelease];
     passwordController.controllerType = kSCHControllerPasswordOnlyView;
-    [passwordController.profileLabel setText:[profileItem displayName]];
-    
+
     BITModalSheetController *modalSheet = [[BITModalSheetController alloc] initWithContentViewController:passwordController];
     [modalSheet setContentSize:CGSizeMake(525,226)];
-    modalSheet.offsetForLandscapeKeyboard = 91;
+    modalSheet.offsetForLandscapeKeyboard = 92;
     
     passwordController.cancelBlock = ^{
         [modalSheet dismissSheetAnimated:YES completion:nil];
@@ -377,10 +376,16 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (void)obtainPasswordThenPushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
 {
-    SCHLoginPasswordViewController *passwordController = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHSetProfilePasswordView" bundle:nil];
+    SCHLoginPasswordViewController *passwordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHSetProfilePasswordView" bundle:nil] autorelease];
+    passwordController.controllerType = kSCHControllerDoublePasswordView;
 
-    [passwordController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [passwordController setModalPresentationStyle:UIModalPresentationFormSheet];
+    BITModalSheetController *modalSheet = [[BITModalSheetController alloc] initWithContentViewController:passwordController];
+    [modalSheet setContentSize:CGSizeMake(525,277)];
+    modalSheet.offsetForLandscapeKeyboard = 117;
+
+    passwordController.cancelBlock = ^{
+        [modalSheet dismissSheetAnimated:YES completion:nil];
+    };
 
     passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldText, NSString *bottomFieldText) {
         if (bottomFieldText != nil && 
@@ -393,45 +398,25 @@ didSelectButtonAnimated:(BOOL)animated
                         [[SCHSyncManager sharedSyncManager] passwordSync];
                     }
                     [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-                    [self pushBookshelvesControllerWithProfileItem:profileItem];
-                    [self dismissModalViewControllerAnimated:YES];
+                    [modalSheet dismissSheetAnimated:YES completion:^{
+                        [self pushBookshelvesControllerWithProfileItem:profileItem];
+                    }];
                     return YES;
                 } else {
-                    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                                         message:NSLocalizedString(@"You cannot use spaces at the beginning of your password.", nil)
-                                                                        delegate:nil 
-                                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                               otherButtonTitles:nil]; 
-                    [errorAlert show];
-                    [errorAlert release];
+                    [passwordController setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningPasswordLeadingSpaces];
                     return NO;
                 }
             } else {
-                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                                     message:NSLocalizedString(@"The password cannot be blank.", nil)
-                                                                    delegate:nil 
-                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                           otherButtonTitles:nil]; 
-                [errorAlert show];
-                [errorAlert release];
+                [passwordController setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningPasswordBlank];
                 return NO;
             }
         } else {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                                 message:NSLocalizedString(@"The passwords do not match.", nil)
-                                                                delegate:nil 
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                       otherButtonTitles:nil]; 
-            [errorAlert show];
-            [errorAlert release];
+            [passwordController setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningPasswordMismatch];
             return NO;
         }
     };
     
-    passwordController.controllerType = kSCHControllerDoublePasswordView;
-    [passwordController.profileLabel setText:[profileItem displayName]];
-    [self presentModalViewController:passwordController animated:YES];
-    [passwordController release];
+    [modalSheet presentSheetInViewController:self animated:YES completion:nil];
 }
 
 - (NSArray *)profileItems

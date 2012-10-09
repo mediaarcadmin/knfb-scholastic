@@ -10,6 +10,9 @@ typedef enum {
 	kSCHLoginHandlerCredentialsWarningNone = 0,
     kSCHLoginHandlerCredentialsWarningMalformedEmail,
     kSCHLoginHandlerCredentialsWarningAuthenticationFailure,
+    kSCHLoginHandlerCredentialsWarningPasswordLeadingSpaces,
+    kSCHLoginHandlerCredentialsWarningPasswordMismatch,
+    kSCHLoginHandlerCredentialsWarningPasswordBlank
 } SCHLoginHandlerCredentialsWarning;
 
 @protocol SCHLoginHandlerDelegate
