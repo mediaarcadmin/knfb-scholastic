@@ -11,12 +11,15 @@
 #import "SCHThemeManager.h"
 #import "SCHAppStateManager.h"
 #import "SCHSyncManager.h"
+#import "SCHTopRatingsSyncComponent.h"
+#import "SCHRecommendationURLRequestOperation.h"
 
 @interface SCHBookShelfRecommendationListController ()
 
 - (void)releaseViewObjects;
 - (void)commitWishListChanges;
 - (void)refreshFromAppProfile;
+- (void)reloadRecommendations;
 
 @property (nonatomic, retain) NSArray *localRecommendationItems;
 @property (nonatomic, retain) NSArray *localWishListItems;
@@ -55,6 +58,13 @@
     [appProfile release], appProfile = nil;
     [closeBlock release], closeBlock = nil;
     [recommendationViewNib release], recommendationViewNib = nil;
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHTopRatingsSyncComponentDidCompleteNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                                  object:nil];
     
     // release view objects
     [self releaseViewObjects];
@@ -81,6 +91,18 @@
         self.shouldShowWishList = YES;
 
         [[SCHSyncManager sharedSyncManager] topRatingsSync];
+
+        // watch for new recommendations coming in
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reloadRecommendations)
+                                                     name:SCHTopRatingsSyncComponentDidCompleteNotification
+                                                   object:nil];
+        // watch for new info becoming available from the recommendation manager
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(recommendationDidUpdate:)
+                                                     name:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                                   object:nil];
+
     }
     return self;
 }
@@ -194,7 +216,12 @@
         [self.modifiedWishListItems addObject:wishListItem];
     }
 
-    
+
+    [self reloadRecommendations];
+}
+
+- (void)reloadRecommendations
+{
     // reload table data
     self.localRecommendationItems = [self.appProfile recommendationDictionaries];
     [self.mainTableView reloadData];
@@ -311,7 +338,9 @@
             } else {
                 recommendationView.showsBottomRule = YES;
             }
-            
+
+            [recommendationView acceptUpdatesFromRecommendationManager];
+
             [cell addSubview:recommendationView];
             [recommendationView release];
         }
@@ -395,6 +424,25 @@
 {
     // FIXME: could add the ability to toggle the whole row for add/remove from wishlist
 //    NSLog(@"Recommendation item selected: %@", [self.localRecommendationItems objectAtIndex:indexPath.row]);
+}
+
+#pragma mark - RecommendationManager update notifications
+
+- (void)recommendationDidUpdate:(NSNotification *)notification
+{
+    NSDictionary *recommendationItemDictionary = notification.userInfo;
+    NSString *updatedRecommendationISBN = [recommendationItemDictionary objectForKey:kSCHAppRecommendationItemISBN];
+
+    if (updatedRecommendationISBN != nil) {
+        for (NSDictionary *recommendationDict in self.localRecommendationItems) {
+            NSString *recommendationISBN = [recommendationDict objectForKey:kSCHAppRecommendationItemISBN];
+
+            if (recommendationISBN != nil && [updatedRecommendationISBN isEqualToString:recommendationISBN] == YES) {
+                self.localRecommendationItems = [self.appProfile recommendationDictionaries];
+                break;
+            }
+        }
+    }
 }
 
 @end
