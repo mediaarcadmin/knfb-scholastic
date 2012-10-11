@@ -22,26 +22,17 @@ extern NSString * const kSCHContentMetadataItem;
 
 }
 
-@property (nonatomic, retain) NSString * appealsToHigh;
-@property (nonatomic, retain) NSString * appealsToLow;
 @property (nonatomic, retain) NSString * Author;
 @property (nonatomic, retain) NSNumber * AverageRating;
 @property (nonatomic, retain) NSString * ContentURL;
 @property (nonatomic, retain) NSString * CoverURL;
 @property (nonatomic, retain) NSString * Description;
-@property (nonatomic, retain) NSString * eBookLexileLevel;
 @property (nonatomic, retain) NSNumber * Enhanced;
 @property (nonatomic, retain) NSNumber * FileSize;
 @property (nonatomic, retain) NSString * FormatAuthorString;
 @property (nonatomic, retain) NSString * formatTitleString;
-@property (nonatomic, retain) NSString * guidedReadingLevel;
-@property (nonatomic, retain) NSString * misc2;
-@property (nonatomic, retain) NSString * misc3;
-@property (nonatomic, retain) NSString * misc4;
-@property (nonatomic, retain) NSString * misc5;
 @property (nonatomic, retain) NSNumber * numVotes;
 @property (nonatomic, retain) NSNumber * PageNumber;
-@property (nonatomic, retain) NSString * readingLevel;
 @property (nonatomic, retain) NSString * thumbnailURL;
 @property (nonatomic, retain) NSString * Title;
 @property (nonatomic, retain) NSString * Version;

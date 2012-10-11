@@ -529,9 +529,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.bookIdentifierList addBookIdentifier:item];
 			[item release], item = nil;
 		}
-        // we have no purpose for this information and do not request it
-        request.maxWordCount = [NSNumber numberWithInt:0];
-        request.lastReadDate = [NSDate distantPast];
+
+        // We have no purpose for this information.
+        // nil returns all words, 0 = 300 words, so we request 1
+        request.maxWordCount = [NSNumber numberWithInt:1];
+        // nil returns unfiltered results
+        //request.lastReadDate = [NSDate distantPast];
 
 		[self.binding ListReadingStatisticsAggregateByTitleAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
@@ -777,7 +780,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		} else if ([anObject isKindOfClass:[tns1_ListTopRatingsResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject topRatingsResponseList] TopRatingsResponseItem]] forKey:kSCHLibreAccessWebServiceTopRatingsList];
 		} else if ([anObject isKindOfClass:[tns1_SaveProfileContentAnnotationsResponse class]] == YES) {
-			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationStatusForRatingsList] AnnotationStatusItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusList];
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationStatusList] AnnotationStatusItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusList];
 		} else if ([anObject isKindOfClass:[tns1_SaveUserSettingsResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject settingStatusList] settingStatusItem]] forKey:kSCHLibreAccessWebServiceUserSettingsStatusList];
 		} else if ([anObject isKindOfClass:[tns1_ListReadingStatisticsAggregateByTitleResponse class]] == YES) {
@@ -976,15 +979,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.EreaderCategories] forKey:kSCHLibreAccessWebServiceeReaderCategories];
 		[objects setObject:[self objectFromTranslate:anObject.Enhanced] forKey:kSCHLibreAccessWebServiceEnhanced];
         [objects setObject:[self objectFromTranslate:anObject.ThumbnailURL] forKey:kSCHLibreAccessWebServiceThumbnailURL];
-        [objects setObject:[self objectFromTranslate:anObject.ReadingLevel] forKey:kSCHLibreAccessWebServiceReadingLevel];
-        [objects setObject:[self objectFromTranslate:anObject.AppealsToLow] forKey:kSCHLibreAccessWebServiceAppealsToLow];
-        [objects setObject:[self objectFromTranslate:anObject.AppealsToHigh] forKey:kSCHLibreAccessWebServiceAppealsToHigh];
-        [objects setObject:[self objectFromTranslate:anObject.GuidedReadingLevel] forKey:kSCHLibreAccessWebServiceGuidedReadingLevel];
-        [objects setObject:[self objectFromTranslate:anObject.EBookLexileLevel] forKey:kSCHLibreAccessWebServiceEBookLexileLevel];
-        [objects setObject:[self objectFromTranslate:anObject.Misc2] forKey:kSCHLibreAccessWebServiceMisc2];
-        [objects setObject:[self objectFromTranslate:anObject.Misc3] forKey:kSCHLibreAccessWebServiceMisc3];
-        [objects setObject:[self objectFromTranslate:anObject.Misc4] forKey:kSCHLibreAccessWebServiceMisc4];
-        [objects setObject:[self objectFromTranslate:anObject.Misc5] forKey:kSCHLibreAccessWebServiceMisc5];
 
 		ret = objects;
 	}

@@ -2,8 +2,10 @@ require 'rake/clean'
 
 SOURCE_DIRECTORY = "./Shared/Libraries/WSDL2ObjC/"
 
-LIBRE_ACCESS_WSDL_URL = "http://laesb.uat.cld.libredigital.com/services/LibreAccessService?wsdl"
+LIBRE_ACCESS_WSDL_URL = "http://laesb.uat.cld.libredigital.com/services/LibreAccessService_1_2_0?wsdl"
 LIBRE_ACCESS_WSDL_NAME = "LibreAccessService_UAT.wsdl"
+LIBRE_ACCESS_XSD_URL = "http://laesb.uat.cld.libredigital.com/services/LibreAccessService_1_2_0?xsd=types_1_2_0.xsd"
+LIBRE_ACCESS_XSD_NAME = "types_1_2_0.xsd"
 SCHWS_AUTHENTICATE_WSDL_URL = "https://esvcsqa2.scholastic.com/SchWS/services/SPS/Authenticate?wsdl"
 SCHWS_AUTHENTICATE_WSDL_NAME = "SchWS_Authenticate_QA.wsdl"
 SCHWS_GETUSERINFO_WSDL_URL = "https://esvcsqa2.scholastic.com/SchWS/services/SPS/GetUserInfo?wsdl"
@@ -22,6 +24,7 @@ task :diff_all_qa_wsdls => ["diff_qa_libre_access_wsdl", "diff_qa_scholastic_aut
 desc "Fetch the UAT Libre Access WSDL file"
 task :fetch_qa_libre_access_wsdl do |t|
   fetch(LIBRE_ACCESS_WSDL_URL, LIBRE_ACCESS_WSDL_NAME)
+  fetch(LIBRE_ACCESS_XSD_URL, LIBRE_ACCESS_XSD_NAME)
 end
 
 desc "Fetch the QA Scholastic Authenticate WSDL file"

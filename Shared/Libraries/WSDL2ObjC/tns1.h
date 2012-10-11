@@ -544,7 +544,7 @@ NSString * tns1_drmqualifiers_stringFromEnum(tns1_drmqualifiers enumValue);
 	NSString * Version;
 	NSNumber * AverageRating;
 	NSNumber * numVotes;
-	tns1_ContentProfileList * ContentProfileForRatingsList;
+	tns1_ContentProfileList * ContentProfileList;
 	tns1_OrderList * OrderList;
 	NSDate * lastmodified;
 	USBoolean * DefaultAssignment;
@@ -569,7 +569,7 @@ NSString * tns1_drmqualifiers_stringFromEnum(tns1_drmqualifiers enumValue);
 @property (nonatomic, retain) NSString * Version;
 @property (nonatomic, retain) NSNumber * AverageRating;
 @property (nonatomic, retain) NSNumber * numVotes;
-@property (nonatomic, retain) tns1_ContentProfileList * ContentProfileForRatingsList;
+@property (nonatomic, retain) tns1_ContentProfileList * ContentProfileList;
 @property (nonatomic, retain) tns1_OrderList * OrderList;
 @property (nonatomic, retain) NSDate * lastmodified;
 @property (nonatomic, retain) USBoolean * DefaultAssignment;
@@ -630,15 +630,6 @@ NSString * tns1_TopFavoritesTypes_stringFromEnum(tns1_TopFavoritesTypes enumValu
 	NSMutableArray *EreaderCategories;
 	USBoolean * Enhanced;
 	NSString * ThumbnailURL;
-	NSString * ReadingLevel;
-	NSString * AppealsToLow;
-	NSString * AppealsToHigh;
-	NSString * GuidedReadingLevel;
-	NSString * EBookLexileLevel;
-	NSString * Misc2;
-	NSString * Misc3;
-	NSString * Misc4;
-	NSString * Misc5;
 /* attributes */
 }
 - (NSString *)nsPrefix;
@@ -666,15 +657,6 @@ NSString * tns1_TopFavoritesTypes_stringFromEnum(tns1_TopFavoritesTypes enumValu
 @property (nonatomic, readonly) NSMutableArray * EreaderCategories;
 @property (nonatomic, retain) USBoolean * Enhanced;
 @property (nonatomic, retain) NSString * ThumbnailURL;
-@property (nonatomic, retain) NSString * ReadingLevel;
-@property (nonatomic, retain) NSString * AppealsToLow;
-@property (nonatomic, retain) NSString * AppealsToHigh;
-@property (nonatomic, retain) NSString * GuidedReadingLevel;
-@property (nonatomic, retain) NSString * EBookLexileLevel;
-@property (nonatomic, retain) NSString * Misc2;
-@property (nonatomic, retain) NSString * Misc3;
-@property (nonatomic, retain) NSString * Misc4;
-@property (nonatomic, retain) NSString * Misc5;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -4100,7 +4082,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 @interface tns1_SaveProfileContentAnnotationsResponse : NSObject <NSCoding> {
 /* elements */
 	tns1_StatusHolder * statusmessage;
-	tns1_AnnotationStatusList * AnnotationStatusForRatingsList;
+	tns1_AnnotationStatusList * AnnotationStatusList;
 /* attributes */
 }
 - (NSString *)nsPrefix;
@@ -4112,7 +4094,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 - (void)deserializeElementsFromNode:(xmlNodePtr)cur;
 /* elements */
 @property (nonatomic, retain) tns1_StatusHolder * statusmessage;
-@property (nonatomic, retain) tns1_AnnotationStatusList * AnnotationStatusForRatingsList;
+@property (nonatomic, retain) tns1_AnnotationStatusList * AnnotationStatusList;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
