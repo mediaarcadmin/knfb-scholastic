@@ -447,7 +447,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                     ([earlierOpenedDate laterDate:recommendationISBN.fetchDate] == earlierOpenedDate &&
                      [[NSDate date] earlierDate:nextUpdate] == nextUpdate)) {
                         if (asISBN == YES) {
-                    NSString *isbn = makeNullNil([item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+                            NSString *isbn = makeNullNil([item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
                             if (isbn != nil && [ret containsObject:isbn] == NO) {
                                 [ret addObject:isbn];
                             }
