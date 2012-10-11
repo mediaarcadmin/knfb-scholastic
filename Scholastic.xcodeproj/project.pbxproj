@@ -1419,6 +1419,7 @@
 		52A36A6C15B444D300162753 /* SCHXPSKNFBMetadataFileParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A36A6915B444D200162753 /* SCHXPSKNFBMetadataFileParser.m */; };
 		52A36A7115B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A36A7015B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m */; };
 		52A6763113AF3744007A7FE6 /* UIColor+Scholastic.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */; };
+		52A7BAC71626E316007E0E5B /* types_1_2_0.xsd in Resources */ = {isa = PBXBuildFile; fileRef = 52A7BAC61626E316007E0E5B /* types_1_2_0.xsd */; };
 		52AA3F631615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */; };
 		52AA3F641615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */; };
 		52AA3F651615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */; };
@@ -4162,6 +4163,7 @@
 		52A3EA9F140FE01D00D69935 /* KIFTestStep+EXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KIFTestStep+EXAdditions.m"; path = "KIF/KIFTestStep+EXAdditions.m"; sourceTree = "<group>"; };
 		52A6762F13AF3744007A7FE6 /* UIColor+Scholastic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Scholastic.h"; path = "Shared/UIColor+Scholastic.h"; sourceTree = "<group>"; };
 		52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Scholastic.m"; path = "Shared/UIColor+Scholastic.m"; sourceTree = "<group>"; };
+		52A7BAC61626E316007E0E5B /* types_1_2_0.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = types_1_2_0.xsd; sourceTree = "<group>"; };
 		52AA3F611615E68300297C01 /* SCHListReadingStatisticsSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListReadingStatisticsSyncComponent.h; path = Shared/SCHListReadingStatisticsSyncComponent.h; sourceTree = "<group>"; };
 		52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHListReadingStatisticsSyncComponent.m; path = Shared/SCHListReadingStatisticsSyncComponent.m; sourceTree = "<group>"; };
 		52AA3F681618F79900297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListReadingStatisticsAggregateByTitleRequestOperation.h; path = Shared/SCHListReadingStatisticsAggregateByTitleRequestOperation.h; sourceTree = "<group>"; };
@@ -7277,6 +7279,7 @@
 			isa = PBXGroup;
 			children = (
 				52EE0ED415CBC086004F7616 /* LibreAccessService_UAT.wsdl */,
+				52A7BAC61626E316007E0E5B /* types_1_2_0.xsd */,
 				52EE0ED515CBC086004F7616 /* SchWS_Authenticate_QA.wsdl */,
 				52EE0ED615CBC086004F7616 /* SchWS_GetUserInfo_QA.wsdl */,
 				52EE0ED715CBC086004F7616 /* SchWS_WishListService_QA.wsdl */,
@@ -10271,6 +10274,7 @@
 				F8FA4616162425BE00CC6D39 /* TooltipBottomBackground~ipad.png in Resources */,
 				F8FA4619162425BE00CC6D39 /* TooltipTopBackground@2x~ipad.png in Resources */,
 				F8FA461C162425BE00CC6D39 /* TooltipTopBackground~ipad.png in Resources */,
+				52A7BAC71626E316007E0E5B /* types_1_2_0.xsd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

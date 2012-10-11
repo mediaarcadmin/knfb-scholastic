@@ -507,15 +507,6 @@
     [ret setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceeReaderCategories];
     [ret setObject:[NSNumber numberWithBool:enhanced] forKey:kSCHLibreAccessWebServiceEnhanced];
     [ret setObject:(thumbnailURL == nil ? (id)[NSNull null] : thumbnailURL) forKey:kSCHLibreAccessWebServiceThumbnailURL];
-    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceReadingLevel];
-    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceAppealsToLow];
-    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceAppealsToHigh];
-    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceGuidedReadingLevel];
-    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceEBookLexileLevel];
-    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceMisc2];
-    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceMisc3];
-    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceMisc4];
-    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceMisc5];
 
     return ret;
 }

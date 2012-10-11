@@ -311,8 +311,6 @@
         <userInfo/>
     </entity>
     <entity name="SCHContentMetadataItem" representedClassName="SCHContentMetadataItem" parentEntity="SCHContentItem">
-        <attribute name="appealsToHigh" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="appealsToLow" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="Author" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -328,7 +326,6 @@
         <attribute name="Description" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="eBookLexileLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="Enhanced" optional="YES" attributeType="Boolean" defaultValueString="0">
             <userInfo/>
         </attribute>
@@ -341,16 +338,10 @@
         <attribute name="formatTitleString" optional="YES" transient="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="guidedReadingLevel" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="misc2" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="misc3" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="misc4" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="misc5" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numVotes" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="PageNumber" optional="YES" attributeType="Integer 32" defaultValueString="0">
             <userInfo/>
         </attribute>
-        <attribute name="readingLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="Title" optional="YES" attributeType="String">
             <userInfo/>
@@ -380,7 +371,7 @@
             <userInfo/>
         </relationship>
         <relationship name="booksAssignment" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHBooksAssignment" inverseName="profileList" inverseEntity="SCHBooksAssignment" syncable="YES"/>
-            <userInfo/>
+        <userInfo/>
     </entity>
     <entity name="SCHDeviceInfo" representedClassName="SCHDeviceInfo">
         <attribute name="Active" optional="YES" attributeType="Boolean">
@@ -810,7 +801,7 @@
         <element name="SCHBookmark" positionX="0" positionY="0" width="128" height="105"/>
         <element name="SCHBooksAssignment" positionX="0" positionY="0" width="128" height="210"/>
         <element name="SCHContentItem" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="SCHContentMetadataItem" positionX="0" positionY="0" width="128" height="420"/>
+        <element name="SCHContentMetadataItem" positionX="0" positionY="0" width="128" height="285"/>
         <element name="SCHContentProfileItem" positionX="0" positionY="0" width="128" height="120"/>
         <element name="SCHDeviceInfo" positionX="0" positionY="0" width="128" height="225"/>
         <element name="SCHDictionaryEntry" positionX="0" positionY="0" width="128" height="105"/>
