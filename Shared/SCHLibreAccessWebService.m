@@ -529,9 +529,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[request.bookIdentifierList addBookIdentifier:item];
 			[item release], item = nil;
 		}
-        // we have no purpose for this information and do not request it
-        request.maxWordCount = [NSNumber numberWithInt:0];
-        request.lastReadDate = [NSDate distantPast];
+
+        // We have no purpose for this information.
+        // nil returns all words, 0 = 300 words, so we request 1
+        request.maxWordCount = [NSNumber numberWithInt:1];
+        // nil returns unfiltered results
+        //request.lastReadDate = [NSDate distantPast];
 
 		[self.binding ListReadingStatisticsAggregateByTitleAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
