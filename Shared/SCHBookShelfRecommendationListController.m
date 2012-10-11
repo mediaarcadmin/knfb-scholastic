@@ -237,9 +237,7 @@
     if (modifiedItemsIndex != NSNotFound) {
         [self.modifiedWishListItems removeObjectAtIndex:modifiedItemsIndex];
         
-        // reload table data
-        self.localRecommendationItems = [self.appProfile recommendationDictionaries];
-        [self.mainTableView reloadData];
+        [self reloadRecommendations];
     }
 }
 
@@ -438,7 +436,7 @@
             NSString *recommendationISBN = [recommendationDict objectForKey:kSCHAppRecommendationItemISBN];
 
             if (recommendationISBN != nil && [updatedRecommendationISBN isEqualToString:recommendationISBN] == YES) {
-                self.localRecommendationItems = [self.appProfile recommendationDictionaries];
+                [self reloadRecommendations];
                 break;
             }
         }
