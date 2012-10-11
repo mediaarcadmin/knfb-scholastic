@@ -455,6 +455,8 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 {
     NSArray *ret = nil;
     NSSet *allItems = [[self appRecommendationISBN] recommendationItems];
+    // start processing any recommendations
+    [self processUserAction:allItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.isReady = %d", YES];
     NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations]
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
@@ -475,8 +477,6 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     }
     
     ret = [NSArray arrayWithArray:objectArray];
-
-    [self processUserAction:allItems];
 
     return ret;
 }
