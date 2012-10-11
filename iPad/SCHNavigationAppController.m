@@ -800,4 +800,27 @@
     }
 }
 
+#pragma mark - iOS 6 Rotation
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    UIViewController *visibleViewController = self.visibleViewController;
+    
+    if ((visibleViewController == nil) ||
+        (visibleViewController == loginViewController) ||
+        (visibleViewController == tourViewController) ||
+        (visibleViewController == profileViewController) ||
+        (visibleViewController == samplesViewController) ||
+        (visibleViewController == settingsViewController) ||
+        (visibleViewController == readingManagerViewController)) {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            return UIInterfaceOrientationMaskLandscape;
+        } else {
+            return UIInterfaceOrientationMaskPortrait;
+        }
+    } else {
+        return UIInterfaceOrientationMaskAll;
+    }
+}
+
 @end
