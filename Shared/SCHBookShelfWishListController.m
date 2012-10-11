@@ -10,6 +10,8 @@
 #import "SCHThemeManager.h"
 
 #import "SCHSyncManager.h"
+#import "SCHWishListSyncComponent.h"
+#import "SCHRecommendationURLRequestOperation.h"
 
 @interface SCHBookShelfWishListController ()
 
@@ -50,6 +52,13 @@
     [wishListItemsToRemove release], wishListItemsToRemove = nil;
     [recommendationViewNib release], recommendationViewNib = nil;
 
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHWishListSyncComponentDidCompleteNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                                  object:nil];
+
     // release view objects
     [self releaseViewObjects];
     [super dealloc];
@@ -75,6 +84,17 @@
         self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
 
         [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
+
+        // watch for new wishlist items coming in
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reloadWishlist)
+                                                     name:SCHWishListSyncComponentDidCompleteNotification
+                                                   object:nil];
+        // watch for new info becoming available from the recommendation manager
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(recommendationDidUpdate:)
+                                                     name:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -190,6 +210,13 @@
     [self.mainTableView reloadData];
 }
 
+- (void)reloadWishlist
+{
+    // reload table data
+    self.localWishListItems = [self.appProfile wishListItemDictionaries];
+    [self.mainTableView reloadData];
+}
+
 - (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN
 {
     NSUInteger index = [self.localWishListItems indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
@@ -263,7 +290,8 @@
                 recommendationView.showsBottomRule = YES;
             }
             
-
+            [recommendationView acceptUpdatesFromRecommendationManager];
+            
             [cell addSubview:recommendationView];
             [recommendationView release];
         }
@@ -352,6 +380,25 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      [detailViewController release];
      */
+}
+
+#pragma mark - RecommendationManager update notifications
+
+- (void)recommendationDidUpdate:(NSNotification *)notification
+{
+    NSDictionary *recommendationItemDictionary = notification.userInfo;
+    NSString *updatedRecommendationISBN = [recommendationItemDictionary objectForKey:kSCHAppRecommendationItemISBN];
+
+    if (updatedRecommendationISBN != nil) {
+        for (NSDictionary *wishlistDict in self.localWishListItems) {
+            NSString *recommendationISBN = [wishlistDict objectForKey:kSCHAppRecommendationItemISBN];
+
+            if (recommendationISBN != nil && [updatedRecommendationISBN isEqualToString:recommendationISBN] == YES) {
+                [self reloadWishlist];
+                break;
+            }
+        }
+    }
 }
 
 @end

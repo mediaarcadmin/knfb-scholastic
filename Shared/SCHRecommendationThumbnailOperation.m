@@ -9,6 +9,9 @@
 #import "SCHRecommendationThumbnailOperation.h"
 #import "UIImage+ScholasticAdditions.h"
 
+// Constants
+NSString * const SCHRecommendationThumbnailOperationDidUpdateNotification = @"SCHRecommendationThumbnailOperationDidUpdateNotification";
+
 @implementation SCHRecommendationThumbnailOperation
 
 - (void)beginOperation
@@ -36,6 +39,16 @@
     
     if (createdThumb) {
         [self setProcessingState:kSCHAppRecommendationProcessingStateComplete];
+        [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
+            NSDictionary *recommendationItemDictionary = [item dictionary];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self.isCancelled == NO) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHRecommendationThumbnailOperationDidUpdateNotification
+                                                                        object:self
+                                                                      userInfo:recommendationItemDictionary];
+                }
+            });
+        }];
     } else {
         [self setProcessingState:kSCHAppRecommendationProcessingStateThumbnailError];
     }

@@ -36,6 +36,7 @@ extern NSString * const kSCHBooksAssignment;
 
 @property (nonatomic, readonly) NSSet *ContentMetadataItem;
 //@property (nonatomic, readonly) NSSet *AssignedProfileList;
+- (NSDate *)earlierOpenedDate;
 
 @end
 

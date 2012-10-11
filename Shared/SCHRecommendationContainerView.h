@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SCHRecommendationListView.h"
+
 @interface SCHRecommendationContainerView : UIView
 
 @property (nonatomic, retain) IBOutlet UIView *container;
@@ -15,4 +17,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *subtitle;
 @property (nonatomic, retain) IBOutlet UILabel *heading;
 
+- (void)setRecommendations:(NSArray *)recommendationDictionaries
+modifiedWishListDictionaries:(NSArray *)modifiedWishListDictionaries
+          listViewDelegate:(id<SCHRecommendationListViewDelegate>)listViewDelegate;
 @end

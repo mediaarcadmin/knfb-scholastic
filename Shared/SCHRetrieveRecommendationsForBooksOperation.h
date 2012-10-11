@@ -8,6 +8,10 @@
 
 #import "SCHSyncComponentOperation.h"
 
+// Constants
+extern NSString * const SCHRetrieveRecommendationsForBooksOperationCreateOrUpdateBooksNotification;
+extern NSString * const SCHRetrieveRecommendationsForBooksOperationBookIdentifiers;
+
 @interface SCHRetrieveRecommendationsForBooksOperation : SCHSyncComponentOperation
 
 - (void)syncRecommendationISBNs:(NSArray *)webRecommendationISBNs

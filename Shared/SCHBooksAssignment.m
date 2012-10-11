@@ -10,6 +10,7 @@
 #import "SCHContentProfileItem.h"
 
 #import "SCHContentMetadataItem.h"
+#import "SCHAppContentProfileItem.h"
 
 // Constants
 NSString * const kSCHBooksAssignment = @"SCHBooksAssignment";
@@ -53,6 +54,22 @@ NSString * const kSCHBooksAssignment = @"SCHBooksAssignment";
 //{
 //	return(self.profileList);
 //}
+
+- (NSDate *)earlierOpenedDate
+{
+    NSDate *ret = nil;
+
+    for (SCHContentProfileItem *item in self.profileList) {
+        NSDate *lastOpenedDate = item.AppContentProfileItem.lastOpenedDate;
+        if (lastOpenedDate != nil &&
+            (ret == nil ||
+             [ret earlierDate:lastOpenedDate] == lastOpenedDate)) {
+                ret = lastOpenedDate;
+            }
+    }
+
+    return ret;
+}
 
 #pragma SCHISBNItem protocol methods
 

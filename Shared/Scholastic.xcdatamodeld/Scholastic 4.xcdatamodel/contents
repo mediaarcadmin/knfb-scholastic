@@ -131,6 +131,7 @@
         <attribute name="LastNoteAnnotationSync" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
+        <attribute name="lastOpenedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="Order" attributeType="Integer 16" defaultValueString="0">
             <userInfo/>
         </attribute>
@@ -379,7 +380,7 @@
             <userInfo/>
         </relationship>
         <relationship name="booksAssignment" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SCHBooksAssignment" inverseName="profileList" inverseEntity="SCHBooksAssignment" syncable="YES"/>
-        <userInfo/>
+            <userInfo/>
     </entity>
     <entity name="SCHDeviceInfo" representedClassName="SCHDeviceInfo">
         <attribute name="Active" optional="YES" attributeType="Boolean">
