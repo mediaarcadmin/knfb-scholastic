@@ -112,6 +112,8 @@
     } else {
         afterDownload();
     }
+    
+    [self.appController presentSettings];
 }
 
 - (void)removeDictionary:(id)sender

@@ -44,7 +44,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @property (nonatomic, assign) SCHSettingsPanel selectedPanel;
 @property (nonatomic, assign) BOOL additionalSettingsVisible;
 
-- (void)updateDictionaryButton;
 - (void)releaseViewObjects;
 - (void)replaceCheckBooksAlertWithAlert:(LambdaAlert *)alert;
 - (void)registerForSyncNotifications;
@@ -234,139 +233,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
 }
 
-#pragma mark - Button states
-
-- (void)updateDictionaryButton
-{
-    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
-    
-    BOOL enabled = NO;
-    
-    // Specifically enumerating without a default so we catch any new cases at compile time
-    switch (state) {
-        case SCHDictionaryProcessingStateReady:
-        case SCHDictionaryProcessingStateUserSetup:
-        case SCHDictionaryProcessingStateUserDeclined:
-        case SCHDictionaryProcessingStateError:
-        case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
-        case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
-        case SCHDictionaryProcessingStateDownloadError:
-        case SCHDictionaryProcessingStateUnableToOpenZipError:
-        case SCHDictionaryProcessingStateUnZipFailureError:
-        case SCHDictionaryProcessingStateParseError:
-            enabled = YES;
-            break;
-        case SCHDictionaryProcessingStateNeedsManifest:
-        case SCHDictionaryProcessingStateManifestVersionCheck:
-        case SCHDictionaryProcessingStateNeedsDownload:
-        case SCHDictionaryProcessingStateNeedsUnzip:
-        case SCHDictionaryProcessingStateNeedsParse:
-        case SCHDictionaryProcessingStateDeleting:
-            enabled = NO;
-            break;
-    }
-    
-   // self.downloadDictionaryButton.enabled = enabled;
-    //self.downloadDictionaryButton.titleLabel.textAlignment = UITextAlignmentCenter;
-
-    BOOL doubleLine = NO;
-
-    switch (state) {
-        case SCHDictionaryProcessingStateReady:
-          //  [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Remove Dictionary", @"remove dictionary button title")
-              //                             forState:UIControlStateNormal];
-
-            break;
-        case SCHDictionaryProcessingStateNeedsManifest:
-        case SCHDictionaryProcessingStateManifestVersionCheck:
-        case SCHDictionaryProcessingStateNeedsDownload:
-        {
-            if ([[SCHDictionaryDownloadManager sharedDownloadManager] wifiAvailable]) {
-                //NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryDownloadPercentage] * 100.0f);
-             //   [self.downloadDictionaryButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Downloading Dictionary %d%%", @"Downloading dictionary button title"),
-                                             //            progress]
-                                             //  forState:UIControlStateNormal];
-            } else {
-               // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Download Paused.\nWaiting for Wi-Fi.", @"Waiting for Wi-Fi dictionary button title")
-                                             //  forState:UIControlStateNormal];
-                doubleLine = YES;
-            }
-            break;
-        }
-        case SCHDictionaryProcessingStateNeedsUnzip:
-        case SCHDictionaryProcessingStateNeedsParse:
-        {
-           // NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryProcessingPercentage] * 100.0f);
-            //[self.downloadDictionaryButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Installing Dictionary %d%%", @"Installing dictionary button title"),
-                                             //        progress]
-                                          // forState:UIControlStateNormal];
-            break;
-        }
-        case SCHDictionaryProcessingStateDeleting:
-            //[self.downloadDictionaryButton setTitle:NSLocalizedString(@"Deleting Dictionary...", @"Deleting dictionary button title")
-               //                            forState:UIControlStateNormal];
-            break;   
-        case SCHDictionaryProcessingStateError:
-           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nUnknown Error", @"Dictionary error button title for unknown error")
-            //                               forState:UIControlStateNormal];
-            doubleLine = YES;
-            break; 
-        case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
-          //  [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nDownload Interrupted.", @"Dictionary error button title for connection interrupted")
-             //                              forState:UIControlStateNormal];
-            doubleLine = YES;
-            break; 
-        case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
-           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nNot Enough Free Space.", @"Dictionary error button title for not enough free space")
-             //                              forState:UIControlStateNormal];
-            doubleLine = YES;
-            break; 
-        case SCHDictionaryProcessingStateDownloadError:
-           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nDownload Failed.", @"Dictionary error button title for download failed")
-           //                                forState:UIControlStateNormal];
-            doubleLine = YES;
-            break; 
-        case SCHDictionaryProcessingStateUnableToOpenZipError:
-           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nCouldn't Open Zip.", @"Dictionary error button title for Couldn't open zip")
-            //                               forState:UIControlStateNormal];
-            doubleLine = YES;
-            break; 
-        case SCHDictionaryProcessingStateUnZipFailureError:
-           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nUnzip Failed. Check Disk Space.", @"Dictionary error button title for unzip failed")
-            //                               forState:UIControlStateNormal];
-            doubleLine = YES;
-            break; 
-        case SCHDictionaryProcessingStateParseError:
-           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Dictionary Error. Try Again.\nParse Failed.", @"Dictionary error button title for parser error")
-             //                              forState:UIControlStateNormal];
-            doubleLine = YES;
-            break;  
-        case SCHDictionaryProcessingStateUserSetup:
-        case SCHDictionaryProcessingStateUserDeclined:
-           // [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
-            //                               forState:UIControlStateNormal];
-
-            break;
-    }
-    
-//    if (doubleLine) {
-//        self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-//
-//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:15.0f];
-//        } else {
-//            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:14.0f];
-//        }
-//    } else {
-//        self.downloadDictionaryButton.titleLabel.lineBreakMode = UILineBreakModeTailTruncation; 
-//        
-//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:18.0f];
-//        } else {
-//            self.downloadDictionaryButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
-//        }
-//    }
-}
 
 #pragma mark - Actions
 #if 0
@@ -749,7 +615,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)dictionaryStateChanged:(NSNotification *)note
 {
-    [self updateDictionaryButton];
+    // FIXME: just reload the single table view cell?
+    [self.tableView reloadData];
 }
 
 - (void)didUpdateAccountDuringSync:(NSNotification *)note
@@ -920,20 +787,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             cell.textLabel.textColor = blueText;
             break;
         case kSCHSettingsPanelDictionaryDownload:
-            cell.textLabel.text = @"Download Dictionary";
-            cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
-            if (isSelected) {
-                cell.textLabel.textColor = lightText;
-                cell.imageView.image = selectedImage;
-                cell.indentationLevel = 0;
-            } else {
-                cell.textLabel.textColor = darkText;
-                cell.imageView.image = nil;
-                cell.indentationLevel = 1;
-            }
-            break;
         case kSCHSettingsPanelDictionaryDelete:
-            cell.textLabel.text = @"Remove Dictionary";
+            cell.textLabel.text = [[SCHDictionaryDownloadManager sharedDownloadManager] titleForCurrentDictionaryState];
             cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
             if (isSelected) {
                 cell.textLabel.textColor = lightText;
@@ -1183,11 +1038,34 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                         return kSCHSettingsPanelAdditionalSettings;
                         break;
                     case 1:
-                        if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
-                            return kSCHSettingsPanelDictionaryDelete;
-                        } else {
-                            return kSCHSettingsPanelDictionaryDownload;
+                    {
+                        switch ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState]) {
+                            case SCHDictionaryProcessingStateReady:
+                            case SCHDictionaryProcessingStateUserSetup:
+                            case SCHDictionaryProcessingStateUserDeclined:
+                            case SCHDictionaryProcessingStateError:
+                            case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
+                            case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
+                            case SCHDictionaryProcessingStateDownloadError:
+                            case SCHDictionaryProcessingStateUnableToOpenZipError:
+                            case SCHDictionaryProcessingStateUnZipFailureError:
+                            case SCHDictionaryProcessingStateParseError:
+                            case SCHDictionaryProcessingStateDeleting:
+                            {
+                                return kSCHSettingsPanelDictionaryDownload;
+                                break;
+                            }
+                            case SCHDictionaryProcessingStateNeedsManifest:
+                            case SCHDictionaryProcessingStateManifestVersionCheck:
+                            case SCHDictionaryProcessingStateNeedsDownload:
+                            case SCHDictionaryProcessingStateNeedsUnzip:
+                            case SCHDictionaryProcessingStateNeedsParse:
+                            {
+                                return kSCHSettingsPanelDictionaryDelete;
+                                break;
+                            }
                         }
+                    }
                         break;
                     case 2:
                         return kSCHSettingsPanelDeregisterDevice;
@@ -1213,10 +1091,31 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         } else {
             switch ([indexPath row]) {
                 case 0:
-                    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
-                        return kSCHSettingsPanelDictionaryDelete;
-                    } else {
-                        return kSCHSettingsPanelDictionaryDownload;
+                    switch ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState]) {
+                        case SCHDictionaryProcessingStateReady:
+                        case SCHDictionaryProcessingStateUserSetup:
+                        case SCHDictionaryProcessingStateUserDeclined:
+                        case SCHDictionaryProcessingStateError:
+                        case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
+                        case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
+                        case SCHDictionaryProcessingStateDownloadError:
+                        case SCHDictionaryProcessingStateUnableToOpenZipError:
+                        case SCHDictionaryProcessingStateUnZipFailureError:
+                        case SCHDictionaryProcessingStateParseError:
+                        case SCHDictionaryProcessingStateDeleting:
+                        {
+                            return kSCHSettingsPanelDictionaryDownload;
+                            break;
+                        }
+                        case SCHDictionaryProcessingStateNeedsManifest:
+                        case SCHDictionaryProcessingStateManifestVersionCheck:
+                        case SCHDictionaryProcessingStateNeedsDownload:
+                        case SCHDictionaryProcessingStateNeedsUnzip:
+                        case SCHDictionaryProcessingStateNeedsParse:
+                        {
+                            return kSCHSettingsPanelDictionaryDelete;
+                            break;
+                        }
                     }
                     break;
                 case 1:
@@ -1297,10 +1196,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             } break;
             case kSCHSettingsPanelDictionaryDownload: {
                 SCHDownloadDictionaryViewController *controller = [[[SCHDownloadDictionaryViewController alloc] init] autorelease];
+                controller.appController = self.appController;
                 self.contentViewController = controller;
             } break;
             case kSCHSettingsPanelDictionaryDelete: {
                 SCHDownloadDictionaryViewController *controller = [[[SCHDownloadDictionaryViewController alloc] initWithNibName:@"SCHRemoveDictionaryViewController" bundle:nil] autorelease];
+                controller.appController = self.appController;
                 self.contentViewController = controller;
             } break;
             case kSCHSettingsPanelDeregisterDevice: {
