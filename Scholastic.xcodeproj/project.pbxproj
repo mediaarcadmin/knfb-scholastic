@@ -1416,6 +1416,8 @@
 		52A36A7115B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A36A7015B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m */; };
 		52A6763113AF3744007A7FE6 /* UIColor+Scholastic.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */; };
 		52A7BAC71626E316007E0E5B /* types_1_2_0.xsd in Resources */ = {isa = PBXBuildFile; fileRef = 52A7BAC61626E316007E0E5B /* types_1_2_0.xsd */; };
+		52A7BAF816280466007E0E5B /* LibreAccessActivityLogSvc_tns1.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7BAF716280466007E0E5B /* LibreAccessActivityLogSvc_tns1.m */; };
+		52A7BAF9162849D6007E0E5B /* LibreAccessActivityLogSvc_tns1.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7BAF716280466007E0E5B /* LibreAccessActivityLogSvc_tns1.m */; };
 		52AA3F631615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */; };
 		52AA3F641615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */; };
 		52AA3F651615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */; };
@@ -4158,6 +4160,8 @@
 		52A6762F13AF3744007A7FE6 /* UIColor+Scholastic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Scholastic.h"; path = "Shared/UIColor+Scholastic.h"; sourceTree = "<group>"; };
 		52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Scholastic.m"; path = "Shared/UIColor+Scholastic.m"; sourceTree = "<group>"; };
 		52A7BAC61626E316007E0E5B /* types_1_2_0.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = types_1_2_0.xsd; sourceTree = "<group>"; };
+		52A7BAF616280466007E0E5B /* LibreAccessActivityLogSvc_tns1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibreAccessActivityLogSvc_tns1.h; sourceTree = "<group>"; };
+		52A7BAF716280466007E0E5B /* LibreAccessActivityLogSvc_tns1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibreAccessActivityLogSvc_tns1.m; sourceTree = "<group>"; };
 		52AA3F611615E68300297C01 /* SCHListReadingStatisticsSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListReadingStatisticsSyncComponent.h; path = Shared/SCHListReadingStatisticsSyncComponent.h; sourceTree = "<group>"; };
 		52AA3F621615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHListReadingStatisticsSyncComponent.m; path = Shared/SCHListReadingStatisticsSyncComponent.m; sourceTree = "<group>"; };
 		52AA3F681618F79900297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListReadingStatisticsAggregateByTitleRequestOperation.h; path = Shared/SCHListReadingStatisticsAggregateByTitleRequestOperation.h; sourceTree = "<group>"; };
@@ -7008,6 +7012,8 @@
 				52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */,
 				52C7892B15F5E7B4003B291C /* LibreAccessActivityLogSvc.h */,
 				52C7892C15F5E7B5003B291C /* LibreAccessActivityLogSvc.m */,
+				52A7BAF616280466007E0E5B /* LibreAccessActivityLogSvc_tns1.h */,
+				52A7BAF716280466007E0E5B /* LibreAccessActivityLogSvc_tns1.m */,
 				520DF6FA15EE64C800C4452F /* tns1.h */,
 				520DF6FB15EE64C800C4452F /* tns1.m */,
 				521B7ADC1521D4BC00DC0739 /* LibreAccessServiceSvc+Binding.h */,
@@ -11668,6 +11674,7 @@
 				F84A4F491623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */,
 				52AA3F631615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */,
 				52AA3F6A1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
+				52A7BAF816280466007E0E5B /* LibreAccessActivityLogSvc_tns1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12535,6 +12542,7 @@
 				F84A4F4A1623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */,
 				52AA3F641615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */,
 				52AA3F6B1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
+				52A7BAF9162849D6007E0E5B /* LibreAccessActivityLogSvc_tns1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

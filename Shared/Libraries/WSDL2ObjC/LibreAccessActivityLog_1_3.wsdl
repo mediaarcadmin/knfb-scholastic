@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://webservices.libredigital.com/LibreAccess/v1.3" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:types="http://webservices.libredigital.com/LibreAccess/schema/types/v1.3" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://webservices.libredigital.com/LibreAccess/v1.3">
+    <wsdl:documentation>Version 1.7.5.0</wsdl:documentation>
+    <wsdl:types>
+        <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified">
+            <xsd:import namespace="http://webservices.libredigital.com/LibreAccess/schema/types/v1.3" schemaLocation="types_1_3-COPY.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <!-- <wsdl:message name="ListAvailableDumpsRequest">
+        <wsdl:part name="parameters" element="types:ListAvailableDumpsRequest"/>
+    </wsdl:message>
+    <wsdl:message name="ListAvailableDumpsResponse">
+        <wsdl:part name="parameters" element="types:ListAvailableDumpsResponse"/>
+    </wsdl:message> -->
+    <!-- <wsdl:message name="SaveDumpRequest">
+        <wsdl:part name="parameters" element="types:SaveDump"/>
+    </wsdl:message>
+    <wsdl:message name="SaveDumpResponse">
+        <wsdl:part name="parameters" element="types:SaveDumpResponse"/>
+    </wsdl:message> -->
+    <wsdl:message name="SaveActivityLogRequest">
+        <wsdl:part name="parameters" element="types:SaveActivityLogRequest"/>
+    </wsdl:message>
+    <wsdl:message name="SaveActivityLogResponse">
+        <wsdl:part name="parameters" element="types:SaveActivityLogResponse"/>
+    </wsdl:message>
+    <!-- <wsdl:message name="ListActivityLogMultiRequest">
+        <wsdl:part name="parameters" element="types:ListActivityLogMultiRequest"/>
+    </wsdl:message>
+    <wsdl:message name="ListActivityLogResponse">
+        <wsdl:part name="parameters" element="types:ListActivityLogResponse"/>
+    </wsdl:message>
+    <wsdl:message name="ListActivityLogRequest">
+        <wsdl:part name="parameters" element="types:ListActivityLogRequest"/>
+    </wsdl:message> -->
+    <!-- <wsdl:message name="ListDumpRequest">
+        <wsdl:part name="parameters" element="types:ListDumpRequest"/>
+    </wsdl:message>
+    <wsdl:message name="ListDumpResponse">
+        <wsdl:part name="parameters" element="types:ListDumpResponse"/>
+    </wsdl:message> -->
+    <wsdl:portType name="LibreAccessActivityLogV2PortType">
+        <!-- <wsdl:operation name="ListAvailableDumps">
+            <wsdl:input message="tns:ListAvailableDumpsRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListAvailableDumps"/>
+            <wsdl:output message="tns:ListAvailableDumpsResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/v1.3/LibreAccessActivityLogPortType/ListAvailableDumpsResponse"/>
+        </wsdl:operation> -->
+        <!-- <wsdl:operation name="SaveDump">
+            <wsdl:input message="tns:SaveDumpRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SaveDump"/>
+            <wsdl:output message="tns:SaveDumpResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/v1.3/LibreAccessActivityLogPortType/SaveDumpResponse"/>
+        </wsdl:operation> -->
+        <wsdl:operation name="SaveActivityLog">
+            <wsdl:input message="tns:SaveActivityLogRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/SaveActivityLog"/>
+            <wsdl:output message="tns:SaveActivityLogResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/v1.3/LibreAccessActivityLogPortType/SaveActivityLogResponse"/>
+        </wsdl:operation>
+        <!-- <wsdl:operation name="ListActivityLogMultiActivity">
+            <wsdl:input message="tns:ListActivityLogMultiRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListActivityLog"/>
+            <wsdl:output message="tns:ListActivityLogResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/v1.3/LibreAccessActivityLogPortType/ListActivityLogMultiActivityResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="ListActivityLog">
+            <wsdl:input message="tns:ListActivityLogRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListActivityLog"/>
+            <wsdl:output message="tns:ListActivityLogResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/v1.3/LibreAccessActivityLogPortType/ListActivityLogResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="ListDump">
+            <wsdl:input message="tns:ListDumpRequest" wsaw:Action="http://webservices.libredigital.com/libreaccess/ListDump"/>
+            <wsdl:output message="tns:ListDumpResponse" wsaw:Action="http://webservices.libredigital.com/LibreAccess/v1.3/LibreAccessActivityLogPortType/ListDumpResponse"/>
+        </wsdl:operation> -->
+    </wsdl:portType>
+    <wsdl:binding name="LibreAccessActivityLogV2Soap11Binding" type="tns:LibreAccessActivityLogV2PortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <!-- <wsdl:operation name="ListAvailableDumps">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/ListAvailableDumps" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SaveDump">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveDump" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation> -->
+        <wsdl:operation name="SaveActivityLog">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveActivityLog" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- <wsdl:operation name="ListActivityLogMultiActivity">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/ListActivityLog" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListActivityLog">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/ListActivityLog" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListDump">
+            <soap:operation soapAction="http://webservices.libredigital.com/libreaccess/ListDump" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation> -->
+    </wsdl:binding>
+    <wsdl:binding name="LibreAccessActivityLogV2Soap12Binding" type="tns:LibreAccessActivityLogV2PortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <!-- <wsdl:operation name="ListAvailableDumps">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/ListAvailableDumps" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SaveDump">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveDump" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation> -->
+        <wsdl:operation name="SaveActivityLog">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/SaveActivityLog" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- <wsdl:operation name="ListActivityLogMultiActivity">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/ListActivityLog" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListActivityLog">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/ListActivityLog" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListDump">
+            <soap12:operation soapAction="http://webservices.libredigital.com/libreaccess/ListDump" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation> -->
+    </wsdl:binding>
+    <wsdl:binding name="LibreAccessActivityLogV2HttpBinding" type="tns:LibreAccessActivityLogV2PortType">
+        <http:binding verb="POST"/>
+        <!-- <wsdl:operation name="ListAvailableDumps">
+            <http:operation location="ListAvailableDumps"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="ListAvailableDumps"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="ListAvailableDumps"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SaveDump">
+            <http:operation location="SaveDump"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="SaveDump"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="SaveDump"/>
+            </wsdl:output>
+        </wsdl:operation> -->
+        <wsdl:operation name="SaveActivityLog">
+            <http:operation location="SaveActivityLog"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="SaveActivityLog"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="SaveActivityLog"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- <wsdl:operation name="ListActivityLogMultiActivity">
+            <http:operation location="ListActivityLogMultiActivity"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="ListActivityLogMultiActivity"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="ListActivityLogMultiActivity"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListActivityLog">
+            <http:operation location="ListActivityLog"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="ListActivityLog"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="ListActivityLog"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListDump">
+            <http:operation location="ListDump"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="ListDump"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="ListDump"/>
+            </wsdl:output>
+        </wsdl:operation> -->
+    </wsdl:binding>
+    <wsdl:service name="LibreAccessActivityLogV2">
+        <wsdl:port name="LibreAccessActivityLogV2HttpSoap11Endpoint" binding="tns:LibreAccessActivityLogV2Soap11Binding">
+            <soap:address location="http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogV2.LibreAccessActivityLogV2HttpSoap11Endpoint"/>
+        </wsdl:port>
+        <wsdl:port name="LibreAccessActivityLogV2HttpsSoap11Endpoint" binding="tns:LibreAccessActivityLogV2Soap11Binding">
+            <soap:address location="https://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogV2.LibreAccessActivityLogV2HttpsSoap11Endpoint"/>
+        </wsdl:port>
+        <wsdl:port name="LibreAccessActivityLogV2HttpSoap12Endpoint" binding="tns:LibreAccessActivityLogV2Soap12Binding">
+            <soap12:address location="http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogV2.LibreAccessActivityLogV2HttpSoap12Endpoint"/>
+        </wsdl:port>
+        <wsdl:port name="LibreAccessActivityLogV2HttpsSoap12Endpoint" binding="tns:LibreAccessActivityLogV2Soap12Binding">
+            <soap12:address location="https://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogV2.LibreAccessActivityLogV2HttpsSoap12Endpoint"/>
+        </wsdl:port>
+        <wsdl:port name="LibreAccessActivityLogV2HttpsEndpoint" binding="tns:LibreAccessActivityLogV2HttpBinding">
+            <http:address location="https://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogV2.LibreAccessActivityLogV2HttpsEndpoint"/>
+        </wsdl:port>
+        <wsdl:port name="LibreAccessActivityLogV2HttpEndpoint" binding="tns:LibreAccessActivityLogV2HttpBinding">
+            <http:address location="http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogV2.LibreAccessActivityLogV2HttpEndpoint"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
