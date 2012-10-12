@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define STANDARD_CORNER_RADIUS 10
-#define FULL_SCREEN_DISABLED 1
+//#define FULL_SCREEN_DISABLED 1
 
 @interface SCHTourStepView ()
 
@@ -40,12 +40,21 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
+    return [self initWithFrame:frame bottomBarVisible:NO];
+}
+
+- (id)initWithFrame:(CGRect)frame bottomBarVisible:(BOOL)bottomBarVisible
+{
     self = [super initWithFrame:frame];
+    
     if (self) {
         
         // content view size is total size minus 33 pixels for the bottom bar
         CGRect mainRect = frame;
-        mainRect.size.height -= 33;
+
+        if (bottomBarVisible) {
+            mainRect.size.height -= 33;
+        }
         
         // ** Top title first - it appears above the view to simplify calculation
         self.topTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, -33, frame.size.width, 33)] autorelease];
@@ -66,37 +75,39 @@
         
         // ** bottom view first - white background, grey action button
         
-        self.bottomView = [[[UIView alloc] initWithFrame:CGRectMake(0, mainRect.size.height - 20, frame.size.width, 53)] autorelease];
-        self.bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-        self.bottomView.backgroundColor = [UIColor whiteColor];
-        
-        self.bottomView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        self.bottomView.layer.borderWidth = 1;
-        self.bottomView.layer.cornerRadius = STANDARD_CORNER_RADIUS;
+        if (bottomBarVisible) {
+            self.bottomView = [[[UIView alloc] initWithFrame:CGRectMake(0, mainRect.size.height - 20, frame.size.width, 53)] autorelease];
+            self.bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+            self.bottomView.backgroundColor = [UIColor whiteColor];
+            
+            self.bottomView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            self.bottomView.layer.borderWidth = 1;
+            self.bottomView.layer.cornerRadius = STANDARD_CORNER_RADIUS;
 
-        // action button
-        self.actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.actionButton.frame = CGRectMake(mainRect.size.width - 100, 0, 120, 53);
-        self.actionButton.titleEdgeInsets = UIEdgeInsetsMake(20, 0, 0, 20);
-        self.actionButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+            // action button
+            self.actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.actionButton.frame = CGRectMake(mainRect.size.width - 100, 0, 120, 53);
+            self.actionButton.titleEdgeInsets = UIEdgeInsetsMake(20, 0, 0, 20);
+            self.actionButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+            
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                [self.actionButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
+            } else {
+                [self.actionButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:11]];
+            }
+            [self.actionButton.titleLabel setTextColor:[UIColor whiteColor]];
+            
+            UIImage *stretchedBackImage = [[UIImage imageNamed:@"greytourbutton"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+            
+            [self.actionButton setBackgroundImage:stretchedBackImage forState:UIControlStateNormal];
+            [self.actionButton addTarget:self action:@selector(performButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [self.bottomView addSubview:self.actionButton];
+            [self addSubview:self.bottomView];
+            
+            self.bottomView.hidden = YES;
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [self.actionButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]];
-        } else {
-            [self.actionButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:11]];
         }
-        [self.actionButton.titleLabel setTextColor:[UIColor whiteColor]];
-        
-        UIImage *stretchedBackImage = [[UIImage imageNamed:@"greytourbutton"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
-        
-        [self.actionButton setBackgroundImage:stretchedBackImage forState:UIControlStateNormal];
-        [self.actionButton addTarget:self action:@selector(performButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [self.bottomView addSubview:self.actionButton];
-        [self addSubview:self.bottomView];
-        
-        self.bottomView.hidden = YES;
-        
         
         // ** content view
         
@@ -176,26 +187,12 @@
 
 - (void)setButtonTitle:(NSString *)buttonTitle
 {
-    BOOL disableButton = NO;
-    
-#if FULL_SCREEN_DISABLED
-    if ([buttonTitle isEqualToString:@"Full Screen"]) {
-        disableButton = YES;
-    }
-    
-#endif
-    
+    // setting a button title shows the white bar
     if (self.actionButton) {
         self.bottomView.hidden = NO;
         
-        if (disableButton) {
-            [self.actionButton setTitle:nil forState:UIControlStateNormal];
-            [self.actionButton setUserInteractionEnabled:NO];
-        } else {
-            [self.actionButton setTitle:buttonTitle forState:UIControlStateNormal];
-            [self.actionButton setUserInteractionEnabled:YES];
-        }
-        
+        [self.actionButton setTitle:buttonTitle forState:UIControlStateNormal];
+        [self.actionButton setUserInteractionEnabled:YES];
         
         CGRect buttonFrame = self.actionButton.frame;
         CGSize buttonTextSize = [buttonTitle sizeWithFont:self.actionButton.titleLabel.font];

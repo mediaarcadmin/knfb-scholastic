@@ -18,6 +18,8 @@
 
 @property (nonatomic, retain) UIView *contentView;
 
+- (id)initWithFrame:(CGRect)frame bottomBarVisible:(BOOL)bottomBarVisible;
+
 @end
 
 
