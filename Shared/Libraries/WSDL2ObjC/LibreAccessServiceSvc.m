@@ -1,4 +1,4 @@
-// Version 1.7.4.0
+// Version 1.7.5.0
 
 #import "LibreAccessServiceSvc.h"
 #import <libxml/xmlstring.h>
@@ -14,7 +14,7 @@
 }
 + (LibreAccessService_1_2_0Soap11Binding *)LibreAccessService_1_2_0Soap11Binding
 {
-	return [[[LibreAccessService_1_2_0Soap11Binding alloc] initWithAddress:@"http://laesb.dev.cld.libredigital.com/services/LibreAccessService_1_2_0.LibreAccessService_1_2_0HttpSoap11Endpoint"] autorelease];
+	return [[[LibreAccessService_1_2_0Soap11Binding alloc] initWithAddress:@"http://laesb.uat.cld.libredigital.com/services/LibreAccessService_1_2_0.LibreAccessService_1_2_0HttpSoap11Endpoint"] autorelease];
 }
 @end
 @implementation LibreAccessService_1_2_0Soap11Binding

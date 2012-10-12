@@ -297,15 +297,6 @@
         newContentMetadataItem.Title = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]);
         newContentMetadataItem.Description = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]);
         newContentMetadataItem.thumbnailURL = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceThumbnailURL]);
-        newContentMetadataItem.readingLevel = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceReadingLevel]);
-        newContentMetadataItem.appealsToLow = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAppealsToLow]);
-        newContentMetadataItem.appealsToHigh = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAppealsToHigh]);
-        newContentMetadataItem.guidedReadingLevel = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceGuidedReadingLevel]);
-        newContentMetadataItem.eBookLexileLevel = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEBookLexileLevel]);
-        newContentMetadataItem.misc2 = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc2]);
-        newContentMetadataItem.misc3 = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc3]);
-        newContentMetadataItem.misc4 = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc4]);
-        newContentMetadataItem.misc5 = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc5]);
 
         newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook
                                                                        inManagedObjectContext:aManagedObjectContext];
@@ -344,16 +335,6 @@
         if (thumbnailURL != nil) {
             localContentMetadataItem.thumbnailURL = contentURL;
         }
-        localContentMetadataItem.readingLevel = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceReadingLevel]);
-        localContentMetadataItem.appealsToLow = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAppealsToLow]);
-        localContentMetadataItem.appealsToHigh = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceAppealsToHigh]);
-        localContentMetadataItem.guidedReadingLevel = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceGuidedReadingLevel]);
-        localContentMetadataItem.eBookLexileLevel = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEBookLexileLevel]);
-        localContentMetadataItem.misc2 = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc2]);
-        localContentMetadataItem.misc3 = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc3]);
-        localContentMetadataItem.misc4 = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc4]);
-        localContentMetadataItem.misc5 = makeNullNil([webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceMisc5]);
-
     }
 }
 

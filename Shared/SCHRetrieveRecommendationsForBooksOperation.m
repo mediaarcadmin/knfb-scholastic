@@ -94,17 +94,19 @@ NSString * const SCHRetrieveRecommendationsForBooksOperationBookIdentifiers = @"
         if (webItem == nil) {
 			break;
 		}
-		
+
+        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithISBN:makeNullNil([webItem objectForKey:kSCHRecommendationWebServiceISBN])
+                                                                          DRMQualifier:makeNullNil([webItem objectForKey:kSCHRecommendationWebServiceDRMQualifier])];
+
 		if (localItem == nil) {
 			while (webItem != nil) {
                 [creationPool addObject:webItem];
+                [booksCreatedOrUpdated addObject:webBookIdentifier];
 				webItem = [webEnumerator nextObject];
 			} 
 			break;			
 		}
         
-        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithISBN:makeNullNil([webItem objectForKey:kSCHRecommendationWebServiceISBN])
-                                                                          DRMQualifier:makeNullNil([webItem objectForKey:kSCHRecommendationWebServiceDRMQualifier])];
         SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
         
         if (webBookIdentifier == nil) {
