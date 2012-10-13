@@ -38,6 +38,7 @@
 // Exit Methods
 - (void)exitBookshelf;
 - (void)exitReadingManager;
+- (void)exitBook;
 
 // TODO: refactor these
 - (void)waitForWebParentToolsToComplete;

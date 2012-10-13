@@ -39,6 +39,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHSupportViewController.h"
+#import "SCHBookShelfViewController.h"
+#import "SCHReadingViewController.h"
 
 @interface SCHNavigationAppController () <UINavigationControllerDelegate>
 
@@ -51,6 +53,7 @@
 @property (nonatomic, retain) SCHTourStartViewController *tourViewController;
 @property (nonatomic, retain) SCHSettingsViewController *settingsViewController;
 @property (nonatomic, retain) UIViewController *readingManagerViewController;
+@property (nonatomic, assign) NSUInteger dynamicInterfaceOrientations;
 
 - (void)pushSamplesAnimated:(BOOL)animated;
 - (void)pushProfileAnimated:(BOOL)animated;
@@ -60,6 +63,7 @@
 - (BOOL)isCurrentlyModal;
 - (SCHReadingViewController *)readingViewControllerForBookWithIdentifier:(SCHBookIdentifier *)identifier profileItem:(SCHProfileItem *)profileItem error:(NSError **)error;
 - (void)failedOpenBookWithError:(NSError *)error;
+- (BOOL)dynamicInterfaceOrientationsSupportInterfaceOrientation:(UIInterfaceOrientation)orientation;
 
 @end
 
@@ -72,6 +76,7 @@
 @synthesize tourViewController;
 @synthesize settingsViewController;
 @synthesize readingManagerViewController;
+@synthesize dynamicInterfaceOrientations;
 
 - (void)dealloc
 {
@@ -96,6 +101,12 @@
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         [self registerForNotifications];
         self.delegate = self;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            dynamicInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
+        } else {
+            dynamicInterfaceOrientations = UIInterfaceOrientationMaskPortrait;
+        }
     }
     
     return self;
@@ -106,6 +117,12 @@
     if ((self = [super initWithCoder:aDecoder])) {
         [self registerForNotifications];
         self.delegate = self;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            dynamicInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
+        } else {
+            dynamicInterfaceOrientations = UIInterfaceOrientationMaskPortrait;
+        }
     }
     
     return self;
@@ -286,6 +303,12 @@
 
 - (void)exitBookshelf
 {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.dynamicInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
+    } else {
+        self.dynamicInterfaceOrientations = UIInterfaceOrientationMaskPortrait;
+    }
+    
     [self popViewControllerAnimated:YES];
 }
 
@@ -302,6 +325,19 @@
     AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
     SCHAppModel *appModel = [appDelegate appModel];
     [appModel waitForSettings];
+}
+
+- (void)exitBook
+{
+    if (tourViewController && [self.viewControllers containsObject:tourViewController]) {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.dynamicInterfaceOrientations = UIInterfaceOrientationMaskLandscape;
+        } else {
+            self.dynamicInterfaceOrientations = UIInterfaceOrientationMaskPortrait;
+        }
+    }
+    
+    [self popViewControllerAnimated:YES];
 }
 
 #pragma mark - Errors
@@ -469,6 +505,8 @@
 
 - (void)pushBookshelfAnimated:(BOOL)animated forProfileItem:(SCHProfileItem *)profileItem
 {
+    self.dynamicInterfaceOrientations = UIInterfaceOrientationMaskAll;
+    
     // TODO, this reliance on using a profile view controller to get at a bookshelf should be refactored
     UIViewController *bookshelfViewController = [[self.profileViewController viewControllersForProfileItem:profileItem showWelcome:NO] lastObject];
     [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, bookshelfViewController, nil] animated:animated];
@@ -481,6 +519,8 @@
 
 - (void)pushBookWithIdentifier:(SCHBookIdentifier *)identifier profileItem:(SCHProfileItem *)profileItem viewControllers:(NSArray *)viewControllers animated:(BOOL)animated
 {
+    self.dynamicInterfaceOrientations = UIInterfaceOrientationMaskAll;
+    
     NSError *error = nil;
     SCHReadingViewController *readingViewController = [self readingViewControllerForBookWithIdentifier:identifier profileItem:profileItem error:&error];
     
@@ -751,6 +791,8 @@
             ret.youngerMode = NO;
         }
     }
+    
+    ret.appController = self;
            
     return ret;
 }
@@ -776,18 +818,6 @@
             SCHAppModel *appModel = [appDelegate appModel];
             loginViewController.showSamples = [appModel hasBooksToImport] || [appModel hasExtraSampleBooks];
         }
-        
-        if (![viewController shouldAutorotateToInterfaceOrientation:self.interfaceOrientation]) {
-            // Need to force a rotation
-            UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-            if ([window.subviews count]) {
-                UIView *aView = [window.subviews objectAtIndex:0];
-                [aView retain];
-                [aView removeFromSuperview];
-                [window addSubview:aView];
-                [aView release];
-            }
-        }
     }
 }
 
@@ -800,27 +830,61 @@
     }
 }
 
-#pragma mark - iOS 6 Rotation
+#pragma mark - Mixed Rotations
+
+- (void)setDynamicInterfaceOrientations:(NSUInteger)newDynamicInterfaceOrientations
+{
+    if (dynamicInterfaceOrientations != newDynamicInterfaceOrientations) {
+        dynamicInterfaceOrientations = newDynamicInterfaceOrientations;
+        
+        if (![self dynamicInterfaceOrientationsSupportInterfaceOrientation:self.interfaceOrientation]) {
+            UIViewController *aVC = [[UIViewController alloc] init];
+            if ([UIViewController instancesRespondToSelector:@selector(presentViewController:animated:completion:)]) {
+                [self presentViewController:aVC animated:NO completion:nil];
+                [self dismissViewControllerAnimated:NO completion:nil];
+            } else {
+                [self presentModalViewController:aVC animated:NO];
+                [self dismissModalViewControllerAnimated:NO];
+            }
+            [aVC release];
+        }
+    }
+}
+
+- (BOOL)dynamicInterfaceOrientationsSupportInterfaceOrientation:(UIInterfaceOrientation)orientation
+{
+    BOOL supportsOrientation = NO;
+    
+    switch (orientation) {
+        case UIInterfaceOrientationLandscapeLeft:
+            supportsOrientation = dynamicInterfaceOrientations & UIInterfaceOrientationMaskLandscapeLeft;
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            supportsOrientation = dynamicInterfaceOrientations & UIInterfaceOrientationMaskLandscapeRight;
+            break;
+        case UIInterfaceOrientationPortrait:
+            supportsOrientation = dynamicInterfaceOrientations & UIInterfaceOrientationMaskPortrait;
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            supportsOrientation = dynamicInterfaceOrientations & UIInterfaceOrientationMaskPortraitUpsideDown;
+            break;
+    }
+    
+    return supportsOrientation;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if ([self dynamicInterfaceOrientationsSupportInterfaceOrientation:toInterfaceOrientation]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    UIViewController *visibleViewController = self.visibleViewController;
-    
-    if ((visibleViewController == nil) ||
-        (visibleViewController == loginViewController) ||
-        (visibleViewController == tourViewController) ||
-        (visibleViewController == profileViewController) ||
-        (visibleViewController == samplesViewController) ||
-        (visibleViewController == settingsViewController) ||
-        (visibleViewController == readingManagerViewController)) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            return UIInterfaceOrientationMaskLandscape;
-        } else {
-            return UIInterfaceOrientationMaskPortrait;
-        }
-    } else {
-        return UIInterfaceOrientationMaskAll;
-    }
+    return self.dynamicInterfaceOrientations;
 }
 
 @end

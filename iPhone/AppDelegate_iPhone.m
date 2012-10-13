@@ -39,7 +39,8 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 {    
 	BOOL success = [super application:application didFinishLaunchingWithOptions:launchOptions];
 
-    [self.window addSubview:navigationController.view];
+//    [self.window addSubview:navigationController.view];
+    [self.window setRootViewController:navigationController];
     [self.window makeKeyAndVisible];
     
     [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
