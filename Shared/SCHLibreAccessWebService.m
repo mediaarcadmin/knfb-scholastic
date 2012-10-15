@@ -2008,23 +2008,16 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
                 [bookmark release], bookmark = nil;
             }
 		}
-
-        id lastPageObject = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastPage]];
-        if ([[self fromObjectTranslate:[lastPageObject valueForKey:SCHSyncEntityState]] statusValue] == kSCHStatusModified) {
-            id lastPage = [[tns1_LastPage alloc] init];
-            intoObject.LastPage = lastPage;
-            [lastPage release];
-            [self fromObject:lastPageObject intoLastPage:intoObject.LastPage];
-        }
-
-        id ratingObject = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]];
-        if ([[self fromObjectTranslate:[ratingObject valueForKey:SCHSyncEntityState]] statusValue] == kSCHStatusModified &&
-            [[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
-            id rating = [[tns1_Rating alloc] init];
-            intoObject.Rating = rating;
-            [rating release];
-            [self fromObject:ratingObject intoRating:intoObject.Rating];
-        }
+        
+        id lastPage = [[tns1_LastPage alloc] init];
+		intoObject.LastPage = lastPage;
+        [lastPage release];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastPage]] intoLastPage:intoObject.LastPage];
+        
+        id rating = [[tns1_Rating alloc] init];
+		intoObject.Rating = rating;
+        [rating release];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]] intoRating:intoObject.Rating];
 	}
 }
 
@@ -2144,7 +2137,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoRating:(tns1_Rating *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-        intoObject.rating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]];
+        if ([[SCHAppStateManager sharedAppStateManager] isCOPPACompliant] == YES) {
+            intoObject.rating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceRating]];
+        } else {
+            intoObject.rating = [NSNumber numberWithInteger:0];
+        }
 		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];
         intoObject.averageRating = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAverageRating]];
         intoObject.numVotes = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNumVotes]];
