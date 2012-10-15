@@ -24,9 +24,9 @@
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame bottomBarVisible:(BOOL)bottomBarVisible
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:frame bottomBarVisible:bottomBarVisible];
     if (self) {
         // Initialization code
         

@@ -107,7 +107,7 @@
     
     NSMutableDictionary *logList = [NSMutableDictionary dictionary];
     [logList setValue:@"eBooks Downloads" forKey:kSCHLibreAccessActivityLogWebServiceActivityName];
-    //[logList setValue:@"123"  forKey:kSCHLibreAccessActivityLogWebServiceCorrelationID];
+    [logList setValue:@"0" forKey:kSCHLibreAccessActivityLogWebServiceCorrelationID];
     [logList setValue:[NSArray arrayWithObjects:devicePlatformItem, contentIdentifierItem, nil]  forKey:kSCHLibreAccessActivityLogWebServiceLogItem];
     [self.activityLogWebService saveActivityLog:[NSArray arrayWithObject:logList] forUserKey:userKey];
 

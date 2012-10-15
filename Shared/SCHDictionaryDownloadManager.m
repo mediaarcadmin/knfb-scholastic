@@ -875,6 +875,90 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     return processingState;
 }
 
+- (NSString *)titleForCurrentDictionaryState
+{
+    SCHDictionaryProcessingState state = [self dictionaryProcessingState];
+    NSString *dictionaryStateTitle = nil;
+    
+    switch (state) {
+        // Specifically enumerating without a default so we catch any new cases at compile time
+        case SCHDictionaryProcessingStateReady:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Remove Dictionary", @"remove dictionary table title");
+            break;
+        }
+        case SCHDictionaryProcessingStateNeedsManifest:
+        case SCHDictionaryProcessingStateManifestVersionCheck:
+        case SCHDictionaryProcessingStateNeedsDownload:
+        {
+            if ([[SCHDictionaryDownloadManager sharedDownloadManager] wifiAvailable]) {
+                NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryDownloadPercentage] * 100.0f);
+                dictionaryStateTitle = [NSString stringWithFormat:NSLocalizedString(@"Downloading Dictionary %d%%", @"Downloading dictionary button title"), progress];
+            } else {
+                dictionaryStateTitle = NSLocalizedString(@"Download Dictionary", @"Download dictionary table title");
+            }
+            break;
+        }
+        case SCHDictionaryProcessingStateNeedsUnzip:
+        case SCHDictionaryProcessingStateNeedsParse:
+        {
+            NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryProcessingPercentage] * 100.0f);
+            dictionaryStateTitle = [NSString stringWithFormat:NSLocalizedString(@"Installing Dictionary %d%%", @"Installing dictionary table title"), progress];
+            break;
+        }
+        case SCHDictionaryProcessingStateDeleting:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Deleting Dictionary...", @"Deleting dictionary table title");
+            break;
+        }
+        case SCHDictionaryProcessingStateError:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nUnknown Error", @"Dictionary error table title for unknown error");
+            break;
+        }
+        case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nDownload Interrupted", @"Dictionary error table title for connection interrupted");
+            break;
+        }
+        case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nNot Enough Free Space", @"Dictionary error table title for not enough free space");
+            break;
+        }
+        case SCHDictionaryProcessingStateDownloadError:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nDownload Failed", @"Dictionary error table title for download failed");
+            break;
+        }
+        case SCHDictionaryProcessingStateUnableToOpenZipError:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nCouldn't Open Zip", @"Dictionary error table title for Couldn't open zip");
+            break;
+        }
+        case SCHDictionaryProcessingStateUnZipFailureError:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nUnzip Failed, Check Space", @"Dictionary error table title for unzip failed");
+            break;
+        }
+        case SCHDictionaryProcessingStateParseError:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nParse Failed", @"Dictionary error button title for parser error");
+            break;
+        }
+        case SCHDictionaryProcessingStateUserSetup:
+        case SCHDictionaryProcessingStateUserDeclined:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Download Dictionary", @"Download dictionary table title");
+            break;
+        }
+    }
+    
+    return dictionaryStateTitle;
+}
+
+
+
 - (BOOL)dictionaryDownloadStarted
 {
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
@@ -1834,8 +1918,20 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 - (void)deleteDictionary
 {
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
-    if (state == SCHDictionaryProcessingStateReady) {
+    
+    if (state != SCHDictionaryProcessingStateReady) {
+        // stop downloading etc.
+		if (self.startTimer && [self.startTimer isValid]) {
+			[self.startTimer invalidate];
+			self.startTimer = nil;
+		}
+		[self.dictionaryDownloadQueue cancelAllOperations];
         
+        [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
+        [self checkOperatingStateImmediately:YES];
+    }
+    
+//    if (state == SCHDictionaryProcessingStateReady) {
         [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] resetDictionaryStore];
         
         [self deleteDictionaryFileWithCompletionBlock:^{
@@ -1847,7 +1943,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             [self setUserRequestState:SCHDictionaryUserNotYetAsked];
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         }];
-    }
+//    }
 }
 
 - (void)setDictionaryIsCurrentlyReadable:(BOOL)setDictionaryIsCurrentlyReadableFlag

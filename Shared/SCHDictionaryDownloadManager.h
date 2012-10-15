@@ -93,6 +93,8 @@ typedef enum {
 - (void)threadSafeUpdateDictionaryState:(SCHDictionaryProcessingState)processingState;
 - (SCHDictionaryProcessingState)dictionaryProcessingState;
 
+- (NSString *)titleForCurrentDictionaryState;
+
 // parsing methods called by the parsing operation
 - (void)initialParseEntryTable;
 - (void)initialParseWordFormTable;

@@ -79,14 +79,14 @@
 #define GETUSERINFO_SERVER_ENDPOINT_PRODUCTION @"https://esvcs.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpsSoap11Endpoint/"
 
 // Libre Digital server EndPoint
-#define LIBREDIGITAL_SERVER_ENDPOINT_DEVINT @"http://laesb.devint.cld.libredigital.com/services/LibreAccessService_1_2_0.LibreAccessService_1_2_0HttpSoap11Endpoint"
-#define LIBREDIGITAL_SERVER_ENDPOINT_UAT @"http://laesb.uat.cld.libredigital.com/services/LibreAccessService_1_2_0.LibreAccessService_1_2_0HttpSoap11Endpoint"
-#define LIBREDIGITAL_SERVER_ENDPOINT_PRODUCTION @"http://laesb.cld.libredigital.com/services/LibreAccessService_1_2_0.LibreAccessService_1_2_0HttpSoap11Endpoint"
+#define LIBREDIGITAL_SERVER_ENDPOINT_DEVINT @"http://laesb.devint.cld.libredigital.com/services/LibreAccessService_1_2_0.LibreAccessService_1_2_0HttpSoap11Endpoint/"
+#define LIBREDIGITAL_SERVER_ENDPOINT_UAT @"http://laesb.uat.cld.libredigital.com/services/LibreAccessService_1_2_0.LibreAccessService_1_2_0HttpSoap11Endpoint/"
+#define LIBREDIGITAL_SERVER_ENDPOINT_PRODUCTION @"http://laesb.cld.libredigital.com/services/LibreAccessService_1_2_0.LibreAccessService_1_2_0HttpSoap11Endpoint/"
 
 // Activity Log server EndPoint
-#define ACTIVITY_LOG_SERVER_ENDPOINT_DEVINT @"http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogOld.LibreAccessActivityLogOldHttpSoap11Endpoint"
-#define ACTIVITY_LOG_SERVER_ENDPOINT_UAT @"http://laesb.uat.cld.libredigital.com/services/LibreAccessActivityLogOld.LibreAccessActivityLogOldHttpSoap11Endpoint"
-#define ACTIVITY_LOG_SERVER_ENDPOINT_PRODUCTION @"http://laesb.cld.libredigital.com/services/LibreAccessActivityLogOld.LibreAccessActivityLogOldHttpSoap11Endpoint"
+#define ACTIVITY_LOG_SERVER_ENDPOINT_DEVINT @"http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogV2.LibreAccessActivityLogV2HttpSoap11Endpoint/"
+#define ACTIVITY_LOG_SERVER_ENDPOINT_UAT @"http://laesb.uat.cld.libredigital.com/services/LibreAccessActivityLogV2.LibreAccessActivityLogV2HttpSoap11Endpoint/"
+#define ACTIVITY_LOG_SERVER_ENDPOINT_PRODUCTION @"http://laesb.cld.libredigital.com/services/LibreAccessActivityLogV2.LibreAccessActivityLogV2HttpSoap11Endpoint/"
 
 // Wishlist Server EndPoint
 #define WISHLIST_SERVER_ENDPOINT_QA @"https://esvcsqa.scholastic.com/SchWS/services/SPS/WishListService.WishListServiceHttpsSoap11Endpoint/"

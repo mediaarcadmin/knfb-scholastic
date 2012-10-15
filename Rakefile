@@ -45,6 +45,7 @@ end
 desc "Diff the UAT Libre Access WSDL file with the online version"
 task :diff_qa_libre_access_wsdl do |t|
   diff(LIBRE_ACCESS_WSDL_URL, LIBRE_ACCESS_WSDL_NAME)
+  diff(LIBRE_ACCESS_XSD_URL, LIBRE_ACCESS_XSD_NAME)
 end
 
 desc "Diff the QA Scholastic Authenticate WSDL file with the online version"

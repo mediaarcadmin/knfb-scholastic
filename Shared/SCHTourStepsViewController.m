@@ -119,7 +119,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.pageControl setIndicatorDiameter:7.0f];
         [self.pageControl setIndicatorSpace:12.0f];
-        [self.pageControl setFrame:CGRectMake(439, 678, 145, 66)];
+        [self.pageControl setFrame:CGRectMake(401, 678, 145, 66)];
     } else {
         [self.pageControl setFrame:CGRectMake(56, 418, 72, 38)];
         [self.pageControl setIndicatorDiameter:7.0f];
@@ -323,7 +323,7 @@
         case SCHTourStepsViewTypeSingleImage:
         {
             SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
-            [tourStepImageView setButtonTitle:@"Full Screen"];
+//            [tourStepImageView setButtonTitle:@"Full Screen"];
             
             if ([tourItem objectForKey:@"subtitle0"]) {
                 [tourStepImageView setStepHeaderTitle:[tourItem objectForKey:@"subtitle0"]];
@@ -355,7 +355,7 @@
         case SCHTourStepsViewTypeDoubleImage:
         {
             SCHTourStepImageView *leftTourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
-            [leftTourStepImageView setButtonTitle:@"Full Screen"];
+//            [leftTourStepImageView setButtonTitle:@"Full Screen"];
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
             
@@ -363,7 +363,7 @@
             [leftTourStepImageView setStepHeaderTitle:[tourItem objectForKey:@"subtitle0"]];
             
             SCHTourStepImageView *rightTourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
-            [rightTourStepImageView setButtonTitle:@"Full Screen"];
+//            [rightTourStepImageView setButtonTitle:@"Full Screen"];
             
             tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 1, imagePostfix]];
             
@@ -395,7 +395,7 @@
         case SCHTourStepsViewTypeReadthrough:
         {
             
-            SCHTourStepMovieView *tourStepMovieView = [[SCHTourStepMovieView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
+            SCHTourStepMovieView *tourStepMovieView = [[SCHTourStepMovieView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight) bottomBarVisible:YES];
             [tourStepMovieView setButtonTitle:@"Play Readthrough"];
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
@@ -426,7 +426,7 @@
         }
         case SCHTourStepsViewTypeBeginTour:
         {
-            SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight)];
+            SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight) bottomBarVisible:YES];
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
             
