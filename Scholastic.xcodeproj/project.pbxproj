@@ -415,7 +415,6 @@
 		5248882C1407990500DA9AFA /* SCHProfileViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController~iphone.xib */; };
 		5248882D1407990500DA9AFA /* SCHSettingsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController~ipad.xib */; };
 		5248882E1407990500DA9AFA /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
-		5248882F1407990500DA9AFA /* SCHLoginViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController~iphone.xib */; };
 		524888301407990500DA9AFA /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D866133F93FA00661718 /* Icon.png */; };
 		524888311407990500DA9AFA /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D867133F93FA00661718 /* Icon-Small@2x.png */; };
 		524888321407990500DA9AFA /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D868133F93FA00661718 /* Icon-Small.png */; };
@@ -1480,7 +1479,6 @@
 		52EB1F8515B976F0007E60D3 /* SCHAccountVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EB1F8415B976F0007E60D3 /* SCHAccountVerifier.m */; };
 		52EB1F8615B976F0007E60D3 /* SCHAccountVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EB1F8415B976F0007E60D3 /* SCHAccountVerifier.m */; };
 		52EF4E5F12E6E01C00E374F7 /* SCHLoginPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */; };
-		52EF4E6012E6E01C00E374F7 /* SCHLoginViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController~iphone.xib */; };
 		52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
 		52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
@@ -4248,7 +4246,6 @@
 		52EE0ED715CBC086004F7616 /* SchWS_WishListService_QA.wsdl */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SchWS_WishListService_QA.wsdl; sourceTree = "<group>"; };
 		52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLoginPasswordViewController.h; path = iPhone/SCHLoginPasswordViewController.h; sourceTree = "<group>"; };
 		52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLoginPasswordViewController.m; path = iPhone/SCHLoginPasswordViewController.m; sourceTree = "<group>"; };
-		52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController~iphone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "SCHLoginViewController~iphone.xib"; sourceTree = "<group>"; };
 		52EF508512E739E900E374F7 /* LibreAccessServiceSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibreAccessServiceSvc.h; sourceTree = "<group>"; };
 		52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibreAccessServiceSvc.m; sourceTree = "<group>"; };
 		52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAuthenticationManager.h; path = Shared/SCHAuthenticationManager.h; sourceTree = "<group>"; };
@@ -8371,7 +8368,6 @@
 		C9F5B9F213911E21009DE113 /* Authentication Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController~iphone.xib */,
 				C9F5BA0013918CE8009DE113 /* SCHProfilePasswordView~iphone.xib */,
 				287262A913E0621A0053CEDE /* SCHSetProfilePasswordView~iphone.xib */,
 			);
@@ -9416,7 +9412,6 @@
 				528A2D6212CDE3B10053A343 /* SCHProfileViewController~iphone.xib in Resources */,
 				529385B612DF231800045B44 /* SCHSettingsViewController~ipad.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
-				52EF4E6012E6E01C00E374F7 /* SCHLoginViewController~iphone.xib in Resources */,
 				C908D86F133F93FA00661718 /* Icon.png in Resources */,
 				C908D871133F93FA00661718 /* Icon-Small@2x.png in Resources */,
 				C908D873133F93FA00661718 /* Icon-Small.png in Resources */,
@@ -10338,7 +10333,6 @@
 				5248882C1407990500DA9AFA /* SCHProfileViewController~iphone.xib in Resources */,
 				5248882D1407990500DA9AFA /* SCHSettingsViewController~ipad.xib in Resources */,
 				5248882E1407990500DA9AFA /* SCHBookShelfViewController.xib in Resources */,
-				5248882F1407990500DA9AFA /* SCHLoginViewController~iphone.xib in Resources */,
 				524888301407990500DA9AFA /* Icon.png in Resources */,
 				524888311407990500DA9AFA /* Icon-Small@2x.png in Resources */,
 				524888321407990500DA9AFA /* Icon-Small.png in Resources */,

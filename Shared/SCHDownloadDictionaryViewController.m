@@ -89,8 +89,8 @@
 
     if (fileSpaceAvailable == NO) {
         LambdaAlert *alert = [[LambdaAlert alloc]
-                              initWithTitle:NSLocalizedString(@"Not Enough Free Space", @"")
-                              message:NSLocalizedString(@"You do not have enough memory on your device to download the Storia dictionary. Please clear some space and then go to the Parent Tools menu to download the Dictionary.", @"")];
+                              initWithTitle:NSLocalizedString(@"Not Enough Storage Space", @"")
+                              message:NSLocalizedString(@"You do not have enough storage space on your device to complete this function. Please clear some space and try again.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:afterDownload];
         [alert show];
         [alert release];   
