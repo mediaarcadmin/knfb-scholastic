@@ -424,4 +424,12 @@ static const CGFloat kContentHeightLandscape = 380;
     self.activeTextField = nil;
 }
 
+#pragma mark - Touch Handling
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    [self.view endEditing:YES];
+}
+
 @end

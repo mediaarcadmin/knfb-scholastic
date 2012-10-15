@@ -350,4 +350,12 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [self.appController presentSettings];
 }
 
+#pragma mark - Touch Handling
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    [self.view endEditing:YES];
+}
+
 @end

@@ -267,4 +267,12 @@ typedef enum  {
     return NO;
 }
 
+#pragma mark - Touch Handling
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    [self.view endEditing:YES];
+}
+
 @end

@@ -304,4 +304,12 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     }
 }
 
+#pragma mark - Touch Handling
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    [self.view endEditing:YES];
+}
+
 @end
