@@ -61,6 +61,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
                                                 forProfile:(NSNumber *)profileID;
 - (BOOL)readingStatsActive;
 - (BOOL)wishListSyncActive;
+- (void)performFlushSaves;
 - (SCHSyncComponent *)queueHead;
 - (void)addToQueue:(SCHSyncComponent *)component;
 - (void)moveToEndOfQueue:(SCHSyncComponent *)component;
@@ -455,7 +456,9 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         NSLog(@"Performing Flush Saves");
         
         [self flushSyncQueue];
-        
+
+        [self.profileSyncComponent synchronize];
+
         [self addAllProfilesToAnnotationSync];
         if ([self.annotationSyncComponent haveProfiles] == YES) {
             [self.annotationSyncComponent synchronize];
@@ -463,8 +466,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         if ([self readingStatsActive] == YES) {
             [self.readingStatsSyncComponent synchronize];
         }
-        [self.profileSyncComponent synchronize];
-        [self.contentSyncComponent synchronize];
+
         if ([self wishListSyncActive] == YES) {
             [self.wishListSyncComponent synchronize];
         }
@@ -817,6 +819,11 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     } else {
         NSLog(@"Wishlists are OFF");
     }
+}
+
+- (void)deregistrationSync
+{
+    [self performFlushSaves];
 }
 
 #pragma mark - SCHComponent Delegate methods
