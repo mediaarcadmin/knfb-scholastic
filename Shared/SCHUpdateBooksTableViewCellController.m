@@ -30,11 +30,9 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
 @implementation SCHUpdateBooksTableViewCellController
 
 @synthesize cell;
-@synthesize bookEnabledForUpdate;
 @synthesize managedObjectContext;
 @synthesize bookIdentifier;
 @synthesize index;
-@synthesize bookEnabledToggleBlock;
 
 - (void)dealloc
 {
@@ -43,7 +41,6 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
     [cell release], cell = nil;
     [managedObjectContext release], managedObjectContext = nil;
     [bookIdentifier release], bookIdentifier = nil;
-    [bookEnabledToggleBlock release], bookEnabledToggleBlock = nil;
     [super dealloc];
 }
 
@@ -52,7 +49,6 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
     if ((self = [super init])) {
         managedObjectContext = [moc retain];
         bookIdentifier = [identifier retain];
-        bookEnabledForUpdate = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didUpdateBookState:)
@@ -83,24 +79,7 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
             
     SCHAppBook *book = [self book];
     [cell bookTitleLabel].text = book.Title;
-    [cell enabledForUpdateCheckbox].selected = self.bookEnabledForUpdate;
-    [cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
-    
-    __block SCHUpdateBooksTableViewCellController *weakSelf = self;
-    
-    cell.onCheckboxUpdate = ^(BOOL enable) {
-        weakSelf.bookEnabledForUpdate = enable;
-    };
-}
-
-- (void)setBookEnabledForUpdate:(BOOL)newBookEnabledForUpdate
-{
-    bookEnabledForUpdate = newBookEnabledForUpdate;
-    
-    if (bookEnabledToggleBlock) {
-        bookEnabledToggleBlock();
-    }
-    
+//    [cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
 }
 
 - (BOOL)spinnerStateForProcessingState:(SCHBookCurrentProcessingState)state
@@ -141,19 +120,17 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
 {
 }
 
-- (void)startUpdateIfEnabled
+- (void)startUpdate
 {    
-    if (self.bookEnabledForUpdate) {
-        SCHAppBook *book = [self book];
-        if (book != nil) {
-            // clear the current book
-            [book.ContentMetadataItem deleteAllFiles];
-            [book clearToDefaultValues];
-            
-            // start redownloading the updated book
-            if ([[SCHProcessingManager sharedProcessingManager] forceReDownloadForBookWithIdentifier:[book bookIdentifier]]) {
-                [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
-            }
+    SCHAppBook *book = [self book];
+    if (book != nil) {
+        // clear the current book
+        [book.ContentMetadataItem deleteAllFiles];
+        [book clearToDefaultValues];
+        
+        // start redownloading the updated book
+        if ([[SCHProcessingManager sharedProcessingManager] forceReDownloadForBookWithIdentifier:[book bookIdentifier]]) {
+            [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
         }
     }
 }

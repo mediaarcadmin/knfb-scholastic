@@ -41,6 +41,8 @@
 #import "SCHSupportViewController.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHReadingViewController.h"
+#import "SCHUpdateBooksViewController.h"
+#import "SCHBookUpdates.h"
 
 @interface SCHNavigationAppController () <UINavigationControllerDelegate>
 
@@ -244,7 +246,17 @@
 
 - (void)presentEbookUpdates
 {
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
     
+    SCHUpdateBooksViewController *controller = [[[SCHUpdateBooksViewController alloc] init] autorelease];
+    controller.appController = self;
+    controller.bookUpdates = [[[SCHBookUpdates alloc] init] autorelease];
+
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+    controller.bookUpdates.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
+
+    
+    [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, controller, nil] animated:shouldAnimate];
 }
 
 #pragma mark - Book Presentation Methods

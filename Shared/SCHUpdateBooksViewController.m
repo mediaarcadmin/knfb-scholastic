@@ -19,32 +19,36 @@
 @property (nonatomic, retain) NSMutableDictionary *cellControllers;
 @property (nonatomic, retain) NSArray *availableBookUpdates;
 
-- (void)checkButtonState;
-
 @end
 
 @implementation SCHUpdateBooksViewController
 
 @synthesize booksTable;
 @synthesize updateBooksButton;
-@synthesize estimatedDownloadTimeLabel;
 @synthesize bookUpdates;
 @synthesize noteUpdateNoticeLabel;
 @synthesize cellControllers;
 @synthesize availableBookUpdates;
+@synthesize appController;
+@synthesize containerView;
+@synthesize shadowView;
+@synthesize backButton;
 
 - (void)releaseViewObjects
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [containerView release], containerView = nil;
+    [shadowView release], shadowView = nil;
     [noteUpdateNoticeLabel release], noteUpdateNoticeLabel = nil;
     [booksTable release], booksTable = nil;
+    [backButton release], backButton = nil;
     [updateBooksButton release], updateBooksButton = nil;
-    [estimatedDownloadTimeLabel release], estimatedDownloadTimeLabel = nil;
 }
 
 - (void)dealloc
 {
+    appController = nil;
     [bookUpdates release], bookUpdates = nil;
     [cellControllers release], cellControllers = nil;
     [self releaseViewObjects];
@@ -58,10 +62,9 @@
     [super viewDidLoad];
 
     self.booksTable.layer.cornerRadius = 10;
-    self.booksTable.layer.borderWidth = 1;
-    self.booksTable.layer.borderColor = [[UIColor SCHGray2Color] CGColor];
-    self.booksTable.separatorColor = [UIColor SCHGray2Color];
-    self.booksTable.backgroundColor = [UIColor colorWithRed:0.969 green:0.969 blue:0.969 alpha:1.];
+    self.booksTable.layer.borderWidth = 2;
+    self.booksTable.layer.borderColor = [[UIColor SCHGrayColor] CGColor];
+    self.booksTable.backgroundColor = [UIColor whiteColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(bookUpdatedSuccessfully:)
@@ -70,10 +73,24 @@
     
 #if IPHONE_HIGHLIGHTS_DISABLED
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            self.noteUpdateNoticeLabel.text = NSLocalizedString(@"Notes made in an eBook will be lost when you upgrade.", @"");
+//            self.noteUpdateNoticeLabel.text = NSLocalizedString(@"Your notes for these books will be lost.", @"");
         }
 #endif
-
+    
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+    
+        UIImage *backButtonImage = [[UIImage imageNamed:@"bookshelf_arrow_bttn_UNselected_3part"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
+        [self.backButton setBackgroundImage:backButtonImage forState:UIControlStateNormal];
+        [self.backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.shadowView.layer.shadowOpacity = 0.5f;
+        self.shadowView.layer.shadowOffset = CGSizeMake(0, 0);
+        self.shadowView.layer.shadowRadius = 4.0f;
+        self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
+        self.containerView.layer.masksToBounds = YES;
+        self.containerView.layer.cornerRadius = 10.0f;
+    }
 }
 
 - (void)viewDidUnload
@@ -92,16 +109,10 @@
     UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
     [self.updateBooksButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
 
-    __block SCHUpdateBooksViewController *weakSelf = self;
-    
     for (SCHAppBook *book in self.availableBookUpdates) {
         SCHBookIdentifier *bookIdentifier = [book bookIdentifier];
         SCHUpdateBooksTableViewCellController *tvc = [[SCHUpdateBooksTableViewCellController alloc] initWithBookIdentifier:bookIdentifier
                                                                                                     inManagedObjectContext:self.bookUpdates.managedObjectContext];
-        [tvc setBookEnabledToggleBlock:^{
-            [weakSelf checkButtonState];
-        }];
-        
         [self.cellControllers setObject:tvc forKey:bookIdentifier];
         [tvc release];
     }
@@ -148,7 +159,7 @@
 
 - (void)updateBooks:(id)sender
 {
-    [[self.cellControllers allValues] makeObjectsPerformSelector:@selector(startUpdateIfEnabled)];
+    [[self.cellControllers allValues] makeObjectsPerformSelector:@selector(startUpdate)];
 }
 
 #pragma mark - Notifications
@@ -166,15 +177,18 @@
     }
 }
 
-- (void)checkButtonState
+- (void)back:(id)sender
 {
-    NSInteger enabledCount = 0;
-    for (SCHUpdateBooksTableViewCellController *c in [self.cellControllers allValues]) {
-        if (c.bookEnabledForUpdate) {
-            enabledCount++;
-        }
-    }
-    self.updateBooksButton.enabled = (enabledCount > 0);
+    [self.appController presentSettings];
 }
+
+//- (void)checkButtonState
+//{
+//    NSInteger enabledCount = 0;
+//    for (SCHUpdateBooksTableViewCellController *c in [self.cellControllers allValues]) {
+//        enabledCount++;
+//    }
+//    self.updateBooksButton.enabled = (enabledCount > 0);
+//}
 
 @end

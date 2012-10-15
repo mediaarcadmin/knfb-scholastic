@@ -692,10 +692,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     NSInteger sectionCount = 0;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return 3;
+//        return 3;
         sectionCount = 2;
     } else {
-        //return 2;
+//        return 2;
         sectionCount = 1;
     }
     
@@ -1216,6 +1216,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             case kSCHSettingsPanelEbookUpdates: {
                 SCHUpdateBooksViewController *controller = [[[SCHUpdateBooksViewController alloc] init] autorelease];
                 self.contentViewController = controller;
+                controller.bookUpdates = self.bookUpdates;
             } break;
             default:
                 break;

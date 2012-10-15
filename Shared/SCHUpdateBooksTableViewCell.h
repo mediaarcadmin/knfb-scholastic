@@ -9,16 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @class SCHUpdateBooksTableViewCellController;
-@class SCHCheckbox;
+//@class SCHCheckbox;
 
 @interface SCHUpdateBooksTableViewCell : UITableViewCell {}
 
-@property (nonatomic, copy) void (^onCheckboxUpdate)(BOOL enable);
-
-- (IBAction)checkboxUpdated:(SCHCheckbox *)sender;
-
 - (UILabel *)bookTitleLabel;
-- (SCHCheckbox *)enabledForUpdateCheckbox;
 - (void)enableSpinner:(BOOL)enable;
 
 @end

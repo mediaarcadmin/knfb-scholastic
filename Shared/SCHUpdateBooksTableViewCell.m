@@ -8,7 +8,7 @@
 
 #import "SCHUpdateBooksTableViewCell.h"
 #import "SCHGradientView.h"
-#import "SCHCheckbox.h"
+//#import "SCHCheckbox.h"
 
 enum {
     kBookTitleLabelTag = 1,
@@ -19,11 +19,11 @@ enum {
 
 @implementation SCHUpdateBooksTableViewCell
 
-@synthesize onCheckboxUpdate;
+//@synthesize onCheckboxUpdate;
 
 - (void)dealloc
 {
-    [onCheckboxUpdate release], onCheckboxUpdate = nil;
+//    [onCheckboxUpdate release], onCheckboxUpdate = nil;
     [super dealloc];
 }
 
@@ -48,21 +48,21 @@ enum {
     return self;
 }
 
-- (void)prepareForReuse
-{
-    self.onCheckboxUpdate = nil;
-    [super prepareForReuse];
-}
+//- (void)prepareForReuse
+//{
+//    self.onCheckboxUpdate = nil;
+//    [super prepareForReuse];
+//}
 
 - (UILabel *)bookTitleLabel
 {
     return (UILabel *)[self viewWithTag:kBookTitleLabelTag];
 }
 
-- (SCHCheckbox *)enabledForUpdateCheckbox
-{
-    return (SCHCheckbox *)[self viewWithTag:kEnableForUpdateCheckboxTag];
-}
+//- (SCHCheckbox *)enabledForUpdateCheckbox
+//{
+//    return (SCHCheckbox *)[self viewWithTag:kEnableForUpdateCheckboxTag];
+//}
 
 - (void)enableSpinner:(BOOL)enable
 {
@@ -74,11 +74,11 @@ enum {
     }
 }
 
-- (void)checkboxUpdated:(SCHCheckbox *)sender
-{
-    if (self.onCheckboxUpdate) {
-        self.onCheckboxUpdate(sender.selected);
-    }
-}
+//- (void)checkboxUpdated:(SCHCheckbox *)sender
+//{
+//    if (self.onCheckboxUpdate) {
+//        self.onCheckboxUpdate(sender.selected);
+//    }
+//}
 
 @end
