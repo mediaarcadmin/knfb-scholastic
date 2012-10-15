@@ -1215,6 +1215,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             } break;
             case kSCHSettingsPanelEbookUpdates: {
                 SCHUpdateBooksViewController *controller = [[[SCHUpdateBooksViewController alloc] init] autorelease];
+                controller.appController = self.appController;
                 self.contentViewController = controller;
                 controller.bookUpdates = self.bookUpdates;
             } break;

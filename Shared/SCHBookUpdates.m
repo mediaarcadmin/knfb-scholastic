@@ -14,6 +14,7 @@
 #import "SCHContentMetadataItem.h"
 #import "SCHBooksAssignment.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHProcessingManager.h"
 
 #define DEBUG_FORCE_ENABLE_UPDATES 0
 
@@ -89,10 +90,8 @@
     [fetch setEntity:[NSEntityDescription entityForName:@"SCHAppBook" inManagedObjectContext:self.managedObjectContext]];
     [fetch setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"ContentMetadataItem.Title" ascending:YES]]];
     
-#if FAKE_BOOK_UPDATES_REQUIRED == 0
-    NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State >= 0"];
+    NSPredicate *statePred = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"State == %@", [NSNumber numberWithInt:SCHBookProcessingStateReadyToRead]]];
     [fetch setPredicate:statePred];
-#endif
     NSArray *allAppBooks = [self.managedObjectContext executeFetchRequest:fetch error:&error];
     [fetch release], fetch = nil;
     if (allAppBooks == nil) {
