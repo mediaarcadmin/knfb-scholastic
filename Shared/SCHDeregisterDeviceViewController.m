@@ -97,6 +97,12 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
     self.containerView.layer.masksToBounds = YES;
     self.containerView.layer.cornerRadius = 10.0f;
+    
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
+
+    if (username) {
+        self.usernameField.text = username;
+    }
 }
 
 - (void)viewDidUnload

@@ -81,7 +81,14 @@ typedef enum  {
     [self.validateButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
     
     [self setAlert:SCHReadingManagerAlertNone];
+    
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
+    
+    if (username) {
+        self.usernameField.text = username;
+    }
 }
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
