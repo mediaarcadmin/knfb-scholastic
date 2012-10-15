@@ -17,5 +17,12 @@ extern NSString * const SCHReadingStatsSyncComponentDidFailNotification;
 @interface SCHReadingStatsSyncComponent : SCHSyncComponent
 
 - (void)clearCoreDataUsingContext:(NSManagedObjectContext *)aManagedObjectContext;
+- (void)addProfile:(NSNumber *)profileID;
+- (void)removeProfile:(NSNumber *)profileID;
+- (BOOL)haveProfiles;
+- (BOOL)nextProfile;
+- (void)syncCompleted:(NSNumber *)profileID
+               result:(NSDictionary *)result
+             userInfo:(NSDictionary *)userInfo;
 
 @end
