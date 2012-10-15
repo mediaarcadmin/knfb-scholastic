@@ -10,4 +10,6 @@
 
 @interface SCHSaveReadingStatisticsDetailedOperation : SCHSyncComponentOperation
 
+@property (nonatomic, retain) NSNumber *profileID;
+
 @end

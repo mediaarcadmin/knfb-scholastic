@@ -56,6 +56,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 
 - (void)endBackgroundTask;
 - (void)addAllProfilesToAnnotationSync;
+- (void)addAllProfilesToReadingStatsSync;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
 - (NSDictionary *)annotationContentItemFromBooksAssignment:(SCHBooksAssignment *)booksAssignment
                                                 forProfile:(NSNumber *)profileID;
@@ -431,11 +432,15 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         if (userInfo != nil ) {
             for (NSNumber *profileID in [userInfo allKeys]) {
                 [self.annotationSyncComponent removeProfile:profileID withBooks:[userInfo objectForKey:profileID]];
+                [self.readingStatsSyncComponent removeProfile:profileID];
                 [self.listReadingStatisticsSyncComponent removeProfile:profileID withBooks:[userInfo objectForKey:profileID]];
             }
             
             if ([self.annotationSyncComponent haveProfiles] == NO) {
                 [self removeFromQueue:self.annotationSyncComponent includeDependants:YES];
+            }
+            if ([self.readingStatsSyncComponent haveProfiles] == NO) {
+                [self removeFromQueue:self.readingStatsSyncComponent includeDependants:YES];
             }
             if ([self.listReadingStatisticsSyncComponent haveProfiles] == NO) {
                 [self removeFromQueue:self.listReadingStatisticsSyncComponent includeDependants:YES];
@@ -464,7 +469,10 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             [self.annotationSyncComponent synchronize];
         }
         if ([self readingStatsActive] == YES) {
-            [self.readingStatsSyncComponent synchronize];
+            [self addAllProfilesToReadingStatsSync];
+            if ([self.readingStatsSyncComponent haveProfiles] == YES) {
+                [self.readingStatsSyncComponent synchronize];
+            }
         }
 
         if ([self wishListSyncActive] == YES) {
@@ -490,6 +498,26 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         [self.annotationSyncComponent addProfile:[profileItem 
                                                   valueForKey:kSCHLibreAccessWebServiceID] 
                                        withBooks:[self bookAnnotationsFromProfile:profileItem]];	
+    }
+    [request release], request = nil;
+}
+
+- (void)addAllProfilesToReadingStatsSync
+{
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHProfileItem
+                                                         inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+
+    NSError *error = nil;
+    NSArray *profiles = [self.managedObjectContext executeFetchRequest:request
+                                                                 error:&error];
+    if (profiles == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+
+    for (SCHProfileItem *profileItem in profiles) {
+        [self.readingStatsSyncComponent addProfile:[profileItem valueForKey:kSCHLibreAccessWebServiceID]];
     }
     [request release], request = nil;
 }
@@ -709,6 +737,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
                     [self addToQueue:self.annotationSyncComponent];
 
                     if ([self readingStatsActive] == YES) {
+                        [self.readingStatsSyncComponent addProfile:profileID];
                         [self addToQueue:self.readingStatsSyncComponent];
                     } else {
                         NSLog(@"Reading Stats are OFF");
@@ -863,6 +892,12 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             NSLog(@"%@ failed %d times, removing the current profile from the sync",
                   [syncComponent class],
                   kSCHSyncManagerMaximumFailureRetries);
+        } else if ([component isKindOfClass:[SCHReadingStatsSyncComponent class]] &&
+                   [(SCHReadingStatsSyncComponent *)component nextProfile] == YES) {
+            // try the next profile
+            NSLog(@"%@ failed %d times, removing the current profile from the sync",
+                  [syncComponent class],
+                  kSCHSyncManagerMaximumFailureRetries);
         } else if ([component isKindOfClass:[SCHListReadingStatisticsSyncComponent class]] &&
                    [(SCHListReadingStatisticsSyncComponent *)component nextProfile] == YES) {
             // try the next profile
@@ -950,6 +985,9 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES &&
         [(SCHAnnotationSyncComponent *)component haveProfiles] == YES) {
         NSLog(@"Next annotation profile");
+    } else if ([component isKindOfClass:[SCHReadingStatsSyncComponent class]] == YES &&
+               [(SCHReadingStatsSyncComponent *)component haveProfiles] == YES) {
+        NSLog(@"Next reading statistics profile");
     } else if ([component isKindOfClass:[SCHListReadingStatisticsSyncComponent class]] == YES &&
                [(SCHListReadingStatisticsSyncComponent *)component haveProfiles] == YES) {
         NSLog(@"Next list reading statistics profile");

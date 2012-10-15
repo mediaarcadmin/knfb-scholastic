@@ -22,12 +22,14 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 @interface SCHReadingStatsSyncComponent ()
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
+@property (atomic, retain) NSMutableSet *profilesForStatistics;
 
 @end
 
 @implementation SCHReadingStatsSyncComponent
 
 @synthesize libreAccessWebService;
+@synthesize profilesForStatistics;
 
 - (id)init
 {
@@ -35,6 +37,8 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 	if (self != nil) {
 		libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
 		libreAccessWebService.delegate = self;
+
+        profilesForStatistics = [[NSMutableSet set] retain];
 	}
 	
 	return(self);
@@ -44,8 +48,54 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 {
     libreAccessWebService.delegate = nil;
 	[libreAccessWebService release], libreAccessWebService = nil;
+
+    [profilesForStatistics release], profilesForStatistics = nil;
     
 	[super dealloc];
+}
+
+- (void)addProfile:(NSNumber *)profileID
+{
+	if (profileID != nil) {
+        if ([self.profilesForStatistics containsObject:profileID] == NO) {
+            [self.profilesForStatistics addObject:profileID];
+        }
+	}
+}
+
+- (void)removeProfile:(NSNumber *)profileID
+{
+	if (self.isSynchronizing == NO && profileID != nil) {
+        [self.profilesForStatistics removeObject:profileID];
+    }
+}
+
+- (BOOL)haveProfiles
+{
+	return([self.profilesForStatistics count ] > 0);
+}
+
+- (NSNumber *)currentProfile
+{
+    NSNumber *ret = nil;
+
+    if ([self haveProfiles] == YES) {
+        ret = [[[self.profilesForStatistics allObjects] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
+    }
+
+    return ret;
+}
+
+- (BOOL)nextProfile
+{
+    NSNumber *currentProfile = [self currentProfile];
+
+    if (currentProfile != nil) {
+        [self.profilesForStatistics removeObject:currentProfile];
+    }
+    [self clearFailures];
+
+    return [self haveProfiles];
 }
 
 - (BOOL)synchronize
@@ -53,48 +103,62 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 	BOOL ret = YES;
     NSError *error = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
+
 	if (self.isSynchronizing == NO) {
         [self beginBackgroundTask];
-		
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem inManagedObjectContext:self.managedObjectContext]];	
-       	NSArray *readingStats = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        if (readingStats == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-        
-        if ([readingStats count] > 0) {
-            self.isSynchronizing = [self.libreAccessWebService saveReadingStatisticsDetailed:readingStats];
-            if (self.isSynchronizing == NO) {
-                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                        [self.delegate authenticationDidSucceed];
-                    } else {
+
+        NSNumber *profileID = [self currentProfile];
+        if (profileID != nil) {
+            [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem inManagedObjectContext:self.managedObjectContext]];
+            [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", profileID]];
+            NSArray *readingStats = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+            if (readingStats == nil) {
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            }
+
+            if ([readingStats count] > 0) {
+                self.isSynchronizing = [self.libreAccessWebService saveReadingStatisticsDetailed:readingStats];
+                if (self.isSynchronizing == NO) {
+                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                        if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                            [self.delegate authenticationDidSucceed];
+                        } else {
+                            self.isSynchronizing = NO;
+                        }
+                    } failureBlock:^(NSError *error){
                         self.isSynchronizing = NO;
-                    }
-                } failureBlock:^(NSError *error){
-                    self.isSynchronizing = NO;
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
-                                                                        object:self]; 
-                }];				
-                ret = NO;			
-            }		            
+                        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncComponentDidFailAuthenticationNotification
+                                                                            object:self];
+                    }];
+                    ret = NO;
+                }
+            } else {
+                // remove the profile if there are no statistics
+                [self.profilesForStatistics removeObject:profileID];
+
+                [self completeWithSuccessMethod:nil
+                                         result:nil
+                                       userInfo:nil
+                               notificationName:SCHReadingStatsSyncComponentDidCompleteNotification
+                           notificationUserInfo:nil];
+            }
         } else {
-            [self completeWithSuccessMethod:nil 
-                                     result:nil 
-                                   userInfo:nil 
-                           notificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+            [self completeWithSuccessMethod:nil
+                                     result:nil
+                                   userInfo:nil
+                           notificationName:SCHReadingStatsSyncComponentDidCompleteNotification
                        notificationUserInfo:nil];
         }
 
         if (ret == NO) {
             [self endBackgroundTask];
-        }         
+        }
 	}
     [fetchRequest release], fetchRequest = nil;
     
-	return(ret);		
+	return ret;		
 }
+
 #pragma - Overrideen methods used by resetSync
 
 - (void)resetWebService
@@ -104,7 +168,7 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 
 - (void)clearComponent
 {
-    // nop
+    [self.profilesForStatistics removeAllObjects];
 }
 
 - (void)clearCoreData
@@ -123,37 +187,67 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
 
 #pragma mark - Delegate methods
 
-- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result 
+- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
       userInfo:(NSDictionary *)userInfo
 {
-    SCHSaveReadingStatisticsDetailedOperation *operation = [[[SCHSaveReadingStatisticsDetailedOperation alloc] initWithSyncComponent:self
-                                                                                                                              result:result
-                                                                                                                            userInfo:userInfo] autorelease];
-    [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
-    [self.backgroundProcessingQueue addOperation:operation];
+    NSNumber *profileID = [self currentProfile];
+
+    if (profileID != nil) {
+        SCHSaveReadingStatisticsDetailedOperation *operation = [[[SCHSaveReadingStatisticsDetailedOperation alloc] initWithSyncComponent:self
+                                                                                                                                  result:result
+                                                                                                                                userInfo:userInfo] autorelease];
+        operation.profileID = profileID;
+        [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
+        [self.backgroundProcessingQueue addOperation:operation];
+    } else {
+        [self completeWithSuccessMethod:kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed
+                                 result:result
+                               userInfo:userInfo
+                       notificationName:SCHReadingStatsSyncComponentDidCompleteNotification
+                   notificationUserInfo:nil];
+    }
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error 
+- (void)method:(NSString *)method didFailWithError:(NSError *)error
    requestInfo:(NSDictionary *)requestInfo
         result:(NSDictionary *)result
 {
     NSLog(@"%@:didFailWithError\n%@", method, error);
-    
+    NSNumber *profileID = [self currentProfile];
+
     // server error so clear the stats
-    if ([error domain] == kBITAPIErrorDomain) {
+    if ([error domain] == kBITAPIErrorDomain && profileID != nil) {
         SCHSaveReadingStatisticsDetailedOperation *operation = [[[SCHSaveReadingStatisticsDetailedOperation alloc] initWithSyncComponent:self
                                                                                                                                   result:result
                                                                                                                                 userInfo:nil] autorelease];
+        operation.profileID = profileID;
         [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
         [self.backgroundProcessingQueue addOperation:operation];
     } else {
-        [self completeWithFailureMethod:method 
-                                  error:error 
-                            requestInfo:requestInfo 
-                                 result:result 
-                       notificationName:SCHReadingStatsSyncComponentDidFailNotification 
-                   notificationUserInfo:nil];        
-    }    
+        [self completeWithFailureMethod:method
+                                  error:error
+                            requestInfo:requestInfo
+                                 result:result
+                       notificationName:SCHReadingStatsSyncComponentDidFailNotification
+                   notificationUserInfo:nil];
+    }
+}
+
+- (void)syncCompleted:(NSNumber *)profileID
+               result:(NSDictionary *)result
+             userInfo:(NSDictionary *)userInfo
+{
+    NSParameterAssert(profileID);
+
+    if (profileID != nil) {
+        [self.profilesForStatistics removeObject:profileID];
+    }
+
+    [self completeWithSuccessMethod:kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed
+                             result:result
+                           userInfo:userInfo
+                   notificationName:SCHReadingStatsSyncComponentDidCompleteNotification
+               notificationUserInfo:nil];
 }
 
 @end

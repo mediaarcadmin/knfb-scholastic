@@ -11,14 +11,40 @@
 #import "SCHReadingStatsSyncComponent.h"
 #import "BITAPIError.h"
 #import "SCHLibreAccessWebService.h"
+#import "SCHReadingStatsDetailItem.h"
 
 @implementation SCHSaveReadingStatisticsDetailedOperation
+
+@synthesize profileID;
 
 - (void)main
 {
     @try {
-        [(SCHReadingStatsSyncComponent *)self.syncComponent clearCoreDataUsingContext:self.backgroundThreadManagedObjectContext];
-        [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
+        if (self.profileID != nil) {
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHReadingStatsDetailItem
+                                                      inManagedObjectContext:self.backgroundThreadManagedObjectContext];
+            [fetchRequest setEntity:entity];
+
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ProfileID == %@",
+                                      self.profileID];
+            [fetchRequest setPredicate:predicate];
+
+            NSError *error = nil;
+            NSArray *readingStats = [self.backgroundThreadManagedObjectContext
+                                     executeFetchRequest:fetchRequest error:&error];
+            if (readingStats == nil) {
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            } else {
+                for (NSManagedObject *managedObject in readingStats) {
+                    [self.backgroundThreadManagedObjectContext deleteObject:managedObject];
+                }
+            }
+
+            [fetchRequest release];
+
+            [self saveWithManagedObjectContext:self.backgroundThreadManagedObjectContext];
+        }
     }
     @catch (NSException *exception) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -36,16 +62,14 @@
             }
         });
     }
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.isCancelled == NO) {
-            [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed 
-                                                   result:self.result 
-                                                 userInfo:self.userInfo 
-                                         notificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
-                                     notificationUserInfo:nil];
+            [(SCHReadingStatsSyncComponent *)self.syncComponent syncCompleted:self.profileID
+                                                                       result:self.result
+                                                                     userInfo:self.userInfo];
         }
-    });                
+    });
 }
 
 @end
