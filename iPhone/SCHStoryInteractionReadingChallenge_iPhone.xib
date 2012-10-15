@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">12B19</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2549</string>
-		<string key="IBDocument.AppKitVersion">1187</string>
-		<string key="IBDocument.HIToolboxVersion">624.00</string>
+		<int key="IBDocument.SystemTarget">1536</int>
+		<string key="IBDocument.SystemVersion">12C54</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2843</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1498</string>
+			<string key="NS.object.0">1929</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -57,7 +57,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">How carefully did you read this book?</string>
+								<string key="IBUIText">How carefully did you read the book?</string>
 								<object class="NSColor" key="IBUITextColor" id="991567297">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4wMzEzNzI1NDkwMiAwLjE1Mjk0MTE3NjUgMC4zNDUwOTgwMzkyAA</bytes>
@@ -79,6 +79,7 @@
 									<double key="NSSize">16</double>
 									<int key="NSfFlags">16</int>
 								</object>
+								<double key="preferredMaxLayoutWidth">430</double>
 							</object>
 							<object class="IBUILabel" id="727896270">
 								<reference key="NSNextResponder" ref="91843582"/>
@@ -111,6 +112,7 @@
 									<double key="NSSize">16</double>
 									<int key="NSfFlags">16</int>
 								</object>
+								<double key="preferredMaxLayoutWidth">430</double>
 							</object>
 							<object class="IBUILabel" id="1021934503">
 								<reference key="NSNextResponder" ref="91843582"/>
@@ -134,6 +136,7 @@
 								<int key="IBUITextAlignment">1</int>
 								<reference key="IBUIFontDescription" ref="386780056"/>
 								<reference key="IBUIFont" ref="718031767"/>
+								<double key="preferredMaxLayoutWidth">430</double>
 							</object>
 							<object class="IBUIButton" id="592113772">
 								<reference key="NSNextResponder" ref="91843582"/>
@@ -379,6 +382,7 @@
 											<double key="NSSize">17</double>
 											<int key="NSfFlags">16</int>
 										</object>
+										<double key="preferredMaxLayoutWidth">430</double>
 									</object>
 									<object class="IBUIView" id="533866452">
 										<reference key="NSNextResponder" ref="427145692"/>
@@ -431,6 +435,7 @@
 													<double key="NSSize">17</double>
 													<int key="NSfFlags">16</int>
 												</object>
+												<double key="preferredMaxLayoutWidth">268</double>
 											</object>
 										</array>
 										<string key="NSFrame">{{0, 148}, {470, 102}}</string>
@@ -1124,7 +1129,7 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1296" key="NS.object.0"/>
+			<real value="1536" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
@@ -1132,6 +1137,6 @@
 			<string key="NS.key.0">answer-button-yellow.png</string>
 			<string key="NS.object.0">{16, 16}</string>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">1498</string>
+		<string key="IBCocoaTouchPluginVersion">1929</string>
 	</data>
 </archive>
