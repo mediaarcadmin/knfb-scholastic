@@ -61,7 +61,7 @@ typedef enum
     
 }
 
-@property (nonatomic, readonly) id <SCHReadingViewDelegate> delegate;
+@property (nonatomic, assign) id <SCHReadingViewDelegate> delegate;
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 @property (nonatomic, retain) SCHTextFlow *textFlow;

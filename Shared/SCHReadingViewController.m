@@ -279,6 +279,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize isInBackground;
 @synthesize appBookIsSuppressingHighlights;
 @synthesize recommendationsContainer;
+@synthesize appController;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -529,7 +530,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
                                                      name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
-                                                   object:nil];	
+                                                   object:nil];
         
         self.lastPageInteractionSoundPlayedOn = -1;
         
@@ -771,6 +772,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     // that buttons and spacers are where we expect
     
     BOOL showOptions = YES;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        showOptions = NO;
+    }
+    
 #if FLOW_VIEW_DISABLED
     showOptions = NO;
 #else
@@ -1250,7 +1256,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [self.bookPackageProvider reportReadingIfRequired];
     [self.audioBookPlayer cleanAudio];
     
-	[self.navigationController popViewControllerAnimated:YES];
+    [self.appController exitBook];
 }
 
 - (void)helpAction:(id)sender

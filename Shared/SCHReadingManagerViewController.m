@@ -41,7 +41,7 @@
     
     NSURL *webParentToolURL = [[SCHAuthenticationManager sharedAuthenticationManager] webParentToolURL:pToken];
     if (webParentToolURL != nil) {
-        NSLog(@"Attempting to access Web Parent Tools using: %@", webParentToolURL);
+        NSLog(@"Attempting to access the reading manager using: %@", webParentToolURL);
         
         UIWebView *webView = (UIWebView *)self.view;
         webView.delegate = self;
@@ -61,7 +61,7 @@
     } else {
         LambdaAlert *lambdaAlert = [[LambdaAlert alloc]
                                     initWithTitle:NSLocalizedString(@"Error", @"")
-                                    message:NSLocalizedString(@"A problem occured accessing web Parent Tools with your account. Please contact support.", @"")];
+                                    message:NSLocalizedString(@"A problem occured accessing the Reading Manager with your account. Please contact support.", @"")];
         [lambdaAlert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
             [self.appController presentSettings];
         }];

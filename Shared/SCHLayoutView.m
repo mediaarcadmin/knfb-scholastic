@@ -265,12 +265,14 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         multiplePagesDisplayed = YES;
     }
     
-    if (multiplePagesDisplayed) {
-        NSRange pageIndices = NSMakeRange(self.pageTurningView.leftPageIndex, 2);
-        [self.delegate readingView:self hasMovedToPageIndicesInRange:pageIndices withFocusedPageIndex:currentPageIndex];
-    } else {
-        [self.delegate readingView:self hasMovedToPageAtIndex:currentPageIndex];
-    }
+    //if (self.window) {
+//    if (multiplePagesDisplayed) {
+//        NSRange pageIndices = NSMakeRange(self.pageTurningView.leftPageIndex, 2);
+//        [self.delegate readingView:self hasMovedToPageIndicesInRange:pageIndices withFocusedPageIndex:currentPageIndex];
+//    } else {
+//        [self.delegate readingView:self hasMovedToPageAtIndex:currentPageIndex];
+//    }
+    //}
 }
 
 - (void)jumpToZoomBlock:(id)zoomBlock

@@ -1267,6 +1267,8 @@ typedef enum
         
     }
     
+    ret.appController = self.appController;
+    
     return([ret autorelease]);
 }
 
