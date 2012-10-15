@@ -772,6 +772,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     // that buttons and spacers are where we expect
     
     BOOL showOptions = YES;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        showOptions = NO;
+    }
+    
 #if FLOW_VIEW_DISABLED
     showOptions = NO;
 #else
