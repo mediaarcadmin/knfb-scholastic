@@ -61,7 +61,7 @@ static NSString * const kSCHScholasticGetUserInfoWebServiceAttributeSPSID = @"sp
 - (void)getUserInfo:(NSString *)token
 {	
 	GetUserInfoSvc_processRemote *request = [GetUserInfoSvc_processRemote new];
-
+    // other requestedProps properties: spsid, SCS_TOOLS_ROLES_KEY, FIRST_NAME_KEY,LAST_NAME_KEY, COPPA_FLAG_KEY
 	request.SPSWSXML = [NSString stringWithFormat:@"<SchWS><attribute name=\"clientID\" value=\"LD\"/><attribute name=\"isSingleToken\" value=\"true\"/><attribute name=\"token\" value=\"%@\"/><attribute name=\"requestedProps\" value=\"spsid,COPPA_FLAG_KEY\"/></SchWS>", (token == nil ? @"" : token)];
     
 	[self.binding processRemoteAsyncUsingParameters:request delegate:self]; 

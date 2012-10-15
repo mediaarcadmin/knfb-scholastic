@@ -36,7 +36,6 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 
 - (void)accountSyncForced:(BOOL)syncNow
 requireDeviceAuthentication:(BOOL)requireAuthentication;
-- (void)performFlushSaves;
 - (void)passwordSync;
 - (void)bookshelfSyncForced:(BOOL)syncNow;
 - (void)openBookSyncForced:(BOOL)syncNow
@@ -49,6 +48,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication;
 - (void)backOfBookRecommendationSync;
 - (void)topRatingsSync;
 - (void)wishListSyncForced:(BOOL)syncNow;
+- (void)deregistrationSync;
 
 // for populating Sample Store
 - (void)populateTestSampleStore;

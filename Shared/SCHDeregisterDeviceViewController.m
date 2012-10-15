@@ -176,7 +176,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)deregisterAfterSuccessfulAuthentication
 {
-    [[SCHSyncManager sharedSyncManager] performFlushSaves];
+    [[SCHSyncManager sharedSyncManager] deregistrationSync];
     
     SCHDrmDeregistrationSuccessBlock deregistrationCompletionBlock = ^{
         dispatch_block_t block = ^{

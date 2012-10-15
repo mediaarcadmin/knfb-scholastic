@@ -24,7 +24,7 @@
 
 @interface SCHReadingView()
 
-@property (nonatomic, assign) id <SCHReadingViewDelegate> delegate;
+//@property (nonatomic, assign) id <SCHReadingViewDelegate> delegate;
 @property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
 @property (nonatomic, retain) EucSelectorRange *singleWordSelectorRange;
 @property (nonatomic, assign) BOOL createHighlightFromSelection;

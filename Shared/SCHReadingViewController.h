@@ -19,6 +19,7 @@
 #import "SCHHelpViewController.h"
 #import "SCHBookStoryInteractionsDelegate.h"
 #import "SCHRecommendationSampleView.h"
+#import "SCHAppController.h"
 
 extern NSString * const kSCHReadingViewErrorDomain;
 
@@ -95,6 +96,7 @@ SCHBookStoryInteractionsDelegate, SCHRecommendationSampleViewDelegate>
 
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, assign) id<SCHAppController> appController;
 
 -(id)initWithNibName:(NSString *)nibNameOrNil 
               bundle:(NSBundle *)nibBundleOrNil 
