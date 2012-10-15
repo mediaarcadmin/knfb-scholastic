@@ -32,7 +32,7 @@
         
         self.tourImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)] autorelease];
         self.tourImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.tourImageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.tourImageView.contentMode = UIViewContentModeCenter;
         self.tourImageView.clipsToBounds = YES;
         
         [self.contentView addSubview:self.tourImageView];
