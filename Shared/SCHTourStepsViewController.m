@@ -332,7 +332,7 @@
             NSLog(@"Loading image: %@", [NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]);
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
-            
+            tourImage = [UIImage imageWithCGImage:tourImage.CGImage scale:[UIScreen mainScreen].scale orientation:tourImage.imageOrientation];
             [tourStepImageView setTourImage:tourImage];
             
             CGFloat textInset = [[tourItem objectForKey:@"textInset"] floatValue];
@@ -358,6 +358,7 @@
 //            [leftTourStepImageView setButtonTitle:@"Full Screen"];
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
+            tourImage = [UIImage imageWithCGImage:tourImage.CGImage scale:[UIScreen mainScreen].scale orientation:tourImage.imageOrientation];
             
             [leftTourStepImageView setTourImage:tourImage];
             [leftTourStepImageView setStepHeaderTitle:[tourItem objectForKey:@"subtitle0"]];
@@ -366,7 +367,9 @@
 //            [rightTourStepImageView setButtonTitle:@"Full Screen"];
             
             tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 1, imagePostfix]];
-            
+            tourImage = [UIImage imageWithCGImage:tourImage.CGImage scale:[UIScreen mainScreen].scale orientation:tourImage.imageOrientation];
+            [rightTourStepImageView setTourImage:tourImage];
+
             [rightTourStepImageView setTourImage:tourImage];
             [rightTourStepImageView setStepHeaderTitle:[tourItem objectForKey:@"subtitle1"]];
             
@@ -399,7 +402,7 @@
             [tourStepMovieView setButtonTitle:@"Play Readthrough"];
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
-            
+            tourImage = [UIImage imageWithCGImage:tourImage.CGImage scale:[UIScreen mainScreen].scale orientation:tourImage.imageOrientation];
             [tourStepMovieView setTourImage:tourImage];
             
             NSURL *movieURL = [NSURL fileURLWithPath:[[NSBundle mainBundle]
@@ -429,7 +432,8 @@
             SCHTourStepImageView *tourStepImageView = [[SCHTourStepImageView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight) bottomBarVisible:YES];
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
-            
+            tourImage = [UIImage imageWithCGImage:tourImage.CGImage scale:[UIScreen mainScreen].scale orientation:tourImage.imageOrientation];
+
             [tourStepImageView setTourImage:tourImage];
             
             CGFloat textInset = [[tourItem objectForKey:@"textInset"] floatValue];
