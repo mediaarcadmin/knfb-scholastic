@@ -66,10 +66,10 @@
     self.booksTable.layer.borderColor = [[UIColor SCHGrayColor] CGColor];
     self.booksTable.backgroundColor = [UIColor whiteColor];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(bookUpdatedSuccessfully:)
-                                                 name:kSCHBookUpdatedSuccessfullyNotification
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(bookUpdatedSuccessfully:)
+//                                                 name:kSCHBookUpdatedSuccessfullyNotification
+//                                               object:nil];
     
 #if IPHONE_HIGHLIGHTS_DISABLED
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -160,22 +160,23 @@
 - (void)updateBooks:(id)sender
 {
     [[self.cellControllers allValues] makeObjectsPerformSelector:@selector(startUpdate)];
+    [self back:nil];
 }
 
 #pragma mark - Notifications
 
-- (void)bookUpdatedSuccessfully:(NSNotification *)note
-{
-    [self.bookUpdates refresh];
-    
-    // automatically dismiss this view once all books are updated
-    if (![self.bookUpdates areBookUpdatesAvailable]) {
-        [self.navigationController popViewControllerAnimated:YES];
-    } else {
-        self.availableBookUpdates = [self.bookUpdates availableBookUpdates];
-        [self.booksTable reloadData];
-    }
-}
+//- (void)bookUpdatedSuccessfully:(NSNotification *)note
+//{
+//    [self.bookUpdates refresh];
+//    
+//    // automatically dismiss this view once all books are updated
+//    if (![self.bookUpdates areBookUpdatesAvailable]) {
+//        [self.navigationController popViewControllerAnimated:YES];
+//    } else {
+//        self.availableBookUpdates = [self.bookUpdates availableBookUpdates];
+//        [self.booksTable reloadData];
+//    }
+//}
 
 - (void)back:(id)sender
 {

@@ -23,7 +23,6 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
 @property (nonatomic, assign) NSInteger index;
 
 - (SCHAppBook *)book;
-- (BOOL)spinnerStateForProcessingState:(SCHBookCurrentProcessingState)state;
 
 @end
 
@@ -79,25 +78,6 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
             
     SCHAppBook *book = [self book];
     [cell bookTitleLabel].text = book.Title;
-//    [cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
-}
-
-- (BOOL)spinnerStateForProcessingState:(SCHBookCurrentProcessingState)state
-{
-    switch (state) {
-        case SCHBookProcessingStateDownloadStarted:
-        case SCHBookProcessingStateReadyForAudioInfoParsing:
-        case SCHBookProcessingStateReadyForBookFileDownload:
-        case SCHBookProcessingStateReadyForDownloadReporting:
-        case SCHBookProcessingStateReadyForLicenseAcquisition:
-        case SCHBookProcessingStateReadyForPagination:
-        case SCHBookProcessingStateReadyForRightsParsing:
-        case SCHBookProcessingStateReadyForSmartZoomPreParse:
-        case SCHBookProcessingStateReadyForTextFlowPreParse:
-            return YES;
-        default:
-            return NO;
-    }
 }
 
 #pragma mark - Notifications
@@ -106,7 +86,7 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
 {
     if ([[[note userInfo] objectForKey:@"bookIdentifier"] isEqual:self.bookIdentifier]) {
         SCHAppBook *book = [self book];
-        [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
+//        [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
 
         if (![book diskVersionOutOfDate]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookUpdatedSuccessfullyNotification object:self];
@@ -129,9 +109,7 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
         [book clearToDefaultValues];
         
         // start redownloading the updated book
-        if ([[SCHProcessingManager sharedProcessingManager] forceReDownloadForBookWithIdentifier:[book bookIdentifier]]) {
-            [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
-        }
+        [[SCHProcessingManager sharedProcessingManager] forceReDownloadForBookWithIdentifier:[book bookIdentifier]];
     }
 }
 
