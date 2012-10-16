@@ -2364,9 +2364,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [self.navigationToolbar setReadingQuizItemActive:bookReadThroughCompletely];
     
     if (bookReadThroughCompletely) {
-        self.readingQuizButton.alpha = 1;
+        [self.readingQuizButton setImage:[UIImage imageNamed:@"icon-readingquiz"] forState:UIControlStateNormal];
     } else {
-        self.readingQuizButton.alpha = 0.5;
+        [self.readingQuizButton setImage:[UIImage imageNamed:@"icon-readingquiz-disabled"] forState:UIControlStateNormal];
     }
     
     BOOL changingFromOptionsView = (self.optionsView.superview || self.popover);

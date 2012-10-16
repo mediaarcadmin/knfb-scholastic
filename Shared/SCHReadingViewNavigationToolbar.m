@@ -192,10 +192,34 @@
 {
     self.readingQuizActive = active;
     
-    if (self.readingQuizActive) {
-        self.readingQuizItemButton.alpha = 1;
-    } else {
-        self.readingQuizItemButton.alpha = 0.5;
+    switch (self.style) {
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
+            if (self.readingQuizActive) {
+                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger.png"] forState:UIControlStateNormal];
+            } else {
+                // can't just use UIControlStateDisabled, because we need to be able to press the button
+                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-disabled.png"] forState:UIControlStateNormal];
+            }
+            break;
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
+            if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
+                if (self.readingQuizActive) {
+                    [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-portrait.png"] forState:UIControlStateNormal];
+                } else {
+                    [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-portrait-disabled.png"] forState:UIControlStateNormal];
+                }
+            } else {
+                if (self.readingQuizActive) {
+                    [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-landscape.png"] forState:UIControlStateNormal];
+                } else {
+                    [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-landscape-disabled.png"] forState:UIControlStateNormal];
+                }
+            }
+            break;
+        default:
+            break;
     }
 }
 
@@ -267,34 +291,34 @@
         backItem = [[UIBarButtonItem alloc] initWithCustomView:backItemButton];        
     }
         
-    switch (self.style) {
-        case kSCHReadingViewNavigationToolbarStyleOlderPad:
-            [backItemButton setImage:[UIImage imageNamed:@"icon-back-older.png"] forState:UIControlStateNormal];
-            break;
-        case kSCHReadingViewNavigationToolbarStyleYoungerPad:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
-            [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger.png"] forState:UIControlStateNormal];
-            break;
-        case kSCHReadingViewNavigationToolbarStyleOlderPhone:
-            if (UIInterfaceOrientationIsPortrait(orientation)) {
-                [backItemButton setImage:[UIImage imageNamed:@"icon-back-older-portrait.png"] forState:UIControlStateNormal];
-            } else {
-                [backItemButton setImage:[UIImage imageNamed:@"icon-back-older-landscape.png"] forState:UIControlStateNormal];
-            }
-            break;
-        case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
-        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
-            if (UIInterfaceOrientationIsPortrait(orientation)) {
-                [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-portrait.png"] forState:UIControlStateNormal];
-            } else {
-                [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-landscape.png"] forState:UIControlStateNormal];
-            }
-            break;
-    }
+//    switch (self.style) {
+//        case kSCHReadingViewNavigationToolbarStyleOlderPad:
+//            [backItemButton setImage:[UIImage imageNamed:@"icon-back-older.png"] forState:UIControlStateNormal];
+//            break;
+//        case kSCHReadingViewNavigationToolbarStyleYoungerPad:
+//        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+//        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+//        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
+//            [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger.png"] forState:UIControlStateNormal];
+//            break;
+//        case kSCHReadingViewNavigationToolbarStyleOlderPhone:
+//            if (UIInterfaceOrientationIsPortrait(orientation)) {
+//                [backItemButton setImage:[UIImage imageNamed:@"icon-back-older-portrait.png"] forState:UIControlStateNormal];
+//            } else {
+//                [backItemButton setImage:[UIImage imageNamed:@"icon-back-older-landscape.png"] forState:UIControlStateNormal];
+//            }
+//            break;
+//        case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
+//        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+//        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+//        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
+//            if (UIInterfaceOrientationIsPortrait(orientation)) {
+//                [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-portrait.png"] forState:UIControlStateNormal];
+//            } else {
+//                [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-landscape.png"] forState:UIControlStateNormal];
+//            }
+//            break;
+//    }
     
     return backItem;
 }
@@ -338,24 +362,31 @@
     switch (self.style) {
         case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
-            [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger.png"] forState:UIControlStateNormal];
+            if (self.readingQuizActive) {
+                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger.png"] forState:UIControlStateNormal];
+            } else {
+                // can't just use UIControlStateDisabled, because we need to be able to press the button
+                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-disabled.png"] forState:UIControlStateNormal];
+            }
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
             if (UIInterfaceOrientationIsPortrait(orientation)) {
-                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-portrait.png"] forState:UIControlStateNormal];
+                if (self.readingQuizActive) {
+                    [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-portrait.png"] forState:UIControlStateNormal];
+                } else {
+                    [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-portrait-disabled.png"] forState:UIControlStateNormal];
+                }
             } else {
-                [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-landscape.png"] forState:UIControlStateNormal];
+                if (self.readingQuizActive) {
+                    [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-landscape.png"] forState:UIControlStateNormal];
+                } else {
+                    [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-landscape-disabled.png"] forState:UIControlStateNormal];
+                }
             }
             break;
         default:
             break;
-    }
-    
-    if (self.readingQuizActive) {
-        self.readingQuizItemButton.alpha = 1;
-    } else {
-        self.readingQuizItemButton.alpha = 0.5;
     }
     
     return readingQuizItem;
