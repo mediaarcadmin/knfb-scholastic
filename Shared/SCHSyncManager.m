@@ -30,6 +30,7 @@
 #import "NSFileManager+Extensions.h"
 #import "SCHBooksAssignment.h"
 #import "SCHSyncDelay.h"
+#import "SCHAppProfile.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -578,6 +579,32 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     }
 }
 
+- (void)forceAllBookshelvesToSyncOnOpen
+{
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHAppProfile
+                                                         inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+
+    NSError *error = nil;
+    NSArray *appProfiles = [self.managedObjectContext executeFetchRequest:request
+                                                                    error:&error];
+    [request release], request = nil;
+    
+    if (appProfiles == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else {
+        for (SCHAppProfile *appProfile in appProfiles) {
+            appProfile.forceBookshelfToSyncOnOpen = [NSNumber numberWithBool:YES];
+        }
+
+        if ([self.managedObjectContext hasChanges] == YES &&
+            ![self.managedObjectContext save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+    }
+}
+
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem
 {
 	NSMutableArray *ret = [NSMutableArray array];
@@ -1050,13 +1077,17 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     if (self.flushSaveMode == NO) {
         if (self.accountSyncDelay.delayActive == YES) {
             [self accountSyncForced:NO requireDeviceAuthentication:NO];
-        } else if (self.bookshelfSyncDelay.delayActive == YES) {
+        }
+        if (self.bookshelfSyncDelay.delayActive == YES) {
             [self bookshelfSyncForced:NO];
-        } else if (self.openBookSyncDelay.delayActive == YES) {
+        }
+        if (self.openBookSyncDelay.delayActive == YES) {
             [self openBookSyncForced:NO booksAssignment:nil forProfile:nil requestReadingStats:NO];
-        } else if (self.closeBookSyncDelay.delayActive == YES) {
+        }
+        if (self.closeBookSyncDelay.delayActive == YES) {
             [self closeBookSyncForced:NO booksAssignment:nil forProfile:nil];
-        } else if (self.wishlistSyncDelay.delayActive == YES) {
+        }
+        if (self.wishlistSyncDelay.delayActive == YES) {
             [self wishListSyncForced:NO];
         }
     } 
