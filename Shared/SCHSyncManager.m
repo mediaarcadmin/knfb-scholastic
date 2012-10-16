@@ -1050,13 +1050,17 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     if (self.flushSaveMode == NO) {
         if (self.accountSyncDelay.delayActive == YES) {
             [self accountSyncForced:NO requireDeviceAuthentication:NO];
-        } else if (self.bookshelfSyncDelay.delayActive == YES) {
+        }
+        if (self.bookshelfSyncDelay.delayActive == YES) {
             [self bookshelfSyncForced:NO];
-        } else if (self.openBookSyncDelay.delayActive == YES) {
+        }
+        if (self.openBookSyncDelay.delayActive == YES) {
             [self openBookSyncForced:NO booksAssignment:nil forProfile:nil requestReadingStats:NO];
-        } else if (self.closeBookSyncDelay.delayActive == YES) {
+        }
+        if (self.closeBookSyncDelay.delayActive == YES) {
             [self closeBookSyncForced:NO booksAssignment:nil forProfile:nil];
-        } else if (self.wishlistSyncDelay.delayActive == YES) {
+        }
+        if (self.wishlistSyncDelay.delayActive == YES) {
             [self wishListSyncForced:NO];
         }
     } 
