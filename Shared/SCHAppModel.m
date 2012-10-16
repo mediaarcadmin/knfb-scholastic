@@ -289,6 +289,7 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncFailed:) name:SCHProfileSyncComponentDidFailNotification object:nil];
     [syncManager accountSyncForced:now
        requireDeviceAuthentication:authenticate];
+    [syncManager forceAllBookshelvesToSyncOnOpen];
 }
 
 - (BOOL)hasProfilesInManagedObjectContext:(NSManagedObjectContext *)moc

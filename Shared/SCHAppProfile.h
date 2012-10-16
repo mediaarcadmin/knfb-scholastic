@@ -30,6 +30,7 @@ extern NSString * const kSCHAppProfile;
 @property (nonatomic, retain) NSNumber *SortType;
 @property (nonatomic, retain) NSNumber *ShowListView;
 @property (nonatomic, retain) NSDate * lastEnteredBookshelfDate;
+@property (nonatomic, retain) NSNumber * forceBookshelfToSyncOnOpen;
 
 - (SCHAppRecommendationProfile *)appRecommendationProfile;
 - (SCHAppRecommendationTopRating *)appRecommendationTopRating;

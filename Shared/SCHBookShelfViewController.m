@@ -314,9 +314,10 @@ typedef enum
         self.navigationItem.title = NSLocalizedString(@"My eBooks", @"Sample bookshelf title");
     }
 
-    BOOL forceBookshelfSync = self.profileItem.AppProfile.lastEnteredBookshelfDate == nil;
+    BOOL forceBookshelfSync = [self.profileItem.AppProfile.forceBookshelfToSyncOnOpen boolValue];
+    self.profileItem.AppProfile.forceBookshelfToSyncOnOpen = [NSNumber numberWithBool:NO];
     self.profileItem.AppProfile.lastEnteredBookshelfDate = [NSDate date];
-    
+
     // Always force a sync if we are on the sample bookshelf
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
         [[SCHSyncManager sharedSyncManager] accountSyncForced:YES

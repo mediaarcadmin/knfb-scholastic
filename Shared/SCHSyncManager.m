@@ -30,6 +30,7 @@
 #import "NSFileManager+Extensions.h"
 #import "SCHBooksAssignment.h"
 #import "SCHSyncDelay.h"
+#import "SCHAppProfile.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -574,6 +575,32 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             });
         } else {
             [self.bookshelfSyncDelay activateDelay];
+        }
+    }
+}
+
+- (void)forceAllBookshelvesToSyncOnOpen
+{
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHAppProfile
+                                                         inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+
+    NSError *error = nil;
+    NSArray *appProfiles = [self.managedObjectContext executeFetchRequest:request
+                                                                    error:&error];
+    [request release], request = nil;
+    
+    if (appProfiles == nil) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    } else {
+        for (SCHAppProfile *appProfile in appProfiles) {
+            appProfile.forceBookshelfToSyncOnOpen = [NSNumber numberWithBool:YES];
+        }
+
+        if ([self.managedObjectContext hasChanges] == YES &&
+            ![self.managedObjectContext save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         }
     }
 }

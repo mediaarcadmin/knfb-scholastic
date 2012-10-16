@@ -45,6 +45,7 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 @dynamic SortType;
 @dynamic ShowListView;
 @dynamic lastEnteredBookshelfDate;
+@dynamic forceBookshelfToSyncOnOpen;
 
 - (SCHAppRecommendationProfile *)appRecommendationProfile
 {

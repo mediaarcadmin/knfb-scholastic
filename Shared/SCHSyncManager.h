@@ -38,6 +38,7 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 requireDeviceAuthentication:(BOOL)requireAuthentication;
 - (void)passwordSync;
 - (void)bookshelfSyncForced:(BOOL)syncNow;
+- (void)forceAllBookshelvesToSyncOnOpen;
 - (void)openBookSyncForced:(BOOL)syncNow
            booksAssignment:(SCHBooksAssignment *)booksAssignment
                 forProfile:(NSNumber *)profileID
