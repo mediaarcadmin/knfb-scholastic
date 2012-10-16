@@ -322,13 +322,15 @@ typedef enum
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
         [[SCHSyncManager sharedSyncManager] accountSyncForced:YES
                                   requireDeviceAuthentication:NO];
-        [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:YES];
+        [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:YES
+                                                 forProfileItem:self.profileItem];
         self.shouldWaitForCellsToLoad = YES;
         [self reloadDataImmediately:YES];
     } else {
         [[SCHSyncManager sharedSyncManager] accountSyncForced:NO
                                   requireDeviceAuthentication:NO];
-        [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:forceBookshelfSync];
+        [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:forceBookshelfSync
+                                                 forProfileItem:self.profileItem];
         
         if ([[SCHSyncManager sharedSyncManager] isSuspended]) {
             [[SCHProcessingManager sharedProcessingManager] checkStateForAllBooks];
@@ -545,7 +547,8 @@ typedef enum
         [self.appController exitBookshelf];
     }
 
-    [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:NO];
+    [[SCHSyncManager sharedSyncManager] bookshelfSyncForced:NO
+                                             forProfileItem:self.profileItem];
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 

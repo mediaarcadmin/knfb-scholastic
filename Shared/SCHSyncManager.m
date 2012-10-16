@@ -542,6 +542,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 }
 
 - (void)bookshelfSyncForced:(BOOL)syncNow
+             forProfileItem:(SCHProfileItem *)profileItem
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
         
@@ -552,8 +553,9 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 
             [self addToQueue:self.bookshelfSyncComponent];
 
-            [self addAllProfilesToAnnotationSync];
-            if ([self.annotationSyncComponent haveProfiles] == YES) {
+            if (profileItem != nil) {
+                [self.annotationSyncComponent addProfile:profileItem.ID
+                                               withBooks:[self bookAnnotationsFromProfile:profileItem]];
                 [self addToQueue:self.annotationSyncComponent];
             }
 
@@ -1079,7 +1081,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             [self accountSyncForced:NO requireDeviceAuthentication:NO];
         }
         if (self.bookshelfSyncDelay.delayActive == YES) {
-            [self bookshelfSyncForced:NO];
+            [self bookshelfSyncForced:NO forProfileItem:nil];
         }
         if (self.openBookSyncDelay.delayActive == YES) {
             [self openBookSyncForced:NO booksAssignment:nil forProfile:nil requestReadingStats:NO];
