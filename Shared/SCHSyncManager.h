@@ -15,6 +15,7 @@
 extern NSString * const SCHSyncManagerDidCompleteNotification;
 
 @class SCHBooksAssignment;
+@class SCHProfileItem;
 
 @interface SCHSyncManager : NSObject <SCHComponentDelegate>
 {	
@@ -37,7 +38,8 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (void)accountSyncForced:(BOOL)syncNow
 requireDeviceAuthentication:(BOOL)requireAuthentication;
 - (void)passwordSync;
-- (void)bookshelfSyncForced:(BOOL)syncNow;
+- (void)bookshelfSyncForced:(BOOL)syncNow
+             forProfileItem:(SCHProfileItem *)profileItem;
 - (void)forceAllBookshelvesToSyncOnOpen;
 - (void)openBookSyncForced:(BOOL)syncNow
            booksAssignment:(SCHBooksAssignment *)booksAssignment

@@ -1693,6 +1693,8 @@
 		C923A27D12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
 		C923A27E12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
 		C923A27F12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
+		C924FF5A162D65EB009F7F97 /* SCHReadingManagerCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C924FF59162D65EA009F7F97 /* SCHReadingManagerCache.m */; };
+		C924FF5B162D65EB009F7F97 /* SCHReadingManagerCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C924FF59162D65EA009F7F97 /* SCHReadingManagerCache.m */; };
 		C9261FBF13970220009FF459 /* notes-count.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBD13970220009FF459 /* notes-count.png */; };
 		C9261FC113970220009FF459 /* notes-count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBE13970220009FF459 /* notes-count@2x.png */; };
 		C927973B140FA4AD0091B8B5 /* icon-audio-younger-small-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C9279739140FA4AC0091B8B5 /* icon-audio-younger-small-landscape.png */; };
@@ -4604,6 +4606,8 @@
 		C923A27712F06FE60054426F /* MRGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridViewController.m; path = Shared/Libraries/MRGridView/MRGridViewController.m; sourceTree = "<group>"; };
 		C923A27812F06FE60054426F /* MRGridViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDataSource.h; path = Shared/Libraries/MRGridView/MRGridViewDataSource.h; sourceTree = "<group>"; };
 		C923A27912F06FE60054426F /* MRGridViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDelegate.h; path = Shared/Libraries/MRGridView/MRGridViewDelegate.h; sourceTree = "<group>"; };
+		C924FF58162D65EA009F7F97 /* SCHReadingManagerCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingManagerCache.h; path = Shared/SCHReadingManagerCache.h; sourceTree = "<group>"; };
+		C924FF59162D65EA009F7F97 /* SCHReadingManagerCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingManagerCache.m; path = Shared/SCHReadingManagerCache.m; sourceTree = "<group>"; };
 		C9254E8D143DBCA100A92831 /* StartingScreenTests.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = StartingScreenTests.js; path = "UI Tests/StartingScreenTests.js"; sourceTree = SOURCE_ROOT; };
 		C9254E93143DDA6F00A92831 /* Scholastic.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Scholastic.js; path = "UI Tests/Scholastic.js"; sourceTree = SOURCE_ROOT; };
 		C9254ECF143DF89800A92831 /* LoginScreenTests.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LoginScreenTests.js; path = "UI Tests/LoginScreenTests.js"; sourceTree = SOURCE_ROOT; };
@@ -7972,6 +7976,8 @@
 				C9EE59C0161ED7D8002B8F3E /* SCHSettingsViewCell.m */,
 				C9E1BF9D1603446400CB8A4E /* SCHReadingManagerViewController.h */,
 				C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */,
+				C924FF58162D65EA009F7F97 /* SCHReadingManagerCache.h */,
+				C924FF59162D65EA009F7F97 /* SCHReadingManagerCache.m */,
 				28C7416013D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.h */,
 				28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */,
 				28D2AA0C13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.h */,
@@ -11725,6 +11731,7 @@
 				52AA3F631615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */,
 				52AA3F6A1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
 				52A7BAF816280466007E0E5B /* LibreAccessActivityLogSvc_tns1.m in Sources */,
+				C924FF5A162D65EB009F7F97 /* SCHReadingManagerCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12593,6 +12600,7 @@
 				52AA3F641615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */,
 				52AA3F6B1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
 				52A7BAF9162849D6007E0E5B /* LibreAccessActivityLogSvc_tns1.m in Sources */,
+				C924FF5B162D65EB009F7F97 /* SCHReadingManagerCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
