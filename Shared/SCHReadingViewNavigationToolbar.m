@@ -204,7 +204,7 @@
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
-            if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
+            if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
                 if (self.readingQuizActive) {
                     [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-portrait.png"] forState:UIControlStateNormal];
                 } else {
@@ -221,6 +221,7 @@
         default:
             break;
     }
+
 }
 
 - (void)setOrientation:(UIInterfaceOrientation)orientation
@@ -291,34 +292,34 @@
         backItem = [[UIBarButtonItem alloc] initWithCustomView:backItemButton];        
     }
         
-//    switch (self.style) {
-//        case kSCHReadingViewNavigationToolbarStyleOlderPad:
-//            [backItemButton setImage:[UIImage imageNamed:@"icon-back-older.png"] forState:UIControlStateNormal];
-//            break;
-//        case kSCHReadingViewNavigationToolbarStyleYoungerPad:
-//        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
-//        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
-//        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
-//            [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger.png"] forState:UIControlStateNormal];
-//            break;
-//        case kSCHReadingViewNavigationToolbarStyleOlderPhone:
-//            if (UIInterfaceOrientationIsPortrait(orientation)) {
-//                [backItemButton setImage:[UIImage imageNamed:@"icon-back-older-portrait.png"] forState:UIControlStateNormal];
-//            } else {
-//                [backItemButton setImage:[UIImage imageNamed:@"icon-back-older-landscape.png"] forState:UIControlStateNormal];
-//            }
-//            break;
-//        case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
-//        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
-//        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
-//        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
-//            if (UIInterfaceOrientationIsPortrait(orientation)) {
-//                [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-portrait.png"] forState:UIControlStateNormal];
-//            } else {
-//                [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-landscape.png"] forState:UIControlStateNormal];
-//            }
-//            break;
-//    }
+    switch (self.style) {
+        case kSCHReadingViewNavigationToolbarStyleOlderPad:
+            [backItemButton setImage:[UIImage imageNamed:@"icon-back-older.png"] forState:UIControlStateNormal];
+            break;
+        case kSCHReadingViewNavigationToolbarStyleYoungerPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
+            [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger.png"] forState:UIControlStateNormal];
+            break;
+        case kSCHReadingViewNavigationToolbarStyleOlderPhone:
+            if (UIInterfaceOrientationIsPortrait(orientation)) {
+                [backItemButton setImage:[UIImage imageNamed:@"icon-back-older-portrait.png"] forState:UIControlStateNormal];
+            } else {
+                [backItemButton setImage:[UIImage imageNamed:@"icon-back-older-landscape.png"] forState:UIControlStateNormal];
+            }
+            break;
+        case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
+        case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
+            if (UIInterfaceOrientationIsPortrait(orientation)) {
+                [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-portrait.png"] forState:UIControlStateNormal];
+            } else {
+                [backItemButton setImage:[UIImage imageNamed:@"icon-back-younger-landscape.png"] forState:UIControlStateNormal];
+            }
+            break;
+    }
     
     return backItem;
 }
@@ -371,7 +372,7 @@
             break;
         case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
         case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
-            if (UIInterfaceOrientationIsPortrait(orientation)) {
+            if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
                 if (self.readingQuizActive) {
                     [readingQuizItemButton setImage:[UIImage imageNamed:@"icon-readingquiz-younger-portrait.png"] forState:UIControlStateNormal];
                 } else {

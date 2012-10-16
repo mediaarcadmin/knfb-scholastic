@@ -3303,7 +3303,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
     NSUInteger furthestPageRead = [appContentProfileItem.pageRead unsignedIntegerValue];
     
-    if (furthestPageRead >= pageCount) {
+    if (furthestPageRead >= (pageCount - 1)) {
         return YES;
     }
     
