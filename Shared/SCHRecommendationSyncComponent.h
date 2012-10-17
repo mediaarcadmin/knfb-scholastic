@@ -14,12 +14,19 @@ extern NSString * const SCHRecommendationSyncComponentISBNs;
 extern NSString * const SCHRecommendationSyncComponentDidCompleteNotification;
 extern NSString * const SCHRecommendationSyncComponentDidFailNotification;
 
+@class SCHBookIdentifier;
+
 @interface SCHRecommendationSyncComponent : SCHSyncComponent
 
+- (void)addBookIdentifier:(SCHBookIdentifier *)bookIdentifier;
+- (void)removeBookIdentifier:(SCHBookIdentifier *)bookIdentifier;
+- (BOOL)haveBookIdentifiers;
+- (SCHBookIdentifier *)currentBookIdentifier;
+- (BOOL)nextBookIdentifier;
 - (void)retrieveRecommendationsForProfileCompletionResult:(NSDictionary *)result
                                                  userInfo:(NSDictionary *)userInfo;
-- (void)retrieveRecommendationsForBooksResult:(NSDictionary *)result 
-                                     userInfo:(NSDictionary *)userInfo;
+- (void)retrieveRecommendationsForBooksCompletionResult:(NSDictionary *)result
+                                               userInfo:(NSDictionary *)userInfo;
 - (NSMutableArray *)localFilteredBooksForDRMQualifier:(NSNumber *)drmQualifier 
                                                asISBN:(BOOL)asISBN
                                  managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;

@@ -48,8 +48,8 @@ NSString * const SCHRetrieveRecommendationsForBooksOperationBookIdentifiers = @"
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.isCancelled == NO) {
-                [(SCHRecommendationSyncComponent *)self.syncComponent retrieveRecommendationsForBooksResult:self.result 
-                                                                                                   userInfo:self.userInfo];
+                [(SCHRecommendationSyncComponent *)self.syncComponent retrieveRecommendationsForBooksCompletionResult:self.result
+                                                                                                             userInfo:self.userInfo];
             }
         });                
     }

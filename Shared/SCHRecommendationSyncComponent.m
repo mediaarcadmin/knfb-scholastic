@@ -279,8 +279,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     }            
 }
 
-- (void)retrieveRecommendationsForBooksResult:(NSDictionary *)result 
-                                     userInfo:(NSDictionary *)userInfo
+- (void)retrieveRecommendationsForBooksCompletionResult:(NSDictionary *)result
+                                               userInfo:(NSDictionary *)userInfo
 {
     if ([self.remainingBatchedItems count] > 0) {
         NSMutableArray *remainingBooks = [self removeBatchItemsFrom:self.remainingBatchedItems];
