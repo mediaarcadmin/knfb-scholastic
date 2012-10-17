@@ -3590,11 +3590,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         ret = NO;
     } else if ([[self.profile recommendationsOn] boolValue] == YES) {
         ret = YES;
-    } else {
-        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-        SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
-        
-        ret = [book isSampleBook];
     }
     
     return ret;
