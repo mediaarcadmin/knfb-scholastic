@@ -803,14 +803,18 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     return [settingValue boolValue];
 }
 
-- (void)backOfBookRecommendationSync
+- (void)backOfBookRecommendationSync:(SCHBookIdentifier *)bookIdentifier
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
     if ([self shouldSync] == YES) {	 
         NSLog(@"Scheduling Back of Book Recommendation Sync");
-        
-        [self addToQueue:self.recommendationSyncComponent];
+
+        if (bookIdentifier != nil) {
+            [self.recommendationSyncComponent addBookIdentifier:bookIdentifier];
+
+            [self addToQueue:self.recommendationSyncComponent];
+        }
 
         [self kickQueue];	
     } else {
@@ -933,6 +937,12 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             NSLog(@"%@ failed %d times, removing the current profile from the sync",
                   [syncComponent class],
                   kSCHSyncManagerMaximumFailureRetries);
+        } else if ([component isKindOfClass:[SCHRecommendationSyncComponent class]] &&
+                   [(SCHRecommendationSyncComponent *)component nextBookIdentifier] == YES) {
+            // try the next book identifier
+            NSLog(@"%@ failed %d times, removing the current book identifier from the sync",
+                  [syncComponent class],
+                  kSCHSyncManagerMaximumFailureRetries);
         } else {
             // remove from the queue when we have exhausted the retries
             NSLog(@"%@ failed %d times, removing from the sync manager queue", 
@@ -1020,6 +1030,9 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     } else if ([component isKindOfClass:[SCHListReadingStatisticsSyncComponent class]] == YES &&
                [(SCHListReadingStatisticsSyncComponent *)component haveProfiles] == YES) {
         NSLog(@"Next list reading statistics profile");
+    } else if ([component isKindOfClass:[SCHRecommendationSyncComponent class]] == YES &&
+               [(SCHRecommendationSyncComponent *)component haveBookIdentifiers] == YES) {
+        NSLog(@"Next recommendation book identifier");
     } else if ([self.queue containsObject:component] == YES) {
 		NSLog(@"Removing %@ from the sync manager queue", [component class]);
         [self.queue removeObject:component];
