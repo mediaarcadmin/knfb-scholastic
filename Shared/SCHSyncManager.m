@@ -925,18 +925,31 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
                                                 forKey:kSCHUserDefaultsPerformedAccountSync];
         [[NSUserDefaults standardUserDefaults] synchronize];
 	}
-	
-    [self removeFromQueue:(SCHSyncComponent *)component includeDependants:NO];
 
-	[self kickQueue];
+    if (self.flushSaveMode == YES) {
+        if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] &&
+            [self.annotationSyncComponent haveProfiles] == YES) {
+            NSLog(@"Next annotation profile");
+            [self.annotationSyncComponent synchronize];
+        } else if ([component isKindOfClass:[SCHReadingStatsSyncComponent class]] &&
+                   [self.readingStatsSyncComponent haveProfiles] == YES) {
+            NSLog(@"Next reading statistics profile");
+            [self.readingStatsSyncComponent synchronize];
+        }
+    } else {
+        [self removeFromQueue:(SCHSyncComponent *)component includeDependants:NO];
+
+        [self kickQueue];
+    }
 }
 
 - (void)component:(SCHComponent *)component didFailWithError:(NSError *)error
 {
     SCHSyncComponent *syncComponent = (SCHSyncComponent *)component;
     
-    // push to the end of the queue to retry
-    if (syncComponent.failureCount <= kSCHSyncManagerMaximumFailureRetries) {
+    // push to the end of the queue to retry unless we are in flushSaveMode
+    if (self.flushSaveMode == NO &&
+        syncComponent.failureCount <= kSCHSyncManagerMaximumFailureRetries) {
         NSLog(@"%@ failed, moving to the end of the sync manager queue", [component class]);
         [self moveToEndOfQueue:syncComponent];
     } else {
@@ -946,12 +959,18 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             NSLog(@"%@ failed %d times, removing the current profile from the sync",
                   [syncComponent class],
                   kSCHSyncManagerMaximumFailureRetries);
+            if (self.flushSaveMode == YES) {
+                [self.annotationSyncComponent synchronize];
+            }
         } else if ([component isKindOfClass:[SCHReadingStatsSyncComponent class]] &&
                    [(SCHReadingStatsSyncComponent *)component nextProfile] == YES) {
             // try the next profile
             NSLog(@"%@ failed %d times, removing the current profile from the sync",
                   [syncComponent class],
                   kSCHSyncManagerMaximumFailureRetries);
+            if (self.flushSaveMode == YES) {
+                [self.readingStatsSyncComponent synchronize];
+            }
         } else if ([component isKindOfClass:[SCHListReadingStatisticsSyncComponent class]] &&
                    [(SCHListReadingStatisticsSyncComponent *)component nextProfile] == YES) {
             // try the next profile
