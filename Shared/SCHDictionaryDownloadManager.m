@@ -895,7 +895,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 NSUInteger progress = roundf([[SCHDictionaryDownloadManager sharedDownloadManager] currentDictionaryDownloadPercentage] * 100.0f);
                 dictionaryStateTitle = [NSString stringWithFormat:NSLocalizedString(@"Downloading Dictionary %d%%", @"Downloading dictionary button title"), progress];
             } else {
-                dictionaryStateTitle = NSLocalizedString(@"Download Dictionary", @"Download dictionary table title");
+                dictionaryStateTitle = NSLocalizedString(@"Dictionary waiting for Wi-Fi...", @"Download dictionary waiting for wi-fi table title");
             }
             break;
         }
