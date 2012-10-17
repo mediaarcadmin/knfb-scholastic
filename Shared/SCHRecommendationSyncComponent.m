@@ -24,6 +24,7 @@
 #import "SCHRetrieveRecommendationsForBooksOperation.h"
 #import "SCHRetrieveSampleBooksOperation.h"
 #import "SCHMakeNullNil.h"
+#import "SCHBookIdentifier.h"
 
 // Constants
 NSString * const SCHRecommendationSyncComponentISBNs = @"SCHRecommendationSyncComponentISBNs";
@@ -37,6 +38,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 
 @property (nonatomic, retain) SCHRecommendationWebService *recommendationWebService;
 @property (nonatomic, retain) NSMutableArray *remainingBatchedItems;
+@property (atomic, retain) NSMutableSet *bookIdentifiersForRecommendations;
 
 - (BOOL)updateRecommendations;
 - (BOOL)retrieveBooks:(NSArray *)books;
@@ -55,6 +57,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 
 @synthesize recommendationWebService;
 @synthesize remainingBatchedItems;
+@synthesize bookIdentifiersForRecommendations;
 
 - (id)init
 {
@@ -62,6 +65,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	if (self != nil) {
 		recommendationWebService = [[SCHRecommendationWebService alloc] init];	
 		recommendationWebService.delegate = self;
+
+        bookIdentifiersForRecommendations = [[NSMutableSet set] retain];
 	}
 	
 	return(self);
@@ -72,8 +77,53 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     recommendationWebService.delegate = nil;
 	[recommendationWebService release], recommendationWebService = nil;
     [remainingBatchedItems release], remainingBatchedItems = nil;
+    [bookIdentifiersForRecommendations release], bookIdentifiersForRecommendations = nil;
     
 	[super dealloc];
+}
+
+- (void)addBookIdentifier:(SCHBookIdentifier *)bookIdentifier
+{
+	if (bookIdentifier != nil) {
+        if ([self.bookIdentifiersForRecommendations containsObject:bookIdentifier] == NO) {
+            [self.bookIdentifiersForRecommendations addObject:bookIdentifier];
+        }
+	}
+}
+
+- (void)removeBookIdentifier:(SCHBookIdentifier *)bookIdentifier
+{
+	if (self.isSynchronizing == NO && bookIdentifier != nil) {
+        [self.bookIdentifiersForRecommendations removeObject:bookIdentifier];
+    }
+}
+
+- (BOOL)haveBookIdentifiers
+{
+	return([self.bookIdentifiersForRecommendations count ] > 0);
+}
+
+- (SCHBookIdentifier *)currentBookIdentifier
+{
+    SCHBookIdentifier *ret = nil;
+
+    if ([self haveBookIdentifiers] == YES) {
+        ret = [[[self.bookIdentifiersForRecommendations allObjects] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
+    }
+
+    return ret;
+}
+
+- (BOOL)nextBookIdentifier
+{
+    SCHBookIdentifier *currentBookIdentifier = [self currentBookIdentifier];
+
+    if (currentBookIdentifier != nil) {
+        [self.bookIdentifiersForRecommendations removeObject:currentBookIdentifier];
+    }
+    [self clearFailures];
+
+    return [self haveBookIdentifiers];
 }
 
 - (BOOL)synchronize
@@ -102,6 +152,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 - (void)clearComponent
 {
     self.remainingBatchedItems = nil;
+    [self.bookIdentifiersForRecommendations removeAllObjects];
 }
 
 - (void)clearCoreData
@@ -138,17 +189,24 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                                                                                                                 userInfo:nil] autorelease];
             [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
             [self.backgroundProcessingQueue addOperation:operation];    
-            
-            NSMutableArray *books = [self localFilteredBooksForDRMQualifier:
-                                     [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullWithDRM] 
-                                                                     asISBN:YES
-                                     managedObjectContext:self.managedObjectContext];
+
+//            NSMutableArray *books = [self localFilteredBooksForDRMQualifier:
+//                                     [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullWithDRM]
+//                                                                     asISBN:YES
+//                                                       managedObjectContext:self.managedObjectContext];
+
+            SCHBookIdentifier *bookIdentifier = [self currentBookIdentifier];
+            NSMutableArray *books = [self filteredBookForBookIdentifier:bookIdentifier];
             
             if ([books count] > 0) {
                 self.remainingBatchedItems = [self removeBatchItemsFrom:books];
                 ret = [self retrieveBooks:books];
             } else {
-                [self completeWithSuccessMethod:nil 
+                if (bookIdentifier != nil) {
+                    [self.bookIdentifiersForRecommendations removeObject:bookIdentifier];
+                }
+
+                [self completeWithSuccessMethod:nil
                                          result:nil 
                                        userInfo:nil 
                                notificationName:SCHRecommendationSyncComponentDidCompleteNotification 
@@ -170,7 +228,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                    notificationUserInfo:nil];
     }
 #endif
-    return  ret;
+    
+    return ret;
 }
 
 #pragma mark - Overridden methods
@@ -253,16 +312,23 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                                                                                                                 userInfo:nil] autorelease];
             [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
             [self.backgroundProcessingQueue addOperation:operation];    
-            
-            NSMutableArray *books = [self localFilteredBooksForDRMQualifier:
-                                     [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullWithDRM] 
-                                                                     asISBN:YES
-                                                       managedObjectContext:self.managedObjectContext];
-            
+
+//            NSMutableArray *books = [self localFilteredBooksForDRMQualifier:
+//                                     [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullWithDRM]
+//                                                                     asISBN:YES
+//                                                       managedObjectContext:self.managedObjectContext];
+
+            SCHBookIdentifier *bookIdentifier = [self currentBookIdentifier];
+            NSMutableArray *books = [self filteredBookForBookIdentifier:bookIdentifier];
+
             if ([books count] > 0) {
                 self.remainingBatchedItems = [self removeBatchItemsFrom:books];
                 [self retrieveBooks:books];
             } else {
+                if (bookIdentifier != nil) {
+                    [self.bookIdentifiersForRecommendations removeObject:bookIdentifier];
+                }
+
                 [self completeWithSuccessMethod:kSCHRecommendationWebServiceRetrieveRecommendationsForProfile 
                                          result:result 
                                        userInfo:userInfo 
@@ -279,9 +345,14 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
     }            
 }
 
-- (void)retrieveRecommendationsForBooksResult:(NSDictionary *)result 
-                                     userInfo:(NSDictionary *)userInfo
+- (void)retrieveRecommendationsForBooksCompletionResult:(NSDictionary *)result
+                                               userInfo:(NSDictionary *)userInfo
 {
+    SCHBookIdentifier *bookIdentifier = [self currentBookIdentifier];
+    if (bookIdentifier != nil) {
+        [self.bookIdentifiersForRecommendations removeObject:bookIdentifier];
+    }
+
     if ([self.remainingBatchedItems count] > 0) {
         NSMutableArray *remainingBooks = [self removeBatchItemsFrom:self.remainingBatchedItems];
         [self retrieveBooks:self.remainingBatchedItems];                    
@@ -403,6 +474,40 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
 	return(filteredProfileAges);
 }
 
+- (NSMutableArray *)filteredBookForBookIdentifier:(SCHBookIdentifier *)bookIdentifier
+{
+    NSMutableArray *ret = [NSMutableArray array];
+
+    if (bookIdentifier != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment
+                                            inManagedObjectContext:self.managedObjectContext]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", bookIdentifier.isbn, bookIdentifier.DRMQualifier]];
+
+        NSError *error = nil;
+        NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                    error:&error];
+        if (results == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        } else if ([results count] > 0) {
+            // only return those items that require updating
+            SCHBooksAssignment *booksAssignment = [results objectAtIndex:0];
+            if (booksAssignment != nil) {
+                if ([self shouldRequestRecommendationsForBookAssignment:booksAssignment] == YES) {
+                    NSString *isbn = makeNullNil([booksAssignment valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+                    if (isbn != nil && [ret containsObject:isbn] == NO) {
+                        [ret addObject:isbn];
+                    }
+                }
+            }
+        }
+        [fetchRequest release], fetchRequest = nil;
+    }
+
+	return ret;
+}
+
+
 // drmQualifier = nil for all books
 - (NSMutableArray *)localFilteredBooksForDRMQualifier:(NSNumber *)drmQualifier 
                                                asISBN:(BOOL)asISBN
@@ -430,37 +535,50 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         // only return those items that require updating
         ret = [NSMutableArray arrayWithCapacity:[results count]];
         for (SCHBooksAssignment *item in results) {
-            NSDate *earlierOpenedDate = [item earlierOpenedDate];
-            
-            if (earlierOpenedDate != nil) {
-                NSSet *contentMetadataItems = [item ContentMetadataItem];
-                SCHAppRecommendationISBN *recommendationISBN = nil;
-                if ([contentMetadataItems count] > 0) {
-                    // it's a book to book relationship so only 1 book in the set
-                    SCHContentMetadataItem *contentMetadataItem = [contentMetadataItems anyObject];
-                    recommendationISBN = [contentMetadataItem.AppBook appRecommendationISBN];
-                }
-
-                NSDate *nextUpdate = [recommendationISBN.fetchDate dateByAddingTimeInterval:kSCHRecommendationSyncComponentBookSyncDelayTimeInterval];
-
-                if (nextUpdate == nil ||
-                    ([earlierOpenedDate laterDate:recommendationISBN.fetchDate] == earlierOpenedDate &&
-                     [[NSDate date] earlierDate:nextUpdate] == nextUpdate)) {
-                        if (asISBN == YES) {
-                            NSString *isbn = makeNullNil([item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
-                            if (isbn != nil && [ret containsObject:isbn] == NO) {
-                                [ret addObject:isbn];
-                            }
-                        } else {
-                            [ret addObject:item];
-                        }
+            if ([self shouldRequestRecommendationsForBookAssignment:item] == YES) {
+                if (asISBN == YES) {
+                    NSString *isbn = makeNullNil([item valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+                    if (isbn != nil && [ret containsObject:isbn] == NO) {
+                        [ret addObject:isbn];
                     }
+                } else {
+                    [ret addObject:item];
+                }
             }
         }
     }
 	[fetchRequest release], fetchRequest = nil;
+
+	return ret;
+}
+
+- (BOOL)shouldRequestRecommendationsForBookAssignment:(SCHBooksAssignment *)bookAssignment
+{
+    BOOL ret = NO;
+
+    if (bookAssignment != nil) {
+        NSDate *earlierOpenedDate = [bookAssignment earlierOpenedDate];
+
+        if (earlierOpenedDate != nil) {
+            NSSet *contentMetadataItems = [bookAssignment ContentMetadataItem];
+            SCHAppRecommendationISBN *recommendationISBN = nil;
+            if ([contentMetadataItems count] > 0) {
+                // it's a book to book relationship so only 1 book in the set
+                SCHContentMetadataItem *contentMetadataItem = [contentMetadataItems anyObject];
+                recommendationISBN = [contentMetadataItem.AppBook appRecommendationISBN];
+            }
+
+            NSDate *nextUpdate = [recommendationISBN.fetchDate dateByAddingTimeInterval:kSCHRecommendationSyncComponentBookSyncDelayTimeInterval];
+
+            if (nextUpdate == nil ||
+                ([earlierOpenedDate laterDate:recommendationISBN.fetchDate] == earlierOpenedDate &&
+                 [[NSDate date] earlierDate:nextUpdate] == nextUpdate)) {
+                    ret = YES;
+                }
+        }
+    }
     
-	return(ret);
+	return ret;
 }
 
 #pragma - Syncing methods
