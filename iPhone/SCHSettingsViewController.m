@@ -1040,7 +1040,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                     case 1:
                     {
                         switch ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState]) {
-                            case SCHDictionaryProcessingStateReady:
                             case SCHDictionaryProcessingStateUserSetup:
                             case SCHDictionaryProcessingStateUserDeclined:
                             case SCHDictionaryProcessingStateError:
@@ -1055,6 +1054,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                                 return kSCHSettingsPanelDictionaryDownload;
                                 break;
                             }
+                            case SCHDictionaryProcessingStateReady:
                             case SCHDictionaryProcessingStateNeedsManifest:
                             case SCHDictionaryProcessingStateManifestVersionCheck:
                             case SCHDictionaryProcessingStateNeedsDownload:
