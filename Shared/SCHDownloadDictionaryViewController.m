@@ -97,9 +97,6 @@
         return;
     }
     
-    [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
-    
-    
     BOOL reachable = [[Reachability reachabilityForLocalWiFi] isReachable];
     
     if (reachable == NO) {
@@ -108,8 +105,10 @@
                               message:NSLocalizedString(@"Downloading the dictionary requires a Wi-Fi connection. Please connect to Wi-Fi and then try again.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:afterDownload];
         [alert show];
-        [alert release];   
+        [alert release];
+        return;
     } else {
+        [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
         afterDownload();
     }
     

@@ -788,6 +788,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             break;
         case kSCHSettingsPanelDictionaryDownload:
         case kSCHSettingsPanelDictionaryDelete:
+        {
             cell.textLabel.text = [[SCHDictionaryDownloadManager sharedDownloadManager] titleForCurrentDictionaryState];
             cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
             if (isSelected) {
@@ -800,6 +801,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                 cell.indentationLevel = 1;
             }
             break;
+        }
         case kSCHSettingsPanelDeregisterDevice:
             cell.textLabel.text = @"Deregister Device";
             cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
