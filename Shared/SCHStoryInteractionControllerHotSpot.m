@@ -364,15 +364,17 @@
         CGSize pageSize = [self.delegate sizeOfPageAtIndex:self.storyInteraction.documentPageNumber];
         CGContextTranslateCTM(ctx, -pageSize.width, 0);
     }
-    
-    CGContextSetRGBStrokeColor(ctx, 0, 1, 0, 1);
-    CGContextSetLineWidth(ctx, 2);
-    CGContextAddPath(ctx, [[self currentQuestion] path]);
-    CGContextStrokePath(ctx);
-    
-    CGContextSetRGBStrokeColor(ctx, 1, 0, 0, 1);
-    CGContextAddRect(ctx, [[self currentQuestion] hotSpotRect]);
-    CGContextStrokePath(ctx);
+
+    for (SCHHotSpotCoordinates *hotSpotCoordinates in [[self currentQuestion] hotSpots]) {
+        CGContextSetRGBStrokeColor(ctx, 0, 1, 0, 1);
+        CGContextSetLineWidth(ctx, 2);
+        CGContextAddPath(ctx, hotSpotCoordinates.path);
+        CGContextStrokePath(ctx);
+
+        CGContextSetRGBStrokeColor(ctx, 1, 0, 0, 1);
+        CGContextAddRect(ctx, hotSpotCoordinates.rect);
+        CGContextStrokePath(ctx);
+    }
 }
 #endif
 
