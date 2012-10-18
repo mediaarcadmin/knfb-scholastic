@@ -32,7 +32,8 @@
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 static const CGFloat kSCHProfileViewControllerRowHeightPad = 100.0f;
 static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
-static const CGFloat kSCHProfileViewControllerParentButtonMaxWidth = 282.0f;
+static const CGFloat kSCHProfileViewControllerParentButtonMaxWidthPhone = 282.0f;
+static const CGFloat kSCHProfileViewControllerParentButtonMaxWidthPad = 1000.0f;
 static const CGFloat kSCHProfileViewControllerParentButtonMinWidth = 141.0f;
 
 @interface SCHProfileViewController() <UIScrollViewDelegate, NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate>
@@ -843,8 +844,15 @@ didSelectButtonAnimated:(BOOL)animated
         [self.parentButton sizeToFit];
         [self.parentButton setCenter:currentCenter];
         [self.parentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 10)];
+        [self.parentButton.titleLabel setLineBreakMode:NSLineBreakByTruncatingTail];
         CGRect newBounds = CGRectInset(self.parentButton.bounds, -10, 0);
-        newBounds.size.width = MAX(MIN(newBounds.size.width, kSCHProfileViewControllerParentButtonMaxWidth), kSCHProfileViewControllerParentButtonMinWidth);
+        CGFloat maxWidth;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            maxWidth = kSCHProfileViewControllerParentButtonMaxWidthPad;
+        } else {
+            maxWidth = kSCHProfileViewControllerParentButtonMaxWidthPhone;
+        }
+        newBounds.size.width = MAX(MIN(newBounds.size.width, maxWidth), kSCHProfileViewControllerParentButtonMinWidth);
         self.parentButton.bounds = newBounds;
     }
 }
