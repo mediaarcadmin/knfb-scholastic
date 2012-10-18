@@ -489,7 +489,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                booksAssignment:book.ContentMetadataItem.booksAssignment
                                               forProfile:profile.ID
                                            requestReadingStats:[self bookHasReadingChallenge]];
-        [[SCHSyncManager sharedSyncManager] backOfBookRecommendationSync];
+        [[SCHSyncManager sharedSyncManager] backOfBookRecommendationSync:self.bookIdentifier];
         [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
 
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -1029,7 +1029,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                            booksAssignment:book.ContentMetadataItem.booksAssignment
                                                 forProfile:self.profile.ID
                                        requestReadingStats:[self bookHasReadingChallenge]];
-    [[SCHSyncManager sharedSyncManager] backOfBookRecommendationSync];
+    [[SCHSyncManager sharedSyncManager] backOfBookRecommendationSync:self.bookIdentifier];
     [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
 }
 
@@ -3590,11 +3590,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         ret = NO;
     } else if ([[self.profile recommendationsOn] boolValue] == YES) {
         ret = YES;
-    } else {
-        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-        SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
-        
-        ret = [book isSampleBook];
     }
     
     return ret;

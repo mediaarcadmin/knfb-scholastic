@@ -16,6 +16,7 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 
 @class SCHBooksAssignment;
 @class SCHProfileItem;
+@class SCHBookIdentifier;
 
 @interface SCHSyncManager : NSObject <SCHComponentDelegate>
 {	
@@ -48,7 +49,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication;
 - (void)closeBookSyncForced:(BOOL)syncNow
             booksAssignment:(SCHBooksAssignment *)booksAssignment
                  forProfile:(NSNumber *)profileID;
-- (void)backOfBookRecommendationSync;
+- (void)backOfBookRecommendationSync:(SCHBookIdentifier *)bookIdentifier;
 - (void)topRatingsSync;
 - (void)wishListSyncForced:(BOOL)syncNow;
 - (void)deregistrationSync;

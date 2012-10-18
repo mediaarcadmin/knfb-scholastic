@@ -547,15 +547,18 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
         
     if ([self shouldSync] == YES) {
+        if (profileItem != nil) {
+            [self.annotationSyncComponent addProfile:profileItem.ID
+                                           withBooks:[self bookAnnotationsFromProfile:profileItem]];
+        }
+
         if (syncNow == YES || [self.bookshelfSyncDelay shouldSync] == YES) {
             NSLog(@"Scheduling Bookshelf Sync");
             [self.bookshelfSyncDelay syncStarted];
 
             [self addToQueue:self.bookshelfSyncComponent];
 
-            if (profileItem != nil) {
-                [self.annotationSyncComponent addProfile:profileItem.ID
-                                               withBooks:[self bookAnnotationsFromProfile:profileItem]];
+            if ([self.annotationSyncComponent haveProfiles] == YES) {
                 [self addToQueue:self.annotationSyncComponent];
             }
 
@@ -699,26 +702,35 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
     if ([self shouldSync] == YES) {
+        if (booksAssignment != nil && profileID != nil) {
+            NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment
+                                                                                      forProfile:profileID];
+            if (annotationContentItem != nil) {
+                [self.annotationSyncComponent addProfile:profileID
+                                               withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
+
+                if (requestReadingStats == YES) {
+                    [self.listReadingStatisticsSyncComponent addProfile:profileID
+                                                              withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
+                }
+            }
+        }
+
         if (syncNow == YES || [self.openBookSyncDelay shouldSync] == YES) {
             NSLog(@"Scheduling Open Book");
             [self.openBookSyncDelay syncStarted];
-            
-            if (booksAssignment != nil && profileID != nil) {
-                NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment forProfile:profileID];
-                if (annotationContentItem != nil) {
-                    [self.annotationSyncComponent addProfile:profileID
-                                                   withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
-                    [self addToQueue:self.annotationSyncComponent];
 
-                    if (requestReadingStats == YES) {
-                        [self.listReadingStatisticsSyncComponent addProfile:profileID
-                                                                  withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
-                        [self addToQueue:self.listReadingStatisticsSyncComponent];
-                    }
+            if ([self.annotationSyncComponent haveProfiles] == YES ) {
+                [self addToQueue:self.annotationSyncComponent];
+            }
 
-                    [self kickQueue];
+            if (requestReadingStats == YES) {
+                if ([self.listReadingStatisticsSyncComponent haveProfiles] == YES) {
+                    [self addToQueue:self.listReadingStatisticsSyncComponent];
                 }
             }
+
+            [self kickQueue];
         } else {
             [self.openBookSyncDelay activateDelay];
         }
@@ -754,27 +766,36 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     } 
     
     if ([self shouldSync] == YES) {
+        if (booksAssignment != nil && profileID != nil) {
+            NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment
+                                                                                      forProfile:profileID];
+            if (annotationContentItem != nil) {
+                [self.annotationSyncComponent addProfile:profileID
+                                               withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
+
+                if ([self readingStatsActive] == YES) {
+                    [self.readingStatsSyncComponent addProfile:profileID];
+                }
+            }
+        }
+
         if (syncNow == YES || [self.closeBookSyncDelay shouldSync] == YES) {
             NSLog(@"Scheduling Close Book");
             [self.closeBookSyncDelay syncStarted];
 
-            if (booksAssignment != nil && profileID != nil) {
-                NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment forProfile:profileID];
-                if (annotationContentItem != nil) {
-                    [self.annotationSyncComponent addProfile:profileID
-                                                   withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
-                    [self addToQueue:self.annotationSyncComponent];
-
-                    if ([self readingStatsActive] == YES) {
-                        [self.readingStatsSyncComponent addProfile:profileID];
-                        [self addToQueue:self.readingStatsSyncComponent];
-                    } else {
-                        NSLog(@"Reading Stats are OFF");
-                    }
-
-                    [self kickQueue];	
-                }
+            if ([self.annotationSyncComponent haveProfiles] == YES ) {
+                [self addToQueue:self.annotationSyncComponent];
             }
+
+            if ([self readingStatsActive] == YES) {
+                if ([self.readingStatsSyncComponent haveProfiles] == YES) {
+                    [self addToQueue:self.readingStatsSyncComponent];
+                }
+            } else {
+                NSLog(@"Reading Stats are OFF");
+            }
+
+            [self kickQueue];
         } else {
             [self.closeBookSyncDelay activateDelay];
         }
@@ -803,14 +824,18 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     return [settingValue boolValue];
 }
 
-- (void)backOfBookRecommendationSync
+- (void)backOfBookRecommendationSync:(SCHBookIdentifier *)bookIdentifier
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
     if ([self shouldSync] == YES) {	 
         NSLog(@"Scheduling Back of Book Recommendation Sync");
-        
-        [self addToQueue:self.recommendationSyncComponent];
+
+        if (bookIdentifier != nil) {
+            [self.recommendationSyncComponent addBookIdentifier:bookIdentifier];
+
+            [self addToQueue:self.recommendationSyncComponent];
+        }
 
         [self kickQueue];	
     } else {
@@ -900,18 +925,31 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
                                                 forKey:kSCHUserDefaultsPerformedAccountSync];
         [[NSUserDefaults standardUserDefaults] synchronize];
 	}
-	
-    [self removeFromQueue:(SCHSyncComponent *)component includeDependants:NO];
 
-	[self kickQueue];
+    if (self.flushSaveMode == YES) {
+        if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] &&
+            [self.annotationSyncComponent haveProfiles] == YES) {
+            NSLog(@"Next annotation profile");
+            [self.annotationSyncComponent synchronize];
+        } else if ([component isKindOfClass:[SCHReadingStatsSyncComponent class]] &&
+                   [self.readingStatsSyncComponent haveProfiles] == YES) {
+            NSLog(@"Next reading statistics profile");
+            [self.readingStatsSyncComponent synchronize];
+        }
+    } else {
+        [self removeFromQueue:(SCHSyncComponent *)component includeDependants:NO];
+
+        [self kickQueue];
+    }
 }
 
 - (void)component:(SCHComponent *)component didFailWithError:(NSError *)error
 {
     SCHSyncComponent *syncComponent = (SCHSyncComponent *)component;
     
-    // push to the end of the queue to retry
-    if (syncComponent.failureCount <= kSCHSyncManagerMaximumFailureRetries) {
+    // push to the end of the queue to retry unless we are in flushSaveMode
+    if (self.flushSaveMode == NO &&
+        syncComponent.failureCount <= kSCHSyncManagerMaximumFailureRetries) {
         NSLog(@"%@ failed, moving to the end of the sync manager queue", [component class]);
         [self moveToEndOfQueue:syncComponent];
     } else {
@@ -921,16 +959,28 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             NSLog(@"%@ failed %d times, removing the current profile from the sync",
                   [syncComponent class],
                   kSCHSyncManagerMaximumFailureRetries);
+            if (self.flushSaveMode == YES) {
+                [self.annotationSyncComponent synchronize];
+            }
         } else if ([component isKindOfClass:[SCHReadingStatsSyncComponent class]] &&
                    [(SCHReadingStatsSyncComponent *)component nextProfile] == YES) {
             // try the next profile
             NSLog(@"%@ failed %d times, removing the current profile from the sync",
                   [syncComponent class],
                   kSCHSyncManagerMaximumFailureRetries);
+            if (self.flushSaveMode == YES) {
+                [self.readingStatsSyncComponent synchronize];
+            }
         } else if ([component isKindOfClass:[SCHListReadingStatisticsSyncComponent class]] &&
                    [(SCHListReadingStatisticsSyncComponent *)component nextProfile] == YES) {
             // try the next profile
             NSLog(@"%@ failed %d times, removing the current profile from the sync",
+                  [syncComponent class],
+                  kSCHSyncManagerMaximumFailureRetries);
+        } else if ([component isKindOfClass:[SCHRecommendationSyncComponent class]] &&
+                   [(SCHRecommendationSyncComponent *)component nextBookIdentifier] == YES) {
+            // try the next book identifier
+            NSLog(@"%@ failed %d times, removing the current book identifier from the sync",
                   [syncComponent class],
                   kSCHSyncManagerMaximumFailureRetries);
         } else {
@@ -1020,6 +1070,9 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     } else if ([component isKindOfClass:[SCHListReadingStatisticsSyncComponent class]] == YES &&
                [(SCHListReadingStatisticsSyncComponent *)component haveProfiles] == YES) {
         NSLog(@"Next list reading statistics profile");
+    } else if ([component isKindOfClass:[SCHRecommendationSyncComponent class]] == YES &&
+               [(SCHRecommendationSyncComponent *)component haveBookIdentifiers] == YES) {
+        NSLog(@"Next recommendation book identifier");
     } else if ([self.queue containsObject:component] == YES) {
 		NSLog(@"Removing %@ from the sync manager queue", [component class]);
         [self.queue removeObject:component];
@@ -1084,7 +1137,8 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             [self bookshelfSyncForced:NO forProfileItem:nil];
         }
         if (self.openBookSyncDelay.delayActive == YES) {
-            [self openBookSyncForced:NO booksAssignment:nil forProfile:nil requestReadingStats:NO];
+            [self openBookSyncForced:NO booksAssignment:nil forProfile:nil
+                 requestReadingStats:YES];
         }
         if (self.closeBookSyncDelay.delayActive == YES) {
             [self closeBookSyncForced:NO booksAssignment:nil forProfile:nil];

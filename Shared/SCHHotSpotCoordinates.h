@@ -11,6 +11,7 @@
 @interface SCHHotSpotCoordinates : NSObject
 
 @property (nonatomic, assign) CGRect rect;
+@property (nonatomic, assign, readonly) CGPathRef path;
 
 - (void)calculatePathWithText:(NSString *)text;
 - (BOOL)containsPoint:(CGPoint)point;

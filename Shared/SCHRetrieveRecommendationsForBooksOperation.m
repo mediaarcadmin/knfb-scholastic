@@ -48,8 +48,8 @@ NSString * const SCHRetrieveRecommendationsForBooksOperationBookIdentifiers = @"
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.isCancelled == NO) {
-                [(SCHRecommendationSyncComponent *)self.syncComponent retrieveRecommendationsForBooksResult:self.result 
-                                                                                                   userInfo:self.userInfo];
+                [(SCHRecommendationSyncComponent *)self.syncComponent retrieveRecommendationsForBooksCompletionResult:self.result
+                                                                                                             userInfo:self.userInfo];
             }
         });                
     }
@@ -95,8 +95,8 @@ NSString * const SCHRetrieveRecommendationsForBooksOperationBookIdentifiers = @"
 			break;
 		}
 
-        SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithISBN:makeNullNil([webItem objectForKey:kSCHRecommendationWebServiceISBN])
-                                                                          DRMQualifier:makeNullNil([webItem objectForKey:kSCHRecommendationWebServiceDRMQualifier])];
+        SCHBookIdentifier *webBookIdentifier = [[[SCHBookIdentifier alloc] initWithISBN:makeNullNil([webItem objectForKey:kSCHRecommendationWebServiceISBN])
+                                                                          DRMQualifier:makeNullNil([webItem objectForKey:kSCHRecommendationWebServiceDRMQualifier])] autorelease];
 
 		if (localItem == nil) {
 			while (webItem != nil) {
@@ -134,8 +134,6 @@ NSString * const SCHRetrieveRecommendationsForBooksOperationBookIdentifiers = @"
                     break;			
             }		
         }
-		
-        [webBookIdentifier release];
         
 		if (webItem == nil) {
 			webItem = [webEnumerator nextObject];
