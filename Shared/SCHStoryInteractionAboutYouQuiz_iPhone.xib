@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
-		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">12A269</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2549</string>
-		<string key="IBDocument.AppKitVersion">1187</string>
-		<string key="IBDocument.HIToolboxVersion">624.00</string>
+		<int key="IBDocument.SystemTarget">1536</int>
+		<string key="IBDocument.SystemVersion">12C54</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2843</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1498</string>
+			<string key="NS.object.0">1929</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -71,6 +71,7 @@
 							<double key="NSSize">18</double>
 							<int key="NSfFlags">16</int>
 						</object>
+						<double key="preferredMaxLayoutWidth">370</double>
 					</object>
 					<object class="IBUIButton" id="720560732">
 						<reference key="NSNextResponder" ref="204109347"/>
@@ -343,7 +344,6 @@
 						<string key="NSFrame">{{50, 15}, {370, 162}}</string>
 						<reference key="NSSuperview" ref="854115624"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -361,6 +361,7 @@
 						<int key="IBUITextAlignment">1</int>
 						<reference key="IBUIFontDescription" ref="343310302"/>
 						<reference key="IBUIFont" ref="191296624"/>
+						<double key="preferredMaxLayoutWidth">370</double>
 					</object>
 					<object class="IBUIButton" id="129082207">
 						<reference key="NSNextResponder" ref="854115624"/>
@@ -500,6 +501,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">questionButtonTapCancelled:</string>
+						<reference key="source" ref="377787671"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">8</int>
+					</object>
+					<int key="connectionID">69</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">questionButtonTapped:</string>
 						<reference key="source" ref="489278870"/>
 						<reference key="destination" ref="841351856"/>
@@ -515,6 +525,15 @@
 						<int key="IBEventType">1</int>
 					</object>
 					<int key="connectionID">61</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">questionButtonTapCancelled:</string>
+						<reference key="source" ref="489278870"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">8</int>
+					</object>
+					<int key="connectionID">68</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -536,6 +555,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">questionButtonTapCancelled:</string>
+						<reference key="source" ref="163701049"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">8</int>
+					</object>
+					<int key="connectionID">67</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">questionButtonTapped:</string>
 						<reference key="source" ref="13217982"/>
 						<reference key="destination" ref="841351856"/>
@@ -554,6 +582,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">questionButtonTapCancelled:</string>
+						<reference key="source" ref="13217982"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">8</int>
+					</object>
+					<int key="connectionID">66</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">questionButtonTouched:</string>
 						<reference key="source" ref="977206857"/>
 						<reference key="destination" ref="841351856"/>
@@ -569,6 +606,15 @@
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">36</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">questionButtonTapCancelled:</string>
+						<reference key="source" ref="977206857"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">8</int>
+					</object>
+					<int key="connectionID">70</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -831,7 +877,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">65</int>
+			<int key="maxID">70</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -988,7 +1034,7 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1296" key="NS.object.0"/>
+			<real value="1536" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
@@ -1009,6 +1055,6 @@
 				<string>{14, 40}</string>
 			</object>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">1498</string>
+		<string key="IBCocoaTouchPluginVersion">1929</string>
 	</data>
 </archive>
