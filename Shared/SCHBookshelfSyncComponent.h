@@ -24,7 +24,12 @@ extern NSString * const SCHBookshelfSyncComponentDidFailNotification;
 @property (atomic, assign) BOOL useIndividualRequests;
 @property (atomic, assign) NSInteger requestCount;
 @property (nonatomic, retain) NSMutableArray *didReceiveFailedResponseBooks;
+@property (atomic, retain) NSMutableSet *profilesForBooks;
 
+- (void)addProfile:(NSNumber *)profileID;
+- (void)removeProfile:(NSNumber *)profileID;
+- (BOOL)haveProfiles;
+- (BOOL)nextProfile;
 - (NSArray *)bookIdentifiersFromRequestInfo:(NSArray *)contentMetadataItems;
 - (SCHContentMetadataItem *)addContentMetadataItemFromMainThread:(NSDictionary *)webContentMetadataItem;
 - (void)syncContentMetadataItemsFromMainThread:(NSArray *)contentMetadataList;

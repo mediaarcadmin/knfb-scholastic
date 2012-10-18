@@ -13,6 +13,7 @@
 @interface SCHListContentMetadataOperation : SCHSyncComponentOperation
 
 @property (nonatomic, assign) BOOL useIndividualRequests;
+@property (nonatomic, retain) NSNumber *profileID;
 
 - (void)syncContentMetadataItems:(NSArray *)contentMetadataList 
             managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
