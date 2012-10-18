@@ -32,6 +32,7 @@
 @implementation SCHListContentMetadataOperation
 
 @synthesize useIndividualRequests;
+@synthesize profileID;
 
 - (void)main
 {
@@ -56,6 +57,10 @@
             if (triggerDidCompleteNotification == YES) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (self.isCancelled == NO) {
+                        if (self.profileID != nil) {
+                            [((SCHBookshelfSyncComponent *)self.syncComponent).profilesForBooks removeObject:self.profileID];
+                        }
+
                         [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceListContentMetadata 
                                                                result:nil 
                                                              userInfo:self.userInfo 
@@ -69,6 +74,10 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self.isCancelled == NO) {
+                    if (self.profileID != nil) {
+                        [((SCHBookshelfSyncComponent *)self.syncComponent).profilesForBooks removeObject:self.profileID];
+                    }
+
                     [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceListContentMetadata 
                                                            result:nil 
                                                          userInfo:self.userInfo 
@@ -148,7 +157,6 @@
 - (void)syncContentMetadataItems:(NSArray *)contentMetadataList 
             managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
 {		
-	NSMutableArray *deletePool = [NSMutableArray array];    
 	NSMutableArray *creationPool = [NSMutableArray array];
 	
 	NSArray *webProfiles = [contentMetadataList sortedArrayUsingDescriptors:
@@ -166,10 +174,6 @@
 	
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
-			while (localItem != nil) {
-				[deletePool addObject:localItem];
-				localItem = [localEnumerator nextObject];
-			} 
 			break;
 		}
 		
@@ -199,8 +203,7 @@
                     [creationPool addObject:webItem];
                     webItem = nil;
                     break;
-                case NSOrderedDescending:
-                    [deletePool addObject:localItem];                
+                case NSOrderedDescending:                
                     localItem = nil;
                     break;			
             }
@@ -215,33 +218,7 @@
 			localItem = [localEnumerator nextObject];
 		}		
 	}
-    
-    if (self.useIndividualRequests == NO && [deletePool count] > 0) {
-        NSMutableArray *deletedBookIdentifiers = [NSMutableArray array];
-        for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
-            SCHBookIdentifier *bookIdentifier = [contentMetadataItem bookIdentifier];
-            if (bookIdentifier != nil) {
-                [deletedBookIdentifiers addObject:bookIdentifier];            
-            }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.isCancelled == NO) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentWillDeleteNotification 
-                                                                    object:self 
-                                                                  userInfo:[NSDictionary dictionaryWithObject:deletedBookIdentifiers 
-                                                                                                       forKey:SCHBookshelfSyncComponentBookIdentifiers]];        
-            }
-        });
         
-        for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
-            [self deleteStatisticsForBook:[contentMetadataItem bookIdentifier]
-                     managedObjectContext:aManagedObjectContext];
-            [self deleteAnnotationsForBook:[contentMetadataItem bookIdentifier]
-                      managedObjectContext:aManagedObjectContext];
-            [aManagedObjectContext deleteObject:contentMetadataItem];
-        }
-    }
-    
 	for (NSDictionary *webItem in creationPool) {
 		[self addContentMetadataItem:webItem
                 managedObjectContext:aManagedObjectContext];
