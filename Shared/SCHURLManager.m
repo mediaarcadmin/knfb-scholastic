@@ -26,8 +26,8 @@ NSString * const kSCHURLManagerBatchComplete = @"URLManagerBatchComplete";
 NSString * const kSCHURLManagerError = @"URLManagerError";
 NSString * const kSCHURLManagerCleared = @"URLManagerCleared";
 static NSUInteger const kSCHURLManagerMaxConnections = 6;
-static NSString * const kURLManagerBookIdentifier = @"URLManagerBookIdentifier";
-static NSString * const kURLManagerVersion = @"URLManagerVersion";
+NSString * const kURLManagerBookIdentifier = @"URLManagerBookIdentifier";
+NSString * const kURLManagerVersion = @"URLManagerVersion";
 
 @interface SCHURLManager ()
 
@@ -118,7 +118,9 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
                                 version, kURLManagerVersion,
                                 nil];
 
-    [self performSelectorOnMainThread:@selector(requestURLForBookOnMainThread:) withObject:parameters waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(requestURLForBookOnMainThread:)
+                           withObject:parameters
+                        waitUntilDone:NO];
 }
 
 - (void)requestURLForBooks:(NSArray *)arrayOfBooks
@@ -134,7 +136,9 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
 {
     NSParameterAssert(isbn);
     
-    [self performSelectorOnMainThread:@selector(requestURLForRecommendationOnMainThread:) withObject:isbn waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(requestURLForRecommendationOnMainThread:)
+                           withObject:isbn
+                        waitUntilDone:NO];
 }
 
 - (void)requestURLForRecommendations:(NSArray *)arrayOfISBNs
@@ -207,7 +211,11 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
         ret.ContentIdentifierType = [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
         ret.DRMQualifier = bookIdentifier.DRMQualifier;
         ret.coverURLOnly = NO;
-        ret.Version = version;
+        if (version == nil) {
+            ret.Version = [NSNumber numberWithInteger:0];
+        } else {
+            ret.Version = version;
+        }
     }
     
     return ret;
@@ -363,6 +371,10 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
 	requestCount--;
 	
     NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
+    // if the response had no contentmetadataitems then use the requestInfo
+    if ([list count] < 1) {
+        list = [requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata];
+    }
     NSInteger listCount = [list count];
 
     if (listCount == 1) {
