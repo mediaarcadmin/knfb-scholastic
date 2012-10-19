@@ -131,6 +131,9 @@
 
 - (void)tappedAudioButton:(id)sender withViewAtIndex:(NSInteger)screenIndex
 {
+    // this can only be executed when this is a younger story interaction
+    // disabled by shouldShowAudioButtonForViewAtIndex:
+    
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         switch (screenIndex) {
             case 0:
@@ -167,8 +170,10 @@
     self.completedReadthrough = [self.delegate bookHasBeenReadThroughCompletely];
     
     if (self.completedReadthrough) {
-        [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForIntroduction]
+        if (!self.storyInteraction.olderStoryInteraction) {
+            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForIntroduction]
                         fromBundle:YES];
+        }
         
         self.bestScoreLabel.text = [NSString stringWithFormat:@"Best Score: %d/%d", bestScore, [[(SCHStoryInteractionReadingChallenge *)self.storyInteraction questions] count]];
         [self.introActionButton setTitle:@"Start" forState:UIControlStateNormal];
@@ -178,8 +183,10 @@
             self.bestScoreLabel.hidden = YES;
         }
     } else {
-        [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForNotCompletedBook]
+        if (!self.storyInteraction.olderStoryInteraction) {
+            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForNotCompletedBook]
                         fromBundle:YES];
+        }
         self.introTitleLabel.text = @"Finish reading this book before trying this reading challenge.";
         [self.introActionButton setTitle:@"OK" forState:UIControlStateNormal];
         self.introSubtitleLabel.hidden = YES;
@@ -203,7 +210,11 @@
 
 - (BOOL)shouldShowAudioButtonForViewAtIndex:(NSInteger)screenIndex
 {
-    return YES;
+    if (self.storyInteraction.olderStoryInteraction) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 - (void)setupQuestionView
@@ -269,24 +280,26 @@
 
 - (void)playSummaryAudio
 {
-    NSInteger maxScore = self.progressView.numberOfSteps;
-    if (score <= (int) ceil((float)maxScore/2.0f)) {
-        // 50% or less
-        if (!self.storyInteraction.olderStoryInteraction) {
-            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForLessThanFiftyPercent]
-                            fromBundle:YES];
-        }
-    } else if (score < ceil((float)maxScore)) {
-        // less than 100%
-        if (!self.storyInteraction.olderStoryInteraction) {
-            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForMoreThanFiftyPercent]
-                            fromBundle:YES];
-        }
-    } else {
-        // 100%
-        if (!self.storyInteraction.olderStoryInteraction) {
-            [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForAllCorrect]
-                            fromBundle:YES];
+    if (!self.storyInteraction.olderStoryInteraction) {
+        NSInteger maxScore = self.progressView.numberOfSteps;
+        if (score <= (int) ceil((float)maxScore/2.0f)) {
+            // 50% or less
+            if (!self.storyInteraction.olderStoryInteraction) {
+                [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForLessThanFiftyPercent]
+                                fromBundle:YES];
+            }
+        } else if (score < ceil((float)maxScore)) {
+            // less than 100%
+            if (!self.storyInteraction.olderStoryInteraction) {
+                [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForMoreThanFiftyPercent]
+                                fromBundle:YES];
+            }
+        } else {
+            // 100%
+            if (!self.storyInteraction.olderStoryInteraction) {
+                [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForAllCorrect]
+                                fromBundle:YES];
+            }
         }
     }
 }
@@ -389,30 +402,33 @@
 
 - (void)playQuestionAudioAndHighlightAnswers
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
-        
-        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+    if (!self.storyInteraction.olderStoryInteraction) {
     
-        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion]
-                        fromBundle:NO];
+        [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+            
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
         
-        NSInteger index = 0;
-        for (UIButton *button in self.answerButtons) {
-            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:index]
-                            fromBundle:NO
-                            startDelay:0.5
-                synchronizedStartBlock:^{
-                    [button setHighlighted:YES];
-                }
-                  synchronizedEndBlock:^{
-                      [button setHighlighted:NO];
-                      if (index + 1 == [self.answerButtons count]) {
-                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                      }
-                  }];
-            index++;
-        }
-    }];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion]
+                            fromBundle:NO];
+            
+            NSInteger index = 0;
+            for (UIButton *button in self.answerButtons) {
+                [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:index]
+                                fromBundle:NO
+                                startDelay:0.5
+                    synchronizedStartBlock:^{
+                        [button setHighlighted:YES];
+                    }
+                      synchronizedEndBlock:^{
+                          [button setHighlighted:NO];
+                          if (index + 1 == [self.answerButtons count]) {
+                              self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                          }
+                      }];
+                index++;
+            }
+        }];
+    }
 
 }
 
@@ -515,7 +531,7 @@
         }
         
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
-
+        
         [self.answersGiven addObject:[NSNumber numberWithInt:chosenAnswer]];
 
         if (chosenAnswer == [self currentQuestion].correctAnswer) {
