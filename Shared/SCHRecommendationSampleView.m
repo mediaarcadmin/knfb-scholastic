@@ -9,6 +9,7 @@
 #import "SCHRecommendationSampleView.h"
 #import "UILabel+ScholasticAdditions.h"
 #import "SCHAppRecommendationItem.h"
+#import "SCHAppStateManager.h"
 
 @interface SCHRecommendationSampleView ()
 
@@ -34,6 +35,10 @@
     self.boxView.layer.cornerRadius = 10;
     self.boxView.layer.borderWidth = 1;
     self.boxView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    
+    if (![[SCHAppStateManager sharedAppStateManager] isCOPPACompliant]) {
+        self.wishListButton.hidden = YES;
+    }
     
     [self.wishListButton setImage:[UIImage imageNamed:@"WishListButtonOff"] forState:UIControlStateNormal];
     [self.wishListButton setImage:[UIImage imageNamed:@"WishListButtonOn"] forState:UIControlStateSelected];

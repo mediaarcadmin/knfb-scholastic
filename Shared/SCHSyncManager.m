@@ -432,19 +432,29 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         
         if (userInfo != nil ) {
             for (NSNumber *profileID in [userInfo allKeys]) {
-                [self.annotationSyncComponent removeProfile:profileID withBooks:[userInfo objectForKey:profileID]];
+                [self.bookshelfSyncComponent removeProfile:profileID];
+                [self.annotationSyncComponent removeProfile:profileID
+                                                  withBooks:[userInfo objectForKey:profileID]];
                 [self.readingStatsSyncComponent removeProfile:profileID];
-                [self.listReadingStatisticsSyncComponent removeProfile:profileID withBooks:[userInfo objectForKey:profileID]];
+                [self.listReadingStatisticsSyncComponent removeProfile:profileID
+                                                             withBooks:[userInfo objectForKey:profileID]];
             }
-            
+
+            if ([self.bookshelfSyncComponent haveProfiles] == NO) {
+                [self removeFromQueue:self.bookshelfSyncComponent
+                    includeDependants:YES];
+            }
             if ([self.annotationSyncComponent haveProfiles] == NO) {
-                [self removeFromQueue:self.annotationSyncComponent includeDependants:YES];
+                [self removeFromQueue:self.annotationSyncComponent
+                    includeDependants:YES];
             }
             if ([self.readingStatsSyncComponent haveProfiles] == NO) {
-                [self removeFromQueue:self.readingStatsSyncComponent includeDependants:YES];
+                [self removeFromQueue:self.readingStatsSyncComponent
+                    includeDependants:YES];
             }
             if ([self.listReadingStatisticsSyncComponent haveProfiles] == NO) {
-                [self removeFromQueue:self.listReadingStatisticsSyncComponent includeDependants:YES];
+                [self removeFromQueue:self.listReadingStatisticsSyncComponent
+                    includeDependants:YES];
             }
             
         }
@@ -548,6 +558,8 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         
     if ([self shouldSync] == YES) {
         if (profileItem != nil) {
+            [self.bookshelfSyncComponent addProfile:profileItem.ID];
+
             [self.annotationSyncComponent addProfile:profileItem.ID
                                            withBooks:[self bookAnnotationsFromProfile:profileItem]];
         }
@@ -556,7 +568,9 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             NSLog(@"Scheduling Bookshelf Sync");
             [self.bookshelfSyncDelay syncStarted];
 
-            [self addToQueue:self.bookshelfSyncComponent];
+            if ([self.bookshelfSyncComponent haveProfiles] == YES) {
+                [self addToQueue:self.bookshelfSyncComponent];
+            }
 
             if ([self.annotationSyncComponent haveProfiles] == YES) {
                 [self addToQueue:self.annotationSyncComponent];
@@ -953,8 +967,14 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
         NSLog(@"%@ failed, moving to the end of the sync manager queue", [component class]);
         [self moveToEndOfQueue:syncComponent];
     } else {
-        if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] &&
-            [(SCHAnnotationSyncComponent *)component nextProfile] == YES) {
+        if ([component isKindOfClass:[SCHBookshelfSyncComponent class]] &&
+            [(SCHBookshelfSyncComponent *)component nextProfile] == YES) {
+            // try the next profile
+            NSLog(@"%@ failed %d times, removing the current profile from the sync",
+                  [syncComponent class],
+                  kSCHSyncManagerMaximumFailureRetries);
+        } else if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] &&
+                   [(SCHAnnotationSyncComponent *)component nextProfile] == YES) {
             // try the next profile
             NSLog(@"%@ failed %d times, removing the current profile from the sync",
                   [syncComponent class],
@@ -1061,7 +1081,10 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 
 - (void)removeFromQueue:(SCHSyncComponent *)component includeDependants:(BOOL)includeDependants
 {
-    if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES &&
+    if ([component isKindOfClass:[SCHBookshelfSyncComponent class]] == YES &&
+        [(SCHBookshelfSyncComponent *)component haveProfiles] == YES) {
+        NSLog(@"Next bookshelf profile");
+    } else if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES &&
         [(SCHAnnotationSyncComponent *)component haveProfiles] == YES) {
         NSLog(@"Next annotation profile");
     } else if ([component isKindOfClass:[SCHReadingStatsSyncComponent class]] == YES &&

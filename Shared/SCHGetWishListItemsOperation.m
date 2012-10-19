@@ -90,8 +90,9 @@
 {
 	NSMutableArray *deletePool = [NSMutableArray array];
 	NSMutableArray *creationPool = [NSMutableArray array];
-	
-	webWishListProfiles = [webWishListProfiles sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHWishListWebServiceProfileID ascending:YES]]];		
+
+    NSString  *keypath = [NSString stringWithFormat:@"%@.%@", kSCHWishListWebServiceProfile, kSCHWishListWebServiceProfileID];
+	webWishListProfiles = [webWishListProfiles sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:keypath ascending:YES]]];
 	NSArray *localWishListProfilesArray = [self localWishListProfiles];
     
 	NSEnumerator *webEnumerator = [webWishListProfiles objectEnumerator];			  

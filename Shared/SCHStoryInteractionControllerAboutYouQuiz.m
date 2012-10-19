@@ -302,12 +302,19 @@ typedef enum {
         // button spacing and height
         NSInteger activeButtonCount = [[[self currentQuestion] answers] count];
         CGFloat areaHeight = CGRectGetHeight(self.buttonContainerView.frame);
+        CGFloat maxButtonHeight = 110;
         
-        CGFloat buttonHeight = floorf(areaHeight * 0.9 / activeButtonCount);
+        CGFloat buttonHeight = floorf(areaHeight * 0.8 / activeButtonCount);
+
+        if (buttonHeight > maxButtonHeight) {
+            buttonHeight = maxButtonHeight;
+        }
+        
         CGFloat buttonSpacing = floorf((areaHeight - (activeButtonCount * buttonHeight)) / activeButtonCount);
-        CGFloat topBottomInset = floorf(buttonHeight * 0.2);
         
         buttonSpacing = floorf(((buttonSpacing * activeButtonCount) - buttonSpacing) / activeButtonCount);
+        
+        CGFloat topBottomInset = MAX(floorf((areaHeight - ((buttonHeight * activeButtonCount) + (buttonSpacing * (activeButtonCount - 1)))) / 2), 0);
         
         for (int i = 0; i < activeButtonCount; i++) {
             UIButton *currentButton = (UIButton *)[self.answerButtons objectAtIndex:i];

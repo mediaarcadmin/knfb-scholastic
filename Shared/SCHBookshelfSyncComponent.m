@@ -25,12 +25,14 @@ NSString * const SCHBookshelfSyncComponentBookReceivedNotification = @"SCHBooksh
 NSString * const SCHBookshelfSyncComponentDidCompleteNotification = @"SCHBookshelfSyncComponentDidCompleteNotification";
 NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSyncComponentDidFailNotification";
 
+static BOOL const SCHBookshelfSyncComponentIncludeURLs = YES;
+
 @interface SCHBookshelfSyncComponent ()
 
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
 
 - (BOOL)updateContentMetadataItems;
-- (NSArray *)localBooksAssignments;
+- (NSArray *)localBooksAssignmentsForProfile:(NSNumber *)profileID;
 
 @end
 
@@ -40,6 +42,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 @synthesize useIndividualRequests;
 @synthesize requestCount;
 @synthesize didReceiveFailedResponseBooks;
+@synthesize profilesForBooks;
 
 - (id)init
 {
@@ -48,9 +51,10 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
         libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
 		libreAccessWebService.delegate = self;
 
-		useIndividualRequests = YES;	
+		useIndividualRequests = YES;
 		requestCount = 0;
         didReceiveFailedResponseBooks = [[NSMutableArray alloc] init];
+        profilesForBooks = [[NSMutableSet set] retain];        
 	}
 	return(self);
 }
@@ -61,8 +65,53 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	[libreAccessWebService release], libreAccessWebService = nil;
 
     [didReceiveFailedResponseBooks release], didReceiveFailedResponseBooks = nil;
+    [profilesForBooks release], profilesForBooks = nil;
     
     [super dealloc];
+}
+
+- (void)addProfile:(NSNumber *)profileID
+{
+	if (profileID != nil) {
+        if ([self.profilesForBooks containsObject:profileID] == NO) {
+            [self.profilesForBooks addObject:profileID];
+        }
+	}
+}
+
+- (void)removeProfile:(NSNumber *)profileID
+{
+	if (self.isSynchronizing == NO && profileID != nil) {
+        [self.profilesForBooks removeObject:profileID];
+    }
+}
+
+- (BOOL)haveProfiles
+{
+	return([self.profilesForBooks count ] > 0);
+}
+
+- (NSNumber *)currentProfile
+{
+    NSNumber *ret = nil;
+
+    if ([self haveProfiles] == YES) {
+        ret = [[[self.profilesForBooks allObjects] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
+    }
+
+    return ret;
+}
+
+- (BOOL)nextProfile
+{
+    NSNumber *currentProfile = [self currentProfile];
+
+    if (currentProfile != nil) {
+        [self.profilesForBooks removeObject:currentProfile];
+    }
+    [self clearFailures];
+
+    return [self haveProfiles];
 }
 
 - (BOOL)synchronize
@@ -92,6 +141,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 {
     self.requestCount = 0;
     [self.didReceiveFailedResponseBooks removeAllObjects];
+    [self.profilesForBooks removeAllObjects];
 }
 
 - (void)clearCoreData
@@ -116,6 +166,7 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
                                                                                                             userInfo:userInfo] autorelease];
         [operation setThreadPriority:SCHSyncComponentThreadLowPriority];
         operation.useIndividualRequests = self.useIndividualRequests;
+        operation.profileID = [self currentProfile];
         [self.backgroundProcessingQueue addOperation:operation];
     }
 }
@@ -178,25 +229,13 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 
 	NSMutableArray *results = [NSMutableArray array];
 
-    // only update books on a bookshelf that has been accessed and we don't
-    // already have unless there is a version change
-    [[self localBooksAssignments] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    // only update books we don't already have unless there is a version change
+    NSNumber *profileID = [self currentProfile];
+    [[self localBooksAssignmentsForProfile:profileID] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         SCHBooksAssignment *booksAssignment = obj;
-        NSSet *contentProfileItems = [obj profileList];
         NSSet *contentMetadataItems = (NSSet *)[obj ContentMetadataItem];
-        BOOL onAbookShelf = NO;
 
-        for (SCHContentProfileItem *contentProfileItem in contentProfileItems) {
-            for (SCHProfileItem *profileItem in [contentProfileItem ProfileItem]) {
-                if ([profileItem AppProfile].lastEnteredBookshelfDate != nil) {
-                    onAbookShelf = YES;
-                    break;
-                }
-            }
-        }
-
-        if (onAbookShelf == YES &&
-            ([contentMetadataItems count] < 1 ||
+        if (([contentMetadataItems count] < 1 ||
             [[[contentMetadataItems anyObject] Version] integerValue] != [booksAssignment.version integerValue])) {
             [results addObject:obj];
         }
@@ -208,7 +247,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 		if (self.useIndividualRequests == YES) {
 			for (NSDictionary *ISBN in results) {				
 				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] 
-                                                                           includeURLs:NO coverURLOnly:NO];
+                                                                           includeURLs:SCHBookshelfSyncComponentIncludeURLs
+                                                                          coverURLOnly:NO];
 				if (self.isSynchronizing == NO) {
 					[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
                         if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
@@ -229,7 +269,8 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 			}
 		} else {			
 			self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results 
-                                                                       includeURLs:NO coverURLOnly:NO];
+                                                                       includeURLs:SCHBookshelfSyncComponentIncludeURLs
+                                                                      coverURLOnly:NO];
 			if (self.isSynchronizing == NO) {
 				[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
                     if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
@@ -248,7 +289,12 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 			}
 		}
 	} else {
-        [self completeWithSuccessMethod:nil 
+        // remove the profile if there are no books to request
+        if (profileID != nil) {
+            [self.profilesForBooks removeObject:profileID];
+        }
+
+        [self completeWithSuccessMethod:kSCHLibreAccessWebServiceListContentMetadata
                                  result:nil 
                                userInfo:nil 
                        notificationName:SCHBookshelfSyncComponentDidCompleteNotification 
@@ -260,26 +306,33 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 	return(ret);	
 }
 
-- (NSArray *)localBooksAssignments
+- (NSArray *)localBooksAssignmentsForProfile:(NSNumber *)profileID
 {
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSError *error = nil;
-	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment inManagedObjectContext:self.managedObjectContext]];
-    // we only want books that are on a bookshelf
-	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"profileList.@count > 0"]];    
-	[fetchRequest setSortDescriptors:[NSArray arrayWithObjects:
-                                      [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
-                                      [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],
-                                      nil]];
-	
-	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-	[fetchRequest release], fetchRequest = nil;
-    if (ret == nil) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-	
-	return(ret);
+    NSArray *ret = [NSArray array];
+
+    if (profileID != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSError *error = nil;
+
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHBooksAssignment inManagedObjectContext:self.managedObjectContext]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ANY profileList.ProfileID == %@", profileID]];
+        [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:
+                                          [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
+                                          [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],
+                                          nil]];
+
+        NSArray *bookAssignments = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                            error:&error];
+        [fetchRequest release], fetchRequest = nil;
+        
+        if (bookAssignments == nil) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        } else {
+            ret = bookAssignments;
+        }
+	}
+    
+	return ret;
 }
 
 - (void)syncContentMetadataItemsFromMainThread:(NSArray *)contentMetadataList
