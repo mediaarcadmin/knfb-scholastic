@@ -15,6 +15,7 @@
 // Constants
 extern NSString * const kSCHURLManagerSuccess;
 extern NSString * const kSCHURLManagerFailure;
+extern NSString * const kSCHURLManagerBatchComplete;
 extern NSString * const kSCHURLManagerCleared;
 
 @interface SCHURLManager : NSObject <BITAPIProxyDelegate>
@@ -25,7 +26,10 @@ extern NSString * const kSCHURLManagerCleared;
 
 - (void)requestURLForBook:(SCHBookIdentifier *)bookIdentifier
                   version:(NSNumber *)version;
+// book = dictionary of bookIdentifiers and versions
+- (void)requestURLForBooks:(NSArray *)arrayOfBooks;
 - (void)requestURLForRecommendation:(NSString *)isbn;
+- (void)requestURLForRecommendations:(NSArray *)arrayOfISBNs;
 - (void)clear;
 
 @end

@@ -17,10 +17,12 @@
 #import "SCHAppRecommendationItem.h"
 #import "SCHContentItem.h"
 #import "SCHISBNItemObject.h"
+#import "SCHMakeNullNil.h"
 
 // Constants
 NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
 NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
+NSString * const kSCHURLManagerBatchComplete = @"URLManagerBatchComplete";
 NSString * const kSCHURLManagerCleared = @"URLManagerCleared";
 static NSUInteger const kSCHURLManagerMaxConnections = 6;
 static NSString * const kURLManagerBookIdentifier = @"URLManagerBookIdentifier";
@@ -29,9 +31,16 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
 @interface SCHURLManager ()
 
 - (void)requestURLForBookOnMainThread:(NSDictionary *)parameters;
+- (void)requestURLForBooksOnMainThread:(NSDictionary *)arrayOfBooks;
+- (SCHISBNItemObject *)ISBNItemObjectForBook:(SCHBookIdentifier *)bookIdentifier
+                                     version:(NSNumber *)version;
 - (void)requestURLForRecommendationOnMainThread:(NSString *)isbn;
+- (void)requestURLForRecommendationsOnMainThread:(NSArray *)arrayOfISBNs;
+- (SCHISBNItemObject *)ISBNItemObjectForRecommendation:(NSString *)isbn;
 - (void)clearOnMainThread;
 - (void)shakeTable;
+- (NSDictionary *)processBatchResultOfContentMetadataItems:(NSArray *)contentMetadataItems;
+- (BOOL)isValidContentMetadataItemDictionary:(NSDictionary *)contentMetadataItem;
 - (void)endBackgroundTask;
 
 @property (retain, nonatomic) NSMutableSet *table;
@@ -110,11 +119,31 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
     [self performSelectorOnMainThread:@selector(requestURLForBookOnMainThread:) withObject:parameters waitUntilDone:NO];
 }
 
+- (void)requestURLForBooks:(NSArray *)arrayOfBooks
+{
+    NSParameterAssert(arrayOfBooks);
+
+    [self performSelectorOnMainThread:@selector(requestURLForBooksOnMainThread:)
+                           withObject:arrayOfBooks
+                        waitUntilDone:NO];
+}
+
 - (void)requestURLForRecommendation:(NSString *)isbn
 {
+    NSParameterAssert(isbn);
+    
     [self performSelectorOnMainThread:@selector(requestURLForRecommendationOnMainThread:) withObject:isbn waitUntilDone:NO];
 }
-	
+
+- (void)requestURLForRecommendations:(NSArray *)arrayOfISBNs
+{
+    NSParameterAssert(arrayOfISBNs);
+
+    [self performSelectorOnMainThread:@selector(requestURLForRecommendationsOnMainThread:)
+                           withObject:arrayOfISBNs
+                        waitUntilDone:NO];
+}
+
 - (void)clear
 {
     [self performSelectorOnMainThread:@selector(clearOnMainThread) withObject:nil waitUntilDone:NO];    
@@ -130,19 +159,56 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
     NSNumber *version = [parameters objectForKey:kURLManagerVersion];
 
 	if (bookIdentifier != nil) {
-        SCHISBNItemObject *isbnItem = [[SCHISBNItemObject alloc] init];
-        isbnItem.ContentIdentifier = bookIdentifier.isbn;
-        isbnItem.ContentIdentifierType = [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
-        isbnItem.DRMQualifier = bookIdentifier.DRMQualifier;
-        isbnItem.coverURLOnly = NO;
-        isbnItem.Version = version;
-        
-        [self.table addObject:isbnItem];
-        
-        [isbnItem release];
-        
+        SCHISBNItemObject *isbnItem = [self ISBNItemObjectForBook:bookIdentifier
+                                                          version:version];
+        if (isbnItem != nil) {
+            [self.table addObject:[NSArray arrayWithObject:isbnItem]];
+        }
 		[self shakeTable];
 	}
+}
+
+- (void)requestURLForBooksOnMainThread:(NSDictionary *)arrayOfBooks
+{
+    NSAssert([NSThread isMainThread] == YES, @"requestURLForBooksOnMainThread MUST be executed on the main thread");
+
+    if ([arrayOfBooks count] > 0) {
+        NSMutableArray *arrayOfISBNItems = [NSMutableArray arrayWithCapacity:[arrayOfBooks count]];
+
+        for (NSDictionary *book in arrayOfBooks) {
+            SCHBookIdentifier *bookIdentifier = [book objectForKey:kURLManagerBookIdentifier];
+            NSNumber *version = [book objectForKey:kURLManagerVersion];
+
+            if (bookIdentifier != nil) {
+                SCHISBNItemObject *isbnItem = [self ISBNItemObjectForBook:bookIdentifier
+                                                                  version:version];
+
+                if (isbnItem != nil) {
+                    [arrayOfISBNItems addObject:isbnItem];
+                }
+            }
+        }
+        [self.table addObject:[NSArray arrayWithArray:arrayOfISBNItems]];
+        [self shakeTable];
+    }
+}
+
+- (SCHISBNItemObject *)ISBNItemObjectForBook:(SCHBookIdentifier *)bookIdentifier
+                                     version:(NSNumber *)version
+{
+    SCHISBNItemObject *ret = nil;
+
+    if (bookIdentifier != nil) {
+        ret = [[[SCHISBNItemObject alloc] init] autorelease];
+        
+        ret.ContentIdentifier = bookIdentifier.isbn;
+        ret.ContentIdentifierType = [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
+        ret.DRMQualifier = bookIdentifier.DRMQualifier;
+        ret.coverURLOnly = NO;
+        ret.Version = version;
+    }
+    
+    return ret;
 }
 
 - (void)requestURLForRecommendationOnMainThread:(NSString *)isbn
@@ -150,19 +216,50 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
     NSAssert([NSThread isMainThread] == YES, @"SCHURLManager:requestURLForRecommendationOnMainThread MUST be executed on the main thread");
     
     if (isbn != nil) {
-        SCHISBNItemObject *isbnItem = [[SCHISBNItemObject alloc] init];
-        isbnItem.ContentIdentifier = isbn;
-        isbnItem.ContentIdentifierType = [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
-        isbnItem.DRMQualifier = [NSNumber numberWithInt:kSCHDRMQualifiersFullWithDRM];
-        isbnItem.coverURLOnly = YES;
-        isbnItem.Version = [NSNumber numberWithInteger:0];
+        SCHISBNItemObject *isbnItem = [self ISBNItemObjectForRecommendation:isbn];
         
-        [self.table addObject:isbnItem];
-        
-        [isbnItem release];
+        if (isbnItem != nil) {
+            [self.table addObject:[NSArray arrayWithObject:isbnItem]];
+        }
         
 		[self shakeTable];
 	}
+}
+
+- (void)requestURLForRecommendationsOnMainThread:(NSArray *)arrayOfISBNs
+{
+    NSAssert([NSThread isMainThread] == YES, @"requestURLForRecommendationsOnMainThread MUST be executed on the main thread");
+
+    if ([arrayOfISBNs count] > 0) {
+        NSMutableArray *arrayOfISBNItems = [NSMutableArray arrayWithCapacity:[arrayOfISBNs count]];
+
+        for (NSString *isbn in arrayOfISBNs) {
+            SCHISBNItemObject *isbnItem = [self ISBNItemObjectForRecommendation:isbn];
+
+            if (isbnItem != nil) {
+                [self.table addObject:[NSArray arrayWithObject:isbnItem]];
+            }
+        }
+        [self.table addObject:[NSArray arrayWithObject:arrayOfISBNItems]];
+		[self shakeTable];
+	}
+}
+
+- (SCHISBNItemObject *)ISBNItemObjectForRecommendation:(NSString *)isbn
+{
+    SCHISBNItemObject *ret = nil;
+
+    if (isbn != nil) {
+        ret = [[[SCHISBNItemObject alloc] init] autorelease];
+        
+        ret.ContentIdentifier = isbn;
+        ret.ContentIdentifierType = [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
+        ret.DRMQualifier = [NSNumber numberWithInt:kSCHDRMQualifiersFullWithDRM];
+        ret.coverURLOnly = YES;
+        ret.Version = [NSNumber numberWithInteger:0];
+    }
+
+    return ret;
 }
 
 - (void)clearOnMainThread
@@ -175,51 +272,58 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
 }
 
 - (void)shakeTable
-{	
-	if ([table count] > 0) {
+{
+	if ([self.table count] > 0) {
 		NSMutableSet *removeFromTable = [NSMutableSet set];
 		
         if (self.backgroundTaskIdentifier == UIBackgroundTaskInvalid) {
-            self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-                if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) { 
-                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];            
+            self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+                if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
                     self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
                 }
             }];
         }
-		
-		for (id<SCHISBNItem> isbnItem in table) {
-            if ([isbnItem conformsToProtocol:@protocol(SCHISBNItem)] == YES) {
-                // limit the amount of requests
-                if (requestCount > kSCHURLManagerMaxConnections) {
-                    NSLog(@"URL Manager connections maxed out, please wait...");
-                    continue;
-                } else {
-                    NSLog(@"URL Manager active connections %d", requestCount);
-                }
-                
-                if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:isbnItem] 
-                                                        includeURLs:YES coverURLOnly:[isbnItem coverURLOnly]] == YES) {
-                    NSLog(@"Requesting URLs for %@", [isbnItem ContentIdentifier]);
-                    
-                    requestCount++;
-                    [removeFromTable addObject:isbnItem];
-                } else {
-                    
-                    [self endBackgroundTask];
-                    
-                    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-                        if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                            [self shakeTable];
-                        }
-                    } failureBlock:nil];							
+
+		for (NSArray *isbnItems in self.table) {
+            // limit the amount of requests
+            if (requestCount > kSCHURLManagerMaxConnections) {
+                NSLog(@"URL Manager connections maxed out, please wait...");
+                continue;
+            } else {
+                NSLog(@"URL Manager active connections %d", requestCount);
+            }
+
+            // find out if any of the items require more than just the cover URL
+            BOOL coverURLOnly = YES;
+            for (SCHISBNItemObject *item in isbnItems) {
+                if (item.coverURLOnly == NO) {
+                    coverURLOnly = NO;
                     break;
                 }
             }
-		}
-		
-		[table minusSet:removeFromTable];	
-	}
+
+            if ([self.libreAccessWebService listContentMetadata:isbnItems
+                                                    includeURLs:YES coverURLOnly:coverURLOnly] == YES) {
+                NSLog(@"Requesting URLs for %@", isbnItems);
+
+                requestCount++;
+                [removeFromTable addObject:isbnItems];
+            } else {
+
+                [self endBackgroundTask];
+
+                [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                    if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                        [self shakeTable];
+                    }
+                } failureBlock:nil];
+                break;
+            }
+        }
+
+        [self.table minusSet:removeFromTable];
+    }
 }
 
 #pragma mark - BIT API Proxy Delegate methods
@@ -231,11 +335,16 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
 	
 	if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
-		
-		if ([list count] > 0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
+        NSInteger listCount = [list count];
+        
+		if (listCount == 1) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess
 																object:self userInfo:[list objectAtIndex:0]];
-		}		
+		} else if (listCount > 1) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerBatchComplete
+																object:self
+                                                              userInfo:[self processBatchResultOfContentMetadataItems:list]];
+        }
 	}
 	
     [self endBackgroundTask];
@@ -250,21 +359,71 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
 	requestCount--;
 	
     NSArray *list = [requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata];
-    
-    if ([list count] > 0) {
+    NSInteger listCount = [list count];
+
+    if (listCount == 1) {
         SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease];
         NSLog(@"Failed URLs for %@", bookIdentifier);
 
         if (bookIdentifier != nil) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
                                                                 object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:bookIdentifier, bookIdentifier.isbn, [NSNumber numberWithInt:[error code]], nil]                                                                                                  forKeys:[NSArray arrayWithObjects:kSCHBookIdentifierBookIdentifier, kSCHAppRecommendationItemIsbn, kSCHAppRecommendationItemErrorCode, nil]]];	
+                                                              userInfo:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:bookIdentifier, bookIdentifier.isbn, [NSNumber numberWithInt:[error code]], nil]                                                                                                  forKeys:[NSArray arrayWithObjects:kSCHBookIdentifierBookIdentifier, kSCHAppRecommendationItemIsbn, kSCHAppRecommendationItemErrorCode, nil]]];
+        }
+    } else if (listCount > 1) {
+        SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease];
+        NSLog(@"Failed URLs for %@", bookIdentifier);
+
+        if (bookIdentifier != nil) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerBatchComplete
+                                                                object:self
+                                                              userInfo:[self processBatchResultOfContentMetadataItems:list]];
+
+            // add error code
         }
     }
     
     [self endBackgroundTask];
 	
     [self shakeTable];
+}
+
+- (NSDictionary *)processBatchResultOfContentMetadataItems:(NSArray *)contentMetadataItems
+{
+    NSMutableDictionary *ret = [NSMutableDictionary dictionary];
+    NSMutableArray *successList = [NSMutableArray array];
+    NSMutableArray *failureList = [NSMutableArray array];    
+
+    for (NSDictionary *contentMetadataItem in contentMetadataItems) {
+        if ([self isValidContentMetadataItemDictionary:contentMetadataItem] == YES) {
+            [successList addObject:contentMetadataItem];
+        } else {
+            SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:contentMetadataItem] autorelease];
+            NSLog(@"Failed URLs for %@", bookIdentifier);
+
+            [failureList addObject:bookIdentifier];
+        }
+    }
+
+    [ret setObject:successList forKey:kSCHURLManagerSuccess];
+    [ret setObject:failureList forKey:kSCHURLManagerFailure];
+
+    return [NSDictionary dictionaryWithDictionary:ret];
+}
+
+- (BOOL)isValidContentMetadataItemDictionary:(NSDictionary *)contentMetadataItem
+{
+    BOOL ret = NO;
+
+    if (contentMetadataItem != nil) {
+        NSString *contentIdentifier = makeNullNil([contentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+        
+        if ([[contentIdentifier stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 0) {
+            ret = YES;
+        }
+    }
+
+    return ret;
 }
 
 - (void)endBackgroundTask
