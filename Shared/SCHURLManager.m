@@ -25,9 +25,9 @@ NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 NSString * const kSCHURLManagerBatchComplete = @"URLManagerBatchComplete";
 NSString * const kSCHURLManagerError = @"URLManagerError";
 NSString * const kSCHURLManagerCleared = @"URLManagerCleared";
+NSString * const kURLManagerBookIdentifier = @"URLManagerBookIdentifier";
+NSString * const kURLManagerVersion = @"URLManagerVersion";
 static NSUInteger const kSCHURLManagerMaxConnections = 6;
-static NSString * const kURLManagerBookIdentifier = @"URLManagerBookIdentifier";
-static NSString * const kURLManagerVersion = @"URLManagerVersion";
 
 @interface SCHURLManager ()
 
