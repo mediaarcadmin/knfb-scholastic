@@ -39,6 +39,8 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
 - (NSData *)lastTwoBytes;
 - (NSData *)jpegEOF;
 - (void)cancelOperationAndSuboperations;
+- (void)setDownloadFailedState;
+- (void)resetDownloadFailedState;
 
 @end
 
@@ -101,7 +103,7 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
             [self performWithBookAndSave:^(SCHAppBook *book) {  
                 book.ForceProcess = [NSNumber numberWithBool:YES];
             }];
-            [self setCoverURLExpiredState];
+            [self setCoverURLExpiredStateForBookWithIdentifier:self.identifier];
             [self setIsProcessing:NO];                                
             [self endOperation];
             return;            
@@ -155,7 +157,7 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
         }];
 		
         if (bookCoverURLIsValid == NO) {
-            [self setCoverURLExpiredState];
+            [self setCoverURLExpiredStateForBookWithIdentifier:self.identifier];
             [self setIsProcessing:NO];                                
             [self endOperation];
             return;            
@@ -587,6 +589,40 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
 - (BOOL)isExecuting
 {
     return self.downloadOperation != nil && [self.downloadOperation isExecuting];
+}
+
+// Used to track if a download fails. We repeat the download request 3 times and
+// then set an error state if it is still erroring. The state is stored in the
+// app book entity.
+
+
+- (void)setDownloadFailedState
+{
+    [self performWithBookAndSave:^(SCHAppBook *book) {
+        NSInteger newDownloadFailedCount = [book.downloadFailedCount integerValue] + 1;
+        
+        NSLog(@"Warning: download failed for %@![%i]", book.ContentIdentifier, newDownloadFailedCount);
+        
+        if (newDownloadFailedCount >= 3) {
+            book.State = [NSNumber numberWithInt:SCHBookProcessingStateDownloadFailed];
+            book.downloadFailedCount = [NSNumber numberWithInteger:0];
+            
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",
+                                      nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
+        } else {
+            // the current download operation will go to the end of the queue and repeat
+            book.downloadFailedCount = [NSNumber numberWithInteger:newDownloadFailedCount];
+        }
+    }];
+}
+
+- (void)resetDownloadFailedState
+{
+    [self performWithBookAndSave:^(SCHAppBook *book) {
+        book.downloadFailedCount = [NSNumber numberWithInteger:0];
+    }];
 }
 
 @end

@@ -29,23 +29,27 @@
 // thread-safe access to book object; the block is executed synchronously so may make
 // changes to any __block storage locals
 - (void)performWithBook:(void (^)(SCHAppBook *book))block;
+- (void)performWithBook:(void (^)(SCHAppBook *))block forBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier;
 
 // thread-safe access to book object followed by save; the block is executed asynchronously
 - (void)performWithBookAndSave:(void (^)(SCHAppBook *))block;
+- (void)performWithBookAndSave:(void (^)(SCHAppBook *))block forBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier;
 
 // thread-safe update of book state
 - (void)setProcessingState:(SCHBookCurrentProcessingState)state;
+- (void)setProcessingState:(SCHBookCurrentProcessingState)state forBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier;
 
 // thread-safe access to book state
 - (SCHBookCurrentProcessingState)processingState;
+- (SCHBookCurrentProcessingState)processingStateForBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier;
 
 // thread-safe setter for book Processing flag
 - (void)setIsProcessing:(BOOL)isProcessing;
-- (void)setNotCancelledCompletionBlock:(void (^)(void))block;
+- (void)setIsProcessing:(BOOL)isProcessing forBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier;
 
-- (void)setCoverURLExpiredState;
-- (void)resetCoverURLExpiredState;
-- (void)setDownloadFailedState;
-- (void)resetDownloadFailedState;
+- (void)setCoverURLExpiredStateForBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier;
+- (void)resetCoverURLExpiredStateForBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier;
+
+- (void)setNotCancelledCompletionBlock:(void (^)(void))block;
 
 @end

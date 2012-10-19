@@ -138,7 +138,7 @@
             
             // check here for invalidity
             if (!urlsValid) {
-                [self setCoverURLExpiredState];
+                [self setCoverURLExpiredStateForBookWithIdentifier:self.identifier];
             }
         }
         

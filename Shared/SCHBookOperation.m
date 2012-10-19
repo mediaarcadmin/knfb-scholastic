@@ -111,14 +111,20 @@
 
 #pragma mark - thread safe access to book object
 
+
 - (void)performWithBook:(void (^)(SCHAppBook *))block
 {
-    if (self.isCancelled || !self.identifier || !block) {
+    [self performWithBook:block forBookWithIdentifier:self.identifier];
+}
+
+- (void)performWithBook:(void (^)(SCHAppBook *))block forBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier
+{
+    if (self.isCancelled || !bookIdentifier || !block) {
         return;
     }
     
     dispatch_block_t accessBlock = ^{
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:self.mainThreadManagedObjectContext];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:bookIdentifier inManagedObjectContext:self.mainThreadManagedObjectContext];
         block(book);
     };
     
@@ -137,13 +143,18 @@
 
 - (void)performWithBookAndSave:(void (^)(SCHAppBook *))block
 {
-    if (self.isCancelled || !self.identifier) {
+    [self performWithBook:block forBookWithIdentifier:self.identifier];
+}
+
+- (void)performWithBookAndSave:(void (^)(SCHAppBook *))block forBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier
+{
+    if (self.isCancelled || !bookIdentifier) {
         return;
     }
     
     dispatch_block_t accessBlock = ^{
         if (block) {
-            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:self.mainThreadManagedObjectContext];
+            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:bookIdentifier inManagedObjectContext:self.mainThreadManagedObjectContext];
             block(book);
         }
         NSError *error = nil;
@@ -161,11 +172,16 @@
 
 - (void)setProcessingState:(SCHBookCurrentProcessingState)state
 {
+    [self setProcessingState:state forBookWithIdentifier:self.identifier];
+}
+
+- (void)setProcessingState:(SCHBookCurrentProcessingState)state forBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier
+{
     [self performWithBookAndSave:^(SCHAppBook *book) {
         book.State = [NSNumber numberWithInt: (int) state];
 
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",
+                                  (bookIdentifier == nil ? (id)[NSNull null] : bookIdentifier), @"bookIdentifier",
                                   nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
     }];
@@ -173,17 +189,27 @@
 
 - (SCHBookCurrentProcessingState)processingState
 {
+    return [self processingStateForBookWithIdentifier:self.identifier];
+}
+
+- (SCHBookCurrentProcessingState)processingStateForBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier
+{
     __block SCHBookCurrentProcessingState state = SCHBookProcessingStateError;
     [self performWithBook:^(SCHAppBook *book) {
         state = [book processingState];
-    }];
+    } forBookWithIdentifier:bookIdentifier];
     return state;
 }
 
 - (void)setIsProcessing:(BOOL)isProcessing
 {
+    [self setIsProcessing:isProcessing forBookWithIdentifier:self.identifier];
+}
+
+- (void)setIsProcessing:(BOOL)isProcessing forBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier
+{
     // Doesn't need to be called on main thread as processing manager synchronises this
-    [[SCHProcessingManager sharedProcessingManager] setProcessing:isProcessing forIdentifier:[self identifier]];
+    [[SCHProcessingManager sharedProcessingManager] setProcessing:isProcessing forIdentifier:bookIdentifier];
 }
 
 - (void)setNotCancelledCompletionBlock:(void (^)(void))block
@@ -201,7 +227,8 @@
 // set an error state if it is still expired. The state is stored in the app 
 // book entity and is shared between the url request and download book 
 // operations to avoid any endless url request scenarios between them.
-- (void)setCoverURLExpiredState
+
+- (void)setCoverURLExpiredStateForBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier
 {
     [self performWithBookAndSave:^(SCHAppBook *book) {
         NSInteger newURLExpiredCount = [book.urlExpiredCount integerValue] + 1;
@@ -215,48 +242,16 @@
             book.State = [NSNumber numberWithInt:SCHBookProcessingStateNoURLs];
             book.urlExpiredCount = [NSNumber numberWithInteger:newURLExpiredCount];
         }
-    }];
+    } forBookWithIdentifier:bookIdentifier];
 }
 
 // NOTE: SCHBookURLRequestOperation.m performs the same operation in it's own
 // performWithRecommendationAndSave
-- (void)resetCoverURLExpiredState
+- (void)resetCoverURLExpiredStateForBookWithIdentifier:(SCHBookIdentifier *)bookIdentifier
 {
     [self performWithBookAndSave:^(SCHAppBook *book) {
             book.urlExpiredCount = [NSNumber numberWithInteger:0];
-    }];
-}
-
-// Used to track if a download fails. We repeat the download request 3 times and 
-// then set an error state if it is still erroring. The state is stored in the 
-// app book entity.
-- (void)setDownloadFailedState
-{
-    [self performWithBookAndSave:^(SCHAppBook *book) {
-        NSInteger newDownloadFailedCount = [book.downloadFailedCount integerValue] + 1;
-        
-        NSLog(@"Warning: download failed for %@![%i]", book.ContentIdentifier, newDownloadFailedCount);
-        
-        if (newDownloadFailedCount >= 3) {
-            book.State = [NSNumber numberWithInt:SCHBookProcessingStateDownloadFailed];            
-            book.downloadFailedCount = [NSNumber numberWithInteger:0];
-            
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      (self.identifier == nil ? (id)[NSNull null] : self.identifier), @"bookIdentifier",
-                                      nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
-        } else {
-            // the current download operation will go to the end of the queue and repeat
-            book.downloadFailedCount = [NSNumber numberWithInteger:newDownloadFailedCount];
-        }
-    }];
-}
-
-- (void)resetDownloadFailedState
-{
-    [self performWithBookAndSave:^(SCHAppBook *book) {
-        book.downloadFailedCount = [NSNumber numberWithInteger:0];
-    }];
+    } forBookWithIdentifier:bookIdentifier];
 }
 
 @end
