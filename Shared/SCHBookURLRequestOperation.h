@@ -7,12 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCHBookOperation.h"
+#import "SCHBookBatchOperation.h"
 
-@interface SCHBookURLRequestOperation : SCHBookOperation {
+@interface SCHBookURLRequestOperation : SCHBookBatchOperation {
 	
 }
-
-@property (nonatomic, retain) NSArray *identifiers;
 
 @end

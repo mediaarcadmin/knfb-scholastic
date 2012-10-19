@@ -15,25 +15,6 @@
 
 @implementation SCHBookURLRequestOperation
 
-@synthesize identifiers;
-
-#pragma mark - Object Lifecycle
-
-- (void)dealloc 
-{
-    [identifiers release], identifiers = nil;
-	[super dealloc];
-}
-
-- (void)start
-{
-	if ((self.identifier || [self.identifiers count]) && ![self isCancelled]) {
-		[self beginOperation];
-	} else {
-        [self endOperation];
-    }
-}
-
 #pragma mark - Book Operation Methods
 
 - (void)beginOperation
@@ -52,45 +33,50 @@
     
     [self didChangeValueForKey:@"isExecuting"];
     
-    SCHBookIdentifier *anIdentifier = self.identifier;
-    if ([self.identifiers count]) {
-        anIdentifier = [self.identifiers objectAtIndex:0];
-    }
     // N.B. Cannot set self.identifier after we start executing
     
-    __block BOOL validContentMetadataURLs = NO;
-    __block NSInteger version = 0;
     
-    // sync call to find out if we have valid contentMetadata URLs
-    [self performWithBook:^(SCHAppBook *book) {
-        validContentMetadataURLs = [book contentMetadataCoverURLIsValid] && [book contentMetadataFileURLIsValid];
-    }];
-
-    if (validContentMetadataURLs) {
-        [self performWithBookAndSave:^(SCHAppBook *book) {
-            [book setValue:book.ContentMetadataItem.CoverURL forKey:kSCHAppBookCoverURL];
-            [book setValue:book.ContentMetadataItem.ContentURL forKey:kSCHAppBookFileURL];
+    NSMutableArray *bookDictionaries = [NSMutableArray arrayWithCapacity:[self.identifiers count]];
+    
+    for (SCHBookIdentifier *identifier in self.identifiers) {
+        __block BOOL validContentMetadataURLs = NO;
+        __block NSInteger version = 0;
+        
+        [self performWithBook:^(SCHAppBook *book) {
+            validContentMetadataURLs = [book contentMetadataCoverURLIsValid] && [book contentMetadataFileURLIsValid];
             version = [book.ContentMetadataItem.Version integerValue];
-        }];
-        [self setProcessingState:SCHBookProcessingStateNoCoverImage];
-        [self setIsProcessing:NO];                
+        } forBookWithIdentifier:identifier];
+        
+        if (validContentMetadataURLs) {
+            [self performWithBookAndSave:^(SCHAppBook *book) {
+                [book setValue:book.ContentMetadataItem.CoverURL forKey:kSCHAppBookCoverURL];
+                [book setValue:book.ContentMetadataItem.ContentURL forKey:kSCHAppBookFileURL];
+            } forBookWithIdentifier:identifier];
+            [self setProcessingState:SCHBookProcessingStateNoCoverImage forBookWithIdentifier:identifier];
+        } else {
+            NSDictionary *bookItem = [NSDictionary dictionaryWithObjectsAndKeys:identifier, kURLManagerBookIdentifier, version, kURLManagerVersion, nil];
+            [bookDictionaries addObject:bookItem];
+        }
+    }
+        
+
+    if ([bookDictionaries count] == 0) {
         [self endOperation];
     } else {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlCleared:) name:kSCHURLManagerCleared object:nil];
         
-        [[SCHURLManager sharedURLManager] requestURLForBook:anIdentifier
-                                                    version:[NSNumber numberWithInteger:version]];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(batchComplete:) name:kSCHURLManagerBatchComplete object:nil];
+                
+        [[SCHURLManager sharedURLManager] requestURLForBooks:bookDictionaries];
         
-        //NSArray * books = array of dicts with [these keys:kURLManagerBookIdentifier kURLManagerVersion
-        //requestURLForBooks:
-        //requestURLForRecommendations:
-        //kSCHURLManagerBatchComplete with userIfno dict with keys kSCHURLManagerSuccess array (dict of contentmetatadataitem), kSCHURLManagerFailure array (of strings of contentidentifiers) kSCHURLManagerError - error from web service
     }
 }
 
 #pragma mark - SCHURLManager Notifications
+
+- (void)batchComplete:(NSNotification *)notification
+{
+    
+}
 
 - (void)urlSuccess:(NSNotification *)notification
 {

@@ -2344,6 +2344,9 @@
 		C9965F4B161D8261008602A3 /* NavBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9965F49161D825F008602A3 /* NavBar@2x.png */; };
 		C9965F4F161D82CB008602A3 /* NavBar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9965F4E161D82CA008602A3 /* NavBar.png */; };
 		C9965F50161D82CB008602A3 /* NavBar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9965F4E161D82CA008602A3 /* NavBar.png */; };
+		C99841651631972000EBD73E /* SCHBookBatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C99841641631972000EBD73E /* SCHBookBatchOperation.m */; };
+		C99841661631972000EBD73E /* SCHBookBatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C99841641631972000EBD73E /* SCHBookBatchOperation.m */; };
+		C99841671631972000EBD73E /* SCHBookBatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C99841641631972000EBD73E /* SCHBookBatchOperation.m */; };
 		C99B4A971405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */; };
 		C99B4A991405124E00B3ADF0 /* reading-view-scrubber-rightcap-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A921405124E00B3ADF0 /* reading-view-scrubber-rightcap-large@2x.png */; };
 		C99B4A9B1405124E00B3ADF0 /* reading-view-scrubber-leftcap-large.png in Resources */ = {isa = PBXBuildFile; fileRef = C99B4A931405124E00B3ADF0 /* reading-view-scrubber-leftcap-large.png */; };
@@ -4898,6 +4901,8 @@
 		C9951724146D694600EA7337 /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C9965F49161D825F008602A3 /* NavBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NavBar@2x.png"; sourceTree = "<group>"; };
 		C9965F4E161D82CA008602A3 /* NavBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NavBar.png; sourceTree = "<group>"; };
+		C99841631631972000EBD73E /* SCHBookBatchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookBatchOperation.h; path = Shared/SCHBookBatchOperation.h; sourceTree = "<group>"; };
+		C99841641631972000EBD73E /* SCHBookBatchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookBatchOperation.m; path = Shared/SCHBookBatchOperation.m; sourceTree = "<group>"; };
 		C99B4A911405124E00B3ADF0 /* reading-view-scrubber-rightcap-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-rightcap-large.png"; path = "Resources/UIAssets/reading-view-scrubber-rightcap-large.png"; sourceTree = "<group>"; };
 		C99B4A921405124E00B3ADF0 /* reading-view-scrubber-rightcap-large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-rightcap-large@2x.png"; path = "Resources/UIAssets/reading-view-scrubber-rightcap-large@2x.png"; sourceTree = "<group>"; };
 		C99B4A931405124E00B3ADF0 /* reading-view-scrubber-leftcap-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reading-view-scrubber-leftcap-large.png"; path = "Resources/UIAssets/reading-view-scrubber-leftcap-large.png"; sourceTree = "<group>"; };
@@ -8810,6 +8815,8 @@
 				F8C4C408133259750057420E /* SCHProcessingManager.m */,
 				F878D6B61344996400DDB98B /* SCHBookOperation.h */,
 				F878D6B71344996400DDB98B /* SCHBookOperation.m */,
+				C99841631631972000EBD73E /* SCHBookBatchOperation.h */,
+				C99841641631972000EBD73E /* SCHBookBatchOperation.m */,
 				287ADE9D13BB7A1B00D03247 /* SCHCoreDataOperation.h */,
 				287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */,
 			);
@@ -11732,6 +11739,7 @@
 				52AA3F6A1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
 				52A7BAF816280466007E0E5B /* LibreAccessActivityLogSvc_tns1.m in Sources */,
 				C924FF5A162D65EB009F7F97 /* SCHReadingManagerCache.m in Sources */,
+				C99841651631972000EBD73E /* SCHBookBatchOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12169,6 +12177,7 @@
 				F84A4F4B1623F27D000FA943 /* SCHProfileTooltipContainer.m in Sources */,
 				52AA3F651615E68300297C01 /* SCHListReadingStatisticsSyncComponent.m in Sources */,
 				52AA3F6C1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
+				C99841671631972000EBD73E /* SCHBookBatchOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12601,6 +12610,7 @@
 				52AA3F6B1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
 				52A7BAF9162849D6007E0E5B /* LibreAccessActivityLogSvc_tns1.m in Sources */,
 				C924FF5B162D65EB009F7F97 /* SCHReadingManagerCache.m in Sources */,
+				C99841661631972000EBD73E /* SCHBookBatchOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
