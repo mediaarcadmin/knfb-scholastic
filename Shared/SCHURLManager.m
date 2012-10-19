@@ -23,6 +23,7 @@
 NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
 NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 NSString * const kSCHURLManagerBatchComplete = @"URLManagerBatchComplete";
+NSString * const kSCHURLManagerError = @"URLManagerError";
 NSString * const kSCHURLManagerCleared = @"URLManagerCleared";
 static NSUInteger const kSCHURLManagerMaxConnections = 6;
 static NSString * const kURLManagerBookIdentifier = @"URLManagerBookIdentifier";
@@ -39,7 +40,8 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
 - (SCHISBNItemObject *)ISBNItemObjectForRecommendation:(NSString *)isbn;
 - (void)clearOnMainThread;
 - (void)shakeTable;
-- (NSDictionary *)processBatchResultOfContentMetadataItems:(NSArray *)contentMetadataItems;
+- (NSDictionary *)processBatchContentMetadataItems:(NSArray *)contentMetadataItems
+                                             error:(NSError *)error;
 - (BOOL)isValidContentMetadataItemDictionary:(NSDictionary *)contentMetadataItem;
 - (void)endBackgroundTask;
 
@@ -339,11 +341,13 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
         
 		if (listCount == 1) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess
-																object:self userInfo:[list objectAtIndex:0]];
+																object:self
+                                                              userInfo:[list objectAtIndex:0]];
 		} else if (listCount > 1) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerBatchComplete
 																object:self
-                                                              userInfo:[self processBatchResultOfContentMetadataItems:list]];
+                                                              userInfo:[self processBatchContentMetadataItems:list
+                                                                                                        error:nil]];
         }
 	}
 	
@@ -358,7 +362,7 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
 {
 	requestCount--;
 	
-    NSArray *list = [requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata];
+    NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
     NSInteger listCount = [list count];
 
     if (listCount == 1) {
@@ -371,16 +375,10 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
                                                               userInfo:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:bookIdentifier, bookIdentifier.isbn, [NSNumber numberWithInt:[error code]], nil]                                                                                                  forKeys:[NSArray arrayWithObjects:kSCHBookIdentifierBookIdentifier, kSCHAppRecommendationItemIsbn, kSCHAppRecommendationItemErrorCode, nil]]];
         }
     } else if (listCount > 1) {
-        SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease];
-        NSLog(@"Failed URLs for %@", bookIdentifier);
-
-        if (bookIdentifier != nil) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerBatchComplete
-                                                                object:self
-                                                              userInfo:[self processBatchResultOfContentMetadataItems:list]];
-
-            // add error code
-        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerBatchComplete
+                                                            object:self
+                                                          userInfo:[self processBatchContentMetadataItems:list
+                                                                                                    error:error]];
     }
     
     [self endBackgroundTask];
@@ -388,7 +386,8 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
     [self shakeTable];
 }
 
-- (NSDictionary *)processBatchResultOfContentMetadataItems:(NSArray *)contentMetadataItems
+- (NSDictionary *)processBatchContentMetadataItems:(NSArray *)contentMetadataItems
+                                             error:(NSError *)error
 {
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];
     NSMutableArray *successList = [NSMutableArray array];
@@ -399,14 +398,18 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
             [successList addObject:contentMetadataItem];
         } else {
             SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:contentMetadataItem] autorelease];
+            NSAssert(bookIdentifier, @"A failed contentMetadataItem should have a valid book identifier");
             NSLog(@"Failed URLs for %@", bookIdentifier);
 
-            [failureList addObject:bookIdentifier];
+            [failureList addObject:(bookIdentifier == nil ? [NSNull null] : bookIdentifier)];
         }
     }
 
     [ret setObject:successList forKey:kSCHURLManagerSuccess];
     [ret setObject:failureList forKey:kSCHURLManagerFailure];
+    if (error != nil) {
+        [ret setObject:error forKey:kSCHURLManagerError];
+    }
 
     return [NSDictionary dictionaryWithDictionary:ret];
 }
@@ -417,8 +420,12 @@ static NSString * const kURLManagerVersion = @"URLManagerVersion";
 
     if (contentMetadataItem != nil) {
         NSString *contentIdentifier = makeNullNil([contentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]);
-        
-        if ([[contentIdentifier stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 0) {
+        NSString *coverURL = makeNullNil([contentMetadataItem objectForKey:kSCHLibreAccessWebServiceCoverURL]);
+
+        // a valid response must include content identifier and cover url
+        // recommendations do not request content url so that is not included
+        if ([[contentIdentifier stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 0 &&
+            [[coverURL stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 0) {
             ret = YES;
         }
     }
