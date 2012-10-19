@@ -29,17 +29,19 @@
 // Constants
 NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
 NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerConnectionBusy";
+static const NSUInteger kSCHProcessingManagerBatchSize = 10;
 
 #pragma mark - Class Extension
 
 @interface SCHProcessingManager()
 
 - (void)createProcessingQueues;
-- (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier;
+- (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier batch:(BOOL *)batchProcess;
 - (BOOL)identifierHasAcquiredLicense:(SCHBookIdentifier *)identifier;
 
-- (void) processIdentifier: (SCHBookIdentifier *) identifier;
-- (void) redispatchIdentifier: (SCHBookIdentifier *) identifier;
+- (void)processIdentifier:(SCHBookIdentifier *)identifier;
+- (void)processIdentifiers:(NSArray *)identifiers;
+- (void)redispatchIdentifier:(SCHBookIdentifier *)identifier;
 
 // fire notifications if there's a change in state between processing and not processing
 - (void)checkIfProcessing;
@@ -106,7 +108,7 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
         
         self.thumbnailAccessQueue = dispatch_queue_create("com.scholastic.ThumbnailAccessQueue", NULL);
         
-        [[NSNotificationCenter defaultCenter] addObserver:self 
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
                                                      name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
                                                    object:nil];	        
@@ -239,7 +241,7 @@ static SCHProcessingManager *sharedManager = nil;
         // when it finishes processing, so no need to add it for consideration
         if ([self identifierIsProcessing:identifier]) {
             
-            if ([self identifierNeedsProcessing:identifier]) {
+            if ([self identifierNeedsProcessing:identifier batch:NULL]) {
                 [self processIdentifier:identifier];
             }
             
@@ -257,7 +259,8 @@ static SCHProcessingManager *sharedManager = nil;
     NSManagedObjectContext *moc = self.managedObjectContext;
 
 	NSArray *allIdentifiers = [[SCHBookManager sharedBookManager] allBookIdentifiersInManagedObjectContext:moc];
-    NSMutableArray *identifiersToBeProcessed = [NSMutableArray array];
+    NSMutableArray *identifiersToBeIndividuallyProcessed = [NSMutableArray array];
+    NSMutableArray *identifiersToBeBatchProcessed = [NSMutableArray array];
     
 	// get all the books independent of profile
 	for (SCHBookIdentifier *identifier in allIdentifiers) {
@@ -267,28 +270,51 @@ static SCHProcessingManager *sharedManager = nil;
             // if the book is currently processing, it will already be taken care of 
             // when it finishes processing, so no need to add it for consideration
             // Bundle books get processed before non-bundle books
-            if (![book isProcessing] && [self identifierNeedsProcessing:identifier]) {
+            BOOL batchProcess = NO;
+            
+            if (![book isProcessing] && [self identifierNeedsProcessing:identifier batch:&batchProcess]) {
                 if ([book contentMetadataCoverURLIsBundleURL]) {
-                    [identifiersToBeProcessed insertObject:identifier atIndex:0];
+                    [identifiersToBeIndividuallyProcessed insertObject:identifier atIndex:0];
+                } else if (batchProcess) {
+                    [identifiersToBeBatchProcessed addObject:identifier];
                 } else {
-                    [identifiersToBeProcessed addObject:identifier];
+                    [identifiersToBeIndividuallyProcessed addObject:identifier];
                 }
             }
         }
 	}
+    
+    if ([identifiersToBeBatchProcessed count]) {
+        NSMutableArray *batchedIdentifiers = [NSMutableArray arrayWithCapacity:kSCHProcessingManagerBatchSize];
+        for (int i = 0; i < [identifiersToBeBatchProcessed count]; i++) {
+            [batchedIdentifiers addObject:[identifiersToBeBatchProcessed objectAtIndex:i]];
+            
+            if ((i != 0) && (i % kSCHProcessingManagerBatchSize == 0)) {
+                [self processIdentifiers:batchedIdentifiers];
+                [batchedIdentifiers removeAllObjects];
+            }
+        }
+        
+        if ([batchedIdentifiers count]) {
+            [self processIdentifiers:batchedIdentifiers];
+            [batchedIdentifiers removeAllObjects];
+        }
+    }
 	
-    for (SCHBookIdentifier *identifier in identifiersToBeProcessed) {
+    for (SCHBookIdentifier *identifier in identifiersToBeIndividuallyProcessed) {
         [self processIdentifier:identifier];
     }
     
     [self checkIfProcessing];
 }
 
-- (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier
+- (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier batch:(BOOL *)batchProcess
 {
     NSAssert([NSThread isMainThread], @"ISBNNeedsProcessing must run on main thread");
     
     BOOL needsProcessing = YES;
+    *batchProcess = NO;
+    
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
     
     if (book != nil) {        
@@ -296,6 +322,8 @@ static SCHProcessingManager *sharedManager = nil;
             needsProcessing = NO;
         } else if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload) {
             needsProcessing = NO;
+        } else if (book.processingState == SCHBookProcessingStateNoURLs) {
+            *batchProcess = YES;
         }
     } else {
         needsProcessing = NO;
@@ -480,6 +508,47 @@ static SCHProcessingManager *sharedManager = nil;
 }
 
 #pragma mark - Processing Methods
+
+- (void)processIdentifiers:(NSArray *)identifiers
+{
+    // Only supported batch operation is bookurl requests but should still check
+    NSMutableArray *noURLsBatch = [NSMutableArray array];
+    NSMutableArray *invalidBatch = [NSMutableArray array];
+
+    for (SCHBookIdentifier *identifier in identifiers) {
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+        switch (book.processingState) {
+            case SCHBookProcessingStateNoURLs:
+                [noURLsBatch addObject:identifier];
+                break;
+            default:
+                NSLog(@"WARNING: Batch processing attempted for identifier: %@ in unbatchable state: %@", identifier, [book processingStateAsString]);
+                [invalidBatch addObject:identifier];
+                break;
+        }
+    }
+    
+    if ([noURLsBatch count]) {
+        SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
+        [bookURLOp setMainThreadManagedObjectContext:self.managedObjectContext];
+        bookURLOp.identifiers = noURLsBatch;
+        
+        // the identifiers will be redispatched on completion
+        [bookURLOp setNotCancelledCompletionBlock:^{
+            for (SCHBookIdentifier *identifier in noURLsBatch) {
+                [self redispatchIdentifier:identifier];
+            }
+        }];
+        
+        // add the operation to the web service queue
+        [self.webServiceOperationQueue addOperation:bookURLOp];
+        [bookURLOp release];
+    }
+    
+    for (SCHBookIdentifier *identifier in invalidBatch) {
+        [self processIdentifier:identifier];
+    }
+}
 
 - (void)processIdentifier:(SCHBookIdentifier *)identifier
 {

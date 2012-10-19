@@ -15,11 +15,23 @@
 
 @implementation SCHBookURLRequestOperation
 
+@synthesize identifiers;
+
 #pragma mark - Object Lifecycle
 
 - (void)dealloc 
 {
+    [identifiers release], identifiers = nil;
 	[super dealloc];
+}
+
+- (void)start
+{
+	if ((self.identifier || [self.identifiers count]) && ![self isCancelled]) {
+		[self beginOperation];
+	} else {
+        [self endOperation];
+    }
 }
 
 #pragma mark - Book Operation Methods
@@ -39,6 +51,12 @@
     self.executing = YES;
     
     [self didChangeValueForKey:@"isExecuting"];
+    
+    SCHBookIdentifier *anIdentifier = self.identifier;
+    if ([self.identifiers count]) {
+        anIdentifier = [self.identifiers objectAtIndex:0];
+    }
+    // N.B. Cannot set self.identifier after we start executing
     
     __block BOOL validContentMetadataURLs = NO;
     __block NSInteger version = 0;
@@ -62,8 +80,13 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlCleared:) name:kSCHURLManagerCleared object:nil];
         
-        [[SCHURLManager sharedURLManager] requestURLForBook:self.identifier
+        [[SCHURLManager sharedURLManager] requestURLForBook:anIdentifier
                                                     version:[NSNumber numberWithInteger:version]];
+        
+        //NSArray * books = array of dicts with [these keys:kURLManagerBookIdentifier kURLManagerVersion
+        //requestURLForBooks:
+        //requestURLForRecommendations:
+        //kSCHURLManagerBatchComplete with userIfno dict with keys kSCHURLManagerSuccess array (dict of contentmetatadataitem), kSCHURLManagerFailure array (of strings of contentidentifiers) kSCHURLManagerError - error from web service
     }
 }
 
