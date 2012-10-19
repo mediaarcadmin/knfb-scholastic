@@ -194,7 +194,9 @@ NSString * const kURLManagerVersion = @"URLManagerVersion";
                 }
             }
         }
-        [self.table addObject:[NSArray arrayWithArray:arrayOfISBNItems]];
+        if ([arrayOfBooks count] > 0) {
+            [self.table addObject:[NSArray arrayWithArray:arrayOfISBNItems]];
+        }
         [self shakeTable];
     }
 }
@@ -247,10 +249,12 @@ NSString * const kURLManagerVersion = @"URLManagerVersion";
             SCHISBNItemObject *isbnItem = [self ISBNItemObjectForRecommendation:isbn];
 
             if (isbnItem != nil) {
-                [self.table addObject:[NSArray arrayWithObject:isbnItem]];
+                [arrayOfISBNItems addObject:isbnItem];
             }
         }
-        [self.table addObject:[NSArray arrayWithObject:arrayOfISBNItems]];
+        if ([arrayOfISBNItems count] > 0) {
+            [self.table addObject:[NSArray arrayWithArray:arrayOfISBNItems]];
+        }
 		[self shakeTable];
 	}
 }
