@@ -16,6 +16,7 @@
 extern NSString * const kSCHURLManagerSuccess;
 extern NSString * const kSCHURLManagerFailure;
 extern NSString * const kSCHURLManagerBatchComplete;
+extern NSString * const kSCHURLManagerError;
 extern NSString * const kSCHURLManagerCleared;
 
 @interface SCHURLManager : NSObject <BITAPIProxyDelegate>
