@@ -583,7 +583,8 @@
         
         for (NSString *key in loadedDictionary) {
             NSNumber *convertedKey = [NSNumber numberWithInt:[key intValue]];
-            [convertedDictionary setObject:[loadedDictionary objectForKey:key]
+            NSMutableArray *convertedObject = [NSMutableArray arrayWithArray:[loadedDictionary objectForKey:key]];
+            [convertedDictionary setObject:convertedObject
                                   forKey:convertedKey];
         }
 
