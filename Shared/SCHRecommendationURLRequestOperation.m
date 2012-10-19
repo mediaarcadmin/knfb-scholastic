@@ -95,7 +95,7 @@ NSString * const SCHRecommendationURLRequestOperationDidUpdateNotification = @"S
             } 
             
             if (!coverUrlIsValid) {
-                [self setCoverURLExpiredState];
+                [self setCoverURLExpiredStateForRecommendationWithIsbn:self.isbn];
             } else {
                 NSLog(@"Successful URL retrieval for %@!", completedIsbn);
                 [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {

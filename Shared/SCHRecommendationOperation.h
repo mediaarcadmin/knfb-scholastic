@@ -25,10 +25,13 @@
 
 // thread-safe access
 - (void)performWithRecommendation:(void (^)(SCHAppRecommendationItem *item))block;
+- (void)performWithRecommendation:(void (^)(SCHAppRecommendationItem *item))block forRecommendationWithIsbn:(NSString *)isbn;
 - (void)performWithRecommendationAndSave:(void (^)(SCHAppRecommendationItem *))block;
+- (void)performWithRecommendationAndSave:(void (^)(SCHAppRecommendationItem *))block forRecommendationWithIsbn:(NSString *)isbn;
 - (void)setProcessingState:(SCHAppRecommendationProcessingState)state;
+- (void)setProcessingState:(SCHAppRecommendationProcessingState)state forRecommendationWithIsbn:(NSString *)isbn;
 
-- (void)setCoverURLExpiredState;
-- (void)resetCoverURLExpiredState;
+- (void)setCoverURLExpiredStateForRecommendationWithIsbn:(NSString *)isbn;
+- (void)resetCoverURLExpiredStateForRecommendationWithIsbn:(NSString *)isbn;
 
 @end

@@ -87,15 +87,19 @@
 }
 
 #pragma mark - thread safe access to book object
-
-- (void)performWithRecommendation:(void (^)(SCHAppRecommendationItem *item))block;
+- (void)performWithRecommendation:(void (^)(SCHAppRecommendationItem *item))block
 {
-    if (self.isCancelled || !self.isbn || !block) {
+    [self performWithRecommendation:block forRecommendationWithIsbn:self.isbn];
+}
+
+- (void)performWithRecommendation:(void (^)(SCHAppRecommendationItem *item))block forRecommendationWithIsbn:(NSString *)recommendationIsbn
+{
+    if (self.isCancelled || !recommendationIsbn || !block) {
         return;
     }
     
     dispatch_block_t accessBlock = ^{
-        SCHAppRecommendationItem *recommendation = [[SCHRecommendationManager sharedManager] appRecommendationForIsbn:self.isbn];
+        SCHAppRecommendationItem *recommendation = [[SCHRecommendationManager sharedManager] appRecommendationForIsbn:recommendationIsbn];
         block(recommendation);
     };
     
@@ -112,15 +116,20 @@
     }
 }
 
-- (void)performWithRecommendationAndSave:(void (^)(SCHAppRecommendationItem *))block;
+- (void)performWithRecommendationAndSave:(void (^)(SCHAppRecommendationItem *))block
 {
-    if (self.isCancelled || !self.isbn) {
+    [self performWithRecommendationAndSave:block forRecommendationWithIsbn:self.isbn];
+}
+
+- (void)performWithRecommendationAndSave:(void (^)(SCHAppRecommendationItem *))block forRecommendationWithIsbn:(NSString *)recommendationIsbn
+{
+    if (self.isCancelled || !recommendationIsbn) {
         return;
     }
     
     dispatch_block_t accessBlock = ^{
         if (block) {
-            SCHAppRecommendationItem *recommendation = [[SCHRecommendationManager sharedManager] appRecommendationForIsbn:self.isbn];
+            SCHAppRecommendationItem *recommendation = [[SCHRecommendationManager sharedManager] appRecommendationForIsbn:recommendationIsbn];
             block(recommendation);
         }
         NSError *error = nil;
@@ -137,6 +146,11 @@
 }
 
 - (void)setProcessingState:(SCHAppRecommendationProcessingState)state
+{
+    [self setProcessingState:state forRecommendationWithIsbn:self.isbn];
+}
+
+- (void)setProcessingState:(SCHAppRecommendationProcessingState)state forRecommendationWithIsbn:(NSString *)recommendationIsbn
 {
     [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
         item.state = [NSNumber numberWithInt: (int) state];
@@ -159,7 +173,7 @@
 // app recommendation item entity and is shared between the url request and 
 // download cover operations to avoid any endless url request scenarios between
 // them.
-- (void)setCoverURLExpiredState
+- (void)setCoverURLExpiredStateForRecommendationWithIsbn:(NSString *)recommendationIsbn
 {
     [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
         NSInteger newCoverURLExpiredCount = [item.coverURLExpiredCount integerValue] + 1;
@@ -178,7 +192,7 @@
 
 // NOTE: SCHRecommendationURLRequestOperation performs the same operation in it's
 // own performWithRecommendationAndSave
-- (void)resetCoverURLExpiredState
+- (void)resetCoverURLExpiredStateForRecommendationWithIsbn:(NSString *)recommendationIsbn
 {
     [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
         item.coverURLExpiredCount = [NSNumber numberWithInteger:0];

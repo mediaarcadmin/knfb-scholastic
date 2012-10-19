@@ -68,7 +68,7 @@
     BOOL coverURLIsValid = [SCHRecommendationManager urlIsValid:coverURL];
     
     if (!coverURLIsValid) {
-        [self setCoverURLExpiredState];
+        [self setCoverURLExpiredStateForRecommendationWithIsbn:self.isbn];
         [self endOperation];
         return;            
     }
