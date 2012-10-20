@@ -564,7 +564,7 @@ static SCHProcessingManager *sharedManager = nil;
                 // create URL processing operation
                 SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
                 [bookURLOp setMainThreadManagedObjectContext:self.managedObjectContext];
-                bookURLOp.identifier = identifier;
+                bookURLOp.identifiers = [NSArray arrayWithObject:identifier];
                 
                 // the book will be redispatched on completion
                 [bookURLOp setNotCancelledCompletionBlock:^{

@@ -33,9 +33,6 @@
     
     [self didChangeValueForKey:@"isExecuting"];
     
-    // N.B. Cannot set self.identifier after we start executing
-    
-    
     NSMutableArray *bookDictionaries = [NSMutableArray arrayWithCapacity:[self.identifiers count]];
     
     for (SCHBookIdentifier *identifier in self.identifiers) {
@@ -65,7 +62,8 @@
     } else {
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(batchComplete:) name:kSCHURLManagerBatchComplete object:nil];
-                
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlCleared:) name:kSCHURLManagerCleared object:nil];
+
         [[SCHURLManager sharedURLManager] requestURLForBooks:bookDictionaries];
         
     }
@@ -75,103 +73,111 @@
 
 - (void)batchComplete:(NSNotification *)notification
 {
+    NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
     
-}
-
-- (void)urlSuccess:(NSNotification *)notification
-{
     if (self.isCancelled) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];        
-        [self setIsProcessing:NO];        
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
         [self endOperation];
 		return;
 	}
 
-	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
-
-	NSDictionary *userInfo = [notification userInfo];
-    SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:userInfo] autorelease];
-	
-    if ([bookIdentifier isEqual:self.identifier]) {
+    NSDictionary *userInfo = [notification userInfo];
+    NSArray *failureURLs = [userInfo objectForKey:kSCHURLManagerFailure];
+    NSArray *successURLs = [userInfo objectForKey:kSCHURLManagerSuccess];
+    NSError *urlsError   = [userInfo objectForKey:kSCHURLManagerError];
+    
+    if (urlsError) {
+        NSUInteger successCount = [successURLs count];
+        NSUInteger failureCount = [failureURLs count];
         
-        if ([[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]] || 
-            [[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] isEqual:[NSNull null]]) {
-            NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
-            [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
-        } else {
-            
-            __block BOOL urlsValid = NO;
-            
-            [self performWithBookAndSave:^(SCHAppBook *book) {
-                SCHListContentMetadataOperation *localOperation = [[SCHListContentMetadataOperation alloc] initWithSyncComponent:nil 
-                                                                                                                          result:nil
-                                                                                                                        userInfo:nil];
-                [localOperation syncContentMetadataItem:userInfo withContentMetadataItem:book.ContentMetadataItem];
-                
-                if (([book contentMetadataCoverURLIsValid] && [book contentMetadataFileURLIsValid])) {
-                    [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
-                    [book setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
-                    urlsValid = YES;
-                    
-                    // combine resetCoverURLExpiredState and setProcessingState:kSCHAppRecommendationProcessingStateNoCover into this one save
-                    [book setUrlExpiredCount:[NSNumber numberWithInteger:0]];
-                    NSLog(@"Successful URL retrieval for %@!", bookIdentifier);
-                    [book setState:[NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage]];
-                }
-                [localOperation release];
-                
-            }];
-            
-            // check here for invalidity
-            if (!urlsValid) {
-                [self setCoverURLExpiredStateForBookWithIdentifier:self.identifier];
+        NSLog(@"Error when requesting URLS. Received %d success and %d failures", successCount, failureCount);
+        
+        if ((successCount + failureCount) == 0) {
+            // If we get an error from the service with no identifying dictionaries we fail this operation (and any other operations waiting on URLs)
+            for (SCHBookIdentifier *identifier in self.identifiers) {
+                [self setProcessingState:SCHBookProcessingStateURLsNotPopulated forBookWithIdentifier:identifier];
             }
+            
+            [[NSNotificationCenter defaultCenter] removeObserver:self];
+            [self endOperation];
         }
+    }
+    BOOL matchedResults = NO;
+    
+    for (NSDictionary *contentMetadataDictionary in successURLs) {
+        SCHBookIdentifier *succeeededBookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:contentMetadataDictionary] autorelease];
+
+        if ([self.identifiers containsObject:succeeededBookIdentifier]) {
+            
+            if ([[contentMetadataDictionary valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]] ||
+                [[contentMetadataDictionary valueForKey:kSCHLibreAccessWebServiceContentURL] isEqual:[NSNull null]]) {
+                NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", contentMetadataDictionary);
+                [self setProcessingState:SCHBookProcessingStateURLsNotPopulated forBookWithIdentifier:succeeededBookIdentifier];
+            } else {
+                
+                __block BOOL urlsValid = NO;
+                
+                [self performWithBookAndSave:^(SCHAppBook *book) {
+                    SCHListContentMetadataOperation *localOperation = [[SCHListContentMetadataOperation alloc] initWithSyncComponent:nil
+                                                                                                                              result:nil
+                                                                                                                            userInfo:nil];
+                    [localOperation syncContentMetadataItem:contentMetadataDictionary withContentMetadataItem:book.ContentMetadataItem];
+                    
+                    if (([book contentMetadataCoverURLIsValid] && [book contentMetadataFileURLIsValid])) {
+                        [book setValue:[contentMetadataDictionary valueForKey:kSCHLibreAccessWebServiceCoverURL] forKey:kSCHAppBookCoverURL];
+                        [book setValue:[contentMetadataDictionary valueForKey:kSCHLibreAccessWebServiceContentURL] forKey:kSCHAppBookFileURL];
+                        urlsValid = YES;
+                        
+                        // combine resetCoverURLExpiredState and setProcessingState:kSCHAppRecommendationProcessingStateNoCover into this one save
+                        [book setUrlExpiredCount:[NSNumber numberWithInteger:0]];
+                        NSLog(@"Successful URL retrieval for %@", succeeededBookIdentifier);
+                        [book setState:[NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage]];
+                    }
+                    [localOperation release];
+                    
+                } forBookWithIdentifier:succeeededBookIdentifier];
+                
+                // check here for invalidity
+                if (!urlsValid) {
+                    [self setCoverURLExpiredStateForBookWithIdentifier:succeeededBookIdentifier];
+                }
+            }
+
+            matchedResults = YES;
+        }
+    }
+    
+    for (NSDictionary *contentMetadataDictionary in failureURLs) {
+        SCHBookIdentifier *failedBookIdentifier = [contentMetadataDictionary objectForKey:kSCHBookIdentifierBookIdentifier];
         
+        if ([self.identifiers containsObject:failedBookIdentifier]) {
+            NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", contentMetadataDictionary);
+            [self setProcessingState:SCHBookProcessingStateURLsNotPopulated forBookWithIdentifier:failedBookIdentifier];
+            matchedResults = YES;
+        }
+    }
+    
+    if (matchedResults) {
         [[NSNotificationCenter defaultCenter] removeObserver:self];
-        [self setIsProcessing:NO];        
-        [self endOperation];        
-	}
-}
-
-- (void)urlFailure:(NSNotification *)notification
-{
-    if (self.isCancelled) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];        
-        [self setIsProcessing:NO];        
         [self endOperation];
-		return;
-	}
-
-	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
-	NSDictionary *userInfo = [notification userInfo];
-	SCHBookIdentifier *completedBookIdentifier = [userInfo objectForKey:kSCHBookIdentifierBookIdentifier];
-	
-    if ([completedBookIdentifier isEqual:self.identifier]) {
-        NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
-        [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
-
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-        [self setIsProcessing:NO];    
-        [self endOperation];        
-	}
+    }
 }
 
 - (void)urlCleared:(NSNotification *)notification
 {
     if (self.isCancelled) {
         [[NSNotificationCenter defaultCenter] removeObserver:self];        
-        [self setIsProcessing:NO];        
         [self endOperation];
 		return;
 	}
     
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
 
-    [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
+    for (SCHBookIdentifier *identifier in self.identifiers) {
+        [self setProcessingState:SCHBookProcessingStateURLsNotPopulated forBookWithIdentifier:identifier];
+    }
         
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self setIsProcessing:NO];    
     [self endOperation];        
 }
 

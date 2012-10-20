@@ -184,7 +184,7 @@
                                   (bookIdentifier == nil ? (id)[NSNull null] : bookIdentifier), @"bookIdentifier",
                                   nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
-    }];
+    } forBookWithIdentifier:bookIdentifier];
 }
 
 - (SCHBookCurrentProcessingState)processingState
