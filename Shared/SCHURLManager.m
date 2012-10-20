@@ -118,7 +118,9 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
                                 version, kURLManagerVersion,
                                 nil];
 
-    [self performSelectorOnMainThread:@selector(requestURLForBookOnMainThread:) withObject:parameters waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(requestURLForBookOnMainThread:)
+                           withObject:parameters
+                        waitUntilDone:NO];
 }
 
 - (void)requestURLForBooks:(NSArray *)arrayOfBooks
@@ -134,7 +136,9 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 {
     NSParameterAssert(isbn);
     
-    [self performSelectorOnMainThread:@selector(requestURLForRecommendationOnMainThread:) withObject:isbn waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(requestURLForRecommendationOnMainThread:)
+                           withObject:isbn
+                        waitUntilDone:NO];
 }
 
 - (void)requestURLForRecommendations:(NSArray *)arrayOfISBNs
@@ -190,7 +194,9 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
                 }
             }
         }
-        [self.table addObject:[NSArray arrayWithArray:arrayOfISBNItems]];
+        if ([arrayOfBooks count] > 0) {
+            [self.table addObject:[NSArray arrayWithArray:arrayOfISBNItems]];
+        }
         [self shakeTable];
     }
 }
@@ -207,7 +213,11 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
         ret.ContentIdentifierType = [NSNumber numberWithInt:kSCHContentItemContentIdentifierTypesISBN13];
         ret.DRMQualifier = bookIdentifier.DRMQualifier;
         ret.coverURLOnly = NO;
-        ret.Version = version;
+        if (version == nil) {
+            ret.Version = [NSNumber numberWithInteger:0];
+        } else {
+            ret.Version = version;
+        }
     }
     
     return ret;
@@ -239,10 +249,12 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
             SCHISBNItemObject *isbnItem = [self ISBNItemObjectForRecommendation:isbn];
 
             if (isbnItem != nil) {
-                [self.table addObject:[NSArray arrayWithObject:isbnItem]];
+                [arrayOfISBNItems addObject:isbnItem];
             }
         }
-        [self.table addObject:[NSArray arrayWithObject:arrayOfISBNItems]];
+        if ([arrayOfISBNItems count] > 0) {
+            [self.table addObject:[NSArray arrayWithArray:arrayOfISBNItems]];
+        }
 		[self shakeTable];
 	}
 }
@@ -363,6 +375,10 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 	requestCount--;
 	
     NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
+    // if the response had no contentmetadataitems then use the requestInfo
+    if ([list count] < 1) {
+        list = [requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata];
+    }
     NSInteger listCount = [list count];
 
     if (listCount == 1) {

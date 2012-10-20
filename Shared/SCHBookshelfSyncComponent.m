@@ -25,7 +25,7 @@ NSString * const SCHBookshelfSyncComponentBookReceivedNotification = @"SCHBooksh
 NSString * const SCHBookshelfSyncComponentDidCompleteNotification = @"SCHBookshelfSyncComponentDidCompleteNotification";
 NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSyncComponentDidFailNotification";
 
-static BOOL const SCHBookshelfSyncComponentIncludeURLs = YES;
+static BOOL const SCHBookshelfSyncComponentIncludeURLs = NO;
 
 @interface SCHBookshelfSyncComponent ()
 
