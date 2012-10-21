@@ -6,11 +6,11 @@
 //  Copyright (c) 2012 BitWink. All rights reserved.
 //
 
-#import "SCHRecommendationOperation.h"
+#import "SCHRecommendationBatchOperation.h"
 
 // Constants
 extern NSString * const SCHRecommendationURLRequestOperationDidUpdateNotification;
 
-@interface SCHRecommendationURLRequestOperation : SCHRecommendationOperation
+@interface SCHRecommendationURLRequestOperation : SCHRecommendationBatchOperation
 
 @end

@@ -313,7 +313,10 @@ static SCHProcessingManager *sharedManager = nil;
     NSAssert([NSThread isMainThread], @"ISBNNeedsProcessing must run on main thread");
     
     BOOL needsProcessing = YES;
-    *batchProcess = NO;
+    
+    if (batchProcess) {
+        *batchProcess = NO;
+    }
     
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
     
@@ -323,7 +326,9 @@ static SCHProcessingManager *sharedManager = nil;
         } else if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload) {
             needsProcessing = NO;
         } else if (book.processingState == SCHBookProcessingStateNoURLs) {
-            *batchProcess = YES;
+            if (batchProcess) {
+                *batchProcess = YES;
+            }
         }
     } else {
         needsProcessing = NO;

@@ -19,14 +19,17 @@
 #import "NSURL+Extensions.h"
 #import "NSDate+ServerDate.h"
 
+static const NSUInteger kSCHRecommendationsManagerBatchSize = 10;
+
 @interface SCHRecommendationManager()
 
 - (void)createProcessingQueues;
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification;
 - (BOOL)isbnIsProcessing:(NSString *)isbn;
-- (BOOL)recommendationNeedsProcessing:(SCHAppRecommendationItem *)recommendationItem;
+- (BOOL)recommendationNeedsProcessing:(SCHAppRecommendationItem *)recommendationItem batch:(BOOL *)batchProcess;
 - (BOOL)isbnNeedsProcessing:(NSString *)isbn;
 - (void)processIsbn:(NSString *)isbn;
+- (void)processIsbns:(NSArray *)isbns;
 - (void)checkStateForAllRecommendations;
 - (void)redispatchIsbn:(NSString *)isbn;
 
@@ -157,15 +160,39 @@ static SCHRecommendationManager *sharedManager = nil;
         NSLog(@"Unresolved error fetching recommendations %@, %@", error, [error userInfo]);
     }
     
-    NSMutableArray *isbnsToBeProcessed = [NSMutableArray array];
+    NSMutableArray *isbnsToBeIndividuallyProcessed = [NSMutableArray array];
+    NSMutableArray *isbnsToBeBatchProcessed = [NSMutableArray array];
+    
+	for (SCHAppRecommendationItem *recommendationItem in allRecommendationItems) {
+        BOOL batchProcess = NO;
         
-	for (SCHAppRecommendationItem *recommendationItem in allRecommendationItems) {        
-        if ([self recommendationNeedsProcessing:recommendationItem]) {
-            [isbnsToBeProcessed addObject:[recommendationItem ContentIdentifier]];
+        if ([self recommendationNeedsProcessing:recommendationItem batch:&batchProcess]) {
+            if (batchProcess) {
+                [isbnsToBeBatchProcessed addObject:[recommendationItem ContentIdentifier]];
+            } else {
+                [isbnsToBeIndividuallyProcessed addObject:[recommendationItem ContentIdentifier]];
+            }
+        }
+    }
+    
+    if ([isbnsToBeBatchProcessed count]) {
+        NSMutableArray *batchedIsbns = [NSMutableArray arrayWithCapacity:kSCHRecommendationsManagerBatchSize];
+        for (int i = 0; i < [isbnsToBeBatchProcessed count]; i++) {
+            [batchedIsbns addObject:[isbnsToBeBatchProcessed objectAtIndex:i]];
+            
+            if ((i != 0) && (i % kSCHRecommendationsManagerBatchSize == 0)) {
+                [self processIsbns:batchedIsbns];
+                [batchedIsbns removeAllObjects];
+            }
+        }
+        
+        if ([batchedIsbns count]) {
+            [self processIsbns:batchedIsbns];
+            [batchedIsbns removeAllObjects];
         }
     }
                	
-    for (NSString *isbn in isbnsToBeProcessed) {
+    for (NSString *isbn in isbnsToBeIndividuallyProcessed) {
         [self processIsbn:isbn];
     }
 }
@@ -174,14 +201,18 @@ static SCHRecommendationManager *sharedManager = nil;
 {
     NSAssert([NSThread isMainThread], @"checkStateForRecommendation must run on main thread");
 
-    if (recommendationItem != nil && [self recommendationNeedsProcessing:recommendationItem]) {
+    if (recommendationItem != nil && [self recommendationNeedsProcessing:recommendationItem batch:NULL]) {
         [self processIsbn:recommendationItem.ContentIdentifier];
     }
 }
 
-- (BOOL)recommendationNeedsProcessing:(SCHAppRecommendationItem *)recommendationItem
+- (BOOL)recommendationNeedsProcessing:(SCHAppRecommendationItem *)recommendationItem batch:(BOOL *)batchProcess
 {
     BOOL needsProcessing = NO;
+    
+    if (batchProcess) {
+        *batchProcess = NO;
+    }
     
     if (![self isbnIsProcessing:[recommendationItem ContentIdentifier]]) {        
         if (recommendationItem != nil) {
@@ -196,9 +227,14 @@ static SCHRecommendationManager *sharedManager = nil;
                     needsProcessing = NO;
                     break;
                 case kSCHAppRecommendationProcessingStateDownloadFailed:     
-                case kSCHAppRecommendationProcessingStateNoMetadata:          
                 case kSCHAppRecommendationProcessingStateNoCover:
                 case kSCHAppRecommendationProcessingStateNoThumbnails:
+                    needsProcessing = YES;
+                    break;
+                case kSCHAppRecommendationProcessingStateNoMetadata:
+                    if (batchProcess) {
+                        *batchProcess = YES;
+                    }
                     needsProcessing = YES;
                     break;
             }
@@ -209,12 +245,12 @@ static SCHRecommendationManager *sharedManager = nil;
 
 }
 
-- (BOOL)isbnNeedsProcessing:(NSString *)isbn 
+- (BOOL)isbnNeedsProcessing:(NSString *)isbn
 {
     NSAssert([NSThread isMainThread], @"isbnNeedsProcessing must run on main thread");
     SCHAppRecommendationItem *recommendationItem = [self appRecommendationForIsbn:isbn];
     
-    return [self recommendationNeedsProcessing:recommendationItem];
+    return [self recommendationNeedsProcessing:recommendationItem batch:NULL];
 }
 
 #pragma mark - Processing
@@ -241,6 +277,46 @@ static SCHRecommendationManager *sharedManager = nil;
     }
 }
 
+- (void)processIsbns:(NSArray *)isbns
+{
+    // Only supported batch operation is recommendationurl requests but should still check
+    NSMutableArray *noURLsBatch = [NSMutableArray array];
+    NSMutableArray *invalidBatch = [NSMutableArray array];
+    
+    for (NSString *isbn in isbns) {
+        SCHAppRecommendationItem *item = [self appRecommendationForIsbn:isbn];
+
+        switch (item.processingState) {
+            case kSCHAppRecommendationProcessingStateNoMetadata:
+                [noURLsBatch addObject:isbn];
+                break;
+            default:
+                NSLog(@"WARNING: Batch processing attempted for isbn: %@ in unbatchable state: %d", isbn, [item processingState]);
+                [invalidBatch addObject:isbn];
+                break;
+        }
+    }
+    
+    if ([noURLsBatch count]) {
+        SCHRecommendationURLRequestOperation *urlOp = [[SCHRecommendationURLRequestOperation alloc] init];
+        [urlOp setMainThreadManagedObjectContext:self.managedObjectContext];
+        urlOp.isbns = noURLsBatch;
+        
+        [urlOp setNotCancelledCompletionBlock:^{
+            for (NSString *isbn in noURLsBatch) {
+                [self redispatchIsbn:isbn];
+            }
+        }];
+        
+        [self.processingQueue addOperation:urlOp];
+        [urlOp release];
+    }
+    
+    for (NSString *isbn in invalidBatch) {
+        [self processIsbn:isbn];
+    }
+}
+
 - (void)processIsbn:(NSString *)isbn
 {
     SCHAppRecommendationItem *item = [self appRecommendationForIsbn:isbn];
@@ -254,7 +330,7 @@ static SCHRecommendationManager *sharedManager = nil;
             { 
                 SCHRecommendationURLRequestOperation *urlOp = [[SCHRecommendationURLRequestOperation alloc] init];
                 [urlOp setMainThreadManagedObjectContext:self.managedObjectContext];
-                urlOp.isbn = isbn;
+                urlOp.isbns = [NSArray arrayWithObject:isbn];
                 
                 [urlOp setNotCancelledCompletionBlock:^{
                     [self redispatchIsbn:isbn];

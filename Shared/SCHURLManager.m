@@ -349,18 +349,10 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 	
 	if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
-        NSInteger listCount = [list count];
-        
-		if (listCount == 1) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess
-																object:self
-                                                              userInfo:[list objectAtIndex:0]];
-		} else if (listCount > 1) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerBatchComplete
 																object:self
                                                               userInfo:[self processBatchContentMetadataItems:list
                                                                                                         error:nil]];
-        }
 	}
 	
     [self endBackgroundTask];
@@ -376,26 +368,15 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 	
     NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
     // if the response had no contentmetadataitems then use the requestInfo
+    // TODO: could do with an explanantion of why there is this fallback rather than just a comment that describes what the code does
     if ([list count] < 1) {
         list = [requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata];
     }
-    NSInteger listCount = [list count];
 
-    if (listCount == 1) {
-        SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease];
-        NSLog(@"Failed URLs for %@", bookIdentifier);
-
-        if (bookIdentifier != nil) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
-                                                                object:self 
-                                                              userInfo:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:bookIdentifier, bookIdentifier.isbn, [NSNumber numberWithInt:[error code]], nil]                                                                                                  forKeys:[NSArray arrayWithObjects:kSCHBookIdentifierBookIdentifier, kSCHAppRecommendationItemIsbn, kSCHAppRecommendationItemErrorCode, nil]]];
-        }
-    } else if (listCount > 1) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerBatchComplete
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerBatchComplete
                                                             object:self
                                                           userInfo:[self processBatchContentMetadataItems:list
                                                                                                     error:error]];
-    }
     
     [self endBackgroundTask];
 	

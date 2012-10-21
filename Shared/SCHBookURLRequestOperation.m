@@ -17,6 +17,11 @@
 
 #pragma mark - Book Operation Methods
 
+- (void)dealloc
+{
+    [super dealloc];
+}
+
 - (void)beginOperation
 {
     // Following Dave Dribins pattern 
