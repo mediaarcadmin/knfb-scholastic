@@ -87,7 +87,7 @@
 
         // watch for new wishlist items coming in
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reloadWishlist)
+                                                 selector:@selector(wishlistSyncCompleted:)
                                                      name:SCHWishListSyncComponentDidCompleteNotification
                                                    object:nil];
         // watch for new info becoming available from the recommendation manager
@@ -109,6 +109,7 @@
     // we need to maintain this local copy, so that items can 
     // be unticked but remain in the list
     self.localWishListItems = [self.appProfile wishListItemDictionaries];
+    [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[self.appProfile appRecommendationItemsForWishlists]];
     
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -208,6 +209,12 @@
     }
 
     [self.mainTableView reloadData];
+}
+
+- (void)wishlistSyncCompleted:(NSNotification *)notification
+{
+    [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[self.appProfile appRecommendationItemsForWishlists]];
+    [self reloadWishlist];
 }
 
 - (void)reloadWishlist

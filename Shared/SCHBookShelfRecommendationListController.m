@@ -114,7 +114,8 @@
     [super viewDidLoad];
     
     [self refreshFromAppProfile];
-    [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[self.appProfile appRecommendationItems]];
+    NSArray *allAppRecommendationItems = [[self.appProfile appRecommendationItemsForTopFavorites] arrayByAddingObjectsFromArray:[self.appProfile appRecommendationItemsForWishlists]];
+    [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:allAppRecommendationItems];
     
     // iPad specific setup
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -230,7 +231,7 @@
 
 - (void)topRatingsSyncCompleted:(NSNotification *)notification
 {
-    [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[self.appProfile appRecommendationItems]];
+    [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[self.appProfile appRecommendationItemsForTopFavorites]];
     [self reloadRecommendations];
 }
 

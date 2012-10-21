@@ -28,7 +28,8 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 
 @interface SCHAppProfile ()
 
-- (NSSet *)recommendationItems;
+- (NSArray *)recommendationItems;
+- (NSArray *)wishlistItems;
 - (NSArray *)purchasedBooks;
 - (void)save;
 
@@ -91,12 +92,12 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     return ret;
 }
 
-- (NSSet *)recommendationItems
+- (NSArray *)recommendationItems
 {
 #if USE_TOP_RATINGS_FOR_PROFILE_RECOMMENDATIONS
-    return [[self appRecommendationTopRating] recommendationItems];
+    return [[[self appRecommendationTopRating] recommendationItems] allObjects];
 #else
-    return [[self appRecommendationProfile] recommendationItems];
+    return [[[self appRecommendationProfile] recommendationItems] allObjects];
 #endif
 }
 
@@ -126,9 +127,9 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 - (NSArray *)recommendationDictionaries
 {
     NSArray *ret = nil;
-    NSSet *allItems = [self recommendationItems];
+    NSArray *allItems = [self recommendationItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.isReady = %d", YES];
-    NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations] 
+    NSArray *filteredItems = [[allItems filteredArrayUsingPredicate:readyRecommendations]
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
 
     NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[filteredItems count]];
@@ -172,64 +173,59 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     return ret;
 }
 
-
-- (NSArray *)wishListItemDictionaries
+- (NSArray *)wishlistItems
 {
-    NSArray *ret = nil;
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListItem 
-                                        inManagedObjectContext:self.managedObjectContext]];	
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"WishListProfile.ProfileID = %@ AND State != %@", 
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHWishListItem
+                                        inManagedObjectContext:self.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"WishListProfile.ProfileID = %@ AND State != %@",
                                 self.ProfileItem.ID, [NSNumber numberWithStatus:kSCHStatusDeleted]]];
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObjects:
                                       [NSSortDescriptor sortDescriptorWithKey:SCHSyncEntityLastModified ascending:NO],
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHWishListTitle ascending:YES],
                                       nil]];
     
-    
     NSError *error = nil;
-    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
     if (result == nil) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    } else {
-        
-        NSArray *purchasedBooks = [self purchasedBooks];
-        
-        NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[result count]];
-        
-        for (SCHWishListItem *item in result) {
-            NSDictionary *wishlistDictionary = [item dictionary];
-            if (wishlistDictionary &&
-                [purchasedBooks containsObject:[wishlistDictionary objectForKey:kSCHWishListISBN]] == NO) {
-                [objectArray addObject:wishlistDictionary];
-            }
-        }
-        
-        ret = [NSArray arrayWithArray:objectArray];
-        
-        [self processWishlistItems:result];
+        NSLog(@"Error whilst fetching wishlistItems %@, %@", error, [error userInfo]);
     }
     
-    [fetchRequest release], fetchRequest = nil;        
+    return result;
+}
+
+- (NSArray *)wishListItemDictionaries
+{
+    NSArray *ret = nil;
+    NSArray *allItems = [self wishlistItems];
+    
+    NSArray *purchasedBooks = [self purchasedBooks];
+    
+    NSMutableArray *objectArray = [NSMutableArray arrayWithCapacity:[allItems count]];
+    
+    for (SCHWishListItem *item in allItems) {
+        NSDictionary *wishlistDictionary = [item dictionary];
+        if (wishlistDictionary &&
+            [purchasedBooks containsObject:[wishlistDictionary objectForKey:kSCHWishListISBN]] == NO) {
+            [objectArray addObject:wishlistDictionary];
+        }
+    }
+    
+    ret = [NSArray arrayWithArray:objectArray];
     
     return ret;
 }
 
-- (NSArray *)appRecommendationItems
+- (NSArray *)appRecommendationItemsForTopFavorites
 {
-    return [[[self recommendationItems] allObjects] valueForKey:@"appRecommendationItem"];
+    return [[self recommendationItems] valueForKey:@"appRecommendationItem"];
 }
 
-- (void)processWishlistItems:(NSArray *)wishlists
+- (NSArray *)appRecommendationItemsForWishlists
 {
-    if ([wishlists count] > 0) {
-        for (SCHWishListItem *item in wishlists) {
-            [item.appRecommendationItem processUserAction];
-        }
-
-        [self save];
-    }
+    return [[self wishlistItems] valueForKey:@"appRecommendationItem"];
 }
 
 - (void)addToWishList:(NSDictionary *)wishListItem
