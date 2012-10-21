@@ -52,10 +52,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:SCHRecommendationURLRequestOperationDidUpdateNotification
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:SCHRecommendationThumbnailOperationDidUpdateNotification
+                                                    name:kSCHRecommendationStateUpdateNotification
                                                   object:nil];
 
     delegate = nil;
@@ -337,13 +334,9 @@
     // watch for new new info or book covers becoming available from the recommendation manager
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(recommendationDidUpdate:)
-                                                 name:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                                 name:kSCHRecommendationStateUpdateNotification
                                                object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(recommendationDidUpdate:)
-                                                 name:SCHRecommendationThumbnailOperationDidUpdateNotification
-                                               object:nil];
 }
 
 - (void)recommendationDidUpdate:(NSNotification *)notification

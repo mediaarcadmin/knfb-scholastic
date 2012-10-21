@@ -20,6 +20,8 @@
 #import "NSDate+ServerDate.h"
 
 static const NSUInteger kSCHRecommendationsManagerBatchSize = 10;
+NSString * const kSCHRecommendationStateUpdateNotification = @"SCHRecommendationStateUpdateNotification";
+
 
 @interface SCHRecommendationManager()
 
@@ -32,7 +34,8 @@ static const NSUInteger kSCHRecommendationsManagerBatchSize = 10;
 - (void)processIsbns:(NSArray *)isbns;
 - (void)checkStateForAllRecommendations;
 - (void)redispatchIsbn:(NSString *)isbn;
-
+- (void)processRecommendationItems:(NSArray *)recommendationItems forcePendingItemsToProcess:(BOOL)force;
+- (void)postRecommendationStateUpdate:(NSString *)isbn;
 + (BOOL)urlHasExpired:(NSString *)urlString;
 
 @property (readwrite, retain) NSOperationQueue *processingQueue;
@@ -143,6 +146,11 @@ static SCHRecommendationManager *sharedManager = nil;
 
 #pragma mark - Recommendation State Check
 
+- (void)beginProcessingForRecommendationItems:(NSArray *)recommendationItems
+{
+    [self processRecommendationItems:recommendationItems forcePendingItemsToProcess:YES];
+}
+
 - (void)checkStateForAllRecommendations
 {
     NSAssert([NSThread isMainThread], @"checkStateForAllRecommendations must run on main thread");
@@ -160,11 +168,20 @@ static SCHRecommendationManager *sharedManager = nil;
         NSLog(@"Unresolved error fetching recommendations %@, %@", error, [error userInfo]);
     }
     
+    [self processRecommendationItems:allRecommendationItems forcePendingItemsToProcess:NO];
+}
+
+- (void)processRecommendationItems:(NSArray *)recommendationItems forcePendingItemsToProcess:(BOOL)force
+{
     NSMutableArray *isbnsToBeIndividuallyProcessed = [NSMutableArray array];
     NSMutableArray *isbnsToBeBatchProcessed = [NSMutableArray array];
     
-	for (SCHAppRecommendationItem *recommendationItem in allRecommendationItems) {
+	for (SCHAppRecommendationItem *recommendationItem in recommendationItems) {
         BOOL batchProcess = NO;
+        
+        if (force && ([recommendationItem processingState] == kSCHAppRecommendationProcessingStateWaitingOnUserAction)) {
+            [recommendationItem setProcessingState:kSCHAppRecommendationProcessingStateNoMetadata];
+        }
         
         if ([self recommendationNeedsProcessing:recommendationItem batch:&batchProcess]) {
             if (batchProcess) {
@@ -333,6 +350,7 @@ static SCHRecommendationManager *sharedManager = nil;
                 urlOp.isbns = [NSArray arrayWithObject:isbn];
                 
                 [urlOp setNotCancelledCompletionBlock:^{
+                    [self postRecommendationStateUpdate:isbn];
                     [self redispatchIsbn:isbn];
                 }];
                 
@@ -368,6 +386,7 @@ static SCHRecommendationManager *sharedManager = nil;
                 thumbOp.isbn = isbn;
                 
                 [thumbOp setNotCancelledCompletionBlock:^{
+                    [self postRecommendationStateUpdate:isbn];
                     [self redispatchIsbn:isbn];
                 }];
                 
@@ -514,6 +533,25 @@ static SCHRecommendationManager *sharedManager = nil;
     }
     
     return ret;
+}
+
+- (void)postRecommendationStateUpdate:(NSString *)isbn
+{
+    dispatch_block_t notify = ^{
+        if (isbn != nil) {
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:isbn
+                                                                 forKey:kSCHAppRecommendationItemISBN];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHRecommendationStateUpdateNotification
+                                                                object:nil
+                                                              userInfo:userInfo];
+        }
+    };
+    
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), notify);
+    } else {
+        notify();
+    }
 }
 
 #pragma mark - Class methods

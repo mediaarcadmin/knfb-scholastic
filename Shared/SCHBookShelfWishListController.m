@@ -56,7 +56,7 @@
                                                     name:SCHWishListSyncComponentDidCompleteNotification
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                                    name:kSCHRecommendationStateUpdateNotification
                                                   object:nil];
 
     // release view objects
@@ -93,7 +93,7 @@
         // watch for new info becoming available from the recommendation manager
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(recommendationDidUpdate:)
-                                                     name:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                                     name:kSCHRecommendationStateUpdateNotification
                                                    object:nil];
     }
     return self;

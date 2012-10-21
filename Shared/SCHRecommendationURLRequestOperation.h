@@ -8,9 +8,6 @@
 
 #import "SCHRecommendationBatchOperation.h"
 
-// Constants
-extern NSString * const SCHRecommendationURLRequestOperationDidUpdateNotification;
-
 @interface SCHRecommendationURLRequestOperation : SCHRecommendationBatchOperation
 
 @end

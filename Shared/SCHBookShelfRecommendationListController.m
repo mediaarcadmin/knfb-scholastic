@@ -63,7 +63,7 @@
                                                     name:SCHTopRatingsSyncComponentDidCompleteNotification
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                                    name:kSCHRecommendationStateUpdateNotification
                                                   object:nil];
     
     // release view objects
@@ -94,13 +94,13 @@
 
         // watch for new recommendations coming in
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reloadRecommendations)
+                                                 selector:@selector(topRatingsSyncCompleted:)
                                                      name:SCHTopRatingsSyncComponentDidCompleteNotification
                                                    object:nil];
         // watch for new info becoming available from the recommendation manager
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(recommendationDidUpdate:)
-                                                     name:SCHRecommendationURLRequestOperationDidUpdateNotification
+                                                     name:kSCHRecommendationStateUpdateNotification
                                                    object:nil];
 
     }
@@ -114,6 +114,7 @@
     [super viewDidLoad];
     
     [self refreshFromAppProfile];
+    [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[self.appProfile appRecommendationItems]];
     
     // iPad specific setup
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -225,6 +226,12 @@
     // reload table data
     self.localRecommendationItems = [self.appProfile recommendationDictionaries];
     [self.mainTableView reloadData];
+}
+
+- (void)topRatingsSyncCompleted:(NSNotification *)notification
+{
+    [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[self.appProfile appRecommendationItems]];
+    [self reloadRecommendations];
 }
 
 - (void)recommendationListView:(SCHRecommendationListView *)listView removedISBNFromWishList:(NSString *)ISBN

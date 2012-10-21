@@ -127,8 +127,6 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
 {
     NSArray *ret = nil;
     NSSet *allItems = [self recommendationItems];
-    // start processing any recommendations
-    [self processUserAction:allItems];
     NSPredicate *readyRecommendations = [NSPredicate predicateWithFormat:@"appRecommendationItem.isReady = %d", YES];
     NSArray *filteredItems = [[allItems filteredSetUsingPredicate:readyRecommendations] 
                               sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
@@ -150,15 +148,6 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     ret = [NSArray arrayWithArray:objectArray];
 
     return ret;
-}
-
-- (void)processUserAction:(NSSet *)recommendations
-{
-    for (SCHRecommendationItem *item in recommendations) {
-        [item.appRecommendationItem processUserAction];
-    }
-
-    [self save];
 }
 
 - (SCHWishListProfile *)wishListProfile
@@ -225,6 +214,11 @@ NSString * const kSCHAppProfile = @"SCHAppProfile";
     [fetchRequest release], fetchRequest = nil;        
     
     return ret;
+}
+
+- (NSArray *)appRecommendationItems
+{
+    return [[[self recommendationItems] allObjects] valueForKey:@"appRecommendationItem"];
 }
 
 - (void)processWishlistItems:(NSArray *)wishlists

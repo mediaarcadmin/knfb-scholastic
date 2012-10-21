@@ -35,6 +35,7 @@ extern NSString * const kSCHAppProfile;
 - (SCHAppRecommendationProfile *)appRecommendationProfile;
 - (SCHAppRecommendationTopRating *)appRecommendationTopRating;
 - (NSArray *)recommendationDictionaries;
+- (NSArray *)appRecommendationItems;
 - (SCHWishListProfile *)wishListProfile;
 - (NSArray *)wishListItemDictionaries;
 - (void)addToWishList:(NSDictionary *)wishListItem;
