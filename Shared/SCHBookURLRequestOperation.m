@@ -56,7 +56,7 @@
             } forBookWithIdentifier:identifier];
             [self setProcessingState:SCHBookProcessingStateNoCoverImage forBookWithIdentifier:identifier];
         } else {
-            NSDictionary *bookItem = [NSDictionary dictionaryWithObjectsAndKeys:identifier, kURLManagerBookIdentifier, version, kURLManagerVersion, nil];
+            NSDictionary *bookItem = [NSDictionary dictionaryWithObjectsAndKeys:identifier, kURLManagerBookIdentifier, [NSNumber numberWithInteger:version], kURLManagerVersion, nil];
             [bookDictionaries addObject:bookItem];
         }
     }
