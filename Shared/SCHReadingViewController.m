@@ -187,6 +187,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation;
 - (BOOL)shouldShowBookRecommendationsForReadingView:(SCHReadingView *)readingView;
+- (void)reloadRecommendationsContainer;
 - (void)commitWishListChanges;
 
 @end
@@ -2560,6 +2561,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
     
+    // We are about to display recommendations so start processing them
+    [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[book appRecommendationItemsForBook]];
+
     if ([book isSampleBook]) {
         // show the sample book version of recommendations
         SCHRecommendationSampleView *recommendationSampleView = [[[self.recommendationSampleViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
@@ -2607,8 +2611,46 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                  selector:@selector(retrieveRecommendationsForBooksOperationCreateOrUpdateBooks:)
                                                      name:SCHRetrieveRecommendationsForBooksOperationCreateOrUpdateBooksNotification
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(recommendationDidUpdate:)
+                                                     name:kSCHRecommendationStateUpdateNotification
+                                                   object:nil];
 
         return [recommendationsContainer autorelease];
+    }
+}
+
+- (void)reloadRecommendationsContainer
+{
+    self.recommendationsDictionaries = nil;
+    
+    [self.recommendationsContainer setRecommendations:self.recommendationsDictionaries
+                         modifiedWishListDictionaries:self.modifiedWishListDictionaries
+                                     listViewDelegate:self];
+
+}
+
+- (void)recommendationDidUpdate:(NSNotification *)notification
+{
+    NSDictionary *recommendationItemDictionary = notification.userInfo;
+    NSString *updatedRecommendationISBN = [recommendationItemDictionary objectForKey:kSCHAppRecommendationItemISBN];
+    
+    BOOL match = NO;
+    
+    if (updatedRecommendationISBN != nil) {
+        for (NSDictionary *recommendationDict in self.recommendationsDictionaries) {
+            NSString *recommendationISBN = [recommendationDict objectForKey:kSCHAppRecommendationItemISBN];
+            
+            if (recommendationISBN != nil && [updatedRecommendationISBN isEqualToString:recommendationISBN] == YES) {
+                match = YES;
+                break;
+            }
+        }
+    }
+    
+    if (match) {
+        [self reloadRecommendationsContainer];
     }
 }
 
@@ -2618,12 +2660,14 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
     for (SCHBookIdentifier *bookId in booksCreatedOrUpdated) {
         if ([bookId isEqual:self.bookIdentifier] == YES) {
-            // refetch dictionaries
-            self.recommendationsDictionaries = nil;
 
-            [self.recommendationsContainer setRecommendations:self.recommendationsDictionaries
-                            modifiedWishListDictionaries:self.modifiedWishListDictionaries
-                                        listViewDelegate:self];
+            // We are about to update recommendations so start processing them
+            SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+            SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];
+            [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[book appRecommendationItemsForBook]];
+            
+            [self reloadRecommendationsContainer];
+
             break;
         }
     }

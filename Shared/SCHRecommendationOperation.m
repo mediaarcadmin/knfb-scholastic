@@ -29,6 +29,7 @@
 	}
 	
     if (newIsbn != isbn) {
+        [[SCHRecommendationManager sharedManager] setProcessing:YES forIsbn:self.isbn];
         [isbn release];
         isbn = [newIsbn copy];
     }
@@ -39,7 +40,6 @@
 - (void)start
 {
 	if (self.isbn && ![self isCancelled]) {
-        [[SCHRecommendationManager sharedManager] setProcessing:YES forIsbn:self.isbn];
 		[self beginOperation];
 	} else {
         [self endOperation];
@@ -154,7 +154,7 @@
 {
     [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
         item.state = [NSNumber numberWithInt: (int) state];
-    }];
+    } forRecommendationWithIsbn:recommendationIsbn];
 }
 
 - (void)setNotCancelledCompletionBlock:(void (^)(void))block
@@ -187,7 +187,7 @@
             item.state = [NSNumber numberWithInt:kSCHAppRecommendationProcessingStateNoMetadata];
             item.coverURLExpiredCount = [NSNumber numberWithInteger:newCoverURLExpiredCount];
         }
-    }];
+    } forRecommendationWithIsbn:recommendationIsbn];
 }
 
 // NOTE: SCHRecommendationURLRequestOperation performs the same operation in it's

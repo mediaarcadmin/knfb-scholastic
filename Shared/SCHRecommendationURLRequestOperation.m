@@ -89,7 +89,7 @@
         NSUInteger successCount = [successURLs count];
         NSUInteger failureCount = [failureURLs count];
         
-        NSLog(@"Error when requesting URLS. Received %d success and %d failures", successCount, failureCount);
+        NSLog(@"Error when requesting URLs. Received %d success and %d failures", successCount, failureCount);
         
         if ((successCount + failureCount) == 0) {
             // If we get an error from the service with no identifying isbns we fail this operation (and any other operations waiting on URLs)
@@ -125,7 +125,6 @@
                 if (!coverUrlIsValid) {
                     [self setCoverURLExpiredStateForRecommendationWithIsbn:self.isbn];
                 } else {
-                    NSLog(@"Successful URL retrieval for %@!", succeeededIsbn);
                     [self performWithRecommendationAndSave:^(SCHAppRecommendationItem *item) {
                         [item setCoverURL:[contentMetadataDictionary valueForKey:kSCHLibreAccessWebServiceCoverURL]];
                         [item setAuthor:[contentMetadataDictionary valueForKey:kSCHLibreAccessWebServiceAuthor]];
@@ -146,8 +145,9 @@
     for (SCHBookIdentifier *failedBookIdentifier in failureURLs) {
         
         NSString *failedIsbn = [failedBookIdentifier isbn];
-
+        
         if ([self.isbns containsObject:failedIsbn]) {
+
             //NSInteger errorCode = [[contentMetadataDictionary objectForKey:kSCHAppRecommendationItemErrorCode] intValue];
             
             //if (errorCode == 75) {

@@ -296,9 +296,7 @@
             } else {
                 recommendationView.showsBottomRule = YES;
             }
-            
-            [recommendationView acceptUpdatesFromRecommendationManager];
-            
+                        
             [cell addSubview:recommendationView];
             [recommendationView release];
         }
