@@ -29,6 +29,8 @@ NSString * const kURLManagerBookIdentifier = @"URLManagerBookIdentifier";
 NSString * const kURLManagerVersion = @"URLManagerVersion";
 static NSUInteger const kSCHURLManagerMaxConnections = 6;
 
+NSString * const kSCHURLManagerErrorDomain = @"com.knfb.scholastic.URLManagerErrorDomain";
+
 @interface SCHURLManager ()
 
 - (void)requestURLForBookOnMainThread:(NSDictionary *)parameters;
@@ -41,6 +43,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 - (void)clearOnMainThread;
 - (void)shakeTable;
 - (NSDictionary *)processBatchContentMetadataItems:(NSArray *)contentMetadataItems
+                   unpopulatedContentMetadataItems:(BOOL)unpopulatedContentMetadataItems
                                              error:(NSError *)error;
 - (void)endBackgroundTask;
 
@@ -348,10 +351,11 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 	
 	if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerBatchComplete
-																object:self
-                                                              userInfo:[self processBatchContentMetadataItems:list
-                                                                                                        error:nil]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerBatchComplete
+                                                            object:self
+                                                          userInfo:[self processBatchContentMetadataItems:list
+                                                                          unpopulatedContentMetadataItems:NO
+                                                                                                    error:nil]];
 	}
 	
     [self endBackgroundTask];
@@ -366,6 +370,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 	requestCount--;
 	
     NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
+    BOOL unpopulatedContentMetadataItems = [list count] == 0;
     // if the response had no contentmetadataitems then use the requestInfo
     // for example, this will happen if an invalid property was sent
     if ([list count] < 1) {
@@ -375,6 +380,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
     [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerBatchComplete
                                                             object:self
                                                           userInfo:[self processBatchContentMetadataItems:list
+                                                                          unpopulatedContentMetadataItems:unpopulatedContentMetadataItems
                                                                                                     error:error]];
     
     [self endBackgroundTask];
@@ -383,6 +389,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 }
 
 - (NSDictionary *)processBatchContentMetadataItems:(NSArray *)contentMetadataItems
+                   unpopulatedContentMetadataItems:(BOOL)unpopulatedContentMetadataItems
                                              error:(NSError *)error
 {
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];
@@ -390,14 +397,29 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
     NSMutableArray *failureList = [NSMutableArray array];    
 
     for (NSDictionary *contentMetadataItem in contentMetadataItems) {
-        if ([SCHContentMetadataItem isValidContentMetadataItemDictionary:contentMetadataItem] == YES) {
+        NSString *coverURL = makeNullNil([contentMetadataItem objectForKey:kSCHLibreAccessWebServiceCoverURL]);
+        if ([SCHContentMetadataItem isValidContentMetadataItemDictionary:contentMetadataItem] == YES &&
+            [[coverURL stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 0) {
             [successList addObject:contentMetadataItem];
         } else {
             SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:contentMetadataItem] autorelease];
             NSAssert(bookIdentifier, @"A failed contentMetadataItem should have a valid book identifier");
             NSLog(@"Failed URLs for %@", bookIdentifier);
 
-            [failureList addObject:(bookIdentifier == nil ? [NSNull null] : bookIdentifier)];
+            NSInteger code = kSCHURLManagerUnknownError;
+            if (unpopulatedContentMetadataItems == YES) {
+                code = kSCHURLManagerUnpopulatedDataError;
+            } else {
+                code = kSCHURLManagerPartiallyPopulatedDataError;
+            }
+            NSError *failureError = [NSError errorWithDomain:kSCHURLManagerErrorDomain
+                                                 code:code
+                                             userInfo:nil];
+            NSDictionary *failureObject = [NSDictionary dictionaryWithObjectsAndKeys:(bookIdentifier == nil ? [NSNull null] : bookIdentifier), kSCHBookIdentifierBookIdentifier,
+                                           failureError, kSCHAppRecommendationItemError,
+                                           nil];
+
+            [failureList addObject:failureObject];
         }
     }
 
