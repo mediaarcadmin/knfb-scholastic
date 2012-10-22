@@ -218,22 +218,6 @@ NSString * const kSCHAppRecommendationItemFullCoverImagePath = @"FullCoverImageP
     return isReady;
 }
 
-- (BOOL)processUserAction
-{
-    BOOL ret = NO;
-
-    if ([self processingState] == kSCHAppRecommendationProcessingStateWaitingOnUserAction) {
-        [self setProcessingState:kSCHAppRecommendationProcessingStateNoMetadata];
-
-        [[SCHRecommendationManager sharedManager] checkStateForRecommendation:self];
-
-        ret = YES;
-    }
-
-    return ret;
-}
-
-
 // when there are no wishlist or recommendation items the appRecommendationItem
 // gets deleted as well as the on disk files
 - (void)deleteAllFiles

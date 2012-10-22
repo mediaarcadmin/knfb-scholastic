@@ -32,7 +32,6 @@ NSString * const kSCHRecommendationStateUpdateNotification = @"SCHRecommendation
 - (BOOL)isbnNeedsProcessing:(NSString *)isbn;
 - (void)processIsbn:(NSString *)isbn;
 - (void)processIsbns:(NSArray *)isbns;
-- (void)checkStateForAllRecommendations;
 - (void)redispatchIsbn:(NSString *)isbn;
 - (void)processRecommendationItems:(NSArray *)recommendationItems forcePendingItemsToProcess:(BOOL)force;
 - (void)postRecommendationStateUpdate:(NSString *)isbn;
@@ -148,31 +147,21 @@ static SCHRecommendationManager *sharedManager = nil;
 
 - (void)beginProcessingForRecommendationItems:(NSArray *)recommendationItems
 {
-    [self processRecommendationItems:recommendationItems forcePendingItemsToProcess:YES];
-}
-
-- (void)checkStateForAllRecommendations
-{
-    NSAssert([NSThread isMainThread], @"checkStateForAllRecommendations must run on main thread");
-
-    NSArray *allRecommendationItems = nil;
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    dispatch_block_t processBlock = ^{
+        [self processRecommendationItems:recommendationItems forcePendingItemsToProcess:YES];
+    };
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationItem 
-                                        inManagedObjectContext:self.managedObjectContext]];	
-    
-    NSError *error = nil;
-    allRecommendationItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
-    [fetchRequest release], fetchRequest = nil;
-    if (allRecommendationItems == nil) {
-        NSLog(@"Unresolved error fetching recommendations %@, %@", error, [error userInfo]);
+    if ([NSThread isMainThread]) {
+        processBlock();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), processBlock);
     }
-    
-    [self processRecommendationItems:allRecommendationItems forcePendingItemsToProcess:NO];
 }
 
 - (void)processRecommendationItems:(NSArray *)recommendationItems forcePendingItemsToProcess:(BOOL)force
 {
+    NSAssert([NSThread isMainThread], @"processRecommendationItems must run on main thread");
+
     NSMutableArray *isbnsToBeIndividuallyProcessed = [NSMutableArray array];
     NSMutableArray *isbnsToBeBatchProcessed = [NSMutableArray array];
     
@@ -498,13 +487,6 @@ static SCHRecommendationManager *sharedManager = nil;
 	}		
 }
 
-- (void)recommendationSyncDidComplete:(NSNotification *)notification
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self checkStateForAllRecommendations];
-    });
-}
-
 #pragma mark - SCHAppRecommendationItem vending
 
 - (SCHAppRecommendationItem *)appRecommendationForIsbn:(NSString *)isbn
@@ -570,23 +552,7 @@ static SCHRecommendationManager *sharedManager = nil;
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(enterForeground) 
 													 name:UIApplicationWillEnterForegroundNotification 
-												   object:nil];	
-        
-        [[NSNotificationCenter defaultCenter] addObserver:sharedManager 
-												 selector:@selector(recommendationSyncDidComplete:) 
-													 name:SCHRecommendationSyncComponentDidCompleteNotification 
 												   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:sharedManager
-												 selector:@selector(recommendationSyncDidComplete:)
-													 name:SCHWishListSyncComponentDidCompleteNotification
-												   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:sharedManager
-												 selector:@selector(recommendationSyncDidComplete:)
-													 name:SCHTopRatingsSyncComponentDidCompleteNotification
-												   object:nil];
-
     });
 	
 	return sharedManager;

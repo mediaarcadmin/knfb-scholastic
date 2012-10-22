@@ -60,7 +60,6 @@ typedef enum {
 - (UIImage *)bookCover;
 - (BOOL)isInUse;
 - (BOOL)isReady;
-- (BOOL)processUserAction;
 
 - (void)deleteAllFiles;
 

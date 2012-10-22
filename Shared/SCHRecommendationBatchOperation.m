@@ -30,6 +30,11 @@
 		return;
 	}
 	
+    for (NSString *isbn in array) {
+        [[SCHRecommendationManager sharedManager] setProcessing:YES forIsbn:isbn];
+        
+    }
+    
     NSArray *newIsbns = [array copy];
     [isbns release];
     isbns = newIsbns;    
@@ -40,10 +45,6 @@
 - (void)start
 {
 	if ([self.isbns count] && ![self isCancelled]) {
-        for (NSString *isbn in self.isbns) {
-            [[SCHRecommendationManager sharedManager] setProcessing:YES forIsbn:isbn];
-
-        }
 		[self beginOperation];
 	} else {
         [self endOperation];

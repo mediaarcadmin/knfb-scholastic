@@ -80,7 +80,6 @@ modifiedWishListDictionaries:(NSArray *)modifiedWishListDictionaries
             listView.showsWishListButton = [[SCHAppStateManager sharedAppStateManager] shouldShowWishList];
 
             [listView updateWithRecommendationItem:recommendationDictionary];
-            [listView acceptUpdatesFromRecommendationManager];
 
             NSString *ISBN = [recommendationDictionary objectForKey:kSCHAppRecommendationItemISBN];
 

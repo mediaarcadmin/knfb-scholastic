@@ -39,8 +39,6 @@
 - (void)updateWithWishListItem:(NSDictionary *)item;
 - (IBAction)toggledOnWishListButton:(UIButton *)wishListButton;
 
-- (void)acceptUpdatesFromRecommendationManager;
-
 @end
 
 @protocol SCHRecommendationListViewDelegate <NSObject>

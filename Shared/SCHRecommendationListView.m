@@ -327,26 +327,4 @@
 //    NSLog(@"cover frame: %@", NSStringFromCGRect(self.coverImageView.frame));
 }
 
-#pragma mark - RecommendationManager update notifications
-
-- (void)acceptUpdatesFromRecommendationManager
-{
-    // watch for new new info or book covers becoming available from the recommendation manager
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(recommendationDidUpdate:)
-                                                 name:kSCHRecommendationStateUpdateNotification
-                                               object:nil];
-
-}
-
-- (void)recommendationDidUpdate:(NSNotification *)notification
-{
-    NSDictionary *recommendationItemDictionary = notification.userInfo;
-    NSString *recommendationISBN = [recommendationItemDictionary objectForKey:kSCHAppRecommendationItemISBN];
-
-    if (recommendationISBN != nil && [self.ISBN isEqualToString:recommendationISBN] == YES) {
-        [self updateWithRecommendationItem:recommendationItemDictionary];
-    }
-}
-
 @end

@@ -248,15 +248,21 @@
 {
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
     
-    SCHUpdateBooksViewController *controller = [[[SCHUpdateBooksViewController alloc] init] autorelease];
-    controller.appController = self;
-    controller.bookUpdates = [[[SCHBookUpdates alloc] init] autorelease];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-    controller.bookUpdates.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
+        SCHUpdateBooksViewController *controller = [[[SCHUpdateBooksViewController alloc] init] autorelease];
+        controller.appController = self;
+        controller.bookUpdates = [[[SCHBookUpdates alloc] init] autorelease];
 
+        AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+        controller.bookUpdates.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
+
+        
+        [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, controller, nil] animated:shouldAnimate];
     
-    [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, controller, nil] animated:shouldAnimate];
+    } else {
+        [self pushEbookUpdatesAnimated:shouldAnimate];
+    }
 }
 
 #pragma mark - Book Presentation Methods
@@ -458,6 +464,18 @@
     }
     
     [self.settingsViewController displaySettingsPanel:kSCHSettingsPanelReadingManager];
+    [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, nil] animated:animated];
+}
+
+- (void)pushEbookUpdatesAnimated:(BOOL)animated
+{
+    if ([[self.profileViewController profileItems] count]) {
+        [self.settingsViewController setBackButtonHidden:NO];
+    } else {
+        [self.settingsViewController setBackButtonHidden:YES];
+    }
+    
+    [self.settingsViewController displaySettingsPanel:kSCHSettingsPanelEbookUpdates];
     [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, nil] animated:animated];
 }
 
