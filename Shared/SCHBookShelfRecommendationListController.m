@@ -438,8 +438,8 @@
     NSString *updatedRecommendationISBN = [recommendationItemDictionary objectForKey:kSCHAppRecommendationItemISBN];
 
     if (updatedRecommendationISBN != nil) {
-        for (NSDictionary *recommendationDict in self.localRecommendationItems) {
-            NSString *recommendationISBN = [recommendationDict objectForKey:kSCHAppRecommendationItemISBN];
+        for (SCHAppRecommendationItem *recommendationItem in [self.appProfile appRecommendationItemsForTopFavorites]) {
+            NSString *recommendationISBN = [recommendationItem ContentIdentifier];
 
             if (recommendationISBN != nil && [updatedRecommendationISBN isEqualToString:recommendationISBN] == YES) {
                 [self reloadRecommendations];

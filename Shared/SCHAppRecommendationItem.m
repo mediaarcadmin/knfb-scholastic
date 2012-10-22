@@ -201,13 +201,13 @@ NSString * const kSCHAppRecommendationItemFullCoverImagePath = @"FullCoverImageP
         case kSCHAppRecommendationProcessingStateUnspecifiedError:               
         case kSCHAppRecommendationProcessingStateWaitingOnUserAction:  
         case kSCHAppRecommendationProcessingStateInvalidRecommendation:
+        case kSCHAppRecommendationProcessingStateNoMetadata:
             isReady = NO;
             break;
         case kSCHAppRecommendationProcessingStateThumbnailError:      
         case kSCHAppRecommendationProcessingStateCachedCoverError:    
         case kSCHAppRecommendationProcessingStateURLsNotPopulated:
         case kSCHAppRecommendationProcessingStateDownloadFailed:
-        case kSCHAppRecommendationProcessingStateNoMetadata:          
         case kSCHAppRecommendationProcessingStateNoCover:
         case kSCHAppRecommendationProcessingStateNoThumbnails:
         case kSCHAppRecommendationProcessingStateComplete:
