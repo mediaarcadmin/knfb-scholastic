@@ -395,8 +395,8 @@
     NSString *updatedRecommendationISBN = [recommendationItemDictionary objectForKey:kSCHAppRecommendationItemISBN];
 
     if (updatedRecommendationISBN != nil) {
-        for (NSDictionary *wishlistDict in self.localWishListItems) {
-            NSString *recommendationISBN = [wishlistDict objectForKey:kSCHAppRecommendationItemISBN];
+        for (SCHAppRecommendationItem *recommendationItem in [self.appProfile appRecommendationItemsForWishlists]) {
+            NSString *recommendationISBN = [recommendationItem ContentIdentifier];
 
             if (recommendationISBN != nil && [updatedRecommendationISBN isEqualToString:recommendationISBN] == YES) {
                 [self reloadWishlist];

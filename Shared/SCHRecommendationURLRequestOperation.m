@@ -142,21 +142,21 @@
         }
     }
     
-    for (SCHBookIdentifier *failedBookIdentifier in failureURLs) {
-        
+    for (NSDictionary *contentMetadataDictionary in failureURLs) {
+        SCHBookIdentifier *failedBookIdentifier = [contentMetadataDictionary objectForKey:kSCHBookIdentifierBookIdentifier];
         NSString *failedIsbn = [failedBookIdentifier isbn];
         
         if ([self.isbns containsObject:failedIsbn]) {
-
-            //NSInteger errorCode = [[contentMetadataDictionary objectForKey:kSCHAppRecommendationItemErrorCode] intValue];
             
-            //if (errorCode == 75) {
+            NSError *error = [contentMetadataDictionary objectForKey:kSCHAppRecommendationItemError];
+            
+            if ([error code] == kSCHURLManagerPartiallyPopulatedDataError) {
                 NSLog(@"Warning: recommendation URL request invalid for isbn %@", failedIsbn);
                 [self setProcessingState:kSCHAppRecommendationProcessingStateInvalidRecommendation forRecommendationWithIsbn:failedIsbn];
-            //} else {
-              //  NSLog(@"Warning: recommendation URL request failed %@", contentMetadataDictionary);
-                //[self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated forRecommendationWithIsbn:failedIsbn];
-            //}
+            } else {
+                NSLog(@"Warning: recommendation URL request failed %@", contentMetadataDictionary);
+                [self setProcessingState:kSCHAppRecommendationProcessingStateURLsNotPopulated forRecommendationWithIsbn:failedIsbn];
+            }
             
             matchedResults = YES;
         }

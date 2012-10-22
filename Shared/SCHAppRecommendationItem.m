@@ -15,7 +15,7 @@
 // Constants
 NSString * const kSCHAppRecommendationItem = @"SCHAppRecommendationItem";
 NSString * const kSCHAppRecommendationItemIsbn = @"isbn";
-NSString * const kSCHAppRecommendationItemErrorCode = @"errorCode";
+NSString * const kSCHAppRecommendationItemError = @"error";
 NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
 NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad = 140;
 NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 134;
@@ -201,13 +201,13 @@ NSString * const kSCHAppRecommendationItemFullCoverImagePath = @"FullCoverImageP
         case kSCHAppRecommendationProcessingStateUnspecifiedError:               
         case kSCHAppRecommendationProcessingStateWaitingOnUserAction:  
         case kSCHAppRecommendationProcessingStateInvalidRecommendation:
+        case kSCHAppRecommendationProcessingStateNoMetadata:
             isReady = NO;
             break;
         case kSCHAppRecommendationProcessingStateThumbnailError:      
         case kSCHAppRecommendationProcessingStateCachedCoverError:    
         case kSCHAppRecommendationProcessingStateURLsNotPopulated:
         case kSCHAppRecommendationProcessingStateDownloadFailed:
-        case kSCHAppRecommendationProcessingStateNoMetadata:          
         case kSCHAppRecommendationProcessingStateNoCover:
         case kSCHAppRecommendationProcessingStateNoThumbnails:
         case kSCHAppRecommendationProcessingStateComplete:

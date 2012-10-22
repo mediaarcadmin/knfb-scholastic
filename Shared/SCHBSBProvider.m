@@ -69,6 +69,11 @@ NSString * const SCHBSBManifestFile = @"/manifest.xml";
     return NO;
 }
 
+- (BOOL)containsFlowedRepresentation
+{
+    return YES;
+}
+
 - (void)resetDrmDecrypter
 {
     // noop

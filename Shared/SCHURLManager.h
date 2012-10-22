@@ -21,6 +21,14 @@ extern NSString * const kSCHURLManagerCleared;
 extern NSString * const kURLManagerBookIdentifier;
 extern NSString * const kURLManagerVersion;
 
+extern NSString * const kSCHURLManagerErrorDomain;
+typedef enum
+{
+    kSCHURLManagerUnknownError = 0,
+	kSCHURLManagerUnpopulatedDataError,
+	kSCHURLManagerPartiallyPopulatedDataError,  // This is the equivalent of the old 75 error code
+} SCHURLManagerError;
+
 @interface SCHURLManager : NSObject <BITAPIProxyDelegate>
 {	
 }

@@ -483,6 +483,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 #else
         if (![bookPackageProvider containsFixedRepresentation]) {
             self.forceLayoutType = SCHReadingViewLayoutTypeFlow;
+        } else if (![bookPackageProvider containsFlowedRepresentation]) {
+            self.forceLayoutType = SCHReadingViewLayoutTypeFixed;
         }
 #endif
         
@@ -782,6 +784,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     showOptions = NO;
 #else
     if (![self.bookPackageProvider containsFixedRepresentation]) {
+        showOptions = NO;
+    } else if (![bookPackageProvider containsFlowedRepresentation]) {
         showOptions = NO;
     }
 #endif
@@ -2639,9 +2643,13 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     BOOL match = NO;
     
     if (updatedRecommendationISBN != nil) {
-        for (NSDictionary *recommendationDict in self.recommendationsDictionaries) {
-            NSString *recommendationISBN = [recommendationDict objectForKey:kSCHAppRecommendationItemISBN];
-            
+        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+        SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];
+        [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[book appRecommendationItemsForBook]];
+
+        for (SCHAppRecommendationItem *recommendationItem in [book appRecommendationItemsForBook]) {
+            NSString *recommendationISBN = [recommendationItem ContentIdentifier];
+
             if (recommendationISBN != nil && [updatedRecommendationISBN isEqualToString:recommendationISBN] == YES) {
                 match = YES;
                 break;

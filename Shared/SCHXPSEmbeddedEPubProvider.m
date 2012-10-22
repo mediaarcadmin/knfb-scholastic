@@ -15,4 +15,9 @@
     return NO;
 }
 
+- (BOOL)containsFlowedRepresentation
+{
+    return YES;
+}
+
 @end
