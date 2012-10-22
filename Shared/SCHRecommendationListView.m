@@ -51,10 +51,6 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kSCHRecommendationStateUpdateNotification
-                                                  object:nil];
-
     delegate = nil;
     [recommendationBackgroundColor release], recommendationBackgroundColor = nil;
     [ISBN release], ISBN = nil;
