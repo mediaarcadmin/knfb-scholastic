@@ -2590,7 +2590,14 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         }
         recommendationSampleView.delegate = self;
         
-        if ([[book purchasedBooks] containsObject:self.bookIdentifier.isbn]) {
+        BOOL hideWishList = NO;
+        
+        if (![[SCHAppStateManager sharedAppStateManager] shouldShowWishList] ||
+            [[book purchasedBooks] containsObject:self.bookIdentifier.isbn]) {
+            hideWishList = YES;
+        }
+        
+        if (hideWishList) {
             [recommendationSampleView hideWishListButton];
         } else {
             NSString *ISBN = [recommendationDictionary objectForKey:kSCHAppRecommendationItemISBN];
