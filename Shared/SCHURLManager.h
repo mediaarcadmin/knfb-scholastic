@@ -26,7 +26,7 @@ typedef enum
 {
     kSCHURLManagerUnknownError = 0,
 	kSCHURLManagerUnpopulatedDataError,
-	kSCHURLManagerPartiallyPopulatedDataError,    
+	kSCHURLManagerPartiallyPopulatedDataError,  // This is the equivalent of the old 75 error code
 } SCHURLManagerError;
 
 @interface SCHURLManager : NSObject <BITAPIProxyDelegate>
