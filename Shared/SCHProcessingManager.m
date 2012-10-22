@@ -29,7 +29,7 @@
 // Constants
 NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
 NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerConnectionBusy";
-static const NSUInteger kSCHProcessingManagerBatchSize = 10;
+const NSUInteger kSCHProcessingManagerBatchSize = 10;
 
 #pragma mark - Class Extension
 

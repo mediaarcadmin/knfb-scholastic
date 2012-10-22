@@ -40,6 +40,7 @@ typedef enum {
 // Constants
 extern NSString * const kSCHProcessingManagerConnectionIdle;
 extern NSString * const kSCHProcessingManagerConnectionBusy;
+extern const NSUInteger kSCHProcessingManagerBatchSize;
 
 @interface SCHProcessingManager : NSObject {}
 

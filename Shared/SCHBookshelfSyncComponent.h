@@ -30,7 +30,6 @@ extern NSString * const SCHBookshelfSyncComponentDidFailNotification;
 - (void)removeProfile:(NSNumber *)profileID;
 - (BOOL)haveProfiles;
 - (BOOL)nextProfile;
-- (NSArray *)bookIdentifiersFromRequestInfo:(NSArray *)contentMetadataItems;
 - (SCHContentMetadataItem *)addContentMetadataItemFromMainThread:(NSDictionary *)webContentMetadataItem;
 - (void)syncContentMetadataItemsFromMainThread:(NSArray *)contentMetadataList;
 

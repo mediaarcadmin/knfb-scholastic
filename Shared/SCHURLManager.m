@@ -42,7 +42,6 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 - (void)shakeTable;
 - (NSDictionary *)processBatchContentMetadataItems:(NSArray *)contentMetadataItems
                                              error:(NSError *)error;
-- (BOOL)isValidContentMetadataItemDictionary:(NSDictionary *)contentMetadataItem;
 - (void)endBackgroundTask;
 
 @property (retain, nonatomic) NSMutableSet *table;
@@ -368,7 +367,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 	
     NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
     // if the response had no contentmetadataitems then use the requestInfo
-    // for example, this will happen if an invalid ISBN was sent
+    // for example, this will happen if an invalid property was sent
     if ([list count] < 1) {
         list = [requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata];
     }
@@ -391,7 +390,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
     NSMutableArray *failureList = [NSMutableArray array];    
 
     for (NSDictionary *contentMetadataItem in contentMetadataItems) {
-        if ([self isValidContentMetadataItemDictionary:contentMetadataItem] == YES) {
+        if ([SCHContentMetadataItem isValidContentMetadataItemDictionary:contentMetadataItem] == YES) {
             [successList addObject:contentMetadataItem];
         } else {
             SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:contentMetadataItem] autorelease];
@@ -409,25 +408,6 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
     }
 
     return [NSDictionary dictionaryWithDictionary:ret];
-}
-
-- (BOOL)isValidContentMetadataItemDictionary:(NSDictionary *)contentMetadataItem
-{
-    BOOL ret = NO;
-
-    if (contentMetadataItem != nil) {
-        NSString *contentIdentifier = makeNullNil([contentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]);
-        NSString *coverURL = makeNullNil([contentMetadataItem objectForKey:kSCHLibreAccessWebServiceCoverURL]);
-
-        // a valid response must include content identifier and cover url
-        // recommendations do not request content url so that is not included
-        if ([[contentIdentifier stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 0 &&
-            [[coverURL stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 0) {
-            ret = YES;
-        }
-    }
-
-    return ret;
 }
 
 - (void)endBackgroundTask

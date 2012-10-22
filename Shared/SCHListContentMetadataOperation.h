@@ -14,6 +14,8 @@
 
 @property (nonatomic, assign) BOOL useIndividualRequests;
 @property (nonatomic, retain) NSNumber *profileID;
+@property (nonatomic, retain) NSDictionary *requestInfo;
+@property (nonatomic, retain) NSError *responseError;
 
 - (void)syncContentMetadataItems:(NSArray *)contentMetadataList 
             managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;

@@ -91,6 +91,24 @@
         self.containerView.layer.masksToBounds = YES;
         self.containerView.layer.cornerRadius = 10.0f;
     }
+    
+    
+    self.cellControllers = [NSMutableDictionary dictionary];
+    self.availableBookUpdates = [self.bookUpdates availableBookUpdates];
+    
+    UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
+    [self.updateBooksButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+    
+    for (SCHAppBook *book in self.availableBookUpdates) {
+        SCHBookIdentifier *bookIdentifier = [book bookIdentifier];
+        SCHUpdateBooksTableViewCellController *tvc = [[SCHUpdateBooksTableViewCellController alloc] initWithBookIdentifier:bookIdentifier
+                                                                                                    inManagedObjectContext:self.bookUpdates.managedObjectContext];
+        [self.cellControllers setObject:tvc forKey:bookIdentifier];
+        [tvc release];
+    }
+    
+    [self.booksTable reloadData];
+
 }
 
 - (void)viewDidUnload
@@ -102,22 +120,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    self.cellControllers = [NSMutableDictionary dictionary];
-    self.availableBookUpdates = [self.bookUpdates availableBookUpdates];
-    
-    UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
-    [self.updateBooksButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
-
-    for (SCHAppBook *book in self.availableBookUpdates) {
-        SCHBookIdentifier *bookIdentifier = [book bookIdentifier];
-        SCHUpdateBooksTableViewCellController *tvc = [[SCHUpdateBooksTableViewCellController alloc] initWithBookIdentifier:bookIdentifier
-                                                                                                    inManagedObjectContext:self.bookUpdates.managedObjectContext];
-        [self.cellControllers setObject:tvc forKey:bookIdentifier];
-        [tvc release];
-    }
-    
-    [self.booksTable reloadData];
 }
 
 #pragma mark - UITableViewDataSource

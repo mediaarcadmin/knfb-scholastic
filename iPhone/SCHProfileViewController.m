@@ -770,7 +770,16 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr
 {
-    [self settings:nil];
+    if (self.simultaneousTapCount == 0) {
+        self.simultaneousTapCount++;
+        SCHProfileViewController *weakSelf = self;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kSCHProfileViewControllerMinimumDistinguishedTapDelay * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            weakSelf.simultaneousTapCount = 0;
+            
+            [self.appController presentEbookUpdates];
+        });
+    }
 }
 
 - (void)deviceDeregistered:(NSNotification *)notification

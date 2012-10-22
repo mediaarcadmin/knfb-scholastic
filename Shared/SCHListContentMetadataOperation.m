@@ -20,7 +20,11 @@
 
 @interface SCHListContentMetadataOperation ()
 
-- (void)postBookshelfSyncComponentBookReceivedNotification:(NSArray *)contentMetadataItems;
+- (void)postBookshelfSyncComponentFailureForAllRequestedBooks:(NSArray *)contentMetadataItems;
+- (NSArray *)bookIdentifiersFromDictionary:(NSArray *)contentMetadataItems
+                              includeValid:(BOOL)includeValid
+                            includeInvalid:(BOOL)includeInvalid;
+- (BOOL)postBookshelfSyncComponentBookReceivedNotification:(NSArray *)contentMetadataItems;
 - (NSArray *)localContentMetadataItemsWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 - (void)deleteStatisticsForBook:(SCHBookIdentifier *)identifier
            managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
@@ -33,65 +37,74 @@
 
 @synthesize useIndividualRequests;
 @synthesize profileID;
+@synthesize requestInfo;
+@synthesize responseError;
 
 - (void)main
 {
     SCHBookshelfSyncComponent *bookshelfSyncComponent = (SCHBookshelfSyncComponent *)self.syncComponent;
     
     @try {
-        BOOL triggerDidCompleteNotification = NO;
-        if (self.useIndividualRequests == YES) {
-            bookshelfSyncComponent.requestCount--;
-            triggerDidCompleteNotification = (bookshelfSyncComponent.requestCount < 1);
-        }
-                
         NSArray *list = [self.result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
-        [self syncContentMetadataItems:list 
-                  managedObjectContext:self.backgroundThreadManagedObjectContext];
-        
-        if (self.useIndividualRequests == YES) {
-            if ([list count] > 0) {
-                [self postBookshelfSyncComponentBookReceivedNotification:[NSArray arrayWithObject:[list objectAtIndex:0]]];
+
+        // if the response had no contentmetadataitems then we fail all the
+        // requested books, otherwise we process the books
+        // for example, this will happen if an invalid property was sent
+        if ([list count] < 1) {
+            [self postBookshelfSyncComponentFailureForAllRequestedBooks:[requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata]];
+        } else {
+            BOOL triggerDidCompleteNotification = NO;
+            if (self.useIndividualRequests == YES) {
+                bookshelfSyncComponent.requestCount -= [list count];
+                triggerDidCompleteNotification = (bookshelfSyncComponent.requestCount < 1);
             }
-            
-            if (triggerDidCompleteNotification == YES) {
+
+            [self syncContentMetadataItems:list
+                  managedObjectContext:self.backgroundThreadManagedObjectContext];
+
+            BOOL hadInvalidBooks = [self postBookshelfSyncComponentBookReceivedNotification:list];
+
+            if (self.useIndividualRequests == NO ||
+                triggerDidCompleteNotification == YES) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (self.isCancelled == NO) {
-                        if (self.profileID != nil) {
-                            [((SCHBookshelfSyncComponent *)self.syncComponent).profilesForBooks removeObject:self.profileID];
-                        }
+                        if (hadInvalidBooks == NO) {
+                            if (self.profileID != nil) {
+                                [((SCHBookshelfSyncComponent *)self.syncComponent).profilesForBooks
+                                 removeObject:self.profileID];
+                            }
 
-                        [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceListContentMetadata 
-                                                               result:nil 
-                                                             userInfo:self.userInfo 
-                                                     notificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                                 notificationUserInfo:nil];
+                            [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceListContentMetadata
+                                                                   result:nil
+                                                                 userInfo:self.userInfo
+                                                         notificationName:SCHBookshelfSyncComponentDidCompleteNotification
+                                                     notificationUserInfo:nil];
+                        } else {
+                            NSArray *bookIdentifiers = [self bookIdentifiersFromDictionary:[self.result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]
+                                                                              includeValid:NO
+                                                                            includeInvalid:YES];
+                            NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:bookIdentifiers
+                                                                                             forKey:SCHBookshelfSyncComponentBookIdentifiers];
+
+                            [bookshelfSyncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceListContentMetadata
+                                                                        error:self.responseError
+                                                                  requestInfo:self.requestInfo
+                                                                       result:nil
+                                                             notificationName:SCHBookshelfSyncComponentDidFailNotification
+                                                         notificationUserInfo:notificationUserInfo];
+                        }
                     }
                 });
             }
-        } else {
-            [self postBookshelfSyncComponentBookReceivedNotification:list];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (self.isCancelled == NO) {
-                    if (self.profileID != nil) {
-                        [((SCHBookshelfSyncComponent *)self.syncComponent).profilesForBooks removeObject:self.profileID];
-                    }
-
-                    [self.syncComponent completeWithSuccessMethod:kSCHLibreAccessWebServiceListContentMetadata 
-                                                           result:nil 
-                                                         userInfo:self.userInfo 
-                                                 notificationName:SCHBookshelfSyncComponentDidCompleteNotification 
-                                             notificationUserInfo:nil];
-                }
-            });
         }
     }
     @catch (NSException *exception) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.isCancelled == NO) {
-                NSArray *bookIdentifiers = [bookshelfSyncComponent bookIdentifiersFromRequestInfo:[self.result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
-                
+                NSArray *bookIdentifiers = [self bookIdentifiersFromDictionary:[self.result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]
+                                                                  includeValid:YES
+                                                                includeInvalid:YES];
+
                 if (self.useIndividualRequests == YES) {
                     [bookshelfSyncComponent.didReceiveFailedResponseBooks addObjectsFromArray:bookIdentifiers];
                     
@@ -131,19 +144,74 @@
     }                    
 }
 
-- (void)postBookshelfSyncComponentBookReceivedNotification:(NSArray *)contentMetadataItems
+- (void)postBookshelfSyncComponentFailureForAllRequestedBooks:(NSArray *)contentMetadataItems;
 {
-    NSMutableArray *bookIdentifiers = [NSMutableArray arrayWithCapacity:[contentMetadataItems count]];
-    
-    for (NSDictionary *book in contentMetadataItems) {
-        SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:book] autorelease];
-        if (bookIdentifier) {
-            [bookIdentifiers addObject:bookIdentifier];
+    NSArray *bookIdentifiers = [self bookIdentifiersFromDictionary:contentMetadataItems
+                                                      includeValid:YES
+                                                    includeInvalid:YES];
+    SCHBookshelfSyncComponent *bookshelfSyncComponent = (SCHBookshelfSyncComponent *)self.syncComponent;
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.isCancelled == NO) {
+            if (self.useIndividualRequests == YES) {
+                bookshelfSyncComponent.requestCount -= [contentMetadataItems count];
+                [bookshelfSyncComponent.didReceiveFailedResponseBooks addObjectsFromArray:bookIdentifiers];
+
+                if (bookshelfSyncComponent.requestCount < 1) {
+                    NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:bookshelfSyncComponent.didReceiveFailedResponseBooks
+                                                                                     forKey:SCHBookshelfSyncComponentBookIdentifiers];
+
+                    [bookshelfSyncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceListContentMetadata
+                                                                error:self.responseError
+                                                          requestInfo:self.requestInfo
+                                                               result:self.result
+                                                     notificationName:SCHBookshelfSyncComponentDidFailNotification
+                                                 notificationUserInfo:notificationUserInfo];
+                }
+            } else {
+                NSDictionary *notificationUserInfo = [NSDictionary dictionaryWithObject:bookIdentifiers
+                                                                                 forKey:SCHBookshelfSyncComponentBookIdentifiers];
+
+                [bookshelfSyncComponent completeWithFailureMethod:kSCHLibreAccessWebServiceListContentMetadata
+                                                            error:self.responseError
+                                                      requestInfo:self.requestInfo
+                                                           result:self.result
+                                                 notificationName:SCHBookshelfSyncComponentDidFailNotification
+                                             notificationUserInfo:notificationUserInfo];
+            }
+        }
+    });
+}
+
+- (NSArray *)bookIdentifiersFromDictionary:(NSArray *)contentMetadataItems
+                              includeValid:(BOOL)includeValid
+                            includeInvalid:(BOOL)includeInvalid
+{
+    NSMutableArray *ret = [NSMutableArray arrayWithCapacity:[contentMetadataItems count]];
+
+    for (NSDictionary *contentMetadataItem in contentMetadataItems) {
+        BOOL isValid = [SCHContentMetadataItem isValidContentMetadataItemDictionary:contentMetadataItem];
+        if ((includeValid == YES && isValid == YES) ||
+            (includeInvalid == YES && isValid == NO)) {
+            SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithObject:contentMetadataItem] autorelease];
+            if (bookIdentifier != nil) {
+                [ret addObject:bookIdentifier];
+            }
         }
     }
+
+    return ret;
+}
+
+// returns YES if we had any invalid books
+- (BOOL)postBookshelfSyncComponentBookReceivedNotification:(NSArray *)contentMetadataItems
+{
+    NSArray *bookIdentifiers = [self bookIdentifiersFromDictionary:contentMetadataItems
+                                                      includeValid:YES
+                                                    includeInvalid:NO];
     
     if ([bookIdentifiers count] > 0) {
-        NSLog(@"Book information received:\n%@", bookIdentifiers);
+        NSLog(@"Valid book information received:\n%@", bookIdentifiers);
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.isCancelled == NO) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentBookReceivedNotification 
@@ -152,6 +220,8 @@
             }
         });
     }
+
+    return [contentMetadataItems count] != [bookIdentifiers count];
 }
 
 - (void)syncContentMetadataItems:(NSArray *)contentMetadataList 
@@ -179,7 +249,9 @@
 		
 		if (localItem == nil) {
 			while (webItem != nil) {
-				[creationPool addObject:webItem];
+                if ([SCHContentMetadataItem isValidContentMetadataItemDictionary:webItem] == YES) {
+                    [creationPool addObject:webItem];
+                }
 				webItem = [webEnumerator nextObject];
 			} 
 			break;			
@@ -188,7 +260,8 @@
         SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webItem];
         SCHBookIdentifier *localBookIdentifier = localItem.bookIdentifier;
         
-        if (webBookIdentifier == nil) {
+        if (webBookIdentifier == nil ||
+            [SCHContentMetadataItem isValidContentMetadataItemDictionary:webItem] == NO) {
             webItem = nil;
         } else if (localBookIdentifier == nil) {
             localItem = nil;                
