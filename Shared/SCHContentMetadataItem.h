@@ -48,4 +48,6 @@ extern NSString * const kSCHContentMetadataItem;
 - (void)deleteBookPackageFile;
 - (void)deleteCoverFile;
 
++ (BOOL)isValidContentMetadataItemDictionary:(NSDictionary *)contentMetadataItem;
+
 @end

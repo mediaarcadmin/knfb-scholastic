@@ -15,6 +15,8 @@
 #import "SCHBookIdentifier.h"
 #import "SCHProcessingManager.h"
 #import "NSFileManager+Extensions.h"
+#import "SCHLibreAccessConstants.h"
+#include "SCHMakeNullNil.h"
 
 // Constants
 NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
@@ -384,6 +386,39 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
               self.ContentIdentifier, [error localizedDescription]);
     }
 }
+
++ (BOOL)isValidContentMetadataItemDictionary:(NSDictionary *)contentMetadataItem
+{
+    BOOL ret = NO;
+
+    // If this ContentMetadataItem dictionary contains any additional non-nil
+    // properties to the invalid properties then it is deemed to be valid
+    if (contentMetadataItem != nil) {
+        NSSet *invalidContentMetadatItemProperties = [NSSet setWithObjects:kSCHLibreAccessWebServiceContentIdentifier,
+                                                      kSCHLibreAccessWebServiceContentIdentifierType,
+                                                      kSCHLibreAccessWebServiceAverageRating,
+                                                      kSCHLibreAccessWebServiceNumVotes,
+                                                      kSCHLibreAccessWebServiceDRMQualifier,
+                                                      nil];
+
+        for (NSString *propertyKey in [contentMetadataItem allKeys]) {
+            if ([propertyKey isEqualToString:kSCHLibreAccessWebServiceeReaderCategories]) {
+                NSArray *eReaderCategories = makeNullNil([contentMetadataItem objectForKey:kSCHLibreAccessWebServiceeReaderCategories]);
+                if ([eReaderCategories count] > 0) {
+                    ret = YES;
+                    break;
+                }
+            } else if ([invalidContentMetadatItemProperties containsObject:propertyKey] == NO &&
+                       [contentMetadataItem objectForKey:propertyKey] != [NSNull null]) {
+                ret = YES;
+                break;
+            }
+        }
+    }
+    
+    return ret;
+}
+
 
 #pragma mark - Core Data Generated Accessors
 
