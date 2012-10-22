@@ -2566,9 +2566,19 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex
 {
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-    SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
+    NSManagedObjectContext *threadMoc = nil;
+    if ([NSThread isMainThread]) {
+        threadMoc = bookManager.mainThreadManagedObjectContext;
+    } else {
+        threadMoc = [[NSManagedObjectContext alloc] init];
+        [threadMoc setPersistentStoreCoordinator:bookManager.mainThreadManagedObjectContext.persistentStoreCoordinator];
+        [threadMoc setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+    }
+
+    SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:threadMoc];
     
     // We are about to display recommendations so start processing them
+    // This can be called on a background thread so need to dispatch
     [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[book appRecommendationItemsForBook]];
     
     UIView *ret = nil;
