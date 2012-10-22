@@ -18,7 +18,7 @@
 // Constants
 extern NSString * const kSCHAppRecommendationItem;
 extern NSString * const kSCHAppRecommendationItemIsbn;
-extern NSString * const kSCHAppRecommendationItemErrorCode;
+extern NSString * const kSCHAppRecommendationItemError;
 extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad;
 extern NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone;
 

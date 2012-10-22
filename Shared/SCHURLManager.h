@@ -21,6 +21,14 @@ extern NSString * const kSCHURLManagerCleared;
 extern NSString * const kURLManagerBookIdentifier;
 extern NSString * const kURLManagerVersion;
 
+extern NSString * const kSCHURLManagerErrorDomain;
+typedef enum
+{
+    kSCHURLManagerUnknownError = 0,
+	kSCHURLManagerUnpopulatedDataError,
+	kSCHURLManagerPartiallyPopulatedDataError,    
+} SCHURLManagerError;
+
 @interface SCHURLManager : NSObject <BITAPIProxyDelegate>
 {	
 }
