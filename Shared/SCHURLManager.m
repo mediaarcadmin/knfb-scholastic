@@ -368,7 +368,7 @@ static NSUInteger const kSCHURLManagerMaxConnections = 6;
 	
     NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
     // if the response had no contentmetadataitems then use the requestInfo
-    // TODO: could do with an explanantion of why there is this fallback rather than just a comment that describes what the code does
+    // for example, this will happen if an invalid ISBN was sent
     if ([list count] < 1) {
         list = [requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata];
     }
