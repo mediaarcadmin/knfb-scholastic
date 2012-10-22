@@ -36,7 +36,7 @@
     self.boxView.layer.borderWidth = 1;
     self.boxView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
-    if (![[SCHAppStateManager sharedAppStateManager] isCOPPACompliant]) {
+    if (![[SCHAppStateManager sharedAppStateManager] shouldShowWishList]) {
         self.wishListButton.hidden = YES;
     }
     
