@@ -30,6 +30,11 @@
     return NO;
 }
 
+- (BOOL)containsFlowedRepresentation
+{
+    return YES;
+}
+
 #pragma mark - SCHBSBContentsProvider
 
 - (SCHBSBManifest *)manifest

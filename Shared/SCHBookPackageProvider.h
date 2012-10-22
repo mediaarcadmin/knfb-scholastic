@@ -16,6 +16,7 @@
 - (BOOL)isValid;
 - (BOOL)decryptionIsAvailable;
 - (BOOL)containsFixedRepresentation;
+- (BOOL)containsFlowedRepresentation;
 - (void)resetDrmDecrypter;
 - (void)reportReadingIfRequired;
 - (UIImage *)thumbnailForPage:(NSInteger)pageNumber;

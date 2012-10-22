@@ -94,6 +94,11 @@
     return YES;
 }
 
+- (BOOL)containsFlowedRepresentation
+{
+    return NO;
+}
+
 - (BOOL)containsEmbeddedBSB
 {
     return [self componentExistsAtPath:@"/Documents/1/Other/KNFB/Branching/manifest.xml"];
