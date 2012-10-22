@@ -148,7 +148,15 @@ static SCHRecommendationManager *sharedManager = nil;
 
 - (void)beginProcessingForRecommendationItems:(NSArray *)recommendationItems
 {
-    [self processRecommendationItems:recommendationItems forcePendingItemsToProcess:YES];
+    dispatch_block_t processBlock = ^{
+        [self processRecommendationItems:recommendationItems forcePendingItemsToProcess:YES];
+    };
+    
+    if ([NSThread isMainThread]) {
+        processBlock();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), processBlock);
+    }
 }
 
 - (void)checkStateForAllRecommendations
@@ -173,6 +181,8 @@ static SCHRecommendationManager *sharedManager = nil;
 
 - (void)processRecommendationItems:(NSArray *)recommendationItems forcePendingItemsToProcess:(BOOL)force
 {
+    NSAssert([NSThread isMainThread], @"processRecommendationItems must run on main thread");
+
     NSMutableArray *isbnsToBeIndividuallyProcessed = [NSMutableArray array];
     NSMutableArray *isbnsToBeBatchProcessed = [NSMutableArray array];
     
@@ -498,6 +508,13 @@ static SCHRecommendationManager *sharedManager = nil;
 	}		
 }
 
+- (void)wishlistSyncDidComplete:(NSNotification *)notification
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self checkStateForAllRecommendations];
+    });
+}
+
 - (void)recommendationSyncDidComplete:(NSNotification *)notification
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -578,7 +595,7 @@ static SCHRecommendationManager *sharedManager = nil;
 												   object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:sharedManager
-												 selector:@selector(recommendationSyncDidComplete:)
+												 selector:@selector(wishlistSyncDidComplete:)
 													 name:SCHWishListSyncComponentDidCompleteNotification
 												   object:nil];
 

@@ -179,6 +179,7 @@ typedef enum {
 - (BOOL)isSampleBook;
 - (SCHAppRecommendationISBN *)appRecommendationISBN;
 - (NSArray *)recommendationDictionaries;
+- (NSArray *)appRecommendationItemsForBook;
 
 - (void)setForcedProcessing:(BOOL)forceProcess;
 
