@@ -186,7 +186,10 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     [self addSubview:aButtonSegment];
     [aButtonSegment release];
     
-    NSDate *date = [NSDate serverDate];
+    NSDate *date = [self.note LastModified];
+    if (date == nil) {
+        date = [NSDate serverDate];
+    }
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateStyle:NSDateFormatterShortStyle];
     NSString *dateString = [dateFormat stringFromDate:date];  
