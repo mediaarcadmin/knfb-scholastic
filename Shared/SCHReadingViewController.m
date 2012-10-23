@@ -1024,6 +1024,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [[SCHSyncManager sharedSyncManager] closeBookSyncForced:YES
                                             booksAssignment:book.ContentMetadataItem.booksAssignment
                                                  forProfile:self.profile.ID];
+    [[SCHSyncManager sharedSyncManager] wishListSyncForced:YES];
 }
 
 - (void)willEnterForegroundNotification:(NSNotification *)notification
