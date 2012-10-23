@@ -468,9 +468,9 @@
     NSString *screenName = [[SCHAppStateManager sharedAppStateManager] settingNamed:kSCHSettingItemSCREEN_NAME];
     
     if (![screenName length]) {
-        screenName = @"PARENT";
+        screenName = @"Reading Manager";
     }
-    
+        
     return screenName;
 }
 
