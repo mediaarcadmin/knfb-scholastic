@@ -33,7 +33,7 @@ static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
 static const CGFloat kSCHProfileViewControllerRowHeightPad = 100.0f;
 static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
 static const CGFloat kSCHProfileViewControllerParentButtonMaxWidthPhone = 282.0f;
-static const CGFloat kSCHProfileViewControllerParentButtonMaxWidthPad = 671.0f;
+static const CGFloat kSCHProfileViewControllerParentButtonMaxWidthPad = 512.0f;
 static const CGFloat kSCHProfileViewControllerParentButtonMinWidth = 141.0f;
 
 @interface SCHProfileViewController() <UIScrollViewDelegate, NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate>
