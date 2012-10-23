@@ -19,16 +19,21 @@
 #import "SCHAuthenticationManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NSString+EmailValidation.h"
+#import "SCHAccountVerifier.h"
+#import "SFHFKeychainUtils.h"
 
 typedef enum  {
     SCHDeregistrationAlertNone,
     SCHDeregistrationAlertMalformedEmail,
-    SCHDeregistrationAlertAuthenticationFailure
+    SCHDeregistrationAlertAuthenticationFailure,
+    SCHDeregistrationAlertWrongUser
 } SCHDeregistrationAlert;
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 @interface SCHDeregisterDeviceViewController () <UITextFieldDelegate>
+
+@property (nonatomic, retain) SCHAccountVerifier *accountVerifier;
 
 - (void)setAlert:(SCHDeregistrationAlert)alert;
 - (void)deregisterAfterSuccessfulAuthentication;
@@ -52,6 +57,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize containerView;
 @synthesize shadowView;
 @synthesize transformableView;
+@synthesize accountVerifier;
 
 - (void)releaseViewObjects
 {
@@ -72,6 +78,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [self releaseViewObjects];
     appController = nil;
+    [accountVerifier release], accountVerifier = nil;
     [super dealloc];
 }
 
@@ -109,6 +116,15 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [super viewDidUnload];
     [self releaseViewObjects];
+}
+
+- (SCHAccountVerifier *)accountVerifier
+{
+    if (accountVerifier == nil) {
+        accountVerifier = [[SCHAccountVerifier alloc] init];
+    }
+    
+    return accountVerifier;
 }
 
 #pragma mark - Actions
@@ -155,26 +171,60 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                     [self.deregisterButton setEnabled:YES];
 //                        [weakSelf setEnablesUI:YES];                                    
                 } else {
-                    if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
-                        [weakSelf deregisterAfterSuccessfulAuthentication];
-                    } else {
-                        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) {
-                            if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                                [weakSelf deregisterAfterSuccessfulAuthentication];
-                            } else {
-                                [weakSelf deregisterFailedAuthentication:[NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
-                                                                                             code:kSCHAuthenticationManagerOfflineError 
-                                                                                         userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You are in offline mode, you must be in online mode to deregister", @"") 
-                                                                                                                              forKey:NSLocalizedDescriptionKey]] offerForceDeregistration:NO];
-                            }
-                        } 
-                                                                                                failureBlock:^(NSError *error){
-                                                                                                    [weakSelf deregisterFailedAuthentication:error
-                                                                                                                    offerForceDeregistration:YES];
-                                                                                                }
-                                                                                 waitUntilVersionCheckIsDone:YES];
-                    }                
-                }    
+                    
+                    // check this username isnt for a different user
+                    [self.accountVerifier verifyAccount:pToken
+                                   accountVerifiedBlock:^(BOOL usernameIsValid, NSError *error) {
+                                       if (usernameIsValid == YES) {
+                                           // update username/password
+                                           [[NSUserDefaults standardUserDefaults] setObject:username forKey:kSCHAuthenticationManagerUsername];
+                                           [[NSUserDefaults standardUserDefaults] synchronize];
+                                           
+                                           NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:username
+                                                                                                 andServiceName:kSCHAuthenticationManagerServiceName
+                                                                                                          error:nil];
+                                           
+                                           if ([self.passwordField.text isEqualToString:storedPassword] == NO) {
+                                               [SFHFKeychainUtils storeUsername:username
+                                                                    andPassword:self.passwordField.text
+                                                                 forServiceName:kSCHAuthenticationManagerServiceName
+                                                                 updateExisting:YES
+                                                                          error:nil];
+                                           }
+                                           
+                                           if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
+                                               [weakSelf deregisterAfterSuccessfulAuthentication];
+                                           } else {
+                                               [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) {
+                                                   if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                                                       [weakSelf deregisterAfterSuccessfulAuthentication];
+                                                   } else {
+                                                       [weakSelf deregisterFailedAuthentication:[NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain
+                                                                                                                    code:kSCHAuthenticationManagerOfflineError
+                                                                                                                userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You are in offline mode, you must be in online mode to deregister", @"")
+                                                                                                                                                     forKey:NSLocalizedDescriptionKey]] offerForceDeregistration:NO];
+                                                   }
+                                               }
+                                                                                                                       failureBlock:^(NSError *error){
+                                                                                                                           [weakSelf deregisterFailedAuthentication:error
+                                                                                                                                           offerForceDeregistration:YES];
+                                                                                                                       }
+                                                                                                        waitUntilVersionCheckIsDone:YES];
+                                           }                
+
+                                       } else {
+                                           self.passwordField.text = @"";
+                                           [self setAlert:SCHDeregistrationAlertWrongUser];
+                                           [self.spinner stopAnimating];
+                                           [self.deregisterButton setEnabled:YES];
+                                       }                                       
+                                   }];
+                    
+                    
+                    
+                    // end
+                    
+                                    }    
             }];
         }
     }
@@ -321,6 +371,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             break;
         case SCHDeregistrationAlertAuthenticationFailure:
             self.promptLabel.text = NSLocalizedString(@"Your e-mail address or password was not recognized. Please try again, or contact Scholastic customer service at storia@scholastic.com.", nil);
+            break;
+        case SCHDeregistrationAlertWrongUser:
+            self.promptLabel.text = NSLocalizedString(@"This e-mail address does not match your account. Please try again, or contact Scholastic customer service at storia@scholastic.com.", nil);
             break;
         default:
             break;
