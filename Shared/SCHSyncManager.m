@@ -60,7 +60,7 @@ static NSUInteger const kSCHSyncManagerMaximumFailureRetries = 3;
 - (void)addAllProfilesToReadingStatsSync;
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
 - (NSDictionary *)annotationContentItemFromBooksAssignment:(SCHBooksAssignment *)booksAssignment
-                                                forProfile:(NSNumber *)profileID;
+                                                forProfile:(SCHProfileItem *)profileItem;
 - (BOOL)readingStatsActive;
 - (BOOL)wishListSyncActive;
 - (void)performFlushSaves;
@@ -630,7 +630,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 	
 	for (SCHContentProfileItem *contentProfileItem in profileItem.ContentProfileItem) {
         if (contentProfileItem.booksAssignment) {
-            NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:contentProfileItem.booksAssignment forProfile:profileItem.ID];
+            NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:contentProfileItem.booksAssignment forProfile:profileItem];
             if (annotationContentItem != nil) {
                 [ret addObject:annotationContentItem];
             }
@@ -641,67 +641,52 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 }
 
 - (NSDictionary *)annotationContentItemFromBooksAssignment:(SCHBooksAssignment *)booksAssignment
-                                                forProfile:(NSNumber *)profileID;
-{	
+                                                forProfile:(SCHProfileItem *)profileItem;
+{
 	NSMutableDictionary *ret = nil;
-    
-    if (booksAssignment != nil && profileID != nil) {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSError *error = nil;
-        
-        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem
-                                            inManagedObjectContext:self.managedObjectContext]];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", profileID]];
-        
-        NSArray *profiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        [fetchRequest release];
-        if (profiles == nil) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-        
-        if ([profiles count] > 0) {
-            SCHAppContentProfileItem *appContentProfileItem = [[profiles objectAtIndex:0] appContentProfileItemForBookIdentifier:
-                                                               [booksAssignment bookIdentifier]];        
-            
-            id contentIdentifier = [booksAssignment valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-            id contentIdentifierType = [booksAssignment valueForKey:kSCHLibreAccessWebServiceContentIdentifierType];
-            id DRMQualifier = [booksAssignment valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
-            id format = [booksAssignment valueForKey:kSCHLibreAccessWebServiceFormat];
-            id version = [booksAssignment valueForKey:kSCHLibreAccessWebServiceVersion];
-            id averageRating = [booksAssignment valueForKey:kSCHLibreAccessWebServiceAverageRating];
-            
-            if (appContentProfileItem != nil && 
-                contentIdentifier != nil && contentIdentifier != [NSNull null] && 
-                contentIdentifierType != nil && contentIdentifierType != [NSNull null] && 
-                DRMQualifier != nil && DRMQualifier != [NSNull null] &&
-                format != nil && format != [NSNull null] && 
-                version != nil && version != [NSNull null] &&
-                averageRating != nil && averageRating != [NSNull null]) {
-                ret = [NSMutableDictionary dictionary];
-                
-                [ret setObject:contentIdentifier forKey:kSCHLibreAccessWebServiceContentIdentifier];
-                [ret setObject:contentIdentifierType forKey:kSCHLibreAccessWebServiceContentIdentifierType];
-                [ret setObject:DRMQualifier forKey:kSCHLibreAccessWebServiceDRMQualifier];
-                [ret setObject:format forKey:kSCHLibreAccessWebServiceFormat];
-                [ret setObject:averageRating forKey:kSCHLibreAccessWebServiceAverageRating];
-                
-                NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];	
-                
-                NSDate *highlightsAfter = appContentProfileItem.LastHighlightAnnotationSync;
-                NSDate *notesAfter = appContentProfileItem.LastNoteAnnotationSync;
-                NSDate *bookmarksAfter = appContentProfileItem.LastBookmarkAnnotationSync;
-                
-                [privateAnnotation setObject:version forKey:kSCHLibreAccessWebServiceVersion];
-                [privateAnnotation setObject:(highlightsAfter == nil ? [NSDate distantPast] : highlightsAfter)
-                                      forKey:kSCHLibreAccessWebServiceHighlightsAfter];
-                [privateAnnotation setObject:(notesAfter == nil ? [NSDate distantPast] : notesAfter)
-                                      forKey:kSCHLibreAccessWebServiceNotesAfter];
-                [privateAnnotation setObject:(bookmarksAfter == nil ? [NSDate distantPast] : bookmarksAfter)
-                                      forKey:kSCHLibreAccessWebServiceBookmarksAfter];
-                
-                [ret setObject:privateAnnotation 
-                        forKey:kSCHLibreAccessWebServicePrivateAnnotations];            
-            }
+
+    if (booksAssignment != nil && profileItem != nil) {
+        SCHAppContentProfileItem *appContentProfileItem = [profileItem appContentProfileItemForBookIdentifier:
+                                                           [booksAssignment bookIdentifier]];
+
+        id contentIdentifier = [booksAssignment valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+        id contentIdentifierType = [booksAssignment valueForKey:kSCHLibreAccessWebServiceContentIdentifierType];
+        id DRMQualifier = [booksAssignment valueForKey:kSCHLibreAccessWebServiceDRMQualifier];
+        id format = [booksAssignment valueForKey:kSCHLibreAccessWebServiceFormat];
+        id version = [booksAssignment valueForKey:kSCHLibreAccessWebServiceVersion];
+        id averageRating = [booksAssignment valueForKey:kSCHLibreAccessWebServiceAverageRating];
+
+        if (appContentProfileItem != nil &&
+            contentIdentifier != nil && contentIdentifier != [NSNull null] &&
+            contentIdentifierType != nil && contentIdentifierType != [NSNull null] &&
+            DRMQualifier != nil && DRMQualifier != [NSNull null] &&
+            format != nil && format != [NSNull null] &&
+            version != nil && version != [NSNull null] &&
+            averageRating != nil && averageRating != [NSNull null]) {
+            ret = [NSMutableDictionary dictionary];
+
+            [ret setObject:contentIdentifier forKey:kSCHLibreAccessWebServiceContentIdentifier];
+            [ret setObject:contentIdentifierType forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+            [ret setObject:DRMQualifier forKey:kSCHLibreAccessWebServiceDRMQualifier];
+            [ret setObject:format forKey:kSCHLibreAccessWebServiceFormat];
+            [ret setObject:averageRating forKey:kSCHLibreAccessWebServiceAverageRating];
+
+            NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];
+
+            NSDate *highlightsAfter = appContentProfileItem.LastHighlightAnnotationSync;
+            NSDate *notesAfter = appContentProfileItem.LastNoteAnnotationSync;
+            NSDate *bookmarksAfter = appContentProfileItem.LastBookmarkAnnotationSync;
+
+            [privateAnnotation setObject:version forKey:kSCHLibreAccessWebServiceVersion];
+            [privateAnnotation setObject:(highlightsAfter == nil ? [NSDate distantPast] : highlightsAfter)
+                                  forKey:kSCHLibreAccessWebServiceHighlightsAfter];
+            [privateAnnotation setObject:(notesAfter == nil ? [NSDate distantPast] : notesAfter)
+                                  forKey:kSCHLibreAccessWebServiceNotesAfter];
+            [privateAnnotation setObject:(bookmarksAfter == nil ? [NSDate distantPast] : bookmarksAfter)
+                                  forKey:kSCHLibreAccessWebServiceBookmarksAfter];
+
+            [ret setObject:privateAnnotation
+                    forKey:kSCHLibreAccessWebServicePrivateAnnotations];
         }
     }
     
@@ -710,21 +695,21 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 
 - (void)openBookSyncForced:(BOOL)syncNow
            booksAssignment:(SCHBooksAssignment *)booksAssignment
-                forProfile:(NSNumber *)profileID
+                forProfile:(SCHProfileItem *)profileItem
        requestReadingStats:(BOOL)requestReadingStats
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
     if ([self shouldSync] == YES) {
-        if (booksAssignment != nil && profileID != nil) {
+        if (booksAssignment != nil && profileItem != nil) {
             NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment
-                                                                                      forProfile:profileID];
+                                                                                      forProfile:profileItem];
             if (annotationContentItem != nil) {
-                [self.annotationSyncComponent addProfile:profileID
+                [self.annotationSyncComponent addProfile:profileItem.ID
                                                withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
 
                 if (requestReadingStats == YES) {
-                    [self.listReadingStatisticsSyncComponent addProfile:profileID
+                    [self.listReadingStatisticsSyncComponent addProfile:profileItem.ID
                                                               withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
                 }
             }
@@ -768,7 +753,7 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
 
 - (void)closeBookSyncForced:(BOOL)syncNow
             booksAssignment:(SCHBooksAssignment *)booksAssignment
-                 forProfile:(NSNumber *)profileID
+                 forProfile:(SCHProfileItem *)profileItem
 {
     NSAssert([NSThread isMainThread], @"Must be called on main thread");
     
@@ -780,15 +765,15 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
     } 
     
     if ([self shouldSync] == YES) {
-        if (booksAssignment != nil && profileID != nil) {
+        if (booksAssignment != nil && profileItem != nil) {
             NSDictionary *annotationContentItem = [self annotationContentItemFromBooksAssignment:booksAssignment
-                                                                                      forProfile:profileID];
+                                                                                      forProfile:profileItem];
             if (annotationContentItem != nil) {
-                [self.annotationSyncComponent addProfile:profileID
+                [self.annotationSyncComponent addProfile:profileItem.ID
                                                withBooks:[NSMutableArray arrayWithObject:annotationContentItem]];
 
                 if ([self readingStatsActive] == YES) {
-                    [self.readingStatsSyncComponent addProfile:profileID];
+                    [self.readingStatsSyncComponent addProfile:profileItem.ID];
                 }
             }
         }
