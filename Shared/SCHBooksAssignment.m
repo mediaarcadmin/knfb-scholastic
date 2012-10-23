@@ -38,7 +38,7 @@ NSString * const kSCHBooksAssignment = @"SCHBooksAssignment";
                                         inManagedObjectContext:self.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@",
                                 self.ContentIdentifier, self.DRMQualifier]];
-    
+    [fetchRequest setReturnsObjectsAsFaults:NO];
     
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest
                                                                error:&error];
