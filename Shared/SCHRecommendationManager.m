@@ -162,13 +162,13 @@ static SCHRecommendationManager *sharedManager = nil;
 {
     NSAssert([NSThread isMainThread], @"processRecommendationItems must run on main thread");
 
-    NSMutableArray *isbnsToBeIndividuallyProcessed = [NSMutableArray array];
-    NSMutableArray *isbnsToBeBatchProcessed = [NSMutableArray array];
+    NSMutableSet *isbnsToBeIndividuallyProcessed = [NSMutableSet set];
+    NSMutableSet *isbnsToBeBatchProcessed = [NSMutableSet set];
     
 	for (SCHAppRecommendationItem *recommendationItem in recommendationItems) {
         BOOL batchProcess = NO;
         
-        if (force && ([recommendationItem processingState] == kSCHAppRecommendationProcessingStateWaitingOnUserAction)) {
+        if (force && ![self isbnIsProcessing:[recommendationItem ContentIdentifier]] && ([recommendationItem processingState] == kSCHAppRecommendationProcessingStateWaitingOnUserAction)) {
             [recommendationItem setProcessingState:kSCHAppRecommendationProcessingStateNoMetadata];
         }
         
@@ -181,10 +181,12 @@ static SCHRecommendationManager *sharedManager = nil;
         }
     }
     
-    if ([isbnsToBeBatchProcessed count]) {
+    NSArray *allIsbnsToBeBatchProcessed = [isbnsToBeBatchProcessed allObjects];
+    
+    if ([allIsbnsToBeBatchProcessed count]) {
         NSMutableArray *batchedIsbns = [NSMutableArray arrayWithCapacity:kSCHRecommendationsManagerBatchSize];
-        for (int i = 0; i < [isbnsToBeBatchProcessed count]; i++) {
-            [batchedIsbns addObject:[isbnsToBeBatchProcessed objectAtIndex:i]];
+        for (int i = 0; i < [allIsbnsToBeBatchProcessed count]; i++) {
+            [batchedIsbns addObject:[allIsbnsToBeBatchProcessed objectAtIndex:i]];
             
             if ((i != 0) && (i % kSCHRecommendationsManagerBatchSize == 0)) {
                 [self processIsbns:batchedIsbns];
