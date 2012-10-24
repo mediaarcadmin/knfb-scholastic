@@ -92,7 +92,7 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
                                         inManagedObjectContext:self.managedObjectContext]];	
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];
     [fetchRequest setReturnsObjectsAsFaults:NO];
-    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"SCHBooksAssignment"]];
+    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"booksAssignment"]];
     
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
                                                                error:&error];
@@ -201,7 +201,7 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
         for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
             NSSet *contentMetadataItems = contentProfileItem.booksAssignment.ContentMetadataItem;
             if ([contentMetadataItems count] > 0) {
-                for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.booksAssignment.ContentMetadataItem) {
+                for (SCHContentMetadataItem *contentMetadataItem in contentMetadataItems) {
                     SCHBookIdentifier *identifier = [contentMetadataItem bookIdentifier];
                     if (identifier != nil) {
                         [books addObject:identifier];

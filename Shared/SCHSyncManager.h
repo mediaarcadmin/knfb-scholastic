@@ -44,11 +44,11 @@ requireDeviceAuthentication:(BOOL)requireAuthentication;
 - (void)forceAllBookshelvesToSyncOnOpen;
 - (void)openBookSyncForced:(BOOL)syncNow
            booksAssignment:(SCHBooksAssignment *)booksAssignment
-                forProfile:(NSNumber *)profileID
+                forProfile:(SCHProfileItem *)profileItem
        requestReadingStats:(BOOL)requestReadingStats;
 - (void)closeBookSyncForced:(BOOL)syncNow
             booksAssignment:(SCHBooksAssignment *)booksAssignment
-                 forProfile:(NSNumber *)profileID;
+                 forProfile:(SCHProfileItem *)profileItem;
 - (void)backOfBookRecommendationSync:(SCHBookIdentifier *)bookIdentifier;
 - (void)topRatingsSync;
 - (void)wishListSyncForced:(BOOL)syncNow;

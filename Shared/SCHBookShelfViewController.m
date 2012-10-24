@@ -837,9 +837,13 @@ typedef enum
 
 - (void)annotationSyncComponentDidComplete:(NSNotification *)notification
 {
-    self.gridViewNeedsRefreshed = YES;
-    self.listViewNeedsRefreshed = YES;
-    [self reloadData];            
+    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentProfileIDs];
+
+    if ([profileID isEqualToNumber:self.profileItem.ID] == YES) {
+        self.gridViewNeedsRefreshed = YES;
+        self.listViewNeedsRefreshed = YES;
+        [self reloadData];
+    }
 }
 
 #pragma mark - Core Data Table View Methods
@@ -992,7 +996,7 @@ typedef enum
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
     gridCell.delegate = self;
-        gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
+    gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
     gridCell.showRatings = self.showingRatings;
 
     if (self.currentlyLoadingIndex == index) {

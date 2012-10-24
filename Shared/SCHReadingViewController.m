@@ -491,7 +491,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         [[SCHSyncManager sharedSyncManager] openBookSyncForced:YES
                                                booksAssignment:book.ContentMetadataItem.booksAssignment
-                                              forProfile:profile.ID
+                                              forProfile:profile
                                            requestReadingStats:[self bookHasReadingChallenge]];
         [[SCHSyncManager sharedSyncManager] backOfBookRecommendationSync:self.bookIdentifier];
         [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
@@ -1007,7 +1007,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                            inManagedObjectContext:self.managedObjectContext];
         [[SCHSyncManager sharedSyncManager] closeBookSyncForced:NO
                                                 booksAssignment:book.ContentMetadataItem.booksAssignment
-                                                     forProfile:self.profile.ID];
+                                                     forProfile:self.profile];
         [[SCHSyncManager sharedSyncManager] wishListSyncForced:YES];
     }
 }
@@ -1021,7 +1021,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                        inManagedObjectContext:self.managedObjectContext];
     [[SCHSyncManager sharedSyncManager] closeBookSyncForced:YES
                                             booksAssignment:book.ContentMetadataItem.booksAssignment
-                                                 forProfile:self.profile.ID];
+                                                 forProfile:self.profile];
     [[SCHSyncManager sharedSyncManager] wishListSyncForced:YES];
 }
 
@@ -1034,7 +1034,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                        inManagedObjectContext:self.managedObjectContext];
     [[SCHSyncManager sharedSyncManager] openBookSyncForced:NO
                                            booksAssignment:book.ContentMetadataItem.booksAssignment
-                                                forProfile:self.profile.ID
+                                                forProfile:self.profile
                                        requestReadingStats:[self bookHasReadingChallenge]];
     [[SCHSyncManager sharedSyncManager] backOfBookRecommendationSync:self.bookIdentifier];
     [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
@@ -1258,7 +1258,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                                                        inManagedObjectContext:self.managedObjectContext];
     [[SCHSyncManager sharedSyncManager] closeBookSyncForced:YES
                                             booksAssignment:book.ContentMetadataItem.booksAssignment
-                                                 forProfile:self.profile.ID];
+                                                 forProfile:self.profile];
     [[SCHSyncManager sharedSyncManager] wishListSyncForced:YES];
     [self.bookPackageProvider reportReadingIfRequired];
     [self.audioBookPlayer cleanAudio];
