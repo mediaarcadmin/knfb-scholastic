@@ -384,6 +384,8 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void)setProcessing:(BOOL)processing forIdentifier:(SCHBookIdentifier *)identifier
 {
+    NSAssert(identifier != nil, @"Must not set processing on nil identifier");
+
     @synchronized(self.currentlyProcessingIdentifiers) {
         if (processing) {
             if (![self.currentlyProcessingIdentifiers containsObject:identifier]) {

@@ -15,6 +15,9 @@
 
 @property (nonatomic, retain) UINib *recommendationViewNib;
 
+- (void)setRecommendations:(NSArray *)recommendationDictionaries
+    modifiedWishListDictionaries:(NSArray *)modifiedWishListDictionaries;
+
 @end
 
 @implementation SCHRecommendationContainerView
@@ -24,6 +27,8 @@
 @synthesize heading;
 @synthesize subtitle;
 @synthesize recommendationViewNib;
+@synthesize listViewDelegate;
+@synthesize fetchingLabel;
 
 - (void)awakeFromNib
 {
@@ -43,6 +48,7 @@
     
     [self.heading adjustPointSizeToFitWidthWithPadding:2.0f];
     [self.subtitle adjustPointSizeToFitWidthWithPadding:0.0f];
+    [self.fetchingLabel adjustPointSizeToFitWidthWithPadding:0.0f];
 }
 
 - (void)dealloc
@@ -52,18 +58,21 @@
     [box release], box = nil;
     [heading release], heading = nil;
     [subtitle release], subtitle = nil;
+    listViewDelegate = nil;
+    [fetchingLabel release], fetchingLabel = nil;
     [super dealloc];
 }
 
 - (void)setRecommendations:(NSArray *)recommendationDictionaries
 modifiedWishListDictionaries:(NSArray *)modifiedWishListDictionaries
-          listViewDelegate:(id<SCHRecommendationListViewDelegate>)listViewDelegate
 {
     for (UIView *view in self.container.subviews) {
         [view removeFromSuperview];
     }
      
     if ([recommendationDictionaries count] > 0) {
+        self.fetchingLabel.hidden = YES;
+        
         CGFloat count = MIN([recommendationDictionaries count], 4);
         CGFloat rowHeight = floorf((self.container.frame.size.height)/4);
 
@@ -76,7 +85,7 @@ modifiedWishListDictionaries:(NSArray *)modifiedWishListDictionaries
 
             listView.showsBottomRule = NO;
             listView.showOnBackCover = YES;
-            listView.delegate = listViewDelegate;
+            listView.delegate = self.listViewDelegate;
             listView.showsWishListButton = [[SCHAppStateManager sharedAppStateManager] shouldShowWishList];
 
             [listView updateWithRecommendationItem:recommendationDictionary];
@@ -98,22 +107,18 @@ modifiedWishListDictionaries:(NSArray *)modifiedWishListDictionaries
             [listView release];
         }
     } else {
-        UIFont *labelFont = [UIFont fontWithName:@"Arial-BoldMT" size:26.0f];
-        CGRect labelFrame = CGRectMake(0, 0, CGRectGetWidth(self.container.frame), labelFont.lineHeight);
-        UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
-
-        label.text = NSLocalizedString(@"Getting recommendations for this book.", nil);
-        label.font = labelFont;
-        label.adjustsFontSizeToFitWidth = YES;
-        label.minimumFontSize = 4.0;
-        label.textColor = [UIColor colorWithRed:0.004 green:0.192 blue:0.373 alpha:1.0];
-        label.textAlignment = UITextAlignmentCenter;
-        label.backgroundColor = [UIColor clearColor];
-        label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
-        [self.container addSubview:label];
-        [label release], label = nil;
+        self.fetchingLabel.hidden = NO;
     }
+    
+    [self setNeedsLayout];
 }
+
+#pragma mark - SCHRecommendationViewDelegate
+
+- (void)updateWithRecommendationDictionaries:(NSArray *)recommendationDictionaries wishListDictionaries:(NSArray *)wishlistDictionaries;
+{
+    [self setRecommendations:recommendationDictionaries modifiedWishListDictionaries:wishlistDictionaries];
+}
+
 
 @end

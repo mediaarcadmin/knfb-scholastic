@@ -7,15 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCHRecommendationViewDelegate.h"
 
 @protocol SCHRecommendationSampleViewDelegate;
 
-@interface SCHRecommendationSampleView : UIView
+@interface SCHRecommendationSampleView : UIView <SCHRecommendationViewDelegate>
 
 
 
 @property (retain, nonatomic) IBOutlet UIImageView *largeCoverImageView;
 @property (retain, nonatomic) IBOutlet UIButton *wishListButton;
+@property (retain, nonatomic) IBOutlet UIView *wishlistButtonContainer;
 @property (retain, nonatomic) IBOutlet UILabel *infoLabel;
 @property (retain, nonatomic) IBOutlet UIView *boxView;
 
@@ -23,7 +25,6 @@
 @property (nonatomic, retain) NSString *ISBN;
 @property (nonatomic, assign) BOOL isOnWishList;
 
-- (void)updateWithRecommendationItemDictionary:(NSDictionary *)recommendationDictionary;
 - (void)hideWishListButton;
 
 @end

@@ -272,6 +272,7 @@ static SCHRecommendationManager *sharedManager = nil;
 
 - (void)setProcessing:(BOOL)processing forIsbn:(NSString *)isbn
 {
+    NSAssert(isbn != nil, @"Must not set processing on nil isbn");
     @synchronized(self.currentlyProcessingIsbns) {
         if (processing) {
             if (isbn != nil &&
@@ -330,7 +331,7 @@ static SCHRecommendationManager *sharedManager = nil;
 }
 
 - (void)processIsbn:(NSString *)isbn
-{
+{    
     if ([self isbnIsProcessing:isbn]) {
         NSLog(@"Warning: ISBN requested batch processing whilst already processing: %@", isbn);
         return;

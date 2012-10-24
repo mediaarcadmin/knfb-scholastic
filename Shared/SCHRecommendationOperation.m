@@ -29,7 +29,9 @@
 	}
 	
     if (newIsbn != isbn) {
-        [[SCHRecommendationManager sharedManager] setProcessing:YES forIsbn:self.isbn];
+        if (newIsbn) {
+            [[SCHRecommendationManager sharedManager] setProcessing:YES forIsbn:newIsbn];
+        }
         [isbn release];
         isbn = [newIsbn copy];
     }

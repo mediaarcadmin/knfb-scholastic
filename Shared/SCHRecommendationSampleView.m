@@ -16,6 +16,8 @@
 @property (nonatomic, retain) UIImage *initialNormalStateImage;
 @property (nonatomic, retain) UIImage *initialSelectedStateImage;
 
+- (void)updateWithRecommendationItemDictionary:(NSDictionary *)recommendationDictionary;
+
 @end
 
 @implementation SCHRecommendationSampleView
@@ -29,34 +31,44 @@
 @synthesize ISBN;
 @synthesize initialNormalStateImage;
 @synthesize initialSelectedStateImage;
+@synthesize wishlistButtonContainer;
 
 - (void)awakeFromNib
 {
     self.boxView.layer.cornerRadius = 10;
     self.boxView.layer.borderWidth = 1;
     self.boxView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    
-    [self.wishListButton setImage:[UIImage imageNamed:@"WishListButtonOff"] forState:UIControlStateNormal];
-    [self.wishListButton setImage:[UIImage imageNamed:@"WishListButtonOn"] forState:UIControlStateSelected];
+    [self.wishListButton setBackgroundImage:[UIImage imageNamed:@"WishListButtonOff"] forState:UIControlStateNormal];
+    [self.wishListButton setBackgroundImage:[UIImage imageNamed:@"WishListButtonOn"] forState:UIControlStateSelected];
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
-    [self.infoLabel adjustPointSizeToFitWidthWithPadding:2.0f];
-    
     // wish list button aspect ratio
-    UIImage *buttonImage = [self.wishListButton imageForState:self.wishListButton.state];
+    UIImage *buttonImage = [self.wishListButton backgroundImageForState:self.wishListButton.state];
     
     if (buttonImage) {
         CGSize buttonSize = buttonImage.size;
-        CGFloat aspect = buttonSize.width / buttonSize.height;
+        CGSize containerSize = self.wishlistButtonContainer.bounds.size;
         
-        CGRect buttonFrame = self.wishListButton.frame;
-        buttonFrame.size.height = floorf(buttonFrame.size.width / aspect);
-        self.wishListButton.frame = buttonFrame;
+        
+        CGFloat maxWidth = MIN(buttonSize.width, containerSize.width);
+        CGFloat maxHeight = MIN(buttonSize.height, containerSize.height);
+        
+        CGFloat ratioWidth = maxWidth / buttonSize.width;
+        CGFloat ratioHeight = maxHeight / buttonSize.height;
+        CGFloat ratio = MIN(ratioWidth, ratioHeight);
+        
+        CGRect buttonBounds = CGRectZero;
+        buttonBounds.size.height = floorf(buttonSize.height * ratio);
+        buttonBounds.size.width = floorf(buttonSize.width * ratio);
+        self.wishListButton.bounds = buttonBounds;
     }
+    
+    [self.infoLabel setFont:[[self.infoLabel font] fontWithSize:26.0f]];
+    [self.infoLabel adjustPointSizeToFitWidthWithPadding:0];
 
 }
 
@@ -75,7 +87,7 @@
 - (UIImage *)initialNormalStateImage
 {
     if (!initialNormalStateImage) {
-        initialNormalStateImage = [[self.wishListButton imageForState:UIControlStateNormal] retain];
+        initialNormalStateImage = [[self.wishListButton backgroundImageForState:UIControlStateNormal] retain];
     }
     
     return initialNormalStateImage;
@@ -84,7 +96,7 @@
 - (UIImage *)initialSelectedStateImage
 {
     if (!initialSelectedStateImage) {
-        initialSelectedStateImage = [[self.wishListButton imageForState:UIControlStateSelected] retain];
+        initialSelectedStateImage = [[self.wishListButton backgroundImageForState:UIControlStateSelected] retain];
     }
     
     return initialSelectedStateImage;
@@ -116,11 +128,11 @@
     isOnWishList = newIsOnWishList;
     
     if (isOnWishList) {
-        [self.wishListButton setImage:selectedImage forState:UIControlStateNormal];
-        [self.wishListButton setImage:selectedImage forState:UIControlStateSelected];
+        [self.wishListButton setBackgroundImage:selectedImage forState:UIControlStateNormal];
+        [self.wishListButton setBackgroundImage:selectedImage forState:UIControlStateSelected];
     } else {
-        [self.wishListButton setImage:normalImage forState:UIControlStateNormal];
-        [self.wishListButton setImage:normalImage forState:UIControlStateSelected];
+        [self.wishListButton setBackgroundImage:normalImage forState:UIControlStateNormal];
+        [self.wishListButton setBackgroundImage:normalImage forState:UIControlStateSelected];
     }
     
     [self.wishListButton setSelected:isOnWishList];
@@ -135,6 +147,28 @@
     [wishListButton release], wishListButton = nil;
     [infoLabel release], infoLabel = nil;
     [boxView release], boxView = nil;
+    [wishlistButtonContainer release], wishlistButtonContainer = nil;
     [super dealloc];
 }
+
+#pragma mark - SCHRecommendationViewDelegate
+
+- (void)updateWithRecommendationDictionaries:(NSArray *)recommendationDictionaries wishListDictionaries:(NSArray *)wishlistDictionaries;
+{
+    if ([recommendationDictionaries count]) {
+        [self updateWithRecommendationItemDictionary:[recommendationDictionaries objectAtIndex:0]];
+                
+        NSUInteger index = [wishlistDictionaries
+                            indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+                                return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationItemISBN] isEqualToString:self.ISBN];
+                            }];
+        
+        if (index != NSNotFound) {
+            [self setIsOnWishList:YES];
+        } else {
+            [self setIsOnWishList:NO];
+        }
+    }
+}
+
 @end

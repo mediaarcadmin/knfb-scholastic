@@ -53,6 +53,7 @@
 #import "SCHCoreDataHelper.h"
 #import "Reachability.h"
 #import "SCHRetrieveRecommendationsForBooksOperation.h"
+#import "SCHRecommendationViewDelegate.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -142,8 +143,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, assign) BOOL isInBackground;
 @property (nonatomic, assign) BOOL appBookIsSuppressingHighlights;
 
-@property (nonatomic, retain) SCHRecommendationContainerView *recommendationsContainer;
-@property (nonatomic, retain) SCHRecommendationSampleView *recommendationSampleView;
+@property (nonatomic, retain) UIView <SCHRecommendationViewDelegate> *backOfBookRecommendationsView;
 
 - (void)updateNotesCounter;
 - (id)initFailureWithErrorCode:(NSInteger)code error:(NSError **)error;
@@ -188,7 +188,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation;
 - (BOOL)shouldShowBookRecommendationsForReadingView:(SCHReadingView *)readingView;
-- (void)reloadRecommendationsView;
+- (void)updateRecommendations;
 - (void)commitWishListChanges;
 
 @end
@@ -280,8 +280,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize modifiedWishListDictionaries;
 @synthesize isInBackground;
 @synthesize appBookIsSuppressingHighlights;
-@synthesize recommendationsContainer;
-@synthesize recommendationSampleView;
+@synthesize backOfBookRecommendationsView;
 @synthesize appController;
 
 #pragma mark - Dealloc and View Teardown
@@ -315,6 +314,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     [storyInteractionViewController release], storyInteractionViewController = nil;
     [cornerCoverFadeTimer release], cornerCoverFadeTimer = nil;
     [forceOpenToCover release], forceOpenToCover = nil;
+    [backOfBookRecommendationsView release], backOfBookRecommendationsView = nil;
     [recommendationsContainerNib release], recommendationsContainerNib = nil;
     [recommendationSampleViewNib release], recommendationSampleViewNib = nil;
     [recommendationsDictionaries release], recommendationsDictionaries = nil;
@@ -370,8 +370,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     [navigationToolbar release], navigationToolbar = nil;
 
-    [recommendationsContainer release], recommendationsContainer = nil;
-    [recommendationSampleView release], recommendationSampleView = nil;
 }
 
 - (void)viewDidUnload 
@@ -2564,115 +2562,70 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     return NO;
 }
 
-- (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex
+- (UIView *)backOfBookRecommendationsView
 {
-    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-    NSManagedObjectContext *threadMoc = nil;
-    if ([NSThread isMainThread]) {
-        threadMoc = bookManager.mainThreadManagedObjectContext;
-    } else {
-        threadMoc = [[NSManagedObjectContext alloc] init];
-        [threadMoc setPersistentStoreCoordinator:bookManager.mainThreadManagedObjectContext.persistentStoreCoordinator];
-        [threadMoc setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-    }
+    if (!backOfBookRecommendationsView) {
+        NSAssert([NSThread mainThread], @"Cannot create backOfBookRecommendationsView on background thread");
 
-    SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:threadMoc];
-    
-    // We are about to display recommendations so start processing them
-    // This can be called on a background thread so need to dispatch
-    [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[book appRecommendationItemsForBook]];
-    
-    UIView *ret = nil;
-
-    if ([book isSampleBook]) {
-        // show the sample book version of recommendations
-        self.recommendationSampleView = [[[self.recommendationSampleViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
-        [recommendationSampleView setFrame:self.readingView.bounds];
-        
-        NSArray *recommendationsDictionarysArray = [self recommendationsDictionaries];
-        NSDictionary *recommendationDictionary = nil;
-        
-        if (recommendationsDictionarysArray && [recommendationsDictionarysArray count] == 1) {
-            recommendationDictionary = [recommendationsDictionarysArray objectAtIndex:0];
-        }
-        
-        if (recommendationDictionary) {
-            [recommendationSampleView updateWithRecommendationItemDictionary:recommendationDictionary];
-        }
-        recommendationSampleView.delegate = self;
-        
-        BOOL hideWishList = NO;
-        
-        if (![[SCHAppStateManager sharedAppStateManager] shouldShowWishList] ||
-            [[book purchasedBooks] containsObject:self.bookIdentifier.isbn]) {
-            hideWishList = YES;
-        }
-        
-        if (hideWishList) {
-            [recommendationSampleView hideWishListButton];
-        } else {
-            NSString *ISBN = [recommendationDictionary objectForKey:kSCHAppRecommendationItemISBN];
+        if ([NSThread mainThread]) {
+            SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+            SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];
             
-            NSUInteger index = [self.modifiedWishListDictionaries
-                                indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
-                                    return [[(NSDictionary *)obj objectForKey:kSCHAppRecommendationItemISBN] isEqualToString:ISBN];
-                                }];
-            
-            if (index != NSNotFound) {
-                [recommendationSampleView setIsOnWishList:YES];
+            if ([book isSampleBook]) {
+                // show the sample book version of recommendations
+                SCHRecommendationSampleView *sampleView = [[self.recommendationSampleViewNib instantiateWithOwner:self options:nil] objectAtIndex:0];
+                sampleView.delegate = self;
+                                
+                if (![[SCHAppStateManager sharedAppStateManager] shouldShowWishList] ||
+                    [[book purchasedBooks] containsObject:self.bookIdentifier.isbn]) {
+                    [sampleView hideWishListButton];
+                }
+                
+                backOfBookRecommendationsView = [sampleView retain];
             } else {
-                [recommendationSampleView setIsOnWishList:NO];
+                // show the recommendations container
+                SCHRecommendationContainerView *containerView = [[self.recommendationsContainerNib instantiateWithOwner:self options:nil] objectAtIndex:0];
+                containerView.listViewDelegate = self;
+                
+                [[NSNotificationCenter defaultCenter] addObserver:self
+                                                         selector:@selector(retrieveRecommendationsForBooksOperationCreateOrUpdateBooks:)
+                                                             name:SCHRetrieveRecommendationsForBooksOperationCreateOrUpdateBooksNotification
+                                                           object:nil];
+                
+                backOfBookRecommendationsView = [containerView retain];
             }
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(recommendationDidUpdate:)
+                                                         name:kSCHRecommendationStateUpdateNotification
+                                                       object:nil];
+            
+            [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[book appRecommendationItemsForBook]];
+            [self updateRecommendations];
         }
-        
-        ret = [recommendationSampleView autorelease];
-        
-    } else {
-        // show the recommendations container
-        self.recommendationsContainer = [[[self.recommendationsContainerNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
-        [recommendationsContainer setFrame:self.readingView.bounds];
-
-        [recommendationsContainer setRecommendations:self.recommendationsDictionaries
-                        modifiedWishListDictionaries:self.modifiedWishListDictionaries
-                                    listViewDelegate:self];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(retrieveRecommendationsForBooksOperationCreateOrUpdateBooks:)
-                                                     name:SCHRetrieveRecommendationsForBooksOperationCreateOrUpdateBooksNotification
-                                                   object:nil];
-
-        ret = [recommendationsContainer autorelease];
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(recommendationDidUpdate:)
-                                                 name:kSCHRecommendationStateUpdateNotification
-                                               object:nil];
-    
-    return ret;
+        
+    return backOfBookRecommendationsView;
 }
 
-- (void)reloadRecommendationsView
+- (UIView *)generatedViewForPageAtIndex:(NSUInteger)pageIndex
+{
+    return self.backOfBookRecommendationsView;
+}
+
+- (void)updateRecommendations
 {
     self.recommendationsDictionaries = nil;
 
-    if (self.recommendationSampleView ) {
-        NSString *sampleIsbn = [[self bookIdentifier] isbn];
-        if (sampleIsbn) {
-            for (NSDictionary *recommendationDictionary in self.recommendationsDictionaries) {
-                if ([[recommendationDictionary valueForKey:kSCHAppRecommendationItemISBN] isEqualToString:sampleIsbn]) {
-                    [self.recommendationSampleView updateWithRecommendationItemDictionary:recommendationDictionary];
-                }
-            }
-        }
-    }
+    dispatch_block_t updateRecommendations = ^{
+        [self.backOfBookRecommendationsView updateWithRecommendationDictionaries:self.recommendationsDictionaries wishListDictionaries:self.modifiedWishListDictionaries];
+    };
     
-    if (self.recommendationsContainer) {
-        [self.recommendationsContainer setRecommendations:self.recommendationsDictionaries
-                             modifiedWishListDictionaries:self.modifiedWishListDictionaries
-                                         listViewDelegate:self];
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), updateRecommendations);
+    } else {
+        updateRecommendations();
     }
-
 }
 
 - (void)recommendationDidUpdate:(NSNotification *)notification
@@ -2698,7 +2651,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     }
     
     if (match) {
-        [self reloadRecommendationsView];
+        [self updateRecommendations];
     }
 }
 
@@ -2714,7 +2667,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];
             [[SCHRecommendationManager sharedManager] beginProcessingForRecommendationItems:[book appRecommendationItemsForBook]];
             
-            [self reloadRecommendationsView];
+            [self updateRecommendations];
 
             break;
         }
@@ -3690,12 +3643,22 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (NSArray *)recommendationsDictionaries
 {
     if (!recommendationsDictionaries) {
+        NSAssert([NSThread isMainThread], @"recommendationDictionaries must be created on the main thread");
+
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
         NSArray *allRecommendationsDictionaries = [book recommendationDictionaries];
                 
         if ([book isSampleBook]) {
-            recommendationsDictionaries = [allRecommendationsDictionaries retain];
+            NSString *sampleIsbn = [[self bookIdentifier] isbn];
+            if (sampleIsbn) {
+                for (NSDictionary *recommendationDictionary in allRecommendationsDictionaries) {
+                    if ([[recommendationDictionary valueForKey:kSCHAppRecommendationItemISBN] isEqualToString:sampleIsbn]) {
+                        recommendationsDictionaries = [[NSArray arrayWithObject:recommendationDictionary] retain];
+                        break;
+                    }
+                }
+            }
         } else {
             // all books that are not already on the wishlist
             NSIndexSet *recommendationsNotOnWishlist = [allRecommendationsDictionaries indexesOfObjectsPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
@@ -3714,7 +3677,15 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                 return YES;
             }];
             
-            recommendationsDictionaries = [[allRecommendationsDictionaries objectsAtIndexes:recommendationsNotOnWishlist] retain];
+            NSArray *notOnWishlist = [allRecommendationsDictionaries objectsAtIndexes:recommendationsNotOnWishlist];
+            if ([notOnWishlist count] < 4) {
+                NSMutableIndexSet *recommendationsOnWishlist = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [allRecommendationsDictionaries count])];
+                NSArray *onWishlist = [allRecommendationsDictionaries objectsAtIndexes:recommendationsOnWishlist];
+                
+                recommendationsDictionaries = [[notOnWishlist arrayByAddingObjectsFromArray:onWishlist] retain];
+            } else {
+                recommendationsDictionaries = [notOnWishlist retain];
+            }
         }
     }
     
