@@ -239,7 +239,7 @@ static SCHProcessingManager *sharedManager = nil;
         
         // if the book is currently processing, it will already be taken care of 
         // when it finishes processing, so no need to add it for consideration
-        if ([self identifierIsProcessing:identifier]) {
+        if (![self identifierIsProcessing:identifier]) {
             
             if ([self identifierNeedsProcessing:identifier batch:NULL]) {
                 [self processIdentifier:identifier];
