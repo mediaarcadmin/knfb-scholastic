@@ -293,15 +293,19 @@ static SCHRecommendationManager *sharedManager = nil;
     
     for (NSString *isbn in isbns) {
         SCHAppRecommendationItem *item = [self appRecommendationForIsbn:isbn];
-
-        switch (item.processingState) {
-            case kSCHAppRecommendationProcessingStateNoMetadata:
-                [noURLsBatch addObject:isbn];
-                break;
-            default:
-                NSLog(@"WARNING: Batch processing attempted for isbn: %@ in unbatchable state: %d", isbn, [item processingState]);
-                [invalidBatch addObject:isbn];
-                break;
+        
+        if (![self isbnIsProcessing:isbn]) {
+            switch (item.processingState) {
+                case kSCHAppRecommendationProcessingStateNoMetadata:
+                    [noURLsBatch addObject:isbn];
+                    break;
+                default:
+                    NSLog(@"WARNING: Batch processing attempted for isbn: %@ in unbatchable state: %d", isbn, [item processingState]);
+                    [invalidBatch addObject:isbn];
+                    break;
+            }
+        } else {
+            NSLog(@"Warning: ISBN requested batch processing whilst already processing: %@", isbn);
         }
     }
     
@@ -327,6 +331,11 @@ static SCHRecommendationManager *sharedManager = nil;
 
 - (void)processIsbn:(NSString *)isbn
 {
+    if ([self isbnIsProcessing:isbn]) {
+        NSLog(@"Warning: ISBN requested batch processing whilst already processing: %@", isbn);
+        return;
+    }
+    
     SCHAppRecommendationItem *item = [self appRecommendationForIsbn:isbn];
     
     if (item != nil) {
