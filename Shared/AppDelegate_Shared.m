@@ -366,7 +366,12 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     [self ensureCorrectCertsAvailable];
     abort();
 }
-   
+
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    return UIInterfaceOrientationMaskAll;
+}
+
 - (void)resetDRMState
 {
     fprintf(stderr, "\nStoria: Resetting the DRM state");
