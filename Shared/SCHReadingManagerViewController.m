@@ -63,14 +63,7 @@
         [webView setScalesPageToFit:YES];
         
         [self.navigationController setNavigationBarHidden:YES animated:NO];
-        
-        UIButton *close = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [close setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
-        [close addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-        [close setTitle:@"Client Close" forState:UIControlStateNormal];
-        [close setFrame:CGRectMake(CGRectGetWidth(self.view.bounds) - 137, 7, 130, 30)];
-        [self.view addSubview:close];
-        
+                
         [self.appController waitForWebParentToolsToComplete];
     } else {
         LambdaAlert *lambdaAlert = [[LambdaAlert alloc]
