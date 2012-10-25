@@ -894,7 +894,10 @@ didSelectButtonAnimated:(BOOL)animated
         if ([view superview]) {
             [view removeFromSuperview];
         }
-    }}
+    }
+
+    [viewsToRemove release];
+}
 
 #pragma mark - UIScrollViewDelegate
 
