@@ -37,7 +37,6 @@ NSInteger const kSCHSyncManagerGeneralError = 2000;
 - (void)trackProfileSaves:(NSArray *)profilesArray;
 - (BOOL)requestSaveUserProfiles:(NSArray *)updatedProfiles;
 - (BOOL)updateProfiles;
-- (NSArray *)localProfilesWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
 @end
 
@@ -227,6 +226,7 @@ NSInteger const kSCHSyncManagerGeneralError = 2000;
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"State IN %@", 
 								[NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
 								 [NSNumber numberWithStatus:kSCHStatusDeleted], nil]]];
+    [fetchRequest setReturnsObjectsAsFaults:NO];
 	NSArray *updatedProfiles = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (updatedProfiles == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -239,25 +239,7 @@ NSInteger const kSCHSyncManagerGeneralError = 2000;
     }
 	[fetchRequest release], fetchRequest = nil;
 	
-	return(ret);
-}
-
-- (NSArray *)localProfilesWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
-{
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSError *error = nil;
-	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem 
-                                        inManagedObjectContext:aManagedObjectContext]];	
-	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
-	
-	NSArray *ret = [aManagedObjectContext executeFetchRequest:fetchRequest error:&error];	
-	[fetchRequest release], fetchRequest = nil;
-    if (ret == nil) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-	
-	return(ret);
+	return ret;
 }
 
 - (void)syncProfilesFromMainThread:(NSArray *)profileList
