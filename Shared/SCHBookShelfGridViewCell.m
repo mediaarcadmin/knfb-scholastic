@@ -201,13 +201,13 @@
 
 - (void)setShowRatings:(BOOL)newShowRatings
 {
-    showRatings = newShowRatings;
+       showRatings = newShowRatings;
 //    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.bookCoverView.hideElementsForRatings = showRatings;
         self.personalRateView.rating = (float)self.userRating;
         
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-        SCHAppBook *book = [bookManager bookWithIdentifier:self.identifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
+        SCHAppBook *book = [bookManager bookWithIdentifier:self.identifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];
 
         self.othersRateView.rating = [[book AverageRating] floatValue];
 

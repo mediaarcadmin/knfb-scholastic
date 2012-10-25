@@ -358,10 +358,11 @@ typedef enum
     [self setupAssetsForOrientation:self.interfaceOrientation];
     if (self.updateShelfOnReturnToShelf == YES) {
         self.updateShelfOnReturnToShelf = NO;
+        // setting books also performs a reloadData
         self.books = [self.profileItem allBookIdentifiers];
-    }    
-
-    [self reloadData];
+    } else {
+        [self reloadData];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -570,7 +571,8 @@ typedef enum
 {
     self.sortType = newSortType;
     [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:self.sortType]];
-    
+
+    // setting books also performs a reloadData
     self.books = [self.profileItem allBookIdentifiers];
     [self dismissLoadingView];
     
@@ -621,6 +623,7 @@ typedef enum
         self.navigationItem.title = [self.profileItem displayName];
     }
 
+    // setting books also performs a reloadData
 	self.books = [self.profileItem allBookIdentifiers];
         
     // tell the theme manager which profile to use for storage
@@ -789,6 +792,7 @@ typedef enum
     }
     
     if (refreshBooks == YES) {
+        // setting books also performs a reloadData
         self.books = [self.profileItem allBookIdentifiers];
         [self dismissLoadingView];        
     }   
@@ -805,8 +809,8 @@ typedef enum
             if ([profileBooks containsObject:recievedBook] == YES) {
                 self.gridViewNeedsRefreshed = YES;
                 self.listViewNeedsRefreshed = YES;
+                // setting books also performs a reloadData
                 self.books = [self.profileItem allBookIdentifiers];
-                [self reloadData];            
                 break;
             }
         }

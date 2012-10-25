@@ -186,6 +186,7 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
 - (NSMutableArray *)allBookIdentifiers
 {
     NSNumber *sortTypeObj = [[self AppProfile] SortType];
+    NSSet *contentProfileItems = [self ContentProfileItem];
     
     if (!sortTypeObj) {
         sortTypeObj = [NSNumber numberWithInt:kSCHBookSortTypeUser];
@@ -198,7 +199,7 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
         
         NSMutableArray *books = [NSMutableArray array];
         
-        for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
+        for (SCHContentProfileItem *contentProfileItem in contentProfileItems) {
             NSSet *contentMetadataItems = contentProfileItem.booksAssignment.ContentMetadataItem;
             if ([contentMetadataItems count] > 0) {
                 for (SCHContentMetadataItem *contentMetadataItem in contentMetadataItems) {
@@ -244,7 +245,7 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
     NSMutableArray *books = [NSMutableArray array];
     NSMutableArray *bookObjects = [NSMutableArray array];
     
-    for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
+    for (SCHContentProfileItem *contentProfileItem in contentProfileItems) {
         for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.booksAssignment.ContentMetadataItem) {
             [bookObjects addObject:contentMetadataItem];
         }

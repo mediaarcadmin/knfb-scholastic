@@ -397,7 +397,10 @@ NSString * const SCHAnnotationSyncComponentProfileIDs = @"SCHAnnotationSyncCompo
                      profileID, changedStates];        
     }
 	[fetchRequest setPredicate:predicate];
-	    
+    [fetchRequest setReturnsObjectsAsFaults:NO];
+    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"AnnotationsContentItem.PrivateAnnotations.Highlights"]];
+    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"AnnotationsContentItem.PrivateAnnotations.Notes"]];
+    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"AnnotationsContentItem.PrivateAnnotations.Bookmarks"]];
 	ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     [fetchRequest release], fetchRequest = nil;
     if (ret == nil) {

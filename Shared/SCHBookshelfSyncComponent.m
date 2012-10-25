@@ -294,6 +294,7 @@ static BOOL const SCHBookshelfSyncComponentIncludeURLs = YES;
                                           [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
                                           [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],
                                           nil]];
+        [fetchRequest setReturnsObjectsAsFaults:NO];
 
         NSArray *bookAssignments = [self.managedObjectContext executeFetchRequest:fetchRequest
                                                                             error:&error];
