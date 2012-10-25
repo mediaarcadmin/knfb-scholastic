@@ -79,6 +79,14 @@
     }
 }
 
+- (void)endOperation
+{
+    // Always dispatch async the end operation to the main queue so we give the activityLogWebService a chance to complete the run loop
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [super endOperation];
+    });
+}
+
 - (void)saveActivityLog
 {
     if (self.isCancelled) {
