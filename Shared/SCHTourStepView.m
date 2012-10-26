@@ -111,7 +111,7 @@
         
         // ** content view
         
-        self.contentView = [[UIView alloc] initWithFrame:mainRect];
+        self.contentView = [[[UIView alloc] initWithFrame:mainRect] autorelease];
         self.contentView.backgroundColor = [UIColor whiteColor];
         
         self.contentView.layer.cornerRadius = STANDARD_CORNER_RADIUS;
