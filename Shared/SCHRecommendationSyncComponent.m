@@ -440,6 +440,8 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
                                         inManagedObjectContext:self.managedObjectContext]];	
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:
                                       [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
+    [fetchRequest setReturnsObjectsAsFaults:NO];
+    [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"AppProfile"]];
 	
     NSError *error = nil;
 	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
@@ -721,6 +723,7 @@ static NSTimeInterval const kSCHRecommendationSyncComponentBookSyncDelayTimeInte
         NSError *error = nil;    
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppRecommendationProfile
                                             inManagedObjectContext:self.managedObjectContext]];
+        [fetchRequest setReturnsObjectsAsFaults:NO];
         
         NSArray *recommendationProfiles = [self.managedObjectContext executeFetchRequest:fetchRequest 
                                                                                    error:&error];
