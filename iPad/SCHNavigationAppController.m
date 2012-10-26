@@ -204,6 +204,30 @@
     [self setViewControllers:[NSArray arrayWithObject:self.loginViewController] animated:shouldAnimate];
 }
 
+- (void)presentDeviceDeregistered
+{
+    if (self.undismissableAlert) {
+        [self.undismissableAlert dismissAnimated:YES];
+        self.undismissableAlert = nil;
+    }
+    
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
+    
+    [CATransaction begin];
+    [self setViewControllers:[NSArray arrayWithObject:self.loginViewController] animated:shouldAnimate];
+    
+    [CATransaction setCompletionBlock:^{
+    
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered")
+                          message:NSLocalizedString(@"This device has been deregistered. To read eBooks, please register this device again.", @"") ];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:nil];
+    [alert show];
+    [alert release];
+    }];
+    [CATransaction commit];
+}
+
 - (void)presentDictionaryDownload
 {
     BOOL shouldAnimate = ([self.viewControllers count] > 0);

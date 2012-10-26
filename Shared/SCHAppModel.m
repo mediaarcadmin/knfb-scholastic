@@ -65,6 +65,7 @@ typedef enum {
     if ((self = [super init])) {
         
         appController = anAppController;
+        
     }
     
     return self;
@@ -287,6 +288,8 @@ typedef enum {
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncSucceeded:) name:SCHProfileSyncComponentDidCompleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncFailed:) name:SCHProfileSyncComponentDidFailNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDeregistered:) name:SCHAuthenticationManagerReceivedServerDeregistrationNotification object:nil];
+
     [syncManager accountSyncForced:now
        requireDeviceAuthentication:authenticate];
     [syncManager forceAllBookshelvesToSyncOnOpen];
@@ -327,11 +330,17 @@ typedef enum {
 
 #pragma mark - Notification handlers
 
+- (void)deviceDeregistered:(NSNotification *)note
+{
+    [self.appController presentDeviceDeregistered];
+}
+
 - (void)syncSucceeded:(NSNotification *)note
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidCompleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidFailNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerReceivedServerDeregistrationNotification object:nil];
+
     SCHAppModelSyncState currentSyncState = self.syncState;
     self.syncState = kSCHAppModelSyncStateNone;
     
@@ -368,8 +377,9 @@ typedef enum {
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidCompleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidFailNotification object:nil];
-    
-    NSError *error = [NSError errorWithDomain:kSCHSyncManagerErrorDomain  
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerReceivedServerDeregistrationNotification object:nil];
+
+    NSError *error = [NSError errorWithDomain:kSCHSyncManagerErrorDomain
                                          code:kSCHSyncManagerGeneralError  
                                      userInfo:nil];  
     

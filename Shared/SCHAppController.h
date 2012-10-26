@@ -29,6 +29,7 @@
 - (void)presentDeregisterDevice;
 - (void)presentSupport;
 - (void)presentEbookUpdates;
+- (void)presentDeviceDeregistered;
 
 // Book Presentation Methods
 - (void)presentTourBookWithIdentifier:(SCHBookIdentifier *)identifier;
