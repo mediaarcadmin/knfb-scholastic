@@ -945,7 +945,7 @@ didSelectButtonAnimated:(BOOL)animated
 }
 
 - (NSInteger)numberOfPages
-{	
+{
     NSInteger resultsPerRow = [self resultsPerRow];
     NSInteger rowsPerPage = [self rowsPerPage];
     NSInteger resultsPerPage = resultsPerRow * rowsPerPage;
@@ -1073,18 +1073,11 @@ didSelectButtonAnimated:(BOOL)animated
 {
     NSLog(@"Show tooltips");
     
-    self.tooltipContainer = [[[SCHProfileTooltipContainer alloc] initWithFrame:self.view.frame] autorelease];
+    self.tooltipContainer = [[[SCHProfileTooltipContainer alloc] initWithFrame:self.view.frame
+                                                           numberOfBookshelves:[[self.fetchedResultsController fetchedObjects] count]
+                              ] autorelease];
     self.tooltipContainer.delegate = self;
     self.tooltipContainer.alpha = 0;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self.tooltipContainer addHighlightAtLocation:CGPointMake(160, 160)];
-        [self.tooltipContainer addHighlightAtLocation:CGPointMake(86, 239)];
-    } else {
-        [self.tooltipContainer addHighlightAtLocation:CGPointMake(514, 250)];
-        [self.tooltipContainer addHighlightAtLocation:CGPointMake(248, 358)];
-    }
-
     
     [self.view addSubview:self.tooltipContainer];
     
