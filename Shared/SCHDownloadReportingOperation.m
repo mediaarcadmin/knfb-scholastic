@@ -12,6 +12,7 @@
 #import "SCHUserDefaults.h"
 #import "SCHBookIdentifier.h"
 #import <sys/sysctl.h>
+#import "SCHAppStateManager.h"
 
 @interface SCHDownloadReportingOperation () <BITAPIProxyDelegate>
 
@@ -57,25 +58,29 @@
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
     
-    [[SCHAuthenticationManager sharedAuthenticationManager] expireToken];
-    if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
-        [self saveActivityLog];
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
+        [self updateBookAfterUnsuccessfulReport];
     } else {
-        
-        // Attempt to authenticate
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
-            if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
-                [self saveActivityLog];
-            } else {
+        [[SCHAuthenticationManager sharedAuthenticationManager] expireToken];
+        if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {
+            [self saveActivityLog];
+        } else {
+            
+            // Attempt to authenticate
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithSuccessBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode){
+                if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                    [self saveActivityLog];
+                } else {
+                    [self updateBookAfterUnsuccessfulReport];
+                }
+                
+            } failureBlock:^(NSError *error) {
+                
                 [self updateBookAfterUnsuccessfulReport];
-            }
+                
+            } waitUntilVersionCheckIsDone:YES];
             
-        } failureBlock:^(NSError *error) {
-            
-            [self updateBookAfterUnsuccessfulReport];
-            
-        } waitUntilVersionCheckIsDone:YES];
-        
+        }
     }
 }
 
