@@ -15,6 +15,8 @@
 
 @property (nonatomic, assign) id <SCHProfileTooltipContainerDelegate> delegate;
 
+- (id)initWithFrame:(CGRect)frame numberOfBookshelves:(NSUInteger)bookshelves;
+
 - (void)addHighlightAtLocation:(CGPoint)location;
 
 @end
