@@ -290,6 +290,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext]];	
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
+    [fetchRequest setReturnsObjectsAsFaults:NO];
 	
 	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
 	[fetchRequest release], fetchRequest = nil;
@@ -312,6 +313,7 @@ NSString * const SCHWishListSyncComponentDidFailNotification = @"SCHWishListSync
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:
                                     @"ANY ItemList.State IN %@", changedStates]];
     }
+    [fetchRequest setReturnsObjectsAsFaults:NO];
     
 	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
 	[fetchRequest release], fetchRequest = nil;

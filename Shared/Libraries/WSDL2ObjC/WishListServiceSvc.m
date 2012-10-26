@@ -2388,7 +2388,13 @@
 		[dateFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease]];
 		[dateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss zzz"]; 
 	}
-	NSDate *serverDate = [dateFormatter dateFromString:[self.responseHeaders objectForKey:@"Date"]];
+    NSDate *serverDate = nil;
+    NSString *responseDateString = [self.responseHeaders objectForKey:@"Date"];
+    if (responseDateString) {
+        serverDate = [dateFormatter dateFromString:responseDateString];
+    } else {
+        NSLog(@"Warning: no date returned in the response headers. This should be investigated.");
+    }
 	self.serverDateDelta = (serverDate == nil ? 0.0 : [serverDate timeIntervalSinceNow]);
 	
 	if ([urlResponse.MIMEType rangeOfString:[self.binding MIMEType]].length == 0) {

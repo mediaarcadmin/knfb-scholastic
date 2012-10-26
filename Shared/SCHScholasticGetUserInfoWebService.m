@@ -130,8 +130,14 @@ completedWithResponse:(GetUserInfoSoap11BindingResponse *)response
                                           requestInfo:nil 
                                                result:nil];
                         }
-                    } else if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {					
-                        NSDate *serverDate = [self.rfc822DateFormatter dateFromString:[operation.responseHeaders objectForKey:@"Date"]];
+                    } else if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:userInfo:)]) {
+                        NSDate *serverDate = nil;
+                        NSString *responseDateString = [operation.responseHeaders objectForKey:@"Date"];
+                        if (responseDateString) {
+                            serverDate = [self.rfc822DateFormatter dateFromString:responseDateString];
+                        } else {
+                            NSLog(@"Warning: no date returned in the response headers. This should be investigated.");
+                        }
                         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:(double)operation.serverDateDelta], @"serverDateDelta",
                                                   (serverDate == nil ? (id)[NSNull null] : serverDate), @"serverDate",
                                                   nil];

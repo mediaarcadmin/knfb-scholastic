@@ -19,8 +19,6 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 - (void)releaseViewObjects;
 - (void)showAppVersionOutdatedAlert;
 
-@property (nonatomic, retain) UITextField *activeTextField;
-
 @end
 
 @implementation SCHStoriaLoginViewController
