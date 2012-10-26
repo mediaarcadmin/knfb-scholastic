@@ -111,6 +111,8 @@ NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingS
         if (profileID != nil) {
             [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem inManagedObjectContext:self.managedObjectContext]];
             [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", profileID]];
+            [fetchRequest setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObject:@"ReadingStatsContentItem.ReadingStatsEntryItem"]];
+
             NSArray *readingStats = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
             if (readingStats == nil) {
                 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
