@@ -102,7 +102,8 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
 
-    // there should only ever be a single matching user content item
+    NSAssert([result count] <= 1, @"There should never be more than one SCHBooksAssignment for a SCHContentMetadataItem");
+
     if ([result count] > 0) {
         ret = [result objectAtIndex:0];
     }

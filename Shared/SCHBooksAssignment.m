@@ -46,7 +46,9 @@ NSString * const kSCHBooksAssignment = @"SCHBooksAssignment";
     if (result == nil) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
-    
+
+    NSAssert([result count] <= 1, @"There should never be more than one SCHContentMetadataItem for a SCHBooksAssignment");
+
     return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
 }
 
