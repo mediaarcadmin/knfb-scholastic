@@ -30,7 +30,7 @@
     if (self) {
         // Initialization code
         
-        self.tourImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)] autorelease];
+        self.tourImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height)] autorelease];
         self.tourImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.tourImageView.contentMode = UIViewContentModeCenter;
         self.tourImageView.clipsToBounds = YES;

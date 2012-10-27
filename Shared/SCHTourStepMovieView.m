@@ -72,7 +72,7 @@
     self.moviePlayer.shouldAutoplay = NO;
     self.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
     
-    self.moviePlayer.view.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    self.moviePlayer.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
     
     self.moviePlayer.view.autoresizingMask =
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight |
