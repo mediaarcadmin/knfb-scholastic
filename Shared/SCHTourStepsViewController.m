@@ -399,7 +399,7 @@
         {
             
             SCHTourStepMovieView *tourStepMovieView = [[SCHTourStepMovieView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, self.viewHeight) bottomBarVisible:YES];
-            [tourStepMovieView setButtonTitle:@"Play Read-Aloud"];
+            [tourStepMovieView setButtonTitle:@"Play Read-to-Me"];
             
             UIImage *tourImage = [UIImage imageNamed:[NSString stringWithFormat:@"tour_full_image_%d_%d%@.jpg", index, 0, imagePostfix]];
             tourImage = [UIImage imageWithCGImage:tourImage.CGImage scale:[UIScreen mainScreen].scale orientation:tourImage.imageOrientation];
