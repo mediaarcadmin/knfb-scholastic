@@ -43,6 +43,7 @@
 #import "SCHReadingViewController.h"
 #import "SCHUpdateBooksViewController.h"
 #import "SCHBookUpdates.h"
+#import "SCHAppBook.h"
 
 @interface SCHNavigationAppController () <UINavigationControllerDelegate>
 
@@ -61,7 +62,6 @@
 - (void)pushProfileAnimated:(BOOL)animated;
 - (void)pushBookshelfAnimated:(BOOL)animated forProfileItem:(SCHProfileItem *)profileItem;
 - (void)pushReadingManagerAnimated:(BOOL)animated;
-- (void)pushBookWithIdentifier:(SCHBookIdentifier *)identifier profileItem:(SCHProfileItem *)profileItem viewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
 - (BOOL)isCurrentlyModal;
 - (SCHReadingViewController *)readingViewControllerForBookWithIdentifier:(SCHBookIdentifier *)identifier profileItem:(SCHProfileItem *)profileItem error:(NSError **)error;
 - (void)failedOpenBookWithError:(NSError *)error;
@@ -298,8 +298,34 @@
     // TODO, this reliance on using a profile view controller to get at a bookshelf should be refactored
     if ([[self.samplesViewController profileItems] count]) {
         SCHProfileItem *profileItem = [[self.samplesViewController profileItems] lastObject]; // Only one sample bookshelf so any result will do
-        NSArray *stack = [NSArray arrayWithObjects:self.loginViewController, self.tourViewController, nil];
-        [self pushBookWithIdentifier:identifier profileItem:profileItem viewControllers:stack animated:shouldAnimate];
+                
+        NSError *error = nil;
+        SCHReadingViewController *readingViewController = [self readingViewControllerForBookWithIdentifier:identifier profileItem:profileItem error:&error];
+        
+        if (readingViewController) {
+            if (self.undismissableAlert) {
+                [self.undismissableAlert dismissAnimated:YES];
+                self.undismissableAlert = nil;
+            }
+            
+            self.dynamicInterfaceOrientations = UIInterfaceOrientationMaskAll;
+
+            NSArray *stack = [NSArray arrayWithObjects:self.loginViewController, self.tourViewController, readingViewController, nil];
+            [self setViewControllers:stack animated:shouldAnimate];
+        } else {
+            if ([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError)) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.undismissableAlert = [[[LambdaAlert alloc]
+                                                initWithTitle:NSLocalizedString(@"Opening eBook", @"")
+                                                message:@"\n"] autorelease];
+                    [self.undismissableAlert setSpinnerHidden:NO];
+                    [self.undismissableAlert show];
+                });
+                [self waitingForTourBookWithIdentifier:identifier];
+            } else {
+                [self failedOpenBookWithError:error];
+            }
+        }
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
@@ -321,8 +347,18 @@
     if ([[self.samplesViewController profileItems] count]) {
         SCHProfileItem *profileItem = [[self.samplesViewController profileItems] lastObject]; // Only one sample bookshelf so any result will do
         UIViewController *bookshelfViewController = [[self.samplesViewController viewControllersForProfileItem:profileItem showWelcome:NO] lastObject];
-        NSArray *stack = [NSArray arrayWithObjects:self.loginViewController, bookshelfViewController, nil];
-        [self pushBookWithIdentifier:identifier profileItem:profileItem viewControllers:stack animated:shouldAnimate];
+        
+        NSError *error = nil;
+        SCHReadingViewController *readingViewController = [self readingViewControllerForBookWithIdentifier:identifier profileItem:profileItem error:&error];
+        
+        if (readingViewController) {
+            self.dynamicInterfaceOrientations = UIInterfaceOrientationMaskAll;
+            NSArray *stack = [NSArray arrayWithObjects:self.loginViewController, bookshelfViewController, readingViewController, nil];
+
+            [self setViewControllers:stack animated:shouldAnimate];
+        } else {
+            [self failedOpenBookWithError:error];
+        }
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Unable To Open the Sample Bookshelf", @"")
@@ -571,22 +607,6 @@
     [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.tourViewController, nil] animated:animated];
 }
 
-- (void)pushBookWithIdentifier:(SCHBookIdentifier *)identifier profileItem:(SCHProfileItem *)profileItem viewControllers:(NSArray *)viewControllers animated:(BOOL)animated
-{
-    self.dynamicInterfaceOrientations = UIInterfaceOrientationMaskAll;
-    
-    NSError *error = nil;
-    SCHReadingViewController *readingViewController = [self readingViewControllerForBookWithIdentifier:identifier profileItem:profileItem error:&error];
-    
-    if (readingViewController) {
-        NSMutableArray *allViewControllers = [[viewControllers mutableCopy] autorelease];
-        [allViewControllers addObject:readingViewController];
-        [self setViewControllers:allViewControllers animated:animated];
-    } else {
-        [self failedOpenBookWithError:error];
-    }
-}
-
 #pragma mark - SCHProfileSetupDelegate
 
 
@@ -612,6 +632,13 @@
     AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
     SCHAppModel *appModel = [appDelegate appModel];
     [appModel waitForBookshelves];
+}
+
+- (void)waitingForTourBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
+    SCHAppModel *appModel = [appDelegate appModel];
+    [appModel waitForTourBookWithIdentifier:identifier];
 }
 
 - (void)dismissModalViewControllerAnimated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion

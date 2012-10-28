@@ -42,6 +42,7 @@ typedef enum {
 
 @property (nonatomic, assign) id<SCHAppController> appController;
 @property (nonatomic, assign) SCHAppModelSyncState syncState;
+@property (nonatomic, retain) SCHBookIdentifier *processingIdentifier;
 
 - (void)createLocalSampleBooksWithCompletion:(dispatch_block_t)completion importLocalBooks:(BOOL)importLocal;
 - (void)startSyncNow:(BOOL)now requireAuthentication:(BOOL)authenticate withSyncManager:(SCHSyncManager *)syncManager;
@@ -52,10 +53,12 @@ typedef enum {
 
 @synthesize appController;
 @synthesize syncState;
+@synthesize processingIdentifier;
 
 - (void)dealloc
 {
     appController = nil;
+    [processingIdentifier release], processingIdentifier = nil;
 
     [super dealloc];
 }
@@ -252,6 +255,12 @@ typedef enum {
     [self startSyncNow:YES requireAuthentication:YES withSyncManager:syncManager];
 }
 
+- (void)waitForTourBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    self.processingIdentifier = identifier;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tourBookProcessingUpdate:) name:@"SCHBookStateUpdate" object:nil];
+}
+
 #pragma mark - Utility Methods
 
 - (void)createLocalSampleBooksWithCompletion:(dispatch_block_t)completion importLocalBooks:(BOOL)importLocal
@@ -389,6 +398,19 @@ typedef enum {
         [self.appController presentSettings];
     } else {
         [self.appController failedSyncWithError:error];
+    }
+}
+
+- (void)tourBookProcessingUpdate:(NSNotification *)notification
+{
+    SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
+    if (self.processingIdentifier && [bookIdentifier isEqual:self.processingIdentifier]) {
+        SCHBookCurrentProcessingState bookState = [[[notification userInfo] objectForKey:@"bookState"] intValue];
+        if (bookState == SCHBookProcessingStateReadyToRead) {
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStateUpdate" object:nil];
+            self.processingIdentifier = nil;
+            [self.appController presentTourBookWithIdentifier:bookIdentifier];
+        }
     }
 }
 
