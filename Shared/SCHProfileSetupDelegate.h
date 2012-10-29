@@ -8,11 +8,14 @@
 
 #import "SCHModalPresenterDelegate.h"
 
+@class SCHBookIdentifier;
+
 @protocol SCHProfileSetupDelegate <SCHModalPresenterDelegate>
 
 - (void)popToAuthenticatedProfileAnimated:(BOOL)animated;
 - (void)pushCurrentProfileAnimated:(BOOL)animated;
 - (void)waitingForPassword;
 - (void)waitingForBookshelves;
+- (void)waitingForTourBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
 @end

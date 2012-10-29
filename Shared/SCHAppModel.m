@@ -42,6 +42,7 @@ typedef enum {
 
 @property (nonatomic, assign) id<SCHAppController> appController;
 @property (nonatomic, assign) SCHAppModelSyncState syncState;
+@property (nonatomic, retain) SCHBookIdentifier *processingIdentifier;
 
 - (void)createLocalSampleBooksWithCompletion:(dispatch_block_t)completion importLocalBooks:(BOOL)importLocal;
 - (void)startSyncNow:(BOOL)now requireAuthentication:(BOOL)authenticate withSyncManager:(SCHSyncManager *)syncManager;
@@ -52,10 +53,12 @@ typedef enum {
 
 @synthesize appController;
 @synthesize syncState;
+@synthesize processingIdentifier;
 
 - (void)dealloc
 {
     appController = nil;
+    [processingIdentifier release], processingIdentifier = nil;
 
     [super dealloc];
 }
@@ -65,6 +68,7 @@ typedef enum {
     if ((self = [super init])) {
         
         appController = anAppController;
+        
     }
     
     return self;
@@ -251,6 +255,12 @@ typedef enum {
     [self startSyncNow:YES requireAuthentication:YES withSyncManager:syncManager];
 }
 
+- (void)waitForTourBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    self.processingIdentifier = identifier;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tourBookProcessingUpdate:) name:@"SCHBookStateUpdate" object:nil];
+}
+
 #pragma mark - Utility Methods
 
 - (void)createLocalSampleBooksWithCompletion:(dispatch_block_t)completion importLocalBooks:(BOOL)importLocal
@@ -287,6 +297,8 @@ typedef enum {
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncSucceeded:) name:SCHProfileSyncComponentDidCompleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncFailed:) name:SCHProfileSyncComponentDidFailNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDeregistered:) name:SCHAuthenticationManagerReceivedServerDeregistrationNotification object:nil];
+
     [syncManager accountSyncForced:now
        requireDeviceAuthentication:authenticate];
     [syncManager forceAllBookshelvesToSyncOnOpen];
@@ -327,11 +339,17 @@ typedef enum {
 
 #pragma mark - Notification handlers
 
+- (void)deviceDeregistered:(NSNotification *)note
+{
+    [self.appController presentDeviceDeregistered];
+}
+
 - (void)syncSucceeded:(NSNotification *)note
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidCompleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidFailNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerReceivedServerDeregistrationNotification object:nil];
+
     SCHAppModelSyncState currentSyncState = self.syncState;
     self.syncState = kSCHAppModelSyncStateNone;
     
@@ -368,8 +386,9 @@ typedef enum {
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidCompleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHProfileSyncComponentDidFailNotification object:nil];
-    
-    NSError *error = [NSError errorWithDomain:kSCHSyncManagerErrorDomain  
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerReceivedServerDeregistrationNotification object:nil];
+
+    NSError *error = [NSError errorWithDomain:kSCHSyncManagerErrorDomain
                                          code:kSCHSyncManagerGeneralError  
                                      userInfo:nil];  
     
@@ -379,6 +398,19 @@ typedef enum {
         [self.appController presentSettings];
     } else {
         [self.appController failedSyncWithError:error];
+    }
+}
+
+- (void)tourBookProcessingUpdate:(NSNotification *)notification
+{
+    SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
+    if (self.processingIdentifier && [bookIdentifier isEqual:self.processingIdentifier]) {
+        SCHBookCurrentProcessingState bookState = [[[notification userInfo] objectForKey:@"bookState"] intValue];
+        if (bookState == SCHBookProcessingStateReadyToRead) {
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStateUpdate" object:nil];
+            self.processingIdentifier = nil;
+            [self.appController presentTourBookWithIdentifier:bookIdentifier];
+        }
     }
 }
 

@@ -880,6 +880,12 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
         }
     } else if (strcmp(name, "Row") == 0) {
         NSString *row = extractXmlAttribute(attributes, "Letters");
+        
+        // convert to upper case, in case it's not already upper case
+        if (row && [row length] > 0) {
+            row = [row uppercaseString];
+        }
+        
         BOOL isFirstRow = ([parser.array count] == 0);
         __block NSInteger letterCount = 0;
         // string is ostensibly comma-separated but bad forms exist so just extract

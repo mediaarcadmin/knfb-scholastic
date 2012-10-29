@@ -182,6 +182,7 @@
 
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   (bookIdentifier == nil ? (id)[NSNull null] : bookIdentifier), @"bookIdentifier",
+                                  (book.State == nil ? (id)[NSNull null] : book.State), @"bookState",
                                   nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
     } forBookWithIdentifier:bookIdentifier];

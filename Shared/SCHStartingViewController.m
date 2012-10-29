@@ -495,6 +495,11 @@ static const NSTimeInterval kSCHStartingViewControllerNonForcedAlertInterval = (
                               requireDeviceAuthentication:YES];
 }
 
+- (void)waitingForTourBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+   
+}
+
 #pragma mark - Profile view
 
 - (SCHProfileViewController *)profileViewController

@@ -37,7 +37,11 @@
 
 - (NSInteger)matrixRows
 {
-    return [self.matrix length] / matrixColumns;
+    if (matrixColumns > 0) {
+        return [self.matrix length] / matrixColumns;
+    } else {
+        return 0;
+    }
 }
 
 - (unichar)matrixLetterAtRow:(NSInteger)row column:(NSInteger)column

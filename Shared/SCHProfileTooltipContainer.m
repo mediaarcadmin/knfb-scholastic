@@ -38,7 +38,7 @@
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame numberOfBookshelves:(NSUInteger)numberOfBookshelves
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -72,7 +72,20 @@
             self.bottomTooltip.backgroundImage = [UIImage imageNamed:@"TooltipBottomBackground"];
             self.bottomTooltip.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
             [self addSubview:self.bottomTooltip];
+            
+            [self addHighlightAtLocation:CGPointMake(160, 160)];
+            [self addHighlightAtLocation:CGPointMake(86, 239)];
+            
         } else {
+            
+            CGFloat xOffset = 0;
+            
+            if (numberOfBookshelves == 1) {
+                xOffset = 266;
+            } else if (numberOfBookshelves == 2) {
+                xOffset = 133;
+            }
+            
             self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(584, 192, 315, 119) edgeInsets:UIEdgeInsetsMake(-5, 20, 0, 0)] autorelease];
             [self.topTooltip setTitle:@"Reading Manager"
                              bodyText:@"Go here to assign new eBooks and monitor reading progress. This area is password protected and only accessible to grown-ups."];
@@ -83,7 +96,7 @@
             [self addSubview:self.topTooltip];
             
             
-            self.bottomTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(102, 388, 301, 132)
+            self.bottomTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(102 + xOffset, 388, 301, 132)
                                    edgeInsets:UIEdgeInsetsMake(20, 0, 0, 0)] autorelease];
             [self.bottomTooltip setTitle:@"Child's Bookshelf"
                              bodyText:@"Your child can start reading by selecting their name. The eBooks you have assigned are waiting for them!"];
@@ -91,6 +104,12 @@
             self.bottomTooltip.backgroundImage = [UIImage imageNamed:@"TooltipBottomBackground"];
             self.bottomTooltip.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
             [self addSubview:self.bottomTooltip];
+            
+            // reading manager highlight
+            [self addHighlightAtLocation:CGPointMake(514, 250)];
+            
+            // bookshelf highlight
+            [self addHighlightAtLocation:CGPointMake(248 + xOffset, 358)];
         }
     }
     return self;

@@ -41,11 +41,12 @@
 - (void)checkMovieStatus:(NSNotification *)note {
     if (moviePlayer.loadState & (MPMovieLoadStatePlayable | MPMovieLoadStatePlaythroughOK))
     {
+        [self.contentView setBackgroundColor:[UIColor blackColor]];
         [self.contentView addSubview:self.moviePlayer.view];
         [self.contentView bringSubviewToFront:self.tourImageView];
         [UIView animateWithDuration:0.1
                          animations:^{
-                             self.tourImageView.alpha = 0;
+                             self.tourImageView.alpha = 0.9f;
                              self.moviePlayer.view.alpha = 1;
                          } completion:^(BOOL finished) {
                              [self.contentView bringSubviewToFront:self.moviePlayer.view];
@@ -72,7 +73,7 @@
     self.moviePlayer.shouldAutoplay = NO;
     self.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
     
-    self.moviePlayer.view.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    self.moviePlayer.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
     
     self.moviePlayer.view.autoresizingMask =
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight |
@@ -89,16 +90,16 @@
 {
     // animations here to prevent a black flicker when the movie stops
     if (self.moviePlayer) {
-        self.tourImageView.alpha = 0;
+        self.tourImageView.alpha = 0.9f;
         [self.contentView bringSubviewToFront:self.tourImageView];
         [self.moviePlayer pause];
         [UIView animateWithDuration:0.1
                          animations:^{
-                             self.moviePlayer.view.alpha = 0;
+                             self.moviePlayer.view.alpha = 0.9f;
                              self.tourImageView.alpha = 1;
                          } completion:^(BOOL finished) {
                              self.tourImageView.alpha = 1;
-                             self.moviePlayer.view.alpha = 0;
+                             self.moviePlayer.view.alpha = 0.9f;
                              [self.moviePlayer stop];
                          }];
     }

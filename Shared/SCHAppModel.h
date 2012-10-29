@@ -47,6 +47,7 @@ extern NSInteger const kSCHAppModelErrorBookRequiresNetworkConnection;
 - (void)waitForSettings;
 - (void)waitForBookshelves;
 - (void)waitForWebParentToolsToComplete;
+- (void)waitForTourBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
 - (void)waitForSettingsWithSyncManager:(SCHSyncManager *)syncManager;
 - (void)waitForBookshelvesWithSyncManager:(SCHSyncManager *)syncManager;
