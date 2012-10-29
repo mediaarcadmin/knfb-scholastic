@@ -799,6 +799,9 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 		case SCHBookProcessingStateDownloadFailed:
 			status = @"Error Download Failed";
 			break;
+        case SCHBookProcessingStateLicensingNotEnoughStorage:
+			status = @"Error Not Enough Storage Space to Acquire License";
+			break;
 		case SCHBookProcessingStateUnableToAcquireLicense:
 			status = @"Error Unable to Acquire License";
 			break;
@@ -869,6 +872,9 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
             case SCHBookProcessingStateNotEnoughStorageError:
                 *error = [self errorWithCode:kSCHAppBookNotEnoughStorageError];
                 break;
+            case SCHBookProcessingStateLicensingNotEnoughStorage:
+                *error = [self errorWithCode:kSCHAppBookNotEnoughStorageToAcquireLicenseError];
+                break;
             case SCHBookProcessingStateUnableToAcquireLicense:
                 *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
                 break;
@@ -933,13 +939,16 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     
     switch (code) {
         case kSCHAppBookNotEnoughStorageError:
-            description = NSLocalizedString(@"Not enough storage. You do not have enough storage on your device to complete this function. Please clear some space and then try again.", @"Not enough storage error message from AppBook");
+            description = NSLocalizedString(@"You do not have enough storage on your device to complete this function. Please clear some space and then try again.", @"Not enough storage error message from AppBook");
             break;            
         case kSCHAppBookStillBeingProcessedError:
             description = NSLocalizedString(@"The eBook is still being processed.", @"Still being processed error message from AppBook");
             break;
         case kSCHAppBookUnableToAcquireLicenseError:
-            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure this device is authorized, connected to the internet and you have enough free storage space.", @"Decryption not available error message from AppBook");
+            description = NSLocalizedString(@"It has not been possible to use a DRM license for this eBook. Please make sure this device is authorized and connected to the internet.", @"Decryption not available error message from AppBook");
+            break;
+        case kSCHAppBookNotEnoughStorageToAcquireLicenseError:
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this eBook. Please make sure you have enough free storage space.", @"Decryption not available because of storage space error message from AppBook");
             break;
         case kSCHAppBookCachedCoverError:
             description = NSLocalizedString(@"There was a problem retrieving the cover for this eBook. Please try again.", @"Cached Cover error message from AppBook");

@@ -1132,6 +1132,7 @@ typedef enum
                 [self.navigationController pushViewController:readingController animated:YES]; 
             } else {
                 if (error) {
+                    
                     if ([[error domain] isEqualToString:kSCHBookShelfErrorDomain] && ([error code] == kSCHBookShelfNoInternet)) {
                         LambdaAlert *alert = [[LambdaAlert alloc]
                                               initWithTitle:NSLocalizedString(@"No Internet Connection", @"No Internet Connection")
@@ -1139,7 +1140,23 @@ typedef enum
                         [alert addButtonWithTitle:@"OK" block:nil];
                         [alert show];
                         [alert release];
-                    } else if (!([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
+                    } else if ([[error domain] isEqualToString:kSCHAppBookErrorDomain]
+                               && (([error code] == kSCHAppBookNotEnoughStorageError) ||
+                               ([error code] == kSCHAppBookNotEnoughStorageToAcquireLicenseError)))
+                             {
+                        LambdaAlert *alert = [[LambdaAlert alloc]
+                                              initWithTitle:NSLocalizedString(@"Not Enough Storage", @"Not Enough Storage")
+                                              message:[error localizedDescription]];
+                        [alert addButtonWithTitle:@"Cancel" block:nil];
+                         [alert addButtonWithTitle:@"Retry" block:^{
+                             [[SCHProcessingManager sharedProcessingManager] userRequestedRetryForBookWithIdentifier:identifier];
+                             
+                         }];
+                        [alert show];
+                        [alert release];
+                    } else if (!([[error domain] isEqualToString:kSCHAppBookErrorDomain] &&
+                                 ([error code] == kSCHAppBookStillBeingProcessedError)))
+                                  {
                         LambdaAlert *alert = [[LambdaAlert alloc]
                                               initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook")
                                               message:[error localizedDescription]];
