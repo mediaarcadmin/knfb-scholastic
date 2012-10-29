@@ -3679,8 +3679,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             
             NSArray *notOnWishlist = [allRecommendationsDictionaries objectsAtIndexes:recommendationsNotOnWishlist];
             if ([notOnWishlist count] < 4) {
-                NSMutableIndexSet *recommendationsOnWishlist = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [allRecommendationsDictionaries count])];
-                NSArray *onWishlist = [allRecommendationsDictionaries objectsAtIndexes:recommendationsOnWishlist];
+                NSMutableArray *onWishlist = [[allRecommendationsDictionaries mutableCopy] autorelease];
+                [onWishlist removeObjectsAtIndexes:recommendationsNotOnWishlist];
                 
                 recommendationsDictionaries = [[notOnWishlist arrayByAddingObjectsFromArray:onWishlist] retain];
             } else {
