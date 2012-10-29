@@ -1139,6 +1139,13 @@ typedef enum
                         [alert addButtonWithTitle:@"OK" block:nil];
                         [alert show];
                         [alert release];
+                    } else if (!([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookNotEnoughStorageError))) {
+                        LambdaAlert *alert = [[LambdaAlert alloc]
+                                              initWithTitle:NSLocalizedString(@"Not Enough Storage", @"Not Enough Storage")
+                                              message:[error localizedDescription]];
+                        [alert addButtonWithTitle:@"OK" block:nil];
+                        [alert show];
+                        [alert release];
                     } else if (!([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
                         LambdaAlert *alert = [[LambdaAlert alloc]
                                               initWithTitle:NSLocalizedString(@"This eBook Could Not Be Opened", @"Could not open eBook")

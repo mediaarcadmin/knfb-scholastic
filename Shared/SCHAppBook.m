@@ -933,7 +933,7 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     
     switch (code) {
         case kSCHAppBookNotEnoughStorageError:
-            description = NSLocalizedString(@"Not enough storage. You do not have enough storage on your device to complete this function. Please clear some space and then try again.", @"Not enough storage error message from AppBook");
+            description = NSLocalizedString(@"You do not have enough storage on your device to complete this function. Please clear some space and then try again.", @"Not enough storage error message from AppBook");
             break;            
         case kSCHAppBookStillBeingProcessedError:
             description = NSLocalizedString(@"The eBook is still being processed.", @"Still being processed error message from AppBook");
