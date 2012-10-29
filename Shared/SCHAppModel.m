@@ -44,6 +44,7 @@ typedef enum {
 @property (nonatomic, assign) SCHAppModelSyncState syncState;
 @property (nonatomic, retain) SCHBookIdentifier *processingIdentifier;
 
+- (void)purgeDocumentsFolder;
 - (void)createLocalSampleBooksWithCompletion:(dispatch_block_t)completion importLocalBooks:(BOOL)importLocal;
 - (void)startSyncNow:(BOOL)now requireAuthentication:(BOOL)authenticate withSyncManager:(SCHSyncManager *)syncManager;
 
@@ -163,6 +164,7 @@ typedef enum {
                                                         password:password
                                                     successBlock:^(SCHAuthenticationManagerConnectivityMode connectivityMode) { 
                                                         if (connectivityMode == SCHAuthenticationManagerConnectivityModeOnline) {
+                                                            [self purgeDocumentsFolder];
                                                             [self startSyncNow:YES requireAuthentication:NO withSyncManager:syncManager];
                                                         } else { 
                                                             NSError *anError = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain  
@@ -262,6 +264,33 @@ typedef enum {
 }
 
 #pragma mark - Utility Methods
+
+// see ticket https://bitwink.codebasehq.com/projects/scholastic/tickets/1950
+- (void)purgeDocumentsFolder
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        NSError *error = nil;
+        NSFileManager *localManager = [[[NSFileManager alloc] init] autorelease];
+        NSArray *documentDirectorys = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentDirectory = ([documentDirectorys count] > 0) ? [documentDirectorys objectAtIndex:0] : nil;
+
+        if (documentDirectory != nil) {
+            NSArray *directoryContents = [localManager contentsOfDirectoryAtPath:documentDirectory
+                                                                           error:&error];
+
+            if (directoryContents == nil) {
+                NSLog(@"Error retrieving files to delete from Documents: %@", error);
+            } else {
+                for (NSString *fileName in directoryContents) {
+                    NSString *filePath = [documentDirectory stringByAppendingPathComponent:fileName];
+                    if ([localManager removeItemAtPath:filePath error:&error] == NO) {
+                        NSLog(@"Error trying to delete: %@, error: %@", filePath, error);
+                    }
+                }
+            }
+        }
+    });
+}
 
 - (void)createLocalSampleBooksWithCompletion:(dispatch_block_t)completion importLocalBooks:(BOOL)importLocal
 {
