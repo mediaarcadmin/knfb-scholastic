@@ -787,6 +787,7 @@ static SCHProcessingManager *sharedManager = nil;
             }
             case SCHBookProcessingStateError:
             case SCHBookProcessingStateNotEnoughStorageError:    
+            case SCHBookProcessingStateLicensingNotEnoughStorage:
             case SCHBookProcessingStateUnableToAcquireLicense:
             case SCHBookProcessingStateCachedCoverError:
             case SCHBookProcessingStateDownloadFailed:
@@ -1003,6 +1004,7 @@ static SCHProcessingManager *sharedManager = nil;
                     [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
                 }
                 break;
+            case SCHBookProcessingStateLicensingNotEnoughStorage:
             case SCHBookProcessingStateUnableToAcquireLicense:
                 [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
                 break;

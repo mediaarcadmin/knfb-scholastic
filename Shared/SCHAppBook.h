@@ -23,6 +23,7 @@ typedef enum
 	kSCHAppBookStillBeingProcessedError = 0,
     kSCHAppBookNotEnoughStorageError,
     kSCHAppBookUnableToAcquireLicenseError,
+    kSCHAppBookNotEnoughStorageToAcquireLicenseError,
     kSCHAppBookCachedCoverError,
     kSCHAppBookDownloadFailedError,
     kSCHAppBookURLsNotPopulatedError,
