@@ -118,8 +118,6 @@
             [self updateBookWithFailureState:SCHBookProcessingStateUnableToAcquireLicense];
         }
     }
-    
-    [checkoutError release];
 }
 
 #pragma mark - Accessor methods
