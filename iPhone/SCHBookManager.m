@@ -325,6 +325,53 @@ static int allocCountBookPackage = 0;
     return(ret);	
 }
 
+- (id <SCHBookPackageProvider>)threadSafeCheckOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier error:(NSError **)error
+{
+//    NSParameterAssert(identifier);
+//    
+//    if (error != NULL) {
+//        *error = nil;
+//    }
+//    
+//    __block id <SCHBookPackageProvider> provider = nil;
+//    
+//    [self performOnMainThread:^{
+//        NSError *localError = nil;
+//        provider = [[self checkOutBookPackageProviderForBookIdentifier:identifier inManagedObjectContext:self.mainThreadManagedObjectContext error:&localError] retain];
+//        if (error != NULL) {
+//            *error = [localError retain];
+//        }
+//    }];
+//    
+//    [*error autorelease];
+//    
+//    return [provider autorelease];
+    
+    NSParameterAssert(identifier);
+    
+    __block id <SCHBookPackageProvider> provider = nil;
+    __block NSError *blockError = nil;
+    
+    [self performOnMainThread:^{
+        NSError *checkoutError = nil;
+        provider = [[self checkOutBookPackageProviderForBookIdentifier:identifier inManagedObjectContext:self.mainThreadManagedObjectContext error:&checkoutError] retain];
+        if (checkoutError) {
+            blockError = [checkoutError retain];
+        }
+    }];
+    
+    if (blockError) {
+        if (error != NULL) {
+            *error = blockError;
+        }
+        [blockError autorelease];
+    }
+    
+    return [provider autorelease];
+
+    
+}
+
 - (id <SCHBookPackageProvider>)threadSafeCheckOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier
 {
     NSParameterAssert(identifier);

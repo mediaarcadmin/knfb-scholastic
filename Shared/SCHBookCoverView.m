@@ -431,7 +431,8 @@
     thumbPath = [book thumbPathForSize:thumbSize];
     
     if ([book.BookCoverExists boolValue] == NO || (bookState <= SCHBookProcessingStateNoCoverImage && 
-                                                    bookState != SCHBookProcessingStateUnableToAcquireLicense &&
+                                                   bookState != SCHBookProcessingStateUnableToAcquireLicense &&
+                                                   bookState != SCHBookProcessingStateLicensingNotEnoughStorage &&
                                                     [book.BookCoverExists boolValue] == NO)) {
         // book does not have a cover image downloaded 
         self.coverImageView.image = nil;
@@ -466,6 +467,7 @@
             case SCHBookProcessingStateNotEnoughStorageError:
             case SCHBookProcessingStateURLsNotPopulated:
             case SCHBookProcessingStateDownloadFailed:
+            case SCHBookProcessingStateLicensingNotEnoughStorage:
             case SCHBookProcessingStateUnableToAcquireLicense:
             case SCHBookProcessingStateCachedCoverError:
             case SCHBookProcessingStateError:
@@ -686,6 +688,7 @@
         case SCHBookProcessingStateDownloadFailed:
         case SCHBookProcessingStateURLsNotPopulated:
         case SCHBookProcessingStateUnableToAcquireLicense:
+        case SCHBookProcessingStateLicensingNotEnoughStorage:
         case SCHBookProcessingStateCachedCoverError:
         case SCHBookProcessingStateBookVersionNotSupported:
             self.progressView.alpha = 1.0f;

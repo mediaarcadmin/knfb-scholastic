@@ -14,7 +14,7 @@
 @interface SCHLicenseAcquisitionOperation ()
 
 - (void)updateBookWithSuccess;
-- (void)updateBookWithFailure;
+- (void)updateBookWithFailureState:(SCHBookCurrentProcessingState)errorState;
 
 @property (nonatomic, retain) NSNumber *useDRM;
 
@@ -40,8 +40,9 @@
 
 - (void)beginOperation
 { 
+    NSError *checkoutError = nil;
     
-    id<SCHBookPackageProvider> provider = [[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.identifier];
+    id<SCHBookPackageProvider> provider = [[SCHBookManager sharedBookManager] threadSafeCheckOutBookPackageProviderForBookIdentifier:self.identifier error:&checkoutError];
     
     if (provider) {
         if ([[self useDRM] boolValue]) {
@@ -100,7 +101,7 @@
                     [self.licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
                     self.licenseAcquisitionSession = nil;
                 } else {
-                    [self updateBookWithFailure];
+                    [self updateBookWithFailureState:SCHBookProcessingStateUnableToAcquireLicense];
                 }
                 
                 [authenticationCondition release];
@@ -109,7 +110,13 @@
             [self updateBookWithSuccess];
         }
     } else {
-        [self updateBookWithFailure];
+        if (checkoutError && [checkoutError domain] == kKNFBXPSProviderErrorDomain && [checkoutError code] == kKNFBXPSProviderNotEnoughDiskSpaceError) {
+            NSLog(@"Updating status: licensing not enough storage");
+            [self updateBookWithFailureState:SCHBookProcessingStateLicensingNotEnoughStorage];
+        } else {
+            NSLog(@"Updating status: licensing unknown error");
+            [self updateBookWithFailureState:SCHBookProcessingStateUnableToAcquireLicense];
+        }
     }
 }
 
@@ -146,14 +153,15 @@
     [self endOperation];
 }
 
-- (void)updateBookWithFailure
+- (void)updateBookWithFailureState:(SCHBookCurrentProcessingState)errorState
 {
     if (self.isCancelled) {
         [self endOperation];
 		return;
 	}
 
-    [self setProcessingState:SCHBookProcessingStateUnableToAcquireLicense];
+//    [self setProcessingState:SCHBookProcessingStateUnableToAcquireLicense];
+    [self setProcessingState:errorState];
     [self setIsProcessing:NO];
     [self endOperation];
 }
@@ -179,7 +187,7 @@
     
     NSLog(@"licenseAcquisitionSession didFailWithError: %@ : %@", error, [error userInfo]);
 
-    [self updateBookWithFailure];
+    [self updateBookWithFailureState:SCHBookProcessingStateUnableToAcquireLicense];
 }
 
 @end

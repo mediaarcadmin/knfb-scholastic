@@ -51,6 +51,7 @@
 // these are like the normal checkout method but synchronously jump to the main thread to do core data access
 - (id<KNFBParagraphSource>)threadSafeCheckOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier;
 - (id <SCHBookPackageProvider>)threadSafeCheckOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
+- (id <SCHBookPackageProvider>)threadSafeCheckOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier error:(NSError **)error;
 - (id<EucBook, SCHEucBookmarkPointTranslation>)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 
