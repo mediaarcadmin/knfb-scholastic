@@ -157,6 +157,17 @@
     [self presentReadingManager];
 }
 
+- (void)presentSettingsWithExpandedNavigation
+{
+    if (self.undismissableAlert) {
+        [self.undismissableAlert dismissAnimated:YES];
+        self.undismissableAlert = nil;
+    }
+    
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
+    [self pushSettingsAnimated:shouldAnimate expandedNavigation:YES];
+}
+
 - (void)presentSettings
 {
     if (self.undismissableAlert) {
@@ -514,8 +525,12 @@
 
 #pragma mark - Push Methods
 
-
 - (void)pushSettingsAnimated:(BOOL)animated
+{
+    [self pushSettingsAnimated:animated expandedNavigation:NO];
+}
+
+- (void)pushSettingsAnimated:(BOOL)animated expandedNavigation:(BOOL)expandedNavigation
 {
     if ([[self.profileViewController profileItems] count]) {
         [self.settingsViewController setBackButtonHidden:NO];
@@ -523,7 +538,12 @@
         [self.settingsViewController setBackButtonHidden:YES];
     }
     
-    [self.settingsViewController displaySettingsPanel:kSCHSettingsPanelReadingManager];
+    if (expandedNavigation) {
+        [self.settingsViewController displaySettingsPanel:kSCHSettingsPanelReadingManager changeLeftNavigation:NO];
+        [self.settingsViewController displaySettingsPanel:kSCHSettingsPanelAdditionalSettings changeLeftNavigation:NO];
+    } else {
+        [self.settingsViewController displaySettingsPanel:kSCHSettingsPanelReadingManager changeLeftNavigation:YES];
+    }
     [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, self.settingsViewController, nil] animated:animated];
 }
 

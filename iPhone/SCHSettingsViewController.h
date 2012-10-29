@@ -42,6 +42,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL backButtonHidden; // defaults to NO
 
 - (void)displaySettingsPanel:(SCHSettingsPanel)panel;
+- (void)displaySettingsPanel:(SCHSettingsPanel)panel changeLeftNavigation:(BOOL)changeNavigation;
 - (IBAction)close:(id)sender;
 
 @end

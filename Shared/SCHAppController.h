@@ -24,6 +24,7 @@
 - (void)presentBookshelfForProfile:(SCHProfileItem *)profileItem;
 - (void)presentReadingManager;
 - (void)presentSettings;
+- (void)presentSettingsWithExpandedNavigation;
 - (void)presentDictionaryDownload;
 - (void)presentDictionaryDelete;
 - (void)presentDeregisterDevice;

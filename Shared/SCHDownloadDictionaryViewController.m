@@ -112,13 +112,13 @@
         afterDownload();
     }
     
-    [self.appController presentSettings];
+    [self.appController presentSettingsWithExpandedNavigation];
 }
 
 - (void)removeDictionary:(id)sender
 {
     [[SCHDictionaryDownloadManager sharedDownloadManager] deleteDictionary];
-    [self.appController presentSettings];
+    [self.appController presentSettingsWithExpandedNavigation];
 }
 
 - (IBAction)close:(id)sender
