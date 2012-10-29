@@ -62,6 +62,10 @@ extern NSInteger const kSCHAppModelErrorBookRequiresNetworkConnection;
 - (BOOL)canOpenBookWithIdentifier:(SCHBookIdentifier *)identifier error:(NSError **)error;
 - (NSInteger)bookshelfStyleForBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
+#pragma mark - Interrogate Dictionary state
+
+- (BOOL)dictionaryNeedsDownloaded;
+
 // Exposed for testing purposes
 
 - (BOOL)hasProfilesInManagedObjectContext:(NSManagedObjectContext *)moc;

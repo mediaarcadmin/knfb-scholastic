@@ -328,15 +328,6 @@ typedef enum {
     return ret;
 }
 
-- (BOOL)dictionaryDownloadRequired
-{
-    BOOL downloadRequired = 
-    ([[SCHDictionaryDownloadManager sharedDownloadManager] userRequestState] == SCHDictionaryUserNotYetAsked) 
-    || ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup);
-    
-    return (downloadRequired && [[Reachability reachabilityForLocalWiFi] isReachable]);
-}
-
 #pragma mark - Notification handlers
 
 - (void)deviceDeregistered:(NSNotification *)note
@@ -371,7 +362,11 @@ typedef enum {
         switch (currentSyncState) {
             case kSCHAppModelSyncStateWaitingForLoginToComplete:
             case kSCHAppModelSyncStateWaitingForBookshelves:
-                [self.appController presentProfiles];
+                if ([self dictionaryNeedsDownloaded] && [[Reachability reachabilityForLocalWiFi] isReachable]) {
+                    [self.appController presentProfilesWithDictionaryCheck];
+                } else {
+                    [self.appController presentProfiles];
+                }
                 break;
             case kSCHAppModelSyncStateWaitingForSettings:
                 [self.appController presentSettings];
@@ -490,5 +485,41 @@ typedef enum {
     
     return ret;
 }
+
+#pragma mark - Interrogate Dictionary state
+
+- (BOOL)dictionaryNeedsDownloaded
+{
+    BOOL ret = NO;
     
+    switch ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState]) {
+        case SCHDictionaryProcessingStateUserSetup:
+        case SCHDictionaryProcessingStateUserDeclined:
+        case SCHDictionaryProcessingStateError:
+        case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
+        case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
+        case SCHDictionaryProcessingStateDownloadError:
+        case SCHDictionaryProcessingStateUnableToOpenZipError:
+        case SCHDictionaryProcessingStateUnZipFailureError:
+        case SCHDictionaryProcessingStateParseError:
+        case SCHDictionaryProcessingStateDeleting:
+        {
+            ret = YES;
+            break;
+        }
+        case SCHDictionaryProcessingStateReady:
+        case SCHDictionaryProcessingStateNeedsManifest:
+        case SCHDictionaryProcessingStateManifestVersionCheck:
+        case SCHDictionaryProcessingStateNeedsDownload:
+        case SCHDictionaryProcessingStateNeedsUnzip:
+        case SCHDictionaryProcessingStateNeedsParse:
+        {
+            ret = NO;
+            break;
+        }
+    }
+    
+    return ret;
+}
+
 @end

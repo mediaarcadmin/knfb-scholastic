@@ -59,7 +59,7 @@
 @property (nonatomic, assign) NSUInteger dynamicInterfaceOrientations;
 
 - (void)pushSamplesAnimated:(BOOL)animated;
-- (void)pushProfileAnimated:(BOOL)animated;
+- (void)pushProfileAnimated:(BOOL)animated showDictionaryChoice:(BOOL)showDictionary;
 - (void)pushBookshelfAnimated:(BOOL)animated forProfileItem:(SCHProfileItem *)profileItem;
 - (void)pushReadingManagerAnimated:(BOOL)animated;
 - (BOOL)isCurrentlyModal;
@@ -149,7 +149,19 @@
     }
     
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
-    [self pushProfileAnimated:shouldAnimate];
+    [self pushProfileAnimated:shouldAnimate showDictionaryChoice:NO];
+}
+
+
+- (void)presentProfilesWithDictionaryCheck
+{
+    if (self.undismissableAlert) {
+        [self.undismissableAlert dismissAnimated:YES];
+        self.undismissableAlert = nil;
+    }
+    
+    BOOL shouldAnimate = ([self.viewControllers count] > 0);
+    [self pushProfileAnimated:shouldAnimate showDictionaryChoice:YES];
 }
 
 - (void)presentProfilesSetup
@@ -575,9 +587,10 @@
     }
 }
 
-- (void)pushProfileAnimated:(BOOL)animated
+- (void)pushProfileAnimated:(BOOL)animated showDictionaryChoice:(BOOL)showDictionary;
 {
     if ([[self.profileViewController profileItems] count]) {
+        self.profileViewController.shouldShowDictionaryDownloadChoice = showDictionary;
         [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, nil] animated:animated];
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
@@ -637,7 +650,7 @@
 
 - (void)pushCurrentProfileAnimated:(BOOL)animated
 {
-    [self pushProfileAnimated:animated];
+    [self pushProfileAnimated:animated showDictionaryChoice:NO];
 }
 
 - (void)waitingForPassword

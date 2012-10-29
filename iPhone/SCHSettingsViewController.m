@@ -32,6 +32,8 @@
 #import "SCHVersionDownloadManager.h"
 #import "SCHSupportViewController.h"
 #import "SCHSettingsViewCell.h"
+#import "AppDelegate_iPhone.h"
+#import "SCHAppModel.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -1041,31 +1043,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                         break;
                     case 1:
                     {
-                        switch ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState]) {
-                            case SCHDictionaryProcessingStateUserSetup:
-                            case SCHDictionaryProcessingStateUserDeclined:
-                            case SCHDictionaryProcessingStateError:
-                            case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
-                            case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
-                            case SCHDictionaryProcessingStateDownloadError:
-                            case SCHDictionaryProcessingStateUnableToOpenZipError:
-                            case SCHDictionaryProcessingStateUnZipFailureError:
-                            case SCHDictionaryProcessingStateParseError:
-                            case SCHDictionaryProcessingStateDeleting:
-                            {
-                                return kSCHSettingsPanelDictionaryDownload;
-                                break;
-                            }
-                            case SCHDictionaryProcessingStateReady:
-                            case SCHDictionaryProcessingStateNeedsManifest:
-                            case SCHDictionaryProcessingStateManifestVersionCheck:
-                            case SCHDictionaryProcessingStateNeedsDownload:
-                            case SCHDictionaryProcessingStateNeedsUnzip:
-                            case SCHDictionaryProcessingStateNeedsParse:
-                            {
-                                return kSCHSettingsPanelDictionaryDelete;
-                                break;
-                            }
+                        AppDelegate_iPhone *appDelegate = (AppDelegate_iPhone *)[[UIApplication sharedApplication] delegate];
+                        SCHAppModel *appModel = [appDelegate appModel];
+                        if ([appModel dictionaryNeedsDownloaded]) {
+                            return kSCHSettingsPanelDictionaryDownload;
+                        } else {
+                            return kSCHSettingsPanelDictionaryDelete;
                         }
                     }
                         break;

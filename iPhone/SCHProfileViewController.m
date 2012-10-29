@@ -27,6 +27,8 @@
 #import "DDPageControl.h"
 #import "SCHAppStateManager.h"
 #import "BITModalSheetController.h"
+#import "SCHDictionaryDownloadManager.h"
+#import "SCHDownloadDictionaryChoiceViewController.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
@@ -55,6 +57,7 @@ static const CGFloat kSCHProfileViewControllerParentButtonMinWidth = 141.0f;
 - (void)queryPasswordBeforePushingBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)pushSettingsControllerAnimated:(BOOL)animated;
+- (void)showDictionaryDownloadChoice;
 
 // Paged TableView content
 - (void)reloadPages;
@@ -86,6 +89,7 @@ static const CGFloat kSCHProfileViewControllerParentButtonMinWidth = 141.0f;
 @synthesize simultaneousTapCount;
 @synthesize appController;
 @synthesize tooltipContainer;
+@synthesize shouldShowDictionaryDownloadChoice;
 
 #pragma mark - Object lifecycle
 
@@ -196,6 +200,23 @@ static const CGFloat kSCHProfileViewControllerParentButtonMinWidth = 141.0f;
     [self.navigationController setNavigationBarHidden:YES];
     [self checkForBookUpdates];
     [self reloadPages];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (self.shouldShowDictionaryDownloadChoice) {
+            [self showDictionaryDownloadChoice];
+        }
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.shouldShowDictionaryDownloadChoice) {
+            [self showDictionaryDownloadChoice];
+        }
+    }
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification
@@ -341,6 +362,35 @@ didSelectButtonAnimated:(BOOL)animated
     [self reloadPages];
 }
 
+#pragma mark - Dictionary download
+
+- (void)showDictionaryDownloadChoice
+{
+    self.shouldShowDictionaryDownloadChoice = NO;
+    
+    SCHDownloadDictionaryChoiceViewController *downloadDictionary = [[[SCHDownloadDictionaryChoiceViewController alloc] initWithNibName:@"SCHDownloadDictionaryViewController" bundle:nil] autorelease];
+    
+    BITModalSheetController *modalSheet = nil;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        modalSheet = [[[BITModalSheetController alloc] initWithContentViewController:downloadDictionary] autorelease];
+        [modalSheet setContentSize:CGSizeMake(641,362)];
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        downloadDictionary.completionBlock = ^{
+            [modalSheet dismissSheetAnimated:YES completion:nil];
+        };
+        
+        [modalSheet presentSheetInViewController:self animated:YES completion:nil];
+    } else {
+        downloadDictionary.completionBlock = ^{
+            [self.navigationController popViewControllerAnimated:YES];
+        };
+        [self.navigationController pushViewController:downloadDictionary animated:YES];
+    }
+    
+}
 
 #pragma mark - Profile password
 

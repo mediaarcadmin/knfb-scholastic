@@ -2338,6 +2338,8 @@
 		C9915E701626F5800041A114 /* support.html in Resources */ = {isa = PBXBuildFile; fileRef = C9915E6E1626F57B0041A114 /* support.html */; };
 		C9916195163AA98D003A19CC /* SCHTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C9916194163AA98D003A19CC /* SCHTextField.m */; };
 		C9916196163AA98D003A19CC /* SCHTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C9916194163AA98D003A19CC /* SCHTextField.m */; };
+		C991620B163EE100003A19CC /* SCHDownloadDictionaryChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C991620A163EE0FF003A19CC /* SCHDownloadDictionaryChoiceViewController.m */; };
+		C991620C163EE100003A19CC /* SCHDownloadDictionaryChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C991620A163EE0FF003A19CC /* SCHDownloadDictionaryChoiceViewController.m */; };
 		C9951722146D693600EA7337 /* LocalSamplesManifest.xml in Resources */ = {isa = PBXBuildFile; fileRef = C9951721146D693600EA7337 /* LocalSamplesManifest.xml */; };
 		C9951725146D694600EA7337 /* LocalSamplesManifest.xml in Resources */ = {isa = PBXBuildFile; fileRef = C9951724146D694600EA7337 /* LocalSamplesManifest.xml */; };
 		C9965F4A161D8261008602A3 /* NavBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9965F49161D825F008602A3 /* NavBar@2x.png */; };
@@ -4900,6 +4902,8 @@
 		C9915E6E1626F57B0041A114 /* support.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = support.html; path = Resources/support.html; sourceTree = "<group>"; };
 		C9916193163AA98D003A19CC /* SCHTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextField.h; path = Shared/SCHTextField.h; sourceTree = "<group>"; };
 		C9916194163AA98D003A19CC /* SCHTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextField.m; path = Shared/SCHTextField.m; sourceTree = "<group>"; };
+		C9916209163EE0FF003A19CC /* SCHDownloadDictionaryChoiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDownloadDictionaryChoiceViewController.h; path = Shared/SCHDownloadDictionaryChoiceViewController.h; sourceTree = "<group>"; };
+		C991620A163EE0FF003A19CC /* SCHDownloadDictionaryChoiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDownloadDictionaryChoiceViewController.m; path = Shared/SCHDownloadDictionaryChoiceViewController.m; sourceTree = "<group>"; };
 		C9951721146D693600EA7337 /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C9951724146D694600EA7337 /* LocalSamplesManifest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = LocalSamplesManifest.xml; sourceTree = "<group>"; };
 		C9965F49161D825F008602A3 /* NavBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NavBar@2x.png"; sourceTree = "<group>"; };
@@ -7990,6 +7994,8 @@
 				28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */,
 				28D2AA0C13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.h */,
 				28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */,
+				C9916209163EE0FF003A19CC /* SCHDownloadDictionaryChoiceViewController.h */,
+				C991620A163EE0FF003A19CC /* SCHDownloadDictionaryChoiceViewController.m */,
 				28986DDB13DD62E30011B148 /* SCHUpdateBooksViewController.h */,
 				28986DDC13DD62E30011B148 /* SCHUpdateBooksViewController.m */,
 				28986DE913DD701A0011B148 /* SCHUpdateBooksTableViewCellController.h */,
@@ -11745,6 +11751,7 @@
 				C99841651631972000EBD73E /* SCHBookBatchOperation.m in Sources */,
 				C998419C1632DB2500EBD73E /* SCHRecommendationBatchOperation.m in Sources */,
 				C9916195163AA98D003A19CC /* SCHTextField.m in Sources */,
+				C991620B163EE100003A19CC /* SCHDownloadDictionaryChoiceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12619,6 +12626,7 @@
 				C99841661631972000EBD73E /* SCHBookBatchOperation.m in Sources */,
 				C998419D1632DB2500EBD73E /* SCHRecommendationBatchOperation.m in Sources */,
 				C9916196163AA98D003A19CC /* SCHTextField.m in Sources */,
+				C991620C163EE100003A19CC /* SCHDownloadDictionaryChoiceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

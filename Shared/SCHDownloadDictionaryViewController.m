@@ -15,25 +15,24 @@
 
 @interface SCHDownloadDictionaryViewController()
 
-@property (nonatomic, copy) dispatch_block_t completion;
-
 - (void)releaseViewObjects;
 
 @end
 
 @implementation SCHDownloadDictionaryViewController
 
-@synthesize completion;
+@synthesize completionBlock;
 @synthesize actionButton;
 @synthesize containerView;
 @synthesize shadowView;
 @synthesize backButton;
 @synthesize appController;
+@synthesize downloadLaterButton;
 
 - (void)dealloc
 {
     [self releaseViewObjects];
-    [completion release], completion = nil;
+    [completionBlock release], completionBlock = nil;
     appController = nil;
     
     [super dealloc];
@@ -45,6 +44,7 @@
     [containerView release], containerView = nil;
     [shadowView release], shadowView = nil;
     [backButton release], backButton = nil;
+    [downloadLaterButton release], downloadLaterButton = nil;
 }
 
 - (void)viewDidLoad
@@ -53,6 +53,7 @@
     
     UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
     [self.actionButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
+    [self.downloadLaterButton setBackgroundImage:stretchedButtonImage forState:UIControlStateNormal];
     
     UIImage *backButtonImage = [[UIImage imageNamed:@"bookshelf_arrow_bttn_UNselected_3part"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
     [self.backButton setBackgroundImage:backButtonImage forState:UIControlStateNormal];
@@ -75,25 +76,25 @@
     [self releaseViewObjects];
 }
 
-- (void)downloadDictionary:(id)sender
+- (void)startDictionaryDownload
 {
     dispatch_block_t afterDownload = ^{
-        if (completion) {
-            completion();
+        if (self.completionBlock) {
+            self.completionBlock();
         }
     };
-
+    
     // we need to have 1GB free for initial dictionary download
     // less for subsequent updates
     BOOL fileSpaceAvailable = [[NSFileManager defaultManager] BITfileSystemHasBytesAvailable:1073741824];
-
+    
     if (fileSpaceAvailable == NO) {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Not Enough Storage Space", @"")
                               message:NSLocalizedString(@"You do not have enough storage space on your device to complete this function. Please clear some space and try again.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:afterDownload];
         [alert show];
-        [alert release];   
+        [alert release];
         return;
     }
     
@@ -111,13 +112,26 @@
         [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
         afterDownload();
     }
-    
+
+}
+
+- (void)startDictionaryDeletion
+{
+    [[SCHDictionaryDownloadManager sharedDownloadManager] deleteDictionary];
+    if (self.completionBlock) {
+        self.completionBlock();
+    }
+}
+
+- (IBAction)downloadDictionary:(id)sender
+{
+    [self startDictionaryDownload];
     [self.appController presentSettingsWithExpandedNavigation];
 }
 
-- (void)removeDictionary:(id)sender
+- (IBAction)removeDictionary:(id)sender
 {
-    [[SCHDictionaryDownloadManager sharedDownloadManager] deleteDictionary];
+    [self startDictionaryDeletion];
     [self.appController presentSettingsWithExpandedNavigation];
 }
 

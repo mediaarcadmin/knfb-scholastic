@@ -31,6 +31,7 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate;
 @property (nonatomic, assign) id<SCHAppController> appController;
+@property (nonatomic, assign) BOOL shouldShowDictionaryDownloadChoice;
 
 - (NSArray *)profileItems;
 - (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem showWelcome:(BOOL)welcome;

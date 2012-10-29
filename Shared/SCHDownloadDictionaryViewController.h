@@ -12,13 +12,17 @@
 @interface SCHDownloadDictionaryViewController : UIViewController {}
 
 @property (nonatomic, retain) IBOutlet UIButton *actionButton;
+@property (nonatomic, retain) IBOutlet UIButton *downloadLaterButton;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
 @property (nonatomic, retain) IBOutlet UIView *shadowView;
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, assign) id<SCHAppController> appController;
+@property (nonatomic, copy) dispatch_block_t completionBlock;
 
 - (IBAction)downloadDictionary:(id)sender;
 - (IBAction)removeDictionary:(id)sender;
 - (IBAction)close:(id)sender;
+
+- (void)startDictionaryDownload;
 
 @end
