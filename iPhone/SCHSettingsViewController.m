@@ -1185,7 +1185,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     return nil;
 }
 
-- (void)displaySettingsPanel:(SCHSettingsPanel)panel
+- (void)displaySettingsPanel:(SCHSettingsPanel)panel changeLeftNavigation:(BOOL)changeNavigation
 {
     [self.view endEditing:YES];
     
@@ -1228,12 +1228,14 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [self addContentSubview:self.contentViewController.view];
         [self setSelectedPanel:panel];
         
-        
-        if ([[self indexPathForPanel:panel] section] == [[self indexPathForPanel:kSCHSettingsPanelAdditionalSettings] section]) {
-            [self setAdditionalSettingsVisible:YES];
-        } else {
-            [self setAdditionalSettingsVisible:NO];
+        if (changeNavigation) {
+            if ([[self indexPathForPanel:panel] section] == [[self indexPathForPanel:kSCHSettingsPanelAdditionalSettings] section]) {
+                [self setAdditionalSettingsVisible:YES];
+            } else {
+                [self setAdditionalSettingsVisible:NO];
+            }
         }
+        
     } else {
         switch (panel) {
             case kSCHSettingsPanelReadingManager: {
@@ -1264,6 +1266,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         }
         
     }
+}
+
+- (void)displaySettingsPanel:(SCHSettingsPanel)panel
+{
+    [self displaySettingsPanel:panel changeLeftNavigation:YES];
 }
 
 - (IBAction)close:(id)sender
