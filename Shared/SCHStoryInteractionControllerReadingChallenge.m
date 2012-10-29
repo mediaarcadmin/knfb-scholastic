@@ -234,7 +234,7 @@
 
 - (void)setupScoreView
 {
-    UIColor *backgroundColor = [UIColor whiteColor];
+    UIColor *backgroundColor = nil;
     
     if (self.storyInteraction.olderStoryInteraction) {
         backgroundColor = [UIColor colorWithRed:0.851 green:0.945 blue:0.996 alpha:1];
@@ -322,7 +322,7 @@
         SCHStoryInteractionReadingChallengeQuestion *question = [[(SCHStoryInteractionReadingChallenge *)self.storyInteraction questions] objectAtIndex:i];
         BOOL correctAnswer = (answerGiven == question.correctAnswer);
         
-        SCHStoryInteractionReadingChallengeResultView *resultView = [[SCHStoryInteractionReadingChallengeResultView alloc] init];
+        SCHStoryInteractionReadingChallengeResultView *resultView = [[[SCHStoryInteractionReadingChallengeResultView alloc] init] autorelease];
         
         resultView.tag = 999;
         resultView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
