@@ -183,7 +183,7 @@
         {
             NSString *title = [tourItem objectForKey:[NSString stringWithFormat:@"fullScreenTitle%d", containerIndex]];
 
-            SCHTourFullScreenImageViewController *fullScreenController = [[SCHTourFullScreenImageViewController alloc] initWithNibName:nil bundle:nil];
+            SCHTourFullScreenImageViewController *fullScreenController = [[[SCHTourFullScreenImageViewController alloc] initWithNibName:nil bundle:nil] autorelease];
             fullScreenController.imageTitle = title;
             fullScreenController.imageName = [NSString stringWithFormat:@"tour_full_image_%d_%d.jpg", self.currentIndex, containerIndex];
 
