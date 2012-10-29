@@ -259,10 +259,10 @@
     self.scoreLabel.text = [NSString stringWithFormat:@"You got %d out of %d right!", self.score, maxScore];
     if (score <= (int) ceil((float)maxScore/2.0f)) {
         // 50% or less
-        self.scoreSublabel.text = NSLocalizedString(@"Try reading the book again to find more answers.", @"Try reading the book again to find more answers.");
+        self.scoreSublabel.text = NSLocalizedString(@"Try reading the eBook again to find more answers.", @"Try reading the book again to find more answers.");
     } else if (score < ceil((float)maxScore)) {
         // less than 100%
-        self.scoreSublabel.text = NSLocalizedString(@"Great job! Read the book again for an even higher score.", @"Great job! Read the book again for an even higher score.");
+        self.scoreSublabel.text = NSLocalizedString(@"Great job! Read the eBook again for an even higher score.", @"Great job! Read the book again for an even higher score.");
     } else {
         // 100%
         self.scoreSublabel.text = NSLocalizedString(@"Great reading!", @"Great reading!");
