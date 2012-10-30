@@ -40,6 +40,8 @@
 
 - (id)initWithFrame:(CGRect)frame numberOfBookshelves:(NSUInteger)numberOfBookshelves
 {
+    CGFloat xOffset = 0;
+    
     self = [super initWithFrame:frame];
     if (self) {
         
@@ -53,6 +55,10 @@
         [self addSubview:self.clearBackgroundButton];
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            if (numberOfBookshelves == 1) {
+                xOffset = 74;
+            }
+            
             self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(0, 14, 320, 100)] autorelease];
             [self.topTooltip setTitle:@"Welcome to your Bookshelves!"
                              bodyText:@"Manage individual bookshelves for your children. You’ll need to assign each eBook to a bookshelf before they can be read."];
@@ -74,12 +80,9 @@
             [self addSubview:self.bottomTooltip];
             
             [self addHighlightAtLocation:CGPointMake(160, 160)];
-            [self addHighlightAtLocation:CGPointMake(86, 239)];
+            [self addHighlightAtLocation:CGPointMake(86 + xOffset, 239)];
             
         } else {
-            
-            CGFloat xOffset = 0;
-            
             if (numberOfBookshelves == 1) {
                 xOffset = 266;
             } else if (numberOfBookshelves == 2) {
