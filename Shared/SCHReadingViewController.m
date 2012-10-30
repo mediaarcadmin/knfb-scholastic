@@ -1199,9 +1199,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     }
     
     SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
-
-    // FIXME: the last page location is not working for side-loaded books
-    lastPageLocation = [annotationsLastPage LastPageLocation];
     
     if (lastPageLocation) {
         lastPoint.layoutPage = MAX([lastPageLocation integerValue], 1);
