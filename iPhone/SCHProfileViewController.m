@@ -1123,9 +1123,9 @@ didSelectButtonAnimated:(BOOL)animated
 {
     NSLog(@"Show tooltips");
     
+    NSInteger numberOfResultsInPage = [self numberOfResultsInPage:self.pageControl.currentPage];
     self.tooltipContainer = [[[SCHProfileTooltipContainer alloc] initWithFrame:self.view.frame
-                                                           numberOfBookshelves:[[self.fetchedResultsController fetchedObjects] count]
-                              ] autorelease];
+                                                           numberOfBookshelves:numberOfResultsInPage] autorelease];
     self.tooltipContainer.delegate = self;
     self.tooltipContainer.alpha = 0;
     
