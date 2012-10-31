@@ -49,6 +49,8 @@
 - (void)saveCachedWordsToDisk;
 - (void)clearCachedWordsFromDisk;
 
+- (void)setFinishedIfAllWordsMatch;
+
 @end
 
 @implementation SCHStoryInteractionControllerTitleTwister
@@ -682,7 +684,26 @@
 - (void)closeButtonTapped:(id)sender
 {
     [self saveCachedWordsToDisk];
+    [self setFinishedIfAllWordsMatch];
     [super closeButtonTapped:sender];
+}
+
+- (void)setFinishedIfAllWordsMatch
+{
+    BOOL allWordsMatch = YES;
+    
+    for (NSUInteger i = 0; i < 5; ++i) {
+        NSNumber *lengthkey = [NSNumber numberWithInt:i+3];
+        if ([[self.answersByLength objectForKey:lengthkey] count] <
+            [[self.answerCountsByLength objectForKey:lengthkey] integerValue]) {
+            allWordsMatch = NO;
+            break;
+        }
+    }
+
+    if (allWordsMatch == YES) {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    }
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
