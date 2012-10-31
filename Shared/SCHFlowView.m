@@ -230,7 +230,19 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         EucBookPageIndexPoint *endPoint   = [self.eucBookView indexPointForPageIndex:self.eucBookView.currentPageIndex + 1];
 
         SCHBookPoint *startBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:startPoint];
-        SCHBookPoint *endBookPoint   = [self.eucBook bookPointFromBookPageIndexPoint:endPoint];
+        SCHBookPoint *endBookPoint;
+        
+        if (endPoint) {
+            endBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:endPoint];
+            
+            SCHBookPoint *nullPoint = [[[SCHBookPoint alloc] init] autorelease];
+            if ([endBookPoint isEqual:nullPoint]) {
+                endBookPoint.layoutPage = startBookPoint.layoutPage + 1;
+            }
+        } else {
+            endBookPoint = [[[SCHBookPoint alloc] init] autorelease];
+            endBookPoint.layoutPage = startBookPoint.layoutPage + 1;
+        }
         
         pageRange = [[[SCHBookRange alloc] init] autorelease];
         pageRange.startPoint = startBookPoint;
