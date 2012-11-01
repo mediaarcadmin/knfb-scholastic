@@ -519,7 +519,7 @@
     NSParameterAssert(contentIdentifier);
 
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];    
-    NSDate *dateNow = [NSDate date];
+    NSDate *dateNow = [NSDate distantPast];
     
     NSMutableArray *profileList = [NSMutableArray arrayWithCapacity:[profileIDs count]];
     for (NSNumber *profileID in profileIDs) {
