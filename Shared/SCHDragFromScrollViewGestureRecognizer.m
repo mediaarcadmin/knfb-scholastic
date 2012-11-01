@@ -77,6 +77,13 @@
     self.state = UIGestureRecognizerStateBegan;
 }
 
+- (void)reset
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [super reset];
+    self.state = UIGestureRecognizerStateEnded;    
+}
+
 - (BOOL)shouldCancelWithMotion:(CGFloat)dx :(CGFloat)dy
 {
     if (self.direction == kSCHDragFromScrollViewHorizontally) {
