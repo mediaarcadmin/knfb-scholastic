@@ -18,6 +18,9 @@
 
 @property (nonatomic, retain) UIView *recommendationView;
 @property (nonatomic, retain) EucUIViewViewSpiritElement *recommendationViewSpiritElement;
+@property (nonatomic, assign) id <SCHRecommendationViewDataSource> dataSource;
+@property (nonatomic, retain) NSArray *recommendationElements;
+@property (nonatomic, assign) CGRect elementFrame;
 
 @end
 
@@ -29,6 +32,9 @@
 @synthesize invertLuminance;
 @synthesize recommendationView;
 @synthesize recommendationViewSpiritElement;
+@synthesize dataSource;
+@synthesize recommendationElements;
+@synthesize elementFrame;
 
 - (void)dealloc
 {
@@ -36,6 +42,8 @@
     [pageOptions release], pageOptions = nil;
     [recommendationView release], recommendationView = nil;
     [recommendationViewSpiritElement release], recommendationViewSpiritElement = nil;
+    [recommendationElements release], recommendationElements = nil;
+    dataSource = nil;
     [super dealloc];
 }
 
@@ -55,18 +63,29 @@
         endPoint.source = startPoint.source + 1;
 
         pageRanges = [[NSArray arrayWithObject:[[[EucBookPageIndexPointRange alloc] initWithStartPoint:startPoint endPoint:endPoint] autorelease]] retain];
-        
-        id <SCHRecommendationViewDataSource> dataSource = [book recommendationViewDataSource];
-        recommendationView = [[dataSource recommendationView] retain];
-        if (recommendationView) {
-            recommendationView.frame = frame;
-            recommendationViewSpiritElement = [[EucUIViewViewSpiritElement alloc] initWithView:recommendationView];
-            recommendationViewSpiritElement.frame = recommendationView.frame;
-            [self addElement:recommendationViewSpiritElement];
-        }
+        dataSource = [book recommendationViewDataSource];
+        elementFrame = frame;
     }
     
     return self;
+}
+
+- (NSArray *)elements
+{
+    if (!recommendationElements) {
+        NSAssert([NSThread isMainThread], @"Must be main thread");
+        recommendationView = [[self.dataSource recommendationView] retain];
+        if (recommendationView) {
+            recommendationView.frame = self.elementFrame;
+            recommendationViewSpiritElement = [[EucUIViewViewSpiritElement alloc] initWithView:recommendationView];
+            recommendationViewSpiritElement.frame = recommendationView.frame;
+            recommendationElements = [[NSArray alloc] initWithObjects:recommendationViewSpiritElement, nil];
+        } else {
+            recommendationElements = [[NSArray alloc] init];
+        }
+    }
+    
+    return recommendationElements;
 }
 
 - (NSArray *)blockIdentifiers
