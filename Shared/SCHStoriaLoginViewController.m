@@ -250,14 +250,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     CGRect promptFrame = self.promptLabel.frame;
     promptFrame.size.height = promptHeight;
     self.promptLabel.frame = promptFrame;
-    self.containerView.transform = containerTransform;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        CGRect containerFrame = self.containerView.frame;
-        containerFrame.size.height = phoneContainerHeight;
-        containerFrame.origin.y = CGRectGetHeight(self.view.frame) - phoneContainerHeight;
-        self.containerView.frame = containerFrame;
-    }
+    self.containerView.transform = containerTransform;    
 }
 
 #pragma mark - UITextFieldDelegate
