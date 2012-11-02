@@ -372,7 +372,7 @@
                                                   byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight
                                                         cornerRadii:CGSizeMake(10.0, 10.0)];
     
-    CAShapeLayer* shape = [[CAShapeLayer alloc] init];
+    CAShapeLayer* shape = [[[CAShapeLayer alloc] init] autorelease];
     [shape setPath:rounded.CGPath];
     
     self.answerBackgroundView.layer.mask = shape;

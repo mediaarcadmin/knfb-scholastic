@@ -94,9 +94,9 @@ static CGPathRef parseBase64EncodedPathAndFitToHotSpotRect(NSString *text, CGRec
         NSData *data = [NSData dataWithBase64EncodedString:text];
         const uint8_t *bytes = (const uint8_t *)[data bytes];
         int numberOfPoints = [data length] / 4;
-        CGPoint *points = (CGPoint *)malloc(sizeof(CGPoint)*numberOfPoints);
         float minx = 0, maxx = 0, miny = 0, maxy = 0;
         if (numberOfPoints > 0) {
+            CGPoint *points = (CGPoint *)malloc(sizeof(CGPoint)*numberOfPoints);
             for (NSInteger i = 0; i < numberOfPoints; ++i, bytes += 4) {
                 float x = (bytes[0] << 8) + (bytes[1]);
                 float y = (bytes[2] << 8) + (bytes[3]);
