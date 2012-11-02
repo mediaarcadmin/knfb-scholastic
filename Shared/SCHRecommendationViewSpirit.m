@@ -90,27 +90,27 @@
 
 - (NSArray *)blockIdentifiers
 {
-    return [NSArray arrayWithObject:recommendationView];
+    return nil;
 }
 
 - (CGRect)frameOfBlockWithIdentifier:(id)blockId
 {
-    return [(UIView *)blockId frame];
+    return CGRectZero;
 }
 
 - (NSArray *)identifiersForElementsOfBlockWithIdentifier:(id)blockId
 {
-    return [(UIView *)blockId subviews];
+    return nil;
 }
 
 - (NSArray *)rectsForElementWithIdentifier:(id)elementId ofBlockWithIdentifier:(id)blockId
 {
-    return [NSArray arrayWithObject:[NSValue valueWithCGRect:[(UIView *)elementId frame]]];
+    return nil;
 }
 
 - (NSString *)accessibilityLabelForElementWithIdentifier:(id)elementId ofBlockWithIdentifier:(id)blockId
 {
-    return [(UIView *)elementId accessibilityLabel];
+    return nil;
 }
 
 @end

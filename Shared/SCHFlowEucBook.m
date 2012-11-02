@@ -272,7 +272,7 @@
 
 - (BOOL)fullBleedPageForIndexPoint:(EucBookPageIndexPoint *)indexPoint
 {
-    if ([indexPoint isEqual:self.recommendationIndexPoint]) {
+    if (indexPoint.source == self.recommendationIndexPoint.source) {
         return YES;
     } else {
         return [super fullBleedPageForIndexPoint:indexPoint];

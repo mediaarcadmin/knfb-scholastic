@@ -113,6 +113,18 @@ modifiedWishListDictionaries:(NSArray *)modifiedWishListDictionaries
     [self setNeedsLayout];
 }
 
+// Only allow taps on the buttons
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *ret = [super hitTest:point withEvent:event];
+    
+    if (![ret isKindOfClass:[UIControl class]]) {
+        ret = nil;
+    }
+    
+    return ret;
+}
+
 #pragma mark - SCHRecommendationViewDelegate
 
 - (void)updateWithRecommendationDictionaries:(NSArray *)recommendationDictionaries wishListDictionaries:(NSArray *)wishlistDictionaries;
