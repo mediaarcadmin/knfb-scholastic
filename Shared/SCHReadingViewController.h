@@ -54,7 +54,7 @@ typedef enum
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
 SCHStoryInteractionControllerDelegate, SCHReadingViewNavigationToolbarDelegate, SCHHelpViewControllerDelegate,
-SCHBookStoryInteractionsDelegate, SCHRecommendationSampleViewDelegate> 
+SCHBookStoryInteractionsDelegate, SCHRecommendationSampleViewDelegate>
 {}
 
 @property (nonatomic, assign) BOOL youngerMode;

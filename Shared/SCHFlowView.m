@@ -27,7 +27,7 @@
 
 @interface SCHFlowView () <SCHBSBEucBookDelegate>
 
-@property (nonatomic, retain) id<EucBook, SCHEucBookmarkPointTranslation> eucBook;
+@property (nonatomic, retain) id<EucBook, SCHEucBookmarkPointTranslation, SCHRecommendationDataSource> eucBook;
 @property (nonatomic, retain) id<KNFBParagraphSource> paragraphSource;
 @property (nonatomic, retain) EucBookView *eucBookView;
 
@@ -102,10 +102,12 @@
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame bookIdentifier:(SCHBookIdentifier *)bookIdentifier 
-managedObjectContext:(NSManagedObjectContext *)managedObjectContext 
+- (id)initWithFrame:(CGRect)frame
+     bookIdentifier:(SCHBookIdentifier *)bookIdentifier
+managedObjectContext:(NSManagedObjectContext *)managedObjectContext
            delegate:(id<SCHReadingViewDelegate>)delegate
               point:(SCHBookPoint *)point
+ recommendationViewDataSource:(id <SCHRecommendationViewDataSource>)recommendationViewDataSource
 {
     self = [super initWithFrame:frame
                  bookIdentifier:bookIdentifier 
@@ -118,6 +120,10 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
         
+        if ([eucBook respondsToSelector:@selector(setRecommendationViewDataSource:)]) {
+            [eucBook setRecommendationViewDataSource:recommendationViewDataSource];
+        }
+
         if ([eucBook isKindOfClass:[EucEPubBook class]]) {
             paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:managedObjectContext] retain];
         } else if ([eucBook isKindOfClass:[SCHBSBEucBook class]]) {
@@ -617,8 +623,8 @@ static void sortedHighlightRangePredicateInit() {
 
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index
 {
-    // Just refresh them all even if it is called on multiple pages in flow view
-    [self.eucBookView refreshHighlights];
+    // No-op highlights are not supported in flow view in Storia
+    //[self.eucBookView refreshHighlights];
 }
 
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange

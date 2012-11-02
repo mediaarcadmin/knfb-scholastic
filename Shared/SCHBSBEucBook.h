@@ -10,12 +10,13 @@
 #import <libEucalyptus/EucBook.h>
 #import "SCHEucBookmarkPointTranslation.h"
 #import "SCHBSBEucBookDelegate.h"
+#import "SCHRecommendationDataSource.h"
 
 @class EucBookIndex, EucBookNavPoint, EucBookPageIndexPoint, EucBookPageIndexPointRange;
 @class EucCSSIntermediateDocument;
 @class SCHBookIdentifier;
 
-@interface SCHBSBEucBook : NSObject <EucBook, SCHEucBookmarkPointTranslation>
+@interface SCHBSBEucBook : NSObject <EucBook, SCHEucBookmarkPointTranslation, SCHRecommendationDataSource>
 
 @property (nonatomic, assign) id <SCHBSBEucBookDelegate> delegate;
 

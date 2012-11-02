@@ -335,6 +335,13 @@
     return nil;
 }
 
+#pragma mark - SCHRecommendationDataSource
+
+- (BOOL)shouldShowRecommendationView
+{
+    return NO;
+}
+
 #pragma mark - SCHEucBookmarkPointTranslation
 
 - (SCHBookPoint *)bookPointFromBookPageIndexPoint:(EucBookPageIndexPoint *)indexPoint

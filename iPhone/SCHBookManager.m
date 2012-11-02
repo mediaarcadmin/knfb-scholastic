@@ -418,11 +418,11 @@ static int allocCountBookPackage = 0;
 
 static int checkoutCountEucBook = 0;
 
-- (id<EucBook, SCHEucBookmarkPointTranslation>)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (id<EucBook, SCHEucBookmarkPointTranslation, SCHRecommendationDataSource>)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSParameterAssert(identifier);
     
-	id<EucBook, SCHEucBookmarkPointTranslation> ret = nil;
+	id<EucBook, SCHEucBookmarkPointTranslation, SCHRecommendationDataSource> ret = nil;
 	
     checkoutCountEucBook++;
     
@@ -440,7 +440,7 @@ static int checkoutCountEucBook = 0;
             }
             ret = previouslyCachedEucBook;
         } else {
-            id<EucBook, SCHEucBookmarkPointTranslation> eucBook = nil;
+            id<EucBook, SCHEucBookmarkPointTranslation, SCHRecommendationDataSource> eucBook = nil;
             
             id <SCHBookPackageProvider> provider = [self checkOutBookPackageProviderForBookIdentifier:identifier inManagedObjectContext:managedObjectContext];
             

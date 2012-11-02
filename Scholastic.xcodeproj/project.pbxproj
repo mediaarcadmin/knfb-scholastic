@@ -2378,6 +2378,10 @@
 		C9A1F43F15FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */; };
 		C9A1F44015FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */; };
 		C9A1F44115FDDB88000705C4 /* SCHBSBReplacedElementDropdownControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */; };
+		C9A23E6116414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A23E6016414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m */; };
+		C9A23E6216414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A23E6016414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m */; };
+		C9A23E6516414E77001C2CD1 /* SCHRecommendationViewSpirit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A23E6416414E77001C2CD1 /* SCHRecommendationViewSpirit.m */; };
+		C9A23E6616414E77001C2CD1 /* SCHRecommendationViewSpirit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A23E6416414E77001C2CD1 /* SCHRecommendationViewSpirit.m */; };
 		C9A6B3FB148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
 		C9A6B3FC148B7F0900B31277 /* SCHHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */; };
 		C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
@@ -4935,6 +4939,12 @@
 		C9A1F43D15FDDB81000705C4 /* SCHBSBReplacedElementDropdownControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBReplacedElementDropdownControl.h; path = Shared/SCHBSBReplacedElementDropdownControl.h; sourceTree = "<group>"; };
 		C9A1F43E15FDDB85000705C4 /* SCHBSBReplacedElementDropdownControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBSBReplacedElementDropdownControl.m; path = Shared/SCHBSBReplacedElementDropdownControl.m; sourceTree = "<group>"; };
 		C9A1F44415FE3152000705C4 /* SCHBSBCSSXHTMLTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBSBCSSXHTMLTreeNode.h; path = Shared/SCHBSBCSSXHTMLTreeNode.h; sourceTree = "<group>"; };
+		C9A23E5F16414876001C2CD1 /* SCHRecommendationProxyViewSpirit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationProxyViewSpirit.h; path = Shared/SCHRecommendationProxyViewSpirit.h; sourceTree = "<group>"; };
+		C9A23E6016414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationProxyViewSpirit.m; path = Shared/SCHRecommendationProxyViewSpirit.m; sourceTree = "<group>"; };
+		C9A23E6316414E77001C2CD1 /* SCHRecommendationViewSpirit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationViewSpirit.h; path = Shared/SCHRecommendationViewSpirit.h; sourceTree = "<group>"; };
+		C9A23E6416414E77001C2CD1 /* SCHRecommendationViewSpirit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationViewSpirit.m; path = Shared/SCHRecommendationViewSpirit.m; sourceTree = "<group>"; };
+		C9A23E7C1642AD6E001C2CD1 /* SCHRecommendationViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationViewDataSource.h; path = Shared/SCHRecommendationViewDataSource.h; sourceTree = "<group>"; };
+		C9A23E7D1642BFA8001C2CD1 /* SCHRecommendationDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationDataSource.h; path = Shared/SCHRecommendationDataSource.h; sourceTree = "<group>"; };
 		C9A6B3F9148B7F0900B31277 /* SCHHelpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpManager.h; path = Shared/SCHHelpManager.h; sourceTree = "<group>"; };
 		C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpManager.m; path = Shared/SCHHelpManager.m; sourceTree = "<group>"; };
 		C9A6B3FE148B853C00B31277 /* SCHAppHelpState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppHelpState.h; path = Shared/SCHAppHelpState.h; sourceTree = "<group>"; };
@@ -8512,6 +8522,8 @@
 			children = (
 				F81B00DB1510A67F002DEE25 /* SCHRecommendationListView.h */,
 				F81B00DC1510A67F002DEE25 /* SCHRecommendationListView.m */,
+				C9A23E7D1642BFA8001C2CD1 /* SCHRecommendationDataSource.h */,
+				C9A23E7C1642AD6E001C2CD1 /* SCHRecommendationViewDataSource.h */,
 				C94364ED1636ECEF00533355 /* SCHRecommendationViewDelegate.h */,
 				C9EB4993152EDCF500DA227A /* SCHRecommendationContainerView.h */,
 				C9EB4994152EDCF500DA227A /* SCHRecommendationContainerView.m */,
@@ -8998,6 +9010,10 @@
 				F81C74741344DA0700B1D9DB /* SCHFlowEucBook.h */,
 				F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */,
 				C98BDDB61548629400E265B8 /* SCHEucBookmarkPointTranslation.h */,
+				C9A23E5F16414876001C2CD1 /* SCHRecommendationProxyViewSpirit.h */,
+				C9A23E6016414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m */,
+				C9A23E6316414E77001C2CD1 /* SCHRecommendationViewSpirit.h */,
+				C9A23E6416414E77001C2CD1 /* SCHRecommendationViewSpirit.m */,
 				C98BDDAF1548625300E265B8 /* SCHEPubBook.h */,
 				C98BDDB01548625400E265B8 /* SCHEPubBook.m */,
 				C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */,
@@ -11752,6 +11768,8 @@
 				C998419C1632DB2500EBD73E /* SCHRecommendationBatchOperation.m in Sources */,
 				C9916195163AA98D003A19CC /* SCHTextField.m in Sources */,
 				C991620B163EE100003A19CC /* SCHDownloadDictionaryChoiceViewController.m in Sources */,
+				C9A23E6116414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m in Sources */,
+				C9A23E6516414E77001C2CD1 /* SCHRecommendationViewSpirit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12627,6 +12645,8 @@
 				C998419D1632DB2500EBD73E /* SCHRecommendationBatchOperation.m in Sources */,
 				C9916196163AA98D003A19CC /* SCHTextField.m in Sources */,
 				C991620C163EE100003A19CC /* SCHDownloadDictionaryChoiceViewController.m in Sources */,
+				C9A23E6216414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m in Sources */,
+				C9A23E6616414E77001C2CD1 /* SCHRecommendationViewSpirit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

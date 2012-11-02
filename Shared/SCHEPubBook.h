@@ -8,10 +8,11 @@
 
 #import "SCHEucBookmarkPointTranslation.h"
 #import <libEucalyptus/EucEPubBook.h>
+#import "SCHRecommendationDataSource.h"
 
 @class SCHBookIdentifier;
 
-@interface SCHEPubBook : EucEPubBook <SCHEucBookmarkPointTranslation> {}
+@interface SCHEPubBook : EucEPubBook <SCHEucBookmarkPointTranslation, SCHRecommendationDataSource> {}
 
 @property (nonatomic, retain, readonly) SCHBookIdentifier *identifier;
 

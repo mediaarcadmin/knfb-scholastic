@@ -20,6 +20,7 @@
 @protocol SCHEucBookmarkPointTranslation;
 @protocol EucBook;
 @protocol SCHBookPackageProvider;
+@protocol SCHRecommendationDataSource;
 
 @interface SCHBookManager : NSObject 
 {
@@ -39,7 +40,7 @@
 - (id <SCHBookPackageProvider>)checkOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext error:(NSError **)error;
 - (void)checkInBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
 
-- (id<EucBook, SCHEucBookmarkPointTranslation>)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id<EucBook, SCHEucBookmarkPointTranslation, SCHRecommendationDataSource>)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 - (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
@@ -52,7 +53,7 @@
 - (id<KNFBParagraphSource>)threadSafeCheckOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier;
 - (id <SCHBookPackageProvider>)threadSafeCheckOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
 - (id <SCHBookPackageProvider>)threadSafeCheckOutBookPackageProviderForBookIdentifier:(SCHBookIdentifier *)identifier error:(NSError **)error;
-- (id<EucBook, SCHEucBookmarkPointTranslation>)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
+- (id<EucBook, SCHEucBookmarkPointTranslation, SCHRecommendationDataSource>)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 
 + (BOOL)checkAppCompatibilityForFeature:(NSString *)key version:(float)version;

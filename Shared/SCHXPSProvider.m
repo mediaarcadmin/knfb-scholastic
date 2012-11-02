@@ -96,7 +96,7 @@
 
 - (BOOL)containsFlowedRepresentation
 {
-    return NO;
+    return YES;
 }
 
 - (BOOL)containsEmbeddedBSB

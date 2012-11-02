@@ -16,6 +16,8 @@
 #import <libEucalyptus/EucEPubBookReference.h>
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucCSSLayoutRunExtractor.h>
+#import "SCHRecommendationViewDataSource.h"
+#import "SCHRecommendationProxyViewSpirit.h"
 
 @interface SCHEPubBook ()
 
@@ -23,6 +25,8 @@
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, assign) BOOL fakeCover;
+@property (nonatomic, assign) id <SCHRecommendationViewDataSource> recommendationViewDataSource;
+@property (nonatomic, assign) EucBookPageIndexPoint *recommendationIndexPoint;
 
 @end
 
@@ -32,6 +36,8 @@
 @synthesize managedObjectContext;
 @synthesize provider;
 @synthesize fakeCover;
+@synthesize recommendationViewDataSource;
+@synthesize recommendationIndexPoint;
 
 - (void)dealloc
 {
@@ -42,6 +48,8 @@
     
     [identifier release], identifier = nil;
     [managedObjectContext release], managedObjectContext = nil;
+    [recommendationIndexPoint release], recommendationIndexPoint = nil;
+    recommendationViewDataSource = nil;
     
     [super dealloc];
 }
@@ -287,6 +295,57 @@
         
         return eucIndexPoint;  
     }
+}
+
+#pragma mark - Back of Book Recommendations Support
+
+- (Class)pageContentsViewSpiritClass
+{
+    return [SCHRecommendationProxyViewSpirit class];
+}
+
+- (Class)pageContentsViewSpiritSuperClass
+{
+    return [super pageContentsViewSpiritClass];
+}
+
+- (EucBookPageIndexPoint *)recommendationIndexPoint
+{
+    if (!recommendationIndexPoint) {
+        recommendationIndexPoint = [[super offTheEndIndexPoint] copy];
+    }
+    
+    return recommendationIndexPoint;
+}
+
+- (EucBookPageIndexPoint *)offTheEndIndexPoint
+{
+    EucBookPageIndexPoint *indexPoint = [[self.recommendationIndexPoint copy] autorelease];
+    indexPoint.source++;
+    
+    return indexPoint;
+}
+
+- (NSArray *)hardPageBreakIndexPoints
+{
+    NSMutableArray *buildhardPageBreakIndexPoints = [NSMutableArray arrayWithArray:[super hardPageBreakIndexPoints]];    
+    [buildhardPageBreakIndexPoints addObject:self.recommendationIndexPoint];
+    
+    return buildhardPageBreakIndexPoints;
+}
+
+- (BOOL)fullBleedPageForIndexPoint:(EucBookPageIndexPoint *)indexPoint
+{
+    if ([indexPoint isEqual:self.recommendationIndexPoint]) {
+        return YES;
+    } else {
+        return [super fullBleedPageForIndexPoint:indexPoint];
+    }
+}
+
+- (BOOL)shouldShowRecommendationView
+{
+    return [self.recommendationViewDataSource shouldShowRecommendationView];
 }
 
 @end

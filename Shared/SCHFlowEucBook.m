@@ -15,15 +15,19 @@
 #import "SCHBookIdentifier.h"
 #import "SCHTextFlowParagraphSource.h"
 #import "KNFBXPSConstants.h"
+#import "SCHRecommendationProxyViewSpirit.h"
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
 #import <libEucalyptus/EucCSSLayoutRunExtractor.h>
+#import "SCHRecommendationViewDataSource.h"
 
 @interface SCHFlowEucBook ()
 
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, assign) SCHTextFlowParagraphSource *paragraphSource;
+@property (nonatomic, assign) id <SCHRecommendationViewDataSource> recommendationViewDataSource;
+@property (nonatomic, retain) EucBookPageIndexPoint *recommendationIndexPoint;
 
 @end
 
@@ -32,6 +36,8 @@
 @synthesize identifier;
 @synthesize managedObjectContext;
 @synthesize paragraphSource;
+@synthesize recommendationViewDataSource;
+@synthesize recommendationIndexPoint;
 
 - (id)initWithBookIdentifier:(SCHBookIdentifier *)newIdentifier managedObjectContext:(NSManagedObjectContext *)moc
 {
@@ -93,6 +99,8 @@
     
     [identifier release], identifier = nil;
     [managedObjectContext release], managedObjectContext = nil;
+    [recommendationIndexPoint release], recommendationIndexPoint = nil;
+    recommendationViewDataSource = nil;
     
     [super dealloc];
 }
@@ -225,5 +233,55 @@
     return [ret autorelease];    
 }
 
+#pragma mark - Back of Book Recommendations Support
+
+- (Class)pageContentsViewSpiritClass
+{
+    return [SCHRecommendationProxyViewSpirit class];
+}
+
+- (Class)pageContentsViewSpiritSuperClass
+{
+    return [super pageContentsViewSpiritClass];
+}
+
+- (EucBookPageIndexPoint *)recommendationIndexPoint
+{
+    if (!recommendationIndexPoint) {
+        recommendationIndexPoint = [[super offTheEndIndexPoint] copy];
+    }
+    
+    return recommendationIndexPoint;
+}
+
+- (EucBookPageIndexPoint *)offTheEndIndexPoint
+{
+    EucBookPageIndexPoint *indexPoint = [[self.recommendationIndexPoint copy] autorelease];
+    indexPoint.source++;
+    
+    return indexPoint;
+}
+
+- (NSArray *)hardPageBreakIndexPoints
+{
+    NSMutableArray *buildhardPageBreakIndexPoints = [NSMutableArray arrayWithArray:[super hardPageBreakIndexPoints]];
+    [buildhardPageBreakIndexPoints addObject:self.recommendationIndexPoint];
+    
+    return buildhardPageBreakIndexPoints;
+}
+
+- (BOOL)fullBleedPageForIndexPoint:(EucBookPageIndexPoint *)indexPoint
+{
+    if ([indexPoint isEqual:self.recommendationIndexPoint]) {
+        return YES;
+    } else {
+        return [super fullBleedPageForIndexPoint:indexPoint];
+    }
+}
+
+- (BOOL)shouldShowRecommendationView
+{
+    return [self.recommendationViewDataSource shouldShowRecommendationView];
+}
 
 @end
