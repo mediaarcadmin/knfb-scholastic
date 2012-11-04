@@ -348,8 +348,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             
             if (notePoint) {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;  
-                NSString *displayPage = [self.delegate displayPageNumberForBookPoint:notePoint];
-                subTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@", @"Display page for Notes List Controller"), displayPage];
+                NSString *displayPage = [self.delegate displayPageLabelForBookPoint:notePoint];
+                subTitleLabel.text = displayPage;
                 subTitleLabel.alpha = 1;
                 activityView.alpha = 0;
             } else {

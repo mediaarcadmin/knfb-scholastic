@@ -210,39 +210,56 @@
                 indexes[0] = eucIndexPoint.source;
             }
             
-            
-            EucCSSIntermediateDocument *document = [self intermediateDocumentForIndexPoint:eucIndexPoint];
-            
-            // All the pageXX anchors will be in this dictionary
-            NSDictionary *idToNodeKey = [document idToNodeKey];
-            
-            NSLog(@"idToNodeKey: %@", idToNodeKey);
-            
-            EucCSSLayoutRunExtractor *extractor = [[EucCSSLayoutRunExtractor alloc] initWithDocument:document];
-            EucCSSIntermediateDocumentNode *docNode = [document nodeForKey:eucIndexPoint.block];
-            EucCSSLayoutPoint layoutPoint = [extractor layoutPointForNode:docNode];
-            [extractor release];
-                        
             NSInteger lowestIndexMatch = NSNotFound;
-            NSInteger lowestNodeKeyMatch = NSNotFound;
-            NSInteger targetNodeKey = [EucCSSIntermediateDocument documentTreeNodeKeyForKey:layoutPoint.nodeKey];
+            NSInteger source = eucIndexPoint.source;
             
-            for (NSString *pageAnchor in [idToNodeKey allKeys]) {
-                if ([pageAnchor hasPrefix:@"page"]) {
-                    NSString *pageString = [pageAnchor substringFromIndex:4];
-                    if ([pageString length]) {
-                        NSInteger pageIndex = [pageString integerValue];
-                        NSInteger nodeKey = [[idToNodeKey valueForKey:pageAnchor] integerValue];
-                        
-                        if ((lowestNodeKeyMatch > nodeKey) && (targetNodeKey < nodeKey)) {
-                            lowestNodeKeyMatch = nodeKey;
-                            lowestIndexMatch = pageIndex;
+            while (source >= 0 && lowestIndexMatch == NSNotFound) {
+                
+                EucBookPageIndexPoint *sourceIndexPoint = [[EucBookPageIndexPoint alloc] init];
+                sourceIndexPoint.source = source;
+                
+                EucCSSIntermediateDocument *document = [self intermediateDocumentForIndexPoint:sourceIndexPoint];
+                
+                [sourceIndexPoint release];
+                
+                // All the pageXX anchors will be in this dictionary
+                NSDictionary *idToNodeKey = [document idToNodeKey];
+                
+                NSLog(@"idToNodeKey: %@", idToNodeKey);
+                
+                EucCSSLayoutRunExtractor *extractor = [[EucCSSLayoutRunExtractor alloc] initWithDocument:document];
+                EucCSSIntermediateDocumentNode *docNode = [document nodeForKey:eucIndexPoint.block];
+                EucCSSLayoutPoint layoutPoint = [extractor layoutPointForNode:docNode];
+                [extractor release];
+                
+                
+                NSInteger lowestNodeKeyMatch = NSNotFound;
+                NSInteger targetNodeKey = [EucCSSIntermediateDocument documentTreeNodeKeyForKey:layoutPoint.nodeKey];
+                
+                for (NSString *pageAnchor in [idToNodeKey allKeys]) {
+                    if ([pageAnchor hasPrefix:@"page"]) {
+                        NSString *pageString = [pageAnchor substringFromIndex:4];
+                        if ([pageString length]) {
+                            NSInteger pageIndex = [pageString integerValue];
+                            NSInteger nodeKey = [[idToNodeKey valueForKey:pageAnchor] integerValue];
+                            
+                            if ((lowestNodeKeyMatch > nodeKey) && (targetNodeKey < nodeKey)) {
+                                lowestNodeKeyMatch = nodeKey;
+                                lowestIndexMatch = pageIndex;
+                            }
                         }
                     }
                 }
+                
+                source--;
             }
             
-            bookPoint.layoutPage = lowestIndexMatch + 1;
+            if (lowestIndexMatch == NSNotFound) {
+                bookPoint.layoutPage = 1;
+            } else {
+                bookPoint.layoutPage = lowestIndexMatch + 1;
+            }
+            
             bookPoint.blockOffset = 0;
             bookPoint.wordOffset = 0;
             bookPoint.elementOffset = 0;

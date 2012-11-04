@@ -98,7 +98,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 - (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark;
 
-- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint;
+- (NSString *)displayPageLabelForBookPoint:(SCHBookPoint *)bookPoint;
 - (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex showChapters:(BOOL)showChapters;
 
 - (void)layoutPage:(NSUInteger *)layoutPage 

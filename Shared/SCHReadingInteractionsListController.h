@@ -48,7 +48,7 @@
 @required
 
 - (SCHBookPoint *)bookPointForStoryInteractionDocumentPageNumber:(NSUInteger)pageNumber; // returns nil if book isn't paginated yet
-- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint;
+- (NSString *)displayPageLabelForBookPoint:(SCHBookPoint *)bookPoint;
 - (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction;
 
 @end

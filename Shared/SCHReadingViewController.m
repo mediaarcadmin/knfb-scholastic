@@ -3084,9 +3084,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     }
 }
 
-- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
+- (NSString *)displayPageLabelForBookPoint:(SCHBookPoint *)bookPoint
 {
-    return [self.readingView displayPageNumberForBookPoint:bookPoint];
+    return [self.readingView displayPageLabelForBookPoint:bookPoint];
 }
 
 #pragma mark - SCHNotesViewDelegate methods

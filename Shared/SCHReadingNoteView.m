@@ -199,11 +199,11 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     NSString *displayPage = nil;
 
     if (notePoint) {
-        displayPage = [self.delegate displayPageNumberForBookPoint:notePoint];
+        displayPage = [self.delegate displayPageLabelForBookPoint:notePoint];
     }
     
     if (displayPage) {
-		self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@, %@", @"Display page and date toolbar label for Notes View"), displayPage, dateString];
+		self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, %@", @"Display page and date toolbar label for Notes View"), displayPage, dateString];
     } else {
         self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@", @"Unknown page + date toolbar label for Notes View"), dateString];
     }
