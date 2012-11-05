@@ -531,16 +531,21 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         
 }
 
-- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
+- (NSString *)displayPageLabelForBookPoint:(SCHBookPoint *)bookPoint
 {    
     NSUInteger pageIndex = MAX(bookPoint.layoutPage, 1) - 1;
-    NSString *pageStr = [self displayPageNumberForPageAtIndex:pageIndex];
     
-    if (![pageStr length]) {
-        pageStr = [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
+    // Return Cover for the first page as a special case
+    if (pageIndex == 0) {
+        return @"Cover";
     }
     
-    return pageStr;
+    NSString *displayPageStr = [self displayPageNumberForPageAtIndex:pageIndex];
+    if (displayPageStr) {
+        return [NSString stringWithFormat:NSLocalizedString(@"Page %@",@"Page label X (page number (string)) (layout view)"), displayPageStr];
+    } else {
+        return [NSString stringWithFormat:NSLocalizedString(@"Page %@",@"Page label X (page number (string)) (layout view)"), [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex]];
+    }
 }
 
 - (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex showChapters:(BOOL)showChapters

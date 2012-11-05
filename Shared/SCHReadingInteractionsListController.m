@@ -237,8 +237,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     if (interactionPoint) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;  
-        NSString *displayPage = [self.delegate displayPageNumberForBookPoint:interactionPoint];
-        subTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@", @"Display page for Story Interaction List Controller"), displayPage];
+        NSString *displayPage = [self.delegate displayPageLabelForBookPoint:interactionPoint];
+        subTitleLabel.text = displayPage;
         subTitleLabel.alpha = 1;
         activityView.alpha = 0;
     } else {

@@ -37,7 +37,7 @@
 - (void)notesView:(SCHReadingNoteView *)notesView savedNote:(SCHNote *)note;
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView;
 - (SCHBookPoint *)bookPointForNote:(SCHNote *)note; // returns nil if book isn't paginated yet
-- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint;
+- (NSString *)displayPageLabelForBookPoint:(SCHBookPoint *)bookPoint;
 
 
 @end

@@ -176,7 +176,7 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return bookPoint.layoutPage - 1;
 }
 
-- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint 
+- (NSString *)displayPageLabelForBookPoint:(SCHBookPoint *)bookPoint
 {
     return nil;
 }

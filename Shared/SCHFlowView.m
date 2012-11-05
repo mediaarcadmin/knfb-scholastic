@@ -519,9 +519,16 @@ static void sortedHighlightRangePredicateInit() {
     return ret;
 }
 
-- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
+- (NSString *)displayPageLabelForBookPoint:(SCHBookPoint *)bookPoint
 {
-    return [self.eucBookView displayPageNumberForPageIndex:[self.eucBookView pageIndexForIndexPoint:[self.eucBook bookPageIndexPointFromBookPoint:bookPoint]]];
+    NSInteger pageIndex = [self.eucBookView pageIndexForIndexPoint:[self.eucBook bookPageIndexPointFromBookPoint:bookPoint]];
+
+    NSString *pageNumber = [self.eucBookView displayPageNumberForPageIndex:pageIndex];
+    if (pageNumber) {
+        return [NSString stringWithFormat:NSLocalizedString(@"Page %@", @"displayPageLabelForBookPoint (flow view)"), pageNumber];
+    } else {
+        return [self.eucBookView pageDescriptionForPageIndex:pageIndex];
+    }
 }
 
 - (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex showChapters:(BOOL)showChapters
