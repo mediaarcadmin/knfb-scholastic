@@ -12,7 +12,7 @@
 
 - (BOOL)containsFixedRepresentation
 {
-    return NO;
+    return YES;
 }
 
 - (BOOL)containsFlowedRepresentation
