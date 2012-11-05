@@ -20,9 +20,12 @@
 
 - (void)initialiseView;
 - (void)setupImages;
+- (void)setTitle:(NSString *)title subtitle:(NSString *)subtitle pointSize:(CGFloat)pointSize;
 
 @property (nonatomic, retain) UIImage *initialNormalStateImage;
 @property (nonatomic, retain) UIImage *initialSelectedStateImage;
+@property (nonatomic, retain) NSString *titleText;
+@property (nonatomic, retain) NSString *subtitleText;
 
 @end
 
@@ -36,8 +39,7 @@
 @synthesize recommendationBackgroundColor;
 
 @synthesize coverImageView;
-@synthesize titleLabel;
-@synthesize subtitleLabel;
+@synthesize titleAndSubtitleLabel;
 @synthesize rateView;
 @synthesize ratingLabel;
 @synthesize ratingBackgroundImageView;
@@ -48,6 +50,12 @@
 @synthesize initialNormalStateImage;
 @synthesize initialSelectedStateImage;
 @synthesize showOnBackCover;
+@synthesize insets;
+@synthesize ratingContainer;
+@synthesize titleText;
+@synthesize subtitleText;
+@synthesize titleLabel;
+@synthesize subtitleLabel;
 
 - (void)dealloc
 {
@@ -55,8 +63,7 @@
     [recommendationBackgroundColor release], recommendationBackgroundColor = nil;
     [ISBN release], ISBN = nil;
     [coverImageView release], coverImageView = nil;
-    [titleLabel release], titleLabel = nil;
-    [subtitleLabel release], subtitleLabel = nil;
+    [titleAndSubtitleLabel release], titleAndSubtitleLabel = nil;
     [rateView release], rateView = nil;
     [ratingLabel release], ratingLabel = nil;
     [onWishListButton release], onWishListButton = nil;
@@ -64,7 +71,12 @@
     [ruleImageView release], ruleImageView = nil;
     [initialNormalStateImage release], initialNormalStateImage = nil;
     [initialSelectedStateImage release], initialSelectedStateImage = nil;
-
+    [ratingContainer release], ratingContainer = nil;
+    [titleText release], titleText = nil;
+    [subtitleText release], subtitleText = nil;
+    [titleLabel release], titleLabel = nil;
+    [subtitleLabel release], subtitleLabel = nil;
+    
     [middleView release];
     [leftView release];
     [super dealloc];
@@ -98,6 +110,12 @@
     self.showsWishListButton = YES;
     self.rateView.editable = NO;
     self.showOnBackCover = NO;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.maxPointSize = 19;
+    } else {
+        self.maxPointSize = 17;
+    }
 }
 
 - (void)setupImages
@@ -142,17 +160,45 @@
     [self.onWishListButton setSelected:isOnWishList];
 }
 
+- (void)setTitle:(NSString *)title subtitle:(NSString *)subtitle pointSize:(CGFloat)pointSize;
+{
+    self.titleText = title ? : @"";
+    self.subtitleText = subtitle ? : @"";
+    // Create the attributes
+    //UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:15];
+    UIFont *systemFont = [UIFont boldSystemFontOfSize:pointSize];
+    CTFontRef boldFont = CTFontCreateWithName((CFStringRef)systemFont.fontName, systemFont.pointSize, NULL);
+    CTFontRef regFont = CTFontCreateWithName((CFStringRef)systemFont.fontName, systemFont.pointSize, NULL);
+
+    NSDictionary *boldAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                               (id)boldFont, (NSString *)kCTFontAttributeName, nil];
+    NSDictionary *regAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                              (id)regFont, (NSString *)kCTFontAttributeName, nil];
+    
+    NSMutableAttributedString *attText = [[[NSMutableAttributedString alloc] initWithString:self.titleText attributes:boldAttrs] autorelease];
+    
+    [attText appendAttributedString:[[[NSAttributedString alloc] initWithString:self.subtitleText attributes:regAttrs] autorelease]];
+    
+    CFRelease(boldFont);
+    CFRelease(regFont);
+    
+    self.titleAndSubtitleLabel.attributedText = attText;
+}
+
 - (void)updateWithRecommendationItem:(NSDictionary *)item
 {
     [self setupImages];
     
     self.ISBN = [item objectForKey:kSCHAppRecommendationItemISBN];
-    self.titleLabel.text = [item objectForKey:kSCHAppRecommendationItemTitle];
-    self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationItemAuthor];
     self.rateView.dimEmptyRatings = !self.showOnBackCover;
     self.rateView.rating = [[item objectForKey:kSCHAppRecommendationItemAverageRating] floatValue];
     UIImage *coverImage = [item objectForKey:kSCHAppRecommendationItemCoverImage];
     
+    NSString *title = [NSString stringWithFormat:@"%@\n", [item objectForKey:kSCHAppRecommendationItemTitle]];
+    NSString *subtitle = [item objectForKey:kSCHAppRecommendationItemAuthor];
+    
+    [self setTitle:title subtitle:subtitle pointSize:15];
+
     if (coverImage && ![coverImage isKindOfClass:[NSNull class]]) {
         self.coverImageView.image = coverImage;
     }
@@ -168,6 +214,8 @@
     } else {
         self.onWishListButton.hidden = YES;
     }
+    
+    [self setNeedsLayout];
 }
 
 - (void)updateWithWishListItem:(NSDictionary *)item
@@ -175,8 +223,12 @@
     [self setupImages];
     
     self.ISBN = [item objectForKey:kSCHAppRecommendationItemISBN];
-    self.titleLabel.text = [item objectForKey:kSCHAppRecommendationItemTitle];
-    self.subtitleLabel.text = [item objectForKey:kSCHAppRecommendationItemAuthor];
+    
+    NSString *title = [NSString stringWithFormat:@"%@\n", [item objectForKey:kSCHAppRecommendationItemTitle]];
+    NSString *subtitle = [item objectForKey:kSCHAppRecommendationItemAuthor];
+    
+    [self setTitle:title subtitle:subtitle pointSize:15];
+
     self.rateView.rating = [[item objectForKey:kSCHAppRecommendationItemAverageRating] floatValue];
     UIImage *coverImage = [item objectForKey:kSCHAppRecommendationItemCoverImage];
     
@@ -195,6 +247,8 @@
     } else {
         self.onWishListButton.hidden = YES;
     }
+    
+    [self setNeedsLayout];
 }
 
 - (void)setRecommendationBackgroundColor:(UIColor *)newRecommendationBackgroundColor
@@ -204,8 +258,7 @@
     [oldColor release];
     
     self.backgroundColor = self.recommendationBackgroundColor;
-    self.titleLabel.backgroundColor = self.recommendationBackgroundColor;
-    self.subtitleLabel.backgroundColor = self.recommendationBackgroundColor;
+    self.titleAndSubtitleLabel.backgroundColor = self.recommendationBackgroundColor;
 }
 
 - (UIImage *)initialNormalStateImage
@@ -228,99 +281,95 @@
 
 - (void)layoutSubviews
 {
-    [super layoutSubviews];
     
-    // wish list button aspect ratio
-    UIImage *buttonImage = [self.onWishListButton imageForState:self.onWishListButton.state];
+    CGRect bounds = UIEdgeInsetsInsetRect(self.bounds, self.insets);
+    CGFloat maxLeftWidth = floorf(CGRectGetWidth(bounds) * 0.25f);
+    CGFloat leftWidth = MIN(maxLeftWidth, CGRectGetHeight(bounds));
     
-    if (buttonImage) {
-        CGSize buttonSize = buttonImage.size;
-        CGFloat aspect = buttonSize.width / buttonSize.height;
-        
-        CGRect buttonFrame = self.onWishListButton.frame;
-        buttonFrame.size.height = floorf(buttonFrame.size.width / aspect);
-        
-        CGFloat bottomButtonPosition = buttonFrame.origin.y + buttonFrame.size.height;
-        CGFloat imageBottomPosition = self.coverImageView.frame.origin.y + self.coverImageView.frame.size.height;
-        
-        CGFloat diff = bottomButtonPosition - imageBottomPosition;
-        
-        if (diff > 0) {
-            // alter the button size to fit the space available
-            buttonFrame.size.height -= diff;
-            buttonFrame.size.width -= (diff * aspect);
-        }
-        
-        self.onWishListButton.frame = CGRectIntegral(buttonFrame);
+    self.leftView.frame = CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), leftWidth, CGRectGetHeight(bounds));
+    self.middleView.frame = CGRectMake(CGRectGetMinX(bounds) + leftWidth, CGRectGetMinY(bounds), CGRectGetWidth(bounds) - leftWidth, CGRectGetHeight(bounds));
+    self.ruleImageView.frame = CGRectMake(CGRectGetMinX(bounds) + 10, CGRectGetMaxY(self.bounds) - 2, CGRectGetWidth(bounds) - 20, 2);
+    self.coverImageView.frame = CGRectInset(self.leftView.bounds, 4, 4);
+    
+
+    CGRect middleBounds = CGRectInset(self.middleView.bounds, 4, 4);
+    CGFloat sectionPadding;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        sectionPadding = 8;
+    } else {
+        sectionPadding = 4;
     }
     
+    NSUInteger numSections = 3;
     
-    // rating view width
+    CGFloat ratingMaxHeight = 40;
+    CGFloat ratingMaxWidth = 300;
+    CGFloat ratingRatio = ratingMaxWidth/ratingMaxHeight;
     
-    CGSize textSize = [self.ratingLabel.text sizeWithFont:self.ratingLabel.font
-                                        constrainedToSize:self.ratingLabel.frame.size];
-    CGRect ratingLabelFrame = self.ratingLabel.frame;
-    ratingLabelFrame.size.width = floorf(textSize.width + 15);
-    self.ratingLabel.frame = ratingLabelFrame;
+    CGFloat wishlistButtonMaxHeight = self.initialNormalStateImage.size.height;
+    CGFloat wishlistButtonMaxWidth = self.initialNormalStateImage.size.width;
+    CGFloat wishlistRatio = wishlistButtonMaxWidth/wishlistButtonMaxHeight;
+    
+    CGFloat ratingToWishlistRatio = 0.8f;
+    CGFloat maxPoint = self.maxPointSize;
+    
+    if (self.onWishListButton.hidden) {
+        wishlistButtonMaxHeight = 0;
+        numSections = 2;
+    } else {
+        maxPoint -= 1;
+    }
+    
+    CGFloat equalHeight = floorf((CGRectGetHeight(middleBounds) - (numSections * sectionPadding))/numSections);
+
+    CGFloat wishlistHeight = MIN(equalHeight, wishlistButtonMaxHeight);
+    CGFloat wishlistWidth = MIN(MIN(CGRectGetWidth(middleBounds), wishlistButtonMaxWidth), wishlistHeight * wishlistRatio);
+    
+    CGFloat ratingHeight = MIN(equalHeight, ratingMaxHeight);
+    
+    if (wishlistHeight > 0) {
+        ratingHeight = MIN(ratingHeight, wishlistHeight * ratingToWishlistRatio);
+    }
+    
+    CGFloat ratingWidth = MIN(MIN(CGRectGetWidth(middleBounds), ratingMaxWidth), ratingHeight * ratingRatio);
+    
+    CGFloat textHeight = CGRectGetHeight(middleBounds) - (numSections * sectionPadding) - ratingHeight - wishlistHeight;
+    
+    CGRect textFrame = CGRectMake(CGRectGetMinX(middleBounds), CGRectGetMinY(middleBounds), CGRectGetWidth(middleBounds), textHeight);
+    textFrame = CGRectInset(textFrame, 6, 0);
+    
+    CGFloat pointSize;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        pointSize = floorf(MAX(14, MIN(maxPoint, CGRectGetHeight(textFrame)/3.0f)));
+    } else {
+        pointSize = floorf(MAX(6, MIN(maxPoint, CGRectGetHeight(textFrame)/3.0f)));
+    }
+    [self setTitle:self.titleText subtitle:self.subtitleText pointSize:pointSize];
+    
+    CGSize desiredSize = [self.titleAndSubtitleLabel sizeThatFits:textFrame.size];
+    textFrame.size.width = MIN(textFrame.size.width, desiredSize.width);
+    textFrame.size.height = MIN(textFrame.size.height, desiredSize.height);
+    
+    CGRect ratingFrame = CGRectMake(CGRectGetMinX(middleBounds), CGRectGetMaxY(textFrame) + 2 * sectionPadding, ratingWidth, ratingHeight);
+    
+    CGRect wishlistFrame = CGRectMake(CGRectGetMinX(middleBounds), CGRectGetMaxY(ratingFrame) + sectionPadding, wishlistWidth, wishlistHeight);
+ 
+    // Now center all the sections of the middleview
+    CGFloat offset = MAX(0, floorf((CGRectGetHeight(middleBounds) - CGRectGetMaxY(wishlistFrame))/2.0f));
+    
+    textFrame.origin.y += offset;
+    ratingFrame.origin.y += offset;
+    wishlistFrame.origin.y += offset;
+    
+    self.titleAndSubtitleLabel.frame = textFrame;
+    self.ratingContainer.frame = ratingFrame;
+    self.onWishListButton.frame = wishlistFrame;
     
     CGRect rateViewFrame = self.rateView.frame;
-    rateViewFrame.origin.x = ratingLabelFrame.size.width + 10;
+    rateViewFrame.size.height = MIN(28, CGRectGetHeight(rateViewFrame));
+    rateViewFrame.origin.y = floorf((CGRectGetHeight(ratingFrame) - CGRectGetHeight(rateViewFrame))/2.0f);
     self.rateView.frame = rateViewFrame;
-    
-    CGRect backgroundImageFrame = self.ratingBackgroundImageView.frame;
-    backgroundImageFrame.size.width = ratingLabelFrame.size.width + rateViewFrame.size.width + 20;
-    self.ratingBackgroundImageView.frame = backgroundImageFrame;
-    
-    
-    if (!self.showOnBackCover)  {
-        [self.titleLabel adjustPointSizeToFitWidthWithPadding:0];
-        [self.subtitleLabel adjustPointSizeToFitWidthWithPadding:0];
-        self.ratingLabel.font = self.subtitleLabel.font;
-    } else {
-        // two line title view
-        // size the title view
-        CGSize restrictedWidthSize = CGSizeMake(self.titleLabel.frame.size.width, CGFLOAT_MAX);
-        CGSize oneLineSize = [@"W" sizeWithFont:self.titleLabel.font];
-        
-        CGSize textSize = [self.titleLabel.text sizeWithFont:self.titleLabel.font
-                                           constrainedToSize:restrictedWidthSize
-                                               lineBreakMode:UILineBreakModeWordWrap];
-        
-        CGFloat titleLabelHeight = MIN(oneLineSize.height * 2, textSize.height);
-        CGRect titleFrame = self.titleLabel.frame;
-        CGRect subtitleFrame = self.subtitleLabel.frame;
-        
-        CGRect rateFrame = self.ratingBackgroundImageView.superview.frame;
-
-        // if we're limited on space (i.e. two lines won't fit) revert to one line
-        if (rateFrame.origin.y < titleFrame.origin.y + titleLabelHeight + 2 + subtitleFrame.size.height) {
-            titleLabelHeight = oneLineSize.height;
-            self.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-        } else {
-            self.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-        }
-        
-        
-//        NSLog(@"Text size for %@: %@", self.titleLabel.text, NSStringFromCGSize(textSize));
-//        NSLog(@"Title label height: %f", titleLabelHeight);
-        
-        titleFrame.size.height = titleLabelHeight;
-        
-        // move the subtitle view to match
-        subtitleFrame.origin.y = titleFrame.origin.y + titleFrame.size.height + 2;
-
-        self.titleLabel.frame = titleFrame;
-        self.subtitleLabel.frame = subtitleFrame;
-        
-        
-    }
-
-    
-    //NSLog(@"self frame: %@", NSStringFromCGRect(self.frame));
-//    NSLog(@"rating background frame: %@", NSStringFromCGRect(self.ratingBackgroundImageView.frame));
-//    NSLog(@"rating label frame: %@", NSStringFromCGRect(self.ratingLabel.frame));
-//    NSLog(@"rating frame: %@", NSStringFromCGRect(self.rateView.frame));
-//    NSLog(@"cover frame: %@", NSStringFromCGRect(self.coverImageView.frame));
 }
 
 @end

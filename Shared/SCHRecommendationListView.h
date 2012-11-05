@@ -10,6 +10,7 @@
 #import "SCHRecommendationItem.h"
 #import "SCHWishListItem.h"
 #import "RateView.h"
+#import "TTTAttributedLabel.h"
 
 @protocol SCHRecommendationListViewDelegate;
 
@@ -24,6 +25,7 @@
 @property (nonatomic, retain) UIColor *recommendationBackgroundColor;
 
 @property (nonatomic, retain) IBOutlet UIImageView *coverImageView;
+@property (nonatomic, retain) IBOutlet TTTAttributedLabel *titleAndSubtitleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *subtitleLabel;
 @property (nonatomic, retain) IBOutlet RateView *rateView;
@@ -31,9 +33,13 @@
 @property (nonatomic, retain) IBOutlet UIImageView *ratingBackgroundImageView;
 @property (nonatomic, retain) IBOutlet UIButton *onWishListButton;
 
-@property (retain, nonatomic) IBOutlet UIView *middleView;
-@property (retain, nonatomic) IBOutlet UIView *leftView;
-@property (retain, nonatomic) IBOutlet UIImageView *ruleImageView;
+@property (nonatomic, retain) IBOutlet UIView *middleView;
+@property (nonatomic, retain) IBOutlet UIView *leftView;
+@property (nonatomic, retain) IBOutlet UIImageView *ruleImageView;
+@property (nonatomic, retain) IBOutlet UIView *ratingContainer;
+
+@property (nonatomic, assign) UIEdgeInsets insets;
+@property (nonatomic, assign) CGFloat maxPointSize;
 
 - (void)updateWithRecommendationItem:(NSDictionary *)item;
 - (void)updateWithWishListItem:(NSDictionary *)item;

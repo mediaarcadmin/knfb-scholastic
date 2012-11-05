@@ -39,7 +39,7 @@
     self.box.layer.borderWidth = 1;
     self.box.layer.borderColor = [UIColor lightGrayColor].CGColor;
 
-    self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView-ReadingView" bundle:nil];
+    self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
 }
 
 - (void)layoutSubviews
@@ -74,14 +74,18 @@ modifiedWishListDictionaries:(NSArray *)modifiedWishListDictionaries
         self.fetchingLabel.hidden = YES;
         
         CGFloat count = MIN([recommendationDictionaries count], 4);
-        CGFloat rowHeight = floorf((self.container.frame.size.height)/4);
+        CGFloat rowHeight = floorf((self.container.frame.size.height)/MAX(count, 3));
 
         for (int i = 0; i < count; i++) {
             NSDictionary *recommendationDictionary = [recommendationDictionaries objectAtIndex:i];
 
             SCHRecommendationListView *listView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                listView.insets = UIEdgeInsetsMake(4, 0, 4, 0);
+            }
             listView.frame = CGRectMake(0, rowHeight * i, self.container.frame.size.width, rowHeight);
             listView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+            listView.backgroundColor = [UIColor clearColor];
 
             listView.showsBottomRule = NO;
             listView.showOnBackCover = YES;

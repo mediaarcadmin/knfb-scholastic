@@ -278,6 +278,15 @@
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
             
             SCHRecommendationListView *recommendationView = [[[self.recommendationViewNib instantiateWithOwner:self options:nil] objectAtIndex:0] retain];
+            
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                recommendationView.insets = UIEdgeInsetsMake(10, 20, 10, 20);
+                recommendationView.maxPointSize = 20.0f;
+            } else {
+                recommendationView.insets = UIEdgeInsetsMake(0, 10, 0, 10);
+                recommendationView.maxPointSize = 15.0f;
+            }
+            
             recommendationView.frame = cell.frame;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -358,17 +367,8 @@
     }
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        
-        if (indexPath.row == 0) {
-            return 199;
-        }
-        
         return 185;
     } else {
-        if (indexPath.row == 0) {
-            return 157;
-        }
-        
         return 150;
     }
 }
