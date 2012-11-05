@@ -303,8 +303,17 @@
     
     NSUInteger numSections = 3;
     
-    CGFloat ratingMaxHeight = 40;
-    CGFloat ratingMaxWidth = 300;
+    CGFloat ratingMaxHeight;
+    CGFloat ratingMaxWidth;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        ratingMaxHeight = 40;
+        ratingMaxWidth = 300;
+    } else {
+        ratingMaxHeight = 32;
+        ratingMaxWidth = 220;
+    }
+    
     CGFloat ratingRatio = ratingMaxWidth/ratingMaxHeight;
     
     CGFloat wishlistButtonMaxHeight = self.initialNormalStateImage.size.height;
@@ -367,7 +376,7 @@
     self.onWishListButton.frame = wishlistFrame;
     
     CGRect rateViewFrame = self.rateView.frame;
-    rateViewFrame.size.height = MIN(28, CGRectGetHeight(rateViewFrame));
+    rateViewFrame.size.height = MIN(self.rateView.fullSelectedImage.size.height, CGRectGetHeight(rateViewFrame));
     rateViewFrame.origin.y = floorf((CGRectGetHeight(ratingFrame) - CGRectGetHeight(rateViewFrame))/2.0f);
     self.rateView.frame = rateViewFrame;
 }
