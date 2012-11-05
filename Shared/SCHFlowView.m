@@ -14,6 +14,7 @@
 #import "KNFBParagraphSource.h"
 #import "SCHEPubBook.h"
 #import "SCHBSBEucBook.h"
+#import "SCHRecommendationViewDataSource.h"
 #import <libEucalyptus/EucBookView.h>
 #import <libEucalyptus/EucEPubBook.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
@@ -75,7 +76,6 @@
         }
         
         [self addSubview:eucBookView];
-        
     }
 }
 
@@ -203,6 +203,16 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
             [self.eucBookView bookWillShrink];
             EucBookPageIndexPoint *startPoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
             [self.eucBookView bookHasShrunkToIndexPoint:startPoint];
+        } else {
+            BOOL containsRecommendation = [self.eucBook indexContainsRecommendationIndexPoint];
+            BOOL shouldShowRecommendation = [self.eucBook.recommendationViewDataSource shouldShowRecommendationView];
+            
+            if (shouldShowRecommendation && !containsRecommendation) {
+                [eucBookView bookHasGrown];
+            } else if (!shouldShowRecommendation && containsRecommendation) {
+                [eucBookView bookWillShrink];
+                [self.eucBookView bookHasShrunkToIndexPoint:[self.eucBook offTheEndIndexPoint]];
+            }
         }
 
         [self attachSelector];
@@ -252,7 +262,12 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         
         pageRange = [[[SCHBookRange alloc] init] autorelease];
         pageRange.startPoint = startBookPoint;
-        pageRange.endPoint = endBookPoint;        
+        
+        if ([startBookPoint compare:endBookPoint] == NSOrderedAscending) {
+            pageRange.endPoint = endBookPoint;
+        } else {
+            pageRange.endPoint = startBookPoint;
+        }
     }
     
     return pageRange;

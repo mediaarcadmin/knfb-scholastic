@@ -1110,7 +1110,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                 // Normally we shouldn't have time to dispatch to the main thread during backgrouding but it can happen
                 // so this BOOL check is required
                 if (!self.isInBackground) {
-                    if (visibleIndices.location != NSNotFound) {
+                    if ((visibleIndices.location != NSNotFound) && (visibleIndices.length != NSNotFound)) {
                         for (NSUInteger i = 0; i < visibleIndices.length; i++) {
                             [weakSelf.readingView refreshHighlightsForPageAtIndex:visibleIndices.location + i];
                         }
@@ -2640,16 +2640,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)updateScrubberHUD
 {
-    BOOL showRecommendationsLabel = NO;
-    
+    BOOL suppressPageNumbers = self.shouldShowPageNumbers && (self.layoutType == SCHReadingViewLayoutTypeFixed);
+
     if (self.currentPageIndex != NSUIntegerMax) {
         
-        if (([self shouldShowBookRecommendationsForReadingView:self.readingView]) &&
-             (self.currentPageIndex == [self generatedPageCountForReadingView:self.readingView] - 1)) {
-            showRecommendationsLabel = YES;
-            [self.pageLabel setText:NSLocalizedString(@"Recommendations", nil)];
-            NSLog(@"Showing recommendations label!");
-        } else if (self.shouldShowPageNumbers) {
+        if (!suppressPageNumbers) {
             [self.pageLabel setText:[self.readingView pageLabelForPageAtIndex:self.currentPageIndex showChapters:self.shouldShowChapters]];
         } else {
             [self.pageLabel setText:nil];
@@ -2658,11 +2653,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [self.pageLabel setText:nil];
     }  
     
-    if ((self.layoutType == SCHReadingViewLayoutTypeFixed) &&
-        (showRecommendationsLabel == NO)) {
-        
-            UIImage *scrubImage = [self.bookPackageProvider thumbnailForPage:self.currentPageIndex + 1];
-            self.scrubberThumbImage.image = scrubImage;
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+        UIImage *scrubImage = [self.bookPackageProvider thumbnailForPage:self.currentPageIndex + 1];
+        self.scrubberThumbImage.image = scrubImage;
     } else {
         self.scrubberThumbImage.image = nil;
     }
@@ -2675,7 +2668,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     CGRect statusFrame = [[UIApplication sharedApplication] statusBarFrame];
     float statusBarHeight = MIN(statusFrame.size.height, statusFrame.size.width);
 
-    if (showRecommendationsLabel || self.shouldShowPageNumbers) {
+    if (!suppressPageNumbers) {
         self.pageLabel.hidden = NO;
     } else {
         self.pageLabel.hidden = YES;
@@ -2689,7 +2682,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         // if we don't need page numbers, adjust the frame
         // if the page numbers are not showing, increase available space
-        if (!self.shouldShowPageNumbers) {
+        if (suppressPageNumbers) {
             CGRect imageFrame = self.scrubberThumbImage.frame;
             CGFloat heightDiff = imageFrame.origin.y - self.pageLabel.frame.origin.y;
             imageFrame.size.height = imageFrame.size.height + heightDiff;
@@ -2758,7 +2751,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     scrubFrame.origin.y = floorf(topLimit + topPoint);
 
     // if the page numbers are not showing, shrink the background to match the new cover position
-    if (!self.shouldShowPageNumbers && !showRecommendationsLabel) {
+    if (suppressPageNumbers) {
         scrubFrame.size.height -= self.pageLabel.frame.size.height;
     }
     
@@ -2770,7 +2763,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 {
     if (self.currentPageIndex != NSUIntegerMax) {
         self.pageSlider.minimumValue = 0;
-        self.pageSlider.maximumValue = [self generatedPageCountForReadingView:self.readingView] - 1;
+        self.pageSlider.maximumValue = [self.readingView pageCount] - 1;
         self.pageSlider.value = self.currentPageIndex;        
     } else {
         self.pageSlider.minimumValue = 0;
@@ -2793,7 +2786,13 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     [self updateScrubberHUD];
     
-    [self.scrubberInfoView setAlpha:1.0f];
+    // Only show the scrubber if it has contents
+    if ([self.pageLabel.text length] || self.scrubberThumbImage.image) {
+        [self.scrubberInfoView setAlpha:1.0f];
+    } else {
+        [self.scrubberInfoView setAlpha:0.0f];
+    }
+    
     [self.view addSubview:self.scrubberInfoView];
             
 	[self cancelInitialTimer];
@@ -3569,8 +3568,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 {
     BOOL ret = NO;
     
-    if ([aReadingView isKindOfClass:[SCHLayoutView class]] &&
-        [self recommendationsActive] == YES) {
+    if ([self recommendationsActive] == YES) {
 
         if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
             ret = YES;
@@ -3789,7 +3787,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (BOOL)shouldShowRecommendationView
 {
-    return YES;
+    return [self shouldShowBookRecommendationsForReadingView:self.readingView];
 }
 
 @end

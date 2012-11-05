@@ -27,7 +27,8 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, assign) SCHTextFlowParagraphSource *paragraphSource;
 @property (nonatomic, assign) id <SCHRecommendationViewDataSource> recommendationViewDataSource;
-@property (nonatomic, retain) EucBookPageIndexPoint *recommendationIndexPoint;
+
+- (EucBookPageIndexPoint *)recommendationIndexPoint;
 
 @end
 
@@ -37,7 +38,6 @@
 @synthesize managedObjectContext;
 @synthesize paragraphSource;
 @synthesize recommendationViewDataSource;
-@synthesize recommendationIndexPoint;
 
 - (id)initWithBookIdentifier:(SCHBookIdentifier *)newIdentifier managedObjectContext:(NSManagedObjectContext *)moc
 {
@@ -99,7 +99,6 @@
     
     [identifier release], identifier = nil;
     [managedObjectContext release], managedObjectContext = nil;
-    [recommendationIndexPoint release], recommendationIndexPoint = nil;
     recommendationViewDataSource = nil;
     
     [super dealloc];
@@ -237,7 +236,11 @@
 
 - (Class)pageContentsViewSpiritClass
 {
-    return [SCHRecommendationProxyViewSpirit class];
+    if ([self shouldShowRecommendationView]) {
+        return [SCHRecommendationProxyViewSpirit class];
+    } else {
+        return [self pageContentsViewSpiritSuperClass];
+    }
 }
 
 - (Class)pageContentsViewSpiritSuperClass
@@ -247,27 +250,31 @@
 
 - (EucBookPageIndexPoint *)recommendationIndexPoint
 {
-    if (!recommendationIndexPoint) {
-        recommendationIndexPoint = [[super offTheEndIndexPoint] copy];
-    }
-    
-    return recommendationIndexPoint;
+    return [super offTheEndIndexPoint];
 }
 
 - (EucBookPageIndexPoint *)offTheEndIndexPoint
 {
-    EucBookPageIndexPoint *indexPoint = [[self.recommendationIndexPoint copy] autorelease];
-    indexPoint.source++;
-    
-    return indexPoint;
+    if ([self shouldShowRecommendationView]) {
+        EucBookPageIndexPoint *indexPoint = [[self.recommendationIndexPoint copy] autorelease];
+        indexPoint.source++;
+        
+        return indexPoint;
+    } else {
+        return [super offTheEndIndexPoint];
+    }
 }
 
 - (NSArray *)hardPageBreakIndexPoints
 {
-    NSMutableArray *buildhardPageBreakIndexPoints = [NSMutableArray arrayWithArray:[super hardPageBreakIndexPoints]];
-    [buildhardPageBreakIndexPoints addObject:self.recommendationIndexPoint];
-    
-    return buildhardPageBreakIndexPoints;
+    if ([self shouldShowRecommendationView]) {
+        NSMutableArray *buildhardPageBreakIndexPoints = [NSMutableArray arrayWithArray:[super hardPageBreakIndexPoints]];
+        [buildhardPageBreakIndexPoints addObject:self.recommendationIndexPoint];
+        
+        return buildhardPageBreakIndexPoints;
+    } else {
+        return [super hardPageBreakIndexPoints];
+    }
 }
 
 - (BOOL)fullBleedPageForIndexPoint:(EucBookPageIndexPoint *)indexPoint
@@ -282,6 +289,20 @@
 - (BOOL)shouldShowRecommendationView
 {
     return [self.recommendationViewDataSource shouldShowRecommendationView];
+}
+
+- (BOOL)indexContainsRecommendationIndexPoint
+{
+    BOOL ret = NO;
+    
+    EucBookPageIndexPoint *lastHardBreak = [[self hardPageBreakIndexPoints] lastObject];
+    EucBookPageIndexPoint *recIndexPoint = self.recommendationIndexPoint;
+    
+    if (lastHardBreak && (lastHardBreak.source >= recIndexPoint.source)) {
+        ret = YES;
+    }
+    
+    return ret;
 }
 
 @end
