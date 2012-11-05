@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">11E53</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2843</string>
-		<string key="IBDocument.AppKitVersion">1138.47</string>
-		<string key="IBDocument.HIToolboxVersion">569.00</string>
+		<string key="IBDocument.SystemVersion">12C60</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1929</string>
+			<string key="NS.object.0">1930</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -105,7 +105,7 @@
 											</object>
 											<object class="IBUILabel" id="307977465">
 												<reference key="NSNextResponder" ref="385869624"/>
-												<int key="NSvFlags">274</int>
+												<int key="NSvFlags">290</int>
 												<string key="NSFrame">{{20, 91}, {268, 133}}</string>
 												<reference key="NSSuperview" ref="385869624"/>
 												<reference key="NSWindow"/>
@@ -571,6 +571,7 @@ ZS4</string>
 							<string>actionButton</string>
 							<string>backButton</string>
 							<string>containerView</string>
+							<string>downloadLaterButton</string>
 							<string>shadowView</string>
 						</object>
 						<object class="NSArray" key="dict.values">
@@ -578,6 +579,7 @@ ZS4</string>
 							<string>UIButton</string>
 							<string>UIButton</string>
 							<string>UIView</string>
+							<string>UIButton</string>
 							<string>UIView</string>
 						</object>
 					</object>
@@ -588,6 +590,7 @@ ZS4</string>
 							<string>actionButton</string>
 							<string>backButton</string>
 							<string>containerView</string>
+							<string>downloadLaterButton</string>
 							<string>shadowView</string>
 						</object>
 						<object class="NSArray" key="dict.values">
@@ -603,6 +606,10 @@ ZS4</string>
 							<object class="IBToOneOutletInfo">
 								<string key="name">containerView</string>
 								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">downloadLaterButton</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">shadowView</string>
@@ -642,6 +649,6 @@ ZS4</string>
 				<string>{320, 480}</string>
 			</object>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">1929</string>
+		<string key="IBCocoaTouchPluginVersion">1930</string>
 	</data>
 </archive>
