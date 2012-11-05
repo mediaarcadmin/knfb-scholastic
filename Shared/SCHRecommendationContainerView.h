@@ -19,5 +19,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *heading;
 @property (nonatomic, retain) IBOutlet UILabel *fetchingLabel;
 @property (nonatomic, assign) id<SCHRecommendationListViewDelegate> listViewDelegate;
+@property (nonatomic, assign) NSUInteger maxRecommendations;
 
 @end

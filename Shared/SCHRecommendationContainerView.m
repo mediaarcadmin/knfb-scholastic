@@ -29,6 +29,7 @@
 @synthesize recommendationViewNib;
 @synthesize listViewDelegate;
 @synthesize fetchingLabel;
+@synthesize maxRecommendations;
 
 - (void)awakeFromNib
 {
@@ -40,6 +41,7 @@
     self.box.layer.borderColor = [UIColor lightGrayColor].CGColor;
 
     self.recommendationViewNib = [UINib nibWithNibName:@"SCHRecommendationListView" bundle:nil];
+    self.maxRecommendations = 4;
 }
 
 - (void)layoutSubviews
@@ -73,7 +75,7 @@ modifiedWishListDictionaries:(NSArray *)modifiedWishListDictionaries
     if ([recommendationDictionaries count] > 0) {
         self.fetchingLabel.hidden = YES;
         
-        CGFloat count = MIN([recommendationDictionaries count], 4);
+        CGFloat count = MIN([recommendationDictionaries count], MIN(self.maxRecommendations, 4));
         CGFloat rowHeight = floorf((self.container.frame.size.height)/MAX(count, 3));
 
         for (int i = 0; i < count; i++) {

@@ -114,7 +114,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.maxPointSize = 19;
     } else {
-        self.maxPointSize = 17;
+        self.maxPointSize = 14;
     }
 }
 
@@ -165,11 +165,12 @@
     self.titleText = title ? : @"";
     self.subtitleText = subtitle ? : @"";
     // Create the attributes
-    //UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:15];
-    UIFont *systemFont = [UIFont boldSystemFontOfSize:pointSize];
-    CTFontRef boldFont = CTFontCreateWithName((CFStringRef)systemFont.fontName, systemFont.pointSize, NULL);
+    UIFont *systemFont = [UIFont systemFontOfSize:pointSize];
+    
+    
     CTFontRef regFont = CTFontCreateWithName((CFStringRef)systemFont.fontName, systemFont.pointSize, NULL);
-
+    CTFontRef boldFont = CTFontCreateCopyWithSymbolicTraits(regFont, systemFont.pointSize, NULL, kCTFontBoldTrait, kCTFontBoldTrait);
+    
     NSDictionary *boldAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
                                (id)boldFont, (NSString *)kCTFontAttributeName, nil];
     NSDictionary *regAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -298,7 +299,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         sectionPadding = 8;
     } else {
-        sectionPadding = 4;
+        sectionPadding = 2;
     }
     
     NSUInteger numSections = 3;
@@ -310,8 +311,8 @@
         ratingMaxHeight = 40;
         ratingMaxWidth = 300;
     } else {
-        ratingMaxHeight = 32;
-        ratingMaxWidth = 220;
+        ratingMaxHeight = 22;
+        ratingMaxWidth = 260;
     }
     
     CGFloat ratingRatio = ratingMaxWidth/ratingMaxHeight;
@@ -330,10 +331,25 @@
         maxPoint -= 1;
     }
     
-    CGFloat equalHeight = floorf((CGRectGetHeight(middleBounds) - (numSections * sectionPadding))/numSections);
+    CGFloat equalHeight;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        equalHeight = floorf((CGRectGetHeight(middleBounds) - (numSections * sectionPadding))/numSections);
+    } else {
+        // On iPhone we want to give extra space to the text
+        equalHeight = floorf((CGRectGetHeight(middleBounds) - (numSections * sectionPadding))/(numSections + 1));
+    }
 
     CGFloat wishlistHeight = MIN(equalHeight, wishlistButtonMaxHeight);
-    CGFloat wishlistWidth = MIN(MIN(CGRectGetWidth(middleBounds), wishlistButtonMaxWidth), wishlistHeight * wishlistRatio);
+    CGFloat wishlistInset;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        wishlistInset = 3;
+    } else {
+        wishlistInset = 0;
+    }
+    
+    CGFloat wishlistWidth = MIN(MIN(CGRectGetWidth(middleBounds) - wishlistInset, wishlistButtonMaxWidth), wishlistHeight * wishlistRatio);
     
     CGFloat ratingHeight = MIN(equalHeight, ratingMaxHeight);
     
@@ -352,7 +368,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         pointSize = floorf(MAX(14, MIN(maxPoint, CGRectGetHeight(textFrame)/3.0f)));
     } else {
-        pointSize = floorf(MAX(6, MIN(maxPoint, CGRectGetHeight(textFrame)/3.0f)));
+        pointSize = floorf(MAX(6, MIN(maxPoint, CGRectGetHeight(textFrame)/3.5f)));
     }
     [self setTitle:self.titleText subtitle:self.subtitleText pointSize:pointSize];
     
@@ -362,7 +378,7 @@
     
     CGRect ratingFrame = CGRectMake(CGRectGetMinX(middleBounds), CGRectGetMaxY(textFrame) + 2 * sectionPadding, ratingWidth, ratingHeight);
     
-    CGRect wishlistFrame = CGRectMake(CGRectGetMinX(middleBounds), CGRectGetMaxY(ratingFrame) + sectionPadding, wishlistWidth, wishlistHeight);
+    CGRect wishlistFrame = CGRectMake(CGRectGetMinX(middleBounds) + wishlistInset, CGRectGetMaxY(ratingFrame) + sectionPadding, wishlistWidth, wishlistHeight);
  
     // Now center all the sections of the middleview
     CGFloat offset = MAX(0, floorf((CGRectGetHeight(middleBounds) - CGRectGetMaxY(wishlistFrame))/2.0f));

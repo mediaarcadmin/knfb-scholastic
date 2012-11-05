@@ -3764,6 +3764,10 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                 SCHRecommendationContainerView *containerView = [[self.recommendationsContainerNib instantiateWithOwner:self options:nil] objectAtIndex:0];
                 containerView.listViewDelegate = self;
                 
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                    containerView.maxRecommendations = 3;
+                }
+                
                 [[NSNotificationCenter defaultCenter] addObserver:self
                                                          selector:@selector(retrieveRecommendationsForBooksOperationCreateOrUpdateBooks:)
                                                              name:SCHRetrieveRecommendationsForBooksOperationCreateOrUpdateBooksNotification
