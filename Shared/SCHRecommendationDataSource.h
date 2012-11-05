@@ -19,6 +19,5 @@
 - (id <SCHRecommendationViewDataSource>)recommendationViewDataSource;
 - (void)setRecommendationViewDataSource:(id <SCHRecommendationViewDataSource>)recommendationViewDataSource;
 - (Class)pageContentsViewSpiritSuperClass;
-- (BOOL)indexContainsRecommendationIndexPoint;
 
 @end

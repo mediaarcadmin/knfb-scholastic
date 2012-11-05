@@ -291,18 +291,4 @@
     return [self.recommendationViewDataSource shouldShowRecommendationView];
 }
 
-- (BOOL)indexContainsRecommendationIndexPoint
-{
-    BOOL ret = NO;
-    
-    EucBookPageIndexPoint *lastHardBreak = [[self hardPageBreakIndexPoints] lastObject];
-    EucBookPageIndexPoint *recIndexPoint = self.recommendationIndexPoint;
-    
-    if (lastHardBreak && (lastHardBreak.source >= recIndexPoint.source)) {
-        ret = YES;
-    }
-    
-    return ret;
-}
-
 @end

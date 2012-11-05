@@ -204,12 +204,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
             EucBookPageIndexPoint *startPoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
             [self.eucBookView bookHasShrunkToIndexPoint:startPoint];
         } else {
-            BOOL containsRecommendation = [self.eucBook indexContainsRecommendationIndexPoint];
             BOOL shouldShowRecommendation = [self.eucBook.recommendationViewDataSource shouldShowRecommendationView];
             
-            if (shouldShowRecommendation && !containsRecommendation) {
+            if (shouldShowRecommendation) {
                 [eucBookView bookHasGrown];
-            } else if (!shouldShowRecommendation && containsRecommendation) {
+            } else  {
                 [eucBookView bookWillShrink];
                 [self.eucBookView bookHasShrunkToIndexPoint:[self.eucBook offTheEndIndexPoint]];
             }
