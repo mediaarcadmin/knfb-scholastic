@@ -114,7 +114,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.maxPointSize = 19;
     } else {
-        self.maxPointSize = 14;
+        self.maxPointSize = 15;
     }
 }
 
@@ -323,12 +323,24 @@
     
     CGFloat ratingToWishlistRatio = 0.8f;
     CGFloat maxPoint = self.maxPointSize;
+    CGFloat pointRatio;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        pointRatio = 3.0f;
+    } else {
+        pointRatio = 5.0f;
+    }
+    
     
     if (self.onWishListButton.hidden) {
         wishlistButtonMaxHeight = 0;
         numSections = 2;
     } else {
-        maxPoint -= 1;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            maxPoint -= 1;
+        } else {
+            maxPoint -= 2;
+        }
     }
     
     CGFloat equalHeight;
@@ -366,9 +378,9 @@
     
     CGFloat pointSize;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        pointSize = floorf(MAX(14, MIN(maxPoint, CGRectGetHeight(textFrame)/3.0f)));
+        pointSize = floorf(MAX(14, MIN(maxPoint, CGRectGetHeight(textFrame)/pointRatio)));
     } else {
-        pointSize = floorf(MAX(6, MIN(maxPoint, CGRectGetHeight(textFrame)/3.5f)));
+        pointSize = floorf(MAX(6, MIN(maxPoint, CGRectGetHeight(textFrame)/pointRatio)));
     }
     [self setTitle:self.titleText subtitle:self.subtitleText pointSize:pointSize];
     
