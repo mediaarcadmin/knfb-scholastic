@@ -167,9 +167,8 @@
     // Create the attributes
     UIFont *systemFont = [UIFont systemFontOfSize:pointSize];
     
-    
-    CTFontRef regFont = CTFontCreateWithName((CFStringRef)systemFont.fontName, systemFont.pointSize, NULL);
-    CTFontRef boldFont = CTFontCreateCopyWithSymbolicTraits(regFont, systemFont.pointSize, NULL, kCTFontBoldTrait, kCTFontBoldTrait);
+    CTFontRef boldFont = CTFontCreateWithName(CFSTR("Helvetica-Bold"), systemFont.pointSize, NULL);
+    CTFontRef regFont = CTFontCreateWithName(CFSTR("Helvetica"), systemFont.pointSize, NULL);
     
     NSDictionary *boldAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
                                (id)boldFont, (NSString *)kCTFontAttributeName, nil];
@@ -180,8 +179,13 @@
     
     [attText appendAttributedString:[[[NSAttributedString alloc] initWithString:self.subtitleText attributes:regAttrs] autorelease]];
     
-    CFRelease(boldFont);
-    CFRelease(regFont);
+    if (boldFont) {
+        CFRelease(boldFont);
+    }
+    
+    if (regFont) {
+        CFRelease(regFont);
+    }
     
     self.titleAndSubtitleLabel.attributedText = attText;
 }
