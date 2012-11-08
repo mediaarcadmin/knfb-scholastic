@@ -31,6 +31,7 @@
 #import "SCHBooksAssignment.h"
 #import "SCHSyncDelay.h"
 #import "SCHAppProfile.h"
+#import "NSDate+LibreAccessEarliestDate.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -678,11 +679,11 @@ requireDeviceAuthentication:(BOOL)requireAuthentication
             NSDate *bookmarksAfter = appContentProfileItem.LastBookmarkAnnotationSync;
 
             [privateAnnotation setObject:version forKey:kSCHLibreAccessWebServiceVersion];
-            [privateAnnotation setObject:(highlightsAfter == nil ? [NSDate distantPast] : highlightsAfter)
+            [privateAnnotation setObject:(highlightsAfter == nil ? [NSDate SCHLibreAccessEarliestDate] : highlightsAfter)
                                   forKey:kSCHLibreAccessWebServiceHighlightsAfter];
-            [privateAnnotation setObject:(notesAfter == nil ? [NSDate distantPast] : notesAfter)
+            [privateAnnotation setObject:(notesAfter == nil ? [NSDate SCHLibreAccessEarliestDate] : notesAfter)
                                   forKey:kSCHLibreAccessWebServiceNotesAfter];
-            [privateAnnotation setObject:(bookmarksAfter == nil ? [NSDate distantPast] : bookmarksAfter)
+            [privateAnnotation setObject:(bookmarksAfter == nil ? [NSDate SCHLibreAccessEarliestDate] : bookmarksAfter)
                                   forKey:kSCHLibreAccessWebServiceBookmarksAfter];
 
             [ret setObject:privateAnnotation

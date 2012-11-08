@@ -10,6 +10,7 @@
 #import "SCHPrivateAnnotations.h"
 
 #import "NSNumber+ObjectTypes.h"
+#import "NSDate+LibreAccessEarliestDate.h"
 
 // Constants
 NSString * const kSCHRating = @"SCHRating";
@@ -27,7 +28,7 @@ NSString * const kSCHRating = @"SCHRating";
     self.averageRating = [NSNumber numberWithFloat:0.0];
     self.numVotes = [NSNumber numberWithInteger:0];
     
-    self.LastModified = [NSDate distantPast];
+    self.LastModified = [NSDate SCHLibreAccessEarliestDate];
     self.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];    
 }
 

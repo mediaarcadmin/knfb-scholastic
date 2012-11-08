@@ -24,6 +24,7 @@
 #import "LambdaAlert.h"
 #import "SCHLibreAccessConstants.h"
 #import "SCHXPSKNFBMetadataFileParser.h"
+#import "NSDate+LibreAccessEarliestDate.h"
 
 @interface SCHPopulateDataStore ()
 
@@ -519,7 +520,7 @@
     NSParameterAssert(contentIdentifier);
 
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];    
-    NSDate *dateNow = [NSDate distantPast];
+    NSDate *dateNow = [NSDate SCHLibreAccessEarliestDate];
     
     NSMutableArray *profileList = [NSMutableArray arrayWithCapacity:[profileIDs count]];
     for (NSNumber *profileID in profileIDs) {

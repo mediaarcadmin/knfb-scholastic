@@ -7,7 +7,9 @@
 //
 
 #import "SCHLastPage.h"
+
 #import "NSNumber+ObjectTypes.h"
+#import "NSDate+LibreAccessEarliestDate.h"
 
 // Constants
 NSString * const kSCHLastPage = @"SCHLastPage";
@@ -25,7 +27,7 @@ NSString * const kSCHLastPage = @"SCHLastPage";
     self.Component = @"";
     self.Percentage = [NSNumber numberWithFloat:0.0];
  
-    self.LastModified = [NSDate distantPast];
+    self.LastModified = [NSDate SCHLibreAccessEarliestDate];
     self.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];    
 }
 

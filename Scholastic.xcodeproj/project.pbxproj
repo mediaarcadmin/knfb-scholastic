@@ -390,6 +390,9 @@
 		52324942164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */; };
 		52324943164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */; };
 		52324944164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */; };
+		52324948164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324947164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.m */; };
+		52324949164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324947164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.m */; };
+		5232494A164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324947164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.m */; };
 		5233E03313154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
 		523756AB13A2548E00B38441 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523756AA13A2548E00B38441 /* MediaPlayer.framework */; };
@@ -4020,6 +4023,8 @@
 		52324940164BCA3500A64BF8 /* SCHResizeExtendingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHResizeExtendingScrollView.h; sourceTree = "<group>"; };
 		52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHResizeExtendingScrollView.m; sourceTree = "<group>"; };
 		52324945164BCB6700A64BF8 /* SCHResizeExtendingScrollViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHResizeExtendingScrollViewDelegate.h; sourceTree = "<group>"; };
+		52324946164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+LibreAccessEarliestDate.h"; path = "Shared/NSDate+LibreAccessEarliestDate.h"; sourceTree = "<group>"; };
+		52324947164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+LibreAccessEarliestDate.m"; path = "Shared/NSDate+LibreAccessEarliestDate.m"; sourceTree = "<group>"; };
 		5233E03113154EEA0088F18C /* SCHDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDeviceInfo.h; path = Shared/SCHDeviceInfo.h; sourceTree = "<group>"; };
 		5233E03213154EEA0088F18C /* SCHDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeviceInfo.m; path = Shared/SCHDeviceInfo.m; sourceTree = "<group>"; };
 		5233E0D613159CA80088F18C /* BITNetworkActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BITNetworkActivityManager.h; path = Shared/BITNetworkActivityManager.h; sourceTree = "<group>"; };
@@ -7167,6 +7172,8 @@
 				52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */,
 				52C7894D15F5FC97003B291C /* SCHMakeNullNil.h */,
 				52C7894815F5FC75003B291C /* SCHMakeNullNil.m */,
+				52324946164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.h */,
+				52324947164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.m */,
 				52AD9B2612FC207A0099FB88 /* Sync */,
 			);
 			name = "Web Services";
@@ -11770,6 +11777,7 @@
 				C9A23E6116414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m in Sources */,
 				C9A23E6516414E77001C2CD1 /* SCHRecommendationViewSpirit.m in Sources */,
 				52324942164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
+				52324948164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12210,6 +12218,7 @@
 				C99841671631972000EBD73E /* SCHBookBatchOperation.m in Sources */,
 				C998419E1632DB2500EBD73E /* SCHRecommendationBatchOperation.m in Sources */,
 				52324944164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
+				5232494A164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12649,6 +12658,7 @@
 				C9A23E6216414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m in Sources */,
 				C9A23E6616414E77001C2CD1 /* SCHRecommendationViewSpirit.m in Sources */,
 				52324943164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
+				52324949164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

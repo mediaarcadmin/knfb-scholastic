@@ -13,6 +13,7 @@
 #import "SCHBookAnnotations.h"
 #import "SCHContentProfileItem.h"
 #import "SCHLastPage.h"
+#import "NSDate+LibreAccessEarliestDate.h"
 
 // Constants
 NSString * const kSCHAppContentProfileItem = @"SCHAppContentProfileItem";
@@ -62,9 +63,10 @@ NSString * const kSCHAppContentProfileItemOrder = @"Order";
         NSDate *assignmentDate = self.ContentProfileItem.LastModified;
         NSDate *lastReadDate = lastPage.LastModified;
         
-        // if any of these haven't been set, or the last read date is the distant past (i.e. hasn't been set), 
-        // then we'll temporarily return NO
-        if (!lastPage || !assignmentDate || !lastReadDate || [[NSDate distantPast] isEqualToDate:lastReadDate]) {
+        // if any of these haven't been set, or the last read date hasn't been
+        // set (SCHLibreAccessEarliestDate), then we'll temporarily return NO
+        if (!lastPage || !assignmentDate || !lastReadDate ||
+            [[NSDate SCHLibreAccessEarliestDate] isEqualToDate:lastReadDate]) {
             ret = [NSNumber numberWithBool:NO];
         } else if ([assignmentDate laterDate:lastReadDate] == lastReadDate) {
         // otherwise, if the last read date is later than the assignment date, return NO and save it
