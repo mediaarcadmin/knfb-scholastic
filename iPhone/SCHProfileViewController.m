@@ -29,6 +29,7 @@
 #import "BITModalSheetController.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDownloadDictionaryChoiceViewController.h"
+#import "SCHResizeExtendingScrollView.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
@@ -118,6 +119,7 @@ static const CGFloat kSCHProfileViewControllerParentButtonMinWidth = 141.0f;
 - (void)releaseViewObjects
 {
     [tooltipContainer release], tooltipContainer = nil;
+    scrollView.delegate = nil;
     [scrollView release], scrollView = nil;
     [parentButton release], parentButton = nil;
     [pageControl release], pageControl = nil;
@@ -964,6 +966,13 @@ didSelectButtonAnimated:(BOOL)animated
         self.currentIndex = newIndex;
         [self setupScrollViewForIndex:self.currentIndex];
         [self.pageControl setCurrentPage:self.currentIndex];
+    }
+}
+
+- (void)resizeExtendingScrollViewDidLayoutSubviews:(SCHResizeExtendingScrollView *)resizeExtendingScrollView
+{
+    if (resizeExtendingScrollView.window != nil) {
+        [self reloadPages];
     }
 }
 

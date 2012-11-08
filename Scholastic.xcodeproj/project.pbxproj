@@ -387,6 +387,9 @@
 		523248A716492B0600A64BF8 /* Default-568h@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 523248A616492B0600A64BF8 /* Default-568h@2x.jpg */; };
 		523248A816492B0600A64BF8 /* Default-568h@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 523248A616492B0600A64BF8 /* Default-568h@2x.jpg */; };
 		523248A916492B0600A64BF8 /* Default-568h@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 523248A616492B0600A64BF8 /* Default-568h@2x.jpg */; };
+		52324942164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */; };
+		52324943164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */; };
+		52324944164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */; };
 		5233E03313154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
 		523756AB13A2548E00B38441 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523756AA13A2548E00B38441 /* MediaPlayer.framework */; };
@@ -4014,6 +4017,9 @@
 		52322C32132693F500BB071D /* SCHURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHURLManager.h; path = Shared/SCHURLManager.h; sourceTree = "<group>"; };
 		52322C33132693F500BB071D /* SCHURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHURLManager.m; path = Shared/SCHURLManager.m; sourceTree = "<group>"; };
 		523248A616492B0600A64BF8 /* Default-568h@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Default-568h@2x.jpg"; sourceTree = "<group>"; };
+		52324940164BCA3500A64BF8 /* SCHResizeExtendingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHResizeExtendingScrollView.h; sourceTree = "<group>"; };
+		52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHResizeExtendingScrollView.m; sourceTree = "<group>"; };
+		52324945164BCB6700A64BF8 /* SCHResizeExtendingScrollViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHResizeExtendingScrollViewDelegate.h; sourceTree = "<group>"; };
 		5233E03113154EEA0088F18C /* SCHDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDeviceInfo.h; path = Shared/SCHDeviceInfo.h; sourceTree = "<group>"; };
 		5233E03213154EEA0088F18C /* SCHDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeviceInfo.m; path = Shared/SCHDeviceInfo.m; sourceTree = "<group>"; };
 		5233E0D613159CA80088F18C /* BITNetworkActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BITNetworkActivityManager.h; path = Shared/BITNetworkActivityManager.h; sourceTree = "<group>"; };
@@ -8705,6 +8711,9 @@
 			isa = PBXGroup;
 			children = (
 				528A2D6112CDE3B10053A343 /* SCHProfileViewController~iphone.xib */,
+				52324940164BCA3500A64BF8 /* SCHResizeExtendingScrollView.h */,
+				52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */,
+				52324945164BCB6700A64BF8 /* SCHResizeExtendingScrollViewDelegate.h */,
 			);
 			name = "Profile View Controller";
 			sourceTree = "<group>";
@@ -11760,6 +11769,7 @@
 				C991620B163EE100003A19CC /* SCHDownloadDictionaryChoiceViewController.m in Sources */,
 				C9A23E6116414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m in Sources */,
 				C9A23E6516414E77001C2CD1 /* SCHRecommendationViewSpirit.m in Sources */,
+				52324942164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12199,6 +12209,7 @@
 				52AA3F6C1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
 				C99841671631972000EBD73E /* SCHBookBatchOperation.m in Sources */,
 				C998419E1632DB2500EBD73E /* SCHRecommendationBatchOperation.m in Sources */,
+				52324944164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12637,6 +12648,7 @@
 				C991620C163EE100003A19CC /* SCHDownloadDictionaryChoiceViewController.m in Sources */,
 				C9A23E6216414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m in Sources */,
 				C9A23E6616414E77001C2CD1 /* SCHRecommendationViewSpirit.m in Sources */,
+				52324943164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
