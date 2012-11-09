@@ -14,12 +14,13 @@
 #import "DDPageControl.h"
 #import "SCHHitTestExtendingView.h"
 #import "SCHProfileTooltipContainer.h"
+#import "SCHResizeExtendingScrollViewDelegate.h"
 
 @class SCHSettingsViewController;
 @class SCHProfileItem;
 @class SCHBookShelfViewController;
 
-@interface SCHProfileViewController : UIViewController <SCHProfileTooltipContainerDelegate> {}
+@interface SCHProfileViewController : UIViewController <SCHProfileTooltipContainerDelegate, SCHResizeExtendingScrollViewDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIButton *parentButton;

@@ -848,9 +848,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [self positionCoverCornerViewForOrientation:self.interfaceOrientation];
         [self positionCornerAudioButtonForOrientation:self.interfaceOrientation];
 
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-        BOOL audioButtonsHidden = ![[book HasAudio] boolValue];
-        self.cornerAudioButtonView.hidden = audioButtonsHidden;
+        self.cornerAudioButtonView.hidden = ![self shouldAllowReadthrough];
         [self startFadeTimer];
     }
 }

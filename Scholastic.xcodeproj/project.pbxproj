@@ -384,6 +384,15 @@
 		522B089213A8A44A0059E2C4 /* answer-cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 522B088E13A8A4490059E2C4 /* answer-cross.png */; };
 		522B089413A8A44A0059E2C4 /* answer-tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 522B088F13A8A4490059E2C4 /* answer-tick.png */; };
 		52322C34132693F500BB071D /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
+		523248A716492B0600A64BF8 /* Default-568h@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 523248A616492B0600A64BF8 /* Default-568h@2x.jpg */; };
+		523248A816492B0600A64BF8 /* Default-568h@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 523248A616492B0600A64BF8 /* Default-568h@2x.jpg */; };
+		523248A916492B0600A64BF8 /* Default-568h@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 523248A616492B0600A64BF8 /* Default-568h@2x.jpg */; };
+		52324942164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */; };
+		52324943164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */; };
+		52324944164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */; };
+		52324948164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324947164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.m */; };
+		52324949164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324947164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.m */; };
+		5232494A164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52324947164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.m */; };
 		5233E03313154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
 		523756AB13A2548E00B38441 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523756AA13A2548E00B38441 /* MediaPlayer.framework */; };
@@ -4010,6 +4019,12 @@
 		52322BF613268C3300BB071D /* SCHUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserDefaults.h; path = Shared/SCHUserDefaults.h; sourceTree = "<group>"; };
 		52322C32132693F500BB071D /* SCHURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHURLManager.h; path = Shared/SCHURLManager.h; sourceTree = "<group>"; };
 		52322C33132693F500BB071D /* SCHURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHURLManager.m; path = Shared/SCHURLManager.m; sourceTree = "<group>"; };
+		523248A616492B0600A64BF8 /* Default-568h@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Default-568h@2x.jpg"; sourceTree = "<group>"; };
+		52324940164BCA3500A64BF8 /* SCHResizeExtendingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHResizeExtendingScrollView.h; sourceTree = "<group>"; };
+		52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHResizeExtendingScrollView.m; sourceTree = "<group>"; };
+		52324945164BCB6700A64BF8 /* SCHResizeExtendingScrollViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHResizeExtendingScrollViewDelegate.h; sourceTree = "<group>"; };
+		52324946164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+LibreAccessEarliestDate.h"; path = "Shared/NSDate+LibreAccessEarliestDate.h"; sourceTree = "<group>"; };
+		52324947164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+LibreAccessEarliestDate.m"; path = "Shared/NSDate+LibreAccessEarliestDate.m"; sourceTree = "<group>"; };
 		5233E03113154EEA0088F18C /* SCHDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDeviceInfo.h; path = Shared/SCHDeviceInfo.h; sourceTree = "<group>"; };
 		5233E03213154EEA0088F18C /* SCHDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeviceInfo.m; path = Shared/SCHDeviceInfo.m; sourceTree = "<group>"; };
 		5233E0D613159CA80088F18C /* BITNetworkActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BITNetworkActivityManager.h; path = Shared/BITNetworkActivityManager.h; sourceTree = "<group>"; };
@@ -7157,6 +7172,8 @@
 				52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */,
 				52C7894D15F5FC97003B291C /* SCHMakeNullNil.h */,
 				52C7894815F5FC75003B291C /* SCHMakeNullNil.m */,
+				52324946164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.h */,
+				52324947164C10AF00A64BF8 /* NSDate+LibreAccessEarliestDate.m */,
 				52AD9B2612FC207A0099FB88 /* Sync */,
 			);
 			name = "Web Services";
@@ -8029,6 +8046,7 @@
 				C9765D7D154FFDE100C876F7 /* Default-Landscape@2x~ipad.jpg */,
 				C9747CD813EAEAC5003ADC71 /* Default.jpg */,
 				C9747CD913EAEAC5003ADC71 /* Default@2x.jpg */,
+				523248A616492B0600A64BF8 /* Default-568h@2x.jpg */,
 			);
 			name = Splash;
 			path = Resources/Splash;
@@ -8700,6 +8718,9 @@
 			isa = PBXGroup;
 			children = (
 				528A2D6112CDE3B10053A343 /* SCHProfileViewController~iphone.xib */,
+				52324940164BCA3500A64BF8 /* SCHResizeExtendingScrollView.h */,
+				52324941164BCA3500A64BF8 /* SCHResizeExtendingScrollView.m */,
+				52324945164BCB6700A64BF8 /* SCHResizeExtendingScrollViewDelegate.h */,
 			);
 			name = "Profile View Controller";
 			sourceTree = "<group>";
@@ -10328,6 +10349,7 @@
 				F81C4F63162D6D0700676749 /* icon-readingquiz-younger-portrait-disabled~iphone.png in Resources */,
 				F81C4F68162D6D1100676749 /* icon-readingquiz-disabled@2x.png in Resources */,
 				F81C4F6B162D6D1100676749 /* icon-readingquiz-disabled.png in Resources */,
+				523248A716492B0600A64BF8 /* Default-568h@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10394,6 +10416,7 @@
 				F81C4F65162D6D0700676749 /* icon-readingquiz-younger-portrait-disabled~iphone.png in Resources */,
 				F81C4F6A162D6D1100676749 /* icon-readingquiz-disabled@2x.png in Resources */,
 				F81C4F6D162D6D1100676749 /* icon-readingquiz-disabled.png in Resources */,
+				523248A916492B0600A64BF8 /* Default-568h@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11281,6 +11304,7 @@
 				F81C4F64162D6D0700676749 /* icon-readingquiz-younger-portrait-disabled~iphone.png in Resources */,
 				F81C4F69162D6D1100676749 /* icon-readingquiz-disabled@2x.png in Resources */,
 				F81C4F6C162D6D1100676749 /* icon-readingquiz-disabled.png in Resources */,
+				523248A816492B0600A64BF8 /* Default-568h@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11752,6 +11776,8 @@
 				C991620B163EE100003A19CC /* SCHDownloadDictionaryChoiceViewController.m in Sources */,
 				C9A23E6116414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m in Sources */,
 				C9A23E6516414E77001C2CD1 /* SCHRecommendationViewSpirit.m in Sources */,
+				52324942164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
+				52324948164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12191,6 +12217,8 @@
 				52AA3F6C1618F79A00297C01 /* SCHListReadingStatisticsAggregateByTitleRequestOperation.m in Sources */,
 				C99841671631972000EBD73E /* SCHBookBatchOperation.m in Sources */,
 				C998419E1632DB2500EBD73E /* SCHRecommendationBatchOperation.m in Sources */,
+				52324944164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
+				5232494A164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12629,6 +12657,8 @@
 				C991620C163EE100003A19CC /* SCHDownloadDictionaryChoiceViewController.m in Sources */,
 				C9A23E6216414876001C2CD1 /* SCHRecommendationProxyViewSpirit.m in Sources */,
 				C9A23E6616414E77001C2CD1 /* SCHRecommendationViewSpirit.m in Sources */,
+				52324943164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
+				52324949164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

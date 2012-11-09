@@ -534,7 +534,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         // nil returns all words, 0 = 300 words, so we request 1
         request.maxWordCount = [NSNumber numberWithInt:1];
         // nil returns unfiltered results
-        //request.lastReadDate = [NSDate distantPast];
+        //request.lastReadDate = [NSDate SCHLibreAccessEarliestDate];
 
 		[self.binding ListReadingStatisticsAggregateByTitleAsyncUsingParameters:request delegate:self];
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
