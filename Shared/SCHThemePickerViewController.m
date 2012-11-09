@@ -13,6 +13,7 @@
 #import "SCHThemeImageView.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHBookShelfShadowsView.h"
+#import <QuartzCore/QuartzCore.h>
 
 static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration = 0.3;
 
@@ -179,11 +180,6 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
 
     NSString *theme = [[[SCHThemeManager sharedThemeManager] themeNames:NO] objectAtIndex:indexPath.row];
     
-    cell.backgroundColor = [UIColor colorWithPatternImage:
-                            [[SCHThemeManager sharedThemeManager] imageForTheme:theme 
-                                                                            key:kSCHThemeManagerImage 
-                                                                    orientation:self.interfaceOrientation 
-                                                                  iPadQualifier:kSCHThemeManagerPadQualifierSuffix]];
     if ([SCHThemeManager sharedThemeManager].theme != nil &&
         [theme isEqualToString:[SCHThemeManager sharedThemeManager].theme] == YES) {
         cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"popoverTickLight"]] autorelease];
@@ -194,6 +190,24 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
     return(cell);
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *theme = [[[SCHThemeManager sharedThemeManager] themeNames:NO] objectAtIndex:indexPath.row];
+    UIImage *themeImage = [[SCHThemeManager sharedThemeManager] imageForTheme:theme
+                                                                            key:kSCHThemeManagerImage
+                                                                    orientation:self.interfaceOrientation
+                                                                  iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+    
+    CGRect backgroundBounds = cell.backgroundView.layer.bounds;
+    
+    UIGraphicsBeginImageContext(backgroundBounds.size);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextDrawImage(ctx, backgroundBounds, themeImage.CGImage);
+    UIImage *background = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    cell.backgroundColor = [UIColor colorWithPatternImage:background];
+}
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
