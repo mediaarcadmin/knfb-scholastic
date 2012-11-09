@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
-		<int key="IBDocument.SystemTarget">1280</int>
-		<string key="IBDocument.SystemVersion">12A269</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2549</string>
-		<string key="IBDocument.AppKitVersion">1187</string>
-		<string key="IBDocument.HIToolboxVersion">624.00</string>
+		<int key="IBDocument.SystemTarget">1536</int>
+		<string key="IBDocument.SystemVersion">12C60</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1498</string>
+			<string key="NS.object.0">1930</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -52,6 +52,8 @@
 						</object>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="509794933"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="1042208657"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC44NDMxMzcyNjQzIDAuOTQ1MDk4MDQyNSAxAA</bytes>
@@ -69,6 +71,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="509794933"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="755457061"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">4</int>
@@ -84,6 +87,8 @@
 						<int key="NSvFlags">-2147483374</int>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="509794933"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -94,13 +99,14 @@
 				</object>
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="500853774"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MSAwLjk0OTAxOTYxMDkgMAA</bytes>
 				</object>
 				<bool key="IBUIClipsSubviews">YES</bool>
-				<int key="IBUIContentMode">4</int>
+				<int key="IBUIContentMode">2</int>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
 					<int key="IBUIStatusBarStyle">2</int>
 				</object>
@@ -131,6 +137,7 @@
 					<object class="IBUITableViewController" id="891391258">
 						<string key="IBUITitle"/>
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="205957914">
+							<reference key="IBUINavigationBar"/>
 							<string key="IBUITitle">Themes</string>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
@@ -463,9 +470,7 @@
 							<string>backgroundView</string>
 							<string>customNavigationBar</string>
 							<string>gridView</string>
-							<string>gridViewToggleView</string>
 							<string>listTableView</string>
-							<string>listToggleView</string>
 							<string>listViewCell</string>
 							<string>themePickerContainer</string>
 						</object>
@@ -474,9 +479,7 @@
 							<string>UIImageView</string>
 							<string>SCHCustomNavigationBar</string>
 							<string>SCHBookShelfGridView</string>
-							<string>UIView</string>
 							<string>UITableView</string>
-							<string>UIView</string>
 							<string>SCHBookShelfTableViewCell</string>
 							<string>UINavigationController</string>
 						</object>
@@ -488,9 +491,7 @@
 							<string>backgroundView</string>
 							<string>customNavigationBar</string>
 							<string>gridView</string>
-							<string>gridViewToggleView</string>
 							<string>listTableView</string>
-							<string>listToggleView</string>
 							<string>listViewCell</string>
 							<string>themePickerContainer</string>
 						</object>
@@ -509,16 +510,8 @@
 								<string key="candidateClassName">SCHBookShelfGridView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">gridViewToggleView</string>
-								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">listTableView</string>
 								<string key="candidateClassName">UITableView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">listToggleView</string>
-								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">listViewCell</string>
@@ -572,6 +565,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">1498</string>
+		<string key="IBCocoaTouchPluginVersion">1930</string>
 	</data>
 </archive>
