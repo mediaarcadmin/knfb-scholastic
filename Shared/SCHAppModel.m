@@ -35,7 +35,7 @@ typedef enum {
     kSCHAppModelSyncStateWaitingForBookshelves,
     kSCHAppModelSyncStateWaitingForPassword,
     kSCHAppModelSyncStateWaitingForWebParentToolsToComplete,
-    kSCHAppModelSyncStateWaitingForSettings
+    kSCHAppModelSyncStateWaitingForBookshelvesOrSettings
 } SCHAppModelSyncState;
 
 @interface SCHAppModel()
@@ -222,14 +222,14 @@ typedef enum {
     self.syncState = kSCHAppModelSyncStateWaitingForPassword;
 }
 
-- (void)waitForSettings
+- (void)waitForBookshelvesOrSettings
 {
-    [self waitForSettingsWithSyncManager:[SCHSyncManager sharedSyncManager]];
+    [self waitForBookshelvesOrSettingsWithSyncManager:[SCHSyncManager sharedSyncManager]];
 }
 
-- (void)waitForSettingsWithSyncManager:(SCHSyncManager *)syncManager
+- (void)waitForBookshelvesOrSettingsWithSyncManager:(SCHSyncManager *)syncManager
 {
-    self.syncState = kSCHAppModelSyncStateWaitingForSettings;
+    self.syncState = kSCHAppModelSyncStateWaitingForBookshelvesOrSettings;
     [self startSyncNow:YES requireAuthentication:YES withSyncManager:syncManager];
 }
 
@@ -381,7 +381,7 @@ typedef enum {
             case kSCHAppModelSyncStateWaitingForWebParentToolsToComplete:
                 self.syncState = kSCHAppModelSyncStateWaitingForWebParentToolsToComplete;
                 break;
-            case kSCHAppModelSyncStateWaitingForSettings:
+            case kSCHAppModelSyncStateWaitingForBookshelvesOrSettings:
                 [self.appController presentSettings];
                 break;
             default:
@@ -397,8 +397,8 @@ typedef enum {
                     [self.appController presentProfiles];
                 }
                 break;
-            case kSCHAppModelSyncStateWaitingForSettings:
-                [self.appController presentSettings];
+            case kSCHAppModelSyncStateWaitingForBookshelvesOrSettings:
+                [self.appController presentProfiles];
                 break;
             default:
                 break;
@@ -418,7 +418,7 @@ typedef enum {
     
     if (self.syncState == kSCHAppModelSyncStateWaitingForLoginToComplete) {
         [self.appController failedLoginWithError:error];
-    } else if (self.syncState == kSCHAppModelSyncStateWaitingForSettings) {
+    } else if (self.syncState == kSCHAppModelSyncStateWaitingForBookshelvesOrSettings) {
         [self.appController presentSettings];
     } else {
         [self.appController failedSyncWithError:error];
