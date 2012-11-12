@@ -72,7 +72,7 @@
 										<string key="NSFrame">{{9, 48}, {303, 48}}</string>
 										<reference key="NSSuperview" ref="837086422"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="40824128"/>
+										<reference key="NSNextKeyView"/>
 										<object class="NSColor" key="IBUIBackgroundColor" id="913759489">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MCAwAA</bytes>
@@ -117,7 +117,7 @@
 										<string key="NSFrame">{{30, 0}, {261, 43}}</string>
 										<reference key="NSSuperview" ref="837086422"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="102631926"/>
+										<reference key="NSNextKeyView" ref="40824128"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -157,7 +157,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Discover the World of Storia without an account!</string>
+										<string key="IBUIText">and Get Your 5 FREE eBooks Today!</string>
 										<reference key="IBUITextColor" ref="605543636"/>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">0</int>
@@ -210,7 +210,7 @@
 												<string key="NSFrame">{{162, 259}, {126, 24}}</string>
 												<reference key="NSSuperview" ref="40824128"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView"/>
+												<reference key="NSNextKeyView" ref="102631926"/>
 												<bool key="IBUIOpaque">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 												<int key="IBUIContentHorizontalAlignment">0</int>
