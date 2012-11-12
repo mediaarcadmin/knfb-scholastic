@@ -66,7 +66,10 @@
     BOOL success = YES;
     int ret = unzGoToFirstFile( _unzFile );
     unsigned char           buffer[4096] = {0};
-    NSFileManager* fman = [NSFileManager defaultManager];
+    NSFileManager* fman = [[NSFileManager alloc] init];
+    NSCalendar *gregorian = [[NSCalendar alloc]
+                             initWithCalendarIdentifier:NSGregorianCalendar];
+
     if( ret!=UNZ_OK )
     {
         [self OutputErrorMessage:@"Failed"];
@@ -184,12 +187,8 @@
             dc.month = fileInfo.tmu_date.tm_mon+1;
             dc.year = fileInfo.tmu_date.tm_year;
             
-            NSCalendar *gregorian = [[NSCalendar alloc] 
-                                     initWithCalendarIdentifier:NSGregorianCalendar];
-            
-            orgDate = [gregorian dateFromComponents:dc] ;
+            orgDate = [gregorian dateFromComponents:dc];
             [dc release];
-            [gregorian release];
             //}}
             
             
@@ -197,7 +196,7 @@
             if( attr )
             {
                 //              [attr  setValue:orgDate forKey:NSFileCreationDate];
-                if( ![[NSFileManager defaultManager] setAttributes:attr ofItemAtPath:fullPath error:nil] )
+                if( ![fman setAttributes:attr ofItemAtPath:fullPath error:nil] )
                 {
                     // cann't set attributes 
                     NSLog(@"Failed to set attributes");
@@ -212,6 +211,10 @@
         unzCloseCurrentFile( _unzFile );
         ret = unzGoToNextFile( _unzFile );
     }while( ret==UNZ_OK && UNZ_OK!=UNZ_END_OF_LIST_OF_FILE );
+
+    [fman release];
+    [gregorian release];
+
     return success;
 }
 
