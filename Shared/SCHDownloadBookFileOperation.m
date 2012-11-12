@@ -59,6 +59,8 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
 
 - (void)dealloc 
 {
+    [self.downloadOperation setCompletionBlock:nil];
+    [self.downloadOperation cancel];
     [downloadOperation release], downloadOperation = nil;
     [realLocalPath release], realLocalPath = nil;
     [temporaryLocalPath release], temporaryLocalPath = nil;
