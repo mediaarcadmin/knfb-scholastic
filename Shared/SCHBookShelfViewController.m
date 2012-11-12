@@ -133,8 +133,14 @@ typedef enum
     
     if ([welcomePopoverController isModalSheetVisible]) {
         [welcomePopoverController dismissSheetAnimated:NO completion:nil];
-        [welcomePopoverController release], welcomePopoverController = nil;
+    }    
+    [welcomePopoverController release], welcomePopoverController = nil;
+
+    
+    if ([menuPopover isModalSheetVisible]) {
+        [menuPopover dismissSheetAnimated:NO completion:nil];
     }
+    [menuPopover release], menuPopover = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:SCHBookshelfSyncComponentBookReceivedNotification
