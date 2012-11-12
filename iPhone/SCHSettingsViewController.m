@@ -45,6 +45,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @property (nonatomic, retain) UIViewController *contentViewController;
 @property (nonatomic, assign) SCHSettingsPanel selectedPanel;
 @property (nonatomic, assign) BOOL additionalSettingsVisible;
+@property (nonatomic, retain) UILabel *dictionaryDownloadLabel;
 
 - (void)releaseViewObjects;
 - (void)replaceCheckBooksAlertWithAlert:(LambdaAlert *)alert;
@@ -81,6 +82,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize backgroundImageView;
 @synthesize selectedPanel;
 @synthesize additionalSettingsVisible;
+@synthesize dictionaryDownloadLabel;
 
 #pragma mark - Object lifecycle
 
@@ -96,7 +98,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [tableView release], tableView = nil;
     [backButton release], backButton = nil;
     [backgroundImageView release], backgroundImageView = nil;
-    
+    [dictionaryDownloadLabel release], dictionaryDownloadLabel = nil;
 }
 
 - (void)dealloc 
@@ -357,8 +359,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)showWifiRequiredAlert
 {
     LambdaAlert *alert = [[LambdaAlert alloc]
-                          initWithTitle:NSLocalizedString(@"No Wi-Fi Connection", @"")
-                          message:NSLocalizedString(@"Downloading the dictionary requires a Wi-Fi connection. Please connect to Wi-Fi and then try again.", @"")];
+                          initWithTitle:NSLocalizedString(@"No WiFi Connection", @"")
+                          message:NSLocalizedString(@"The dictionary will only download over a WiFi connection. When you are connected to WiFi, the download will begin.", @"")];
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
     [alert show];
     [alert release];
@@ -617,8 +619,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)dictionaryStateChanged:(NSNotification *)note
 {
-    // FIXME: just reload the single table view cell?
-    [self.tableView reloadData];
+    self.dictionaryDownloadLabel.text = [[SCHDictionaryDownloadManager sharedDownloadManager] titleForCurrentDictionaryState];
 }
 
 - (void)didUpdateAccountDuringSync:(NSNotification *)note
@@ -743,10 +744,30 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    static NSString * const DictionaryCellIdentifier = @"DictionaryCell";
     static NSString * const CellIdentifier = @"Cell";
-    UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = nil;
+
+    SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
+    BOOL isSelected = (panel == self.selectedPanel);
+
+    if (panel == kSCHSettingsPanelDictionaryDownload ||
+        panel == kSCHSettingsPanelDictionaryDelete) {
+        cell = [aTableView dequeueReusableCellWithIdentifier:DictionaryCellIdentifier];
+    } else {
+        cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    }
+
     if (!cell) {
-        cell = [[[SCHSettingsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        if (panel == kSCHSettingsPanelDictionaryDownload ||
+            panel == kSCHSettingsPanelDictionaryDelete) {
+            cell = [[[SCHSettingsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:DictionaryCellIdentifier] autorelease];
+            self.dictionaryDownloadLabel = cell.textLabel;
+            self.dictionaryDownloadLabel.numberOfLines = 2;
+        } else {
+            cell = [[[SCHSettingsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        }
+
         cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         UIImageView *backStyleView = [[[UIImageView alloc] init] autorelease];
@@ -772,10 +793,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     UIColor *lightText = [UIColor colorWithWhite:1 alpha:1.000];
     UIColor *redText   = [UIColor colorWithRed:0.792 green:0.071 blue:0.208 alpha:1.000];
     UIImage *selectedImage = [UIImage imageNamed:@"cloud_icon_menu_wht"];
-    
-    SCHSettingsPanel panel = [self panelForIndexPath:indexPath];
-    BOOL isSelected = (panel == self.selectedPanel);
-    
+
     switch (panel) {
         case kSCHSettingsPanelReadingManager:
             cell.textLabel.text = @"SIGN IN TO\nREADING MANAGER";

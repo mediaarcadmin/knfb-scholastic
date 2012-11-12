@@ -18,9 +18,15 @@
 
 #define DEBUG_FORCE_ENABLE_UPDATES 0
 
+static const NSTimeInterval kSCHBookUpdatesDelayRefreshNoBooks = 60.0; // secs
+
 @interface SCHBookUpdates ()
+
 @property (nonatomic, assign) BOOL refreshNeeded;
 @property (nonatomic, retain) NSMutableArray *results;
+@property (nonatomic, retain) NSDate *lastRefresh;
+
+- (BOOL)shouldRefreshIfNoBooks;
 
 @end
 
@@ -29,12 +35,15 @@
 @synthesize managedObjectContext;
 @synthesize results;
 @synthesize refreshNeeded;
+@synthesize lastRefresh;
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [results release], results = nil;
+    [lastRefresh release], lastRefresh = nil;
+
     [super dealloc];
 }
 
@@ -69,7 +78,7 @@
 #if UPDATE_BOOKS_DISABLED
     return [NSArray array];
 #else
-    if (self.refreshNeeded || [self.results count] == 0) {
+    if (self.refreshNeeded || [self shouldRefreshIfNoBooks] == YES) {
         [self refresh];
     }
     
@@ -78,6 +87,20 @@
     }
     return [NSArray arrayWithArray:results];
 #endif
+}
+
+- (BOOL)shouldRefreshIfNoBooks
+{
+    BOOL ret = NO;
+
+    if ([self.results count] == 0) {
+        if (self.lastRefresh == nil ||
+            [self.lastRefresh timeIntervalSinceNow] > kSCHBookUpdatesDelayRefreshNoBooks) {
+            ret = YES;
+        }
+    }
+
+    return ret;
 }
 
 - (void)refresh
@@ -113,7 +136,8 @@
 #endif
 
     }];
-    
+
+    self.lastRefresh = [NSDate date];
     self.refreshNeeded = NO;
 }
 

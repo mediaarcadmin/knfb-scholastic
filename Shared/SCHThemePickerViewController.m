@@ -138,6 +138,31 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
     [self setThemeForInterfaceOrientation:toInterfaceOrientation];
 }
 
+// didRotateFromInterfaceOrientation: is not called on child view controllers
+// we are asked to make sure views autoresize correctly so we refresh the cells
+// when the view's frame changes which will reload the background theme image for
+// the current orientation
+// on iPad it's in a popover which is dissmissed on rotation so no need to reload
+- (void)viewWillLayoutSubviews
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        NSArray *visibleCells = [self.tableView visibleCells];
+
+        if ([visibleCells count] > 0) {
+            NSMutableArray *visibleIndexPaths = [NSMutableArray arrayWithCapacity:[visibleCells count]];
+
+            for (UITableViewCell *cell in visibleCells) {
+                NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+                if (indexPath != nil) {
+                    [visibleIndexPaths addObject:indexPath];
+                }
+            }
+            [self.tableView reloadRowsAtIndexPaths:visibleIndexPaths
+                                  withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)previewTheme:(NSString *)themeName
