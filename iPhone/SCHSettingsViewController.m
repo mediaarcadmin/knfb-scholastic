@@ -763,6 +763,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             panel == kSCHSettingsPanelDictionaryDelete) {
             cell = [[[SCHSettingsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:DictionaryCellIdentifier] autorelease];
             self.dictionaryDownloadLabel = cell.textLabel;
+            self.dictionaryDownloadLabel.numberOfLines = 2;
         } else {
             cell = [[[SCHSettingsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         }
