@@ -165,7 +165,7 @@
     
     float progress = (float)(self.alreadyDownloadedSize + downloadedSize) / (self.alreadyDownloadedSize + self.expectedFileSize);
     NSInteger percentage = (NSInteger)(100*progress);
-    if (percentage != self.previousPercentage) {
+    if (percentage - self.previousPercentage >= 1.0f) {
         [self fireProgressUpdate:progress];
         self.previousPercentage = percentage;
     }

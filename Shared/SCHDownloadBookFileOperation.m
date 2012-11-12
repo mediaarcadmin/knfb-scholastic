@@ -324,7 +324,7 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
     float totalDownloadedSize = self.alreadyDownloadedSize + self.currentDownloadedSize;
     float percentage = (self.bookFileSize > 0 ? (totalDownloadedSize / self.bookFileSize) : 0.0);
     
-    if (percentage - self.previousPercentage > 0.001f) {
+    if (percentage - self.previousPercentage >= 0.01f) {
         
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSNumber numberWithFloat:percentage], @"currentPercentage",
