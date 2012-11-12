@@ -33,6 +33,8 @@
 
 - (void)dealloc 
 {
+    [downloadOperation setCompletionBlock:nil];
+    [downloadOperation setDelegate:nil];
     [downloadOperation release], downloadOperation = nil;
     [localPath release], localPath = nil;
 	[super dealloc];

@@ -49,6 +49,8 @@
 - (void)dealloc
 {
     [localFileManager release], localFileManager = nil;
+    [downloadOperation setCompletionBlock:nil];
+    [downloadOperation setDelegate:nil];
     [downloadOperation release], downloadOperation = nil;
 	[super dealloc];
 }
