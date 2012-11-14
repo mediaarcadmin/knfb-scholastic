@@ -12,10 +12,12 @@
 #import "Reachability.h"
 #import "LambdaAlert.h"
 #import "NSFileManager+Extensions.h"
+#import "SCHVersionDownloadManager.h"
 
 @interface SCHDownloadDictionaryViewController()
 
 - (void)releaseViewObjects;
+- (void)showAppVersionOutdatedAlert;
 
 @end
 
@@ -125,8 +127,12 @@
 
 - (IBAction)downloadDictionary:(id)sender
 {
-    [self startDictionaryDownload];
-    [self.appController presentSettingsWithExpandedNavigation];
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else {
+        [self startDictionaryDownload];
+        [self.appController presentSettingsWithExpandedNavigation];
+    }
 }
 
 - (IBAction)removeDictionary:(id)sender
@@ -138,6 +144,16 @@
 - (IBAction)close:(id)sender
 {
     [self.appController presentSettings];
+}
+
+- (void)showAppVersionOutdatedAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Update Required", @"")
+                          message:NSLocalizedString(@"This function requires that you update Storia. Please visit the App Store to update your app.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];
 }
 
 @end
