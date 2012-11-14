@@ -44,6 +44,7 @@
 #import "SCHUpdateBooksViewController.h"
 #import "SCHBookUpdates.h"
 #import "SCHAppBook.h"
+#import "SCHVersionDownloadManager.h"
 
 @interface SCHNavigationAppController () <UINavigationControllerDelegate>
 
@@ -82,11 +83,13 @@
 
 - (void)dealloc
 {
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIApplicationWillEnterForegroundNotification
                                                   object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SCHVersionDownloadManagerCompletedNotification
+                                                  object:nil];
+
     [undismissableAlert release], undismissableAlert = nil;
     [loginViewController release], loginViewController = nil;
     [profileViewController release], profileViewController = nil;
@@ -137,6 +140,12 @@
                                              selector:@selector(willEnterForeground:)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(versionDownloadManagerCompleted:)
+                                                 name:SCHVersionDownloadManagerCompletedNotification
+                                               object:nil];
+
 }
 
 #pragma mark - Presentation Methods
@@ -941,6 +950,31 @@
 {
     if (self.topViewController == self.readingManagerViewController) {
         [self pushSettingsAnimated:NO];
+    }
+}
+
+- (void)versionDownloadManagerCompleted:(NSNotification *)note
+{
+    NSNumber *appStateNumber = [[note userInfo] valueForKey:SCHVersionDownloadManagerCompletionAppVersionState];
+
+    if (appStateNumber) {
+        SCHVersionDownloadManagerAppVersionState appVersionState = [appStateNumber intValue];
+
+        if (appVersionState == SCHVersionDownloadManagerAppVersionStateOutdatedRequiresForcedUpdate) {
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Update Required", @"")
+                                  message:NSLocalizedString(@"Please visit the App Store to update Storia. Until you do, you will still be able to read your eBooks, but will not be able to download any new eBooks or synchronize your app.", @"")];
+            __block LambdaAlert *weakAlert = alert;
+
+            [alert addButtonWithTitle:NSLocalizedString(@"App Store", @"") block:^{
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/scholastic-ereading-app-the/id491014756?mt=8"]];
+                [weakAlert dismissAnimated:NO];
+            }];
+
+            [alert addButtonWithTitle:NSLocalizedString(@"Not Yet", @"") block:^{}];
+            [alert show];
+            [alert release];
+        }
     }
 }
 
