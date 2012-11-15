@@ -59,6 +59,7 @@ static const CGFloat kSCHProfileViewControllerParentButtonMinWidth = 141.0f;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)pushSettingsControllerAnimated:(BOOL)animated;
 - (void)showDictionaryDownloadChoice;
+- (void)showTooltips;
 
 // Paged TableView content
 - (void)reloadPages;
@@ -91,6 +92,7 @@ static const CGFloat kSCHProfileViewControllerParentButtonMinWidth = 141.0f;
 @synthesize appController;
 @synthesize tooltipContainer;
 @synthesize shouldShowDictionaryDownloadChoice;
+@synthesize shouldShowTooltips;
 
 #pragma mark - Object lifecycle
 
@@ -206,6 +208,8 @@ static const CGFloat kSCHProfileViewControllerParentButtonMinWidth = 141.0f;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if (self.shouldShowDictionaryDownloadChoice) {
             [self showDictionaryDownloadChoice];
+        } else if (self.shouldShowTooltips) {
+            [self showTooltips];
         }
     }
 }
@@ -217,6 +221,8 @@ static const CGFloat kSCHProfileViewControllerParentButtonMinWidth = 141.0f;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         if (self.shouldShowDictionaryDownloadChoice) {
             [self showDictionaryDownloadChoice];
+        } else if (self.shouldShowTooltips) {
+            [self showTooltips];
         }
     }
 }
@@ -382,6 +388,9 @@ didSelectButtonAnimated:(BOOL)animated
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         downloadDictionary.completionBlock = ^{
             [modalSheet dismissSheetAnimated:YES completion:nil];
+            if (self.shouldShowTooltips) {
+                [self showTooltips];
+            }
         };
         
         [modalSheet presentSheetInViewController:self animated:YES completion:nil];
@@ -392,6 +401,30 @@ didSelectButtonAnimated:(BOOL)animated
         [self.navigationController pushViewController:downloadDictionary animated:YES];
     }
     
+}
+
+- (void)showTooltips
+{
+    self.shouldShowTooltips = NO;
+    
+    NSLog(@"Show tooltips");
+    
+    NSInteger numberOfResultsInPage = [self numberOfResultsInPage:self.pageControl.currentPage];
+    self.tooltipContainer = [[[SCHProfileTooltipContainer alloc] initWithFrame:self.view.frame
+                                                           numberOfBookshelves:numberOfResultsInPage] autorelease];
+    self.tooltipContainer.delegate = self;
+    self.tooltipContainer.alpha = 0;
+    
+    [self.view addSubview:self.tooltipContainer];
+    
+    
+    [UIView animateWithDuration:0.2
+                          delay:0
+                        options:UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.tooltipContainer.alpha = 1;
+                     }
+                     completion:nil];
 }
 
 #pragma mark - Profile password
@@ -1130,24 +1163,7 @@ didSelectButtonAnimated:(BOOL)animated
 
 - (IBAction)tooltips:(id)sender
 {
-    NSLog(@"Show tooltips");
-    
-    NSInteger numberOfResultsInPage = [self numberOfResultsInPage:self.pageControl.currentPage];
-    self.tooltipContainer = [[[SCHProfileTooltipContainer alloc] initWithFrame:self.view.frame
-                                                           numberOfBookshelves:numberOfResultsInPage] autorelease];
-    self.tooltipContainer.delegate = self;
-    self.tooltipContainer.alpha = 0;
-    
-    [self.view addSubview:self.tooltipContainer];
-    
-    
-    [UIView animateWithDuration:0.2
-                          delay:0
-                        options:UIViewAnimationCurveEaseInOut
-                     animations:^{
-                         self.tooltipContainer.alpha = 1;
-                     }
-                     completion:nil];
+    [self showTooltips];
 }
 
 - (void)profileTooltipContainerSelectedClose:(SCHProfileTooltipContainer *)container

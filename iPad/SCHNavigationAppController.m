@@ -60,7 +60,7 @@
 @property (nonatomic, assign) NSUInteger dynamicInterfaceOrientations;
 
 - (void)pushSamplesAnimated:(BOOL)animated;
-- (void)pushProfileAnimated:(BOOL)animated showDictionaryChoice:(BOOL)showDictionary;
+- (void)pushProfileAnimated:(BOOL)animated showDictionaryChoice:(BOOL)showDictionary showTooltips:(BOOL)showTooltips;
 - (void)pushBookshelfAnimated:(BOOL)animated forProfileItem:(SCHProfileItem *)profileItem;
 - (void)pushReadingManagerAnimated:(BOOL)animated;
 - (BOOL)isCurrentlyModal;
@@ -158,11 +158,11 @@
     }
     
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
-    [self pushProfileAnimated:shouldAnimate showDictionaryChoice:NO];
+    [self pushProfileAnimated:shouldAnimate showDictionaryChoice:NO showTooltips:NO];
 }
 
 
-- (void)presentProfilesWithDictionaryCheck
+- (void)presentProfilesAfterLogin
 {
     if (self.undismissableAlert) {
         [self.undismissableAlert dismissAnimated:YES];
@@ -170,7 +170,7 @@
     }
     
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
-    [self pushProfileAnimated:shouldAnimate showDictionaryChoice:YES];
+    [self pushProfileAnimated:shouldAnimate showDictionaryChoice:YES showTooltips:YES];
 }
 
 - (void)presentProfilesSetup
@@ -596,10 +596,11 @@
     }
 }
 
-- (void)pushProfileAnimated:(BOOL)animated showDictionaryChoice:(BOOL)showDictionary;
+- (void)pushProfileAnimated:(BOOL)animated showDictionaryChoice:(BOOL)showDictionary showTooltips:(BOOL)showTooltips;
 {
     if ([[self.profileViewController profileItems] count]) {
         self.profileViewController.shouldShowDictionaryDownloadChoice = showDictionary;
+        self.profileViewController.shouldShowTooltips = showTooltips;
         [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, nil] animated:animated];
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
@@ -659,7 +660,7 @@
 
 - (void)pushCurrentProfileAnimated:(BOOL)animated
 {
-    [self pushProfileAnimated:animated showDictionaryChoice:NO];
+    [self pushProfileAnimated:animated showDictionaryChoice:NO showTooltips:NO];
 }
 
 - (void)waitingForPassword
