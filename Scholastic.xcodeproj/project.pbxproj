@@ -1685,6 +1685,13 @@
 		52F7C2DA1654DE9F00041661 /* SISampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C2161654DE9F00041661 /* SISampleIcon~iphone.png */; };
 		52F7C2DB1654DE9F00041661 /* SISampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C2161654DE9F00041661 /* SISampleIcon~iphone.png */; };
 		52F7C2DC1654DE9F00041661 /* SISampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C2161654DE9F00041661 /* SISampleIcon~iphone.png */; };
+		52F7C2DD1654E89400041661 /* SCHRecommendationViewSpirit.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A23E6416414E77001C2CD1 /* SCHRecommendationViewSpirit.m */; };
+		52F7C2DE1654E8A200041661 /* SCHTourStepContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FE342B161490E9005B6AA8 /* SCHTourStepContainerView.m */; };
+		52F7C2DF1654E8AC00041661 /* SCHTourStepMovieView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A7F51316199FB200E43EDC /* SCHTourStepMovieView.m */; };
+		52F7C2E01654E8B800041661 /* SCHTourStepImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A7F50D16199AF200E43EDC /* SCHTourStepImageView.m */; };
+		52F7C2E11654E8D700041661 /* SCHTourStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FE33F4161484EC005B6AA8 /* SCHTourStepView.m */; };
+		52F7C2E21654E90000041661 /* LibreAccessActivityLogSvc_tns1.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7BAF716280466007E0E5B /* LibreAccessActivityLogSvc_tns1.m */; };
+		52F7C2E31654E93400041661 /* SCHLibreAccessActivityLogConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7894315F5F4E0003B291C /* SCHLibreAccessActivityLogConstants.m */; };
 		52FCCF4114C6FE71008C2626 /* storia-preview-two.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two.png */; };
 		52FCCF4214C6FE71008C2626 /* storia-preview-two.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two.png */; };
 		7D3F313714069A5200C6F445 /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D583133B9C0100FB4404 /* libcss.a */; };
@@ -12678,6 +12685,13 @@
 				520699C11653B80E00CC80CA /* LibreAccessActivityLogSvc.m in Sources */,
 				520699C21653B85C00CC80CA /* SCHRecommendationProxyViewSpirit.m in Sources */,
 				520699C31653B86900CC80CA /* SCHTourStepsViewController.m in Sources */,
+				52F7C2DD1654E89400041661 /* SCHRecommendationViewSpirit.m in Sources */,
+				52F7C2DE1654E8A200041661 /* SCHTourStepContainerView.m in Sources */,
+				52F7C2DF1654E8AC00041661 /* SCHTourStepMovieView.m in Sources */,
+				52F7C2E01654E8B800041661 /* SCHTourStepImageView.m in Sources */,
+				52F7C2E11654E8D700041661 /* SCHTourStepView.m in Sources */,
+				52F7C2E21654E90000041661 /* LibreAccessActivityLogSvc_tns1.m in Sources */,
+				52F7C2E31654E93400041661 /* SCHLibreAccessActivityLogConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

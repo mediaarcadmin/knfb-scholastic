@@ -40,6 +40,8 @@
 
 @end
 
+NSString * const kSCHRecommendationStateUpdateNotification = @"SCHRecommendationStateUpdateNotification";
+
 @implementation SCHRecommendationManager
 
 

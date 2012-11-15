@@ -8,6 +8,7 @@
 
 #import "SCHProcessingManager.h"
 
+const NSUInteger kSCHProcessingManagerBatchSize = 10;
 
 @implementation SCHProcessingManager
 
