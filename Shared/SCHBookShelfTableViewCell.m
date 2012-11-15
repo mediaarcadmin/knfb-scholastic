@@ -265,22 +265,24 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
     UIImage *ret = nil;
 
     if (bookFeatures.features != kSCHAppBookFeaturesNone) {
-        NSMutableString *imageName = [NSMutableString stringWithString:@"FeatureButtonHorizontal"];
+        NSMutableString *imageName = [NSMutableString string];
 
         if ([bookFeatures hasStoryInteractions] == YES) {
-            [imageName appendFormat:@"+SI"];
+            [imageName appendFormat:@"SI"];
         }
 
         if ([bookFeatures hasAudio] == YES) {
-            [imageName appendFormat:@"+Audio"];
+            [imageName appendFormat:@"Audio"];
         }
 
         if ([bookFeatures isSample] == YES) {
-            [imageName appendFormat:@"+Sample"];
+            [imageName appendFormat:@"Sample"];
         }
 
+        [imageName appendFormat:@"Icon"];
+
         ret = [UIImage imageNamed:imageName];
-        NSAssert(ret != nil, @"failed to load image '%@' for features %@", imageName, bookFeatures);        
+        NSAssert(ret != nil, @"failed to load image '%@' for features %@", imageName, bookFeatures);
     }
     
     return ret;
