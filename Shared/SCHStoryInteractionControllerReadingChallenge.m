@@ -11,6 +11,7 @@
 #import "SCHStoryInteractionProgressView.h"
 #import "SCHStretchableImageButton.h"
 #import "SCHStoryInteractionControllerDelegate.h"
+#import "NSArray+Shuffling.h"
 
 @interface SCHStoryInteractionControllerReadingChallenge ()
 
@@ -413,7 +414,7 @@
             
             NSInteger index = 0;
             for (UIButton *button in self.answerButtons) {
-                [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:index]
+                [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:button.tag]
                                 fromBundle:NO
                                 startDelay:0.5
                     synchronizedStartBlock:^{
@@ -454,9 +455,11 @@
         [self setTitle:[self currentQuestion].prompt];
     }
     NSInteger i = 0;
-    for (NSString *answer in [self currentQuestion].answers) {
+    for (NSString *answer in [[self currentQuestion].answers shuffled]) {
         SCHStretchableImageButton *button = [self.answerButtons objectAtIndex:i];
-        
+        // set the button tag with each answers original index 
+        button.tag = [[self currentQuestion].answers indexOfObject:answer];
+
         if (!self.storyInteraction.olderStoryInteraction) {
             [button setBackgroundImage:[UIImage imageNamed:@"answer-button-blue"] forState:UIControlStateNormal];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -525,8 +528,8 @@
     }
  
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
-        NSInteger chosenAnswer = [self.answerButtons indexOfObject:sender];
-        if (chosenAnswer == NSNotFound) {
+        NSInteger chosenAnswer = ((SCHStretchableImageButton *)sender).tag; 
+        if (chosenAnswer < 0 || chosenAnswer >= [[self currentQuestion].answers count]) {
             return;
         }
         
