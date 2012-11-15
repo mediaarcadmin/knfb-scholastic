@@ -266,7 +266,7 @@ static const CGFloat kContentHeightLandscape = 380;
             break;
         case kSCHLoginHandlerCredentialsWarningAuthenticationFailure:
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                self.promptLabel.text = NSLocalizedString(@"The password you entered is not correct. If you have forgotten your password, you can ask your parent to reset it using Parent Tools.", @"");
+                self.promptLabel.text = NSLocalizedString(@"The password you entered is not correct. If you have forgotten your password, you can ask your parent to reset it using the Reading Manager.", @"");
             } else {
                 self.promptLabel.text = NSLocalizedString(@"Your password was incorrect. Ask your parent or teacher to reset your password.", @"");
             }
