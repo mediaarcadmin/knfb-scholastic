@@ -12,6 +12,7 @@
 #import "SCHStoryInteractionStartingLetter.h"
 #import "KNFBXPSProvider.h"
 #import "SCHImageButton.h"
+#import "NSArray+Shuffling.h"
 
 @interface SCHStoryInteractionControllerStartingLetter ()
 
@@ -40,20 +41,13 @@
 
 - (void)shuffleImageButtons 
 {
-    NSMutableArray *shuffleArray = [NSMutableArray arrayWithArray:self.imageButtons];
+    NSArray *shuffledArray = [self.imageButtons shuffled];
     NSUInteger i = 0;
     SCHImageButton *imageButton = nil;
     
-    // create a Fisher–Yates shuffled array
-    srand(time(NULL));
-    for (i = [shuffleArray count] - 1; i > 0; i--)
-    {
-        [shuffleArray exchangeObjectAtIndex:(rand() % i) withObjectAtIndex:i];
-    }    
-    
     // assign new tags for the image buttons
-    for (i = 0; i < [shuffleArray count]; i++) {
-        imageButton = [shuffleArray objectAtIndex:i];
+    for (i = 0; i < [shuffledArray count]; i++) {
+        imageButton = [shuffledArray objectAtIndex:i];
         imageButton.tag = i + 1;
     }
 }

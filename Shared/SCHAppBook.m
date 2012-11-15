@@ -915,9 +915,6 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     return [[[SCHAppBookFeatures alloc] initWithStoryInteractions:[self.HasStoryInteractions boolValue]
                                                             audio:[self.HasAudio boolValue]
                                                            sample:[self.ContentMetadataItem.DRMQualifier DRMQualifierValue] == kSCHDRMQualifiersSample] autorelease];
-//    return [[[SCHAppBookFeatures alloc] initWithStoryInteractions:YES
-//                                                            audio:NO
-//                                                           sample:NO] autorelease];
 }
 
 - (void)setForcedProcessing:(BOOL)forceProcess
