@@ -33,6 +33,7 @@
 @property (nonatomic, assign) id<SCHProfileSetupDelegate> profileSetupDelegate;
 @property (nonatomic, assign) id<SCHAppController> appController;
 @property (nonatomic, assign) BOOL shouldShowDictionaryDownloadChoice;
+@property (nonatomic, assign) BOOL shouldShowTooltips;
 
 - (NSArray *)profileItems;
 - (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem showWelcome:(BOOL)welcome;

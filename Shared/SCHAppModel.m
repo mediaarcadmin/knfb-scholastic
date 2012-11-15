@@ -392,7 +392,7 @@ typedef enum {
             case kSCHAppModelSyncStateWaitingForLoginToComplete:
             case kSCHAppModelSyncStateWaitingForBookshelves:
                 if ([self dictionaryNeedsDownloaded] && [[Reachability reachabilityForLocalWiFi] isReachable]) {
-                    [self.appController presentProfilesWithDictionaryCheck];
+                    [self.appController presentProfilesAfterLogin];
                 } else {
                     [self.appController presentProfiles];
                 }
