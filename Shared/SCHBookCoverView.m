@@ -573,14 +573,38 @@
                                 horizontal:NO];
     switch (bookFeatures.features) {
         case kSCHAppBookFeaturesStoryInteractions:
+        {
+            minimumTabGraphicHeight = image.size.height - 14;
+            break;
+        }
         case kSCHAppBookFeaturesAudio:
-        case kSCHAppBookFeaturesSample:
-        case kSCHAppBookFeaturesStoryInteractionsAudio:
-        case kSCHAppBookFeaturesStoryInteractionsSample:
-        case kSCHAppBookFeaturesAudioSample:
-        case kSCHAppBookFeaturesStoryInteractionsAudioSample:                        
         {
             minimumTabGraphicHeight = image.size.height;
+            break;
+        }
+        case kSCHAppBookFeaturesSample:
+        {
+            minimumTabGraphicHeight = image.size.height;
+            break;
+        }
+        case kSCHAppBookFeaturesStoryInteractionsAudio:
+        {
+            minimumTabGraphicHeight = image.size.height - 6;
+            break;
+        }
+        case kSCHAppBookFeaturesStoryInteractionsSample:
+        {
+            minimumTabGraphicHeight = image.size.height - 18;
+            break;
+        }
+        case kSCHAppBookFeaturesAudioSample:
+        {
+            minimumTabGraphicHeight = image.size.height;
+            break;
+        }
+        case kSCHAppBookFeaturesStoryInteractionsAudioSample:
+        {
+            minimumTabGraphicHeight = image.size.height - 18;
             break;
         }
         case kSCHAppBookFeaturesNone:
@@ -589,11 +613,11 @@
             break;
         }   
     }
-    
+
+    // use a horizontal tab if the right tab is larger than the book edge
     if (coverFrame.size.height < minimumTabGraphicHeight) {
         tabOnRight = NO;
     }
-    
     
     self.coverImageView.frame = coverFrame;
     self.bookTintView.frame = coverFrame;
