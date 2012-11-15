@@ -275,7 +275,7 @@ static const CGFloat kContentHeightLandscape = 380;
             self.promptLabel.text = NSLocalizedString(@"You cannot use spaces at the beginning of your password.", @"");
             break;
         case kSCHLoginHandlerCredentialsWarningPasswordMismatch:
-            self.promptLabel.text = NSLocalizedString(@"The passwords do not match.", @"");
+            self.promptLabel.text = NSLocalizedString(@"Your password does not match. Try again.", @"");
             break;
         case kSCHLoginHandlerCredentialsWarningPasswordBlank:
             self.promptLabel.text = NSLocalizedString(@"The password cannot be blank.", @"");
