@@ -55,6 +55,7 @@
 #import "SCHRetrieveRecommendationsForBooksOperation.h"
 #import "SCHRecommendationViewDelegate.h"
 #import "SCHRecommendationViewDataSource.h"
+#import "SCHAppBookFeatures.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -185,6 +186,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)updateFontSegmentStateForIndex:(NSInteger)index;
 
 - (void)positionCoverCornerViewForOrientation:(UIInterfaceOrientation)newOrientation;
+- (UIImage *)imageForFeature:(SCHAppBookFeatures *)bookFeatures;
 - (void)dismissCoverCornerViewWithAnimation:(BOOL)animated;
 - (void)checkCornerAudioButtonVisibilityWithAnimation:(BOOL)animated;
 - (void)positionCornerAudioButtonForOrientation:(UIInterfaceOrientation)newOrientation;
@@ -3385,39 +3387,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
         SCHAppBook *book = [bookManager bookWithIdentifier:self.bookIdentifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
         
-        NSString *bookFeatures = nil;
-        
-        switch (book.bookFeatures) {
-            case kSCHAppBookFeaturesSample:
-            {
-                bookFeatures = @"sample";
-                break;
-            }   
-            case kSCHAppBookFeaturesStoryInteractions:
-            {
-                bookFeatures = @"si";
-                break;
-            }   
-            case kSCHAppBookFeaturesSampleWithStoryInteractions:
-            {
-                bookFeatures = @"samplesi";
-                break;
-            }   
-            default:
-            {
-                break;
-            }
-        }
-        
-        NSString *imageName = nil;
-        
-        if (bookFeatures) {
-            imageName = [NSString stringWithFormat:@"reading-%@", bookFeatures];
-        }
-        
-        if (imageName) {
-            NSLog(@"Loading image: %@", imageName);
-            self.sampleSICoverMarker = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]] autorelease];
+        UIImage *coverMarkerImage = [self imageForFeature:book.bookFeatures];
+        if (coverMarkerImage) {
+            self.sampleSICoverMarker = [[[UIImageView alloc] initWithImage:coverMarkerImage] autorelease];
             
             // put it in the top right corner of the book
             CGRect bookCoverFrame = [self.readingView pageRect];
@@ -3442,6 +3414,28 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
                              completion:nil];
         }
     }
+}
+
+- (UIImage *)imageForFeature:(SCHAppBookFeatures *)bookFeatures
+{
+    UIImage *ret = nil;
+
+    if (bookFeatures.features != kSCHAppBookFeaturesNone) {
+        NSMutableString *imageName = [NSMutableString stringWithString:@"reading-"];
+
+        if ([bookFeatures isSample] == YES) {
+            [imageName appendFormat:@"sample"];
+        }
+
+        if ([bookFeatures hasStoryInteractions] == YES) {
+            [imageName appendFormat:@"si"];
+        }
+
+        ret = [UIImage imageNamed:imageName];
+        NSAssert(ret != nil, @"failed to load image '%@' for features %@", imageName, bookFeatures);        
+    }
+    
+    return ret;
 }
 
 - (void)dismissCoverCornerView

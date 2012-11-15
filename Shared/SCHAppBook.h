@@ -32,6 +32,7 @@ typedef enum
 
 @class SCHBookIdentifier;
 @class SCHAppRecommendationISBN;
+@class SCHAppBookFeatures;
 
 // Constants
 extern NSString * const kSCHAppBookProcessingState;
@@ -85,12 +86,6 @@ extern NSString * const kSCHAppBookDRM_QUALIFIER;
 
 extern NSString * const kSCHAppBookEucalyptusCacheDir;
 
-typedef enum {
-    kSCHAppBookFeaturesNone,
-    kSCHAppBookFeaturesSample,
-    kSCHAppBookFeaturesStoryInteractions,
-    kSCHAppBookFeaturesSampleWithStoryInteractions
-} SCHAppBookFeatures;
 
 @interface SCHAppBook :  NSManagedObject  
 {
@@ -176,7 +171,7 @@ typedef enum {
 - (BOOL)haveURLs;
 - (BOOL)canOpenBookError:(NSError **)error;
 - (CGSize)bookCoverImageSize;
-- (SCHAppBookFeatures) bookFeatures;
+- (SCHAppBookFeatures*)bookFeatures;
 - (BOOL)isSampleBook;
 - (SCHAppRecommendationISBN *)appRecommendationISBN;
 - (NSArray *)recommendationDictionaries;

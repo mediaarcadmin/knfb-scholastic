@@ -14,6 +14,7 @@
 #import "SCHBookIdentifier.h"
 #import <CoreText/CoreText.h>
 #import "SCHThemeManager.h"
+#import "SCHAppBookFeatures.h"
 
 //static NSInteger const CELL_TEXT_LABEL_TAG = 100;
 static NSInteger const CELL_TEXT_TITLE_LABEL_TAG = 110;
@@ -51,6 +52,7 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 
 - (void)updateTheme;
 - (void)deferredRefreshCell;
+- (UIImage *)imageForFeature:(SCHAppBookFeatures *)bookFeatures;
 
 @end
 
@@ -224,58 +226,23 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
     self.titleLabel.text = book.Title;
     self.subtitleLabel.text = book.Author;
     
-    SCHAppBookFeatures bookFeatures = book.bookFeatures;
-    
-    if (self.disabledForInteractions) {
-        switch (bookFeatures) {
-            case kSCHAppBookFeaturesNone:
-            case kSCHAppBookFeaturesSample:
-                break;
-            case kSCHAppBookFeaturesStoryInteractions:
-                bookFeatures = kSCHAppBookFeaturesNone;
-                break;
-            case kSCHAppBookFeaturesSampleWithStoryInteractions:
-                bookFeatures = kSCHAppBookFeaturesSample;
-                break;
-        }
+    SCHAppBookFeatures *bookFeatures = book.bookFeatures;
+
+    if (self.disabledForInteractions &&
+        bookFeatures.hasStoryInteractions == YES) {
+        bookFeatures = [[[SCHAppBookFeatures alloc] initWithStoryInteractions:NO
+                                                                        audio:bookFeatures.hasAudio
+                                                                       sample:bookFeatures.isSample] autorelease];
     }
     
-    if (bookFeatures == kSCHAppBookFeaturesSample ||
-        bookFeatures == kSCHAppBookFeaturesSampleWithStoryInteractions) {
+    if (bookFeatures.isSample == YES) {
         [self.starView setHidden:YES];
     } else {
         [self.starView setHidden:NO];
     }
-    
-    switch (bookFeatures) {
-        case kSCHAppBookFeaturesNone:
-        {
-            self.sampleAndSIIndicatorIcon.image = nil;
-            break;
-        }   
-        case kSCHAppBookFeaturesSample:
-        {
-            self.sampleAndSIIndicatorIcon.image = [UIImage imageNamed:@"SampleIcon"];
-            break;
-        }   
-        case kSCHAppBookFeaturesStoryInteractions:
-        {
-            self.sampleAndSIIndicatorIcon.image = [UIImage imageNamed:@"SIIcon"];
-            break;
-        }   
-        case kSCHAppBookFeaturesSampleWithStoryInteractions:
-        {
-            self.sampleAndSIIndicatorIcon.image = [UIImage imageNamed:@"SISampleIcon"];
-            break;
-        }   
-        default:
-        {
-            NSLog(@"Warning: unknown type for book features.");
-            self.sampleAndSIIndicatorIcon.image = nil;
-            break;
-        }
-    }
-    
+
+    self.sampleAndSIIndicatorIcon.image = [self imageForFeature:bookFeatures];
+
     if (self.lastCell) {
         self.ruleImageView.hidden = YES;
     } else {
@@ -291,6 +258,32 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
     self.personalRateView.rating = (float)self.userRating;
     
     self.needsRefresh = NO;
+}
+
+- (UIImage *)imageForFeature:(SCHAppBookFeatures *)bookFeatures
+{
+    UIImage *ret = nil;
+
+    if (bookFeatures.features != kSCHAppBookFeaturesNone) {
+        NSMutableString *imageName = [NSMutableString stringWithString:@"FeatureButtonHorizontal"];
+
+        if ([bookFeatures hasStoryInteractions] == YES) {
+            [imageName appendFormat:@"+SI"];
+        }
+
+        if ([bookFeatures hasAudio] == YES) {
+            [imageName appendFormat:@"+Audio"];
+        }
+
+        if ([bookFeatures isSample] == YES) {
+            [imageName appendFormat:@"+Sample"];
+        }
+
+        ret = [UIImage imageNamed:imageName];
+        NSAssert(ret != nil, @"failed to load image '%@' for features %@", imageName, bookFeatures);        
+    }
+    
+    return ret;
 }
 
 - (void)layoutSubviews 

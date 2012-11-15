@@ -17,6 +17,7 @@
 #import "SCHAppRecommendationISBN.h"
 #import "SCHBooksAssignment.h"
 #import "NSNumber+ObjectTypes.h"
+#import "SCHAppBookFeatures.h"
 
 // Constants
 NSString * const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
@@ -909,21 +910,14 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
     return ([self.ContentMetadataItem.DRMQualifier DRMQualifierValue] == kSCHDRMQualifiersSample);
 }
 
-- (SCHAppBookFeatures)bookFeatures
+- (SCHAppBookFeatures *)bookFeatures
 {
-    SCHAppBookFeatures ret = kSCHAppBookFeaturesNone;
-    BOOL storyInteractions = [[self HasStoryInteractions] boolValue];
-    BOOL sample = ([self.ContentMetadataItem.DRMQualifier DRMQualifierValue] == kSCHDRMQualifiersSample);
-    
-    if (storyInteractions == YES && sample == YES) {
-        ret = kSCHAppBookFeaturesSampleWithStoryInteractions;
-    } else if (storyInteractions == YES) {
-        ret = kSCHAppBookFeaturesStoryInteractions;        
-    } else if (sample == YES) {
-        ret = kSCHAppBookFeaturesSample;        
-    }
-        
-    return(ret);    
+    return [[[SCHAppBookFeatures alloc] initWithStoryInteractions:[self.HasStoryInteractions boolValue]
+                                                            audio:[self.HasAudio boolValue]
+                                                           sample:[self.ContentMetadataItem.DRMQualifier DRMQualifierValue] == kSCHDRMQualifiersSample] autorelease];
+//    return [[[SCHAppBookFeatures alloc] initWithStoryInteractions:YES
+//                                                            audio:NO
+//                                                           sample:NO] autorelease];
 }
 
 - (void)setForcedProcessing:(BOOL)forceProcess

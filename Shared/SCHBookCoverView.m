@@ -15,6 +15,7 @@
 #import "SCHCoreDataHelper.h"
 #import <ImageIO/ImageIO.h>
 #import "SCHThemeManager.h"
+#import "SCHAppBookFeatures.h"
 
 @interface SCHBookCoverView ()
 
@@ -22,7 +23,9 @@
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath;
 - (void)updateCachedImage:(UIImage *)thumbImage atPath:(NSString *)thumbPath forIdentifier:(SCHBookIdentifier *)localIdentifier;
 - (void)updateCachedImage:(UIImage *)thumbImage atPath:(NSString *)thumbPath forIdentifier:(SCHBookIdentifier *)localIdentifier waitUntilDone:(BOOL)wait;
-- (void)resizeElementsForThumbSize: (CGSize) thumbSize;
+- (void)resizeElementsForThumbSize:(CGSize)thumbSize;
+- (UIImage *)imageForFeature:(SCHAppBookFeatures *)bookFeatures
+                  horizontal:(BOOL)horizontal;
 - (void)deferredRefreshBookCoverView;
 - (void)cachedImageFailureForBookIdentifier:(SCHBookIdentifier *)identifier;
 
@@ -564,27 +567,22 @@
     
     float minimumTabGraphicHeight = CGFLOAT_MAX;
     
-    SCHAppBookFeatures bookFeatures = book.bookFeatures;
-//  SCHAppBookFeatures bookFeatures = kSCHAppBookFeaturesSampleWithStoryInteractions;
-    
+    SCHAppBookFeatures *bookFeatures = book.bookFeatures;
 
-    switch (bookFeatures) {
+    UIImage *image = [self imageForFeature:bookFeatures
+                                horizontal:NO];
+    switch (bookFeatures.features) {
         case kSCHAppBookFeaturesStoryInteractions:
-        {
-            minimumTabGraphicHeight = [UIImage imageNamed:@"BookSITab"].size.height + 2;
-            break;
-        }   
-        case kSCHAppBookFeaturesSampleWithStoryInteractions:
-        {
-            minimumTabGraphicHeight = [UIImage imageNamed:@"BookSISampleTab"].size.height - 11;
-            break;
-        }   
-            
+        case kSCHAppBookFeaturesAudio:
         case kSCHAppBookFeaturesSample:
+        case kSCHAppBookFeaturesStoryInteractionsAudio:
+        case kSCHAppBookFeaturesStoryInteractionsSample:
+        case kSCHAppBookFeaturesAudioSample:
+        case kSCHAppBookFeaturesStoryInteractionsAudioSample:                        
         {
-            minimumTabGraphicHeight = [UIImage imageNamed:@"BookSampleTab"].size.height;
+            minimumTabGraphicHeight = image.size.height;
             break;
-        }   
+        }
         case kSCHAppBookFeaturesNone:
         default:
         {
@@ -625,7 +623,7 @@
     }
     
     // move the new badge if the tab is Sample with Story Interactions
-    if (tabOnRight && book.bookFeatures == kSCHAppBookFeaturesSampleWithStoryInteractions) {
+    if (tabOnRight && book.bookFeatures.features == kSCHAppBookFeaturesStoryInteractionsSample) {
         newCenter.x -= 8;
     }
     
@@ -725,73 +723,65 @@
         
         // whether to actually do the resizing work
         BOOL doSizing = YES;
-        
-        if (self.disabledForInteractions) {
-            switch (bookFeatures) {
-                case kSCHAppBookFeaturesNone:
-                case kSCHAppBookFeaturesSample:
-                    break;
-                case kSCHAppBookFeaturesStoryInteractions:
-                    bookFeatures = kSCHAppBookFeaturesNone;
-                    break;
-                case kSCHAppBookFeaturesSampleWithStoryInteractions:
-                    bookFeatures = kSCHAppBookFeaturesSample;
-                    break;
-            }
+
+        if (self.disabledForInteractions &&
+            bookFeatures.hasStoryInteractions == YES) {
+            bookFeatures = [[[SCHAppBookFeatures alloc] initWithStoryInteractions:NO
+                                                                            audio:[bookFeatures hasAudio]
+                                                                           sample:[bookFeatures isSample]] autorelease];
         }
-        
-        switch (bookFeatures) {
+
+        self.featureTab.image = [self imageForFeature:bookFeatures
+                                           horizontal:tabOnRight == NO];
+        switch (bookFeatures.features) {
             case kSCHAppBookFeaturesNone:
             {
-                self.featureTab.image = nil;
                 [self setFeatureTabHidden:YES];
                 doSizing = NO;
                 break;
-            }   
+            }
             case kSCHAppBookFeaturesStoryInteractions:
             {
-                if (tabOnRight) {
-                    self.featureTab.image = [UIImage imageNamed:@"BookSITab"];
-                    overhang = 10;
-                    heightOffset = -1;
-                } else {
-                    self.featureTab.image = [UIImage imageNamed:@"BookSITabHorizontal"];
-                    overhang = 20;
-                }
-                
+                overhang = (tabOnRight ? 15 : 25);
+                heightOffset = (tabOnRight ? 2 : 0);
                 break;
-            }   
-            case kSCHAppBookFeaturesSampleWithStoryInteractions:
+            }
+            case kSCHAppBookFeaturesAudio:
             {
-                if (tabOnRight) {
-                    self.featureTab.image = [UIImage imageNamed:@"BookSISampleTab"];
-                    overhang = 10;
-                    heightOffset = -5;
-                } else {
-                    self.featureTab.image = [UIImage imageNamed:@"BookSISampleTabHorizontal"];
-                    overhang = 21;
-                }
-                
+                overhang = (tabOnRight ? 3 : 13);
                 break;
-            }   
-
+            }
             case kSCHAppBookFeaturesSample:
             {
-                if (tabOnRight) {
-                    self.featureTab.image = [UIImage imageNamed:@"BookSampleTab"];
-                    overhang = 0;
-                    heightOffset = 1;
-               } else {
-                    self.featureTab.image = [UIImage imageNamed:@"BookSampleTabHorizontal"];
-                    overhang = 0;
-                }
-                
+                overhang = (tabOnRight ? 1 : 1);
                 break;
-            }   
+            }
+            case kSCHAppBookFeaturesStoryInteractionsAudio:
+            {
+                overhang = (tabOnRight ? 15 : 25);
+                heightOffset = (tabOnRight ? -3 : 0);
+                break;
+            }
+            case kSCHAppBookFeaturesStoryInteractionsSample:
+            {
+                overhang = (tabOnRight ? 14 : 24);
+                heightOffset = (tabOnRight ? -9 : 0);
+                break;
+            }
+            case kSCHAppBookFeaturesAudioSample:
+            {
+                overhang = (tabOnRight ? 3 : 13);
+                break;
+            }
+            case kSCHAppBookFeaturesStoryInteractionsAudioSample:
+            {
+                overhang = (tabOnRight ? 14 : 24);
+                heightOffset = (tabOnRight ? -9 : 0);
+                break;
+            }
             default:
             {
                 NSLog(@"Warning: unknown type for book features.");
-                self.featureTab.image = nil;
                 [self setFeatureTabHidden:YES];
                 doSizing = NO;
                 break;
@@ -826,6 +816,39 @@
             [self setFeatureTabHidden:NO];
         }
     }
+}
+
+- (UIImage *)imageForFeature:(SCHAppBookFeatures *)bookFeatures
+                  horizontal:(BOOL)horizontal
+{
+    UIImage *ret = nil;
+
+    if (bookFeatures.features != kSCHAppBookFeaturesNone) {
+        NSMutableString *imageName = [NSMutableString stringWithString:@"Book"];
+
+        if ([bookFeatures hasStoryInteractions] == YES) {
+            [imageName appendFormat:@"SI"];
+        }
+
+        if ([bookFeatures hasAudio] == YES) {
+            [imageName appendFormat:@"Audio"];
+        }
+
+        if ([bookFeatures isSample] == YES) {
+            [imageName appendFormat:@"Sample"];
+        }
+
+        [imageName appendFormat:@"Tab"];
+
+        if (horizontal == YES) {
+            [imageName appendString:@"Horizontal"];
+        }
+
+        ret = [UIImage imageNamed:imageName];
+        NSAssert(ret != nil, @"failed to load image '%@' for features %@", imageName, bookFeatures);
+    }
+    
+    return ret;
 }
 
 #pragma mark - Thumbnail Creation
