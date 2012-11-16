@@ -419,7 +419,7 @@ typedef enum
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
     
-    CGFloat inset = 56;
+    CGFloat inset = 34;
 
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
             [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape];
@@ -1039,7 +1039,11 @@ typedef enum
 	}
 	
     [self gridView:aGridView configureCell:gridCell forGridIndex:index];
-  
+      
+    // Allow adornments to flow outside our bounds
+    gridCell.clipsToBounds = NO;
+
+    
 	return(gridCell);
 }
 

@@ -504,7 +504,7 @@
     } else {
         
         __block BOOL successfullyLoaded = NO;
-        
+
         if (self.shouldWaitForExistingCachedThumbToLoad) {
             NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
             if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
@@ -741,10 +741,10 @@
         && self.coverViewMode == SCHBookCoverViewModeGridView) {
         
         // the offset amount that the image tab is over onto the cover
-        NSInteger overhang = 0;
+        CGFloat overhang = 0;
         
         // an offset for centring the tab properly - some of the images aren't symmetrical
-        NSInteger heightOffset = 0;
+        CGFloat heightOffset = 0;
         
         // whether to actually do the resizing work
         BOOL doSizing = YES;
@@ -785,12 +785,12 @@
             }
             case kSCHAppBookFeaturesSample:
             {
-                overhang = (tabOnRight ? 1 : 1);
+                overhang = (tabOnRight ? 1.5 : 1);
                 break;
             }
             case kSCHAppBookFeaturesStoryInteractionsAudio:
             {
-                overhang = (tabOnRight ? 15 : 25);
+                overhang = (tabOnRight ? 15.5 : 25);
                 heightOffset = (tabOnRight ? -3 : 0);
                 break;
             }
@@ -802,12 +802,12 @@
             }
             case kSCHAppBookFeaturesAudioSample:
             {
-                overhang = (tabOnRight ? 3 : 13);
+                overhang = (tabOnRight ? 3.5 : 13);
                 break;
             }
             case kSCHAppBookFeaturesStoryInteractionsAudioSample:
             {
-                overhang = (tabOnRight ? 14 : 24);
+                overhang = (tabOnRight ? 14.5 : 24);
                 heightOffset = (tabOnRight ? -9 : 0);
                 break;
             }
@@ -818,6 +818,11 @@
                 doSizing = NO;
                 break;
             }
+        }
+        
+        if (self.contentScaleFactor == 1) {
+            overhang = floorf(overhang);
+            heightOffset = floorf(heightOffset);
         }
         
         // resize the feature tab image view to the size of the image - this changes between cells
@@ -924,9 +929,10 @@
     // get the full size cover image properties without loading it into memory
     // so we can figure out the aspect
     CGImageSourceRef src = CGImageSourceCreateWithURL((CFURLRef)sourceURL, NULL);
+    CGFloat width = 0.0f, height = 0.0f;
     
     if (src != nil) {
-        CGFloat width = 0.0f, height = 0.0f;
+
         CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(src, 0, NULL);
         if (imageProperties != NULL) {
             CFNumberRef widthNum  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
@@ -949,7 +955,7 @@
         if (height < width) {
             portraitAspect = NO;
         }
-        
+                
         CFRelease(src);
     }
     
@@ -959,21 +965,20 @@
         return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:(self.frame.size.width)];
     }
     
-    if (squareImage) {
-        CGFloat widthHeightDiff = fabsf(self.frame.size.width - self.frame.size.height);
-        UIImage *biggestRightTabImage = [UIImage imageNamed:@"BookSampleTab"];
-
-        // square image - tab on the right, but we need to shrink the image to fit
-        return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:self.frame.size.width - widthHeightDiff - biggestRightTabImage.size.width - 8];
-
-    } else if (portraitAspect) {
-        // standard image - tab is on the right
-        return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:self.frame.size.height];
+    CGFloat widthInset = 0;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        widthInset = 26;
     } else {
-        // tab on the top - make sure we provide enough space for it
-        UIImage *biggestTopTabImage = [UIImage imageNamed:@"BookSampleTabHorizontal"];
-            return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:(self.frame.size.height - biggestTopTabImage.size.height - 8)];
+        widthInset = 4;
     }
+    
+    CGSize insetSize = CGRectInset(self.frame, widthInset, 0).size;
+    CGFloat ratio = MIN(insetSize.width/width, insetSize.height/height);
+    CGSize scaledSize = CGSizeMake(width * ratio, height * ratio);
+    CGFloat limit = floorf(MAX(scaledSize.width, scaledSize.height));
+    
+    return [UIImage SCHCreateThumbWithSourcePath:sourcePath destinationPath:destinationPath maxDimension:limit];
 }
 
 #pragma mark - Notification Methods

@@ -47,7 +47,7 @@
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)aReuseIdentifier 
 {
 	if ((self = [super initWithFrame:frame reuseIdentifier:aReuseIdentifier])) {
-        self.bookCoverView = [[[SCHBookCoverView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width - 4, self.frame.size.height - 22)] autorelease];
+        self.bookCoverView = [[[SCHBookCoverView alloc] initWithFrame:CGRectMake(0, 22, self.frame.size.width - 4, self.frame.size.height - 22)] autorelease];
 
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             self.bookCoverView.topInset = 0;

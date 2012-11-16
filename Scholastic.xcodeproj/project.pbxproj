@@ -1571,18 +1571,15 @@
 		52F7C2681654DE9F00041661 /* BookSIAudioSampleTab~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F01654DE9F00041661 /* BookSIAudioSampleTab~iphone.png */; };
 		52F7C2691654DE9F00041661 /* BookSIAudioSampleTab~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F01654DE9F00041661 /* BookSIAudioSampleTab~iphone.png */; };
 		52F7C26A1654DE9F00041661 /* BookSIAudioSampleTab~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F01654DE9F00041661 /* BookSIAudioSampleTab~iphone.png */; };
-		52F7C26B1654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F11654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~ipad.png */; };
-		52F7C26C1654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F11654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~ipad.png */; };
-		52F7C26D1654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F11654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~ipad.png */; };
-		52F7C26E1654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F21654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~iphone.png */; };
-		52F7C26F1654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F21654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~iphone.png */; };
-		52F7C2701654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F21654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~iphone.png */; };
-		52F7C2711654DE9F00041661 /* BookSIAudioSampleTabHoizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F31654DE9F00041661 /* BookSIAudioSampleTabHoizontal~ipad.png */; };
-		52F7C2721654DE9F00041661 /* BookSIAudioSampleTabHoizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F31654DE9F00041661 /* BookSIAudioSampleTabHoizontal~ipad.png */; };
-		52F7C2731654DE9F00041661 /* BookSIAudioSampleTabHoizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F31654DE9F00041661 /* BookSIAudioSampleTabHoizontal~ipad.png */; };
-		52F7C2741654DE9F00041661 /* BookSIAudioSampleTabHoizontal~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F41654DE9F00041661 /* BookSIAudioSampleTabHoizontal~iphone.png */; };
-		52F7C2751654DE9F00041661 /* BookSIAudioSampleTabHoizontal~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F41654DE9F00041661 /* BookSIAudioSampleTabHoizontal~iphone.png */; };
-		52F7C2761654DE9F00041661 /* BookSIAudioSampleTabHoizontal~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F41654DE9F00041661 /* BookSIAudioSampleTabHoizontal~iphone.png */; };
+		52F7C26B1654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F11654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~ipad.png */; };
+		52F7C26C1654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F11654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~ipad.png */; };
+		52F7C26D1654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F11654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~ipad.png */; };
+		52F7C26E1654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F21654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~iphone.png */; };
+		52F7C26F1654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F21654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~iphone.png */; };
+		52F7C2701654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F21654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~iphone.png */; };
+		52F7C2741654DE9F00041661 /* BookSIAudioSampleTabHorizontal~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F41654DE9F00041661 /* BookSIAudioSampleTabHorizontal~iphone.png */; };
+		52F7C2751654DE9F00041661 /* BookSIAudioSampleTabHorizontal~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F41654DE9F00041661 /* BookSIAudioSampleTabHorizontal~iphone.png */; };
+		52F7C2761654DE9F00041661 /* BookSIAudioSampleTabHorizontal~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F41654DE9F00041661 /* BookSIAudioSampleTabHorizontal~iphone.png */; };
 		52F7C2771654DE9F00041661 /* BookSIAudioTab@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F51654DE9F00041661 /* BookSIAudioTab@2x~ipad.png */; };
 		52F7C2781654DE9F00041661 /* BookSIAudioTab@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F51654DE9F00041661 /* BookSIAudioTab@2x~ipad.png */; };
 		52F7C2791654DE9F00041661 /* BookSIAudioTab@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C1F51654DE9F00041661 /* BookSIAudioTab@2x~ipad.png */; };
@@ -2697,6 +2694,8 @@
 		C9AC86BB13AFAFA7000ECDAE /* storyinteraction-bg-older~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC869E13AFAF9B000ECDAE /* storyinteraction-bg-older~ipad.png */; };
 		C9AC86BD13AFAFA7000ECDAE /* storyinteraction-bg-older@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC869F13AFAF9D000ECDAE /* storyinteraction-bg-older@2x~iphone.png */; };
 		C9AC86BF13AFAFA7000ECDAE /* storyinteraction-bg-older~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC86A013AFAFA3000ECDAE /* storyinteraction-bg-older~iphone.png */; };
+		C9AE6355165681B80022249E /* BookSIAudioSampleTabHorizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AE6354165681B60022249E /* BookSIAudioSampleTabHorizontal~ipad.png */; };
+		C9AE6356165681B80022249E /* BookSIAudioSampleTabHorizontal~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AE6354165681B60022249E /* BookSIAudioSampleTabHorizontal~ipad.png */; };
 		C9B08BC81344D34F001963D0 /* KNFBFlowEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B051344D34F001963D0 /* KNFBFlowEucBook.m */; };
 		C9B08BCA1344D34F001963D0 /* KNFBTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B091344D34F001963D0 /* KNFBTextFlow.m */; };
 		C9B08BCC1344D34F001963D0 /* KNFBTextFlowBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B0B1344D34F001963D0 /* KNFBTextFlowBlock.m */; };
@@ -4556,10 +4555,9 @@
 		52F7C1EE1654DE9F00041661 /* BookSIAudioSampleTab@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioSampleTab@2x~iphone.png"; path = "Resources/UIAssets/BookSIAudioSampleTab@2x~iphone.png"; sourceTree = "<group>"; };
 		52F7C1EF1654DE9F00041661 /* BookSIAudioSampleTab~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioSampleTab~ipad.png"; path = "Resources/UIAssets/BookSIAudioSampleTab~ipad.png"; sourceTree = "<group>"; };
 		52F7C1F01654DE9F00041661 /* BookSIAudioSampleTab~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioSampleTab~iphone.png"; path = "Resources/UIAssets/BookSIAudioSampleTab~iphone.png"; sourceTree = "<group>"; };
-		52F7C1F11654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioSampleTabHoizontal@2x~ipad.png"; path = "Resources/UIAssets/BookSIAudioSampleTabHoizontal@2x~ipad.png"; sourceTree = "<group>"; };
-		52F7C1F21654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioSampleTabHoizontal@2x~iphone.png"; path = "Resources/UIAssets/BookSIAudioSampleTabHoizontal@2x~iphone.png"; sourceTree = "<group>"; };
-		52F7C1F31654DE9F00041661 /* BookSIAudioSampleTabHoizontal~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioSampleTabHoizontal~ipad.png"; path = "Resources/UIAssets/BookSIAudioSampleTabHoizontal~ipad.png"; sourceTree = "<group>"; };
-		52F7C1F41654DE9F00041661 /* BookSIAudioSampleTabHoizontal~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioSampleTabHoizontal~iphone.png"; path = "Resources/UIAssets/BookSIAudioSampleTabHoizontal~iphone.png"; sourceTree = "<group>"; };
+		52F7C1F11654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioSampleTabHorizontal@2x~ipad.png"; path = "Resources/UIAssets/BookSIAudioSampleTabHorizontal@2x~ipad.png"; sourceTree = "<group>"; };
+		52F7C1F21654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioSampleTabHorizontal@2x~iphone.png"; path = "Resources/UIAssets/BookSIAudioSampleTabHorizontal@2x~iphone.png"; sourceTree = "<group>"; };
+		52F7C1F41654DE9F00041661 /* BookSIAudioSampleTabHorizontal~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioSampleTabHorizontal~iphone.png"; path = "Resources/UIAssets/BookSIAudioSampleTabHorizontal~iphone.png"; sourceTree = "<group>"; };
 		52F7C1F51654DE9F00041661 /* BookSIAudioTab@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioTab@2x~ipad.png"; path = "Resources/UIAssets/BookSIAudioTab@2x~ipad.png"; sourceTree = "<group>"; };
 		52F7C1F61654DE9F00041661 /* BookSIAudioTab@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioTab@2x~iphone.png"; path = "Resources/UIAssets/BookSIAudioTab@2x~iphone.png"; sourceTree = "<group>"; };
 		52F7C1F71654DE9F00041661 /* BookSIAudioTab~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioTab~ipad.png"; path = "Resources/UIAssets/BookSIAudioTab~ipad.png"; sourceTree = "<group>"; };
@@ -5325,6 +5323,7 @@
 		C9AC869E13AFAF9B000ECDAE /* storyinteraction-bg-older~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older~ipad.png"; sourceTree = "<group>"; };
 		C9AC869F13AFAF9D000ECDAE /* storyinteraction-bg-older@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older@2x~iphone.png"; sourceTree = "<group>"; };
 		C9AC86A013AFAFA3000ECDAE /* storyinteraction-bg-older~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older~iphone.png"; sourceTree = "<group>"; };
+		C9AE6354165681B60022249E /* BookSIAudioSampleTabHorizontal~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSIAudioSampleTabHorizontal~ipad.png"; path = "Resources/UIAssets/BookSIAudioSampleTabHorizontal~ipad.png"; sourceTree = "<group>"; };
 		C9B08B041344D34F001963D0 /* KNFBFlowEucBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBFlowEucBook.h; sourceTree = "<group>"; };
 		C9B08B051344D34F001963D0 /* KNFBFlowEucBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBFlowEucBook.m; sourceTree = "<group>"; };
 		C9B08B071344D34F001963D0 /* KNFBParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBParagraphSource.h; sourceTree = "<group>"; };
@@ -7152,10 +7151,10 @@
 				52F7C1EE1654DE9F00041661 /* BookSIAudioSampleTab@2x~iphone.png */,
 				52F7C1EF1654DE9F00041661 /* BookSIAudioSampleTab~ipad.png */,
 				52F7C1F01654DE9F00041661 /* BookSIAudioSampleTab~iphone.png */,
-				52F7C1F11654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~ipad.png */,
-				52F7C1F21654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~iphone.png */,
-				52F7C1F31654DE9F00041661 /* BookSIAudioSampleTabHoizontal~ipad.png */,
-				52F7C1F41654DE9F00041661 /* BookSIAudioSampleTabHoizontal~iphone.png */,
+				52F7C1F11654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~ipad.png */,
+				52F7C1F21654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~iphone.png */,
+				52F7C1F41654DE9F00041661 /* BookSIAudioSampleTabHorizontal~iphone.png */,
+				C9AE6354165681B60022249E /* BookSIAudioSampleTabHorizontal~ipad.png */,
 				52F7C1F51654DE9F00041661 /* BookSIAudioTab@2x~ipad.png */,
 				52F7C1F61654DE9F00041661 /* BookSIAudioTab@2x~iphone.png */,
 				52F7C1F71654DE9F00041661 /* BookSIAudioTab~ipad.png */,
@@ -10733,10 +10732,9 @@
 				52F7C2621654DE9F00041661 /* BookSIAudioSampleTab@2x~iphone.png in Resources */,
 				52F7C2651654DE9F00041661 /* BookSIAudioSampleTab~ipad.png in Resources */,
 				52F7C2681654DE9F00041661 /* BookSIAudioSampleTab~iphone.png in Resources */,
-				52F7C26B1654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~ipad.png in Resources */,
-				52F7C26E1654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~iphone.png in Resources */,
-				52F7C2711654DE9F00041661 /* BookSIAudioSampleTabHoizontal~ipad.png in Resources */,
-				52F7C2741654DE9F00041661 /* BookSIAudioSampleTabHoizontal~iphone.png in Resources */,
+				52F7C26B1654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~ipad.png in Resources */,
+				52F7C26E1654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~iphone.png in Resources */,
+				52F7C2741654DE9F00041661 /* BookSIAudioSampleTabHorizontal~iphone.png in Resources */,
 				52F7C2771654DE9F00041661 /* BookSIAudioTab@2x~ipad.png in Resources */,
 				52F7C27A1654DE9F00041661 /* BookSIAudioTab@2x~iphone.png in Resources */,
 				52F7C27D1654DE9F00041661 /* BookSIAudioTab~ipad.png in Resources */,
@@ -10787,6 +10785,7 @@
 				52F7C3831656777F00041661 /* SIAudioSampleIcon@2x~iphone.png in Resources */,
 				52F7C3861656777F00041661 /* SIAudioSampleIcon~ipad.png in Resources */,
 				52F7C3891656777F00041661 /* SIAudioSampleIcon~iphone.png in Resources */,
+				C9AE6355165681B80022249E /* BookSIAudioSampleTabHorizontal~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10882,10 +10881,9 @@
 				52F7C2641654DE9F00041661 /* BookSIAudioSampleTab@2x~iphone.png in Resources */,
 				52F7C2671654DE9F00041661 /* BookSIAudioSampleTab~ipad.png in Resources */,
 				52F7C26A1654DE9F00041661 /* BookSIAudioSampleTab~iphone.png in Resources */,
-				52F7C26D1654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~ipad.png in Resources */,
-				52F7C2701654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~iphone.png in Resources */,
-				52F7C2731654DE9F00041661 /* BookSIAudioSampleTabHoizontal~ipad.png in Resources */,
-				52F7C2761654DE9F00041661 /* BookSIAudioSampleTabHoizontal~iphone.png in Resources */,
+				52F7C26D1654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~ipad.png in Resources */,
+				52F7C2701654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~iphone.png in Resources */,
+				52F7C2761654DE9F00041661 /* BookSIAudioSampleTabHorizontal~iphone.png in Resources */,
 				52F7C2791654DE9F00041661 /* BookSIAudioTab@2x~ipad.png in Resources */,
 				52F7C27C1654DE9F00041661 /* BookSIAudioTab@2x~iphone.png in Resources */,
 				52F7C27F1654DE9F00041661 /* BookSIAudioTab~ipad.png in Resources */,
@@ -11837,10 +11835,9 @@
 				52F7C2631654DE9F00041661 /* BookSIAudioSampleTab@2x~iphone.png in Resources */,
 				52F7C2661654DE9F00041661 /* BookSIAudioSampleTab~ipad.png in Resources */,
 				52F7C2691654DE9F00041661 /* BookSIAudioSampleTab~iphone.png in Resources */,
-				52F7C26C1654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~ipad.png in Resources */,
-				52F7C26F1654DE9F00041661 /* BookSIAudioSampleTabHoizontal@2x~iphone.png in Resources */,
-				52F7C2721654DE9F00041661 /* BookSIAudioSampleTabHoizontal~ipad.png in Resources */,
-				52F7C2751654DE9F00041661 /* BookSIAudioSampleTabHoizontal~iphone.png in Resources */,
+				52F7C26C1654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~ipad.png in Resources */,
+				52F7C26F1654DE9F00041661 /* BookSIAudioSampleTabHorizontal@2x~iphone.png in Resources */,
+				52F7C2751654DE9F00041661 /* BookSIAudioSampleTabHorizontal~iphone.png in Resources */,
 				52F7C2781654DE9F00041661 /* BookSIAudioTab@2x~ipad.png in Resources */,
 				52F7C27B1654DE9F00041661 /* BookSIAudioTab@2x~iphone.png in Resources */,
 				52F7C27E1654DE9F00041661 /* BookSIAudioTab~ipad.png in Resources */,
@@ -11891,6 +11888,7 @@
 				52F7C3841656777F00041661 /* SIAudioSampleIcon@2x~iphone.png in Resources */,
 				52F7C3871656777F00041661 /* SIAudioSampleIcon~ipad.png in Resources */,
 				52F7C38A1656777F00041661 /* SIAudioSampleIcon~iphone.png in Resources */,
+				C9AE6356165681B80022249E /* BookSIAudioSampleTabHorizontal~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

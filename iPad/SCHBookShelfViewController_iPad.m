@@ -175,7 +175,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
 
-    CGFloat inset = 86;
+    CGFloat inset = 64;
 
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
         [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape_iPad];
