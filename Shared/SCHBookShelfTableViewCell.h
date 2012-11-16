@@ -19,6 +19,7 @@
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, assign) id <SCHBookShelfTableViewCellDelegate> delegate;
 @property (nonatomic, assign) BOOL isNewBook;
+@property (nonatomic, assign) BOOL allowReadthrough;
 @property (nonatomic, assign) BOOL lastCell;
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) BOOL disabledForInteractions;
