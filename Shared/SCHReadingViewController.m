@@ -1793,6 +1793,14 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [standalone attachBackgroundView:self.readingView];
     }
     
+    if (aStoryInteractionController.shouldLockInterfaceOrientation) {
+        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            [self.appController setLockedInterfaceOrientations:UIInterfaceOrientationMaskLandscape];
+        } else {
+            [self.appController setLockedInterfaceOrientations:UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown];
+        }
+    }
+    
     // ensure the hosting view is the correct size before laying out the SI view
     standalone.view.frame = self.navigationController.view.bounds;
     
@@ -3206,6 +3214,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)aStoryInteractionController
 {
+    [self.appController setLockedInterfaceOrientations:0];
+    
     if (aStoryInteractionController == self.storyInteractionController) {
         if ([self.navigationController topViewController] != self) {
             [self.navigationController popViewControllerAnimated:NO];

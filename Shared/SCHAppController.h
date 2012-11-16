@@ -51,4 +51,7 @@
 - (void)failedLoginWithError:(NSError *)error;
 - (void)failedSyncWithError:(NSError *)error;
 
+// Rotation locking
+- (void)setLockedInterfaceOrientations:(NSUInteger)lockMask; // 0 indicates no lock
+
 @end
