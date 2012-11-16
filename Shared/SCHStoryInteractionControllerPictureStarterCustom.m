@@ -21,6 +21,7 @@
 @implementation SCHStoryInteractionControllerPictureStarterCustom
 
 @synthesize backgroundChooserButtons;
+@synthesize backgroundChooserImages;
 @synthesize introductionLabel;
 @synthesize pictureStarterCustomViews;
 @synthesize chosenBackgroundIndex;
@@ -28,6 +29,7 @@
 - (void)dealloc
 {
     [backgroundChooserButtons release], backgroundChooserButtons = nil;
+    [backgroundChooserImages release], backgroundChooserImages = nil;    
     [introductionLabel release], introductionLabel = nil;
     [pictureStarterCustomViews release], pictureStarterCustomViews = nil;
     [super dealloc];
@@ -43,9 +45,9 @@
     [self resizeCurrentViewToSize:view.bounds.size animationDuration:0 withAdditionalAdjustments:nil];
     
     SCHStoryInteractionPictureStarterCustom *pictureStarter = (SCHStoryInteractionPictureStarterCustom *)self.storyInteraction;
-    for (UIButton *button in self.backgroundChooserButtons) {
-        NSString *path = [pictureStarter imagePathAtIndex:button.tag];
-        [button setBackgroundImage:[self imageAtPath:path] forState:UIControlStateNormal];
+    for (UIImageView *imageView in self.backgroundChooserImages) {
+        NSString *path = [pictureStarter imagePathAtIndex:imageView.tag];
+        imageView.image = [self imageAtPath:path];
     }
     
     if (!iPad) {
