@@ -62,6 +62,7 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
 
 @synthesize identifier;
 @synthesize isNewBook;
+@synthesize allowReadthrough;
 @synthesize lastCell;
 @synthesize loading;
 @synthesize coalesceRefreshes;
@@ -234,7 +235,14 @@ static NSInteger const CELL_STAR_PERSONAL_RATING_VIEW = 302;
                                                                         audio:bookFeatures.hasAudio
                                                                        sample:bookFeatures.isSample] autorelease];
     }
-    
+
+    if (self.allowReadthrough == NO &&
+        bookFeatures.hasAudio == YES) {
+        bookFeatures = [[[SCHAppBookFeatures alloc] initWithStoryInteractions:[bookFeatures hasStoryInteractions]
+                                                                        audio:NO
+                                                                       sample:[bookFeatures isSample]] autorelease];
+    }
+
     if (bookFeatures.isSample == YES) {
         [self.starView setHidden:YES];
     } else {

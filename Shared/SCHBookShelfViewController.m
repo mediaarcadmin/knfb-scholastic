@@ -940,6 +940,7 @@ typedef enum
     cell.identifier = identifier;
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];
     cell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
+    cell.allowReadthrough = [[self.profileItem allowReadThrough] boolValue];
     
     if ([identifier isEqual:[self.books lastObject]]) {
         cell.lastCell = YES;
@@ -1007,6 +1008,7 @@ typedef enum
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
     gridCell.delegate = self;
     gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
+    gridCell.allowReadthrough = [[self.profileItem allowReadThrough] boolValue];
     gridCell.showRatings = self.showingRatings;
 
     if (self.currentlyLoadingIndex == index) {

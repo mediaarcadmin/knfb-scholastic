@@ -61,6 +61,7 @@
 @synthesize isNewBadge;
 @synthesize errorBadge;
 @synthesize isNewBook;
+@synthesize allowReadthrough;
 @synthesize disabledForInteractions;
 @synthesize coalesceRefreshes;
 @synthesize needsRefresh;
@@ -752,6 +753,13 @@
             bookFeatures.hasStoryInteractions == YES) {
             bookFeatures = [[[SCHAppBookFeatures alloc] initWithStoryInteractions:NO
                                                                             audio:[bookFeatures hasAudio]
+                                                                           sample:[bookFeatures isSample]] autorelease];
+        }
+
+        if (self.allowReadthrough == NO &&
+            bookFeatures.hasAudio == YES) {
+            bookFeatures = [[[SCHAppBookFeatures alloc] initWithStoryInteractions:[bookFeatures hasStoryInteractions]
+                                                                            audio:NO
                                                                            sample:[bookFeatures isSample]] autorelease];
         }
 
