@@ -11,6 +11,7 @@
 @interface SCHStoryInteractionControllerPictureStarterCustom : SCHStoryInteractionControllerPictureStarter
 
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *backgroundChooserButtons;
+@property (nonatomic, retain) IBOutletCollection(UIImageView) NSArray *backgroundChooserImages;
 @property (nonatomic, retain) IBOutlet UILabel *introductionLabel;
 
 - (IBAction)chooseBackground:(id)sender;
