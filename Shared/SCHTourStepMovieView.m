@@ -41,9 +41,6 @@
 - (void)checkMovieStatus:(NSNotification *)note {
     if (moviePlayer.loadState & (MPMovieLoadStatePlayable | MPMovieLoadStatePlaythroughOK))
     {
-        [self.contentView setBackgroundColor:[UIColor blackColor]];
-        [self.contentView addSubview:self.moviePlayer.view];
-        [self.contentView bringSubviewToFront:self.tourImageView];
         [UIView animateWithDuration:0.1
                          animations:^{
                              self.tourImageView.alpha = 0.9f;
@@ -62,9 +59,12 @@
     }
     
     if (self.moviePlayer) {
-        [self.contentView bringSubviewToFront:self.tourImageView];
-        [self.moviePlayer stop];
-        [self.moviePlayer play];
+        if ([self.moviePlayer playbackState] == MPMoviePlaybackStatePlaying) {
+            [self.moviePlayer setCurrentPlaybackTime:0.0f];
+        } else {
+            [self.moviePlayer play];
+        }
+        
         return;
     }
     
@@ -80,8 +80,9 @@
     UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin |
     UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
-    // movie player view is added to the view hierarchy after the "is ready to play" notification is sent
-    // this stops a black flicker effect
+    [self.contentView addSubview:self.moviePlayer.view];
+    [self.contentView bringSubviewToFront:self.tourImageView];
+
     [self.moviePlayer play];
 
 }
@@ -101,6 +102,8 @@
                              self.tourImageView.alpha = 1;
                              self.moviePlayer.view.alpha = 0.9f;
                              [self.moviePlayer stop];
+                             [self.moviePlayer.view removeFromSuperview];
+                             self.moviePlayer = nil;
                          }];
     }
 }
