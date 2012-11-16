@@ -32,6 +32,7 @@
 @synthesize bookCoverView;
 @synthesize identifier;
 @synthesize isNewBook;
+@synthesize allowReadthrough;
 @synthesize loading;
 @synthesize disabledForInteractions;
 @synthesize showRatings;
@@ -174,6 +175,12 @@
 {
     isNewBook = newIsNewBook;
     self.bookCoverView.isNewBook = newIsNewBook;
+}
+
+- (void)setAllowReadthrough:(BOOL)setAllowReadthrough
+{
+    allowReadthrough = setAllowReadthrough;
+    self.bookCoverView.allowReadthrough = setAllowReadthrough;
 }
 
 - (void)setDisabledForInteractions:(BOOL)newDisabledForInteractions
