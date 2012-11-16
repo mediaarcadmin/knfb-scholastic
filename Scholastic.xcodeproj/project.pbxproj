@@ -13422,14 +13422,16 @@
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};
@@ -13610,9 +13612,10 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution: K-NFB Reading Technology Inc.";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: K-NFB Reading Technology Inc.";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PROVISIONING_PROFILE = "2E59CAE6-A1A5-42B1-B1FC-F87A932B37F4";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2E59CAE6-A1A5-42B1-B1FC-F87A932B37F4";
+				VALID_ARCHS = armv7;
 			};
 			name = "Ad Hoc";
 		};
