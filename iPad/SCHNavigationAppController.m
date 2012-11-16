@@ -58,6 +58,7 @@
 @property (nonatomic, retain) SCHSettingsViewController *settingsViewController;
 @property (nonatomic, retain) UIViewController *readingManagerViewController;
 @property (nonatomic, assign) NSUInteger dynamicInterfaceOrientations;
+@property (nonatomic, assign) NSUInteger lockedInterfaceOrientations;
 
 - (void)pushSamplesAnimated:(BOOL)animated;
 - (void)pushProfileAnimated:(BOOL)animated showDictionaryChoice:(BOOL)showDictionary showTooltips:(BOOL)showTooltips;
@@ -80,6 +81,7 @@
 @synthesize settingsViewController;
 @synthesize readingManagerViewController;
 @synthesize dynamicInterfaceOrientations;
+@synthesize lockedInterfaceOrientations;
 
 - (void)dealloc
 {
@@ -406,7 +408,7 @@
 
 - (void)presentAccountBookWithIdentifier:(SCHBookIdentifier *)identifier
 {
-    return; // TODO implement this
+    return; // TODO implement this (not currently used)
 }
 
 #pragma mark - Exit Methods
@@ -1004,18 +1006,20 @@
 {
     BOOL supportsOrientation = NO;
     
+    NSUInteger supportedOrientations = [self supportedInterfaceOrientations];
+    
     switch (orientation) {
         case UIInterfaceOrientationLandscapeLeft:
-            supportsOrientation = dynamicInterfaceOrientations & UIInterfaceOrientationMaskLandscapeLeft;
+            supportsOrientation = supportedOrientations & UIInterfaceOrientationMaskLandscapeLeft;
             break;
         case UIInterfaceOrientationLandscapeRight:
-            supportsOrientation = dynamicInterfaceOrientations & UIInterfaceOrientationMaskLandscapeRight;
+            supportsOrientation = supportedOrientations & UIInterfaceOrientationMaskLandscapeRight;
             break;
         case UIInterfaceOrientationPortrait:
-            supportsOrientation = dynamicInterfaceOrientations & UIInterfaceOrientationMaskPortrait;
+            supportsOrientation = supportedOrientations & UIInterfaceOrientationMaskPortrait;
             break;
         case UIInterfaceOrientationPortraitUpsideDown:
-            supportsOrientation = dynamicInterfaceOrientations & UIInterfaceOrientationMaskPortraitUpsideDown;
+            supportsOrientation = supportedOrientations & UIInterfaceOrientationMaskPortraitUpsideDown;
             break;
     }
     
@@ -1033,7 +1037,7 @@
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return self.dynamicInterfaceOrientations;
+    return self.dynamicInterfaceOrientations & ~self.lockedInterfaceOrientations;
 }
 
 @end
