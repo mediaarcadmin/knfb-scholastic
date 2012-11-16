@@ -2640,7 +2640,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)updateScrubberHUD
 {
-    BOOL suppressPageNumbers = self.shouldShowPageNumbers && (self.layoutType == SCHReadingViewLayoutTypeFixed);
+    BOOL suppressPageNumbers = !(self.shouldShowPageNumbers && (self.layoutType == SCHReadingViewLayoutTypeFixed));
 
     if (self.currentPageIndex != NSUIntegerMax) {
         
