@@ -1692,6 +1692,54 @@
 		52F7C2E11654E8D700041661 /* SCHTourStepView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FE33F4161484EC005B6AA8 /* SCHTourStepView.m */; };
 		52F7C2E21654E90000041661 /* LibreAccessActivityLogSvc_tns1.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A7BAF716280466007E0E5B /* LibreAccessActivityLogSvc_tns1.m */; };
 		52F7C2E31654E93400041661 /* SCHLibreAccessActivityLogConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7894315F5F4E0003B291C /* SCHLibreAccessActivityLogConstants.m */; };
+		52F7C35C1656777F00041661 /* AudioIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34C1656777F00041661 /* AudioIcon@2x~ipad.png */; };
+		52F7C35D1656777F00041661 /* AudioIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34C1656777F00041661 /* AudioIcon@2x~ipad.png */; };
+		52F7C35E1656777F00041661 /* AudioIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34C1656777F00041661 /* AudioIcon@2x~ipad.png */; };
+		52F7C35F1656777F00041661 /* AudioIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34D1656777F00041661 /* AudioIcon@2x~iphone.png */; };
+		52F7C3601656777F00041661 /* AudioIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34D1656777F00041661 /* AudioIcon@2x~iphone.png */; };
+		52F7C3611656777F00041661 /* AudioIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34D1656777F00041661 /* AudioIcon@2x~iphone.png */; };
+		52F7C3621656777F00041661 /* AudioIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34E1656777F00041661 /* AudioIcon~ipad.png */; };
+		52F7C3631656777F00041661 /* AudioIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34E1656777F00041661 /* AudioIcon~ipad.png */; };
+		52F7C3641656777F00041661 /* AudioIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34E1656777F00041661 /* AudioIcon~ipad.png */; };
+		52F7C3651656777F00041661 /* AudioIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34F1656777F00041661 /* AudioIcon~iphone.png */; };
+		52F7C3661656777F00041661 /* AudioIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34F1656777F00041661 /* AudioIcon~iphone.png */; };
+		52F7C3671656777F00041661 /* AudioIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C34F1656777F00041661 /* AudioIcon~iphone.png */; };
+		52F7C3681656777F00041661 /* AudioSampleIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3501656777F00041661 /* AudioSampleIcon@2x~ipad.png */; };
+		52F7C3691656777F00041661 /* AudioSampleIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3501656777F00041661 /* AudioSampleIcon@2x~ipad.png */; };
+		52F7C36A1656777F00041661 /* AudioSampleIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3501656777F00041661 /* AudioSampleIcon@2x~ipad.png */; };
+		52F7C36B1656777F00041661 /* AudioSampleIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3511656777F00041661 /* AudioSampleIcon@2x~iphone.png */; };
+		52F7C36C1656777F00041661 /* AudioSampleIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3511656777F00041661 /* AudioSampleIcon@2x~iphone.png */; };
+		52F7C36D1656777F00041661 /* AudioSampleIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3511656777F00041661 /* AudioSampleIcon@2x~iphone.png */; };
+		52F7C36E1656777F00041661 /* AudioSampleIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3521656777F00041661 /* AudioSampleIcon~ipad.png */; };
+		52F7C36F1656777F00041661 /* AudioSampleIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3521656777F00041661 /* AudioSampleIcon~ipad.png */; };
+		52F7C3701656777F00041661 /* AudioSampleIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3521656777F00041661 /* AudioSampleIcon~ipad.png */; };
+		52F7C3711656777F00041661 /* AudioSampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3531656777F00041661 /* AudioSampleIcon~iphone.png */; };
+		52F7C3721656777F00041661 /* AudioSampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3531656777F00041661 /* AudioSampleIcon~iphone.png */; };
+		52F7C3731656777F00041661 /* AudioSampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3531656777F00041661 /* AudioSampleIcon~iphone.png */; };
+		52F7C3741656777F00041661 /* SIAudioIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3541656777F00041661 /* SIAudioIcon@2x~ipad.png */; };
+		52F7C3751656777F00041661 /* SIAudioIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3541656777F00041661 /* SIAudioIcon@2x~ipad.png */; };
+		52F7C3761656777F00041661 /* SIAudioIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3541656777F00041661 /* SIAudioIcon@2x~ipad.png */; };
+		52F7C3771656777F00041661 /* SIAudioIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3551656777F00041661 /* SIAudioIcon@2x~iphone.png */; };
+		52F7C3781656777F00041661 /* SIAudioIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3551656777F00041661 /* SIAudioIcon@2x~iphone.png */; };
+		52F7C3791656777F00041661 /* SIAudioIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3551656777F00041661 /* SIAudioIcon@2x~iphone.png */; };
+		52F7C37A1656777F00041661 /* SIAudioIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3561656777F00041661 /* SIAudioIcon~ipad.png */; };
+		52F7C37B1656777F00041661 /* SIAudioIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3561656777F00041661 /* SIAudioIcon~ipad.png */; };
+		52F7C37C1656777F00041661 /* SIAudioIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3561656777F00041661 /* SIAudioIcon~ipad.png */; };
+		52F7C37D1656777F00041661 /* SIAudioIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3571656777F00041661 /* SIAudioIcon~iphone.png */; };
+		52F7C37E1656777F00041661 /* SIAudioIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3571656777F00041661 /* SIAudioIcon~iphone.png */; };
+		52F7C37F1656777F00041661 /* SIAudioIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3571656777F00041661 /* SIAudioIcon~iphone.png */; };
+		52F7C3801656777F00041661 /* SIAudioSampleIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3581656777F00041661 /* SIAudioSampleIcon@2x~ipad.png */; };
+		52F7C3811656777F00041661 /* SIAudioSampleIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3581656777F00041661 /* SIAudioSampleIcon@2x~ipad.png */; };
+		52F7C3821656777F00041661 /* SIAudioSampleIcon@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3581656777F00041661 /* SIAudioSampleIcon@2x~ipad.png */; };
+		52F7C3831656777F00041661 /* SIAudioSampleIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3591656777F00041661 /* SIAudioSampleIcon@2x~iphone.png */; };
+		52F7C3841656777F00041661 /* SIAudioSampleIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3591656777F00041661 /* SIAudioSampleIcon@2x~iphone.png */; };
+		52F7C3851656777F00041661 /* SIAudioSampleIcon@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C3591656777F00041661 /* SIAudioSampleIcon@2x~iphone.png */; };
+		52F7C3861656777F00041661 /* SIAudioSampleIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C35A1656777F00041661 /* SIAudioSampleIcon~ipad.png */; };
+		52F7C3871656777F00041661 /* SIAudioSampleIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C35A1656777F00041661 /* SIAudioSampleIcon~ipad.png */; };
+		52F7C3881656777F00041661 /* SIAudioSampleIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C35A1656777F00041661 /* SIAudioSampleIcon~ipad.png */; };
+		52F7C3891656777F00041661 /* SIAudioSampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C35B1656777F00041661 /* SIAudioSampleIcon~iphone.png */; };
+		52F7C38A1656777F00041661 /* SIAudioSampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C35B1656777F00041661 /* SIAudioSampleIcon~iphone.png */; };
+		52F7C38B1656777F00041661 /* SIAudioSampleIcon~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F7C35B1656777F00041661 /* SIAudioSampleIcon~iphone.png */; };
 		52FCCF4114C6FE71008C2626 /* storia-preview-two.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two.png */; };
 		52FCCF4214C6FE71008C2626 /* storia-preview-two.png in Resources */ = {isa = PBXBuildFile; fileRef = 52FCCF4014C6FE71008C2626 /* storia-preview-two.png */; };
 		7D3F313714069A5200C6F445 /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D583133B9C0100FB4404 /* libcss.a */; };
@@ -4546,6 +4594,22 @@
 		52F7C2141654DE9F00041661 /* SISampleIcon@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SISampleIcon@2x~iphone.png"; path = "Resources/UIAssets/SISampleIcon@2x~iphone.png"; sourceTree = "<group>"; };
 		52F7C2151654DE9F00041661 /* SISampleIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SISampleIcon~ipad.png"; path = "Resources/UIAssets/SISampleIcon~ipad.png"; sourceTree = "<group>"; };
 		52F7C2161654DE9F00041661 /* SISampleIcon~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SISampleIcon~iphone.png"; path = "Resources/UIAssets/SISampleIcon~iphone.png"; sourceTree = "<group>"; };
+		52F7C34C1656777F00041661 /* AudioIcon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AudioIcon@2x~ipad.png"; path = "Resources/UIAssets/AudioIcon@2x~ipad.png"; sourceTree = "<group>"; };
+		52F7C34D1656777F00041661 /* AudioIcon@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AudioIcon@2x~iphone.png"; path = "Resources/UIAssets/AudioIcon@2x~iphone.png"; sourceTree = "<group>"; };
+		52F7C34E1656777F00041661 /* AudioIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AudioIcon~ipad.png"; path = "Resources/UIAssets/AudioIcon~ipad.png"; sourceTree = "<group>"; };
+		52F7C34F1656777F00041661 /* AudioIcon~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AudioIcon~iphone.png"; path = "Resources/UIAssets/AudioIcon~iphone.png"; sourceTree = "<group>"; };
+		52F7C3501656777F00041661 /* AudioSampleIcon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AudioSampleIcon@2x~ipad.png"; path = "Resources/UIAssets/AudioSampleIcon@2x~ipad.png"; sourceTree = "<group>"; };
+		52F7C3511656777F00041661 /* AudioSampleIcon@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AudioSampleIcon@2x~iphone.png"; path = "Resources/UIAssets/AudioSampleIcon@2x~iphone.png"; sourceTree = "<group>"; };
+		52F7C3521656777F00041661 /* AudioSampleIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AudioSampleIcon~ipad.png"; path = "Resources/UIAssets/AudioSampleIcon~ipad.png"; sourceTree = "<group>"; };
+		52F7C3531656777F00041661 /* AudioSampleIcon~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AudioSampleIcon~iphone.png"; path = "Resources/UIAssets/AudioSampleIcon~iphone.png"; sourceTree = "<group>"; };
+		52F7C3541656777F00041661 /* SIAudioIcon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIAudioIcon@2x~ipad.png"; path = "Resources/UIAssets/SIAudioIcon@2x~ipad.png"; sourceTree = "<group>"; };
+		52F7C3551656777F00041661 /* SIAudioIcon@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIAudioIcon@2x~iphone.png"; path = "Resources/UIAssets/SIAudioIcon@2x~iphone.png"; sourceTree = "<group>"; };
+		52F7C3561656777F00041661 /* SIAudioIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIAudioIcon~ipad.png"; path = "Resources/UIAssets/SIAudioIcon~ipad.png"; sourceTree = "<group>"; };
+		52F7C3571656777F00041661 /* SIAudioIcon~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIAudioIcon~iphone.png"; path = "Resources/UIAssets/SIAudioIcon~iphone.png"; sourceTree = "<group>"; };
+		52F7C3581656777F00041661 /* SIAudioSampleIcon@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIAudioSampleIcon@2x~ipad.png"; path = "Resources/UIAssets/SIAudioSampleIcon@2x~ipad.png"; sourceTree = "<group>"; };
+		52F7C3591656777F00041661 /* SIAudioSampleIcon@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIAudioSampleIcon@2x~iphone.png"; path = "Resources/UIAssets/SIAudioSampleIcon@2x~iphone.png"; sourceTree = "<group>"; };
+		52F7C35A1656777F00041661 /* SIAudioSampleIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIAudioSampleIcon~ipad.png"; path = "Resources/UIAssets/SIAudioSampleIcon~ipad.png"; sourceTree = "<group>"; };
+		52F7C35B1656777F00041661 /* SIAudioSampleIcon~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIAudioSampleIcon~iphone.png"; path = "Resources/UIAssets/SIAudioSampleIcon~iphone.png"; sourceTree = "<group>"; };
 		52FCCF4014C6FE71008C2626 /* storia-preview-two.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-preview-two.png"; path = "Resources/UIAssets/storia-preview-two.png"; sourceTree = "<group>"; };
 		7D95F777150F66160093BB90 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -7126,6 +7190,22 @@
 				52F7C2141654DE9F00041661 /* SISampleIcon@2x~iphone.png */,
 				52F7C2151654DE9F00041661 /* SISampleIcon~ipad.png */,
 				52F7C2161654DE9F00041661 /* SISampleIcon~iphone.png */,
+				52F7C34C1656777F00041661 /* AudioIcon@2x~ipad.png */,
+				52F7C34D1656777F00041661 /* AudioIcon@2x~iphone.png */,
+				52F7C34E1656777F00041661 /* AudioIcon~ipad.png */,
+				52F7C34F1656777F00041661 /* AudioIcon~iphone.png */,
+				52F7C3501656777F00041661 /* AudioSampleIcon@2x~ipad.png */,
+				52F7C3511656777F00041661 /* AudioSampleIcon@2x~iphone.png */,
+				52F7C3521656777F00041661 /* AudioSampleIcon~ipad.png */,
+				52F7C3531656777F00041661 /* AudioSampleIcon~iphone.png */,
+				52F7C3541656777F00041661 /* SIAudioIcon@2x~ipad.png */,
+				52F7C3551656777F00041661 /* SIAudioIcon@2x~iphone.png */,
+				52F7C3561656777F00041661 /* SIAudioIcon~ipad.png */,
+				52F7C3571656777F00041661 /* SIAudioIcon~iphone.png */,
+				52F7C3581656777F00041661 /* SIAudioSampleIcon@2x~ipad.png */,
+				52F7C3591656777F00041661 /* SIAudioSampleIcon@2x~iphone.png */,
+				52F7C35A1656777F00041661 /* SIAudioSampleIcon~ipad.png */,
+				52F7C35B1656777F00041661 /* SIAudioSampleIcon~iphone.png */,
 			);
 			name = FeatureImages;
 			sourceTree = "<group>";
@@ -10691,6 +10771,22 @@
 				52F7C2D41654DE9F00041661 /* SISampleIcon@2x~iphone.png in Resources */,
 				52F7C2D71654DE9F00041661 /* SISampleIcon~ipad.png in Resources */,
 				52F7C2DA1654DE9F00041661 /* SISampleIcon~iphone.png in Resources */,
+				52F7C35C1656777F00041661 /* AudioIcon@2x~ipad.png in Resources */,
+				52F7C35F1656777F00041661 /* AudioIcon@2x~iphone.png in Resources */,
+				52F7C3621656777F00041661 /* AudioIcon~ipad.png in Resources */,
+				52F7C3651656777F00041661 /* AudioIcon~iphone.png in Resources */,
+				52F7C3681656777F00041661 /* AudioSampleIcon@2x~ipad.png in Resources */,
+				52F7C36B1656777F00041661 /* AudioSampleIcon@2x~iphone.png in Resources */,
+				52F7C36E1656777F00041661 /* AudioSampleIcon~ipad.png in Resources */,
+				52F7C3711656777F00041661 /* AudioSampleIcon~iphone.png in Resources */,
+				52F7C3741656777F00041661 /* SIAudioIcon@2x~ipad.png in Resources */,
+				52F7C3771656777F00041661 /* SIAudioIcon@2x~iphone.png in Resources */,
+				52F7C37A1656777F00041661 /* SIAudioIcon~ipad.png in Resources */,
+				52F7C37D1656777F00041661 /* SIAudioIcon~iphone.png in Resources */,
+				52F7C3801656777F00041661 /* SIAudioSampleIcon@2x~ipad.png in Resources */,
+				52F7C3831656777F00041661 /* SIAudioSampleIcon@2x~iphone.png in Resources */,
+				52F7C3861656777F00041661 /* SIAudioSampleIcon~ipad.png in Resources */,
+				52F7C3891656777F00041661 /* SIAudioSampleIcon~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10824,6 +10920,22 @@
 				52F7C2D61654DE9F00041661 /* SISampleIcon@2x~iphone.png in Resources */,
 				52F7C2D91654DE9F00041661 /* SISampleIcon~ipad.png in Resources */,
 				52F7C2DC1654DE9F00041661 /* SISampleIcon~iphone.png in Resources */,
+				52F7C35E1656777F00041661 /* AudioIcon@2x~ipad.png in Resources */,
+				52F7C3611656777F00041661 /* AudioIcon@2x~iphone.png in Resources */,
+				52F7C3641656777F00041661 /* AudioIcon~ipad.png in Resources */,
+				52F7C3671656777F00041661 /* AudioIcon~iphone.png in Resources */,
+				52F7C36A1656777F00041661 /* AudioSampleIcon@2x~ipad.png in Resources */,
+				52F7C36D1656777F00041661 /* AudioSampleIcon@2x~iphone.png in Resources */,
+				52F7C3701656777F00041661 /* AudioSampleIcon~ipad.png in Resources */,
+				52F7C3731656777F00041661 /* AudioSampleIcon~iphone.png in Resources */,
+				52F7C3761656777F00041661 /* SIAudioIcon@2x~ipad.png in Resources */,
+				52F7C3791656777F00041661 /* SIAudioIcon@2x~iphone.png in Resources */,
+				52F7C37C1656777F00041661 /* SIAudioIcon~ipad.png in Resources */,
+				52F7C37F1656777F00041661 /* SIAudioIcon~iphone.png in Resources */,
+				52F7C3821656777F00041661 /* SIAudioSampleIcon@2x~ipad.png in Resources */,
+				52F7C3851656777F00041661 /* SIAudioSampleIcon@2x~iphone.png in Resources */,
+				52F7C3881656777F00041661 /* SIAudioSampleIcon~ipad.png in Resources */,
+				52F7C38B1656777F00041661 /* SIAudioSampleIcon~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11763,6 +11875,22 @@
 				52F7C2D51654DE9F00041661 /* SISampleIcon@2x~iphone.png in Resources */,
 				52F7C2D81654DE9F00041661 /* SISampleIcon~ipad.png in Resources */,
 				52F7C2DB1654DE9F00041661 /* SISampleIcon~iphone.png in Resources */,
+				52F7C35D1656777F00041661 /* AudioIcon@2x~ipad.png in Resources */,
+				52F7C3601656777F00041661 /* AudioIcon@2x~iphone.png in Resources */,
+				52F7C3631656777F00041661 /* AudioIcon~ipad.png in Resources */,
+				52F7C3661656777F00041661 /* AudioIcon~iphone.png in Resources */,
+				52F7C3691656777F00041661 /* AudioSampleIcon@2x~ipad.png in Resources */,
+				52F7C36C1656777F00041661 /* AudioSampleIcon@2x~iphone.png in Resources */,
+				52F7C36F1656777F00041661 /* AudioSampleIcon~ipad.png in Resources */,
+				52F7C3721656777F00041661 /* AudioSampleIcon~iphone.png in Resources */,
+				52F7C3751656777F00041661 /* SIAudioIcon@2x~ipad.png in Resources */,
+				52F7C3781656777F00041661 /* SIAudioIcon@2x~iphone.png in Resources */,
+				52F7C37B1656777F00041661 /* SIAudioIcon~ipad.png in Resources */,
+				52F7C37E1656777F00041661 /* SIAudioIcon~iphone.png in Resources */,
+				52F7C3811656777F00041661 /* SIAudioSampleIcon@2x~ipad.png in Resources */,
+				52F7C3841656777F00041661 /* SIAudioSampleIcon@2x~iphone.png in Resources */,
+				52F7C3871656777F00041661 /* SIAudioSampleIcon~ipad.png in Resources */,
+				52F7C38A1656777F00041661 /* SIAudioSampleIcon~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
