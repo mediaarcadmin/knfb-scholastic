@@ -258,11 +258,11 @@
     
     NSInteger maxScore = self.progressView.numberOfSteps;
     self.scoreLabel.text = [NSString stringWithFormat:@"You got %d out of %d right!", self.score, maxScore];
-    if (score <= (int) ceil((float)maxScore/2.0f)) {
-        // 50% or less
+    if (score < (int) ceil((float)maxScore/2.0f)) {
+        // less than 50%
         self.scoreSublabel.text = NSLocalizedString(@"Try reading the eBook again to find more answers.", @"Try reading the book again to find more answers.");
     } else if (score < ceil((float)maxScore)) {
-        // less than 100%
+        // 50% to less than 100%
         self.scoreSublabel.text = NSLocalizedString(@"Great job! Read the eBook again for an even higher score.", @"Great job! Read the book again for an even higher score.");
     } else {
         // 100%
@@ -283,14 +283,14 @@
 {
     if (!self.storyInteraction.olderStoryInteraction) {
         NSInteger maxScore = self.progressView.numberOfSteps;
-        if (score <= (int) ceil((float)maxScore/2.0f)) {
-            // 50% or less
+        if (score < (int) ceil((float)maxScore/2.0f)) {
+            // less than 50%
             if (!self.storyInteraction.olderStoryInteraction) {
                 [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForLessThanFiftyPercent]
                                 fromBundle:YES];
             }
         } else if (score < ceil((float)maxScore)) {
-            // less than 100%
+            // 50% to less than 100%
             if (!self.storyInteraction.olderStoryInteraction) {
                 [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForMoreThanFiftyPercent]
                                 fromBundle:YES];
