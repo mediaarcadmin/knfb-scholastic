@@ -35,6 +35,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
 @synthesize showSamples;
 @synthesize samplesButton;
 @synthesize containerView;
+@synthesize centeringContainerView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,6 +55,7 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     [spinner release], spinner = nil;
     [promptLabel release], promptLabel = nil;
     [containerView release], containerView = nil;
+    [centeringContainerView release], centeringContainerView = nil;
 }
 
 - (void)dealloc
@@ -250,7 +252,14 @@ static const CGFloat kSCHStoriaLoginContentHeightLandscape = 420;
     CGRect promptFrame = self.promptLabel.frame;
     promptFrame.size.height = promptHeight;
     self.promptLabel.frame = promptFrame;
-    self.containerView.transform = containerTransform;    
+    self.containerView.transform = containerTransform;
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        CGRect containerFrame = self.containerView.frame;
+        containerFrame.size.height = phoneContainerHeight;
+        containerFrame.origin.y = CGRectGetHeight(self.centeringContainerView.frame) - phoneContainerHeight;
+        self.containerView.frame = containerFrame;
+    }
 }
 
 #pragma mark - UITextFieldDelegate

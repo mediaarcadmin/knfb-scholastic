@@ -72,7 +72,6 @@
 										<string key="NSFrame">{{9, 48}, {303, 48}}</string>
 										<reference key="NSSuperview" ref="837086422"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<object class="NSColor" key="IBUIBackgroundColor" id="913759489">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MCAwAA</bytes>
@@ -538,6 +537,14 @@
 					<int key="connectionID">88</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">centeringContainerView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="837086422"/>
+					</object>
+					<int key="connectionID">105</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">samplesButtonAction:</string>
 						<reference key="source" ref="874913808"/>
@@ -745,7 +752,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">104</int>
+			<int key="maxID">105</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -773,6 +780,7 @@
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="bottomField">UITextField</string>
+						<string key="centeringContainerView">UIView</string>
 						<string key="containerView">UIView</string>
 						<string key="loginButton">UIButton</string>
 						<string key="previewButton">UIButton</string>
@@ -785,6 +793,10 @@
 						<object class="IBToOneOutletInfo" key="bottomField">
 							<string key="name">bottomField</string>
 							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="centeringContainerView">
+							<string key="name">centeringContainerView</string>
+							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="containerView">
 							<string key="name">containerView</string>

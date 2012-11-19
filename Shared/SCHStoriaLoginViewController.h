@@ -26,6 +26,7 @@
 @property (nonatomic, retain) IBOutlet TTTAttributedLabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UIButton *samplesButton;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
+@property (nonatomic, retain) IBOutlet UIView *centeringContainerView;  // iPhone only
 
 - (IBAction)loginButtonAction:(id)sender;
 - (IBAction)previewButtonAction:(id)sender;
