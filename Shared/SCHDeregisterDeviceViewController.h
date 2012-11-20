@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "SCHAppController.h"
 
+@class SCHSettingsViewController;
+
 @interface SCHDeregisterDeviceViewController : UIViewController {}
 
 @property (nonatomic, assign) id <SCHAppController> appController;
+@property (nonatomic, assign) SCHSettingsViewController *settingsViewController;
 @property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UILabel *info1Label;
 @property (nonatomic, retain) IBOutlet UILabel *info2Label;

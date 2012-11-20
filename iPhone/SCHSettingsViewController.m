@@ -1210,6 +1210,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             case kSCHSettingsPanelDeregisterDevice: {
                 SCHDeregisterDeviceViewController *controller = [[[SCHDeregisterDeviceViewController alloc] init] autorelease];
                 controller.appController = self.appController;
+                controller.settingsViewController = self;
                 self.contentViewController = controller;
             } break;
             case kSCHSettingsPanelSupport: {

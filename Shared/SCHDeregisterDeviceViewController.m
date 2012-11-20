@@ -21,6 +21,7 @@
 #import "NSString+EmailValidation.h"
 #import "SCHAccountVerifier.h"
 #import "SFHFKeychainUtils.h"
+#import "SCHSettingsViewController.h"
 
 typedef enum  {
     SCHDeregistrationAlertNone,
@@ -35,6 +36,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 @property (nonatomic, retain) SCHAccountVerifier *accountVerifier;
 
+- (void)setEnablesUI:(BOOL)hidden;
 - (void)setAlert:(SCHDeregistrationAlert)alert;
 - (void)deregisterAfterSuccessfulAuthentication;
 - (void)deregisterFailedAuthentication:(NSError *)error 
@@ -53,6 +55,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize deregisterButton;
 @synthesize spinner;
 @synthesize appController;
+@synthesize settingsViewController;
 @synthesize backButton;
 @synthesize containerView;
 @synthesize shadowView;
@@ -78,6 +81,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [self releaseViewObjects];
     appController = nil;
+    settingsViewController = nil;
     [accountVerifier release], accountVerifier = nil;
     [super dealloc];
 }
@@ -159,7 +163,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             __block SCHDeregisterDeviceViewController *weakSelf = self;
             [self.deregisterButton setEnabled:NO];
             [self.spinner startAnimating];
-//            [self setEnablesUI:NO];
+            [self setEnablesUI:NO];
             [[SCHAuthenticationManager sharedAuthenticationManager] validateWithUserName:username
                                             withPassword:self.passwordField.text 
                                           updatePassword:YES
@@ -169,7 +173,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                     [self setAlert:SCHDeregistrationAlertAuthenticationFailure];
                     [self.spinner stopAnimating];
                     [self.deregisterButton setEnabled:YES];
-//                        [weakSelf setEnablesUI:YES];                                    
+                    [weakSelf setEnablesUI:YES];
                 } else {
                     
                     // check this username isnt for a different user
@@ -217,6 +221,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                            [self setAlert:SCHDeregistrationAlertWrongUser];
                                            [self.spinner stopAnimating];
                                            [self.deregisterButton setEnabled:YES];
+                                           [self setEnablesUI:YES];
                                        }                                       
                                    }];
                     
@@ -227,6 +232,15 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                     }    
             }];
         }
+    }
+}
+
+- (void)setEnablesUI:(BOOL)enable
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.settingsViewController setBackButtonHidden:!enable];
+    } else if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)) {
+        [self.backButton setHidden:!enable];
     }
 }
 
@@ -268,7 +282,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                   initWithTitle:NSLocalizedString(@"Unable to Deregister Device", @"") 
                                   message:[error localizedDescription]];
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
-//                [self setEnablesUI:YES];
+                [self setEnablesUI:YES];
                 [self.deregisterButton setEnabled:YES];
             }];
             [alert show];
@@ -325,7 +339,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [alert addButtonWithTitle:(offerForceDeregistration == YES ? NSLocalizedString(@"Cancel", @"") : NSLocalizedString(@"OK", @"") ) block:^{
         [self.deregisterButton setEnabled:YES];
         [self.spinner stopAnimating];
-//        [self setEnablesUI:YES];                                            
+        [self setEnablesUI:YES];
     }];
     [alert show];
     [alert release];    
