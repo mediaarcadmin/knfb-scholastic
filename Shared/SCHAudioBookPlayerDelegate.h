@@ -12,6 +12,16 @@
 
 @protocol SCHAudioBookPlayerDelegate
 
+- (void)audioBookPlayerHighlightWordOld:(SCHAudioBookPlayer *)player
+                             layoutPage:(NSUInteger)layoutPage
+                         pageWordOffset:(NSUInteger)pageWordOffset;
+- (void)audioBookPlayerHighlightWordNew:(SCHAudioBookPlayer *)player
+                             layoutPage:(NSUInteger)layoutPage
+                           audioBlockID:(NSUInteger)audioBlockID
+                            audioWordID:(NSUInteger)audioWordID;
+- (void)audioBookPlayerPageTurn:(SCHAudioBookPlayer *)player
+               turnToLayoutPage:(NSUInteger)turnToLayoutPage;
+
 - (void)audioBookPlayerDidFinishPlaying:(SCHAudioBookPlayer *)player successfully:(BOOL)flag;
 - (void)audioBookPlayerErrorDidOccur:(SCHAudioBookPlayer *)player error:(NSError *)error;
 
