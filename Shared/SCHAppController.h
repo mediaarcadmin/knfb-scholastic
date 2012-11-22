@@ -20,7 +20,8 @@
 - (void)presentTour;
 - (void)presentSamples;
 - (void)presentProfiles;
-- (void)presentProfilesAfterLogin;
+- (void)presentProfilesAfterLogin:(BOOL)showDictionaryChoice
+                     showTooltips:(BOOL)showTooltips;
 - (void)presentProfilesSetup;
 - (void)presentBookshelfForProfile:(SCHProfileItem *)profileItem;
 - (void)presentReadingManager;

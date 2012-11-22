@@ -30,6 +30,7 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDownloadDictionaryChoiceViewController.h"
 #import "SCHResizeExtendingScrollView.h"
+#import "SCHUserDefaults.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;
@@ -406,6 +407,8 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)showTooltips
 {
     self.shouldShowTooltips = NO;
+    [[NSUserDefaults standardUserDefaults] setBool:YES
+                                            forKey:kSCHUserDefaultsHaveShownProfileTooltips];
     
     NSLog(@"Show tooltips");
     

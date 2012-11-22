@@ -24,6 +24,7 @@
 #import "SCHProcessingManager.h"
 #import "SCHBookIdentifier.h"
 #import "SCHAppBook.h"
+#import "SCHUserDefaults.h"
 
 NSString * const kSCHAppModelErrorDomain  = @"com.knfb.scholastic.AppModelErrorDomain";
 NSInteger const kSCHAppModelErrorBookDoesntExist = 1000;
@@ -391,11 +392,12 @@ typedef enum {
         switch (currentSyncState) {
             case kSCHAppModelSyncStateWaitingForLoginToComplete:
             case kSCHAppModelSyncStateWaitingForBookshelves:
-                if ([self dictionaryNeedsDownloaded] && [[Reachability reachabilityForLocalWiFi] isReachable]) {
-                    [self.appController presentProfilesAfterLogin];
-                } else {
-                    [self.appController presentProfiles];
-                }
+            {
+                BOOL requestDownloadDictionary = [self dictionaryNeedsDownloaded] && [[Reachability reachabilityForLocalWiFi] isReachable];
+                BOOL shouldShowToolTips = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHaveShownProfileTooltips] == NO;
+                [self.appController presentProfilesAfterLogin:requestDownloadDictionary
+                                                 showTooltips:shouldShowToolTips];
+            }
                 break;
             case kSCHAppModelSyncStateWaitingForBookshelvesOrSettings:
                 [self.appController presentProfiles];

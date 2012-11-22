@@ -213,6 +213,7 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedAccountSync,
                                  [NSNumber numberWithInteger:0], kSCHUserDefaultsWelcomeViewShowCount,
+								 [NSNumber numberWithBool:NO], kSCHUserDefaultsHaveShownProfileTooltips,                                 
                                  nil];
     
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];

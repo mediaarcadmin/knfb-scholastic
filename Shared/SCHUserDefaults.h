@@ -12,6 +12,7 @@
 
 extern NSString * const kSCHUserDefaultsPerformedAccountSync;
 extern NSString * const kSCHUserDefaultsWelcomeViewShowCount;
+extern NSString * const kSCHUserDefaultsHaveShownProfileTooltips;
 extern NSString * const kSCHUserDefaultsDeviceID;
 
 extern NSString * const kSCHAuthenticationManagerUserKey;

@@ -11,6 +11,7 @@
 // Constants
 NSString * const kSCHUserDefaultsPerformedAccountSync = @"PerformedAccountSync";
 NSString * const kSCHUserDefaultsWelcomeViewShowCount = @"SCHUserDefaultsWelcomeViewShowCount";
+NSString * const kSCHUserDefaultsHaveShownProfileTooltips = @"SCHUserDefaultsHaveShownProfileTooltips";
 // This matches the corresponding string in Blio, so as to avoid
 // having two different versions of the PlayReady lib.
 NSString * const kSCHUserDefaultsDeviceID = @"lastDevice";
