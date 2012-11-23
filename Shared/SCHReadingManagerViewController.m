@@ -12,11 +12,8 @@
 #import "SCHReadingManagerAuthorisationViewController.h"
 #import "LambdaAlert.h"
 #import "SCHReadingManagerCache.h"
-#import "SCHReadingManagerSplashViewController.h"
 
 @interface SCHReadingManagerViewController () <UIWebViewDelegate>
-
-@property (nonatomic, retain) SCHReadingManagerSplashViewController *splashViewController;
 
 - (void)releaseViewObjects;
 
@@ -26,11 +23,11 @@
 
 @synthesize pToken;
 @synthesize appController;
-@synthesize splashViewController;
+@synthesize splashView;
 
 - (void)releaseViewObjects
 {
-    [splashViewController release], splashViewController = nil;
+    [splashView release], splashView = nil;
 }
 
 - (void)dealloc
@@ -42,19 +39,11 @@
     [super dealloc];
 }
 
-- (void)loadView
-{
-    UIWebView *webView = [[UIWebView alloc] init];
-    self.view = webView;
-    self.splashViewController = [[[SCHReadingManagerSplashViewController alloc] init] autorelease];
-    self.splashViewController.view.frame = self.view.bounds;
-    [webView addSubview:self.splashViewController.view];
-    [webView release];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.view addSubview:self.splashView];
     
 #if DISABLE_READING_MANAGER_CACHING
     static dispatch_once_t onceToken;
@@ -136,10 +125,8 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     // remove the splash now the page is loading
-    if (self.splashViewController.view.hidden == NO) {
-        [UIView animateWithDuration:0.2
-                         animations:^{ self.splashViewController.view.alpha = 0.0; }
-                         completion:^(BOOL finished) { self.splashViewController.view.hidden = YES; }];
+    if (self.splashView.hidden == NO) {
+        self.splashView.hidden = YES;
     }
 }
 

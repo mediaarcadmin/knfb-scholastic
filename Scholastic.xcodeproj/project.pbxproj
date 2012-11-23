@@ -299,15 +299,12 @@
 		52023D561541BA2000C36AD5 /* SCHProfileItemSortObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D541541BA2000C36AD5 /* SCHProfileItemSortObject.m */; };
 		52023D5B1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D5A1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m */; };
 		52023D5C1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 52023D5A1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m */; };
-		520304DD165E289A00822733 /* SCHReadingManagerSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 520304DB165E289900822733 /* SCHReadingManagerSplashViewController.m */; };
-		520304DE165E289A00822733 /* SCHReadingManagerSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 520304DB165E289900822733 /* SCHReadingManagerSplashViewController.m */; };
-		520304DF165E289A00822733 /* SCHReadingManagerSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 520304DB165E289900822733 /* SCHReadingManagerSplashViewController.m */; };
-		520304E0165E289A00822733 /* SCHReadingManagerSplashViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304DC165E289A00822733 /* SCHReadingManagerSplashViewController~ipad.xib */; };
-		520304E1165E289A00822733 /* SCHReadingManagerSplashViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304DC165E289A00822733 /* SCHReadingManagerSplashViewController~ipad.xib */; };
-		520304E2165E289A00822733 /* SCHReadingManagerSplashViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304DC165E289A00822733 /* SCHReadingManagerSplashViewController~ipad.xib */; };
-		520304E4165E4C9A00822733 /* SCHReadingManagerSplashViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304E3165E4C9900822733 /* SCHReadingManagerSplashViewController~iphone.xib */; };
-		520304E5165E4C9A00822733 /* SCHReadingManagerSplashViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304E3165E4C9900822733 /* SCHReadingManagerSplashViewController~iphone.xib */; };
-		520304E6165E4C9A00822733 /* SCHReadingManagerSplashViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304E3165E4C9900822733 /* SCHReadingManagerSplashViewController~iphone.xib */; };
+		520304E0165E289A00822733 /* SCHReadingManagerViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304DC165E289A00822733 /* SCHReadingManagerViewController~ipad.xib */; };
+		520304E1165E289A00822733 /* SCHReadingManagerViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304DC165E289A00822733 /* SCHReadingManagerViewController~ipad.xib */; };
+		520304E2165E289A00822733 /* SCHReadingManagerViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304DC165E289A00822733 /* SCHReadingManagerViewController~ipad.xib */; };
+		520304E4165E4C9A00822733 /* SCHReadingManagerViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304E3165E4C9900822733 /* SCHReadingManagerViewController~iphone.xib */; };
+		520304E5165E4C9A00822733 /* SCHReadingManagerViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304E3165E4C9900822733 /* SCHReadingManagerViewController~iphone.xib */; };
+		520304E6165E4C9A00822733 /* SCHReadingManagerViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520304E3165E4C9900822733 /* SCHReadingManagerViewController~iphone.xib */; };
 		5204B860135C1FC500FCBD90 /* SCHThemeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */; };
 		5206971416523CF900CC80CA /* 9780545323024_enr_v6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C947DF1216106F4E003B1E7D /* 9780545323024_enr_v6.jpg */; };
 		5206971516523CFD00CC80CA /* 9780545323024_enr_v6.xps in Resources */ = {isa = PBXBuildFile; fileRef = C947DF0816106E06003B1E7D /* 9780545323024_enr_v6.xps */; };
@@ -4159,10 +4156,8 @@
 		52023D541541BA2000C36AD5 /* SCHProfileItemSortObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileItemSortObject.m; path = Shared/SCHProfileItemSortObject.m; sourceTree = "<group>"; };
 		52023D591541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+DoNotBackupExtendedAttribute.h"; path = "Shared/NSFileManager+DoNotBackupExtendedAttribute.h"; sourceTree = "<group>"; };
 		52023D5A1541BBB600C36AD5 /* NSFileManager+DoNotBackupExtendedAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+DoNotBackupExtendedAttribute.m"; path = "Shared/NSFileManager+DoNotBackupExtendedAttribute.m"; sourceTree = "<group>"; };
-		520304DA165E289900822733 /* SCHReadingManagerSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingManagerSplashViewController.h; path = Shared/SCHReadingManagerSplashViewController.h; sourceTree = "<group>"; };
-		520304DB165E289900822733 /* SCHReadingManagerSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingManagerSplashViewController.m; path = Shared/SCHReadingManagerSplashViewController.m; sourceTree = "<group>"; };
-		520304DC165E289A00822733 /* SCHReadingManagerSplashViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHReadingManagerSplashViewController~ipad.xib"; path = "Shared/SCHReadingManagerSplashViewController~ipad.xib"; sourceTree = "<group>"; };
-		520304E3165E4C9900822733 /* SCHReadingManagerSplashViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHReadingManagerSplashViewController~iphone.xib"; path = "Shared/SCHReadingManagerSplashViewController~iphone.xib"; sourceTree = "<group>"; };
+		520304DC165E289A00822733 /* SCHReadingManagerViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHReadingManagerViewController~ipad.xib"; path = "Shared/SCHReadingManagerViewController~ipad.xib"; sourceTree = "<group>"; };
+		520304E3165E4C9900822733 /* SCHReadingManagerViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHReadingManagerViewController~iphone.xib"; path = "Shared/SCHReadingManagerViewController~iphone.xib"; sourceTree = "<group>"; };
 		5204B85E135C1FC500FCBD90 /* SCHThemeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeButton.h; path = Shared/SCHThemeButton.h; sourceTree = "<group>"; };
 		5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeButton.m; path = Shared/SCHThemeButton.m; sourceTree = "<group>"; };
 		520697F716525D1800CC80CA /* SCHAppBookFeatures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppBookFeatures.h; path = Shared/SCHAppBookFeatures.h; sourceTree = "<group>"; };
@@ -8406,10 +8401,8 @@
 				C9E1BF9E1603446400CB8A4E /* SCHReadingManagerViewController.m */,
 				C924FF58162D65EA009F7F97 /* SCHReadingManagerCache.h */,
 				C924FF59162D65EA009F7F97 /* SCHReadingManagerCache.m */,
-				520304DA165E289900822733 /* SCHReadingManagerSplashViewController.h */,
-				520304DB165E289900822733 /* SCHReadingManagerSplashViewController.m */,
-				520304DC165E289A00822733 /* SCHReadingManagerSplashViewController~ipad.xib */,
-				520304E3165E4C9900822733 /* SCHReadingManagerSplashViewController~iphone.xib */,
+				520304DC165E289A00822733 /* SCHReadingManagerViewController~ipad.xib */,
+				520304E3165E4C9900822733 /* SCHReadingManagerViewController~iphone.xib */,
 				28C7416013D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.h */,
 				28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */,
 				28D2AA0C13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.h */,
@@ -10803,8 +10796,8 @@
 				52F7C3861656777F00041661 /* SIAudioSampleIcon~ipad.png in Resources */,
 				52F7C3891656777F00041661 /* SIAudioSampleIcon~iphone.png in Resources */,
 				C9AE6355165681B80022249E /* BookSIAudioSampleTabHorizontal~ipad.png in Resources */,
-				520304E0165E289A00822733 /* SCHReadingManagerSplashViewController~ipad.xib in Resources */,
-				520304E4165E4C9A00822733 /* SCHReadingManagerSplashViewController~iphone.xib in Resources */,
+				520304E0165E289A00822733 /* SCHReadingManagerViewController~ipad.xib in Resources */,
+				520304E4165E4C9A00822733 /* SCHReadingManagerViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10953,8 +10946,8 @@
 				52F7C3851656777F00041661 /* SIAudioSampleIcon@2x~iphone.png in Resources */,
 				52F7C3881656777F00041661 /* SIAudioSampleIcon~ipad.png in Resources */,
 				52F7C38B1656777F00041661 /* SIAudioSampleIcon~iphone.png in Resources */,
-				520304E2165E289A00822733 /* SCHReadingManagerSplashViewController~ipad.xib in Resources */,
-				520304E6165E4C9A00822733 /* SCHReadingManagerSplashViewController~iphone.xib in Resources */,
+				520304E2165E289A00822733 /* SCHReadingManagerViewController~ipad.xib in Resources */,
+				520304E6165E4C9A00822733 /* SCHReadingManagerViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11910,8 +11903,8 @@
 				52F7C3871656777F00041661 /* SIAudioSampleIcon~ipad.png in Resources */,
 				52F7C38A1656777F00041661 /* SIAudioSampleIcon~iphone.png in Resources */,
 				C9AE6356165681B80022249E /* BookSIAudioSampleTabHorizontal~ipad.png in Resources */,
-				520304E1165E289A00822733 /* SCHReadingManagerSplashViewController~ipad.xib in Resources */,
-				520304E5165E4C9A00822733 /* SCHReadingManagerSplashViewController~iphone.xib in Resources */,
+				520304E1165E289A00822733 /* SCHReadingManagerViewController~ipad.xib in Resources */,
+				520304E5165E4C9A00822733 /* SCHReadingManagerViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12386,7 +12379,6 @@
 				52324942164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
 				52324948164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 				520697F916525D1900CC80CA /* SCHAppBookFeatures.m in Sources */,
-				520304DD165E289A00822733 /* SCHReadingManagerSplashViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12842,7 +12834,6 @@
 				52F7C2E11654E8D700041661 /* SCHTourStepView.m in Sources */,
 				52F7C2E21654E90000041661 /* LibreAccessActivityLogSvc_tns1.m in Sources */,
 				52F7C2E31654E93400041661 /* SCHLibreAccessActivityLogConstants.m in Sources */,
-				520304DF165E289A00822733 /* SCHReadingManagerSplashViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13284,7 +13275,6 @@
 				52324943164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
 				52324949164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 				520697FA16525D1900CC80CA /* SCHAppBookFeatures.m in Sources */,
-				520304DE165E289A00822733 /* SCHReadingManagerSplashViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

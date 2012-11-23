@@ -13,5 +13,6 @@
 
 @property (nonatomic, copy) NSString *pToken;
 @property (nonatomic, assign) id<SCHAppController> appController;
+@property (nonatomic, retain) IBOutlet UIView *splashView;
 
 @end
