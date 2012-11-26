@@ -921,9 +921,6 @@
 
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 
 {
-    BOOL portraitAspect = YES;
-    BOOL squareImage = NO;
-    
     NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
     
     // get the full size cover image properties without loading it into memory
@@ -947,15 +944,7 @@
             
             CFRelease(imageProperties);
         }
-        
-        if (height == width) {
-            squareImage = YES;
-        }
-        
-        if (height < width) {
-            portraitAspect = NO;
-        }
-                
+
         CFRelease(src);
     }
     
