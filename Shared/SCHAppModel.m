@@ -395,8 +395,16 @@ typedef enum {
             {
                 BOOL requestDownloadDictionary = [self dictionaryNeedsDownloaded] && [[Reachability reachabilityForLocalWiFi] isReachable];
                 BOOL shouldShowToolTips = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHaveShownProfileTooltips] == NO;
+                
+                if (shouldShowToolTips) {
+                    [[NSUserDefaults standardUserDefaults] setBool:YES
+                                                            forKey:kSCHUserDefaultsHaveShownProfileTooltips];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+                
                 [self.appController presentProfilesAfterLogin:requestDownloadDictionary
                                                  showTooltips:shouldShowToolTips];
+                
             }
                 break;
             case kSCHAppModelSyncStateWaitingForBookshelvesOrSettings:

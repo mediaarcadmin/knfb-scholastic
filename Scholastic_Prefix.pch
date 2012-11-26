@@ -57,13 +57,12 @@
 #define GETUSERINFO_SERVER_ENDPOINT GETUSERINFO_SERVER_ENDPOINT_QA
 #endif
 
-#define WEB_PARENT_TOOLS_SERVER_PAD WEB_PARENT_TOOLS_SERVER_CODEANDTHEORY
-#define WEB_PARENT_TOOLS_SERVER_PHONE WEB_PARENT_TOOLS_SERVER_CODEANDTHEORY
-
 #define RECOMMENDATION_SERVER_ENDPOINT RECOMMENDATION_SERVER_ENDPOINT_PRODUCTION
 #define LIBREDIGITAL_SERVER_ENDPOINT LIBREDIGITAL_SERVER_ENDPOINT_UAT
 #define ACTIVITY_LOG_SERVER_ENDPOINT ACTIVITY_LOG_SERVER_ENDPOINT_UAT
 #define DRM_RIGHTSMANAGER_SERVER DRM_RIGHTSMANAGER_SERVER_UAT
+#define WEB_PARENT_TOOLS_SERVER_PAD WEB_PARENT_TOOLS_SERVER_PAD_UAT
+#define WEB_PARENT_TOOLS_SERVER_PHONE WEB_PARENT_TOOLS_SERVER_PHONE_UAT
 #define UPDATE_MANIFEST UPDATE_MANIFEST_PRODUCTION
 #define VIDEO_MANIFEST  VIDEO_MANIFEST_PRODUCTION
 #define FREE_MANIFEST   FREE_MANIFEST_PRODUCTION
@@ -105,11 +104,10 @@
 #define DRM_RIGHTSMANAGER_SERVER_PRODUCTION @"http://plr.cld.libredigital.com/rightsmanager.asmx"
 
 // Web Parent Tools server
-#define WEB_PARENT_TOOLS_SERVER_PAD_UAT @"https://ebooks2uat.scholastic.com/wpt/auth"
-#define WEB_PARENT_TOOLS_SERVER_PAD_PRODUCTION @"https://ebooks2.scholastic.com/wpt/auth"
-#define WEB_PARENT_TOOLS_SERVER_PHONE_UAT @"https://ebooks2uat.scholastic.com/wpt/authh"
-#define WEB_PARENT_TOOLS_SERVER_PHONE_PRODUCTION @"https://ebooks2.scholastic.com/wpt/auth"
-#define WEB_PARENT_TOOLS_SERVER_CODEANDTHEORY @"http://storiaaccount-qa.scholastic.com/wpt/assigneBooks.action"
+#define WEB_PARENT_TOOLS_SERVER_PAD_UAT @"http://storiaaccount-qa.scholastic.com/wpt/assigneBooks.action"
+#define WEB_PARENT_TOOLS_SERVER_PAD_PRODUCTION @"http://storiaaccount.scholastic.com/wpt/assigneBooks.action"
+#define WEB_PARENT_TOOLS_SERVER_PHONE_UAT @"http://storiaaccount-qa.scholastic.com/wpt/assigneBooks.action"
+#define WEB_PARENT_TOOLS_SERVER_PHONE_PRODUCTION @"http://storiaaccount.scholastic.com/wpt/assigneBooks.action"
 
 // Dictionary manifest location
 #define UPDATE_MANIFEST_TEST @"http://bits.blioreader.com/partners/Scholastic/SLInstall/QAStandard/UpdateManifest.xml"

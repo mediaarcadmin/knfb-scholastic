@@ -407,8 +407,6 @@ didSelectButtonAnimated:(BOOL)animated
 - (void)showTooltips
 {
     self.shouldShowTooltips = NO;
-    [[NSUserDefaults standardUserDefaults] setBool:YES
-                                            forKey:kSCHUserDefaultsHaveShownProfileTooltips];
     
     NSLog(@"Show tooltips");
     
