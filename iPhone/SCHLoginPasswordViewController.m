@@ -343,6 +343,10 @@ static const CGFloat kContentHeightLandscape = 380;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.shadowView setTransform:CGAffineTransformIdentity];
+    }
+
     switch (self.controllerType) {
         case kSCHControllerLoginView:
         case kSCHControllerDoublePasswordView:
@@ -402,6 +406,12 @@ static const CGFloat kContentHeightLandscape = 380;
         }
         
         self.activeTextField = textField;
+
+        if (self.controllerType == kSCHControllerPasswordOnlyView) {
+            [self.shadowView setTransform:CGAffineTransformMakeTranslation(0, -132)];
+        } else if (self.controllerType == kSCHControllerDoublePasswordView) {
+            [self.shadowView setTransform:CGAffineTransformMakeTranslation(0, -123)];
+        }
     }
 }
 
