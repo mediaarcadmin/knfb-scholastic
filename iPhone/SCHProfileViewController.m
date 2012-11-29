@@ -30,6 +30,7 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDownloadDictionaryChoiceViewController.h"
 #import "SCHResizeExtendingScrollView.h"
+#import "SCHUserDefaults.h"
 
 // Constants
 static double const kSCHProfileViewControllerMinimumDistinguishedTapDelay = 0.1;

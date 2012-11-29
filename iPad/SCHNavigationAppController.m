@@ -164,7 +164,8 @@
 }
 
 
-- (void)presentProfilesAfterLogin
+- (void)presentProfilesAfterLogin:(BOOL)showDictionaryChoice
+                     showTooltips:(BOOL)showTooltips
 {
     if (self.undismissableAlert) {
         [self.undismissableAlert dismissAnimated:YES];
@@ -172,7 +173,9 @@
     }
     
     BOOL shouldAnimate = ([self.viewControllers count] > 0);
-    [self pushProfileAnimated:shouldAnimate showDictionaryChoice:YES showTooltips:YES];
+    [self pushProfileAnimated:shouldAnimate
+         showDictionaryChoice:showDictionaryChoice
+                 showTooltips:showTooltips];
 }
 
 - (void)presentProfilesSetup

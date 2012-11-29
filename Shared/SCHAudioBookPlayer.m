@@ -94,6 +94,7 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
 
 - (void)dealloc 
 {
+    delegate = nil;
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -115,9 +116,7 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
 
 - (BOOL)prepareAudio:(NSArray *)setAudioBookReferences 
                error:(NSError **)outError 
-        wordBlockOld:(WordBlockOld)wordBlockOld 
-        wordBlockNew:(WordBlockNew)wordBlockNew 
-       pageTurnBlock:(PageTurnBlock)pageTurnBlock {
+{
     BOOL ret = NO;
     
     __block NSUInteger currentPosition = 0;
@@ -145,15 +144,18 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
             self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, q_default); 
             dispatch_time_t now = dispatch_walltime(DISPATCH_TIME_NOW, 0);
             dispatch_source_set_timer(self.timer, now, kSCHAudioBookPlayerWordTimerInterval, NSEC_PER_MSEC);
+            __block SCHAudioBookPlayer *weakSelf = self;
             dispatch_source_set_cancel_handler(self.timer, ^{
-                dispatch_release(self.timer), self.timer = NULL;
+                if (weakSelf.timer != NULL) {
+                    dispatch_release(weakSelf.timer), weakSelf.timer = NULL;
+                }
             });
             dispatch_source_set_event_handler(self.timer, ^{                
-                if (self.isPlaying == YES && [self.wordTimings count] > 0) {
+                if (weakSelf.isPlaying == YES && [weakSelf.wordTimings count] > 0) {
                     // We're using the WordTimings file use of integers for time
-                    NSUInteger currentPlayTime = (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond);
-                    if (currentPosition < [self.wordTimings count]) {
-                        SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:currentPosition];
+                    NSUInteger currentPlayTime = (NSUInteger)(weakSelf.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond);
+                    if (currentPosition < [weakSelf.wordTimings count]) {
+                        SCHWordTiming *wordTiming = [weakSelf.wordTimings objectAtIndex:currentPosition];
                         
                         switch ([wordTiming compareTime:currentPlayTime]) {
                             case NSOrderedSame:
@@ -161,8 +163,8 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
                                 break;
                             case NSOrderedAscending:
                                 // fast forward
-                                for (NSUInteger i = currentPosition + 1; i < [self.wordTimings count]; i++) {
-                                    SCHWordTiming *nextWordTiming = [self.wordTimings objectAtIndex:i];
+                                for (NSUInteger i = currentPosition + 1; i < [weakSelf.wordTimings count]; i++) {
+                                    SCHWordTiming *nextWordTiming = [weakSelf.wordTimings objectAtIndex:i];
                                     NSComparisonResult result = [nextWordTiming compareTime:currentPlayTime];
                                     if (result == NSOrderedSame) {
                                         currentPosition = i;
@@ -172,12 +174,12 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
                                         break;
                                     }
                                 }
-                                for (NSUInteger i = currentAudioInfoPosition; i < [self.audioInfos count]; i++) {                        
-                                    SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:i];
+                                for (NSUInteger i = currentAudioInfoPosition; i < [weakSelf.audioInfos count]; i++) {
+                                    SCHAudioInfo *audioInfo = [weakSelf.audioInfos objectAtIndex:i];
                                     SCHAudioInfo *nextAudioInfo = nil;
                                     
-                                    if (i + 1 < [self.audioInfos count]) {
-                                        nextAudioInfo = [self.audioInfos objectAtIndex:i + 1];
+                                    if (i + 1 < [weakSelf.audioInfos count]) {
+                                        nextAudioInfo = [weakSelf.audioInfos objectAtIndex:i + 1];
                                     }
                                     
                                     if (currentPosition >= audioInfo.timeIndex && 
@@ -192,7 +194,7 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
                                 // rewind
                                 if (currentPosition > 0) {
                                     for (NSInteger i = currentPosition - 1; i >= 0; i--) {
-                                        SCHWordTiming *nextWordTiming = [self.wordTimings objectAtIndex:i];
+                                        SCHWordTiming *nextWordTiming = [weakSelf.wordTimings objectAtIndex:i];
                                         NSComparisonResult result = [nextWordTiming compareTime:currentPlayTime];                                    
                                         if (result == NSOrderedSame) {
                                             currentPosition = i;
@@ -204,11 +206,11 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
                                     }
                                 }
                                 for (NSInteger i = currentAudioInfoPosition; i >= 0; i--) {                        
-                                    SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:i];
+                                    SCHAudioInfo *audioInfo = [weakSelf.audioInfos objectAtIndex:i];
                                     SCHAudioInfo *nextAudioInfo = nil;
                                     
-                                    if (i + 1 < [self.audioInfos count]) {
-                                        nextAudioInfo = [self.audioInfos objectAtIndex:i + 1];
+                                    if (i + 1 < [weakSelf.audioInfos count]) {
+                                        nextAudioInfo = [weakSelf.audioInfos objectAtIndex:i + 1];
                                     }
                                     
                                     if (currentPosition >= audioInfo.timeIndex && 
@@ -228,8 +230,8 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
                             performInitialPageCheck = NO;
                                                         
                             if (currentPlayTime > wordTiming.endTime &&
-                                currentPosition + 1 < [self.wordTimings count]) {
-                                SCHWordTiming *nextWordTiming = [self.wordTimings objectAtIndex:currentPosition + 1];
+                                currentPosition + 1 < [weakSelf.wordTimings count]) {
+                                SCHWordTiming *nextWordTiming = [weakSelf.wordTimings objectAtIndex:currentPosition + 1];
                                 if (wordTiming.pageIndex != nextWordTiming.pageIndex) {
                                     pageTurnAtTime = wordTiming.endTime;
                                     pageTurnToLayoutPage = nextWordTiming.pageIndex + 1;
@@ -239,31 +241,43 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
                         
                         if ((pageTurnAtTime != NSUIntegerMax) && (currentPlayTime >= pageTurnAtTime)) {
                             //NSLog(@"executing page turn for time %d at currentPlayTime %d", pageTurnAtTime, currentPlayTime);
-                            pageTurnBlock(pageTurnToLayoutPage);
-                            pageTurnAtTime = NSUIntegerMax;                            
+                            if ([(id)weakSelf.delegate conformsToProtocol:@protocol(SCHAudioBookPlayerDelegate)] == YES) {
+                                [weakSelf.delegate audioBookPlayerPageTurn:weakSelf
+                                                      turnToLayoutPage:pageTurnToLayoutPage];
+                            }
+                            pageTurnAtTime = NSUIntegerMax;
                         }
                         
                         if (wordTiming != lastTriggered && [wordTiming compareTime:currentPlayTime] == NSOrderedSame) {
                             lastTriggered = wordTiming;
-                            if (self.usingNewRTXFormat == YES) {
+                            if (weakSelf.usingNewRTXFormat == YES) {
                                 //NSLog(@"wordTiming: %d currentPlayTime: %d", wordTiming.startTime, currentPlayTime);
-                                wordBlockNew(wordTiming.pageIndex + 1, wordTiming.blockID, wordTiming.wordID);
+                                if ([(id)weakSelf.delegate conformsToProtocol:@protocol(SCHAudioBookPlayerDelegate)] == YES) {
+                                    [weakSelf.delegate audioBookPlayerHighlightWordNew:weakSelf
+                                                                        layoutPage:wordTiming.pageIndex + 1
+                                                                      audioBlockID:wordTiming.blockID
+                                                                       audioWordID:wordTiming.wordID];
+                                }
                                 
                                 pageTurnAtTime = NSUIntegerMax; 
-                                if (currentPosition + 1 < [self.wordTimings count]) {
-                                    SCHWordTiming *nextWordTiming = [self.wordTimings objectAtIndex:currentPosition + 1];
+                                if (currentPosition + 1 < [weakSelf.wordTimings count]) {
+                                    SCHWordTiming *nextWordTiming = [weakSelf.wordTimings objectAtIndex:currentPosition + 1];
                                     if (wordTiming.pageIndex != nextWordTiming.pageIndex) {
                                         pageTurnAtTime = wordTiming.endTime;
                                         pageTurnToLayoutPage = nextWordTiming.pageIndex + 1;                                
                                     }
                                 }                                                    
                             } else {
-                                SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition];
-                                wordBlockOld(audioInfo.pageIndex + 1, currentPosition - audioInfo.timeIndex);                            
+                                SCHAudioInfo *audioInfo = [weakSelf.audioInfos objectAtIndex:currentAudioInfoPosition];
+                                if ([(id)weakSelf.delegate conformsToProtocol:@protocol(SCHAudioBookPlayerDelegate)] == YES) {
+                                    [weakSelf.delegate audioBookPlayerHighlightWordOld:weakSelf
+                                                                        layoutPage:audioInfo.pageIndex + 1
+                                                                    pageWordOffset:currentPosition - audioInfo.timeIndex];
+                                }
                                 
                                 pageTurnAtTime = NSUIntegerMax; 
-                                if (currentAudioInfoPosition + 1 < [self.audioInfos count]) {
-                                    SCHAudioInfo *nextAudioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition + 1];
+                                if (currentAudioInfoPosition + 1 < [weakSelf.audioInfos count]) {
+                                    SCHAudioInfo *nextAudioInfo = [weakSelf.audioInfos objectAtIndex:currentAudioInfoPosition + 1];
                                     if (currentPosition == nextAudioInfo.timeIndex - 1) {
                                         pageTurnAtTime = wordTiming.endTime;
                                         pageTurnToLayoutPage = nextAudioInfo.pageIndex + 1;

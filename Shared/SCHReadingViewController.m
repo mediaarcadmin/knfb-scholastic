@@ -1323,39 +1323,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         if(audioBookReferences != nil && [audioBookReferences count] > 0) {        
             self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
             self.audioBookPlayer.xpsProvider = (SCHXPSProvider *)self.bookPackageProvider;
-            BOOL success = [self.audioBookPlayer prepareAudio:audioBookReferences error:&error 
-                                                 wordBlockOld:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
-                                                     //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
-                                                     self.pauseAudioOnNextPageTurn = NO;
-                                                     
-                                                     [self.readingView followAlongHighlightWordForLayoutPage:layoutPage 
-                                                                                              pageWordOffset:pageWordOffset 
-                                                                                       withCompletionHandler:^{
-                                                                                           self.pauseAudioOnNextPageTurn = YES;
-                                                                                       }];
-
-                                                 } wordBlockNew:^(NSUInteger layoutPage, NSUInteger audioBlockID, NSUInteger audioWordID) {
-                                                     //NSLog(@"WORD UP! at layoutPage %d blockIndex %d wordIndex %d", layoutPage, audioBlockID, audioWordID);
-                                                     self.pauseAudioOnNextPageTurn = NO;
-                                                     // this assumes the RTX file format uses the same blockID and wordID as the textFlow
-                                                     SCHBookPoint *bookPoint = [[[SCHBookPoint alloc] init] autorelease];
-                                                     bookPoint.layoutPage = layoutPage;
-                                                     bookPoint.blockOffset = audioBlockID;
-                                                     bookPoint.wordOffset = audioWordID;
-
-                                                     [self.readingView followAlongHighlightWordAtPoint:bookPoint 
-                                                                                 withCompletionHandler:^{
-                                                                                     self.pauseAudioOnNextPageTurn = YES;
-                                                                                 }];
-                                                 } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
-                                                     //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
-                                                     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
-                                                         self.pauseAudioOnNextPageTurn = NO;
-                                                         [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES withCompletionHandler:^{
-                                                             self.pauseAudioOnNextPageTurn = YES;
-                                                         }];
-                                                     }
-                                                 }];
+            BOOL success = [self.audioBookPlayer prepareAudio:audioBookReferences error:&error];
             if (success) {
                 self.audioBookPlayer.delegate = self;
                 
@@ -1862,6 +1830,51 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 }
 
 #pragma mark - Audio Book Delegate methods
+
+- (void)audioBookPlayerHighlightWordOld:(SCHAudioBookPlayer *)player
+                             layoutPage:(NSUInteger)layoutPage
+                         pageWordOffset:(NSUInteger)pageWordOffset
+{
+    //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
+    self.pauseAudioOnNextPageTurn = NO;
+
+    [self.readingView followAlongHighlightWordForLayoutPage:layoutPage
+                                             pageWordOffset:pageWordOffset
+                                      withCompletionHandler:^{
+                                          self.pauseAudioOnNextPageTurn = YES;
+                                      }];
+}
+
+- (void)audioBookPlayerHighlightWordNew:(SCHAudioBookPlayer *)player
+                             layoutPage:(NSUInteger)layoutPage
+                           audioBlockID:(NSUInteger)audioBlockID
+                            audioWordID:(NSUInteger)audioWordID
+{
+    //NSLog(@"WORD UP! at layoutPage %d blockIndex %d wordIndex %d", layoutPage, audioBlockID, audioWordID);
+    self.pauseAudioOnNextPageTurn = NO;
+    // this assumes the RTX file format uses the same blockID and wordID as the textFlow
+    SCHBookPoint *bookPoint = [[[SCHBookPoint alloc] init] autorelease];
+    bookPoint.layoutPage = layoutPage;
+    bookPoint.blockOffset = audioBlockID;
+    bookPoint.wordOffset = audioWordID;
+
+    [self.readingView followAlongHighlightWordAtPoint:bookPoint
+                                withCompletionHandler:^{
+                                    self.pauseAudioOnNextPageTurn = YES;
+                                }];
+}
+
+- (void)audioBookPlayerPageTurn:(SCHAudioBookPlayer *)player
+               turnToLayoutPage:(NSUInteger)turnToLayoutPage
+{
+    //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+        self.pauseAudioOnNextPageTurn = NO;
+        [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES withCompletionHandler:^{
+            self.pauseAudioOnNextPageTurn = YES;
+        }];
+    }
+}
 
 - (void)audioBookPlayerDidFinishPlaying:(SCHAudioBookPlayer *)player successfully:(BOOL)flag
 {

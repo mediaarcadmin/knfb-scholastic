@@ -15,30 +15,35 @@
 
 @interface SCHReadingManagerViewController () <UIWebViewDelegate>
 
+- (void)releaseViewObjects;
+
 @end
 
 @implementation SCHReadingManagerViewController
 
 @synthesize pToken;
 @synthesize appController;
+@synthesize splashView;
+
+- (void)releaseViewObjects
+{
+    [splashView release], splashView = nil;
+}
 
 - (void)dealloc
 {
+    [self releaseViewObjects];
+    
     [pToken release], pToken = nil;
     appController = nil;
     [super dealloc];
 }
 
-- (void)loadView
-{
-    UIWebView *webView = [[UIWebView alloc] init];
-    self.view = webView;
-    [webView release];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.view addSubview:self.splashView];
     
 #if DISABLE_READING_MANAGER_CACHING
     static dispatch_once_t onceToken;
@@ -81,6 +86,7 @@
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+    [self releaseViewObjects];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -114,6 +120,14 @@
         }
     
     return(ret);
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    // remove the splash now the page is loading
+    if (self.splashView.hidden == NO) {
+        self.splashView.hidden = YES;
+    }
 }
 
 @end
