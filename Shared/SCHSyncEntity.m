@@ -44,11 +44,7 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
 - (void)willSave
 {
 	[super willSave];
-  
-    if (self.State == [NSNumber numberWithStatus:kSCHStatusUnmodified]) {
-        NSLog(@"SOMETHINGS GONE WRONG");
-    }
-    
+      
 	if ([self shouldResetStateFromSync] == YES) {
         // the sync has made changes reset the state for use
         [self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusUnmodified]];
