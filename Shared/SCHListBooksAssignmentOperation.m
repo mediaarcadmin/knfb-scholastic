@@ -568,7 +568,7 @@
 {
     if (webContentProfileItem != nil) {
         localContentProfileItem.LastModified = makeNullNil([webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]);
-        localContentProfileItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
+        [localContentProfileItem setSyncUpdate];
         
         localContentProfileItem.ProfileID = makeNullNil([webContentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]);
         localContentProfileItem.LastPageLocation = makeNullNil([webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastPageLocation]);

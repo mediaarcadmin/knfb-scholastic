@@ -12,8 +12,7 @@ typedef enum {
 	kSCHStatusCreated = 0,
 	kSCHStatusUnmodified,
 	kSCHStatusModified,
-	kSCHStatusDeleted,
-    kSCHStatusSyncUpdate,		
+	kSCHStatusDeleted,		
 } SCHStatus;
 
 typedef enum {

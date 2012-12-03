@@ -253,7 +253,7 @@ managedObjectContext:(NSManagedObjectContext *)aManagedObjectContext
         localProfile.recommendationsOn = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceRecommendationsOn]);
         localProfile.allowReadThrough = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceAllowReadThrough]);
         localProfile.LastModified = makeNullNil([webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]);
-        localProfile.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				
+        [localProfile setSyncUpdate];
     }
 }
 

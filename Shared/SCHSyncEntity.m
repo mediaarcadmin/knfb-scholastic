@@ -16,6 +16,14 @@
 NSString * const SCHSyncEntityState = @"State";
 NSString * const SCHSyncEntityLastModified = @"LastModified";
 
+@interface SCHSyncEntity ()
+
+@property (nonatomic, assign) BOOL performSyncUpdate;
+
+- (BOOL)shouldSetAsModified;
+
+@end
+
 @interface SCHSyncEntity (CoreDataGeneratedPrimitiveAccessors)
 
 - (NSDate *)primitiveLastModified;
@@ -23,15 +31,14 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
 - (NSNumber *)primitiveState;
 - (void)setPrimitiveState:(NSNumber *)newState;
 
-- (BOOL)shouldResetStateFromSync;
-- (BOOL)shouldSetAsModified;
-
 @end
 
 @implementation SCHSyncEntity 
 
 @dynamic LastModified;
 @dynamic State;
+
+@synthesize performSyncUpdate;
 
 - (void)awakeFromInsert
 {
@@ -44,8 +51,8 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
 - (void)willSave
 {
 	[super willSave];
-      
-	if ([self shouldResetStateFromSync] == YES) {
+
+	if (self.performSyncUpdate == YES) {
         // the sync has made changes reset the state for use
         [self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusUnmodified]];
 	} else if ([self shouldSetAsModified] == YES) {
@@ -60,9 +67,11 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
     }
 }
 
-- (BOOL)shouldResetStateFromSync
+- (void)didSave
 {
-    return [self.State isEqualToNumber:[NSNumber numberWithStatus:kSCHStatusSyncUpdate]] == YES;
+    [super didSave];
+
+    self.performSyncUpdate = NO;
 }
 
 - (BOOL)shouldSetAsModified
@@ -96,6 +105,11 @@ NSString * const SCHSyncEntityLastModified = @"LastModified";
     }
     
     return ret;
+}
+
+- (void)setSyncUpdate
+{
+    self.performSyncUpdate = YES;
 }
 
 - (void)syncDelete

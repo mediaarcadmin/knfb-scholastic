@@ -495,7 +495,7 @@
         localHighlight.Version = makeNullNil([webHighlight objectForKey:kSCHLibreAccessWebServiceVersion]);
         
         localHighlight.LastModified = makeNullNil([webHighlight objectForKey:kSCHLibreAccessWebServiceLastModified]);
-        localHighlight.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
+        [localHighlight setSyncUpdate];
         
         [self syncLocationText:makeNullNil([webHighlight objectForKey:kSCHLibreAccessWebServiceLocation])
               withLocationText:localHighlight.Location];
@@ -678,7 +678,7 @@
         localNote.Version = makeNullNil([webNote objectForKey:kSCHLibreAccessWebServiceVersion]);
         
         localNote.LastModified = makeNullNil([webNote objectForKey:kSCHLibreAccessWebServiceLastModified]);
-        localNote.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
+        [localNote setSyncUpdate];
         
         [self syncLocationGraphics:makeNullNil([webNote objectForKey:kSCHLibreAccessWebServiceLocation])
               withLocationGraphics:localNote.Location];
@@ -832,7 +832,7 @@
         localBookmark.Version = makeNullNil([webBookmark objectForKey:kSCHLibreAccessWebServiceVersion]);
         
         localBookmark.LastModified = makeNullNil([webBookmark objectForKey:kSCHLibreAccessWebServiceLastModified]);
-        localBookmark.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
+        [localBookmark setSyncUpdate];
         
         [self syncLocationBookmark:makeNullNil([webBookmark objectForKey:kSCHLibreAccessWebServiceLocation])
               withLocationBookmark:localBookmark.Location];
@@ -892,7 +892,7 @@
         localLastPage.Percentage = makeNullNil([webLastPage objectForKey:kSCHLibreAccessWebServicePercentage]);
         
         localLastPage.LastModified = makeNullNil([webLastPage objectForKey:kSCHLibreAccessWebServiceLastModified]);
-        localLastPage.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				    
+        [localLastPage setSyncUpdate];
     }
 }
 
@@ -923,7 +923,7 @@
         localRating.numVotes = makeNullNil([webRating objectForKey:kSCHLibreAccessWebServiceNumVotes]);
         
         localRating.LastModified = makeNullNil([webRating objectForKey:kSCHLibreAccessWebServiceLastModified]);
-        localRating.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				    
+        [localRating setSyncUpdate];
     }
 }
 

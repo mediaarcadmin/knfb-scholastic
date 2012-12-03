@@ -202,7 +202,7 @@
         if (webProfile != nil) {                    
             // convert timestamp to lastmodified
             localWishListProfile.LastModified = makeNullNil([webProfile objectForKey:kSCHWishListWebServiceTimestamp]);
-            localWishListProfile.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
+            [localWishListProfile setSyncUpdate];
 
             localWishListProfile.ProfileID = makeNullNil([webProfile objectForKey:kSCHWishListWebServiceProfileID]);
             localWishListProfile.ProfileName = makeNullNil([webProfile objectForKey:kSCHWishListWebServiceProfileName]);
@@ -343,7 +343,7 @@
     if (webWishListItem != nil) {
         // convert timestamp to lastmodified
         localWishListItem.LastModified = makeNullNil([webWishListItem objectForKey:kSCHWishListWebServiceTimestamp]);
-        localWishListItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
+        [localWishListItem setSyncUpdate];
         
         localWishListItem.Author = makeNullNil([webWishListItem objectForKey:kSCHWishListWebServiceAuthor]);
         localWishListItem.InitiatedBy = makeNullNil([webWishListItem objectForKey:kSCHWishListWebServiceInitiatedBy]);

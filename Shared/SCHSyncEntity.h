@@ -21,6 +21,7 @@ extern NSString * const SCHSyncEntityLastModified;
 
 @property (nonatomic, readonly) NSNumber *Action;
 
+- (void)setSyncUpdate;
 - (void)syncDelete;
 - (void)syncReset;
 
