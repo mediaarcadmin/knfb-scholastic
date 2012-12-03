@@ -47,35 +47,33 @@ NSString * const kSCHAppContentProfileItemOrder = @"Order";
     return([identifier autorelease]);
 }
 
-- (NSNumber *)IsNewBook
+- (BOOL)updateIsNewBook
 {
-    [self willAccessValueForKey:@"IsNewBook"];
-    NSNumber *ret = [self primitiveValueForKey:@"IsNewBook"];
-    [self didAccessValueForKey:@"IsNewBook"];
-    
+    BOOL ret = NO;
+
     // Because the annotation sync happens a little later in the sync process we
     // default IsNewBook to nil. 
     // The check happens if that value is nil, or if it's YES (i.e. still a new book)
     // After its no longer a new book, so do not need to check
-    if (!ret || [ret boolValue] == YES) {
+    if (!self.IsNewBook || [self.IsNewBook boolValue] == YES) {
         SCHLastPage *lastPage = [self.ProfileItem annotationsForBook:[self bookIdentifier]].lastPage;
         
         NSDate *assignmentDate = self.ContentProfileItem.LastModified;
         NSDate *lastReadDate = lastPage.LastModified;
         
         // if any of these haven't been set, or the last read date hasn't been
-        // set (SCHLibreAccessEarliestDate), then we'll temporarily return NO
+        // set (SCHLibreAccessEarliestDate), then do nothing
         if (!lastPage || !assignmentDate || !lastReadDate ||
             [[NSDate SCHLibreAccessEarliestDate] isEqualToDate:lastReadDate]) {
-            ret = [NSNumber numberWithBool:NO];
+            ret = NO;
         } else if ([assignmentDate laterDate:lastReadDate] == lastReadDate) {
         // otherwise, if the last read date is later than the assignment date, return NO and save it
-            ret = [NSNumber numberWithBool:NO];
-            self.IsNewBook = ret;
+            self.IsNewBook = [NSNumber numberWithBool:NO];
+            ret = YES;
         } else {
         // otherwise, return YES and save it - we'll check again later if the book has been read
-            ret = [NSNumber numberWithBool:YES];
-            self.IsNewBook = ret;
+            self.IsNewBook = [NSNumber numberWithBool:YES];
+            ret = YES;
         }
     }
     

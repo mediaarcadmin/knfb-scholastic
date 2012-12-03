@@ -43,6 +43,8 @@ extern NSString * const kSCHAppContentProfileItemOrder;
 
 @property (nonatomic, readonly) SCHBookIdentifier *bookIdentifier;
 
+// if IsNewBook was updated returns YES
+- (BOOL)updateIsNewBook;
 - (void)openedBook;
 
 @end

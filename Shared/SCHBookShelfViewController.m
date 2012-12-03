@@ -861,7 +861,8 @@ typedef enum
 - (void)save
 {
     NSError *error = nil;
-    if ([self.managedObjectContext save:&error] == NO) {
+    if ([self.managedObjectContext hasChanges] == YES &&
+        [self.managedObjectContext save:&error] == NO) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
 }
@@ -939,6 +940,9 @@ typedef enum
     cell.delegate = self;
     cell.identifier = identifier;
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];
+    if ([appContentProfileItem updateIsNewBook] == YES) {
+        [self save];
+    }
     cell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
     cell.allowReadthrough = [[self.profileItem allowReadThrough] boolValue];
     
@@ -1007,6 +1011,9 @@ typedef enum
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
     gridCell.delegate = self;
+    if ([appContentProfileItem updateIsNewBook] == YES) {
+        [self save];
+    }
     gridCell.isNewBook = [appContentProfileItem.IsNewBook boolValue];
     gridCell.allowReadthrough = [[self.profileItem allowReadThrough] boolValue];
     gridCell.showRatings = self.showingRatings;
