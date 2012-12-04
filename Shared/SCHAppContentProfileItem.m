@@ -81,16 +81,14 @@ NSString * const kSCHAppContentProfileItemOrder = @"Order";
 }
 
 // only set the best score if it's better than the current best score
-- (void)setBestScore:(NSNumber *)value
+- (void)setBestScoreIfBetter:(NSNumber *)value
 {
     if (value != nil) {
-        NSNumber *currentBestScore = [self primitiveValueForKey:@"bestScore"];
+        NSNumber *currentBestScore = self.bestScore;
         
         if (currentBestScore == nil ||
             [value integerValue] > [currentBestScore integerValue]) {
-            [self willChangeValueForKey:@"bestScore"];
-            [self setPrimitiveValue:value forKey:@"bestScore"];
-            [self didChangeValueForKey:@"bestScore"];
+            self.bestScore = value;
         }
     }
 }

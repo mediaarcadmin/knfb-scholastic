@@ -45,6 +45,7 @@ extern NSString * const kSCHAppContentProfileItemOrder;
 
 // if IsNewBook was updated returns YES
 - (BOOL)updateIsNewBook;
+- (void)setBestScoreIfBetter:(NSNumber *)value;
 - (void)openedBook;
 
 @end

@@ -70,7 +70,7 @@
                     NSNumber *bestScore = makeNullNil([quizItem objectForKey:kSCHLibreAccessWebServiceBestScore]);
                     
                     for (SCHAppContentProfileItem *appContentProfileItem in [self appContentProfileItem:self.profileID isbn:isbn]) {
-                        appContentProfileItem.bestScore = bestScore;
+                        [appContentProfileItem setBestScoreIfBetter:bestScore];
                     }
                 }
             }

@@ -3340,7 +3340,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 {
     SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
     
-    appContentProfileItem.bestScore = [NSNumber numberWithInt:score];
+    [appContentProfileItem setBestScoreIfBetter:[NSNumber numberWithInt:score]];
+    [self save];
     
     [bookStatistics addQuizTrialsItemScore:score total:total];
 }
