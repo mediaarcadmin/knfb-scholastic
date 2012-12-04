@@ -1178,6 +1178,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         // Progress should not be exactly 0 once a book is opened so always set a min of 0.001f and a max of 1.0f
         CGFloat progress = MIN(MAX([self.readingView currentProgressPosition], 0.001f), 1.0f);
         lastPage.Percentage = [NSNumber numberWithFloat:progress];
+        [self save];
     }
 }
 
@@ -2447,6 +2448,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         if (furthestPageRead < currentPage) {
             furthestPageRead = currentPage;
             appContentProfileItem.PageRead = [NSNumber numberWithUnsignedInteger:furthestPageRead];
+            [self save];
         }
         
         [self readingViewHasMoved];
@@ -2497,6 +2499,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     if (furthestPageRead < currentPage) {
         furthestPageRead = currentPage;
         appContentProfileItem.PageRead = [NSNumber numberWithUnsignedInteger:furthestPageRead];
+        [self save];
     }
 
     [self readingViewHasMoved];
@@ -3064,6 +3067,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         
         [aNotesView showInView:self.view animated:YES];
         [aNotesView release];
+        [self save];
     }
 }
 
@@ -3380,7 +3384,8 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (void)save
 {
     NSError *error = nil;
-    if ([self.managedObjectContext save:&error] == NO) {
+    if ([self.managedObjectContext hasChanges] == YES &&
+        [self.managedObjectContext save:&error] == NO) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
 }
