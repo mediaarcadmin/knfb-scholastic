@@ -22,6 +22,4 @@
                    userInfo:(NSDictionary *)aUserInfo;
 - (void)saveWithManagedObjectContext:(NSManagedObjectContext *)aManagedObjectContext;
 
-- (id)makeNullNil:(id)object;
-
 @end

@@ -72,9 +72,4 @@
     }
 }
 
-- (id)makeNullNil:(id)object
-{
-	return(object == [NSNull null] ? nil : object);
-}
-
 @end

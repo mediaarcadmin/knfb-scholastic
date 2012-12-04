@@ -14,6 +14,7 @@
 #import "SCHRecommendationConstants.h"
 #import "SCHLibreAccessConstants.h"
 #import "BITAPIError.h"
+#import "SCHMakeNullNil.h"
 
 @interface SCHRetrieveTopRatingsForProfileOperation ()
 
@@ -42,7 +43,7 @@
 #endif
 
     @try {
-        NSArray *topRatings = [self makeNullNil:[self.result objectForKey:kSCHLibreAccessWebServiceTopRatingsList]];
+        NSArray *topRatings = makeNullNil([self.result objectForKey:kSCHLibreAccessWebServiceTopRatingsList]);
         if ([topRatings count] > 0) {
             [self syncRecommendationTopRatings:topRatings];
         }
@@ -105,7 +106,7 @@
 			break;
 		}
 
-        id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceTopRatingsTypeValue]];
+        id webItemID = makeNullNil([webItem valueForKey:kSCHLibreAccessWebServiceTopRatingsTypeValue]);
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceCategoryClass];
 
         if (webItemID == nil || [SCHAppRecommendationTopRating isValidCategoryClass:webItemID] == NO) {
@@ -172,10 +173,10 @@
                            syncDate:(NSDate *)syncDate
 {
     if (webRecommendationTopRating != nil) {
-        localRecommendationTopRating.categoryClass = [self makeNullNil:[webRecommendationTopRating objectForKey:kSCHLibreAccessWebServiceTopRatingsTypeValue]];
+        localRecommendationTopRating.categoryClass = makeNullNil([webRecommendationTopRating objectForKey:kSCHLibreAccessWebServiceTopRatingsTypeValue]);
         localRecommendationTopRating.fetchDate = syncDate;
 
-        [self syncRecommendationItems:[self makeNullNil:[webRecommendationTopRating objectForKey:kSCHLibreAccessWebServiceTopRatingsContentItems]]
+        [self syncRecommendationItems:makeNullNil([webRecommendationTopRating objectForKey:kSCHLibreAccessWebServiceTopRatingsContentItems])
               withRecommendationItems:localRecommendationTopRating.recommendationItems
                            insertInto:localRecommendationTopRating];
     }
@@ -185,7 +186,7 @@
                                                syncDate:(NSDate *)syncDate
 {
 	SCHAppRecommendationTopRating *ret = nil;
-	id topRatingCategoryClass =  [self makeNullNil:[webRecommendationTopRating valueForKey:kSCHLibreAccessWebServiceTopRatingsTypeValue]];
+	id topRatingCategoryClass =  makeNullNil([webRecommendationTopRating valueForKey:kSCHLibreAccessWebServiceTopRatingsTypeValue]);
 
 	if (webRecommendationTopRating != nil && [SCHAppRecommendationTopRating isValidCategoryClass:topRatingCategoryClass] == YES) {
         ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppRecommendationTopRating
@@ -194,7 +195,7 @@
         ret.categoryClass = topRatingCategoryClass;
         ret.fetchDate = syncDate;
 
-        [self syncRecommendationItems:[self makeNullNil:[webRecommendationTopRating objectForKey:kSCHLibreAccessWebServiceTopRatingsContentItems]]
+        [self syncRecommendationItems:makeNullNil([webRecommendationTopRating objectForKey:kSCHLibreAccessWebServiceTopRatingsContentItems])
               withRecommendationItems:ret.recommendationItems
                            insertInto:ret];
     }
@@ -241,7 +242,7 @@
 			break;
 		}
 
-		id webItemID = [self makeNullNil:[webItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		id webItemID = makeNullNil([webItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
 		id localItemID = [localItem valueForKey:kSCHRecommendationWebServiceProductCode];
 
         if (webItemID == nil || [SCHRecommendationItem isValidItemID:webItemID] == NO) {
@@ -292,14 +293,14 @@
 - (SCHRecommendationItem *)recommendationItem:(NSDictionary *)webRecommendationItem
 {
 	SCHRecommendationItem *ret = nil;
-	id recommendationItemID = [self makeNullNil:[webRecommendationItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+	id recommendationItemID = makeNullNil([webRecommendationItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
 
 	if (webRecommendationItem != nil && [SCHRecommendationItem isValidItemID:recommendationItemID] == YES) {
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHRecommendationItem
                                             inManagedObjectContext:self.backgroundThreadManagedObjectContext];
 
         ret.product_code = recommendationItemID;
-        ret.order = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]];
+        ret.order = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]);
 
         [ret assignAppRecommendationItem];
 	}
@@ -311,8 +312,8 @@
         withRecommendationItem:(SCHRecommendationItem *)localRecommendationItem
 {
     if (webRecommendationItem != nil) {
-        localRecommendationItem.product_code = [self makeNullNil:[webRecommendationItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-        localRecommendationItem.order = [self makeNullNil:[webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]];
+        localRecommendationItem.product_code = makeNullNil([webRecommendationItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+        localRecommendationItem.order = makeNullNil([webRecommendationItem objectForKey:kSCHRecommendationWebServiceOrder]);
     }
 }
 
