@@ -40,8 +40,8 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHAnnotationSyncComponent.h"
 
-static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
-static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
+static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 118;
+static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 118;
 
 NSString * const kSCHBookShelfErrorDomain  = @"com.knfb.scholastic.BookShelfErrorDomain";
 
@@ -1330,12 +1330,12 @@ typedef enum
 // overridden in iPad subclass
 - (CGSize)cellSize
 {
-    return CGSizeMake(80,118);
+    return CGSizeMake(124,118);
 }
 
 - (CGFloat)cellBorderSize
 {
-    return 10;
+    return 18;
 }
 
 #pragma mark - App Version checking methods

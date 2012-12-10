@@ -8,6 +8,9 @@
 #import "MRGridView.h"
 
 @interface MRGridView (PRIVATE)
+
+@property(readwrite, nonatomic) CGFloat currBorderSize;
+
 - (void)invalidateScrollTimer;
 - (void)invalidateEditTimer;
 -(void) resetEditTimer;
@@ -21,7 +24,7 @@ const CGFloat MRGridViewDragScrollSpeed = 10.0;
 const CGFloat MRGridViewScrollOverlapHeight = 44.0;
 
 @implementation MRGridView
-@synthesize gridDataSource, gridDelegate, currDraggedCell,currentScrollOffset,reusableCells,cellIndices,editing,moveStyle;
+@synthesize gridDataSource, gridDelegate, currDraggedCell,currentScrollOffset,reusableCells,cellIndices,editing,moveStyle,currBorderSize;
 
 - (void)initialiseView {
 	[self setBouncesZoom:YES];

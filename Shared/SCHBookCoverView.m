@@ -140,14 +140,11 @@
     [self addSubview:self.progressView];
     self.progressView.hidden = YES;
 
-    // feature tab - only for iPad!
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.featureTab = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookSampleTab"]] autorelease];
-        [self setFeatureTabHidden:YES];
-        self.featureTab.contentMode = UIViewContentModeRight;
-        [self addSubview:self.featureTab];
-    }
-    
+    self.featureTab = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookSampleTab"]] autorelease];
+    [self setFeatureTabHidden:YES];
+    self.featureTab.contentMode = UIViewContentModeRight;
+    [self addSubview:self.featureTab];
+
     // add the new graphic view
     self.isNewBadge = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfNewIcon"]] autorelease];
     [self addSubview:self.isNewBadge];
@@ -737,8 +734,7 @@
         [self setIsNewBadgeHidden:YES];
     }
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad 
-        && self.coverViewMode == SCHBookCoverViewModeGridView) {
+    if (self.coverViewMode == SCHBookCoverViewModeGridView) {
         
         // the offset amount that the image tab is over onto the cover
         CGFloat overhang = 0;

@@ -16,6 +16,7 @@ static const CGFloat kSCHBookShelfGridViewFooterHeight = 60;
 
 @property (nonatomic, retain) SCHBookShelfGridShelvesView *bookShelvesView;
 @property (nonatomic, retain) UILabel *footer;
+@property (nonatomic, assign) CGFloat absoluteShelfHeight;
 
 - (CGFloat)heightForFooter;
 - (void)positionFooter;
@@ -29,6 +30,7 @@ static const CGFloat kSCHBookShelfGridViewFooterHeight = 60;
 @synthesize minimumNumberOfShelves;
 @synthesize toggleView;
 @synthesize footer;
+@synthesize absoluteShelfHeight;
 
 - (void)dealloc
 {
@@ -105,13 +107,21 @@ static const CGFloat kSCHBookShelfGridViewFooterHeight = 60;
 
 - (void)setShelfHeight:(CGFloat)height
 {
+    self.absoluteShelfHeight = height;
     CGFloat currentHeight = [self.bookShelvesView shelfHeight];
     CGRect shelvesFrame = self.bookShelvesView.frame;
     shelvesFrame.size.height -= currentHeight;
-    shelvesFrame.size.height += height;
+    shelvesFrame.size.height += height + currBorderSize;
     
     [self.bookShelvesView setFrame:shelvesFrame];
-    [self.bookShelvesView setShelfHeight:height];
+    [self.bookShelvesView setShelfHeight:height + currBorderSize];
+}
+
+- (void)calculateColumnCount
+{
+    [super calculateColumnCount];
+
+    [self setShelfHeight:self.absoluteShelfHeight];
 }
 
 - (CGFloat)shelfHeight

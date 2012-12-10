@@ -58,6 +58,7 @@ typedef enum {
 @property(readwrite,assign,nonatomic) CGPoint currentScrollOffset;
 @property(readwrite,assign,nonatomic) NSInteger moveStyle;
 @property(readwrite,nonatomic, getter = isEditing) BOOL editing;
+@property(readonly, nonatomic) CGFloat currBorderSize;
 
 - (void)reloadData;
 - (void)rearrangeCells;

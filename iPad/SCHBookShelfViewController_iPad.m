@@ -28,8 +28,8 @@
 #import "SCHAppStateManager.h"
 
 //static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
-static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 224;
-static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 225;
+static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 209;
+static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 209;
 static NSInteger const kSCHBookShelfButtonPadding = 25;
 static NSInteger const kSCHBookShelfEdgePadding = 12;
 //static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.0;
