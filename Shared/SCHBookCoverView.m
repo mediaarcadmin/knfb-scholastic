@@ -761,6 +761,8 @@
 
         self.featureTab.image = [self imageForFeature:bookFeatures
                                            horizontal:tabOnRight == NO];
+
+        BOOL iPhone = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone;
         switch (bookFeatures.features) {
             case kSCHAppBookFeaturesNone:
             {
@@ -770,41 +772,73 @@
             }
             case kSCHAppBookFeaturesStoryInteractions:
             {
-                overhang = (tabOnRight ? 15 : 25);
-                heightOffset = (tabOnRight ? 2 : 0);
+                if (iPhone) {
+                    overhang = (tabOnRight ? 8.5 : 15);
+                    heightOffset = (tabOnRight ? 2 : 0);
+                } else {
+                    overhang = (tabOnRight ? 15 : 25);
+                    heightOffset = (tabOnRight ? 2 : 0);
+                }
                 break;
             }
             case kSCHAppBookFeaturesAudio:
             {
-                overhang = (tabOnRight ? 3 : 13);
+                if (iPhone) {
+                    overhang = (tabOnRight ? 1 : 7);
+                } else {
+                    overhang = (tabOnRight ? 3 : 13);
+                }
                 break;
             }
             case kSCHAppBookFeaturesSample:
             {
-                overhang = (tabOnRight ? 1.5 : 1);
+                if (iPhone) {
+                    overhang = (tabOnRight ? 2.5 : 2);
+                } else {
+                    overhang = (tabOnRight ? 1.5 : 1);
+                }
                 break;
             }
             case kSCHAppBookFeaturesStoryInteractionsAudio:
             {
-                overhang = (tabOnRight ? 15.5 : 25);
-                heightOffset = (tabOnRight ? -3 : 0);
+                if (iPhone) {
+                    overhang = (tabOnRight ? 7.5 : 14.5);
+                    heightOffset = (tabOnRight ? -2 : 0);
+                } else {
+                    overhang = (tabOnRight ? 15.5 : 25);
+                    heightOffset = (tabOnRight ? -3 : 0);
+                }
                 break;
             }
             case kSCHAppBookFeaturesStoryInteractionsSample:
             {
-                overhang = (tabOnRight ? 14 : 24);
-                heightOffset = (tabOnRight ? -9 : 0);
+                if (iPhone) {
+                    overhang = (tabOnRight ? 8 : 14);
+                    heightOffset = (tabOnRight ? -4 : 0);
+                } else {
+                    overhang = (tabOnRight ? 14 : 24);
+                    heightOffset = (tabOnRight ? -9 : 0);
+                }
                 break;
             }
             case kSCHAppBookFeaturesAudioSample:
             {
-                overhang = (tabOnRight ? 3.5 : 13);
+                if (iPhone) {
+                    overhang = (tabOnRight ? 2.5 : 7);
+                } else {
+                    overhang = (tabOnRight ? 3.5 : 13);
+                }
                 break;
             }
             case kSCHAppBookFeaturesStoryInteractionsAudioSample:
             {
-                overhang = (tabOnRight ? 14.5 : 24);
-                heightOffset = (tabOnRight ? -9 : 0);
+                if (iPhone) {
+                    overhang = (tabOnRight ? 8 : 13);
+                    heightOffset = (tabOnRight ? -4 : 0);
+                } else {
+                    overhang = (tabOnRight ? 14.5 : 24);
+                    heightOffset = (tabOnRight ? -9 : 0);
+                }
                 break;
             }
             default:
