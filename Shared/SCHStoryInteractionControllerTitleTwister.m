@@ -691,18 +691,20 @@
 - (void)setFinishedIfAllWordsMatch
 {
     BOOL allWordsMatch = YES;
-    
-    for (NSUInteger i = 0; i < 5; ++i) {
-        NSNumber *lengthkey = [NSNumber numberWithInt:i+3];
-        if ([[self.answersByLength objectForKey:lengthkey] count] <
-            [[self.answerCountsByLength objectForKey:lengthkey] integerValue]) {
-            allWordsMatch = NO;
-            break;
-        }
-    }
 
-    if (allWordsMatch == YES) {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    if (self.answerCountsByLength != nil) {
+        for (NSUInteger i = 0; i < 5; ++i) {
+            NSNumber *lengthkey = [NSNumber numberWithInt:i+3];
+            if ([[self.answersByLength objectForKey:lengthkey] count] <
+                [[self.answerCountsByLength objectForKey:lengthkey] integerValue]) {
+                allWordsMatch = NO;
+                break;
+            }
+        }
+
+        if (allWordsMatch == YES) {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+        }
     }
 }
 
