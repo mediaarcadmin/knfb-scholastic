@@ -120,7 +120,8 @@ typedef enum {
 - (void)setupOutcomeView
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self setupTitle];        
+        [self setupTitle];
+        self.titleView.textAlignment = UITextAlignmentCenter;
     }
     
     self.outcomeTitleLabel.text = [self calculatedResult];
