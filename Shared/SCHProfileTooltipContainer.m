@@ -59,16 +59,6 @@
                 xOffset = 74;
             }
             
-            self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(0, 14, 320, 100)] autorelease];
-            [self.topTooltip setTitle:@"Welcome to your Bookshelves!"
-                             bodyText:@"Manage individual bookshelves for your children. You’ll need to assign each eBook to a bookshelf before they can be read."];
-            self.topTooltip.usesCloseButton = YES;
-            self.topTooltip.delegate = self;
-            self.topTooltip.backgroundImage = [UIImage imageNamed:@"TooltipTopBackground"];
-            self.topTooltip.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
-            [self addSubview:self.topTooltip];
-            
-            
             self.bottomTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(0, 290, 320, 160)] autorelease];
             [self.bottomTooltip setFirstTitle:@"Reading Manager"
                                 firstBodyText:@"Go here to assign new eBooks and monitor reading progress."
