@@ -10,6 +10,7 @@
 #import "SCHStoryInteractionProgressView.h"
 #import "SCHStoryInteractionAboutYouQuiz.h"
 #import "SCHStretchableImageButton.h"
+#import "NSArray+Shuffling.h"
     
 typedef enum {
 	SCHStoryInteractionOpeningScreen,
@@ -141,12 +142,13 @@ typedef enum {
     
     NSInteger i = 0;
     
-    for (NSString *answer in [self currentQuestion].answers) {
+    for (NSString *answer in [[self currentQuestion].answers shuffled]) {
         SCHStretchableImageButton *button = [self.answerButtons objectAtIndex:i];
 
         button.titleLabel.textAlignment = UITextAlignmentCenter;
         [button setTitle:answer forState:UIControlStateNormal];
         [button setHidden:NO];
+        button.tag = [[self currentQuestion].answers indexOfObject:answer];
         ++i;
     }
     
@@ -273,7 +275,7 @@ typedef enum {
 
 - (void)unhighlightAndMoveOn:(UIButton *) sender
 {
-    NSNumber *selection = [NSNumber numberWithInt:[self.answerButtons indexOfObject:sender]];
+    NSNumber *selection = [NSNumber numberWithInt:sender.tag];
     NSNumber *currentCount = [self.outcomeCounts objectAtIndex:[selection intValue]];
     
     currentCount = [NSNumber numberWithInt:[currentCount intValue] + 1];
