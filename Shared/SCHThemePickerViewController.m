@@ -245,7 +245,8 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
         [SCHThemeManager sharedThemeManager].theme = themeName;
         self.navigationController.navigationBar.tintColor = [[SCHThemeManager sharedThemeManager] colorForModalSheetBorder];
 
-        [self.tableView reloadData];    
+        [self.tableView reloadData];
+        [self done];
     }
 }
 
