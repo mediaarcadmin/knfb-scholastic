@@ -129,7 +129,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @property (nonatomic, retain) UIImageView *sampleSICoverMarker;
 @property (nonatomic, assign) BOOL coverMarkerShouldAppear;
 @property (nonatomic, assign) BOOL shouldShowChapters;
-@property (nonatomic, assign) BOOL shouldShowPageNumbers;
+@property (nonatomic, assign) BOOL shouldShowPageNumbersForFixedLayout;
 @property (nonatomic, assign) NSNumber *forceOpenToCover;
 @property (nonatomic, assign) SCHReadingViewLayoutType forceLayoutType;
 
@@ -268,7 +268,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 @synthesize sampleSICoverMarker;
 @synthesize coverMarkerShouldAppear;
 @synthesize shouldShowChapters;
-@synthesize shouldShowPageNumbers;
+@synthesize shouldShowPageNumbersForFixedLayout;
 @synthesize forceOpenToCover;
 @synthesize forceLayoutType;
 @synthesize highlightsModeEnabled;
@@ -478,7 +478,7 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [self save];
         
         self.shouldShowChapters = book.shouldShowChapters;
-        self.shouldShowPageNumbers = book.shouldShowPageNumbers;
+        self.shouldShowPageNumbersForFixedLayout = book.shouldShowPageNumbers;
         self.forceOpenToCover = [NSNumber numberWithBool:book.alwaysOpenToCover];
 
 #if FLOW_VIEW_DISABLED
@@ -2664,7 +2664,12 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 
 - (void)updateScrubberHUD
 {
-    BOOL suppressPageNumbers = !(self.shouldShowPageNumbers && (self.layoutType == SCHReadingViewLayoutTypeFixed));
+    BOOL suppressPageNumbers = NO;
+
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed &&
+        self.shouldShowPageNumbersForFixedLayout == NO) {
+        suppressPageNumbers = YES;
+    }
 
     if (self.currentPageIndex != NSUIntegerMax) {
         
