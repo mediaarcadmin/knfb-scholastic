@@ -193,7 +193,7 @@
                               wordGap:wordGap
                       allowSplitWords:YES];
     }
-    
+
     NSInteger height = [letterRows count]*self.letterTileSize.height + ([letterRows count]-1)*kLetterGap;
     NSInteger y = (CGRectGetHeight(self.letterContainerView.bounds)-height)/2 + self.letterTileSize.height/2;
     for (NSString *letterRow in letterRows) {
@@ -265,6 +265,13 @@
             return nil;
         }
     }
+
+    NSInteger layoutTextHeight = [letterRows count]*self.letterTileSize.height + ([letterRows count]-1)*kLetterGap;
+    if (layoutTextHeight > CGRectGetHeight(rect)) {
+        // can't fit this word in the available space - abandon ship!
+        return nil;
+    }
+
     if ([letterRow length] > 0) {
         [letterRows addObject:letterRow];
     }
