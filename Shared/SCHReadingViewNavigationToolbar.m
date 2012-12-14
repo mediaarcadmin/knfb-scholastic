@@ -127,7 +127,7 @@
         // Initialization code
         self.layer.anchorPoint = CGPointZero;
         self.layer.position = CGPointMake(0, 20);
-        
+
         style = aStyle;
         
         shadowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
@@ -741,25 +741,27 @@
     
     CGSize size = CGSizeZero;
 
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         switch (aStyle) {
             case kSCHReadingViewNavigationToolbarStyleYoungerPhone:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
             case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
-                size = CGSizeMake(320, 60);
+                size = CGSizeMake(screenSize.width, 60);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPhone:
-                size = CGSizeMake(320, 44);
+                size = CGSizeMake(screenSize.width, 44);
                 break;
             case kSCHReadingViewNavigationToolbarStyleYoungerPad:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:
             case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
-                size = CGSizeMake(768, 60);
+                size = CGSizeMake(screenSize.width, 60);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPad:
-                size = CGSizeMake(768, 44);
+                size = CGSizeMake(screenSize.width, 44);
                 break;
         }
     } else {
@@ -768,19 +770,19 @@
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPhone:
             case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePhone:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePhone:
-                size = CGSizeMake(480, 44);
+                size = CGSizeMake(screenSize.height, 44);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPhone:
-                size = CGSizeMake(480, 33);
+                size = CGSizeMake(screenSize.height, 33);
                 break;
             case kSCHReadingViewNavigationToolbarStyleYoungerPad:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterPad:    
             case kSCHReadingViewNavigationToolbarStyleYoungerReadingChallengePad:
             case kSCHReadingViewNavigationToolbarStyleYoungerPictureStarterAndReadingChallengePad:
-                size = CGSizeMake(1024, 60);
+                size = CGSizeMake(screenSize.height, 60);
                 break;
             case kSCHReadingViewNavigationToolbarStyleOlderPad:
-                size = CGSizeMake(1024, 44);
+                size = CGSizeMake(screenSize.height, 44);
                 break;
         }
     }
