@@ -332,10 +332,8 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         
         if ([self shouldAnimateTransitionBetweenViews]) {
             [UIView animateWithDuration:0.3
-                             animations:setupViews
-                             completion:^(BOOL finished) {
-                                 [oldContentsView removeFromSuperview];
-                             }];
+                             animations:setupViews];
+            [oldContentsView removeFromSuperview];
         } else {
             setupViews();
             [oldContentsView removeFromSuperview];
@@ -444,7 +442,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
         [self.contentsView removeFromSuperview];
         self.contentsView = nil;
     }
-    
+
     UIView *host = [self.containerView superview];
     self.currentScreenIndex = (self.currentScreenIndex + 1) % [self.nibObjects count];
     [self presentInHostView:host withInterfaceOrientation:self.interfaceOrientation];
