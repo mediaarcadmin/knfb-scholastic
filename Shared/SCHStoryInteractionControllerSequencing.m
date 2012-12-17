@@ -26,6 +26,7 @@
 @property (nonatomic, retain) NSMutableDictionary *attachedImages;
 
 - (void)setView:(UIView *)view borderColor:(UIColor *)color;
+- (void)removeDraggableViewFromTarget:(SCHStoryInteractionDraggableTargetView *)target;
 
 @end
 
@@ -229,6 +230,21 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
     return [[self.attachedImages allValues] containsObject:target];
 }
 
+- (void)removeDraggableViewFromTarget:(SCHStoryInteractionDraggableTargetView *)target
+{
+    NSNumber *matchKey = nil;
+    
+    for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
+        matchKey = [NSNumber numberWithInteger:draggable.matchTag];
+        SCHStoryInteractionDraggableTargetView *targetFromDraggable = [self.attachedImages objectForKey:matchKey];
+        if (target == targetFromDraggable) {
+            [draggable moveToHomePosition];
+            [self.attachedImages removeObjectForKey:matchKey];
+            break;
+        }
+    }
+}
+
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
     self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
@@ -255,7 +271,10 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
 {
     SCHStoryInteractionDraggableTargetView *attachedTarget = nil;
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-        if (![self targetOccupied:target] && distanceSq(position, target.center) < kSnapDistanceSq) {
+        if (distanceSq(position, target.center) < kSnapDistanceSq) {
+            if ([self targetOccupied:target]) {
+                [self removeDraggableViewFromTarget:target];
+            }
             attachedTarget = target;
             CGPoint position = CGPointMake(target.center.x + kOffsetX, target.center.y + kOffsetY);
             [UIView animateWithDuration:0.25f animations:^{
