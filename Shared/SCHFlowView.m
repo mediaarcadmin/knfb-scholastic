@@ -324,13 +324,18 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         return;
     }
     
-    if (animated) {
+    // The eucBookView won't turn the page if it is already visible, so we need to check that
+    EucBookPageIndexPointRange *visibleIndexPointRange = [self.eucBookView visibleIndexPointRange];
+    
+    BOOL alreadyVisible = [visibleIndexPointRange containsPointExclusively:point];
+    
+    if (animated && !alreadyVisible) {
         self.jumpToPageCompletionHandler = completion;
     }
     
     [self.eucBookView goToIndexPoint:point animated:animated];
     
-    if (!animated) {
+    if (!animated || alreadyVisible) {
         if (completion != nil) {
             completion();
         }
