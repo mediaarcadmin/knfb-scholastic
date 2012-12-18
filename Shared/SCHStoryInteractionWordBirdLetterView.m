@@ -22,7 +22,7 @@
     [letter.titleLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:iPad?30:22]];
     [letter.titleLabel setAdjustsFontSizeToFitWidth:NO];
     // to avoid rounding issues that draw the letters slightly left of center
-    letter.titleEdgeInsets = UIEdgeInsetsMake(0, 0.5, 0, 0);
+    letter.titleEdgeInsets = UIEdgeInsetsMake(0, ([UIScreen mainScreen].scale > 1.0 ? 0.5 : 1), 0, 0);
     return letter;
 }
 
