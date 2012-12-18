@@ -14,7 +14,11 @@
 {
     NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:@"SCHStoryInteractionPictureStarterNewEnding" owner:self options:nil];
     if ([nibObjects count] > 0) {
-        [self.contentsView addSubview:[nibObjects objectAtIndex:0]];
+        UIView *openingView = [nibObjects objectAtIndex:0];
+        if (openingView != nil) {
+            openingView.frame = self.contentsView.bounds;
+            [self.contentsView addSubview:openingView];
+        }
     }
 }
 
