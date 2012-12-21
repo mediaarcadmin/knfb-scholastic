@@ -38,6 +38,7 @@
 @property (nonatomic, assign) BOOL textureIsDark;
 @property (nonatomic, copy) dispatch_block_t jumpToPageCompletionHandler;
 @property (nonatomic, retain) SCHBookPoint *openingPoint;
+@property (nonatomic, assign) BOOL bookSizeMayHaveChanged;
 
 - (void)updatePositionInBook;
 - (void)jumpToPageAtIndexPoint:(EucBookPageIndexPoint *)point animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
@@ -55,6 +56,7 @@
 @synthesize textureIsDark;
 @synthesize jumpToPageCompletionHandler;
 @synthesize openingPoint;
+@synthesize bookSizeMayHaveChanged;
 
 - (void)initialiseView
 {
@@ -66,6 +68,9 @@
         eucBookView.vibratesOnInvalidTurn = NO;
         eucBookView.allowsTapTurn = NO;
         eucBookView.twoUpLandscape = YES;
+        
+        self.bookSizeMayHaveChanged = YES;
+        
         [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
         
         if (self.openingPoint) {
@@ -198,23 +203,31 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
         [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
         [self.eucBookView addObserver:self forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
         
-        if ([self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
+        if (self.bookSizeMayHaveChanged) {
             // Reset needs to be here as page layout controller isn't instantiated earlier and that does the shrinking
-            [self.eucBookView bookWillShrink];
-            EucBookPageIndexPoint *startPoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
-            [self.eucBookView bookHasShrunkToIndexPoint:startPoint];
-        } else {
-            BOOL shouldShowRecommendation = [self.eucBook.recommendationViewDataSource shouldShowRecommendationView];
-            
-            if (shouldShowRecommendation) {
-                [eucBookView bookHasGrown];
-            } else  {
-                [eucBookView bookWillShrink];
-                [self.eucBookView bookHasShrunkToIndexPoint:[self.eucBook offTheEndIndexPoint]];
-            }
+            [self resetBookSize];
+            self.bookSizeMayHaveChanged = NO;
         }
-
+        
         [self attachSelector];
+    }
+}
+
+- (void)resetBookSize
+{
+    if ([self.eucBook isKindOfClass:[SCHBSBEucBook class]]) {
+        [self.eucBookView bookWillShrink];
+        EucBookPageIndexPoint *startPoint = [[[EucBookPageIndexPoint alloc] init] autorelease];
+        [self.eucBookView bookHasShrunkToIndexPoint:startPoint];
+    } else {
+        BOOL shouldShowRecommendation = [self.eucBook.recommendationViewDataSource shouldShowRecommendationView];
+        
+        if (shouldShowRecommendation) {
+            [self.eucBookView bookHasGrown];
+        } else  {
+            [self.eucBookView bookWillShrink];
+            [self.eucBookView bookHasShrunkToIndexPoint:[self.eucBook offTheEndIndexPoint]];
+        }
     }
 }
 
