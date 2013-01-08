@@ -188,7 +188,7 @@
             [self enqueueAudioWithPath:[(SCHStoryInteractionReadingChallenge *)self.storyInteraction audioPathForNotCompletedBook]
                         fromBundle:YES];
         }
-        self.introTitleLabel.text = @"Finish reading this book before trying this reading challenge.";
+        self.introTitleLabel.text = @"Finish reading the eBook before trying this quiz.";
         [self.introActionButton setTitle:@"OK" forState:UIControlStateNormal];
         self.introSubtitleLabel.hidden = YES;
         self.bestScoreLabel.hidden = YES;
