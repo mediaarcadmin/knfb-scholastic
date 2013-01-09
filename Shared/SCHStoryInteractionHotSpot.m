@@ -78,10 +78,18 @@
 
 @implementation SCHStoryInteractionHotSpot
 
+@synthesize introduction;
 @synthesize questions;
+
+- (NSString *)audioPathForIntroduction
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
 
 - (void)dealloc
 {
+    [introduction release], introduction = nil;
     [questions release];
     [super dealloc];
 }

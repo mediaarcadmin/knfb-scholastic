@@ -27,8 +27,11 @@
 
 @interface SCHStoryInteractionHotSpot : SCHStoryInteraction {}
 
+@property (nonatomic, retain) NSString *introduction;
 // array of SCHStoryInteractionHotSpotQuestion
 @property (nonatomic, retain) NSArray *questions;
+
+- (NSString *)audioPathForIntroduction;
 
 - (NSArray *)questionsWithPageAssociation:(enum SCHStoryInteractionQuestionPageAssociation)pageAssociation
                                  pageSize:(CGSize)pageSize;

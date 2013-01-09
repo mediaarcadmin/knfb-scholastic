@@ -285,7 +285,9 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
-    if (strcmp(name, "Question1") == 0 || strcmp(name, "Question2") == 0 || strcmp(name, "Question3") == 0) {
+    if (strcmp(name, "Introduction") == 0) {
+        self.introduction = extractXmlAttribute(attributes, "Transcript");
+    } else if (strcmp(name, "Question1") == 0 || strcmp(name, "Question2") == 0 || strcmp(name, "Question3") == 0) {
         [parser beginQuestion:[SCHStoryInteractionHotSpotQuestion class]];
     } else {
         [super startElement:name attributes:attributes parser:parser];

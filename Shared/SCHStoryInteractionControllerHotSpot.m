@@ -150,9 +150,28 @@
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    [self setTitle:[[self currentQuestion] prompt]];
     self.pageImageView.image = [self.delegate currentPageSnapshot];
     
+    // play intro audio on first question only
+    if ([self.delegate currentQuestionForStoryInteraction] == 0 &&
+        [self.delegate storyInteractionFinished] == NO) {
+        [self setTitle:[(SCHStoryInteractionHotSpot *)self.storyInteraction introduction]];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionHotSpot *)self.storyInteraction audioPathForIntroduction]
+                        fromBundle:NO
+                        startDelay:0.0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [self setupMainView];
+              }];
+    } else {
+        [self setupMainView];
+    }
+}
+
+- (void)setupMainView
+{
+    [self setTitle:[[self currentQuestion] prompt]];
+
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     [tap setDelegate:self];
     [self.pageImageView addGestureRecognizer:tap];
