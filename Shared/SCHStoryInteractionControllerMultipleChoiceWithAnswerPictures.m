@@ -21,6 +21,7 @@
 - (void)setupQuestion;
 - (void)playCurrentQuestionAudio;
 - (void)setupButtonsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)repositionButton:(UIImageView *)button x:(CGFloat)x y:(CGFloat)y;
 
 @end
 
@@ -164,14 +165,22 @@
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if (UIInterfaceOrientationIsLandscape(orientation)) {
-            [(UIView *)[self.answerButtons objectAtIndex:0] setFrame:CGRectMake(17, 55, 140, 140)];
-            [(UIView *)[self.answerButtons objectAtIndex:1] setFrame:CGRectMake(165, 55, 140, 140)];
-            [(UIView *)[self.answerButtons objectAtIndex:2] setFrame:CGRectMake(313, 55, 140, 140)];
+            [self repositionButton:[self.answerButtons objectAtIndex:0] x:17 y:45];
+            [self repositionButton:[self.answerButtons objectAtIndex:1] x:170 y:45];
+            [self repositionButton:[self.answerButtons objectAtIndex:2] x:323 y:45];
         } else {
-            [(UIView *)[self.answerButtons objectAtIndex:0] setFrame:CGRectMake(11, 61, 140, 140)];
-            [(UIView *)[self.answerButtons objectAtIndex:1] setFrame:CGRectMake(159, 61, 140, 140)];
-            [(UIView *)[self.answerButtons objectAtIndex:2] setFrame:CGRectMake(85, 211, 140, 140)];
+            [self repositionButton:[self.answerButtons objectAtIndex:0] x:17 y:38];
+            [self repositionButton:[self.answerButtons objectAtIndex:1] x:163 y:38];
+            [self repositionButton:[self.answerButtons objectAtIndex:2] x:85 y:214];
         }
+    }
+}
+
+- (void)repositionButton:(UIImageView *)button x:(CGFloat)x y:(CGFloat)y
+{
+    if (button != nil) {
+        CGSize buttonSize = button.frame.size;
+        button.frame = CGRectMake(x, y, buttonSize.width, buttonSize.height);
     }
 }
 
