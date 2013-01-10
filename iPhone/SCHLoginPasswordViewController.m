@@ -280,6 +280,9 @@ static const CGFloat kContentHeightLandscape = 380;
         case kSCHLoginHandlerCredentialsWarningPasswordBlank:
             self.promptLabel.text = NSLocalizedString(@"The password cannot be blank.", @"");
             break;
+        case kSCHLoginHandlerCredentialsWarningPasswordIncorrectLength:
+            self.promptLabel.text = NSLocalizedString(@"The password should have 3-30 characters.", @"");
+            break;
     }
 }
 

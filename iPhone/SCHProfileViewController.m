@@ -39,6 +39,8 @@ static const CGFloat kSCHProfileViewControllerRowHeightPhone = 60.0f;
 static const CGFloat kSCHProfileViewControllerParentButtonMaxWidthPhone = 282.0f;
 static const CGFloat kSCHProfileViewControllerParentButtonMaxWidthPad = 512.0f;
 static const CGFloat kSCHProfileViewControllerParentButtonMinWidth = 141.0f;
+static const NSUInteger kSCHProfileViewControllerPasswordMinimumLength = 3;
+static const NSUInteger kSCHProfileViewControllerPasswordMaximumLength = 30;
 
 @interface SCHProfileViewController() <UIScrollViewDelegate, NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate>
 
@@ -508,23 +510,29 @@ didSelectButtonAnimated:(BOOL)animated
         if (bottomFieldText != nil && 
             [topFieldText isEqualToString:bottomFieldText]) {
             if ([topFieldText length] > 0) {
-                
-                if (![[topFieldText substringToIndex:1] isEqualToString:@" "]) {
-                    [profileItem setRawPassword:topFieldText];
-                    if ([self.managedObjectContext save:nil] == YES) {
-                        [[SCHSyncManager sharedSyncManager] passwordSync];
-                    }
-                    [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-                    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                        [modalSheet dismissSheetAnimated:YES completion:^{
+
+                if ([topFieldText length] >= kSCHProfileViewControllerPasswordMinimumLength &&
+                    [topFieldText length] <= kSCHProfileViewControllerPasswordMaximumLength) {
+                    if (![[topFieldText substringToIndex:1] isEqualToString:@" "]) {
+                        [profileItem setRawPassword:topFieldText];
+                        if ([self.managedObjectContext save:nil] == YES) {
+                            [[SCHSyncManager sharedSyncManager] passwordSync];
+                        }
+                        [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
+                        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                            [modalSheet dismissSheetAnimated:YES completion:^{
+                                [self pushBookshelvesControllerWithProfileItem:profileItem];
+                            }];
+                        } else {
                             [self pushBookshelvesControllerWithProfileItem:profileItem];
-                        }];
+                        }
+                        return YES;
                     } else {
-                        [self pushBookshelvesControllerWithProfileItem:profileItem];
+                        [passwordController setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningPasswordLeadingSpaces];
+                        return NO;
                     }
-                    return YES;
                 } else {
-                    [passwordController setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningPasswordLeadingSpaces];
+                    [passwordController setDisplayIncorrectCredentialsWarning:kSCHLoginHandlerCredentialsWarningPasswordIncorrectLength];
                     return NO;
                 }
             } else {

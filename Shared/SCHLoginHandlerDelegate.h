@@ -12,7 +12,8 @@ typedef enum {
     kSCHLoginHandlerCredentialsWarningAuthenticationFailure,
     kSCHLoginHandlerCredentialsWarningPasswordLeadingSpaces,
     kSCHLoginHandlerCredentialsWarningPasswordMismatch,
-    kSCHLoginHandlerCredentialsWarningPasswordBlank
+    kSCHLoginHandlerCredentialsWarningPasswordBlank,
+    kSCHLoginHandlerCredentialsWarningPasswordIncorrectLength
 } SCHLoginHandlerCredentialsWarning;
 
 @protocol SCHLoginHandlerDelegate
