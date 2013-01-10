@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">12C54</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2843</string>
+		<string key="IBDocument.SystemVersion">12C60</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1929</string>
+			<string key="NS.object.0">1930</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -36,7 +36,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="204109347">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -45,6 +45,7 @@
 						<int key="NSvFlags">306</int>
 						<string key="NSFrame">{{50, 15}, {370, 167}}</string>
 						<reference key="NSSuperview" ref="204109347"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="720560732"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -78,6 +79,7 @@
 						<int key="NSvFlags">269</int>
 						<string key="NSFrame">{{166, 190}, {138, 40}}</string>
 						<reference key="NSSuperview" ref="204109347"/>
+						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -104,6 +106,8 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{470, 250}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="336032388"/>
 				<object class="NSColor" key="IBUIBackgroundColor" id="154557587">
 					<int key="NSColorSpace">3</int>
@@ -334,7 +338,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="854115624">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -343,7 +347,6 @@
 						<int key="NSvFlags">295</int>
 						<string key="NSFrame">{{50, 15}, {370, 162}}</string>
 						<reference key="NSSuperview" ref="854115624"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -368,7 +371,6 @@
 						<int key="NSvFlags">269</int>
 						<string key="NSFrame">{{166, 190}, {138, 40}}</string>
 						<reference key="NSSuperview" ref="854115624"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -389,8 +391,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{470, 250}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="364931931"/>
 				<reference key="IBUIBackgroundColor" ref="154557587"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -510,6 +510,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">questionButtonTapCancelled:</string>
+						<reference key="source" ref="377787671"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">9</int>
+					</object>
+					<int key="connectionID">74</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">questionButtonTapped:</string>
 						<reference key="source" ref="489278870"/>
 						<reference key="destination" ref="841351856"/>
@@ -534,6 +543,15 @@
 						<int key="IBEventType">8</int>
 					</object>
 					<int key="connectionID">68</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">questionButtonTapCancelled:</string>
+						<reference key="source" ref="489278870"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">9</int>
+					</object>
+					<int key="connectionID">73</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -564,6 +582,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">questionButtonTapCancelled:</string>
+						<reference key="source" ref="163701049"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">9</int>
+					</object>
+					<int key="connectionID">72</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">questionButtonTapped:</string>
 						<reference key="source" ref="13217982"/>
 						<reference key="destination" ref="841351856"/>
@@ -591,6 +618,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">questionButtonTapCancelled:</string>
+						<reference key="source" ref="13217982"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">9</int>
+					</object>
+					<int key="connectionID">71</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">questionButtonTouched:</string>
 						<reference key="source" ref="977206857"/>
 						<reference key="destination" ref="841351856"/>
@@ -615,6 +651,15 @@
 						<int key="IBEventType">8</int>
 					</object>
 					<int key="connectionID">70</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">questionButtonTapCancelled:</string>
+						<reference key="source" ref="977206857"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">9</int>
+					</object>
+					<int key="connectionID">75</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -877,7 +922,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">70</int>
+			<int key="maxID">75</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1055,6 +1100,6 @@
 				<string>{14, 40}</string>
 			</object>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">1929</string>
+		<string key="IBCocoaTouchPluginVersion">1930</string>
 	</data>
 </archive>
