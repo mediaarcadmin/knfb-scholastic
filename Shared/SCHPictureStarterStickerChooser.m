@@ -66,7 +66,7 @@ enum {
         CGRect frame = CGRectInset(cell.bounds, iPad ? 5 : 1, 0);
         SCHPictureStarterStickerChooserThumbnailView *thumbnail = [[SCHPictureStarterStickerChooserThumbnailView alloc] initWithFrame:frame];
         thumbnail.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        thumbnail.contentMode = UIViewContentModeCenter;
+        thumbnail.contentMode = UIViewContentModeScaleAspectFit;
         thumbnail.tag = kThumbnailTag;
         thumbnail.backgroundColor = [UIColor clearColor];
         [cell addSubview:thumbnail];
