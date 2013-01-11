@@ -19,6 +19,9 @@ extern NSString * const kSCHAudioBookPlayerErrorDomain;
 extern NSInteger const kSCHAudioBookPlayerFileError;
 extern NSInteger const kSCHAudioBookPlayerDataError;
 
+typedef BOOL (^SCHAudioBookPlayerStartPlayingAudioBlock)();
+typedef void (^SCHAudioBookPlayerPriorToPlayingAudioBlock)(NSUInteger wordsStartOnLayoutPage, SCHAudioBookPlayerStartPlayingAudioBlock startPlayingAudioBlock);
+
 @interface SCHAudioBookPlayer : NSObject <AVAudioPlayerDelegate>
 {
 }
@@ -31,8 +34,9 @@ extern NSInteger const kSCHAudioBookPlayerDataError;
                error:(NSError **)outError;
 - (void)cleanAudio;
 - (BOOL)play;
-- (BOOL)playAtLayoutPage:(NSUInteger)layoutPage 
-          pageWordOffset:(NSUInteger)pageWordOffset;
+- (BOOL)playAtLayoutPage:(NSUInteger)layoutPage
+          pageWordOffset:(NSUInteger)pageWordOffset
+priorToPlayingAudioBlock:(SCHAudioBookPlayerPriorToPlayingAudioBlock)priorToPlayingAudioBlock;
 - (void)pause;
 
 @end

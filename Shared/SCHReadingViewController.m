@@ -152,6 +152,9 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (NSError *)errorWithCode:(NSInteger)code;
 - (void)releaseViewObjects;
 
+- (void)bookAudioPlayerStartedPlaying;
+- (void)bookAudioPlayerFailed;
+
 - (void)toolbarButtonPressed;
 - (void)toggleToolbarVisibility;
 - (void)setToolbarVisibility:(BOOL)visibility animated:(BOOL)animated;
@@ -1328,25 +1331,45 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             if (success) {
                 self.audioBookPlayer.delegate = self;
                 
-                success = [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+                success = [self.audioBookPlayer playAtLayoutPage:layoutPage
+                                                  pageWordOffset:pageWordOffset
+                                        priorToPlayingAudioBlock:^(NSUInteger wordsStartOnLayoutPage, SCHAudioBookPlayerStartPlayingAudioBlock startPlayingAudioBlock){
+                                            if (wordsStartOnLayoutPage != layoutPage) {
+                                                if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+                                                    self.pauseAudioOnNextPageTurn = NO;
+                                                    [self.readingView jumpToPageAtIndex:wordsStartOnLayoutPage - 1 animated:YES withCompletionHandler:^{
+                                                        self.pauseAudioOnNextPageTurn = YES;
+                                                        if (startPlayingAudioBlock() == YES) {
+                                                            [self bookAudioPlayerStartedPlaying];
+                                                        } else {
+                                                            [self bookAudioPlayerFailed];
+                                                        }
+                                                    }];
+                                                }
+                                            } else {
+                                                if (startPlayingAudioBlock() == YES) {
+                                                    [self bookAudioPlayerStartedPlaying];
+                                                } else {
+                                                    [self bookAudioPlayerFailed];
+                                                }
+                                            }
+                                        }];
             }
-            
-            if (success) {
-                [self setToolbarVisibility:NO animated:YES];
-            } else {
-                self.audioBookPlayer = nil;   
-                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                                     message:NSLocalizedString(@"Due to a problem with the audio we cannot play this audiobook.", @"") 
-                                                                    delegate:nil 
-                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                           otherButtonTitles:nil]; 
-                [errorAlert show]; 
-                [errorAlert release];                                               
+
+            if (success == NO) {
+                [self bookAudioPlayerFailed];
             }
         }
     } else if(self.audioBookPlayer.isPlaying == NO) {
-        [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
-        [self setToolbarVisibility:NO animated:YES];
+        [self.audioBookPlayer playAtLayoutPage:layoutPage
+                                pageWordOffset:pageWordOffset
+                      priorToPlayingAudioBlock:^(NSUInteger wordsStartOnLayoutPage, SCHAudioBookPlayerStartPlayingAudioBlock startPlayingAudioBlock){
+                          if (startPlayingAudioBlock() == YES) {
+                              [self bookAudioPlayerStartedPlaying];
+                          } else {
+                              [self bookAudioPlayerFailed];
+                          }
+                      }];
     } else {
         [self.readingView dismissFollowAlongHighlighter];  
         [self pauseAudioPlayback];
@@ -1357,6 +1380,23 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     }    
     
     [self checkCornerAudioButtonVisibilityWithAnimation:YES];
+}
+
+- (void)bookAudioPlayerStartedPlaying
+{
+    [self setToolbarVisibility:NO animated:YES];
+}
+
+- (void)bookAudioPlayerFailed
+{
+    self.audioBookPlayer = nil;    
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+                                                         message:NSLocalizedString(@"Due to a problem with the audio we cannot play this audiobook.", @"")
+                                                        delegate:nil
+                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                               otherButtonTitles:nil];
+    [errorAlert show];
+    [errorAlert release];
 }
 
 #pragma mark -

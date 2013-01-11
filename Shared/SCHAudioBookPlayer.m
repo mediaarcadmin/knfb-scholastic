@@ -42,6 +42,7 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
 @property (nonatomic, assign) BOOL isSuspended;
 
 - (BOOL)playWithHighlightDelay:(NSTimeInterval)highlightDelayTime;
+- (NSInteger)actualWordsStartOnLayoutPageForLayoutPage:(NSUInteger)layoutPage;
 - (SCHAudioInfo *)audioInfoForPageIndex:(NSUInteger)pageIndex;
 - (BOOL)prepareToPlay:(SCHAudioInfo *)audioInfoToPrepare 
        pageWordOffset:(NSUInteger)pageWordOffset
@@ -49,6 +50,7 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
 - (void)suspend;
 - (void)pauseToResume;
 - (void)resumeFromPause;
+
 @end
 
 @implementation SCHAudioBookPlayer
@@ -350,20 +352,51 @@ static NSTimeInterval const kSCHAudioBookPlayerMinimumHighlightDelay = 0.1;
     return ret;
 }
 
-- (BOOL)playAtLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
-{  
+- (BOOL)playAtLayoutPage:(NSUInteger)layoutPage
+          pageWordOffset:(NSUInteger)pageWordOffset
+priorToPlayingAudioBlock:(SCHAudioBookPlayerPriorToPlayingAudioBlock)priorToPlayingAudioBlock
+{
+    NSParameterAssert(priorToPlayingAudioBlock);
+
     //NSLog(@"SCHAudioBookPlayer playAtLayoutPage");  
     BOOL ret = NO;
     NSTimeInterval currentTimeOffset = 0.0;
+    NSUInteger layoutPageIndex = (layoutPage == 0 ? 0 : layoutPage - 1);
     
-    SCHAudioInfo *audioInfo = [self audioInfoForPageIndex:(layoutPage == 0 ? 0 : layoutPage - 1)];
+    SCHAudioInfo *audioInfo = [self audioInfoForPageIndex:layoutPageIndex];
     
-    if (audioInfo != nil && [self prepareToPlay:audioInfo 
-                                 pageWordOffset:pageWordOffset 
-                              currentTimeOffset:&currentTimeOffset] == YES) {        
-        ret = [self playWithHighlightDelay:currentTimeOffset];
+    if (audioInfo != nil && [self prepareToPlay:audioInfo
+                                 pageWordOffset:pageWordOffset
+                              currentTimeOffset:&currentTimeOffset] == YES) {
+        NSInteger actualWordsStartOnLayoutPage = [self actualWordsStartOnLayoutPageForLayoutPage:layoutPageIndex];
+        // assume we are on the correct layoutPage if we couldnt find one
+        if (actualWordsStartOnLayoutPage == NSNotFound) {
+            actualWordsStartOnLayoutPage = layoutPage;
+        }
+        ret = YES;
+        priorToPlayingAudioBlock(actualWordsStartOnLayoutPage, ^{
+            return [self playWithHighlightDelay:currentTimeOffset];
+        });
     }
-    
+
+    return ret;
+}
+
+// This will always return NSNotFound if word timings has not been populated
+- (NSInteger)actualWordsStartOnLayoutPageForLayoutPage:(NSUInteger)layoutPageIndex
+{
+    NSInteger ret = NSNotFound;
+
+    NSAssert(self.wordTimings != nil, @"WordTimings should be populated");
+
+    for (SCHWordTiming *wordTiming in self.wordTimings) {
+        if (wordTiming.pageIndex >= layoutPageIndex) {
+            // we got our match
+            ret = wordTiming.pageIndex + 1;
+            break;
+        }
+    }
+
     return ret;
 }
 
