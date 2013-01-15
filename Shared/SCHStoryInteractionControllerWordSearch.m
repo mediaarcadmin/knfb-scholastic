@@ -139,8 +139,16 @@
     }
     
     CGRect containerRect = self.wordsContainerView.bounds;
-    NSInteger numberOfRows = MAX(1, (wordCount + 3) / 4);
-    NSInteger wordsPerRow = wordCount/numberOfRows + (wordCount%2);
+    NSInteger numberOfRows = 4;
+    if (wordCount < 3) {
+        numberOfRows = 1;
+    } else if (wordCount < 5) {
+        numberOfRows = 2;
+    } else if (wordCount < 7 || wordCount == 9) {
+        numberOfRows = 3;
+    } // otherwise leave as default 4
+
+    NSInteger wordsPerRow = ceilf((float)wordCount / numberOfRows);
     CGFloat rowHeight = floorf((CGRectGetHeight(containerRect) - kWordInset*2) / numberOfRows);
     
     for (NSInteger row = 0; row < numberOfRows; ++row) {
