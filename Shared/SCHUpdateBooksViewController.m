@@ -13,6 +13,7 @@
 #import "SCHBookIdentifier.h"
 #import "SCHBookUpdates.h"
 #import "UIColor+Scholastic.h"
+#import "LambdaAlert.h"
 
 @interface SCHUpdateBooksViewController ()
 
@@ -162,7 +163,16 @@
 - (void)updateBooks:(id)sender
 {
     [[self.cellControllers allValues] makeObjectsPerformSelector:@selector(startUpdate)];
-    [self back:nil];
+
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"EBOOK UPDATES", @"EBOOK UPDATES")
+                          message:NSLocalizedString(@"These books are being downloaded. Please go to your bookshelf to start reading.", nil)];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{
+        [self back:nil];
+    }];
+
+    [alert show];
+    [alert release];
 }
 
 #pragma mark - Notifications
