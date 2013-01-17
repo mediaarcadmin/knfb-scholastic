@@ -374,7 +374,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUIView" id="12928583">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -383,7 +383,8 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{50, 10}, {370, 162}}</string>
 						<reference key="NSSuperview" ref="12928583"/>
-						<reference key="NSNextKeyView" ref="877441619"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -403,31 +404,10 @@
 						<reference key="IBUIFont" ref="568050601"/>
 						<double key="preferredMaxLayoutWidth">370</double>
 					</object>
-					<object class="IBUIButton" id="877441619">
-						<reference key="NSNextResponder" ref="12928583"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{166, 190}, {138, 40}}</string>
-						<reference key="NSSuperview" ref="12928583"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<string key="IBUINormalTitle">Done!</string>
-						<object class="NSColor" key="IBUIHighlightedTitleColor">
-							<int key="NSColorSpace">2</int>
-							<bytes key="NSRGB">MCAwLjI4MjM1Mjk0MTIgMC41NTY4NjI3NDUxAA</bytes>
-						</object>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xMzcyNTQ5MDg3IDAuMjIzNTI5NDEzMyAwLjQzMTM3MjU1MzEAA</bytes>
-						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="203878283"/>
-						<reference key="IBUINormalBackgroundImage" ref="144905088"/>
-						<reference key="IBUIFontDescription" ref="967671436"/>
-						<reference key="IBUIFont" ref="568050601"/>
-					</object>
 				</object>
 				<string key="NSFrameSize">{470, 250}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="471871882"/>
 				<reference key="IBUIBackgroundColor" ref="588470206"/>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -715,15 +695,6 @@
 					</object>
 					<int key="connectionID">39</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">doneButtonTapped:</string>
-						<reference key="source" ref="877441619"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">42</int>
-				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -794,18 +765,12 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="471871882"/>
-							<reference ref="877441619"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">36</int>
 						<reference key="object" ref="471871882"/>
-						<reference key="parent" ref="12928583"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">37</int>
-						<reference key="object" ref="877441619"/>
 						<reference key="parent" ref="12928583"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -867,9 +832,6 @@
 					<string>3.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>34.IBPluginDependency</string>
 					<string>36.IBPluginDependency</string>
-					<string>37.CustomClassName</string>
-					<string>37.IBPluginDependency</string>
-					<string>37.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>4.CustomClassName</string>
 					<string>4.IBPluginDependency</string>
 					<string>4.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
@@ -904,9 +866,6 @@
 					<real value="2"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHStretchableImageButton</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
 					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<real value="2"/>

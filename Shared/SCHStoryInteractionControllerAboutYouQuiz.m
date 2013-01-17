@@ -287,14 +287,6 @@ typedef enum {
     [self nextQuestion];
 }
 
-- (IBAction)doneButtonTapped:(id)sender
-{
-    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
-        [self performSelector:@selector(removeFromHostView) withObject:nil afterDelay:0.5];
-    }];
-}
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
