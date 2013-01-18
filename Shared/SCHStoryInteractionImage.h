@@ -16,4 +16,7 @@
 // XPSProvider-relative path for the image
 - (NSString *)imagePath;
 
+// XPSProvider-relative path for the audio
+- (NSString *)audioPathForQuestion;
+
 @end

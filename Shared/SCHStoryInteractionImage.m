@@ -25,6 +25,16 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:self.imageFilename];
 }
 
+- (NSString *)audioPathForQuestion
+{
+    if ([self isOlderStoryInteraction] == YES) {
+        return nil;
+    } else {
+        NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+        return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+    }
+}
+
 - (NSString *)title
 {
     return @"Graphic";

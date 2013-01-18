@@ -74,6 +74,24 @@
     }
 }
 
+- (BOOL)shouldShowAudioButtonForViewAtIndex:(NSInteger)screenIndex
+{
+    NSString *audioPath = [self audioPathForQuestion];
+    return ([self.storyInteraction isOlderStoryInteraction] == NO &&
+            audioPath != nil &&
+            [self.xpsProvider componentExistsAtPath:audioPath] == YES);
+}
+
+- (void)tappedAudioButton:(id)sender withViewAtIndex:(NSInteger)screenIndex
+{
+    [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
+        NSString *path = [self.storyInteraction audioPathForQuestion];
+        if (path != nil) {
+            [self enqueueAudioWithPath:path fromBundle:NO];
+        }
+    }];
+}
+
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
 
 - (void)storyInteractionDisableUserInteraction
