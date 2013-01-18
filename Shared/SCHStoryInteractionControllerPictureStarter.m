@@ -41,6 +41,7 @@ enum SCHToolType {
 @property (nonatomic, retain) UIActionSheet *doneActionSheet;
 @property (nonatomic, assign) BOOL drawingChanged;
 
+- (void)showNoDrawingToSaveMessage:(void (^)(void))completionBlock;
 - (void)savePictureToPhotoLibrary:(void(^)(BOOL success))completionBlock;
 - (void)loadCachedPictureFromDisk;
 - (void)saveCachedPictureToDisk;
@@ -338,13 +339,18 @@ enum SCHToolType {
 - (void)saveButtonPressed:(id)sender
 {
     [self storyInteractionDisableUserInteraction];
-    
-    [self savePictureToPhotoLibrary:^(BOOL success) {
-        [self storyInteractionEnableUserInteraction];
-        if (success) {
-            self.drawingChanged = NO;
-        }
-    }];
+    if (!self.drawingChanged) {
+        [self showNoDrawingToSaveMessage:^{
+            [self storyInteractionEnableUserInteraction];
+        }];
+    } else {
+        [self savePictureToPhotoLibrary:^(BOOL success) {
+            [self storyInteractionEnableUserInteraction];
+            if (success) {
+                self.drawingChanged = NO;
+            }
+        }];
+    }
 }
 
 - (void)clearButtonPressed:(id)sender
@@ -555,6 +561,28 @@ enum SCHToolType {
 }
 
 #pragma mark - Save to photo library
+
+- (void)showNoDrawingToSaveMessage:(void (^)(void))completionBlock
+{
+    self.savingLabel.frame = CGRectIntegral(self.savingLabel.frame);
+    self.savingBackground.frame = CGRectIntegral(self.savingBackground.frame);
+
+    self.savingLabel.text = NSLocalizedString(@"Draw a picture before saving.", @"");
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         self.savingBackground.alpha = 1;
+                     }];
+
+    [UIView animateWithDuration:0.25
+                          delay:1.5
+                        options:UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         self.savingBackground.alpha = 0;
+                     }
+                     completion:^(BOOL finished) {
+                         completionBlock();
+                     }];
+}
 
 - (void)savePictureToPhotoLibrary:(void (^)(BOOL))completionBlock
 {
