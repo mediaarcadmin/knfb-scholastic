@@ -49,7 +49,8 @@
 - (void)saveCachedWordsToDisk;
 - (void)clearCachedWordsFromDisk;
 
-- (void)setFinishedIfAllWordsMatch;
+- (BOOL)allWordsMatch;
+- (void)titleTwisterComplete;
 
 @end
 
@@ -424,6 +425,10 @@
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[answers count]-1 inSection:0];
         [answerTable scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     });
+
+    if ([self allWordsMatch] == YES) {
+        [self titleTwisterComplete];
+    }
 }
 
 - (void)clearButtonTapped:(id)sender
@@ -691,12 +696,12 @@
 - (void)closeButtonTapped:(id)sender
 {
     [self saveCachedWordsToDisk];
-    [self setFinishedIfAllWordsMatch];
     [super closeButtonTapped:sender];
 }
 
-- (void)setFinishedIfAllWordsMatch
+- (BOOL)allWordsMatch
 {
+    BOOL ret = NO;
     BOOL allWordsMatch = YES;
 
     if (self.answerCountsByLength != nil) {
@@ -710,9 +715,24 @@
         }
 
         if (allWordsMatch == YES) {
-            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+            ret = YES;
         }
     }
+
+    return ret;
+}
+
+- (void)titleTwisterComplete
+{
+    [self saveCachedWordsToDisk];
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    [self enqueueAudioWithPath:@"sfx_winround.mp3"
+                    fromBundle:YES
+                    startDelay:0
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:^{
+              [self removeFromHostView];
+          }];
 }
 
 #pragma mark - Override for SCHStoryInteractionControllerStateReactions
