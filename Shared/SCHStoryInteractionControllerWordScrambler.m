@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSArray *letterPositions;
 @property (nonatomic, retain) NSMutableArray *lettersByPosition;
 @property (nonatomic, retain) NSArray *hintLetters;
+@property (nonatomic, retain) NSArray *apostropheLetters;
 @property (nonatomic, assign) BOOL hasShownHint;
 @property (nonatomic, assign) NSInteger tileGap;
 @property (nonatomic, assign) NSInteger snapDistanceSq;
@@ -31,6 +32,7 @@
 - (UIImage *)chooseLetterTileBackgroundForContainerSize:(CGSize)containerSize;
 - (void)createAndLayoutLetterViews;
 - (void)scrambleLetterPositions;
+- (void)fixApostropheLettersInCorrectPositions:(NSMutableArray *)shuffledLetters;
 - (void)layoutLetterViewsWithAnimationDuration:(NSTimeInterval)duration;
 
 - (void)withLetterPositionCloseToPoint:(CGPoint)point :(void(^)(NSInteger letterPosition, BOOL *stop))block;
@@ -52,6 +54,7 @@
 @synthesize letterPositions;
 @synthesize lettersByPosition;
 @synthesize hintLetters;
+@synthesize apostropheLetters;
 @synthesize hasShownHint;
 @synthesize tileGap;
 @synthesize snapDistanceSq;
@@ -65,6 +68,7 @@
     [letterPositions release], letterPositions = nil;
     [lettersByPosition release], lettersByPosition = nil;
     [hintLetters release], hintLetters = nil;
+    [apostropheLetters release], apostropheLetters = nil;
     [super dealloc];
 }
 
@@ -110,6 +114,7 @@
     
     NSMutableArray *views = [NSMutableArray array];
     NSMutableArray *hints = [NSMutableArray array];
+    NSMutableArray *apostrophes = [NSMutableArray array];
     NSInteger characterIndex = 1;
 
     for (NSString *row in self.letterRows) {
@@ -127,7 +132,11 @@
             if ([wordScrambler.hintIndices containsObject:[NSNumber numberWithInteger:characterIndex]]) {
                 [hints addObject:letter];
             }
-            
+
+            if ([[NSCharacterSet punctuationCharacterSet] characterIsMember:letter.letter] == YES) {
+                [apostrophes addObject:letter];
+            }
+
             [letter release];
             characterIndex++;
         }
@@ -136,6 +145,7 @@
     
     self.letterViews = views;
     self.hintLetters = hints;
+    self.apostropheLetters = [NSArray arrayWithArray:apostrophes];
     
     for (SCHStoryInteractionDraggableLetterView *letter in views) {
         [letter setTileImage:letterTile];
@@ -266,13 +276,30 @@
 - (void)scrambleLetterPositions
 {
     self.lettersByPosition = [NSMutableArray array];
-    NSArray *shuffledLetters = [self.letterViews shuffled];
+    NSMutableArray *shuffledLetters = [NSMutableArray arrayWithArray:[self.letterViews shuffled]];
+    [self fixApostropheLettersInCorrectPositions:shuffledLetters];
     NSInteger index = 0;
     for (NSValue *position in self.letterPositions) {
         SCHStoryInteractionDraggableLetterView *view = [shuffledLetters objectAtIndex:index++];
         view.center = [position CGPointValue];
         view.homePosition = view.center;
         [self.lettersByPosition addObject:view];
+    }
+}
+
+- (void)fixApostropheLettersInCorrectPositions:(NSMutableArray *)shuffledLetters
+{
+    NSArray *shuffledLettersCopy = [[shuffledLetters copy] autorelease];
+    
+    for (NSUInteger index = 0; index <  [shuffledLettersCopy count]; index++) {
+        SCHStoryInteractionDraggableLetterView *letter = [shuffledLettersCopy objectAtIndex:index];
+        if ([self.apostropheLetters containsObject:letter] == YES) {
+            NSUInteger correctPositionIndex = [self.letterViews indexOfObject:letter];
+            if (correctPositionIndex < [shuffledLetters count]) {
+                [shuffledLetters exchangeObjectAtIndex:index withObjectAtIndex:correctPositionIndex];
+                [letter setLetterColor:[UIColor SCHYellowColor]];
+            }
+        }
     }
 }
 
@@ -350,7 +377,8 @@
 
 - (BOOL)draggableViewShouldStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-    if (self.hasShownHint && [self.hintLetters containsObject:draggableView]) {
+    if ((self.hasShownHint && [self.hintLetters containsObject:draggableView]) ||
+        [self.apostropheLetters containsObject:draggableView]) {
         return NO;
     }
     return YES;
