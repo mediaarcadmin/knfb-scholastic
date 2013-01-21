@@ -121,7 +121,7 @@ didReceiveResponse:(NSURLResponse *)response
         if ([(NSHTTPURLResponse *)response statusCode] != 200) {
             [conn cancel];
             NSLog(@"Error downloading file, errorCode: %d", [(NSHTTPURLResponse *)response statusCode]);
-            [self cancel];
+            [SCHVersionDownloadManager sharedVersionManager].state = SCHVersionDownloadManagerProcessingStateUnexpectedConnectivityFailureError;
             [self finishOp];
             return;
         }
