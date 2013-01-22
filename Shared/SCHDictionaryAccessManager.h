@@ -31,6 +31,9 @@ extern NSString* const kSCHDictionaryOlderReader;
 // speak a word for a category
 - (void)speakWord:(NSString *)dictionaryWord category:(NSString *)category;
 
+// confirm if word audio file exists for word for a category
+- (BOOL)canSpeakWord:(NSString *)dictionaryWord category:(NSString *)category;
+
 // speak a word definition
 - (void)speakYoungerWordDefinition:(NSString *)dictionaryWord;
 

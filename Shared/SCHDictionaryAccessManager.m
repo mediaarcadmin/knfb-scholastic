@@ -545,6 +545,41 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     
 }
 
+- (BOOL)canSpeakWord:(NSString *)dictionaryWord category:(NSString *)category
+{
+    BOOL ret = NO;
+
+    // if the category isn't YD or OD, return
+    if (!category ||
+        ([category compare:kSCHDictionaryYoungReader] != NSOrderedSame &&
+         [category compare:kSCHDictionaryOlderReader] != NSOrderedSame))
+    {
+        NSLog(@"Warning: unrecognised category %@ in canSpeakWord:category:.", category);
+    } else {
+        // remove whitespace and punctuation characters
+        NSString *trimmedWord = [self trimmedWordForDictionary:dictionaryWord];
+        trimmedWord = [trimmedWord lowercaseString];
+
+        NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3",
+                             [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], trimmedWord];
+
+        BOOL trimmedWordExists = [[NSFileManager defaultManager] fileExistsAtPath:mp3Path];
+
+        if (!trimmedWordExists || ([category compare:kSCHDictionaryOlderReader] == NSOrderedSame)) {
+            SCHDictionaryWordForm *rootWord = [[SCHDictionaryAccessManager sharedAccessManager] wordFormForBaseWord:trimmedWord category:category];
+
+            NSString *mp3PathForRootWord = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3",
+                                            [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], rootWord.rootWord];
+
+            ret = [[NSFileManager defaultManager] fileExistsAtPath:mp3PathForRootWord];
+        } else {
+            ret = trimmedWordExists;
+        }
+    }
+
+    return ret;
+}
+
 - (void)speakYoungerWordDefinition:(NSString *)dictionaryWord
 {
     if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable]) {

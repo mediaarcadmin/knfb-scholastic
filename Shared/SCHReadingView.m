@@ -304,9 +304,6 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
                                                                                action:@selector(selectYoungerWord:)] autorelease];
                     
                     ret = [NSArray arrayWithObjects:dictionaryItem, nil];
-                } else {
-                    // no dictionary entry so let the user see the highlight before dismissing it
-                    [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0.2];                
                 }
             }
         } break;
@@ -411,6 +408,14 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
                 if (word) {
                     if ([self.delegate respondsToSelector:@selector(readingView:hasSelectedWordForSpeaking:)]) {
                         [self.delegate readingView:self hasSelectedWordForSpeaking:word];
+                        if ([[SCHDictionaryAccessManager sharedAccessManager] dictionaryContainsWord:word forCategory:kSCHDictionaryYoungReader] == NO) {
+                            if ([[SCHDictionaryAccessManager sharedAccessManager] canSpeakWord:word
+                                                                                      category:kSCHDictionaryYoungReader] == YES) {
+                                [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0.2];
+                            } else {
+                                [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0.0];
+                            }
+                        }
                     }
                 }
                 break;
