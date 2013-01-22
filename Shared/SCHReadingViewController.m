@@ -56,6 +56,7 @@
 #import "SCHRecommendationViewDelegate.h"
 #import "SCHRecommendationViewDataSource.h"
 #import "SCHAppBookFeatures.h"
+#import <libEucalyptus/THUIDeviceAdditions.h>
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -502,7 +503,12 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         [[SCHSyncManager sharedSyncManager] backOfBookRecommendationSync:self.bookIdentifier];
         [[SCHSyncManager sharedSyncManager] wishListSyncForced:NO];
 
-        [[NSNotificationCenter defaultCenter] addObserver:self 
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(willResignActiveNotification:)
+                                                     name:UIApplicationWillResignActiveNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didEnterBackgroundNotification:) 
                                                      name:UIApplicationDidEnterBackgroundNotification
                                                    object:nil];
@@ -993,6 +999,17 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 }
 
 #pragma mark - Notification methods
+
+- (void)willResignActiveNotification:(NSNotification *)notification
+{
+    // On iOS < 5.0 UIApplicationDidEnterBackgroundNotification is not sent
+    // when the device enters the lock screen instead we pause the audio on
+    // UIApplicationWillResignActiveNotification
+    if([[UIDevice currentDevice] compareSystemVersion:@"5.0"] < NSOrderedSame) {
+        [self.readingView dismissFollowAlongHighlighter];  
+        [self pauseAudioPlayback];
+    }
+}
 
 - (void)didEnterBackgroundNotification:(NSNotification *)notification
 {
