@@ -41,10 +41,14 @@
 @synthesize tapToBeginView;
 @synthesize tapToBeginButton;
 @synthesize tapToBeginLabel;
+@synthesize youWonLabel;
+@synthesize youWonBackground;
 
 - (void)dealloc
 {
     [tapToBeginLabel release], tapToBeginLabel = nil;
+    [youWonLabel release], youWonLabel = nil;
+    [youWonBackground release], youWonBackground = nil;
     [tapToBeginButton release], tapToBeginButton = nil;
     [tapToBeginView release], tapToBeginView = nil;
     [puzzleBackground release], puzzleBackground = nil;
@@ -303,6 +307,9 @@
     self.tapToBeginView.frame = CGRectIntegral(self.tapToBeginView.frame);
     
     [self.tapToBeginView.superview bringSubviewToFront:self.tapToBeginView];
+
+    self.youWonBackground.layer.cornerRadius = 20;
+    self.youWonBackground.alpha = 0;
 }
 
 #pragma mark - puzzle interaction
@@ -349,7 +356,8 @@
         }
     }
     if (correctPieces == [self.jigsawPieces count]) {
-        [self enqueueAudioWithPath:@"sfx_winround.mp3" fromBundle:YES];
+        self.youWonBackground.center = self.puzzleBackground.center;
+        self.youWonBackground.frame = CGRectIntegral(self.youWonBackground.frame);
 
         [self.jigsawPieceViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         self.jigsawPieceViews = nil;
@@ -363,40 +371,22 @@
         [self.contentsView addSubview:completed];
         completed.frame = completedFrame;
 
-        
-        // wiggle animation
-        [UIView animateWithDuration:0.3
-                              delay:0.0 
-                            options:UIViewAnimationOptionCurveEaseInOut 
+        [self.youWonBackground.superview bringSubviewToFront:self.youWonBackground];
+
+        [UIView animateWithDuration:0.25
                          animations:^{
-                             completed.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(35 * M_PI / 180.0), 0.9, 0.9);
-                         }
-                         completion:^(BOOL finished) {
-                            
-                             [UIView animateWithDuration:0.3
-                                                   delay:0.0 
-                                                 options:UIViewAnimationOptionCurveEaseInOut 
-                                              animations:^{
-                                                  completed.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(325 * M_PI / 180.0), 0.75, 0.75);
-                                              }
-                                              completion:^(BOOL finished) {
-                                                  
-                                                  [UIView animateWithDuration:0.3
-                                                                        delay:0.0 
-                                                                      options:UIViewAnimationOptionCurveEaseInOut 
-                                                                   animations:^{
-                                                                       completed.transform = CGAffineTransformIdentity;
-                                                                   }
-                                                                   completion:nil];
-                                              }];
+                             self.youWonBackground.alpha = 1;
                          }];
-        
-        
+
         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self removeFromHostView];
-        });
+
+        [self enqueueAudioWithPath:[(SCHStoryInteractionJigsaw *)self.storyInteraction audioPathForYouWon]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [self removeFromHostView];
+              }];
     }
 }
 

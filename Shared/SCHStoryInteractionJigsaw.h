@@ -16,5 +16,6 @@
 
 - (NSString *)audioPathForChooseYourPuzzle;
 - (NSString *)audioPathForClickPuzzleToStart;
+- (NSString *)audioPathForYouWon;
 
 @end

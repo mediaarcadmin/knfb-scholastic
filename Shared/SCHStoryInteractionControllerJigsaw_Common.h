@@ -20,6 +20,8 @@
 @property (nonatomic, retain) IBOutlet UIView *tapToBeginView;
 @property (nonatomic, retain) IBOutlet UIButton *tapToBeginButton;
 @property (nonatomic, retain) IBOutlet UILabel *tapToBeginLabel;
+@property (nonatomic, retain) IBOutlet UIView *youWonBackground;
+@property (nonatomic, retain) IBOutlet UILabel *youWonLabel;
 @property (nonatomic, retain) SCHStoryInteractionJigsawPreviewView *puzzlePreviewView;
 @property (nonatomic, assign) NSInteger numberOfPieces;
 @property (nonatomic, retain) NSArray *jigsawPieces;

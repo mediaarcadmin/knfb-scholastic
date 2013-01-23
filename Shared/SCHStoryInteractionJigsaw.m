@@ -48,4 +48,9 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_clickthepuzzle.mp3"];
 }
 
+- (NSString *)audioPathForYouWon
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_youwon.mp3"];
+}
+
 @end
