@@ -22,6 +22,7 @@
 
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) KNFBTOCEntry *frontOfBookTOCEntry;
 
 @end
 
@@ -30,6 +31,7 @@
 @synthesize identifier;
 @synthesize xpsProvider;
 @synthesize managedObjectContext;
+@synthesize frontOfBookTOCEntry;
 
 - (id)initWithBookIdentifier:(SCHBookIdentifier *)newIdentifier managedObjectContext:(NSManagedObjectContext *)moc
 {
@@ -52,6 +54,7 @@
     
     [identifier release], identifier = nil;
     [managedObjectContext release], managedObjectContext = nil;
+    [frontOfBookTOCEntry release], frontOfBookTOCEntry = nil;
     [super dealloc];
 }
 
@@ -172,12 +175,29 @@
     THPair *ret = nil;
     
     KNFBTOCEntry *tocEntry = [self tocEntryForSectionUuid:sectionUuid];
-    NSString *sectionName = tocEntry.name;
-    if (sectionName) {
-        ret = [sectionName splitAndFormattedChapterName];
+    
+    // splitAndFormattedChapterName title-cases the word. We don't want that for 'Front of eBook'
+    
+    if ([tocEntry isEqual:[self frontOfBookTOCEntry]]) {
+        ret = [THPair pairWithFirst:tocEntry.name second:nil];
+    } else {
+        NSString *sectionName = tocEntry.name;
+        if (sectionName) {
+            ret = [sectionName splitAndFormattedChapterName];
+        }
     }
     
     return ret;
+}
+
+- (KNFBTOCEntry *)frontOfBookTOCEntry
+{
+    if (!frontOfBookTOCEntry) {
+        frontOfBookTOCEntry = [[KNFBTOCEntry alloc] init];
+        frontOfBookTOCEntry.name = NSLocalizedString(@"Front of eBook", @"Name for the single table-of-contents entry for the front page of an eBook that does not specify a TOC entry for the front page");
+    }
+    
+    return frontOfBookTOCEntry;
 }
 
 @end
