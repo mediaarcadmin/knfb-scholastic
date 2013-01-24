@@ -40,10 +40,11 @@ enum SCHToolType {
 @property (nonatomic, retain) UIActionSheet *clearActionSheet;
 @property (nonatomic, retain) UIActionSheet *doneActionSheet;
 @property (nonatomic, assign) BOOL drawingChanged;
+@property (nonatomic, assign) BOOL drawingIsEmpty;
 
 - (void)showNoDrawingToSaveMessage:(void (^)(void))completionBlock;
 - (void)savePictureToPhotoLibrary:(void(^)(BOOL success))completionBlock;
-- (void)loadCachedPictureFromDisk;
+- (BOOL)loadCachedPictureFromDisk;
 - (void)saveCachedPictureToDisk;
 - (void)clearCachedPictureFromDisk;
 - (BOOL)shouldAutoSaveWhenDone;
@@ -75,6 +76,7 @@ enum SCHToolType {
 @synthesize clearActionSheet;
 @synthesize doneActionSheet;
 @synthesize drawingChanged;
+@synthesize drawingIsEmpty;
 
 - (void)dealloc
 {
@@ -304,9 +306,9 @@ enum SCHToolType {
     } else {
         [self applyRoundRectStyle:self.colorChooser];
     }
-    
-    [self loadCachedPictureFromDisk];
-    
+
+    self.drawingIsEmpty = ([self loadCachedPictureFromDisk] == NO);
+
     self.drawingChanged = NO;
 }
 
@@ -339,7 +341,7 @@ enum SCHToolType {
 - (void)saveButtonPressed:(id)sender
 {
     [self storyInteractionDisableUserInteraction];
-    if (!self.drawingChanged) {
+    if (self.drawingIsEmpty == YES) {
         [self showNoDrawingToSaveMessage:^{
             [self storyInteractionEnableUserInteraction];
         }];
@@ -409,6 +411,7 @@ enum SCHToolType {
                 [self clearCachedPictureFromDisk];
                 [self.drawingCanvas clear];
                 self.drawingChanged = NO;
+                self.drawingIsEmpty = YES;
                 self.clearButton.enabled = NO;
             }
             self.clearActionSheet = nil;
@@ -493,20 +496,22 @@ enum SCHToolType {
 - (void)canvas:(SCHPictureStarterCanvas *)canvas didCommitDrawingInstruction:(id<SCHPictureStarterDrawingInstruction>)drawingInstruction
 {
     self.drawingChanged = YES;
+    self.drawingIsEmpty = NO;
     self.clearButton.enabled = YES;
 }
 
 #pragma mark - Load/Save/Delete work in progress from local storage
 
-- (void)loadCachedPictureFromDisk
+- (BOOL)loadCachedPictureFromDisk
 {
+    BOOL ret = NO;
     
 #if PICTURE_STARTER_CACHE_DISABLED
-    return;
+    return ret;
 #endif
 
     if (!self.delegate) {
-        return;
+        return ret;
     }
     
     NSString *cacheDir = [self.delegate storyInteractionCacheDirectory];
@@ -517,7 +522,10 @@ enum SCHToolType {
     if (previousImage) {
         [self.drawingCanvas setDrawnImage:previousImage];
         self.clearButton.enabled = YES;
+        ret = YES;
     }
+
+    return ret;
 }
 
 - (void)saveCachedPictureToDisk
