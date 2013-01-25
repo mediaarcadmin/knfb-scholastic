@@ -187,16 +187,16 @@ enum SCHToolType {
     if (inDrawingScreen) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             if (UIInterfaceOrientationIsLandscape(orientation)) {
-                self.drawingCanvas.superview.frame = CGRectMake(10, 10, 692, 615);
+                self.drawingCanvas.superview.frame = CGRectMake(15, 10, 672, 615);
 //                self.savingLabel.frame = CGRectMake(250, 330, 310, 60);
-                self.doneButton.frame = CGRectMake(53, 653, 210, 37);
-                self.clearButton.frame = CGRectMake(271, 653, 210, 37);
-                self.saveButton.frame = CGRectMake(489, 653, 210, 37);
-                self.colorChooser.frame = CGRectMake(730, 10, 210, 222);
-                self.sizeChooser.center = CGPointMake(835, 275);
+                self.doneButton.frame = CGRectMake(28, 653, 210, 37);
+                self.clearButton.frame = CGRectMake(246, 653, 210, 37);
+                self.saveButton.frame = CGRectMake(465, 653, 210, 37);
+                self.colorChooser.frame = CGRectMake(725, 10, 210, 222);
+                self.sizeChooser.center = CGPointMake(830, 275);
                 self.sizeChooser.bounds = CGRectMake(0, 0, 210, 50);
                 self.sizeChooser.transform = CGAffineTransformIdentity;
-                self.stickerChoosersContainer.frame = CGRectMake(730, 318, 210, 372);
+                self.stickerChoosersContainer.frame = CGRectMake(725, 318, 210, 372);
             } else {
                 self.drawingCanvas.superview.frame = CGRectMake(10, 20, 672, 615);
 //                self.savingLabel.frame = CGRectMake(192, 298, 310, 60);
@@ -211,7 +211,7 @@ enum SCHToolType {
             }
         } else {
             if (UIInterfaceOrientationIsLandscape(orientation)) {
-                self.drawingCanvas.superview.frame = CGRectMake(10, 10, 339, 245);
+                self.drawingCanvas.superview.frame = CGRectMake(45, 10, 269, 245);
                 self.doneButton.frame = CGRectMake(21, 263, 100, 37);
                 self.clearButton.frame = CGRectMake(129, 263, 100, 37);
                 self.saveButton.frame = CGRectMake(237, 263, 100, 37);
