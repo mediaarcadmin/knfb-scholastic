@@ -308,6 +308,9 @@ static const CGFloat kContentHeightLandscape = 380;
             [self startShowingProgress];
         } else {
             [self clearFields];
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                [self.shadowView setTransform:CGAffineTransformIdentity];
+            }
         }
     }
     }];
@@ -320,6 +323,9 @@ static const CGFloat kContentHeightLandscape = 380;
 {
     [self.view endEditing:YES];
     [self clearFields];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.shadowView setTransform:CGAffineTransformIdentity];
+    }    
     
     if (self.cancelBlock) {
         self.cancelBlock();
