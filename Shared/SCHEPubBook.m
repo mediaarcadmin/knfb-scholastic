@@ -94,7 +94,7 @@
 
 - (NSArray *)userCSSDatasForDocumentTree:(id<EucCSSDocumentTree>)documentTree
 {
-    NSMutableArray *ret = [[[super userAgentCSSDatasForDocumentTree:documentTree] mutableCopy] autorelease];
+    NSMutableArray *ret = [[[super userCSSDatasForDocumentTree:documentTree] mutableCopy] autorelease];
     
     NSMutableString *cssString = [NSMutableString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"SCHEPUB3Overrides" ofType:@"css"] 
                                                                   encoding:NSUTF8StringEncoding error:NULL];
