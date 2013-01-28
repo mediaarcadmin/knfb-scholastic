@@ -11,6 +11,9 @@
 #import "SCHStoryInteractionProgressView.h"
 #import "SCHStretchableImageButton.h"
 
+static const CGFloat kSCHStoryInteractionControllerPopQuizMaximumButtonFontSize = 16.0;
+static const CGFloat kSCHStoryInteractionControllerPopQuizMinimumButtonFontSize = 10.0;
+
 @interface SCHStoryInteractionControllerPopQuiz ()
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
@@ -135,6 +138,7 @@
     self.progressView.currentStep = self.currentQuestionIndex;
     self.questionLabel.text = [self currentQuestion].prompt;
     NSInteger i = 0;
+    CGFloat buttonFontSize = kSCHStoryInteractionControllerPopQuizMaximumButtonFontSize;
     for (NSString *answer in [self currentQuestion].answers) {
         UIImage *highlight = nil;
         if (i == [self currentQuestion].correctAnswer) {
@@ -144,20 +148,21 @@
         }
         SCHStretchableImageButton *button = [self.answerButtons objectAtIndex:i];
         
-        BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-        
         CGSize buttonSize = button.frame.size;
-        UIFont *buttonFont = [UIFont fontWithName:@"Arial-BoldMT" size:iPad?15:15];
+        UIFont *buttonFont = [UIFont fontWithName:@"Arial-BoldMT" size:kSCHStoryInteractionControllerPopQuizMaximumButtonFontSize];
         
-        float actualFontSize = 15;
-        float leftRightPadding = 10;
-        [answer sizeWithFont:buttonFont 
-                                               minFontSize:8 
-                                            actualFontSize:&actualFontSize 
-                                                  forWidth:buttonSize.width - leftRightPadding
-                                             lineBreakMode:UILineBreakModeWordWrap];
+        CGFloat actualFontSize = kSCHStoryInteractionControllerPopQuizMaximumButtonFontSize;
+        CGFloat leftRightPadding = 10.0;
+        [answer sizeWithFont:buttonFont
+                 minFontSize:kSCHStoryInteractionControllerPopQuizMinimumButtonFontSize
+              actualFontSize:&actualFontSize
+                    forWidth:buttonSize.width - leftRightPadding
+               lineBreakMode:UILineBreakModeWordWrap];
         
-        [button.titleLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:actualFontSize]];
+        if (buttonFontSize > actualFontSize) {
+            buttonFontSize = actualFontSize;
+        }
+    
         [button.titleLabel setNumberOfLines:2];
         [button.titleLabel setLineBreakMode:UILineBreakModeWordWrap];
         [button.titleLabel setTextAlignment:UITextAlignmentCenter];
@@ -166,6 +171,9 @@
         [button setCustomTopCap:10];
         [button setBackgroundImage:highlight forState:UIControlStateSelected];
         ++i;
+    }
+    for (SCHStretchableImageButton *button in self.answerButtons) {
+        [button.titleLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:buttonFontSize]];
     }
     for (; i < [self.answerButtons count]; ++i) {
         [[self.answerButtons objectAtIndex:i] setHidden:YES];
