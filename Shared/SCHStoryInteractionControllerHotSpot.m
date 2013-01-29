@@ -46,9 +46,15 @@
     [super dealloc];
 }
 
-- (BOOL)shouldShowSnapshotOfReadingViewInBackground
+- (BOOL)shouldAttachReadingView
+
 {
     return NO;
+}
+
+- (BOOL)shouldSnapshotReadingView
+{
+    return YES;
 }
 
 - (BOOL)shouldLockInterfaceOrientation
@@ -149,9 +155,7 @@
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
-{
-    self.pageImageView.image = [self.delegate currentPageSnapshot];
-    
+{    
     // play intro audio on first question only
     if ([self.delegate currentQuestionForStoryInteraction] == 0 &&
         [self.delegate storyInteractionFinished] == NO) {
@@ -166,6 +170,11 @@
     } else {
         [self setupMainView];
     }
+}
+
+- (void)attachSnapshot:(UIImage *)image
+{
+    self.pageImageView.image = image;
 }
 
 - (void)setupMainView

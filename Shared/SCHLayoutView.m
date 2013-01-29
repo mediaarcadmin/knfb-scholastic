@@ -697,6 +697,12 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return [[[THPositionedCGContext alloc] initWithCGContext:CGContext backing:backing] autorelease];
 }
 
+- (void)pageTurningView:(EucPageTurningView *)pageTurningView didUpdateTextureForPageWithIdentifier:(id)identifier
+{
+    [self.delegate readingView:self hasRenderedPageAtIndex:[(NSNumber *)identifier integerValue]];
+}
+
+
 - (UIImage *)pageTurningView:(EucIndexBasedPageTurningView *)aPageTurningView
 fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 {
@@ -713,7 +719,7 @@ fastThumbnailUIImageForPageAtIndex:(NSUInteger)index
 	return [self generatedPageCount];
 }
 
-- (UIView *)pageTurningView:(EucIndexBasedPageTurningView *)pageTurningView 
+- (UIView *)pageTurningView:(EucIndexBasedPageTurningView *)pageTurningView
        UIViewForPageAtIndex:(NSUInteger)pageIndex
 {
     UIView *aView = nil;

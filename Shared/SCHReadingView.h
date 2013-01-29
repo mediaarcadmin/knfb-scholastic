@@ -40,6 +40,7 @@ typedef enum
 - (void)readingViewWillBeginTurning:(SCHReadingView *)readingView;
 - (void)readingViewWillBeginUserInitiatedZooming:(SCHReadingView *)readingView;
 
+- (void)readingView:(SCHReadingView *)readingView hasRenderedPageAtIndex:(NSUInteger)pageIndex;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageIndicesInRange:(NSRange)pageIndicesRange withFocusedPageIndex:(NSUInteger)pageIndex;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress;
