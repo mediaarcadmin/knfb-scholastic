@@ -93,6 +93,9 @@ typedef enum
 // setup the title text
 - (void)setupTitle;
 
+// attach (or re-attach) a snapshot image
+- (void)attachSnapshot:(UIImage *)image;
+
 // obtain a Controller for a StoryInteraction.
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 
@@ -182,8 +185,11 @@ typedef enum
 // the frame for the overlaid title view
 - (CGRect)overlaidTitleFrame;
 
-// YES (default) if a snapshot of the reading view should be shown as a background to this SI
-- (BOOL)shouldShowSnapshotOfReadingViewInBackground;
+// YES for iPad, NO for iPhone (default) if the reading view should be attached as the background to this SI
+- (BOOL)shouldAttachReadingView;
+
+// NO (default) if a snapshot of the reading view should be shown as a background to this SI
+- (BOOL)shouldSnapshotReadingView;
 
 // should the transition between successive views be animated? defaults to YES on iPad, NO on iPhone
 - (BOOL)shouldAnimateTransitionBetweenViews;

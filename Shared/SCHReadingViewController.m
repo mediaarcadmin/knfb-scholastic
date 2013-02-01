@@ -1815,10 +1815,12 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     SCHStoryInteractionStandaloneViewController *standalone = [[SCHStoryInteractionStandaloneViewController alloc] init];
     standalone.storyInteractionController = aStoryInteractionController;
 
-    if ([aStoryInteractionController shouldShowSnapshotOfReadingViewInBackground]) {
+    if ([aStoryInteractionController shouldAttachReadingView]) {
         [standalone attachBackgroundView:self.readingView];
+    } else if ([aStoryInteractionController shouldSnapshotReadingView]) {
+        [aStoryInteractionController attachSnapshot:[self.readingView pageSnapshot]];
     }
-    
+
     if (aStoryInteractionController.shouldLockInterfaceOrientation) {
         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             [self.appController setLockedInterfaceOrientations:UIInterfaceOrientationMaskLandscape];
@@ -2509,6 +2511,21 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         }
         
         [self readingViewHasMoved];
+    }
+}
+
+- (void)readingView:(SCHReadingView *)aReadingView hasRenderedPageAtIndex:(NSUInteger)pageIndex
+{
+    if (self.readingView == aReadingView) {
+        //NSLog(@"Has rendered page %d", pageIndex);
+        SCHStoryInteractionController *currentController = self.storyInteractionViewController.storyInteractionController;
+        
+        if ([currentController shouldSnapshotReadingView]) {            
+            NSRange pageIndices = [self storyInteractionPageIndices];
+            if (NSLocationInRange(pageIndex, pageIndices)) {
+                [currentController attachSnapshot:[self.readingView pageSnapshot]];
+            }
+        }
     }
 }
 
@@ -3350,11 +3367,6 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
 - (BOOL)isOlderStoryInteraction
 {
     return !self.youngerMode;
-}
-
-- (UIImage *)currentPageSnapshot
-{
-    return [self.readingView pageSnapshot];
 }
 
 - (CGAffineTransform)viewToPageTransform

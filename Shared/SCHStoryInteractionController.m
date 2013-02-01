@@ -430,6 +430,11 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     }
 }
 
+- (void)attachSnapshot:(UIImage *)image
+{
+    // noop
+}
+
 - (void)presentNextView
 {
     [self presentNextViewAnimated:YES];
@@ -902,10 +907,15 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
     return CGRectZero;
 }
 
-- (BOOL)shouldShowSnapshotOfReadingViewInBackground
+- (BOOL)shouldAttachReadingView
 {
     // iPhone SIs are full screen so only required on iPad
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+}
+
+- (BOOL)shouldSnapshotReadingView
+{
+    return NO;
 }
 
 - (BOOL)shouldShowCloseButtonForViewAtIndex:(NSInteger)screenIndex
