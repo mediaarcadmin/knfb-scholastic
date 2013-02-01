@@ -148,22 +148,21 @@ static const CGFloat kSCHStoryInteractionControllerPopQuizMinimumButtonFontSize 
         }
         SCHStretchableImageButton *button = [self.answerButtons objectAtIndex:i];
         
-        CGSize buttonSize = button.frame.size;
-        UIFont *buttonFont = [UIFont fontWithName:@"Arial-BoldMT" size:kSCHStoryInteractionControllerPopQuizMaximumButtonFontSize];
+        CGRect insetContentRect = [button contentRectForBounds:button.bounds];
+        insetContentRect = UIEdgeInsetsInsetRect(insetContentRect, button.contentEdgeInsets);
         
-        CGFloat actualFontSize = kSCHStoryInteractionControllerPopQuizMaximumButtonFontSize;
-        CGFloat leftRightPadding = 10.0;
-        [answer sizeWithFont:buttonFont
-                 minFontSize:kSCHStoryInteractionControllerPopQuizMinimumButtonFontSize
-              actualFontSize:&actualFontSize
-                    forWidth:buttonSize.width - leftRightPadding
-               lineBreakMode:UILineBreakModeWordWrap];
-        
-        if (buttonFontSize > actualFontSize) {
-            buttonFontSize = actualFontSize;
+        // increase the height so we can detect the text flowing outside the display rect
+        CGSize computeSize = CGSizeMake(insetContentRect.size.width, insetContentRect.size.height * 2.0);
+        for (CGFloat fontSize = kSCHStoryInteractionControllerPopQuizMaximumButtonFontSize; fontSize >= kSCHStoryInteractionControllerPopQuizMinimumButtonFontSize; fontSize -= 0.5) {
+            CGSize sizeForText = [answer sizeWithFont:[UIFont fontWithName:@"Arial-BoldMT" size:fontSize] constrainedToSize:computeSize];
+            if (sizeForText.height <= insetContentRect.size.height || fontSize <= kSCHStoryInteractionControllerPopQuizMinimumButtonFontSize) {
+                if (buttonFontSize > fontSize) {
+                    buttonFontSize = fontSize;
+                }
+                break;
+            }
         }
     
-        [button.titleLabel setNumberOfLines:2];
         [button.titleLabel setLineBreakMode:UILineBreakModeWordWrap];
         [button.titleLabel setTextAlignment:UITextAlignmentCenter];
         [button setTitle:answer forState:UIControlStateNormal];
