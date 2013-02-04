@@ -485,16 +485,12 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
         self.shouldShowPageNumbersForFixedLayout = book.shouldShowPageNumbers;
         self.forceOpenToCover = [NSNumber numberWithBool:book.alwaysOpenToCover];
 
-#if FLOW_VIEW_DISABLED
-        // If Flow View is disabled, always use fixed view
-        self.forceLayoutType = SCHReadingViewLayoutTypeFixed;
-#else
-        if (![bookPackageProvider containsFixedRepresentation]) {
+        // Always force the layout to be flow if it is present
+        if ([bookPackageProvider containsFlowedRepresentation]) {
             self.forceLayoutType = SCHReadingViewLayoutTypeFlow;
         } else if (![bookPackageProvider containsFlowedRepresentation]) {
             self.forceLayoutType = SCHReadingViewLayoutTypeFixed;
         }
-#endif
         
         [[SCHSyncManager sharedSyncManager] openBookSyncForced:YES
                                                booksAssignment:book.ContentMetadataItem.booksAssignment
@@ -789,19 +785,11 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
     
     BOOL showOptions = YES;
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        showOptions = NO;
-    }
-    
-#if FLOW_VIEW_DISABLED
-    showOptions = NO;
-#else
     if (![self.bookPackageProvider containsFixedRepresentation]) {
         showOptions = NO;
     } else if (![bookPackageProvider containsFlowedRepresentation]) {
         showOptions = NO;
     }
-#endif
     
     if (!showOptions) {
     // if flow view is disabled, then remove the options button
