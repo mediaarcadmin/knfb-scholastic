@@ -17,6 +17,8 @@
 #import "SCHDictionaryEntry.h"
 #import "SCHCoreDataHelper.h"
 
+#import <dirent.h>
+
 // Constants
 NSString * const kSCHDictionaryYoungReader = @"YD";
 NSString * const kSCHDictionaryOlderReader = @"OD";
@@ -33,6 +35,7 @@ NSString * const kSCHDictionaryOlderReader = @"OD";
 - (SCHDictionaryEntry *)entryForWord:(NSString *)dictionaryWord category:(NSString *)category;
 - (SCHDictionaryWordForm *)wordFormForBaseWord:(NSString *)baseWord category:(NSString *)category;
 - (NSString *)trimmedWordForDictionary:(NSString *)originalWord;
+- (NSString *)caseSensitiveFilePath:(NSString *)filename path:(NSString *)path;
 
 @end
 
@@ -501,13 +504,18 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 
     NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3",
                          [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], trimmedWord];
-    
+    BOOL trimmedWordExists = [[NSFileManager defaultManager] fileExistsAtPath:mp3Path];
+    if (trimmedWordExists == NO) {
+        mp3Path = [self caseSensitiveFilePath:[NSString stringWithFormat:@"pron_%@.mp3", trimmedWord]
+                                         path:[NSString stringWithFormat:@"%@/Pronunciation/", [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]]];
+        trimmedWordExists = [[NSFileManager defaultManager] fileExistsAtPath:mp3Path];
+    }
+
     SCHDictionaryWordForm *rootWord = [[SCHDictionaryAccessManager sharedAccessManager] wordFormForBaseWord:trimmedWord category:category];
     
     NSString *mp3PathForRootWord = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3", 
                                     [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], rootWord.rootWord];
     
-    BOOL trimmedWordExists = [[NSFileManager defaultManager] fileExistsAtPath:mp3Path];
     BOOL rootWordExists = [[NSFileManager defaultManager] fileExistsAtPath:mp3PathForRootWord];
     
     // if this is a younger reader book, only pronounce the actual word highlighted
@@ -565,6 +573,11 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 
         BOOL trimmedWordExists = [[NSFileManager defaultManager] fileExistsAtPath:mp3Path];
 
+        if (trimmedWordExists == NO) {
+            mp3Path = [self caseSensitiveFilePath:[NSString stringWithFormat:@"pron_%@.mp3", trimmedWord]
+                                             path:[NSString stringWithFormat:@"%@/Pronunciation/", [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]]];
+            trimmedWordExists = [[NSFileManager defaultManager] fileExistsAtPath:mp3Path];
+        }
         if (!trimmedWordExists || ([category compare:kSCHDictionaryOlderReader] == NSOrderedSame)) {
             SCHDictionaryWordForm *rootWord = [[SCHDictionaryAccessManager sharedAccessManager] wordFormForBaseWord:trimmedWord category:category];
 
@@ -645,11 +658,9 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 
 - (NSString *)trimmedWordForDictionary:(NSString *)originalWord
 {
-    NSString *trimmedWord = [originalWord stringByTrimmingCharactersInSet:
-                             [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    trimmedWord = [trimmedWord stringByTrimmingCharactersInSet:
-                   [NSCharacterSet punctuationCharacterSet]];
-    
+    NSCharacterSet *allNonLetterCharacters = [[NSMutableCharacterSet letterCharacterSet] invertedSet];
+    NSString *trimmedWord = [originalWord stringByTrimmingCharactersInSet:allNonLetterCharacters];
+
     // Ticket 1846: replace bad quotes and dashes
     NSCharacterSet *dashSet = [NSCharacterSet characterSetWithCharactersInString:
                                [NSString stringWithUTF8String:"\u2010\u2011\u2012\u2013\u2014\u2015\u2212"]];
@@ -660,6 +671,31 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     trimmedWord = [[trimmedWord componentsSeparatedByCharactersInSet:dashSet] componentsJoinedByString:@"-"];
 
     return trimmedWord;
+}
+
+- (NSString *)caseSensitiveFilePath:(NSString *)filename path:(NSString *)path
+{
+    NSString *ret = nil;
+
+    NSUInteger filenameLength = [filename length];
+    if (filenameLength > 0 && [path length] > 0) {
+        DIR *directory = opendir([path UTF8String]);
+        if (directory != NULL) {
+            struct dirent *directoryEntry = NULL;
+            while ((directoryEntry = readdir(directory)) != NULL) {
+                if (directoryEntry->d_namlen == filenameLength) {
+                    NSString *entryFilename = [NSString stringWithCString:directoryEntry->d_name encoding:NSUTF8StringEncoding];
+                    if ([filename caseInsensitiveCompare:entryFilename] == NSOrderedSame) {
+                        ret = [path stringByAppendingPathComponent:entryFilename];
+                        break;
+                    }
+                }
+            }
+            closedir(directory);
+        }
+    }
+
+    return ret;
 }
 
 @end
