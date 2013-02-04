@@ -677,16 +677,15 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 {
     NSString *ret = nil;
 
-    NSUInteger filenameLength = [filename length];
-    if (filenameLength > 0 && [path length] > 0) {
+    const char *filenameAsChar = [filename UTF8String];
+    if ([filename length] > 0 && [path length] > 0) {
         DIR *directory = opendir([path UTF8String]);
         if (directory != NULL) {
             struct dirent *directoryEntry = NULL;
             while ((directoryEntry = readdir(directory)) != NULL) {
-                if (directoryEntry->d_namlen == filenameLength) {
-                    NSString *entryFilename = [NSString stringWithCString:directoryEntry->d_name encoding:NSUTF8StringEncoding];
-                    if ([filename caseInsensitiveCompare:entryFilename] == NSOrderedSame) {
-                        ret = [path stringByAppendingPathComponent:entryFilename];
+                if (directoryEntry->d_namlen > 0) {
+                    if (strcasecmp(directoryEntry->d_name, filenameAsChar) == 0) {
+                        ret = [path stringByAppendingPathComponent:[NSString stringWithCString:directoryEntry->d_name encoding:NSUTF8StringEncoding]];
                         break;
                     }
                 }
