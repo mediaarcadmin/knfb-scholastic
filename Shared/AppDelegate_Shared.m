@@ -26,6 +26,7 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHRecommendationManager.h"
 #import "NSFileManager+DoNotBackupExtendedAttribute.h"
+#import "NSFileManager+Extensions.h"
 
 #if RUN_KIF_TESTS
 #import "SCHKIFTestController.h"
@@ -93,6 +94,10 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
     if ([self createApplicationSupportDirectory] == NO) {
 		NSLog(@"Application Support directory could not be created.");
 	}
+    
+    if ([[NSFileManager BITtemporaryDirectoryIfExistsOrCreated] length] == 0) {
+        NSLog(@"Application temporary directory does not exist.");
+    }
 
     NSError *error;
     BOOL success = NO;
