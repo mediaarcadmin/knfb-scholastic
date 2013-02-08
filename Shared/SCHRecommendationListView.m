@@ -299,11 +299,14 @@
 
     CGRect middleBounds = CGRectInset(self.middleView.bounds, 4, 4);
     CGFloat sectionPadding;
+    CGFloat minimumFontSize;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         sectionPadding = 8;
+        minimumFontSize = 7.0;
     } else {
         sectionPadding = 2;
+        minimumFontSize = 4.0;
     }
     
     NSUInteger numSections = 3;
@@ -375,7 +378,7 @@
     
     CGFloat ratingWidth = MIN(MIN(CGRectGetWidth(middleBounds), ratingMaxWidth), ratingHeight * ratingRatio);
     
-    CGFloat textHeight = CGRectGetHeight(middleBounds) - (numSections * sectionPadding) - ratingHeight - wishlistHeight;
+    CGFloat textHeight = CGRectGetHeight(middleBounds) - (MAX(numSections - 1, 0) * sectionPadding) - ratingHeight - wishlistHeight;
     
     CGRect textFrame = CGRectMake(CGRectGetMinX(middleBounds), CGRectGetMinY(middleBounds), CGRectGetWidth(middleBounds), textHeight);
     textFrame = CGRectInset(textFrame, 6, 0);
@@ -390,9 +393,18 @@
     
     CGSize desiredSize = [self.titleAndSubtitleLabel sizeThatFits:textFrame.size];
     textFrame.size.width = MIN(textFrame.size.width, desiredSize.width);
+    
+    // if the text doesnt fit then use a smaller font
+    // in particular if the book is landscape in shape then there will be less space
+    for (; pointSize > minimumFontSize &&
+         desiredSize.height > textFrame.size.height; pointSize -= 1.0) {
+        [self setTitle:self.titleText subtitle:self.subtitleText pointSize:pointSize];
+        desiredSize = [self.titleAndSubtitleLabel sizeThatFits:textFrame.size];
+    }
+
     textFrame.size.height = MIN(textFrame.size.height, desiredSize.height);
     
-    CGRect ratingFrame = CGRectMake(CGRectGetMinX(middleBounds), CGRectGetMaxY(textFrame) + 2 * sectionPadding, ratingWidth, ratingHeight);
+    CGRect ratingFrame = CGRectMake(CGRectGetMinX(middleBounds), CGRectGetMaxY(textFrame) + sectionPadding, ratingWidth, ratingHeight);
     
     CGRect wishlistFrame = CGRectMake(CGRectGetMinX(middleBounds) + wishlistInset, CGRectGetMaxY(ratingFrame) + sectionPadding, wishlistWidth, wishlistHeight);
  
