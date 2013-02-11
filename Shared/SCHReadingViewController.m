@@ -66,6 +66,7 @@ static const CGFloat kReadingViewOlderScrubberToolbarHeight = 44;
 static const CGFloat kReadingViewYoungerScrubberToolbarHeight = 60.0f;
 static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
+static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0;
 
 #pragma mark - Class Extension
 
@@ -662,6 +663,15 @@ static const NSUInteger kReadingViewMaxRecommendationsCount = 4;
             [[self.profile AppProfile] setPaperType:[NSNumber numberWithInt:SCHReadingViewPaperTypeWhite]];
         }
     }  
+
+    // on the iPad if we have a narrow horizontal book then 4 recommendations
+    // has problems with the limited space so reduce to 3 recommendations
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (CGRectGetHeight([self.readingView pageRect]) <= kReadingViewMinimumBookHeightForFourRecommendations) {
+            ((SCHRecommendationContainerView *)self.recommendationView).maxRecommendations = 3;
+            [self updateRecommendations];
+        }
+    }
     
     [self.paperTypeSegmentedControl setSelectedSegmentIndex:self.paperType];
     
