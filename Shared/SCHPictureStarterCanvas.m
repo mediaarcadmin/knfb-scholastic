@@ -79,16 +79,16 @@
         self.deviceScale = [[UIScreen mainScreen] scale];
 
         self.backgroundLayer = [CALayer layer];
-        self.backgroundLayer.contentsGravity = kCAGravityResize;
+        self.backgroundLayer.contentsGravity = kCAGravityResizeAspect;
         [self.layer addSublayer:self.backgroundLayer];
         
         self.paintedLayer = [CALayer layer];
-        self.paintedLayer.contentsGravity = kCAGravityResize;
+        self.paintedLayer.contentsGravity = kCAGravityResizeAspect;
         [self.layer addSublayer:self.paintedLayer];
         
         self.liveLayer = [CALayer layer];
         self.liveLayer.contentsScale = self.deviceScale;
-        self.liveLayer.contentsGravity = kCAGravityResize;
+        self.liveLayer.contentsGravity = kCAGravityResizeAspect;
         [self.layer addSublayer:self.liveLayer];
         
         [self layoutSubviews];
@@ -328,7 +328,24 @@
     
     CGImageRef backgroundImage = (CGImageRef)self.backgroundLayer.contents;
     if (backgroundImage != NULL) {
-        CGContextDrawImage(context, self.paintedLayer.bounds, backgroundImage);
+        CGRect drawRect = self.paintedLayer.bounds;
+        CGSize backgroundImageSize = CGSizeMake(CGImageGetWidth(backgroundImage),
+                                                CGImageGetHeight(backgroundImage));
+
+        if (CGSizeEqualToSize(drawRect.size, backgroundImageSize) == NO &&
+            CGSizeEqualToSize(backgroundImageSize, CGSizeZero) == NO) {
+            CGFloat delta = 0.0;
+            if (drawRect.size.width > drawRect.size.height) {
+                delta = drawRect.size.height - (backgroundImageSize.height / backgroundImageSize.width * drawRect.size.width);
+                drawRect = CGRectInset(drawRect, 0.0, delta * 0.5);
+            } else {
+                delta = drawRect.size.width - (backgroundImageSize.width / backgroundImageSize.height * drawRect.size.height);
+                drawRect = CGRectInset(drawRect, delta * 0.5, 0.0);
+            }
+            drawRect = CGRectIntegral(drawRect);
+        }
+        CGContextDrawImage(context, drawRect, backgroundImage);
+        
     }
     
     CGImageRef paintedImage = (CGImageRef)self.paintedLayer.contents;
