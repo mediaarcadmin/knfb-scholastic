@@ -267,14 +267,14 @@
         }
     }
 
+    if ([letterRow length] > 0) {
+        [letterRows addObject:letterRow];
+    }
+
     NSInteger layoutTextHeight = [letterRows count]*self.letterTileSize.height + ([letterRows count]-1)*kLetterGap;
     if (layoutTextHeight > CGRectGetHeight(rect)) {
         // can't fit this word in the available space - abandon ship!
         return nil;
-    }
-
-    if ([letterRow length] > 0) {
-        [letterRows addObject:letterRow];
     }
 
     return letterRows;
