@@ -93,7 +93,7 @@
     if (fileSpaceAvailable == NO) {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Not Enough Storage Space", @"")
-                              message:NSLocalizedString(@"You do not have enough storage space on your device to complete this function. Please clear some space and try again.", @"")];
+                              message:NSLocalizedString(@"You do not have enough storage space on your device to complete this function. Please clear 1.2GB of space and try again.", @"")];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:afterDownload];
         [alert show];
         [alert release];
