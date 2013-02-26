@@ -82,10 +82,13 @@
         if (self.connection == nil) {
             [SCHVersionDownloadManager sharedVersionManager].state = SCHVersionDownloadManagerProcessingStateUnexpectedConnectivityFailureError;            
             [self cancel];
+            [self finishOp];
         } else {
             [self startOp];
         }        
-	}
+	} else {
+        [self finishOp];
+    }
 }
 
 #pragma mark - Operation Methods
