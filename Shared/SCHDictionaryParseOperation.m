@@ -57,16 +57,16 @@
         [dictManager setDictionaryIsCurrentlyReadable:YES];
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
         dictManager.isProcessing = NO;
-
-        [self willChangeValueForKey:@"isExecuting"];
-        [self willChangeValueForKey:@"isFinished"];
-        
-        self.executing = NO;
-        self.finished = YES;
-        
-        [self didChangeValueForKey:@"isExecuting"];
-        [self didChangeValueForKey:@"isFinished"];	
     }
+    
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
+    
+    self.executing = NO;
+    self.finished = YES;
+    
+    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:@"isFinished"];
 }
 
 - (BOOL)isConcurrent {
