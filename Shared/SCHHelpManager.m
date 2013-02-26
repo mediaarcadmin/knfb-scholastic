@@ -17,7 +17,7 @@ NSString * const kSCHHelpDownloadPercentageUpdate = @"kSCHHelpDownloadPercentage
 NSString * const kSCHHelpStateChange = @"kSCHHelpStateChange";
 char * const kSCHHelpManifestEntryColumnSeparator = "\t";
 
-NSUInteger const kSCHHelpBackOffPeriodInSeconds = 1800;
+NSUInteger const kSCHHelpErrorRetryTimeInterval = 600; // 10 minutes
 
 static NSString * const kSCHHelpVideosDirectoryName = @"HelpVideos";
 
@@ -30,9 +30,9 @@ static NSString * const kSCHHelpVideosDirectoryName = @"HelpVideos";
 @property (readwrite, retain) NSOperationQueue *downloadQueue;
 @property (readwrite, retain) Reachability *reachability;
 @property (readwrite, retain) NSTimer *startTimer;
-@property (nonatomic, retain) NSTimer *backoffTimer;
 @property (readwrite) float currentHelpVideoDownloadPercentage;
 @property BOOL internetAvailable;
+@property (retain, nonatomic) NSTimer *helpErrorRetryTimer;
 
 - (void)reachabilityCheck: (Reachability *) curReach;
 - (void)enterBackground;
@@ -51,8 +51,8 @@ static NSString * const kSCHHelpVideosDirectoryName = @"HelpVideos";
 @synthesize downloadQueue;
 @synthesize reachability;
 @synthesize startTimer;
-@synthesize backoffTimer;
 @synthesize internetAvailable;
+@synthesize helpErrorRetryTimer;
 //@synthesize connectionIdle;
 @synthesize isProcessing;
 @synthesize mainThreadManagedObjectContext;
@@ -74,7 +74,7 @@ static NSString * const kSCHHelpVideosDirectoryName = @"HelpVideos";
     
     [mainThreadManagedObjectContext release], mainThreadManagedObjectContext = nil;
     [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
-    [backoffTimer release], backoffTimer = nil;
+    [helpErrorRetryTimer release], helpErrorRetryTimer = nil;
 	[super dealloc];
 }
 
@@ -152,13 +152,7 @@ static SCHHelpManager *sharedManager = nil;
     UIDevice* device = [UIDevice currentDevice];
     BOOL backgroundSupported = [device respondsToSelector:@selector(isMultitaskingSupported)] && device.multitaskingSupported;
     if(backgroundSupported) {   
-        
-        // kill the backoff timer, we'll check for downloading when we return from the foreground
-        if (self.backoffTimer) {
-            [self.backoffTimer invalidate];
-            self.backoffTimer = nil;
-        }
-		
+        		
         // if there's already a background monitoring task, then return - the existing one will work
         if (self.backgroundTask && self.backgroundTask != UIBackgroundTaskInvalid) {
             return;
@@ -300,12 +294,7 @@ static SCHHelpManager *sharedManager = nil;
 		[self performSelectorOnMainThread:@selector(processHelp) withObject:nil waitUntilDone:NO];
 		return;
 	}
-    
-    if (self.backoffTimer) {
-        [self.backoffTimer invalidate];
-        self.backoffTimer = nil;
-    }
-	
+    	
     if (!self.internetAvailable) {
         NSLog(@"Process help called, but no wifi available.");
 		return;
@@ -376,15 +365,9 @@ static SCHHelpManager *sharedManager = nil;
         }
         case SCHHelpProcessingStateError:
         {
-            NSLog(@"An error occurred attempting to download Help videos");
-            
-            NSLog(@"********* Starting back off timer...");
-            // 1800 seconds = 30 minutes
-            self.backoffTimer = [NSTimer scheduledTimerWithTimeInterval:kSCHHelpBackOffPeriodInSeconds
-                                                               target:self
-                                                             selector:@selector(retryHelpDownload)
-                                                             userInfo:nil
-                                                              repeats:NO];
+            NSLog(@"SCHHelpProcessingStateError is handled by helpErrorRetryTimer.\n"
+            @"The operations call [self cancel] after setting the state to SCHHelpProcessingStateError"
+            @"which means [self processHelp] does not get called via setNotCancelledCompletionBlock");
             break;
         }
         case SCHHelpProcessingStateNotEnoughFreeSpace:
@@ -549,6 +532,14 @@ static SCHHelpManager *sharedManager = nil;
         }
         
         [self processHelp];
+    }
+    
+    if (self.helpErrorRetryTimer == nil) {
+        self.helpErrorRetryTimer = [NSTimer scheduledTimerWithTimeInterval:kSCHHelpErrorRetryTimeInterval
+                                                                    target:self
+                                                                  selector:@selector(checkIfHelpUpdateNeeded)
+                                                                  userInfo:nil
+                                                                   repeats:YES];
     }
 }
 
