@@ -631,11 +631,14 @@
     // move the new image view to the right spot, the bottom right hand corner
     CGPoint newCenter = CGPointMake(coverFrame.origin.x + coverFrame.size.width, 
                                     coverFrame.origin.y + coverFrame.size.height);
+    CGPoint errorCenter = newCenter;
     
     if (self.coverViewMode == SCHBookCoverViewModeListView) {
         newCenter.y = coverFrame.origin.y + coverFrame.size.height - ceilf(self.isNewBadge.frame.size.height / 2) + 5;
+        errorCenter.y = coverFrame.origin.y + coverFrame.size.height - ceilf(self.errorBadge.frame.size.height / 2) + 7;
     } else if (self.coverViewMode == SCHBookCoverViewModeGridView) {
         newCenter.y = coverFrame.origin.y + coverFrame.size.height - ceilf(self.isNewBadge.frame.size.height / 4);
+        errorCenter.y = coverFrame.origin.y + coverFrame.size.height - ceilf(self.errorBadge.frame.size.height / 4);
     }
     
     // make sure the new badge isn't cut off
@@ -647,9 +650,8 @@
     // move the new badge if the tab is Sample with Story Interactions
     if (tabOnRight && book.bookFeatures.features == kSCHAppBookFeaturesStoryInteractionsSample) {
         newCenter.x -= 8;
+        errorCenter.x -= 8;
     }
-    
-    CGPoint errorCenter = newCenter;
 
     // make sure the error badge isn't cut off
     if (errorCenter.x + (self.errorBadge.frame.size.width / 2) > self.frame.size.width) {
