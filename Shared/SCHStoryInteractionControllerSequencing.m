@@ -24,10 +24,11 @@
 @interface SCHStoryInteractionControllerSequencing ()
 
 @property (nonatomic, retain) NSMutableDictionary *attachedImages;
+@property (nonatomic, retain) SCHStoryInteractionDraggableTargetView *sourceTargetDuringMove;
 
 - (void)setView:(UIView *)view borderColor:(UIColor *)color;
 - (void)removeDraggableViewFromTarget:(SCHStoryInteractionDraggableTargetView *)target;
-
+- (SCHStoryInteractionDraggableView *)draggableViewFromTarget:(SCHStoryInteractionDraggableTargetView *)target;
 @end
 
 @implementation SCHStoryInteractionControllerSequencing
@@ -36,6 +37,7 @@
 @synthesize imageViews;
 @synthesize targets;
 @synthesize attachedImages;
+@synthesize sourceTargetDuringMove;
 @synthesize targetLabels;
 
 - (void)dealloc
@@ -232,21 +234,48 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
 
 - (void)removeDraggableViewFromTarget:(SCHStoryInteractionDraggableTargetView *)target
 {
+    SCHStoryInteractionDraggableView *draggableView = [self draggableViewFromTarget:target];
+    
+    if (draggableView != nil) {
+        NSNumber *matchKey = [NSNumber numberWithInteger:draggableView.matchTag];
+        
+        // if we are dragging from a target swap them else move to the home position
+        if (self.sourceTargetDuringMove != nil) {
+            [UIView animateWithDuration:0.25f animations:^{
+                CGPoint position = CGPointMake(self.sourceTargetDuringMove.center.x + kOffsetX, self.sourceTargetDuringMove.center.y + kOffsetY);
+                draggableView.center = position;
+                [self.attachedImages removeObjectForKey:matchKey];
+                [self.attachedImages setObject:self.sourceTargetDuringMove forKey:matchKey];
+            }];
+        } else {
+            [draggableView moveToHomePosition];
+            [self.attachedImages removeObjectForKey:matchKey];
+        }
+    }
+}
+
+- (SCHStoryInteractionDraggableView *)draggableViewFromTarget:(SCHStoryInteractionDraggableTargetView *)target
+{
+    SCHStoryInteractionDraggableView *ret = nil;
     NSNumber *matchKey = nil;
     
     for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
         matchKey = [NSNumber numberWithInteger:draggable.matchTag];
         SCHStoryInteractionDraggableTargetView *targetFromDraggable = [self.attachedImages objectForKey:matchKey];
         if (target == targetFromDraggable) {
-            [draggable moveToHomePosition];
-            [self.attachedImages removeObjectForKey:matchKey];
+            ret = draggable;
             break;
         }
     }
+    
+    return ret;
 }
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
+    NSNumber *matchKey = [NSNumber numberWithInteger:draggableView.matchTag];
+    self.sourceTargetDuringMove = [self.attachedImages objectForKey:matchKey];
+    
     self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     [self cancelQueuedAudioExecutingSynchronizedBlocksBefore:^{
         [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
