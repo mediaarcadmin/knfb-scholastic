@@ -26,6 +26,13 @@
 #import <libEucalyptus/THPair.h>
 #import <libEucalyptus/EucOTFIndex.h>
 
+static const CGFloat kSCHFlowViewHorizontalMarginPhone = 7.0f;
+static const CGFloat kSCHFlowViewHorizontalMarginPad = 32.0f;
+static const CGFloat kSCHFlowViewBottomMarginPhone = 0.0f;
+static const CGFloat kSCHFlowViewBottomMarginPad = 20.0f;
+static const CGFloat kSCHFlowViewTopTitlePaddingPhone = 2.0f;
+static const CGFloat kSCHFlowViewTopTitlePaddingPad = 10.0f;
+
 @interface SCHFlowView () <SCHBSBEucBookDelegate>
 
 @property (nonatomic, retain) id<EucBook, SCHEucBookmarkPointTranslation, SCHRecommendationDataSource> eucBook;
@@ -721,6 +728,62 @@ static void sortedHighlightRangePredicateInit() {
 {
     [self.eucBookView bookHasGrown];
     [self jumpToPageAtIndexPoint:indexPoint animated:YES withCompletionHandler:nil];
+}
+
+#pragma mark - EucBookViewDelegate Margin Overrides
+
+- (UIEdgeInsets)pageContentInsetsForFontPointSize:(CGFloat)fontPointSize;
+{
+    CGFloat horizontalMargin;
+    CGFloat bottomMargin;
+    CGFloat topTitlePadding;
+        
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        horizontalMargin = kSCHFlowViewHorizontalMarginPad;
+        bottomMargin = kSCHFlowViewBottomMarginPad;
+        topTitlePadding = kSCHFlowViewTopTitlePaddingPad;
+    } else {
+        horizontalMargin = kSCHFlowViewHorizontalMarginPhone;
+        bottomMargin = kSCHFlowViewBottomMarginPhone;
+        topTitlePadding = kSCHFlowViewTopTitlePaddingPhone;
+    }
+    
+    CGFloat topMargin = fontPointSize * 1.2 + 2*topTitlePadding;
+    
+    return UIEdgeInsetsMake(topMargin, horizontalMargin, bottomMargin, horizontalMargin);
+}
+
+- (CGSize)bookView:(EucBookView *)bookView
+pageContentSizeForPageSize:(CGSize)pageSize
+     fontPointSize:(CGFloat)fontPointSize
+{
+    UIEdgeInsets pageContentInsets = [self pageContentInsetsForFontPointSize:fontPointSize];
+    
+    return CGSizeMake(pageSize.width - pageContentInsets.left - pageContentInsets.right, pageSize.height - pageContentInsets.top - pageContentInsets.bottom);
+}
+
+- (CGPoint)bookView:(EucBookView *)bookView
+pageContentOriginForPageSize:(CGSize)pageSize
+      fontPointSize:(CGFloat)fontPointSize
+          placement:(EucBookIndexPointPlacement)placement
+{
+    UIEdgeInsets pageContentInsets = [self pageContentInsetsForFontPointSize:fontPointSize];
+    return CGPointMake(pageContentInsets.left, pageContentInsets.top);
+}
+
+- (CGFloat)bookView:(EucBookView *)bookView
+pageTitleOffsetForPageSize:(CGSize)pageSize
+      fontPointSize:(CGFloat)fontPointSize
+{
+    CGFloat topTitlePadding;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        topTitlePadding = kSCHFlowViewTopTitlePaddingPad;
+    } else {
+        topTitlePadding = kSCHFlowViewTopTitlePaddingPhone;
+    }
+    
+    return fontPointSize * 1.2 + topTitlePadding;
 }
 
 @end
