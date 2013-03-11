@@ -74,10 +74,13 @@
         if (self.connection == nil) {
             [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUnexpectedConnectivityFailureError];
             [self cancel];
+            [self finishOp];
         } else {
             [self startOp];
-        }        
-	}
+        }
+	} else {
+        [self finishOp];
+    }
 }
 
 #pragma mark - NSURLConnection delegate
