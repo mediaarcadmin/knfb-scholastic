@@ -47,16 +47,41 @@
                 scale = [[UIScreen mainScreen] scale];
             }
             
+            CGImageRef thumbnailRef;
+            
             NSInteger maxPixelSize = maxDimension * scale;
             
-            NSDictionary* d = [NSDictionary dictionaryWithObjectsAndKeys:
-                               (id)kCFBooleanFalse, kCGImageSourceShouldAllowFloat,
-                               (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailWithTransform,
-                               (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailFromImageAlways,
-                               [NSNumber numberWithInteger:maxPixelSize], kCGImageSourceThumbnailMaxPixelSize,
-                               nil];
-            
-            CGImageRef thumbnailRef = CGImageSourceCreateThumbnailAtIndex(src, 0, (CFDictionaryRef) d);
+            if ((maxPixelSize > width) && (maxPixelSize > height)) {
+                NSLog(@"WARNING: Source image is smaller than desired thumbnail. Thumbnail generation will be lossy.");
+                CGFloat aspectFitScale = MIN(maxPixelSize/width, maxPixelSize/height);
+                NSUInteger requiredWidth  = width * aspectFitScale;
+                NSUInteger requiredHeight = height * aspectFitScale;
+                
+                NSDictionary* d = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   (id)kCFBooleanFalse, kCGImageSourceShouldAllowFloat,
+                                   (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailWithTransform,
+                                   nil];
+                
+                CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+                CGImageRef srcImage = CGImageSourceCreateImageAtIndex(src, 0, (CFDictionaryRef) d);
+                CGContextRef ctx = CGBitmapContextCreate(NULL, requiredWidth, requiredHeight, 8, 8 * 4 * requiredWidth, colorSpace, kCGImageAlphaPremultipliedLast);
+                
+                CGContextDrawImage(ctx, CGRectMake(0, 0, requiredWidth, requiredHeight), srcImage);
+                thumbnailRef = CGBitmapContextCreateImage(ctx);
+                
+                CGColorSpaceRelease(colorSpace);
+                CGImageRelease(srcImage);
+                CGContextRelease(ctx);
+            } else {
+                NSDictionary* d = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   (id)kCFBooleanFalse, kCGImageSourceShouldAllowFloat,
+                                   (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailWithTransform,
+                                   (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailFromImageAlways,
+                                   [NSNumber numberWithInteger:maxPixelSize], kCGImageSourceThumbnailMaxPixelSize,
+                                   nil];
+                
+                thumbnailRef = CGImageSourceCreateThumbnailAtIndex(src, 0, (CFDictionaryRef) d);
+            }
             
             resizedImage = [[UIImage alloc] initWithCGImage:thumbnailRef scale:scale orientation:UIImageOrientationUp];
             
