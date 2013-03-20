@@ -80,8 +80,8 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 
 NSUInteger const kSCHAppBookThumbnailMaxWidthPad = 180;
 NSUInteger const kSCHAppBookThumbnailMaxHeightPad = 187;
-NSUInteger const kSCHAppBookThumbnailMaxWidthPhone = 134;
-NSUInteger const kSCHAppBookThumbnailMaxHeightPhone = 134;
+NSUInteger const kSCHAppBookThumbnailMaxWidthPhone = 120;
+NSUInteger const kSCHAppBookThumbnailMaxHeightPhone = 120;
 
 @interface SCHAppBook()
 
