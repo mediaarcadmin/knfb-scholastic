@@ -52,37 +52,29 @@
     }
     
     __block NSString *recommendationDirectory = nil;
-    __block NSString *coverURL = nil;
+    __block NSString *maximumThumbnailURL = nil;
     __block NSString *coverPath = nil;
     
     [self performWithRecommendation:^(SCHAppRecommendationItem *item) {
         recommendationDirectory = [[item recommendationDirectory] copy];
         coverPath = [[item coverImagePath] copy];
-        coverURL = [[item CoverURL] copy];
+        maximumThumbnailURL = [[item maximumThumbnailURL] copy];
     }];
     
     [recommendationDirectory autorelease];
     [coverPath autorelease];
-    [coverURL autorelease];
+    [maximumThumbnailURL autorelease];
     
     self.localPath = coverPath;
     
-    BOOL coverURLIsValid = [SCHRecommendationManager urlIsValid:coverURL];
-    
-    if (!coverURLIsValid) {
-        [self setCoverURLExpiredStateForRecommendationWithIsbn:self.isbn];
-        [self endOperation];
-        return;            
-    }
-    
-    if (self.localPath == nil || coverURL == nil || [coverURL isEqualToString:@""]) {
-        NSLog(@"WARNING: problem with SCHAppRecommendation (ISBN: %@ localPath: %@ coverURL: %@", self.isbn, self.localPath, coverURL);
+    if (self.localPath == nil || maximumThumbnailURL == nil || [maximumThumbnailURL isEqualToString:@""]) {
+        NSLog(@"WARNING: problem with SCHAppRecommendation (ISBN: %@ localPath: %@ maximumThumbnailURL: %@", self.isbn, self.localPath, maximumThumbnailURL);
         [self setProcessingState:kSCHAppRecommendationProcessingStateUnspecifiedError];
         [self endOperation];
         return;
     }
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:coverURL]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:maximumThumbnailURL]];
     
     [self willChangeValueForKey:@"isExecuting"];
     
