@@ -171,7 +171,8 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
             [self setProcessingState:SCHBookProcessingStateError];
             [self setIsProcessing:NO];                                
             [self endOperation];
-            [coverURL release];            
+            [coverURL release];
+            [maximumThumbnailURL release];
             return;
         }
 
@@ -193,6 +194,7 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
             [bookDirectory release];
             [contentIdentifier release];
             [coverURL release];
+            [maximumThumbnailURL release];
             return;
 
         } else {
@@ -209,6 +211,7 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
         [bookDirectory release];
         [contentIdentifier release];
         [coverURL release];
+        [maximumThumbnailURL release];
 
 	} else {
 		[NSException raise:@"SCHDownloadFileOperationUnknownFileType" format:@"Unknown file type for SCHDownloadFileOperation."];
