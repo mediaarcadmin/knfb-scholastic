@@ -78,8 +78,8 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 NSString * const kSCHAppBookPackageTypeExtensionXPS = @"XPS";
 NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 
-NSUInteger const kSCHAppBookThumbnailMaxWidthPad = 140;
-NSUInteger const kSCHAppBookThumbnailMaxHeightPad = 134;
+NSUInteger const kSCHAppBookThumbnailMaxWidthPad = 180;
+NSUInteger const kSCHAppBookThumbnailMaxHeightPad = 187;
 NSUInteger const kSCHAppBookThumbnailMaxWidthPhone = 134;
 NSUInteger const kSCHAppBookThumbnailMaxHeightPhone = 134;
 
