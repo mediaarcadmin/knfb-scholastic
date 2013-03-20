@@ -146,27 +146,28 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
         __block NSString *bookDirectory = nil;
         __block NSString *contentIdentifier = nil;
         __block NSString *coverURL = nil;
+        __block NSString *maximumThumbnailURL = nil;
         __block BOOL coverURLIsFileURL = NO;
-        __block BOOL bookCoverURLIsValid = NO;
         
         [self performWithBook:^(SCHAppBook *book) {
             bookDirectory = [[book bookDirectory] copy];
             contentIdentifier = [[book ContentIdentifier] copy];
             self.realLocalPath = [book coverImagePath];
             coverURL = [[book BookCoverURL] copy];
+            maximumThumbnailURL = [[book maximumThumbnailURL] copy];
             coverURLIsFileURL = [book bookCoverURLIsBundleURL];
-            bookCoverURLIsValid = [book bookCoverURLIsValid];
         }];
 		
-        if (bookCoverURLIsValid == NO) {
-            [self setCoverURLExpiredStateForBookWithIdentifier:self.identifier];
-            [self setIsProcessing:NO];                                
-            [self endOperation];
-            return;            
+        BOOL noURL;
+        
+        if (coverURLIsFileURL) {
+            noURL = (coverURL == nil) || ([coverURL compare:@""] == NSOrderedSame);
+        } else {
+            noURL = (maximumThumbnailURL == nil) || ([maximumThumbnailURL compare:@""] == NSOrderedSame);
         }
-
-        if (self.realLocalPath == nil || coverURL == nil || [coverURL compare:@""] == NSOrderedSame) {
-            NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ coverURL: %@", self.identifier, self.realLocalPath, coverURL);
+        
+        if (self.realLocalPath == nil || noURL) {
+            NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ coverURL: %@ thumbURL: %@", self.identifier, self.realLocalPath, coverURL, maximumThumbnailURL);
             [self setProcessingState:SCHBookProcessingStateError];
             [self setIsProcessing:NO];                                
             [self endOperation];
@@ -195,7 +196,7 @@ static NSUInteger const kSCHDownloadBookFileSizeCompleteMarginOfError = 100;
             return;
 
         } else {
-            request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:coverURL]];
+            request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:maximumThumbnailURL]];
             
             // create a temporary path
             CFUUIDRef theUUID = CFUUIDCreate(NULL);

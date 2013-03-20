@@ -586,15 +586,6 @@ static SCHProcessingManager *sharedManager = nil;
                 // *** Book has no full sized cover image ***
             case SCHBookProcessingStateNoCoverImage:
             {	
-                // check first for URL expiry
-                if (![book bookCoverURLIsValid]) {
-                    // if expired, get the URLs again - this won't loop because we check in 
-                    // the URL request operation for expired URLs from the service.
-                    [book setProcessingState:SCHBookProcessingStateNoURLs];
-                    [self redispatchIdentifier:identifier];
-                    return;
-                }
-                
                 // create cover image download operation
                 SCHDownloadBookFileOperation *downloadImageOp = [[SCHDownloadBookFileOperation alloc] init];
                 [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];

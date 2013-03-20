@@ -78,6 +78,11 @@ NSString * const kSCHAppBookFilenameSeparator = @"-";
 NSString * const kSCHAppBookPackageTypeExtensionXPS = @"XPS";
 NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 
+NSUInteger const kSCHAppBookThumbnailMaxWidthPad = 140;
+NSUInteger const kSCHAppBookThumbnailMaxHeightPad = 134;
+NSUInteger const kSCHAppBookThumbnailMaxWidthPhone = 134;
+NSUInteger const kSCHAppBookThumbnailMaxHeightPhone = 134;
+
 @interface SCHAppBook()
 
 - (NSError *)errorWithCode:(NSInteger)code;
@@ -256,6 +261,23 @@ NSString * const kSCHAppBookPackageTypeExtensionBSB = @"BSB";
 - (BOOL)contentMetadataFileURLIsValid
 {
     return (self.ContentMetadataItem.ContentURL && ![self urlHasExpired:self.ContentMetadataItem.ContentURL]);
+}
+
+- (NSString *)maximumThumbnailURL
+{
+    NSUInteger maxWidth;
+    NSUInteger maxHeight;
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        maxWidth = kSCHAppBookThumbnailMaxWidthPad * scale;
+        maxHeight = kSCHAppBookThumbnailMaxHeightPad * scale;
+    } else {
+        maxWidth = kSCHAppBookThumbnailMaxWidthPhone * scale;
+        maxHeight = kSCHAppBookThumbnailMaxHeightPhone * scale;
+    }
+    
+    return [NSString stringWithFormat:@"%@%@.jpg?h=%d&w=%d", IMAGE_RESIZE_SERVICE, self.ContentIdentifier, maxHeight, maxWidth];
 }
             
 - (BOOL)urlHasExpired:(NSString *)urlString

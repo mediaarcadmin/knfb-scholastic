@@ -86,6 +86,11 @@ extern NSString * const kSCHAppBookDRM_QUALIFIER;
 
 extern NSString * const kSCHAppBookEucalyptusCacheDir;
 
+extern NSUInteger const kSCHAppBookThumbnailMaxWidthPad;
+extern NSUInteger const kSCHAppBookThumbnailMaxHeightPad;
+extern NSUInteger const kSCHAppBookThumbnailMaxWidthPhone;
+extern NSUInteger const kSCHAppBookThumbnailMaxHeightPhone;
+
 
 @interface SCHAppBook :  NSManagedObject  
 {
@@ -181,6 +186,7 @@ extern NSString * const kSCHAppBookEucalyptusCacheDir;
 
 // a list of all books purchased
 - (NSArray *)purchasedBooks;
+- (NSString *)maximumThumbnailURL;
 
 @end
 

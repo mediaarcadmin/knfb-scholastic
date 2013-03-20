@@ -19,6 +19,10 @@ NSString * const kSCHAppRecommendationItemError = @"error";
 NSString * const kSCHAppRecommendationFilenameSeparator = @"-";
 NSUInteger const kSCHRecommendationThumbnailMaxDimensionPad = 140;
 NSUInteger const kSCHRecommendationThumbnailMaxDimensionPhone = 134;
+NSUInteger const kSCHRecommendationThumbnailMaxWidthPad = 140;
+NSUInteger const kSCHRecommendationThumbnailMaxHeightPad = 140;
+NSUInteger const kSCHRecommendationThumbnailMaxWidthPhone = 134;
+NSUInteger const kSCHRecommendationThumbnailMaxHeightPhone = 134;
 
 NSString * const kSCHAppRecommendationItemTitle = @"Title";
 NSString * const kSCHAppRecommendationItemAuthor = @"Author";
@@ -88,7 +92,24 @@ NSString * const kSCHAppRecommendationItemFullCoverImagePath = @"FullCoverImageP
                                                                              self.ContentIdentifier, 
                                                                              kSCHAppRecommendationFilenameSeparator,
                                                                              [NSNumber numberWithInteger:kSCHDRMQualifiersFullWithDRM]]];    
-}	
+}
+
+- (NSString *)maximumThumbnailURL
+{
+    NSUInteger maxWidth;
+    NSUInteger maxHeight;
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        maxWidth = kSCHRecommendationThumbnailMaxWidthPad * scale;
+        maxHeight = kSCHRecommendationThumbnailMaxHeightPad * scale;
+    } else {
+        maxWidth = kSCHRecommendationThumbnailMaxWidthPhone * scale;
+        maxHeight = kSCHRecommendationThumbnailMaxHeightPhone * scale;
+    }
+    
+    return [NSString stringWithFormat:@"%@%@.jpg?h=%d&w=%d", IMAGE_RESIZE_SERVICE, self.ContentIdentifier, maxHeight, maxWidth];
+}
 
 - (NSString *)thumbPath
 {    

@@ -68,6 +68,7 @@ typedef enum {
 - (NSString *)recommendationDirectory;
 
 - (NSDictionary *)dictionary;
+- (NSString *)maximumThumbnailURL;
 
 + (NSString *)recommendationsDirectory;
 
