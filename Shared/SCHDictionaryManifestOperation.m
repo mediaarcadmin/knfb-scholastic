@@ -9,6 +9,15 @@
 #import "SCHDictionaryManifestOperation.h"
 #import "SCHDictionaryDownloadManager.h"
 
+// Constants
+NSString * const kSCHDictionaryManifestOperationDictionaryText = @"DictionaryText";
+NSString * const kSCHDictionaryManifestOperationDictionaryPron = @"DictionaryPron";
+NSString * const kSCHDictionaryManifestOperationDictionaryImage = @"DictionaryImage";
+NSString * const kSCHDictionaryManifestOperationDictionaryAudio = @"DictionaryAudio";
+
+static NSString * const kSCHDictionaryManifestOperationUpdateComponent = @"UpdateComponent";
+static NSString * const kSCHDictionaryManifestOperationUpdateEntry = @"UpdateEntry";
+
 @interface SCHDictionaryManifestOperation ()
 
 @property BOOL executing;
@@ -20,6 +29,7 @@
 @property (nonatomic, retain) NSXMLParser *manifestParser;
 @property (nonatomic, retain) NSMutableData *connectionData;
 @property (nonatomic, retain) NSMutableArray *manifestEntries;
+@property (nonatomic, retain) NSMutableDictionary *manifestCategories;
 @property (nonatomic, retain) SCHDictionaryManifestEntry *currentEntry;
 
 - (void)startOp;
@@ -38,6 +48,7 @@
 @synthesize connectionData;
 @synthesize manifestEntries; 
 @synthesize currentEntry;
+@synthesize manifestCategories;
 
 - (void)dealloc 
 {
@@ -46,7 +57,8 @@
 	[manifestParser release], manifestParser = nil;
     [manifestEntries release], manifestEntries = nil;
     [currentEntry release], currentEntry = nil;
-	
+	[manifestCategories release], manifestCategories = nil;
+    
 	[super dealloc];
 }
 
@@ -64,7 +76,7 @@
 		NSLog(@"Starting operation..");
 		
 		self.connectionData = [[[NSMutableData alloc] init] autorelease];
-        self.manifestEntries = [[[NSMutableArray alloc] init] autorelease];
+		self.manifestCategories = [NSMutableDictionary dictionary];
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
@@ -118,7 +130,11 @@ didReceiveResponse:(NSURLResponse *)response
         [self.manifestParser setDelegate:self];
         [self.manifestParser parse];
     
-        [SCHDictionaryDownloadManager sharedDownloadManager].manifestUpdates = self.manifestEntries;    
+        NSDictionary *manifestCategoriesDictionary = nil;
+        if (self.manifestCategories != nil) {
+            manifestCategoriesDictionary = [NSDictionary dictionaryWithDictionary:self.manifestCategories];
+        }
+        [SCHDictionaryDownloadManager sharedDownloadManager].manifestComponentsDictionary = manifestCategoriesDictionary;
     } else {
         NSLog(@"DictionaryManifestOperation was cancelled");
     }
@@ -144,18 +160,23 @@ didStartElement:(NSString *)elementName
     attributes:(NSDictionary *)attributeDict
 {
 //	NSLog(@"parsing element %@", elementName);
-	if ( [elementName isEqualToString:@"UpdateComponent"] ) {
-		NSString * attributeStringValue = [attributeDict objectForKey:@"Name"];
-		if (attributeStringValue && [attributeStringValue isEqualToString:@"Dictionary"]) {
-			self.parsingDictionaryInfo = YES;
+	if ([elementName isEqualToString:kSCHDictionaryManifestOperationUpdateComponent] == YES) {
+		NSString *attributeStringValue = [attributeDict objectForKey:@"Name"];
+		if (attributeStringValue) {
+            if ([attributeStringValue isEqualToString:kSCHDictionaryManifestOperationDictionaryText] == YES ||
+                [attributeStringValue isEqualToString:kSCHDictionaryManifestOperationDictionaryPron] == YES ||
+                [attributeStringValue isEqualToString:kSCHDictionaryManifestOperationDictionaryImage] == YES ||
+                [attributeStringValue isEqualToString:kSCHDictionaryManifestOperationDictionaryAudio] == YES) {
+                self.parsingDictionaryInfo = YES;
+                self.manifestEntries = [NSMutableArray array];
+                [self.manifestCategories setObject:self.manifestEntries forKey:attributeStringValue];
+            }
 		}
-	}
-	else if (self.parsingDictionaryInfo) {
-		
-		if ( [elementName isEqualToString:@"UpdateEntry"] ) {
+	} else if (self.parsingDictionaryInfo) {
+		if ([elementName isEqualToString:kSCHDictionaryManifestOperationUpdateEntry] == YES) {
             self.currentEntry = [[[SCHDictionaryManifestEntry alloc] init] autorelease];
-            
-			NSString * attributeStringValue = [attributeDict objectForKey:@"StartVersion"];
+
+			NSString *attributeStringValue = [attributeDict objectForKey:@"StartVersion"];
 			if (attributeStringValue) {
 				self.currentEntry.fromVersion = attributeStringValue;
 			}
@@ -167,6 +188,10 @@ didStartElement:(NSString *)elementName
 			if (attributeStringValue) {
                 self.currentEntry.url = attributeStringValue;
 			}
+			attributeStringValue = [attributeDict objectForKey:@"Size"];
+			if (attributeStringValue) {
+                self.currentEntry.size = [attributeStringValue integerValue];
+			}
 		}
 	}
 }
@@ -176,14 +201,17 @@ didStartElement:(NSString *)elementName
    namespaceURI:(NSString *)namespaceURI 
   qualifiedName:(NSString *)qName
 {
-	if ( [elementName isEqualToString:@"UpdateComponent"] ) {
-		self.parsingDictionaryInfo = NO;
-	}
-    
-	if (self.parsingDictionaryInfo && [elementName isEqualToString:@"UpdateEntry"] ) {
-        if (self.currentEntry) {
-            [self.manifestEntries addObject:self.currentEntry];
-            self.currentEntry = nil;
+    if (self.parsingDictionaryInfo == YES) {
+        if ([elementName isEqualToString:kSCHDictionaryManifestOperationUpdateComponent]) {
+            self.parsingDictionaryInfo = NO;
+            self.manifestEntries = nil;
+        }
+
+        if ([elementName isEqualToString:kSCHDictionaryManifestOperationUpdateEntry]) {
+            if (self.currentEntry) {
+                [self.manifestEntries addObject:self.currentEntry];
+                self.currentEntry = nil;
+            }
         }
     }
 }

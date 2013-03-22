@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "SCHDictionaryOperation.h"
 
+// Constants
+extern NSString * const kSCHDictionaryManifestOperationDictionaryText;
+extern NSString * const kSCHDictionaryManifestOperationDictionaryPron;
+extern NSString * const kSCHDictionaryManifestOperationDictionaryImage;
+extern NSString * const kSCHDictionaryManifestOperationDictionaryAudio;
+
 @interface SCHDictionaryManifestOperation : SCHDictionaryOperation <NSXMLParserDelegate> {}
 
 @end

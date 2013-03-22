@@ -47,6 +47,7 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 @synthesize fromVersion;
 @synthesize toVersion;
 @synthesize url;
+@synthesize size;
 
 - (void)dealloc
 {
@@ -55,6 +56,11 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
     [url release], url = nil;
     
     [super dealloc];
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@-%@ (%i) '%@'", fromVersion, toVersion, size, url];
 }
 
 @end
@@ -122,7 +128,7 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 @synthesize wifiAvailable;
 @synthesize connectionIdle;
 @synthesize isProcessing;
-@synthesize manifestUpdates;
+@synthesize manifestComponentsDictionary;
 @synthesize mainThreadManagedObjectContext;
 @synthesize persistentStoreCoordinator;
 @synthesize currentDictionaryDownloadPercentage;
@@ -480,7 +486,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     SCHDictionaryManifestEntry *entryUpdateForCurrentDictionaryVersion = nil;
     SCHDictionaryManifestEntry *defaultEntryUpdate = nil;
     
-    for (SCHDictionaryManifestEntry *anEntry in self.manifestUpdates) {
+    for (SCHDictionaryManifestEntry *anEntry in self.manifestComponentsDictionary) {
         //NSLog(@"from: (%@) to: (%@) URL: %@", anEntry.fromVersion, anEntry.toVersion, anEntry.url);
 
         if (currentDictionaryVersion != nil && [anEntry fromVersion]) {
@@ -597,7 +603,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // if there's no manifest set, restart the process
             SCHDictionaryManifestEntry *entry = nil;
             
-            if ([self.manifestUpdates count]) {
+            if ([self.manifestComponentsDictionary count]) {
                 entry = [self nextManifestEntryUpdateForCurrentDictionaryVersion];
             } else {
                 entry = [self manifestEntryFromDatabase];
@@ -633,7 +639,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // if there's no manifest set, restart the process
             SCHDictionaryManifestEntry *entry = nil;
             
-            if ([self.manifestUpdates count]) {
+            if ([self.manifestComponentsDictionary count]) {
                 entry = [self nextManifestEntryUpdateForCurrentDictionaryVersion];
             } else {
                 entry = [self manifestEntryFromDatabase];
@@ -675,7 +681,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // to cope with resuming the app in this state, the manifest entry being processed
             // is cached in the database
             SCHDictionaryManifestEntry *entry;
-            if ([self.manifestUpdates count]) {
+            if ([self.manifestComponentsDictionary count]) {
                 entry = [self nextManifestEntryUpdateForCurrentDictionaryVersion];
                 [self storeManifestEntryInDatabase:entry];
             } else {

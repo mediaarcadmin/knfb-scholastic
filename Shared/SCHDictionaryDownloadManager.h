@@ -48,7 +48,8 @@ typedef enum {
 @property (nonatomic, retain) NSString *fromVersion;
 @property (nonatomic, retain) NSString *toVersion;
 @property (nonatomic, retain) NSString *url;
-    
+@property (nonatomic, assign) NSInteger size;
+
 @end
 
 @class SCHAppDictionaryState;
@@ -59,7 +60,7 @@ typedef enum {
 
 @property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, retain) NSMutableArray *manifestUpdates;
+@property (nonatomic, retain) NSDictionary *manifestComponentsDictionary;
 
 // the current dictionary version
 @property (readwrite, retain) NSString *dictionaryVersion;
