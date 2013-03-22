@@ -15,7 +15,6 @@ NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
 @dynamic LastModified;
 @dynamic State;
 @dynamic Version;
-@dynamic InitialDictionaryProcessed;
 @dynamic appDictionaryManifestEntry;
 
 @end
