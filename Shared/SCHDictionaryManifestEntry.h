@@ -29,6 +29,6 @@ typedef enum {
 @property (nonatomic, assign) SCHDictionaryCategoryProcessingState state;
 @property (nonatomic, retain) NSString *toVersion;
 @property (nonatomic, retain) NSString *url;
-
+@property (nonatomic, assign) BOOL firstManifestEntry;
 
 @end

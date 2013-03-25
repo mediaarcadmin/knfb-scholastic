@@ -39,8 +39,8 @@
         
         [self didChangeValueForKey:@"isExecuting"];
         [self didChangeValueForKey:@"isFinished"];        
-        
-        if (self.manifestEntry.fromVersion == nil) {
+
+        if (self.manifestEntry.firstManifestEntry == YES) {
             [dictManager initialParseEntryTable];
             [dictManager initialParseWordFormTable];
         } else {

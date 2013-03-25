@@ -119,7 +119,7 @@
         // otherwise we leave them where they are - the update text files are deleted at the end of the update parse
         BOOL firstRun = NO;
         
-        if (self.manifestEntry.fromVersion == nil) {
+        if (self.manifestEntry.firstManifestEntry == YES) {
             firstRun = YES;
         }
         

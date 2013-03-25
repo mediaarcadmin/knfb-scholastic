@@ -17,6 +17,7 @@ extern NSString * const kSCHAppDictionaryManifestEntry;
 @interface SCHAppDictionaryManifestEntry : NSManagedObject
 
 @property (nonatomic, retain) NSString * category;
+@property (nonatomic, retain) NSNumber * firstManifestEntry;
 @property (nonatomic, retain) NSNumber * size;
 @property (nonatomic, retain) NSNumber * state;
 @property (nonatomic, retain) NSString * toVersion;

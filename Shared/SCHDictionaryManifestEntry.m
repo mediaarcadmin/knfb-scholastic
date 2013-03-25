@@ -15,6 +15,7 @@
 @synthesize state;
 @synthesize toVersion;
 @synthesize url;
+@synthesize firstManifestEntry;
 
 - (void)dealloc
 {
@@ -27,8 +28,10 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"%@-%@ (%i)(state:%i) '%@'", self.category,
-            self.toVersion, self.size, (int)self.state, self.url];
+    return [NSString stringWithFormat:@"%@ %@%@ state=%i, size=%i, '%@'",
+            self.category, self.toVersion,
+            (self.firstManifestEntry == YES? @" (First Entry)" : @""),
+            (int)self.state, self.size, self.url];
 }
 
 @end

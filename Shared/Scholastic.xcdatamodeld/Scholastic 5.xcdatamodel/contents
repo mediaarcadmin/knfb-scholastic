@@ -146,6 +146,7 @@
     </entity>
     <entity name="SCHAppDictionaryManifestEntry" representedClassName="SCHAppDictionaryManifestEntry" syncable="YES">
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstManifestEntry" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="toVersion" optional="YES" attributeType="String" syncable="YES"/>
@@ -793,7 +794,7 @@
         <element name="SCHAnnotationsItem" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SCHAppBook" positionX="0" positionY="0" width="128" height="450"/>
         <element name="SCHAppContentProfileItem" positionX="0" positionY="0" width="128" height="210"/>
-        <element name="SCHAppDictionaryManifestEntry" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="SCHAppDictionaryManifestEntry" positionX="0" positionY="0" width="128" height="150"/>
         <element name="SCHAppDictionaryState" positionX="0" positionY="0" width="128" height="120"/>
         <element name="SCHAppHelpState" positionX="0" positionY="0" width="128" height="135"/>
         <element name="SCHAppProfile" positionX="0" positionY="0" width="128" height="195"/>

@@ -15,6 +15,7 @@ NSString * const kSCHAppDictionaryManifestEntry = @"SCHAppDictionaryManifestEntr
 @implementation SCHAppDictionaryManifestEntry
 
 @dynamic category;
+@dynamic firstManifestEntry;
 @dynamic size;
 @dynamic state;
 @dynamic toVersion;

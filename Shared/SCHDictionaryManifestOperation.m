@@ -31,6 +31,7 @@ static NSString * const kSCHDictionaryManifestOperationUpdateEntry = @"UpdateEnt
 @property (nonatomic, retain) NSMutableData *connectionData;
 @property (nonatomic, retain) NSMutableArray *manifestEntries;
 @property (nonatomic, retain) NSMutableDictionary *manifestCategories;
+@property (nonatomic, retain) NSString *currentCategory;
 @property (nonatomic, retain) SCHDictionaryManifestEntry *currentEntry;
 
 - (void)startOp;
@@ -47,7 +48,8 @@ static NSString * const kSCHDictionaryManifestOperationUpdateEntry = @"UpdateEnt
 @synthesize manifestParser;
 @synthesize connection;
 @synthesize connectionData;
-@synthesize manifestEntries; 
+@synthesize manifestEntries;
+@synthesize currentCategory;
 @synthesize currentEntry;
 @synthesize manifestCategories;
 
@@ -57,6 +59,7 @@ static NSString * const kSCHDictionaryManifestOperationUpdateEntry = @"UpdateEnt
 	[connectionData release], connectionData = nil;
 	[manifestParser release], manifestParser = nil;
     [manifestEntries release], manifestEntries = nil;
+    [currentCategory release], currentCategory = nil;
     [currentEntry release], currentEntry = nil;
 	[manifestCategories release], manifestCategories = nil;
     
@@ -170,17 +173,21 @@ didStartElement:(NSString *)elementName
                 [attributeStringValue isEqualToString:kSCHDictionaryManifestOperationDictionaryAudio] == YES) {
                 self.parsingDictionaryInfo = YES;
                 self.manifestEntries = [NSMutableArray array];
-                [self.manifestCategories setObject:self.manifestEntries forKey:attributeStringValue];
+                self.currentCategory = attributeStringValue;
+                [self.manifestCategories setObject:self.manifestEntries forKey:self.currentCategory];
             }
 		}
 	} else if (self.parsingDictionaryInfo) {
 		if ([elementName isEqualToString:kSCHDictionaryManifestOperationUpdateEntry] == YES) {
             self.currentEntry = [[[SCHDictionaryManifestEntry alloc] init] autorelease];
+			NSString *attributeStringValue = nil;
 
-			NSString *attributeStringValue = [attributeDict objectForKey:@"StartVersion"];
+            self.currentEntry.category = self.currentCategory;
+            attributeStringValue = [attributeDict objectForKey:@"Size"];
 			if (attributeStringValue) {
-				self.currentEntry.fromVersion = attributeStringValue;
+                self.currentEntry.size = [attributeStringValue integerValue];
 			}
+            self.currentEntry.state = SCHDictionaryCategoryProcessingStateNeedsDownload;
 			attributeStringValue = [attributeDict objectForKey:@"EndVersion"];
 			if (attributeStringValue) {
                 self.currentEntry.toVersion = attributeStringValue;
@@ -188,10 +195,6 @@ didStartElement:(NSString *)elementName
 			attributeStringValue = [attributeDict objectForKey:@"href"];
 			if (attributeStringValue) {
                 self.currentEntry.url = attributeStringValue;
-			}
-			attributeStringValue = [attributeDict objectForKey:@"Size"];
-			if (attributeStringValue) {
-                self.currentEntry.size = [attributeStringValue integerValue];
 			}
 		}
 	}
@@ -205,11 +208,13 @@ didStartElement:(NSString *)elementName
     if (self.parsingDictionaryInfo == YES) {
         if ([elementName isEqualToString:kSCHDictionaryManifestOperationUpdateComponent]) {
             self.parsingDictionaryInfo = NO;
+            self.currentCategory = nil;
             self.manifestEntries = nil;
         }
 
         if ([elementName isEqualToString:kSCHDictionaryManifestOperationUpdateEntry]) {
             if (self.currentEntry) {
+                self.currentEntry.firstManifestEntry = ([self.manifestEntries count] < 1);
                 [self.manifestEntries addObject:self.currentEntry];
                 self.currentEntry = nil;
             }
