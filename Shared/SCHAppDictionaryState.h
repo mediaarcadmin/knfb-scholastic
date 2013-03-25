@@ -19,9 +19,20 @@ extern NSString * const kSCHAppDictionaryState;
 }
 
 @property (nonatomic, retain) NSDate * LastModified;
+@property (nonatomic, retain) NSNumber * remainingFileSize;
 @property (nonatomic, retain) NSNumber * State;
 @property (nonatomic, retain) NSString * Version;
-@property (nonatomic, retain) NSNumber * InitialDictionaryProcessed;
-@property (nonatomic, retain) SCHAppDictionaryManifestEntry *appDictionaryManifestEntry;
+@property (nonatomic, retain) NSSet *appDictionaryManifestEntry;
+
+- (SCHAppDictionaryManifestEntry *)appDictionaryManifestEntryForDictionaryCategory:(NSString *)dictionaryCategory;
+
+@end
+
+@interface SCHAppDictionaryState (CoreDataGeneratedAccessors)
+
+- (void)addAppDictionaryManifestEntryObject:(SCHAppDictionaryManifestEntry *)value;
+- (void)removeAppDictionaryManifestEntryObject:(SCHAppDictionaryManifestEntry *)value;
+- (void)addAppDictionaryManifestEntry:(NSSet *)values;
+- (void)removeAppDictionaryManifestEntry:(NSSet *)values;
 
 @end

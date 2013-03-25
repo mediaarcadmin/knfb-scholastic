@@ -8,13 +8,34 @@
 
 #import "SCHAppDictionaryState.h"
 
+#import "SCHAppDictionaryManifestEntry.h"
+
 // Constants
 NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
 
 @implementation SCHAppDictionaryState
+
 @dynamic LastModified;
+@dynamic remainingFileSize;
 @dynamic State;
 @dynamic Version;
 @dynamic appDictionaryManifestEntry;
+
+- (SCHAppDictionaryManifestEntry *)appDictionaryManifestEntryForDictionaryCategory:(NSString *)dictionaryCategory
+{
+    NSParameterAssert(dictionaryCategory);
+    SCHAppDictionaryManifestEntry *ret = nil;
+
+    if (dictionaryCategory != nil) {
+        for (SCHAppDictionaryManifestEntry *entry in self.appDictionaryManifestEntry) {
+            if ([entry.category isEqualToString:dictionaryCategory] == YES) {
+                ret = entry;
+                break;
+            }
+        }
+    }
+
+    return ret;
+}
 
 @end

@@ -9,12 +9,16 @@
 #import "SCHAppDictionaryManifestEntry.h"
 #import "SCHAppDictionaryState.h"
 
+// Constants
+NSString * const kSCHAppDictionaryManifestEntry = @"SCHAppDictionaryManifestEntry";
 
 @implementation SCHAppDictionaryManifestEntry
 
-@dynamic fromVersion;
-@dynamic url;
+@dynamic category;
+@dynamic size;
+@dynamic state;
 @dynamic toVersion;
+@dynamic url;
 @dynamic appDictionaryState;
 
 @end

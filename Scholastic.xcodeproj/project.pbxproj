@@ -4330,6 +4330,7 @@
 		525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioInfoProcessor.m; path = Shared/SCHAudioInfoProcessor.m; sourceTree = "<group>"; };
 		525E82D513938547006A6775 /* SCHAudioInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfo.h; path = Shared/SCHAudioInfo.h; sourceTree = "<group>"; };
 		525E82D613938548006A6775 /* SCHAudioInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioInfo.m; path = Shared/SCHAudioInfo.m; sourceTree = "<group>"; };
+		525E85B716FC97660044122A /* Scholastic 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Scholastic 5.xcdatamodel"; sourceTree = "<group>"; };
 		5264FAC413A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfTopTenPopoverTableView.h; path = Shared/SCHBookShelfTopTenPopoverTableView.h; sourceTree = "<group>"; };
 		5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfTopTenPopoverTableView.m; path = Shared/SCHBookShelfTopTenPopoverTableView.m; sourceTree = "<group>"; };
 		5264FAC613A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTopTenPopoverTableView.xib; path = Shared/SCHBookShelfTopTenPopoverTableView.xib; sourceTree = "<group>"; };
@@ -13779,11 +13780,12 @@
 			isa = XCVersionGroup;
 			children = (
 				52CEC25515C18AB6004C749A /* Scholastic 4.xcdatamodel */,
+				525E85B716FC97660044122A /* Scholastic 5.xcdatamodel */,
 				52BB7DC214EA67A4009E6CD6 /* Scholastic 3.xcdatamodel */,
 				525477D114BD9B6D001E2388 /* Scholastic 2.xcdatamodel */,
 				2870939E111907710040F596 /* Scholastic.xcdatamodel */,
 			);
-			currentVersion = 52CEC25515C18AB6004C749A /* Scholastic 4.xcdatamodel */;
+			currentVersion = 525E85B716FC97660044122A /* Scholastic 5.xcdatamodel */;
 			name = Scholastic.xcdatamodeld;
 			path = Shared/Scholastic.xcdatamodeld;
 			sourceTree = "<group>";
