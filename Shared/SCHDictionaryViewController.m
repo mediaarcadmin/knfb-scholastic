@@ -241,6 +241,7 @@
     BOOL isSampleStore = [[SCHAppStateManager sharedAppStateManager] isSampleStore];
     
     switch (state) {
+        case SCHDictionaryProcessingStateInitialNeedsManifest:
         case SCHDictionaryProcessingStateUserSetup:
         case SCHDictionaryProcessingStateUserDeclined:
         {

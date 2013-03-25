@@ -20,6 +20,7 @@ extern char * const kSCHDictionaryManifestEntryColumnSeparator;
 
 typedef enum {
 	SCHDictionaryProcessingStateError = 0,
+    SCHDictionaryProcessingStateInitialNeedsManifest,
     SCHDictionaryProcessingStateUserSetup,
     SCHDictionaryProcessingStateUserDeclined,
 	SCHDictionaryProcessingStateNotEnoughFreeSpaceError,

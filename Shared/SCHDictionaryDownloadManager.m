@@ -578,6 +578,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // do nothing
             return;
         }
+        case SCHDictionaryProcessingStateInitialNeedsManifest:            
    		case SCHDictionaryProcessingStateNeedsManifest:
 		{
 			NSLog(@"needs dictionary manifest...");
@@ -998,6 +999,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nParse Failed", @"Dictionary error button title for parser error");
             break;
         }
+        case SCHDictionaryProcessingStateInitialNeedsManifest:
         case SCHDictionaryProcessingStateUserSetup:
         case SCHDictionaryProcessingStateUserDeclined:
         {

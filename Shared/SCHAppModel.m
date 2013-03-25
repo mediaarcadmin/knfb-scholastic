@@ -532,6 +532,7 @@ typedef enum {
     BOOL ret = NO;
     
     switch ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState]) {
+        case SCHDictionaryProcessingStateInitialNeedsManifest:
         case SCHDictionaryProcessingStateUserSetup:
         case SCHDictionaryProcessingStateUserDeclined:
         case SCHDictionaryProcessingStateError:
