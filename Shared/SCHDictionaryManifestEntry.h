@@ -34,5 +34,8 @@ typedef enum {
 @property (nonatomic, retain) NSString *url;
 
 - (id)initWithAppDictionaryManifestEntry:(SCHAppDictionaryManifestEntry *)appDictionaryManifestEntry;
+- (BOOL)stateIsError;
+- (BOOL)stateIsProcessing;
+- (BOOL)stateIsCompleted;
 
 @end

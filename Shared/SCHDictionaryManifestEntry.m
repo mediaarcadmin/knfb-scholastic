@@ -45,6 +45,27 @@
     return ret;
 }
 
+- (BOOL)stateIsError
+{
+    return (self.state == SCHDictionaryCategoryProcessingStateError ||
+            self.state == SCHDictionaryCategoryProcessingStateDownloadError ||
+            self.state == SCHDictionaryCategoryProcessingStateUnableToOpenZipError ||
+            self.state == SCHDictionaryCategoryProcessingStateUnZipFailureError ||
+            self.state == SCHDictionaryCategoryProcessingStateParseError);
+}
+
+- (BOOL)stateIsProcessing
+{
+    return (self.state == SCHDictionaryCategoryProcessingStateNeedsDownload ||
+            self.state == SCHDictionaryCategoryProcessingStateNeedsUnzip ||
+            self.state == SCHDictionaryCategoryProcessingStateNeedsParse);
+}
+
+- (BOOL)stateIsCompleted
+{
+    return (self.state == SCHDictionaryCategoryProcessingStateReady);
+}
+
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"%@ %@%@ state=%i, size=%i, '%@'",

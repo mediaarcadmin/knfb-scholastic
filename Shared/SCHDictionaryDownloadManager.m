@@ -470,6 +470,36 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     return dictionaryCategoriesByPriority;
 }
 
+- (void)updateRemainingFileSizeFromManifestComponentsDictionary
+{
+    NSInteger remainingFileSize = 0;
+
+    if (self.manifestComponentsDictionary != nil) {
+        for (NSString *dictionaryCategory in [self dictionaryCategoriesByPriority]) {
+            SCHDictionaryManifestEntry *currentDictionaryManifestEntry = [self manifestEntryFromDatabaseForDictionaryCategory:dictionaryCategory];
+            NSString *currentDictionaryVersion = currentDictionaryManifestEntry.toVersion;
+            
+            for (SCHDictionaryManifestEntry *anEntry in [self.manifestComponentsDictionary objectForKey:dictionaryCategory]) {
+                if (currentDictionaryVersion == nil ||
+                    ([currentDictionaryManifestEntry stateIsCompleted] == NO &&
+                     ([currentDictionaryVersion compare:anEntry.toVersion options:NSNumericSearch] == NSOrderedAscending ||
+                      [currentDictionaryVersion compare:anEntry.toVersion options:NSNumericSearch] == NSOrderedSame))) {
+                         remainingFileSize += anEntry.size;
+                     }
+            }
+        }
+    }
+
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        state.remainingFileSize = [NSNumber numberWithInteger:remainingFileSize];
+    }];
+
+    NSError *error = nil;
+    if (![self save:&error]) {
+        NSLog(@"failed to save after updating database manifest entry: %@", error);
+    }
+}
+
 - (SCHDictionaryManifestEntry *)nextManifestEntryUpdateForCurrentDictionaryVersion
 {
     SCHDictionaryManifestEntry *ret = nil;
@@ -559,6 +589,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			
 			// dictionary processing is redispatched on completion
 			[manifestOp setNotCancelledCompletionBlock:^{
+                [self updateRemainingFileSizeFromManifestComponentsDictionary];
 				[self processDictionary];
 			}];
 			
