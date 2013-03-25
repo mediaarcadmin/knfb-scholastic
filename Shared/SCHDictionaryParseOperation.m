@@ -10,7 +10,7 @@
 #import "SCHBookManager.h"
 #import "SCHDictionaryEntry.h"
 #import "SCHDictionaryWordForm.h"
-
+#import "SCHDictionaryManifestEntry.h"
 
 @interface SCHDictionaryParseOperation ()
 

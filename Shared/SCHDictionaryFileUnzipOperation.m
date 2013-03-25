@@ -8,6 +8,8 @@
 
 #import "SCHDictionaryFileUnzipOperation.h"
 
+#import "SCHDictionaryManifestEntry.h"
+
 @interface SCHDictionaryFileUnzipOperation ()
 
 @property BOOL executing;

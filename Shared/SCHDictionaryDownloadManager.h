@@ -43,15 +43,6 @@ typedef enum {
     SCHDictionaryUserAccepted
 } SCHDictionaryUserRequestState;
 
-@interface SCHDictionaryManifestEntry : NSObject 
-    
-@property (nonatomic, retain) NSString *fromVersion;
-@property (nonatomic, retain) NSString *toVersion;
-@property (nonatomic, retain) NSString *url;
-@property (nonatomic, assign) NSInteger size;
-
-@end
-
 @class SCHAppDictionaryState;
 
 @interface SCHDictionaryDownloadManager : NSObject

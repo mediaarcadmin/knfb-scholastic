@@ -8,6 +8,7 @@
 
 #import "SCHDictionaryManifestOperation.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHDictionaryManifestEntry.h"
 
 // Constants
 NSString * const kSCHDictionaryManifestOperationDictionaryText = @"DictionaryText";

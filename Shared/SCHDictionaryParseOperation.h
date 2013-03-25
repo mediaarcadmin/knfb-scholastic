@@ -10,6 +10,8 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryOperation.h"
 
+@class SCHDictionaryManifestEntry;
+
 @interface SCHDictionaryParseOperation : SCHDictionaryOperation {
     
 }

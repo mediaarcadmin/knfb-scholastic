@@ -23,6 +23,7 @@
 #import "SCHAppDictionaryManifestEntry.h"
 #import "SCHDictionaryOperation.h"
 #import "AppDelegate_Shared.h"
+#import "SCHDictionaryManifestEntry.h"
 
 // Constants
 NSString * const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
@@ -39,31 +40,6 @@ int const kSCHDictionaryManifestEntryWordFormTableBufferSize = 1024;
 CGFloat const kSCHDictionaryFileUnzipMaxPercentage = 0.9f;
 
 char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
-
-#pragma mark Dictionary Version Class
-
-@implementation SCHDictionaryManifestEntry
-
-@synthesize fromVersion;
-@synthesize toVersion;
-@synthesize url;
-@synthesize size;
-
-- (void)dealloc
-{
-    [fromVersion release], fromVersion = nil;
-    [toVersion release], toVersion = nil;
-    [url release], url = nil;
-    
-    [super dealloc];
-}
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"%@-%@ (%i) '%@'", fromVersion, toVersion, size, url];
-}
-
-@end
 
 #pragma mark Class Extension
 

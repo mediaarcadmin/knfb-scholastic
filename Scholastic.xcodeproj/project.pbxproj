@@ -1377,6 +1377,9 @@
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2D6012CDE39C0053A343 /* SCHProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* SCHProfileViewController.m */; };
 		528A2D6212CDE3B10053A343 /* SCHProfileViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController~iphone.xib */; };
+		528C389916FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 528C389816FCF3A200748771 /* SCHDictionaryManifestEntry.m */; };
+		528C389A16FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 528C389816FCF3A200748771 /* SCHDictionaryManifestEntry.m */; };
+		528C389B16FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 528C389816FCF3A200748771 /* SCHDictionaryManifestEntry.m */; };
 		528C615F13FAA57200D033F8 /* SCHHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528C615D13FAA56C00D033F8 /* SCHHelpViewController.m */; };
 		528C616113FAA57200D033F8 /* SCHHelpViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528C615E13FAA56F00D033F8 /* SCHHelpViewController~ipad.xib */; };
 		528F14DA1512478500C2C6DA /* SCHBookShelfRecommendationListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F89140BE1511EB310026F16F /* SCHBookShelfRecommendationListController.m */; };
@@ -4360,6 +4363,8 @@
 		528A2D5E12CDE39C0053A343 /* SCHProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewController.h; path = iPhone/SCHProfileViewController.h; sourceTree = "<group>"; };
 		528A2D5F12CDE39C0053A343 /* SCHProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileViewController.m; path = iPhone/SCHProfileViewController.m; sourceTree = "<group>"; };
 		528A2D6112CDE3B10053A343 /* SCHProfileViewController~iphone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "SCHProfileViewController~iphone.xib"; sourceTree = "<group>"; };
+		528C389716FCF3A200748771 /* SCHDictionaryManifestEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryManifestEntry.h; path = Shared/SCHDictionaryManifestEntry.h; sourceTree = "<group>"; };
+		528C389816FCF3A200748771 /* SCHDictionaryManifestEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryManifestEntry.m; path = Shared/SCHDictionaryManifestEntry.m; sourceTree = "<group>"; };
 		528C615C13FAA56A00D033F8 /* SCHHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpViewController.h; path = Shared/SCHHelpViewController.h; sourceTree = "<group>"; };
 		528C615D13FAA56C00D033F8 /* SCHHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpViewController.m; path = Shared/SCHHelpViewController.m; sourceTree = "<group>"; };
 		528C615E13FAA56F00D033F8 /* SCHHelpViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHHelpViewController~ipad.xib"; path = "Shared/SCHHelpViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -9125,6 +9130,8 @@
 				F8C4C3FA1332594A0057420E /* SCHDictionaryDownloadManager.m */,
 				F88A7F7D138D151D006A7D12 /* SCHDictionaryAccessManager.h */,
 				F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */,
+				528C389716FCF3A200748771 /* SCHDictionaryManifestEntry.h */,
+				528C389816FCF3A200748771 /* SCHDictionaryManifestEntry.m */,
 			);
 			name = "Dictionary & Help Processing";
 			sourceTree = "<group>";
@@ -12379,6 +12386,7 @@
 				52324942164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
 				52324948164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 				520697F916525D1900CC80CA /* SCHAppBookFeatures.m in Sources */,
+				528C389916FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12834,6 +12842,7 @@
 				52F7C2E11654E8D700041661 /* SCHTourStepView.m in Sources */,
 				52F7C2E21654E90000041661 /* LibreAccessActivityLogSvc_tns1.m in Sources */,
 				52F7C2E31654E93400041661 /* SCHLibreAccessActivityLogConstants.m in Sources */,
+				528C389B16FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13275,6 +13284,7 @@
 				52324943164BCA3600A64BF8 /* SCHResizeExtendingScrollView.m in Sources */,
 				52324949164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 				520697FA16525D1900CC80CA /* SCHAppBookFeatures.m in Sources */,
+				528C389A16FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

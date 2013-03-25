@@ -9,6 +9,7 @@
 #import "SCHDictionaryFileDownloadOperation.h"
 #import "BITNetworkActivityManager.h"
 #import "NSFileManager+Extensions.h"
+#import "SCHDictionaryManifestEntry.h"
 
 #pragma mark Class Extension
 

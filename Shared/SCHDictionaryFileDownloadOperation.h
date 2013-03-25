@@ -11,6 +11,8 @@
 #import "QHTTPOperation.h"
 #import "SCHDictionaryOperation.h"
 
+@class SCHDictionaryManifestEntry;
+
 @interface SCHDictionaryFileDownloadOperation : SCHDictionaryOperation <QHTTPOperationDelegate>
 
 @property (nonatomic, retain) SCHDictionaryManifestEntry *manifestEntry;
