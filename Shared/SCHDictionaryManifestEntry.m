@@ -8,14 +8,16 @@
 
 #import "SCHDictionaryManifestEntry.h"
 
+#import "SCHAppDictionaryManifestEntry.h"
+
 @implementation SCHDictionaryManifestEntry
 
 @synthesize category;
+@synthesize firstManifestEntry;
 @synthesize size;
 @synthesize state;
 @synthesize toVersion;
 @synthesize url;
-@synthesize firstManifestEntry;
 
 - (void)dealloc
 {
@@ -24,6 +26,23 @@
     [url release], url = nil;
 
     [super dealloc];
+}
+
+- (id)initWithAppDictionaryManifestEntry:(SCHAppDictionaryManifestEntry *)appDictionaryManifestEntry
+{
+    NSParameterAssert(appDictionaryManifestEntry);
+    SCHDictionaryManifestEntry *ret = [self init];
+
+    if (appDictionaryManifestEntry != nil && ret != nil) {
+        ret.category = appDictionaryManifestEntry.category;
+        ret.firstManifestEntry = [appDictionaryManifestEntry.firstManifestEntry boolValue];
+        ret.size = [NSNumber numberWithInteger:appDictionaryManifestEntry.size];
+        ret.state = [NSNumber numberWithInt:appDictionaryManifestEntry.state];
+        ret.toVersion = appDictionaryManifestEntry.toVersion;
+        ret.url = appDictionaryManifestEntry.url;
+    }
+
+    return ret;
 }
 
 - (NSString *)description

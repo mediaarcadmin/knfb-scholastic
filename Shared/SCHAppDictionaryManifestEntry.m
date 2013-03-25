@@ -7,7 +7,9 @@
 //
 
 #import "SCHAppDictionaryManifestEntry.h"
+
 #import "SCHAppDictionaryState.h"
+#import "SCHDictionaryManifestEntry.h"
 
 // Constants
 NSString * const kSCHAppDictionaryManifestEntry = @"SCHAppDictionaryManifestEntry";
@@ -21,5 +23,19 @@ NSString * const kSCHAppDictionaryManifestEntry = @"SCHAppDictionaryManifestEntr
 @dynamic toVersion;
 @dynamic url;
 @dynamic appDictionaryState;
+
+- (void)setAttributesFromDictionaryManifestEntry:(SCHDictionaryManifestEntry *)dictionaryManifestEntry
+{
+    NSParameterAssert(dictionaryManifestEntry);
+
+    if (dictionaryManifestEntry != nil) {
+        self.category = dictionaryManifestEntry.category;
+        self.firstManifestEntry = [NSNumber numberWithBool:dictionaryManifestEntry.firstManifestEntry];
+        self.size = [NSNumber numberWithInteger:dictionaryManifestEntry.size];
+        self.state = [NSNumber numberWithInt:dictionaryManifestEntry.state];
+        self.toVersion = dictionaryManifestEntry.toVersion;
+        self.url = dictionaryManifestEntry.url;
+    }
+}
 
 @end

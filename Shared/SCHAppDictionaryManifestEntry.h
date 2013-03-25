@@ -13,6 +13,7 @@
 extern NSString * const kSCHAppDictionaryManifestEntry;
 
 @class SCHAppDictionaryState;
+@class SCHDictionaryManifestEntry;
 
 @interface SCHAppDictionaryManifestEntry : NSManagedObject
 
@@ -23,5 +24,7 @@ extern NSString * const kSCHAppDictionaryManifestEntry;
 @property (nonatomic, retain) NSString * toVersion;
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) SCHAppDictionaryState *appDictionaryState;
+
+- (void)setAttributesFromDictionaryManifestEntry:(SCHDictionaryManifestEntry *)dictionaryManifestEntry;
 
 @end
