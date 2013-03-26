@@ -1021,7 +1021,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 - (BOOL)dictionaryDownloadStarted
 {
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
-    return (state != SCHDictionaryProcessingStateUserSetup && state != SCHDictionaryProcessingStateUserDeclined);
+    return (state != SCHDictionaryProcessingStateInitialNeedsManifest &&
+            state != SCHDictionaryProcessingStateUserSetup &&
+            state != SCHDictionaryProcessingStateUserDeclined);
 }
 
 - (void)dictionaryDownloadPercentageUpdate:(NSNotification *)note
@@ -1863,7 +1865,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // otherwise, create a dictionary state object
             state = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppDictionaryState 
                                                                             inManagedObjectContext:self.mainThreadManagedObjectContext];
-            state.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateUserSetup];
+            state.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateInitialNeedsManifest];
         }
             
         block(state);
