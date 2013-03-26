@@ -13,6 +13,9 @@
 
 #pragma mark Class Extension
 
+// Constants
+const float kSCHDictionaryFileDownloadOperationFileSizeMultiplier = 2.2;
+
 @interface SCHDictionaryFileDownloadOperation ()
 
 // a local file manager, for thread safety
@@ -146,7 +149,7 @@
         // we can't check this up front, but the zip file is unlikely to be
         // highly compressed, as it consists mostly of already-compressed
         // image files and MP3 files
-        sufficientSpace = [fileManager BITfileSystemHasBytesAvailable:(expectedDataSize * 2.2)];
+        sufficientSpace = [fileManager BITfileSystemHasBytesAvailable:(expectedDataSize * kSCHDictionaryFileDownloadOperationFileSizeMultiplier)];
     }
     
     if (!sufficientSpace) {

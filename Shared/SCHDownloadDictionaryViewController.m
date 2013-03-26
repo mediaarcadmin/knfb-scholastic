@@ -8,6 +8,7 @@
 
 #import "SCHDownloadDictionaryViewController.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHAppDictionaryState.h"
 #import "SCHAppStateManager.h"
 #import "Reachability.h"
 #import "LambdaAlert.h"
@@ -30,6 +31,7 @@
 @synthesize backButton;
 @synthesize appController;
 @synthesize downloadLaterButton;
+@synthesize textLabel;
 
 - (void)dealloc
 {
@@ -47,6 +49,7 @@
     [shadowView release], shadowView = nil;
     [backButton release], backButton = nil;
     [downloadLaterButton release], downloadLaterButton = nil;
+    [textLabel release], textLabel = nil;
 }
 
 - (void)viewDidLoad
@@ -66,6 +69,13 @@
     self.shadowView.layer.backgroundColor = [UIColor clearColor].CGColor;
     self.containerView.layer.masksToBounds = YES;
     self.containerView.layer.cornerRadius = 10.0f;
+
+    __block NSString *freeSpaceString = nil;
+    [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        freeSpaceString = [state freeSpaceRequiredToCompleteDownloadAsString];
+    }];
+    self.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Storia features a rich dictionary built especially for kids. It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.\n\n"
+                                            @"This download requires about %@. The dictionary will download in the background while you continue to read.", nil), freeSpaceString];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -86,14 +96,22 @@
         }
     };
     
-    // we need to have 1GB free for initial dictionary download
-    // less for subsequent updates
-    BOOL fileSpaceAvailable = [[NSFileManager defaultManager] BITfileSystemHasBytesAvailable:1073741824];
-    
+    // we need to have free space for dictionary download
+    __block NSInteger *freeSpaceInBytesRequiredToCompleteDownload = 0;
+    [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        freeSpaceInBytesRequiredToCompleteDownload = [state freeSpaceInBytesRequiredToCompleteDownload];
+    }];
+
+    BOOL fileSpaceAvailable = [[NSFileManager defaultManager] BITfileSystemHasBytesAvailable:freeSpaceInBytesRequiredToCompleteDownload];
+
     if (fileSpaceAvailable == NO) {
+        __block NSString *freeSpaceString = nil;
+        [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+            freeSpaceString = [state freeSpaceRequiredToCompleteDownloadAsString];
+        }];
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Not Enough Storage Space", @"")
-                              message:NSLocalizedString(@"You do not have enough storage space on your device to complete this function. Please clear 1.2GB of space and try again.", @"")];
+                              message:[NSString stringWithFormat:NSLocalizedString(@"You do not have enough storage space on your device to complete this function. Please clear %@ of space and try again.", @""), freeSpaceString]];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:afterDownload];
         [alert show];
         [alert release];

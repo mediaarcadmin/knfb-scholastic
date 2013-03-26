@@ -9,6 +9,7 @@
 #import "SCHAppDictionaryState.h"
 
 #import "SCHAppDictionaryManifestEntry.h"
+#import "SCHDictionaryFileDownloadOperation.h"
 
 // Constants
 NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
@@ -33,6 +34,25 @@ NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
                 break;
             }
         }
+    }
+
+    return ret;
+}
+
+- (NSInteger *)freeSpaceInBytesRequiredToCompleteDownload
+{
+    return (NSInteger)floor([self.remainingFileSize integerValue] * kSCHDictionaryFileDownloadOperationFileSizeMultiplier);
+}
+
+- (NSString *)freeSpaceRequiredToCompleteDownloadAsString
+{
+    NSString *ret = nil;
+    NSInteger freeSpaceInBytes = [self freeSpaceInBytesRequiredToCompleteDownload];
+
+    if (freeSpaceInBytes <= 0) {
+        ret = [NSString stringWithFormat:@"0GB"];
+    } else {
+        ret = [NSString stringWithFormat:@"%.1fGB", freeSpaceInBytes / 1000000000.0];
     }
 
     return ret;

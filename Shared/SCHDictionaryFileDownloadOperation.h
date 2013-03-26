@@ -13,6 +13,9 @@
 
 @class SCHDictionaryManifestEntry;
 
+// Constants
+extern const float kSCHDictionaryFileDownloadOperationFileSizeMultiplier;
+
 @interface SCHDictionaryFileDownloadOperation : SCHDictionaryOperation <QHTTPOperationDelegate>
 
 @property (nonatomic, retain) SCHDictionaryManifestEntry *manifestEntry;

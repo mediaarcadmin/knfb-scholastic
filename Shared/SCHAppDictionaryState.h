@@ -25,6 +25,8 @@ extern NSString * const kSCHAppDictionaryState;
 @property (nonatomic, retain) NSSet *appDictionaryManifestEntry;
 
 - (SCHAppDictionaryManifestEntry *)appDictionaryManifestEntryForDictionaryCategory:(NSString *)dictionaryCategory;
+- (NSInteger *)freeSpaceInBytesRequiredToCompleteDownload;
+- (NSString *)freeSpaceRequiredToCompleteDownloadAsString;
 
 @end
 

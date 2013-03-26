@@ -18,6 +18,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, assign) id<SCHAppController> appController;
 @property (nonatomic, copy) dispatch_block_t completionBlock;
+@property (nonatomic, retain) IBOutlet UILabel *textLabel;
 
 - (IBAction)downloadDictionary:(id)sender;
 - (IBAction)removeDictionary:(id)sender;
