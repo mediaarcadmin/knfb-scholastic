@@ -86,8 +86,6 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 - (BOOL)stateNeedsWiFi;
 - (BOOL)stateIsWaitingForUserInteraction;
 
-- (SCHDictionaryManifestEntry *)nextManifestEntryUpdateForCurrentDictionaryVersion;
-
 - (BOOL)parseEntryTableLine:(char *)completeLine withOffset:(long)currentOffset context:(NSManagedObjectContext*)context updates:(BOOL)doesUpdate;
 - (BOOL)parseWordFormLine:(char *)completeLine context:(NSManagedObjectContext*)context updates:(BOOL)doesUpdate;
 
@@ -481,7 +479,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
             for (SCHDictionaryManifestEntry *anEntry in [self.manifestComponentsDictionary objectForKey:dictionaryCategory]) {
                 if (currentDictionaryVersion == nil ||
-                    ([currentDictionaryManifestEntry stateIsCompleted] == NO &&
+                    (currentDictionaryManifestEntry.state != SCHDictionaryCategoryProcessingStateReady &&
                      ([currentDictionaryVersion compare:anEntry.toVersion options:NSNumericSearch] == NSOrderedAscending ||
                       [currentDictionaryVersion compare:anEntry.toVersion options:NSNumericSearch] == NSOrderedSame))) {
                          remainingFileSize += anEntry.size;
@@ -493,31 +491,76 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
         state.remainingFileSize = [NSNumber numberWithInteger:remainingFileSize];
     }];
-
-    NSError *error = nil;
-    if (![self save:&error]) {
-        NSLog(@"failed to save after updating database manifest entry: %@", error);
-    }
 }
 
-- (SCHDictionaryManifestEntry *)nextManifestEntryUpdateForCurrentDictionaryVersion
+- (void)updateDatabaseEntriesFromManifestComponentsDictionary
 {
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        for (NSString *dictionaryCategory in [self dictionaryCategoriesByPriority]) {
+            SCHAppDictionaryManifestEntry *appDictionaryManifestEntry = [state appDictionaryManifestEntryForDictionaryCategory:dictionaryCategory];
+
+            if (appDictionaryManifestEntry == nil) {
+                // create it with the starting entry
+                NSArray *manifestComponentsForCategory = [self.manifestComponentsDictionary objectForKey:dictionaryCategory];
+                if ([manifestComponentsForCategory count] > 0) {
+                    [self storeManifestEntryInDatabase:[manifestComponentsForCategory objectAtIndex:0]];
+                }
+            } else {
+                if ([appDictionaryManifestEntry.state intValue] == SCHDictionaryCategoryProcessingStateReady) {
+                    // if there is a new entry set it into action
+                    SCHDictionaryManifestEntry *nextDictionaryManifestEntry = [self nextManifestEntryFromManifestComponentsDictionary:appDictionaryManifestEntry];
+                    if (nextDictionaryManifestEntry != nil) {
+                        [self storeManifestEntryInDatabase:nextDictionaryManifestEntry];
+                    }
+                } else {
+                    // just in case there are changes update the info
+                    SCHDictionaryManifestEntry *dictionaryManifestEntry = [self currentManifestEntryFromManifestComponentsDictionary:appDictionaryManifestEntry];
+
+                    if (dictionaryManifestEntry != nil) {
+                        appDictionaryManifestEntry.size = [NSNumber numberWithInteger:dictionaryManifestEntry.size];
+                        appDictionaryManifestEntry.url = dictionaryManifestEntry.url;
+                    }
+                }
+            }
+        }
+    }];
+}
+
+- (SCHDictionaryManifestEntry *)currentManifestEntryFromManifestComponentsDictionary:(SCHAppDictionaryManifestEntry *)appDictionaryManifestEntry
+{
+    NSParameterAssert(appDictionaryManifestEntry);
     SCHDictionaryManifestEntry *ret = nil;
 
-    if (self.manifestComponentsDictionary != nil) {
-        for (NSString *dictionaryCategory in [self dictionaryCategoriesByPriority]) {
-            NSString *currentDictionaryVersion = [self dictionaryVersionForDictionaryCategory:dictionaryCategory];
-
-            for (SCHDictionaryManifestEntry *anEntry in [self.manifestComponentsDictionary objectForKey:dictionaryCategory]) {
-                if (currentDictionaryVersion == nil ||
-                    [currentDictionaryVersion compare:anEntry.toVersion options:NSNumericSearch] == NSOrderedAscending) {
-                    ret = anEntry;
+    if (appDictionaryManifestEntry != nil &&
+        self.manifestComponentsDictionary != nil) {
+        NSString *version = appDictionaryManifestEntry.toVersion;
+        if (version != nil) {
+            for (SCHDictionaryManifestEntry *entry in [self.manifestComponentsDictionary objectForKey:appDictionaryManifestEntry.category]) {
+                if ([version compare:entry.toVersion options:NSNumericSearch] == NSOrderedSame) {
+                    ret = entry;
                     break;
                 }
             }
-            // found the next manifest entry
-            if (ret != nil) {
-                break;
+        }
+    }
+
+    return ret;
+}
+
+- (SCHDictionaryManifestEntry *)nextManifestEntryFromManifestComponentsDictionary:(SCHAppDictionaryManifestEntry *)appDictionaryManifestEntry
+{
+    NSParameterAssert(appDictionaryManifestEntry);
+    SCHDictionaryManifestEntry *ret = nil;
+
+    if (appDictionaryManifestEntry != nil &&
+        self.manifestComponentsDictionary != nil) {
+        NSString *version = appDictionaryManifestEntry.toVersion;
+        if (version != nil) {
+            for (SCHDictionaryManifestEntry *entry in [self.manifestComponentsDictionary objectForKey:appDictionaryManifestEntry.category]) {
+                if ([version compare:entry.toVersion options:NSNumericSearch] == NSOrderedAscending) {
+                    ret = entry;
+                    break;
+                }
             }
         }
     }
@@ -534,7 +577,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             SCHAppDictionaryManifestEntry *entry = [state appDictionaryManifestEntryForDictionaryCategory:dictionaryCategory];
 
             if (entry != nil &&
-                [entry.state intValue] != SCHDictionaryProcessingStateReady) {
+                [entry.state intValue] != SCHDictionaryCategoryProcessingStateReady) {
                 ret = [[SCHDictionaryManifestEntry alloc] initWithAppDictionaryManifestEntry:entry];
                 break;
             }
@@ -542,6 +585,26 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     }];
 
     return [ret autorelease];
+}
+
+- (BOOL)allDictionaryCategoriesReady
+{
+    __block BOOL ret = NO;
+
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        for (NSString *dictionaryCategory in [self dictionaryCategoriesByPriority]) {
+            SCHAppDictionaryManifestEntry *entry = [state appDictionaryManifestEntryForDictionaryCategory:dictionaryCategory];
+
+            if ([entry.state intValue] == SCHDictionaryCategoryProcessingStateReady) {
+                ret = YES;
+            } else {
+                ret = NO;
+                break;
+            }
+        }
+    }];
+
+    return ret;
 }
 
 - (void)processDictionary
@@ -603,35 +666,15 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		case SCHDictionaryProcessingStateManifestVersionCheck:
 		{
 			NSLog(@"needs manifest version check...");
-            
-            BOOL processUpdate = NO;
-            SCHDictionaryManifestEntry *entry = [self nextManifestEntryUpdateForCurrentDictionaryVersion];
 
-            NSString *currentDictionaryVersion = [self dictionaryVersion];
-            
-            if (currentDictionaryVersion) {
-                if (entry != nil) {
-                    NSString *toVersion = [entry toVersion];
-                    if (toVersion != nil &&
-                        [currentDictionaryVersion compare:toVersion options:NSNumericSearch] == NSOrderedAscending) {
-                        processUpdate = YES;
-                    }
-                }
-            } else {
-                processUpdate = YES;
-            }
-            
-            if (processUpdate) {
-                if (entry) {
-                    [self storeManifestEntryInDatabase:entry];
-                }
-                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
-                [self processDictionary];
-            } else {
+            [self updateDatabaseEntriesFromManifestComponentsDictionary];
+            if ([self allDictionaryCategoriesReady] == YES) {
                 [self setDictionaryIsCurrentlyReadable:YES];
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateReady];
-                [self processDictionary];
+            } else {
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
             }
+            [self processDictionary];
             
 			return;
 			break;
@@ -639,17 +682,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		case SCHDictionaryProcessingStateNeedsDownload:
 		{
 			NSLog(@"needs download...");
-            
+
+            SCHDictionaryManifestEntry *entry = [self currentManifestEntryFromDatabase];
+
             // if there's no manifest set, restart the process
-            SCHDictionaryManifestEntry *entry = nil;
-            
-            if ([self.manifestComponentsDictionary count]) {
-                entry = [self nextManifestEntryUpdateForCurrentDictionaryVersion];
-            } else {
-                entry = [self currentManifestEntryFromDatabase];
-            }
-            
-            if (entry == nil) {                
+            if (entry == nil) {
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
                 [self processDictionary];
                 return;
@@ -675,16 +712,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		{
 			NSLog(@"needs unzip...");
 			// create unzip operation
-            
+
+            SCHDictionaryManifestEntry *entry = [self currentManifestEntryFromDatabase];
+
             // if there's no manifest set, restart the process
-            SCHDictionaryManifestEntry *entry = nil;
-            
-            if ([self.manifestComponentsDictionary count]) {
-                entry = [self nextManifestEntryUpdateForCurrentDictionaryVersion];
-            } else {
-                entry = [self currentManifestEntryFromDatabase];
-            }
-            
             if (entry == nil) {
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
                 [self processDictionary];
@@ -718,21 +749,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
             self.currentDictionaryProcessingPercentage = kSCHDictionaryFileUnzipMaxPercentage;
 
-            // to cope with resuming the app in this state, the manifest entry being processed
-            // is cached in the database
-            SCHDictionaryManifestEntry *entry;
-            if ([self.manifestComponentsDictionary count]) {
-                entry = [self nextManifestEntryUpdateForCurrentDictionaryVersion];
-                [self storeManifestEntryInDatabase:entry];
-            } else {
-                entry = [self currentManifestEntryFromDatabase];
-                if (entry == nil) {
-                    // if there's no manifest set, restart the process
-                    // this prevents double processing in the event of interruptions during parsing
-                    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
-                    [self processDictionary];
-                    return;
-                }
+            SCHDictionaryManifestEntry *entry = [self currentManifestEntryFromDatabase];
+
+            if (entry == nil) {
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+                [self processDictionary];
+                return;
             }
 
 			// create dictionary parse operation
@@ -740,10 +762,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 			parseOp.manifestEntry = entry;
             
 			[parseOp setNotCancelledCompletionBlock:^{
-                self.dictionaryVersion = entry.toVersion;
-                // TODO: we should not be deleting the manifests for the categories but we
-                // need to make sure this is a safe thing to do
-                [self removeManifestEntryFromDatabaseForDictionaryCategory:entry.category];
+                [self threadSafeUpdateDictionaryCategoryState:entry.category
+                                                        state:SCHDictionaryCategoryProcessingStateReady];
+
 				[self processDictionary];
 			}];
 			
@@ -879,16 +900,14 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     return dictionaryDirectory;
 }
 
-- (NSString *)dictionaryZipPath
+- (NSString *)zipPathForDictionaryManifestEntry:(SCHDictionaryManifestEntry *)dictionaryManifestEntry;
 {
-    if ([self dictionaryVersion] == nil) {
-        return [[self dictionaryDirectory] 
-                stringByAppendingPathComponent:@"dictionary.zip"];
-    } else {
-        return [[self dictionaryDirectory] 
-                stringByAppendingPathComponent:[NSString stringWithFormat:@"dictionary-%@.zip", 
-                                                [self dictionaryVersion]]];
-    }
+    NSParameterAssert(dictionaryManifestEntry);
+    NSString *filename = [NSString stringWithFormat:@"dictionary-%@-%@.zip",
+                          (dictionaryManifestEntry.category == nil ? @"" : dictionaryManifestEntry.category),
+                          (dictionaryManifestEntry.toVersion == nil ? @"" : dictionaryManifestEntry.toVersion)];
+
+    return [[self dictionaryDirectory] stringByAppendingPathComponent:filename];
 }
 
 #pragma mark -
@@ -926,6 +945,21 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         processingState = [state.State intValue];
     }];
     return processingState;
+}
+
+- (void)threadSafeUpdateDictionaryCategoryState:(NSString *)dictionaryCategory
+                                          state:(SCHDictionaryCategoryProcessingState)newState
+{
+    NSParameterAssert(dictionaryCategory);
+    NSLog(@"Updating category %@ to state to %d", dictionaryCategory, newState);
+
+    if (dictionaryCategory != nil) {
+        [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+            SCHAppDictionaryManifestEntry *appDictionaryManifestEntry = [state appDictionaryManifestEntryForDictionaryCategory:dictionaryCategory];
+            appDictionaryManifestEntry.state = [NSNumber numberWithInt:(int)newState];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryStateChange object:nil userInfo:nil];
+        }];
+    }
 }
 
 - (NSString *)titleForCurrentDictionaryState

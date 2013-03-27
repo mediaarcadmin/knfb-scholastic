@@ -11,15 +11,7 @@
 @class SCHAppDictionaryManifestEntry;
 
 typedef enum {
-	SCHDictionaryCategoryProcessingStateError = 0,
-    SCHDictionaryCategoryProcessingStateDownloadError,
-    SCHDictionaryCategoryProcessingStateUnableToOpenZipError,
-    SCHDictionaryCategoryProcessingStateUnZipFailureError,
-    SCHDictionaryCategoryProcessingStateParseError,
-
-	SCHDictionaryCategoryProcessingStateNeedsDownload,
-	SCHDictionaryCategoryProcessingStateNeedsUnzip,
-	SCHDictionaryCategoryProcessingStateNeedsParse,
+    SCHDictionaryCategoryProcessingStateNeedsProcessing = 0,
 	SCHDictionaryCategoryProcessingStateReady,
 } SCHDictionaryCategoryProcessingState;
 
@@ -34,8 +26,5 @@ typedef enum {
 @property (nonatomic, retain) NSString *url;
 
 - (id)initWithAppDictionaryManifestEntry:(SCHAppDictionaryManifestEntry *)appDictionaryManifestEntry;
-- (BOOL)stateIsError;
-- (BOOL)stateIsProcessing;
-- (BOOL)stateIsCompleted;
 
 @end

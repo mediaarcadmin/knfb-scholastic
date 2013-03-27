@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SCHDictionaryManifestEntry.h"
+
 // Constants
 extern NSString * const kSCHDictionaryDownloadPercentageUpdate;
 extern NSString * const kSCHDictionaryProcessingPercentageUpdate;
@@ -54,9 +56,6 @@ typedef enum {
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) NSDictionary *manifestComponentsDictionary;
 
-// the current dictionary version
-@property (readwrite, retain) NSString *dictionaryVersion;
-
 // dictionary is currently processing
 @property BOOL isProcessing;
 
@@ -74,7 +73,7 @@ typedef enum {
 - (NSString *)dictionaryTmpDirectory;
 
 // the location of the downloaded zip file
-- (NSString *)dictionaryZipPath;
+- (NSString *)zipPathForDictionaryManifestEntry:(SCHDictionaryManifestEntry *)dictionaryManifestEntry;
 
 // the location that the current version of the 
 // entry table/word form text files are stored

@@ -11,6 +11,7 @@
 #import "SCHDictionaryEntry.h"
 #import "SCHDictionaryWordForm.h"
 #import "SCHDictionaryManifestEntry.h"
+#import "SCHDictionaryManifestOperation.h"
 
 @interface SCHDictionaryParseOperation ()
 
@@ -40,22 +41,24 @@
         [self didChangeValueForKey:@"isExecuting"];
         [self didChangeValueForKey:@"isFinished"];        
 
-        if (self.manifestEntry.firstManifestEntry == YES) {
-            [dictManager initialParseEntryTable];
-            [dictManager initialParseWordFormTable];
-        } else {
-            [dictManager updateParseEntryTable];
-            [dictManager updateParseWordFormTable];
+        if ([self.manifestEntry.category isEqualToString:kSCHDictionaryManifestOperationDictionaryText] == YES) {
+            if (self.manifestEntry.firstManifestEntry == YES) {
+                [dictManager initialParseEntryTable];
+                [dictManager initialParseWordFormTable];
+            } else {
+                [dictManager updateParseEntryTable];
+                [dictManager updateParseWordFormTable];
+            }
         }
         
         NSFileManager *localFileManager = [[NSFileManager alloc] init];
-        [localFileManager removeItemAtPath:[dictManager dictionaryZipPath] error:nil];
+        [localFileManager removeItemAtPath:[dictManager zipPathForDictionaryManifestEntry:manifestEntry] error:nil];
         [localFileManager release];
         
         // the dictionary is ready to be used, we will do a version check
         // to see if there are any updates available though 
         [dictManager setDictionaryIsCurrentlyReadable:YES];
-        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
         dictManager.isProcessing = NO;
     }
     

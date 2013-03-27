@@ -73,7 +73,7 @@ const float kSCHDictionaryFileDownloadOperationFileSizeMultiplier = 2.2;
     [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = YES;
     [self willChangeValueForKey:@"isExecuting"];
     
-    NSString *localPath = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryZipPath];
+    NSString *localPath = [[SCHDictionaryDownloadManager sharedDownloadManager] zipPathForDictionaryManifestEntry:manifestEntry];
     BOOL append = NO;
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.manifestEntry.url]];

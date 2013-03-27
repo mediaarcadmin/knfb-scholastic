@@ -36,34 +36,13 @@
     if (appDictionaryManifestEntry != nil && ret != nil) {
         ret.category = appDictionaryManifestEntry.category;
         ret.firstManifestEntry = [appDictionaryManifestEntry.firstManifestEntry boolValue];
-        ret.size = [NSNumber numberWithInteger:appDictionaryManifestEntry.size];
-        ret.state = [NSNumber numberWithInt:appDictionaryManifestEntry.state];
+        ret.size = [appDictionaryManifestEntry.size integerValue];
+        ret.state = [appDictionaryManifestEntry.state intValue];
         ret.toVersion = appDictionaryManifestEntry.toVersion;
         ret.url = appDictionaryManifestEntry.url;
     }
 
     return ret;
-}
-
-- (BOOL)stateIsError
-{
-    return (self.state == SCHDictionaryCategoryProcessingStateError ||
-            self.state == SCHDictionaryCategoryProcessingStateDownloadError ||
-            self.state == SCHDictionaryCategoryProcessingStateUnableToOpenZipError ||
-            self.state == SCHDictionaryCategoryProcessingStateUnZipFailureError ||
-            self.state == SCHDictionaryCategoryProcessingStateParseError);
-}
-
-- (BOOL)stateIsProcessing
-{
-    return (self.state == SCHDictionaryCategoryProcessingStateNeedsDownload ||
-            self.state == SCHDictionaryCategoryProcessingStateNeedsUnzip ||
-            self.state == SCHDictionaryCategoryProcessingStateNeedsParse);
-}
-
-- (BOOL)stateIsCompleted
-{
-    return (self.state == SCHDictionaryCategoryProcessingStateReady);
 }
 
 - (NSString *)description

@@ -77,7 +77,7 @@
     
     bool zipSuccess = YES;
     
-    zipSuccess = [zipArchive UnzipOpenFile:[dictManager dictionaryZipPath]];
+    zipSuccess = [zipArchive UnzipOpenFile:[dictManager zipPathForDictionaryManifestEntry:manifestEntry]];
     
     if (zipSuccess) {
         // unzip will always overwrite whatever is already there
@@ -111,7 +111,7 @@
     NSFileManager *localFileManager = [[[NSFileManager alloc] init] autorelease];
 
     if (deleteAfterUnzip) {
-        [localFileManager removeItemAtPath:[dictManager dictionaryZipPath] error:nil];
+        [localFileManager removeItemAtPath:[dictManager zipPathForDictionaryManifestEntry:manifestEntry] error:nil];
     }
     
     if (zipSuccess) {

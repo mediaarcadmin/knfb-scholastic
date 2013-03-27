@@ -187,7 +187,7 @@ didStartElement:(NSString *)elementName
 			if (attributeStringValue) {
                 self.currentEntry.size = [attributeStringValue integerValue];
 			}
-            self.currentEntry.state = SCHDictionaryCategoryProcessingStateNeedsDownload;
+            self.currentEntry.state = SCHDictionaryCategoryProcessingStateNeedsProcessing;
 			attributeStringValue = [attributeDict objectForKey:@"EndVersion"];
 			if (attributeStringValue) {
                 self.currentEntry.toVersion = attributeStringValue;
