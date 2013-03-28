@@ -154,7 +154,8 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
         SCHDictionaryAccessManager *dam = [SCHDictionaryAccessManager sharedAccessManager];
         dam.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
         dam.persistentStoreCoordinator = persistentStoreCoordinator;
-        
+
+        [ddm deleteOldDictionaryIfExists];
         [ddm checkIfDictionaryUpdateNeeded];
 
         SCHVersionDownloadManager *versionManager = [SCHVersionDownloadManager sharedVersionManager];

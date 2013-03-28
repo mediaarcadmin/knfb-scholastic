@@ -33,7 +33,8 @@ NSString * const kSCHDictionaryStateChange = @"SCHDictionaryStateChange";
 
 static NSString *const kSCHDictionaryDownloadManagerDictionaryIsCurrentlyReadable = @"dictionaryIsCurrentlyReadable";
 
-static NSString * const kSCHDictionaryDownloadDirectoryName = @"Dictionary";
+static NSString * const kSCHDictionaryDownloadDirectoryOldName = @"Dictionary";
+static NSString * const kSCHDictionaryDownloadDirectoryName = @"DictionaryFiles";
 
 int const kSCHDictionaryManifestEntryEntryTableBufferSize = 8192;
 int const kSCHDictionaryManifestEntryWordFormTableBufferSize = 1024;
@@ -80,7 +81,8 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 // Cache the current manifest entry in core data
 - (void)storeManifestEntryInDatabase:(SCHDictionaryManifestEntry *)manifestEntry;
 - (SCHDictionaryManifestEntry *)manifestEntryFromDatabaseForDictionaryCategory:(NSString *)dictionaryCategory;
-- (void)deleteDictionaryFileWithCompletionBlock:(dispatch_block_t)completion;
+- (void)deleteDictionaryFiles:(NSString *)dictionaryPath
+         withCompletionBlock:(dispatch_block_t)completion;
 
 - (BOOL)stateNeedsWiFi;
 - (BOOL)stateIsWaitingForUserInteraction;
@@ -844,6 +846,14 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     return dictionaryDirectory;
 }
 
+- (NSString *)oldDictionaryDirectory
+{
+    NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *dictionaryDirectory = [applicationSupportDirectory stringByAppendingPathComponent:kSCHDictionaryDownloadDirectoryOldName];
+
+    return dictionaryDirectory;
+}
+
 - (NSString *)dictionaryTmpDirectory 
 {
     NSString *ret = [NSTemporaryDirectory() stringByAppendingPathComponent:kSCHDictionaryDownloadDirectoryName];  
@@ -1077,7 +1087,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                    state == SCHDictionaryProcessingStateDeleting ||
                    state == SCHDictionaryProcessingStateUnZipFailureError ||
                    state == SCHDictionaryProcessingStateParseError) {
-            [self deleteDictionaryFileWithCompletionBlock:^{
+            [self deleteDictionaryFiles:[self dictionaryDirectory] withCompletionBlock:^{
                 [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input after a delete
             }];
         } else if (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailureError) {
@@ -1943,7 +1953,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 (state == SCHDictionaryProcessingStateUnableToOpenZipError) || 
                 (state == SCHDictionaryProcessingStateUnZipFailureError) || 
                 (state == SCHDictionaryProcessingStateParseError)) {
-                [self deleteDictionaryFileWithCompletionBlock:needsManifestBlock];
+                [self deleteDictionaryFiles:[self dictionaryDirectory] withCompletionBlock:needsManifestBlock];
             } else {
                 needsManifestBlock();
             }
@@ -1994,8 +2004,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     });
 }
 
-- (void)deleteDictionaryFileWithCompletionBlock:(dispatch_block_t)completion
+- (void)deleteDictionaryFiles:(NSString *)dictionaryPath
+          withCompletionBlock:(dispatch_block_t)completion
 {
+    NSParameterAssert(dictionaryPath);
     self.isProcessing = YES;
 
     [self setDictionaryIsCurrentlyReadable:NO];
@@ -2007,14 +2019,13 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         NSString *dictionaryTmpDirectory = [NSString stringWithFormat:@"%@-%@", [self dictionaryTmpDirectory], [NSDate date]];
         NSError *error = nil;
         NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
-        NSString *dictionaryDir = [self dictionaryDirectory];
                 
-        BOOL successfullyMovedToTmp = [fileManager moveItemAtPath:dictionaryDir 
+        BOOL successfullyMovedToTmp = [fileManager moveItemAtPath:dictionaryPath
                                                            toPath:dictionaryTmpDirectory error:&error];
         
         if (!successfullyMovedToTmp) {
             NSLog(@"Failed to move dictionary %@ : %@", error, [error userInfo]);
-            [fileManager removeItemAtPath:dictionaryDir error:nil];
+            [fileManager removeItemAtPath:dictionaryPath error:nil];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -2047,21 +2058,37 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
         [self checkOperatingStateImmediately:YES];
     }
-    
-//    if (state == SCHDictionaryProcessingStateReady) {
+
+    [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] resetDictionaryStore];
+
+    [self deleteDictionaryFiles:[self dictionaryDirectory] withCompletionBlock:^{
+        self.currentDictionaryDownloadPercentage = 0;
+        self.currentDictionaryProcessingPercentage = 0;
+
+        // ticket #1371 - the user should be prompted to download again after
+        // deleting the dictionary
+        [self setUserRequestState:SCHDictionaryUserNotYetAsked];
+        [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateInitialNeedsManifest];
+        [self checkOperatingStateImmediately:YES];
+    }];
+}
+
+- (void)deleteOldDictionaryIfExists
+{
+    NSString *oldDirectoryPath = [self oldDictionaryDirectory];
+    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+
+    if ([localFileManager fileExistsAtPath:oldDirectoryPath isDirectory:NULL] == YES) {
         [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] resetDictionaryStore];
         
-        [self deleteDictionaryFileWithCompletionBlock:^{
-            self.currentDictionaryDownloadPercentage = 0;
-            self.currentDictionaryProcessingPercentage = 0;
-            
-            // ticket #1371 - the user should be prompted to download again after
-            // deleting the dictionary
+        [self deleteDictionaryFiles:[self oldDictionaryDirectory] withCompletionBlock:^{
             [self setUserRequestState:SCHDictionaryUserNotYetAsked];
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateInitialNeedsManifest];
             [self checkOperatingStateImmediately:YES];
         }];
-//    }
+    }
+
+    [localFileManager release];
 }
 
 - (void)setDictionaryIsCurrentlyReadable:(BOOL)setDictionaryIsCurrentlyReadableFlag
