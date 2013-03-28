@@ -957,7 +957,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
             SCHAppDictionaryManifestEntry *appDictionaryManifestEntry = [state appDictionaryManifestEntryForDictionaryCategory:dictionaryCategory];
             appDictionaryManifestEntry.state = [NSNumber numberWithInt:(int)newState];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryStateChange object:nil userInfo:nil];
         }];
     }
 }
@@ -1876,7 +1875,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     dispatch_block_t action = ^{
         
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        // Edit the entity name as appropriate.
         NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHAppDictionaryState
                                                   inManagedObjectContext:self.mainThreadManagedObjectContext];
         [fetchRequest setEntity:entity];
