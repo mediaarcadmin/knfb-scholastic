@@ -795,23 +795,16 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 {
     NSParameterAssert(manifestEntry);
     
-    if ([self manifestEntryFromDatabaseForDictionaryCategory:manifestEntry.category]) {
-        NSLog(@"attempt to overwrite manifest entry in database. Existing one will be deleted");
-        [self removeManifestEntryFromDatabaseForDictionaryCategory:manifestEntry.category];
-    }
-    
     [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
-        SCHAppDictionaryManifestEntry *entry = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppDictionaryManifestEntry
-                                                                             inManagedObjectContext:self.mainThreadManagedObjectContext];
+        SCHAppDictionaryManifestEntry *entry = [state appDictionaryManifestEntryForDictionaryCategory:manifestEntry.category];
+        if (entry == nil) {
+            entry = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppDictionaryManifestEntry
+                                                  inManagedObjectContext:self.mainThreadManagedObjectContext];
+            [state addAppDictionaryManifestEntryObject:entry];
+        }
+
         [entry setAttributesFromDictionaryManifestEntry:manifestEntry];
-        
-        [state addAppDictionaryManifestEntryObject:entry];
     }];
-    
-    NSError *error = nil;
-    if (![self save:&error]) {
-        NSLog(@"failed to save after updating database manifest entry: %@", error);
-    }
 }
 
 - (SCHDictionaryManifestEntry *)manifestEntryFromDatabaseForDictionaryCategory:(NSString *)dictionaryCategory
