@@ -720,10 +720,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 [self processDictionary];
                 return;
             }
-            
-            // only set DictionaryIsCurrentlyReadable once we know we will begin unzipping
-            [self setDictionaryIsCurrentlyReadable:NO];
-            
+
             self.currentDictionaryProcessingPercentage = 0.0;
             
 			SCHDictionaryFileUnzipOperation *unzipOp = [[SCHDictionaryFileUnzipOperation alloc] init];
@@ -743,8 +740,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		case SCHDictionaryProcessingStateNeedsParse:
 		{
 			NSLog(@"needs parse...");
-            
-            [self setDictionaryIsCurrentlyReadable:NO];
             
             self.currentDictionaryProcessingPercentage = kSCHDictionaryFileUnzipMaxPercentage;
 
@@ -1961,8 +1956,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 - (void)deleteCurrentManifestEntryFileWithCompletionBlock:(dispatch_block_t)completion
 {
     self.isProcessing = YES;
-
-    [self setDictionaryIsCurrentlyReadable:NO];
 
     [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeletingCategory];
 
