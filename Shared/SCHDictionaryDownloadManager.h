@@ -38,6 +38,7 @@ typedef enum {
 	SCHDictionaryProcessingStateNeedsParse,
 	SCHDictionaryProcessingStateReady,
     SCHDictionaryProcessingStateDeleting,
+    SCHDictionaryProcessingStateDeletingCategory,
 } SCHDictionaryProcessingState;
 
 typedef enum {

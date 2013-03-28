@@ -543,6 +543,7 @@ typedef enum {
         case SCHDictionaryProcessingStateUnZipFailureError:
         case SCHDictionaryProcessingStateParseError:
         case SCHDictionaryProcessingStateDeleting:
+        case SCHDictionaryProcessingStateDeletingCategory:            
         {
             ret = YES;
             break;

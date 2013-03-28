@@ -1106,6 +1106,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                         case SCHDictionaryProcessingStateUnZipFailureError:
                         case SCHDictionaryProcessingStateParseError:
                         case SCHDictionaryProcessingStateDeleting:
+                        case SCHDictionaryProcessingStateDeletingCategory:
                         {
                             return kSCHSettingsPanelDictionaryDownload;
                             break;

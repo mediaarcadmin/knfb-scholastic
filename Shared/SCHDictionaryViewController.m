@@ -268,6 +268,7 @@
         case SCHDictionaryProcessingStateUnableToOpenZipError:
         case SCHDictionaryProcessingStateUnZipFailureError:
         case SCHDictionaryProcessingStateParseError:
+        case SCHDictionaryProcessingStateDeletingCategory:            
         {
             self.bottomLabel.text = NSLocalizedString(@"There was an error downloading the Storia dictionary. Please try again later.", nil);
             [self.activityIndicator stopAnimating];

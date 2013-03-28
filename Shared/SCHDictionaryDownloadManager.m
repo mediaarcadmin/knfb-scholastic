@@ -974,6 +974,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             dictionaryStateTitle = NSLocalizedString(@"Deleting Dictionary...", @"Deleting dictionary table title");
             break;
         }
+        case SCHDictionaryProcessingStateDeletingCategory:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nUnknown Error", @"Deleting dictionary category table title");
+            break;
+        }
         case SCHDictionaryProcessingStateError:
         {
             dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nUnknown Error", @"Dictionary error table title for unknown error");
@@ -1066,10 +1071,15 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         if (state == SCHDictionaryProcessingStateNotEnoughFreeSpaceError) {
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input but don't delete
-        } else if (state == SCHDictionaryProcessingStateError || 
-                   state == SCHDictionaryProcessingStateDeleting ||
-                   state == SCHDictionaryProcessingStateDownloadError ||
+        } else if (state == SCHDictionaryProcessingStateDownloadError ||
                    state == SCHDictionaryProcessingStateUnableToOpenZipError ||
+                   state == SCHDictionaryProcessingStateDeletingCategory) {
+            // remove the current dictionary category file
+            [self deleteCurrentManifestEntryFileWithCompletionBlock:^{
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input after a delete
+            }];
+        } else if (state == SCHDictionaryProcessingStateError ||
+                   state == SCHDictionaryProcessingStateDeleting ||
                    state == SCHDictionaryProcessingStateUnZipFailureError ||
                    state == SCHDictionaryProcessingStateParseError) {
             [self deleteDictionaryFileWithCompletionBlock:^{
@@ -1946,6 +1956,49 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         }
     }
     
+}
+
+- (void)deleteCurrentManifestEntryFileWithCompletionBlock:(dispatch_block_t)completion
+{
+    self.isProcessing = YES;
+
+    [self setDictionaryIsCurrentlyReadable:NO];
+
+    [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeletingCategory];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        // move the dictionary file to tmp and delete in the background
+        NSString *dictionaryTmpDirectory = [NSString stringWithFormat:@"%@-%@", [self dictionaryTmpDirectory], [NSDate date]];
+        NSError *error = nil;
+        NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+        SCHDictionaryManifestEntry *manifestEntry = [self  currentManifestEntryFromDatabase];
+        BOOL successfullyMovedToTmp = NO;
+
+        if (manifestEntry != nil) {
+            NSString *dictionaryDir = [self zipPathForDictionaryManifestEntry:manifestEntry];
+
+            successfullyMovedToTmp = [fileManager moveItemAtPath:dictionaryDir
+                                                          toPath:dictionaryTmpDirectory
+                                                           error:&error];
+
+            if (!successfullyMovedToTmp) {
+                NSLog(@"Failed to move dictionary category %@ : %@", error, [error userInfo]);
+                [fileManager removeItemAtPath:dictionaryDir error:nil];
+            }
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.isProcessing = NO;
+
+            if (completion) {
+                completion();
+            }
+        });
+
+        if (successfullyMovedToTmp) {
+            [fileManager removeItemAtPath:dictionaryTmpDirectory error:nil];
+        }
+    });
 }
 
 - (void)deleteDictionaryFileWithCompletionBlock:(dispatch_block_t)completion
