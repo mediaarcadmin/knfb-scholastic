@@ -47,14 +47,19 @@ NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
 - (NSString *)freeSpaceRequiredToCompleteDownloadAsString
 {
     NSString *ret = nil;
-    NSInteger freeSpaceInBytes = [self freeSpaceInBytesRequiredToCompleteDownload];
 
-    if (freeSpaceInBytes <= 0) {
-        ret = [NSString stringWithFormat:@"0GB"];
+    if (self.remainingFileSize == nil) {
+        return @"?GB";
     } else {
-        ret = [NSString stringWithFormat:@"%.1fGB", freeSpaceInBytes / 1000000000.0];
-    }
+        NSInteger freeSpaceInBytes = [self freeSpaceInBytesRequiredToCompleteDownload];
 
+        if (freeSpaceInBytes <= 0) {
+            ret = [NSString stringWithFormat:@"0GB"];
+        } else {
+            ret = [NSString stringWithFormat:@"%.1fGB", freeSpaceInBytes / 1000000000.0];
+        }
+    }
+    
     return ret;
 }
 
