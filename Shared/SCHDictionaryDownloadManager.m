@@ -2065,7 +2065,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // ticket #1371 - the user should be prompted to download again after
             // deleting the dictionary
             [self setUserRequestState:SCHDictionaryUserNotYetAsked];
-            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
+            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateInitialNeedsManifest];
+            [self checkOperatingStateImmediately:YES];
         }];
 //    }
 }

@@ -42,6 +42,9 @@
         [self didChangeValueForKey:@"isFinished"];        
 
         if ([self.manifestEntry.category isEqualToString:kSCHDictionaryManifestOperationDictionaryText] == YES) {
+            // the dictionary should not be used during a parse
+            [dictManager setDictionaryIsCurrentlyReadable:NO];
+
             if (self.manifestEntry.firstManifestEntry == YES) {
                 [dictManager initialParseEntryTable];
                 [dictManager initialParseWordFormTable];
@@ -49,15 +52,16 @@
                 [dictManager updateParseEntryTable];
                 [dictManager updateParseWordFormTable];
             }
+
+            // the dictionary is ready to be used
+            [dictManager setDictionaryIsCurrentlyReadable:YES];
         }
         
         NSFileManager *localFileManager = [[NSFileManager alloc] init];
         [localFileManager removeItemAtPath:[dictManager zipPathForDictionaryManifestEntry:manifestEntry] error:nil];
         [localFileManager release];
         
-        // the dictionary is ready to be used, we will do a version check
-        // to see if there are any updates available though 
-        [dictManager setDictionaryIsCurrentlyReadable:YES];
+        // do a version check to see if there are any updates available
         [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
         dictManager.isProcessing = NO;
     }
