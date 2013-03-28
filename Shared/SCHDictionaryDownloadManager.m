@@ -80,7 +80,6 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 // Cache the current manifest entry in core data
 - (void)storeManifestEntryInDatabase:(SCHDictionaryManifestEntry *)manifestEntry;
 - (SCHDictionaryManifestEntry *)manifestEntryFromDatabaseForDictionaryCategory:(NSString *)dictionaryCategory;
-- (void)removeManifestEntryFromDatabaseForDictionaryCategory:(NSString *)dictionaryCategory;
 - (void)deleteDictionaryFileWithCompletionBlock:(dispatch_block_t)completion;
 
 - (BOOL)stateNeedsWiFi;
@@ -823,21 +822,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     }
 
     return [manifestEntry autorelease];
-}
-
-- (void)removeManifestEntryFromDatabaseForDictionaryCategory:(NSString *)dictionaryCategory
-{
-    NSParameterAssert(dictionaryCategory);
-
-    if (dictionaryCategory != nil) {
-        [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
-            SCHAppDictionaryManifestEntry *entry = [state appDictionaryManifestEntryForDictionaryCategory:dictionaryCategory];
-
-            if (entry != nil) {
-                [self.mainThreadManagedObjectContext deleteObject:entry];
-            }
-        }];
-    }
 }
 
 #pragma mark -
