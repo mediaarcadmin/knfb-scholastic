@@ -538,6 +538,7 @@ typedef enum {
         case SCHDictionaryProcessingStateError:
         case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
         case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
+        case SCHDictionaryProcessingStateManifestError:
         case SCHDictionaryProcessingStateDownloadError:
         case SCHDictionaryProcessingStateUnableToOpenZipError:
         case SCHDictionaryProcessingStateUnZipFailureError:

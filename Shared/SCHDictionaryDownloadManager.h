@@ -27,6 +27,7 @@ typedef enum {
     SCHDictionaryProcessingStateUserDeclined,
 	SCHDictionaryProcessingStateNotEnoughFreeSpaceError,
     SCHDictionaryProcessingStateUnexpectedConnectivityFailureError,
+    SCHDictionaryProcessingStateManifestError,
     SCHDictionaryProcessingStateDownloadError,
     SCHDictionaryProcessingStateUnableToOpenZipError,
     SCHDictionaryProcessingStateUnZipFailureError,

@@ -390,6 +390,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         case SCHDictionaryProcessingStateUserDeclined:
         case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
         case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
+        case SCHDictionaryProcessingStateManifestError:
         case SCHDictionaryProcessingStateDownloadError:
         case SCHDictionaryProcessingStateUnableToOpenZipError:
         case SCHDictionaryProcessingStateUnZipFailureError:
@@ -471,7 +472,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (void)updateRemainingFileSizeFromManifestComponentsDictionary
 {
-    NSInteger remainingFileSize = 0;
+    NSInteger remainingFileSize = NSIntegerMin;
 
     if (self.manifestComponentsDictionary != nil) {
         for (NSString *dictionaryCategory in [self dictionaryCategoriesByPriority]) {
@@ -483,14 +484,22 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                     (currentDictionaryManifestEntry.state != SCHDictionaryCategoryProcessingStateReady &&
                      ([currentDictionaryVersion compare:anEntry.toVersion options:NSNumericSearch] == NSOrderedAscending ||
                       [currentDictionaryVersion compare:anEntry.toVersion options:NSNumericSearch] == NSOrderedSame))) {
-                         remainingFileSize += anEntry.size;
+                         if (remainingFileSize == NSIntegerMin) {
+                             remainingFileSize = anEntry.size;
+                         } else {
+                             remainingFileSize += anEntry.size;
+                         }
                      }
             }
         }
     }
 
     [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
-        state.remainingFileSize = [NSNumber numberWithInteger:remainingFileSize];
+        if (remainingFileSize != NSIntegerMin) {
+            state.remainingFileSize = [NSNumber numberWithInteger:remainingFileSize];
+        } else {
+            state.remainingFileSize = nil;
+        }
     }];
 }
 
@@ -989,6 +998,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nUnknown Error", @"Dictionary error table title for unknown error");
             break;
         }
+        case SCHDictionaryProcessingStateManifestError:
+        {
+            dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nManifest Error", @"Dictionary manifest error table title for connection interrupted");
+            break;
+        }
+
         case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
         {
             dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nDownload Interrupted", @"Dictionary error table title for connection interrupted");
@@ -1936,7 +1951,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         if ((state == SCHDictionaryProcessingStateUserSetup) || 
             (state == SCHDictionaryProcessingStateUserDeclined) || 
             (state == SCHDictionaryProcessingStateNotEnoughFreeSpaceError) || 
-            (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailureError) || 
+            (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailureError) ||
+            (state == SCHDictionaryProcessingStateManifestError) ||
             (state == SCHDictionaryProcessingStateError) || 
             (state == SCHDictionaryProcessingStateDownloadError) || 
             (state == SCHDictionaryProcessingStateUnableToOpenZipError) || 
@@ -1948,11 +1964,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 [self checkOperatingStateImmediately:YES];
             };
             
-            if ((state == SCHDictionaryProcessingStateError) ||
-                (state == SCHDictionaryProcessingStateDownloadError) || 
-                (state == SCHDictionaryProcessingStateUnableToOpenZipError) || 
-                (state == SCHDictionaryProcessingStateUnZipFailureError) || 
-                (state == SCHDictionaryProcessingStateParseError)) {
+            if ((state == SCHDictionaryProcessingStateDownloadError) ||
+                (state == SCHDictionaryProcessingStateUnableToOpenZipError)) {
+                [self deleteCurrentManifestEntryFileWithCompletionBlock:needsManifestBlock];
+            } else if ((state == SCHDictionaryProcessingStateError) ||
+                      (state == SCHDictionaryProcessingStateUnZipFailureError) ||
+                      (state == SCHDictionaryProcessingStateParseError)) {
                 [self deleteDictionaryFiles:[self dictionaryDirectory] withCompletionBlock:needsManifestBlock];
             } else {
                 needsManifestBlock();

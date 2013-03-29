@@ -264,6 +264,7 @@
         }
         case SCHDictionaryProcessingStateError:
         case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
+        case SCHDictionaryProcessingStateManifestError:
         case SCHDictionaryProcessingStateDownloadError:
         case SCHDictionaryProcessingStateUnableToOpenZipError:
         case SCHDictionaryProcessingStateUnZipFailureError:

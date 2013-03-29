@@ -134,11 +134,11 @@ didReceiveResponse:(NSURLResponse *)response
         [self.manifestParser setDelegate:self];
         [self.manifestParser parse];
     
-        NSDictionary *manifestCategoriesDictionary = nil;
-        if (self.manifestCategories != nil) {
-            manifestCategoriesDictionary = [NSDictionary dictionaryWithDictionary:self.manifestCategories];
+        if ([self.manifestCategories count] > 0) {
+            [SCHDictionaryDownloadManager sharedDownloadManager].manifestComponentsDictionary = [NSDictionary dictionaryWithDictionary:self.manifestCategories];
+        } else {
+            [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestError];
         }
-        [SCHDictionaryDownloadManager sharedDownloadManager].manifestComponentsDictionary = manifestCategoriesDictionary;
     } else {
         NSLog(@"DictionaryManifestOperation was cancelled");
     }
@@ -236,7 +236,7 @@ didStartElement:(NSString *)elementName
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
-    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateParseError];
+    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestError];
     [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
     
 	NSLog(@"Error: could not parse XML.");

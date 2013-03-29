@@ -157,7 +157,7 @@
         <attribute name="LastModified" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
-        <attribute name="remainingFileSize" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="remainingFileSize" optional="YES" attributeType="Integer 32" syncable="YES"/>
         <attribute name="State" optional="YES" attributeType="Integer 16" defaultValueString="0">
             <userInfo/>
         </attribute>
