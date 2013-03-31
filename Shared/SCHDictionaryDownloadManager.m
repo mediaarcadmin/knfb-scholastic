@@ -35,6 +35,7 @@ static NSString *const kSCHDictionaryDownloadManagerDictionaryIsCurrentlyReadabl
 
 static NSString * const kSCHDictionaryDownloadDirectoryOldName = @"Dictionary";
 static NSString * const kSCHDictionaryDownloadDirectoryName = @"DictionaryFiles";
+static NSString * const kSCHDictionaryTextFilesDirectoryName = @"Current";
 
 int const kSCHDictionaryManifestEntryEntryTableBufferSize = 8192;
 int const kSCHDictionaryManifestEntryWordFormTableBufferSize = 1024;
@@ -872,8 +873,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 - (NSString *)dictionaryTextFilesDirectory 
 {
     NSString *applicationSupportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *dictionaryDirectory = [applicationSupportDirectory stringByAppendingPathComponent:@"Dictionary/Current"];
-    
+    NSString *dictionaryDirectory = [applicationSupportDirectory stringByAppendingPathComponent:kSCHDictionaryDownloadDirectoryName];
+    dictionaryDirectory = [dictionaryDirectory stringByAppendingPathComponent:kSCHDictionaryTextFilesDirectoryName];
+
     NSFileManager *localFileManager = [[NSFileManager alloc] init];
     NSError *error = nil;
     BOOL isDirectory = NO;
