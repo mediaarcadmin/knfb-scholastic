@@ -393,7 +393,7 @@ typedef enum {
             case kSCHAppModelSyncStateWaitingForLoginToComplete:
             case kSCHAppModelSyncStateWaitingForBookshelves:
             {
-                BOOL requestDownloadDictionary = [self dictionaryNeedsDownloaded] && [[Reachability reachabilityForLocalWiFi] isReachable];
+                BOOL requestDownloadDictionary = [self dictionaryNeedsDownloaded];
                 BOOL shouldShowToolTips = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsHaveShownProfileTooltips] == NO;
                 
                 if (shouldShowToolTips) {
