@@ -68,6 +68,9 @@ typedef enum {
 
 + (SCHDictionaryDownloadManager *)sharedDownloadManager;
 
+// returns YES if the dictionary category is ready
+- (BOOL)dictionaryCategoryReady:(NSString *)dictionaryCategory;
+
 // the local dictionary directory
 - (NSString *)dictionaryDirectory;
 
@@ -107,6 +110,7 @@ typedef enum {
 - (void)deleteOldDictionaryIfExists;
 
 - (void)setDictionaryIsCurrentlyReadable:(BOOL)setDictionaryIsCurrentlyReadableFlag;
+// the dictionary is available for use, meaning at least the text category is ready
 - (BOOL)dictionaryIsAvailable;
 
 @end

@@ -618,6 +618,24 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     return ret;
 }
 
+- (BOOL)dictionaryCategoryReady:(NSString *)dictionaryCategory;
+{
+    NSParameterAssert(dictionaryCategory);
+    __block BOOL ret = NO;
+
+    if (dictionaryCategory != nil) {
+        [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+            SCHAppDictionaryManifestEntry *entry = [state appDictionaryManifestEntryForDictionaryCategory:dictionaryCategory];
+
+            if ([entry.state intValue] == SCHDictionaryCategoryProcessingStateReady) {
+                ret = YES;
+            }
+        }];
+    }
+
+    return ret;
+}
+
 - (void)processDictionary
 {
     

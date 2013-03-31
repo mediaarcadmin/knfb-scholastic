@@ -16,6 +16,7 @@
 #import "SCHBookManager.h"
 #import "SCHDictionaryEntry.h"
 #import "SCHCoreDataHelper.h"
+#import "SCHDictionaryManifestOperation.h"
 
 #import <dirent.h>
 
@@ -475,7 +476,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 - (void)speakWord:(NSString *)dictionaryWord category:(NSString *)category
 {
     
-    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable]) {
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryCategoryReady:kSCHDictionaryManifestOperationDictionaryPron]) {
         NSLog(@"Dictionary is not ready yet!");
         return;
     }
@@ -595,7 +596,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 
 - (void)speakYoungerWordDefinition:(NSString *)dictionaryWord
 {
-    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryIsAvailable]) {
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryCategoryReady:kSCHDictionaryManifestOperationDictionaryAudio]) {
         NSLog(@"Dictionary is not ready yet!");
         return;
     }
