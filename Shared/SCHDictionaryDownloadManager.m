@@ -1103,6 +1103,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 #pragma mark - Update Check
 
+// The main purpose of this method is to perform a dictionary update check but
+// also to resolve any error states by deleting the current dictionary category
+// file or the entire dictionary and then waiting for the user to hit the retry
+// button
 - (void)checkIfDictionaryUpdateNeeded
 {
     
