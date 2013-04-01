@@ -26,6 +26,7 @@ extern NSString * const kSCHAppDictionaryState;
 
 - (SCHAppDictionaryManifestEntry *)appDictionaryManifestEntryForDictionaryCategory:(NSString *)dictionaryCategory;
 - (NSInteger *)freeSpaceInBytesRequiredToCompleteDownload;
+- (NSString *)remainingFileSizeToCompleteDownloadAsString;
 - (NSString *)freeSpaceRequiredToCompleteDownloadAsString;
 
 @end

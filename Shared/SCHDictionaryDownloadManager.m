@@ -1107,6 +1107,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 // also to resolve any error states by deleting the current dictionary category
 // file or the entire dictionary and then waiting for the user to hit the retry
 // button
+// See beginDictionaryDownload which is called when the user requests dictionary download
 - (void)checkIfDictionaryUpdateNeeded
 {
     
@@ -1965,6 +1966,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 #pragma mark - user control
 
+// The main purpose of this method is to start the dictionary download. It will
+// attempt to resolve any error states by deleting the current dictionary
+// category file or the entire dictionary.
+// See checkIfDictionaryUpdateNeeded which is called when the apps starts and
+// returns from the background
 - (void)beginDictionaryDownload
 {
     if (!self.isProcessing || [self stateIsWaitingForUserInteraction]) {

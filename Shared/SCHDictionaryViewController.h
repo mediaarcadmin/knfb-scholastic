@@ -32,7 +32,9 @@
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, retain) IBOutlet UIView *leftBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIButton *audioButton;
+@property (nonatomic, retain) IBOutlet UIButton *downloadDictionaryButton;
 
 - (IBAction) playWord;
+- (IBAction)downloadDictionary:(id)sender;
 
 @end
