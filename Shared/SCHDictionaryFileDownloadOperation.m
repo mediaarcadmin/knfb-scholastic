@@ -183,7 +183,7 @@ const float kSCHDictionaryFileDownloadOperationFileSizeMultiplier = 2.2;
 
     if ([error.domain isEqualToString:kQHTTPOperationErrorDomain] && error.code == 416) {
         // There was a problem with the range. Report an error state that will results in a delete of the files on the disk        
-        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDownloadError];
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDownload416Error];
         [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
 
     } else if (!([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSUserCancelledError)) {

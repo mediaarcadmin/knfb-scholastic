@@ -392,7 +392,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
         case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
         case SCHDictionaryProcessingStateManifestError:
-        case SCHDictionaryProcessingStateDownloadError:
+        case SCHDictionaryProcessingStateDownload416Error:
         case SCHDictionaryProcessingStateUnableToOpenZipError:
         case SCHDictionaryProcessingStateUnZipFailureError:
         case SCHDictionaryProcessingStateParseError:
@@ -1039,7 +1039,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                     freeSpaceString];
             break;
         }
-        case SCHDictionaryProcessingStateDownloadError:
+        case SCHDictionaryProcessingStateDownload416Error:
         {
             dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nDownload Failed", @"Dictionary error table title for download failed");
             break;
@@ -1111,7 +1111,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         if (state == SCHDictionaryProcessingStateNotEnoughFreeSpaceError) {
             [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup]; // wait for user input but don't delete
-        } else if (state == SCHDictionaryProcessingStateDownloadError ||
+        } else if (state == SCHDictionaryProcessingStateDownload416Error ||
                    state == SCHDictionaryProcessingStateUnableToOpenZipError ||
                    state == SCHDictionaryProcessingStateDeletingCategory) {
             // remove the current dictionary category file
@@ -1974,7 +1974,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             (state == SCHDictionaryProcessingStateUnexpectedConnectivityFailureError) ||
             (state == SCHDictionaryProcessingStateManifestError) ||
             (state == SCHDictionaryProcessingStateError) || 
-            (state == SCHDictionaryProcessingStateDownloadError) || 
+            (state == SCHDictionaryProcessingStateDownload416Error) ||
             (state == SCHDictionaryProcessingStateUnableToOpenZipError) || 
             (state == SCHDictionaryProcessingStateUnZipFailureError) || 
             (state == SCHDictionaryProcessingStateParseError)) {
@@ -1984,7 +1984,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 [self checkOperatingStateImmediately:YES];
             };
             
-            if ((state == SCHDictionaryProcessingStateDownloadError) ||
+            if ((state == SCHDictionaryProcessingStateDownload416Error) ||
                 (state == SCHDictionaryProcessingStateUnableToOpenZipError)) {
                 [self deleteCurrentManifestEntryFileWithCompletionBlock:needsManifestBlock];
             } else if ((state == SCHDictionaryProcessingStateError) ||

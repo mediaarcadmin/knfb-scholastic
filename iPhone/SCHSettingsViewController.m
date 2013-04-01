@@ -1102,7 +1102,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                         case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
                         case SCHDictionaryProcessingStateUnexpectedConnectivityFailureError:
                         case SCHDictionaryProcessingStateManifestError:
-                        case SCHDictionaryProcessingStateDownloadError:
+                        case SCHDictionaryProcessingStateDownload416Error:
                         case SCHDictionaryProcessingStateUnableToOpenZipError:
                         case SCHDictionaryProcessingStateUnZipFailureError:
                         case SCHDictionaryProcessingStateParseError:
