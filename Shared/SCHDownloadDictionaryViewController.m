@@ -32,6 +32,7 @@
 @synthesize appController;
 @synthesize downloadLaterButton;
 @synthesize textLabel;
+@synthesize removeDictionaryTextLabel;
 
 - (void)dealloc
 {
@@ -50,6 +51,7 @@
     [backButton release], backButton = nil;
     [downloadLaterButton release], downloadLaterButton = nil;
     [textLabel release], textLabel = nil;
+    [removeDictionaryTextLabel release], removeDictionaryTextLabel =nil;
 }
 
 - (void)viewDidLoad
@@ -79,10 +81,15 @@
                                                                            @"It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.\n\n"
                                                                            @"This download requires about %@. "
                                                                            @"The dictionary will download in the background while you continue to read.", nil), freeSpaceString];
+        self.removeDictionaryTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"The Storia Dictionary uses about %@ of storage space. "
+                                                                                           @"If you remove the dictionary, readers will no longer be able to look up words or get word pronunciations.\n\n"
+                                                                                           @"If you choose to remove the dictionary, you can download it again at any time.", nil), freeSpaceString];
     } else {
         self.textLabel.text = NSLocalizedString(@"Storia features a rich dictionary built especially for kids. "
                                                 @"It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.\n\n"
                                                 @"The dictionary will download in the background while you continue to read.", nil);
+        self.removeDictionaryTextLabel.text = NSLocalizedString(@"If you remove the dictionary, readers will no longer be able to look up words or get word pronunciations.\n\n"
+                                                                @"If you choose to remove the dictionary, you can download it again at any time.", nil);
     }
 }
 

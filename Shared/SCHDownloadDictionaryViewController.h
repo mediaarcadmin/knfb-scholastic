@@ -19,6 +19,7 @@
 @property (nonatomic, assign) id<SCHAppController> appController;
 @property (nonatomic, copy) dispatch_block_t completionBlock;
 @property (nonatomic, retain) IBOutlet UILabel *textLabel;
+@property (nonatomic, retain) IBOutlet UILabel *removeDictionaryTextLabel;
 
 - (IBAction)downloadDictionary:(id)sender;
 - (IBAction)removeDictionary:(id)sender;
