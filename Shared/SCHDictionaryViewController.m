@@ -265,20 +265,27 @@
                 if (isSampleStore) {
                     self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Storia dictionary.", nil);
                 } else {
-                    __block NSString *freeSpaceString = nil;
-                    [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
-                        freeSpaceString = [state remainingFileSizeToCompleteDownloadAsString];
-                    }];
-
                     if (self.categoryMode == kSCHDictionaryYoungReader) {
                         self.bottomLabel.text = NSLocalizedString(@"Until the dictionary download is complete, pronunciations, images and audio definitions may not be available. "
                                                                   @"Please wait until the dictionary has fully downloaded and installed and try looking up this word again.", nil);
                         self.downloadDictionaryButton.hidden = YES;
                     } else {
-                        self.bottomLabel.text = [NSString stringWithFormat:NSLocalizedString(@"The Storia dictionary has not been downloaded. "
-                                                                                             @"Please click the download button to download it now.\n\n"
-                                                                                             @"Please be advised that the dictionary is %@ and may take some time to download completely. "
-                                                                                             @"While the dictionary is downloading, you will be able to see text definitions.", nil), freeSpaceString];
+                        __block NSString *freeSpaceString = nil;
+                        [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+                            freeSpaceString = [state remainingFileSizeToCompleteDownloadAsString];
+                        }];
+
+                        if (freeSpaceString != nil) {
+                            self.bottomLabel.text = [NSString stringWithFormat:NSLocalizedString(@"The Storia dictionary has not been downloaded. "
+                                                                                                 @"Please click the download button to download it now.\n\n"
+                                                                                                 @"Please be advised that the dictionary is %@ and may take some time to download completely. "
+                                                                                                 @"While the dictionary is downloading, you will be able to see text definitions.", nil), freeSpaceString];
+                        } else {
+                            self.bottomLabel.text = NSLocalizedString(@"The Storia dictionary has not been downloaded. "
+                                                                      @"Please click the download button to download it now.\n\n"
+                                                                      @"While the dictionary is downloading, you will be able to see text definitions.", nil);
+
+                        }
                         self.downloadDictionaryButton.hidden = NO;
                     }
                 }
@@ -289,7 +296,17 @@
             }
             case SCHDictionaryProcessingStateNotEnoughFreeSpaceError:
             {
-                self.bottomLabel.text = NSLocalizedString(@"There is not enough free space on the device. Please clear some space and try again.", nil);
+                __block NSString *freeSpaceString = nil;
+                [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+                    freeSpaceString = [state freeSpaceRequiredToCompleteDownloadAsString];
+                }];
+                if (freeSpaceString != nil) {
+                    self.bottomLabel.text = [NSString stringWithFormat:NSLocalizedString(@"There is not enough free space on the device. "
+                                                                                         @"Please clear %@ of space and try again.", nil), freeSpaceString];
+                } else {
+                    self.bottomLabel.text = NSLocalizedString(@"There is not enough free space on the device."
+                                                              @"Please clear some space and try again.", nil);
+                }
                 [self.activityIndicator stopAnimating];
                 self.progressBar.hidden = YES;
                 self.downloadDictionaryButton.hidden = YES;
@@ -312,7 +329,7 @@
             }
             case SCHDictionaryProcessingStateDeleting:
             {
-                self.bottomLabel.text = NSLocalizedString(@"The Scholastic dictionary is currently being deleted from your device. To download the dictionary again, go to Additional Settings within the Reading Manager Menu and select Download Dictionary.", nil);
+                self.bottomLabel.text = NSLocalizedString(@"The Storia dictionary is currently being deleted from your device. To download the dictionary again, go to Additional Settings within the Reading Manager Menu and select Download Dictionary.", nil);
                 [self.activityIndicator stopAnimating];
                 self.progressBar.hidden = YES;
                 self.downloadDictionaryButton.hidden = YES;
@@ -344,16 +361,44 @@
                 if (!willDownloadAfterHelpVideo) {
                     if (isSampleStore) {
                         self.bottomLabel.text = NSLocalizedString(@"You have not yet downloaded the Storia dictionary.", nil);
+                        self.downloadDictionaryButton.hidden = YES;
                     } else {
-                        self.bottomLabel.text =NSLocalizedString( @"You have not yet downloaded the Storia dictionary. To download the dictionary, go to Additonal Settings within the Reading Manager Menu.", nil);
+                        __block NSString *freeSpaceString = nil;
+                        [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+                            freeSpaceString = [state remainingFileSizeToCompleteDownloadAsString];
+                        }];
+
+                        if (self.categoryMode == kSCHDictionaryYoungReader) {
+                            self.bottomLabel.text = NSLocalizedString(@"Until the dictionary download is complete, pronunciations, images and audio definitions may not be available. "
+                                                                      @"Please wait until the dictionary has fully downloaded and installed and try looking up this word again.", nil);
+                            self.downloadDictionaryButton.hidden = YES;
+                        } else {
+                            __block NSString *freeSpaceString = nil;
+                            [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+                                freeSpaceString = [state remainingFileSizeToCompleteDownloadAsString];
+                            }];
+
+                            if (freeSpaceString != nil) {
+                                self.bottomLabel.text = [NSString stringWithFormat:NSLocalizedString(@"The Storia dictionary has not been downloaded. "
+                                                                                                     @"Please click the download button to download it now.\n\n"
+                                                                                                     @"Please be advised that the dictionary is %@ and may take some time to download completely. "
+                                                                                                     @"While the dictionary is downloading, you will be able to see text definitions.", nil), freeSpaceString];
+                            } else {
+                                self.bottomLabel.text = NSLocalizedString(@"The Storia dictionary has not been downloaded. "
+                                                                          @"Please click the download button to download it now.\n\n"
+                                                                          @"While the dictionary is downloading, you will be able to see text definitions.", nil);
+
+                            }
+                            self.downloadDictionaryButton.hidden = NO;
+                        }
                     }
                 } else {
                     self.bottomLabel.text = NSLocalizedString(@"The Storia dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.", nil);
+                    self.downloadDictionaryButton.hidden = YES;
                 }
 
                 [self.activityIndicator startAnimating];
                 self.progressBar.hidden = YES;
-                self.downloadDictionaryButton.hidden = YES;
                 break;
             }
             case SCHDictionaryProcessingStateNeedsDownload:

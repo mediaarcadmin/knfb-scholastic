@@ -32,6 +32,7 @@
 @synthesize appController;
 @synthesize downloadLaterButton;
 @synthesize textLabel;
+@synthesize removeDictionaryTextLabel;
 
 - (void)dealloc
 {
@@ -50,6 +51,7 @@
     [backButton release], backButton = nil;
     [downloadLaterButton release], downloadLaterButton = nil;
     [textLabel release], textLabel = nil;
+    [removeDictionaryTextLabel release], removeDictionaryTextLabel =nil;
 }
 
 - (void)viewDidLoad
@@ -74,8 +76,21 @@
     [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
         freeSpaceString = [state freeSpaceRequiredToCompleteDownloadAsString];
     }];
-    self.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Storia features a rich dictionary built especially for kids. It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.\n\n"
-                                            @"This download requires about %@. The dictionary will download in the background while you continue to read.", nil), freeSpaceString];
+    if (freeSpaceString != nil) {
+        self.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Storia features a rich dictionary built especially for kids. "
+                                                                           @"It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.\n\n"
+                                                                           @"This download requires about %@. "
+                                                                           @"The dictionary will download in the background while you continue to read.", nil), freeSpaceString];
+        self.removeDictionaryTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"The Storia Dictionary uses about %@ of storage space. "
+                                                                                           @"If you remove the dictionary, readers will no longer be able to look up words or get word pronunciations.\n\n"
+                                                                                           @"If you choose to remove the dictionary, you can download it again at any time.", nil), freeSpaceString];
+    } else {
+        self.textLabel.text = NSLocalizedString(@"Storia features a rich dictionary built especially for kids. "
+                                                @"It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.\n\n"
+                                                @"The dictionary will download in the background while you continue to read.", nil);
+        self.removeDictionaryTextLabel.text = NSLocalizedString(@"If you remove the dictionary, readers will no longer be able to look up words or get word pronunciations.\n\n"
+                                                                @"If you choose to remove the dictionary, you can download it again at any time.", nil);
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -109,9 +124,17 @@
         [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
             freeSpaceString = [state freeSpaceRequiredToCompleteDownloadAsString];
         }];
+        NSString *messageString = nil;
+        if (freeSpaceString != nil) {
+            messageString = [NSString stringWithFormat:NSLocalizedString(@"You do not have enough storage space on your device to complete this function. "
+                                                                         @"Please clear %@ of space and try again.", @""), freeSpaceString];
+        } else {
+            messageString = NSLocalizedString(@"You do not have enough storage space on your device to complete this function."
+                                              @"Please clear some space and try again.", @"");
+        }
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Not Enough Storage Space", @"")
-                              message:[NSString stringWithFormat:NSLocalizedString(@"You do not have enough storage space on your device to complete this function. Please clear %@ of space and try again.", @""), freeSpaceString]];
+                              message:messageString];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:afterDownload];
         [alert show];
         [alert release];

@@ -1035,8 +1035,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
                 freeSpaceString = [state freeSpaceRequiredToCompleteDownloadAsString];
             }];
-            dictionaryStateTitle = [NSString stringWithFormat:NSLocalizedString(@"Dictionary Error\n%@ Free Space Required", @"Dictionary error table title for not enough free space"),
-                                    freeSpaceString];
+            if (freeSpaceString != nil) {
+                dictionaryStateTitle = [NSString stringWithFormat:NSLocalizedString(@"Dictionary Error\n%@ Free Space Required", @"Dictionary error table title for not enough free space"),
+                                        freeSpaceString];
+            } else {
+                dictionaryStateTitle = NSLocalizedString(@"Dictionary Error\nFree Space Required", @"Dictionary error table title for not enough free space");
+            }
             break;
         }
         case SCHDictionaryProcessingStateDownload416Error:
