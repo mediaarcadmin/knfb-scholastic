@@ -477,7 +477,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 {
     
     if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryCategoryReady:kSCHDictionaryManifestOperationDictionaryPron]) {
-        NSLog(@"Dictionary is not ready yet!");
+        NSLog(@"Dictionary Pron is not ready yet!");
         return;
     }
     
@@ -597,7 +597,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 - (void)speakYoungerWordDefinition:(NSString *)dictionaryWord
 {
     if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryCategoryReady:kSCHDictionaryManifestOperationDictionaryAudio]) {
-        NSLog(@"Dictionary is not ready yet!");
+        NSLog(@"Dictionary Audio is not ready yet!");
         return;
     }
     
