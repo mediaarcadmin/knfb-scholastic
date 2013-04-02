@@ -74,8 +74,16 @@
     [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
         freeSpaceString = [state freeSpaceRequiredToCompleteDownloadAsString];
     }];
-    self.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Storia features a rich dictionary built especially for kids. It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.\n\n"
-                                            @"This download requires about %@. The dictionary will download in the background while you continue to read.", nil), freeSpaceString];
+    if (freeSpaceString != nil) {
+        self.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Storia features a rich dictionary built especially for kids. "
+                                                                           @"It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.\n\n"
+                                                                           @"This download requires about %@. "
+                                                                           @"The dictionary will download in the background while you continue to read.", nil), freeSpaceString];
+    } else {
+        self.textLabel.text = NSLocalizedString(@"Storia features a rich dictionary built especially for kids. "
+                                                @"It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.\n\n"
+                                                @"The dictionary will download in the background while you continue to read.", nil);
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -109,9 +117,17 @@
         [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
             freeSpaceString = [state freeSpaceRequiredToCompleteDownloadAsString];
         }];
+        NSString *messageString = nil;
+        if (freeSpaceString != nil) {
+            messageString = [NSString stringWithFormat:NSLocalizedString(@"You do not have enough storage space on your device to complete this function. "
+                                                                         @"Please clear %@ of space and try again.", @""), freeSpaceString];
+        } else {
+            messageString = NSLocalizedString(@"You do not have enough storage space on your device to complete this function."
+                                              @"Please clear some space and try again.", @"");
+        }
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Not Enough Storage Space", @"")
-                              message:[NSString stringWithFormat:NSLocalizedString(@"You do not have enough storage space on your device to complete this function. Please clear %@ of space and try again.", @""), freeSpaceString]];
+                              message:messageString];
         [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:afterDownload];
         [alert show];
         [alert release];

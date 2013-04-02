@@ -54,9 +54,7 @@ NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
 {
     NSString *ret = nil;
 
-    if (self.remainingFileSize == nil) {
-        return @"?GB";
-    } else {
+    if (self.remainingFileSize != nil) {
         ret = [self fileSizeAsString:[self.remainingFileSize integerValue]];
     }
 
@@ -67,9 +65,7 @@ NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
 {
     NSString *ret = nil;
 
-    if (self.remainingFileSize == nil) {
-        return @"?GB";
-    } else {
+    if (self.remainingFileSize != nil) {
         ret = [self fileSizeAsString:[self freeSpaceInBytesRequiredToCompleteDownload]];
     }
 
