@@ -15,6 +15,7 @@
 #import "LambdaAlert.h"
 #import "SCHVersionDownloadManager.h"
 #import "NSFileManager+Extensions.h"
+#import "Reachability.h"
 
 @interface SCHDictionaryViewController ()
 
@@ -247,8 +248,21 @@
             [alert release];
             return;
         } else {
-            [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
-            [self closeDictionaryView:nil];
+            BOOL reachable = [[Reachability reachabilityForLocalWiFi] isReachable];
+
+            if (reachable == NO) {
+                LambdaAlert *alert = [[LambdaAlert alloc]
+                                      initWithTitle:NSLocalizedString(@"No WiFi Connection", @"")
+                                      message:NSLocalizedString(@"The dictionary will only download over a WiFi connection. When you are connected to WiFi, the download will begin.", @"")];
+                [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^{
+                    [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
+                }];
+                [alert show];
+                [alert release];
+                return;
+            } else {
+                [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
+            }
         }
     }
 }
