@@ -12,6 +12,9 @@
 #import "SCHCustomToolbar.h"
 #import "SCHAppStateManager.h"
 #import "SCHAppDictionaryState.h"
+#import "LambdaAlert.h"
+#import "SCHVersionDownloadManager.h"
+#import "NSFileManager+Extensions.h"
 
 @interface SCHDictionaryViewController ()
 
@@ -212,8 +215,52 @@
 
 - (IBAction)downloadDictionary:(id)sender
 {
-    [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
-    [self closeDictionaryView:nil];
+    if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
+        [self showAppVersionOutdatedAlert];
+    } else {
+        // we need to have free space for dictionary download
+        __block NSInteger *freeSpaceInBytesRequiredToCompleteDownload = 0;
+        [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+            freeSpaceInBytesRequiredToCompleteDownload = [state freeSpaceInBytesRequiredToCompleteDownload];
+        }];
+
+        BOOL fileSpaceAvailable = [[NSFileManager defaultManager] BITfileSystemHasBytesAvailable:freeSpaceInBytesRequiredToCompleteDownload];
+
+        if (fileSpaceAvailable == NO) {
+            __block NSString *freeSpaceString = nil;
+            [[SCHDictionaryDownloadManager sharedDownloadManager] withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+                freeSpaceString = [state freeSpaceRequiredToCompleteDownloadAsString];
+            }];
+            NSString *messageString = nil;
+            if (freeSpaceString != nil) {
+                messageString = [NSString stringWithFormat:NSLocalizedString(@"You do not have enough storage space on your device to complete this function. "
+                                                                             @"Please clear %@ of space and try again.", @""), freeSpaceString];
+            } else {
+                messageString = NSLocalizedString(@"You do not have enough storage space on your device to complete this function."
+                                                  @"Please clear some space and try again.", @"");
+            }
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Not Enough Storage Space", @"")
+                                  message:messageString];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+            [alert show];
+            [alert release];
+            return;
+        } else {
+            [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
+            [self closeDictionaryView:nil];
+        }
+    }
+}
+
+- (void)showAppVersionOutdatedAlert
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Update Required", @"")
+                          message:NSLocalizedString(@"This function requires that you update Storia. Please visit the App Store to update your app.", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+    [alert show];
+    [alert release];
 }
 
 - (void)setUserInterfaceFromState
