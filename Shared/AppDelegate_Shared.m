@@ -27,6 +27,7 @@
 #import "SCHRecommendationManager.h"
 #import "NSFileManager+DoNotBackupExtendedAttribute.h"
 #import "NSFileManager+Extensions.h"
+#import "BITNetworkActivityManager.h"
 
 #if RUN_KIF_TESTS
 #import "SCHKIFTestController.h"
@@ -140,6 +141,9 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
             CFRelease(matchingFont);
             CFRelease(fontDesc);
         });
+        
+        // Ensure the networkActivityManager is invoked on the main thread initially
+        [[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
         
         SCHHelpManager *help = [SCHHelpManager sharedHelpManager];
         help.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
