@@ -458,6 +458,11 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         cssText = self.oldAdditions;
     }
 
+    // If the images aren't yet available, hide the images and caption with CSS
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryCategoryReady:kSCHDictionaryManifestOperationDictionaryImage]) {
+        cssText = [cssText stringByAppendingString:@"<style>img{display:none;}.caption{display:none;}</style>"];
+    }
+    
     headEnd = [resultWithNewHead rangeOfString:@"</head>" options:NSCaseInsensitiveSearch];
     
     // check in here to make sure that we can actually take the substring
