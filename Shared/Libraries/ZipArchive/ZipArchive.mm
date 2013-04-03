@@ -10,7 +10,7 @@
 #import "ZipArchive.h"
 #import "zlib.h"
 #import "zconf.h"
-
+#import "SCHUserDefaults.h"
 
 
 @interface ZipArchive (Private)
@@ -76,6 +76,7 @@
     }
     
     uLong kFileCount = 0;
+    uLong uncompressedFileSize = 0;
     
     do{
         
@@ -206,7 +207,7 @@
             
             kFileCount++;
             [self DoUnzipProgress:kFileCount];
-            
+            uncompressedFileSize += fileInfo.uncompressed_size;
         }
         unzCloseCurrentFile( _unzFile );
         ret = unzGoToNextFile( _unzFile );
@@ -214,6 +215,13 @@
 
     [fman release];
     [gregorian release];
+
+    if (success == YES)   {
+        NSInteger totalUncompressedFileSize = [[NSUserDefaults standardUserDefaults] integerForKey:kSCHDictionaryTotalUncompressedFileSize];
+        totalUncompressedFileSize += uncompressedFileSize;
+        [[NSUserDefaults standardUserDefaults] setInteger:totalUncompressedFileSize forKey:kSCHDictionaryTotalUncompressedFileSize];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 
     return success;
 }

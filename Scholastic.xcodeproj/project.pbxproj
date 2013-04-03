@@ -348,6 +348,9 @@
 		521B7AE51521D61200DC0739 /* GetUserInfoSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE31521D61200DC0739 /* GetUserInfoSvc+Binding.m */; };
 		521B7AEA1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
 		521B7AEB1521D67E00DC0739 /* WishListServiceSvc+Binding.m in Sources */ = {isa = PBXBuildFile; fileRef = 521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */; };
+		521DEF82170C745C00050224 /* NSString+FileSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 521DEF81170C745C00050224 /* NSString+FileSize.m */; };
+		521DEF83170C745C00050224 /* NSString+FileSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 521DEF81170C745C00050224 /* NSString+FileSize.m */; };
+		521DEF84170C745C00050224 /* NSString+FileSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 521DEF81170C745C00050224 /* NSString+FileSize.m */; };
 		521F50DB16143AC80002E83F /* SCHSyncDelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 521F50DA16143AC80002E83F /* SCHSyncDelay.m */; };
 		521F50DC16143AC80002E83F /* SCHSyncDelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 521F50DA16143AC80002E83F /* SCHSyncDelay.m */; };
 		521F50DD16143AC80002E83F /* SCHSyncDelay.m in Sources */ = {isa = PBXBuildFile; fileRef = 521F50DA16143AC80002E83F /* SCHSyncDelay.m */; };
@@ -4201,6 +4204,8 @@
 		521B7AE81521D67E00DC0739 /* WishListServiceSvc+Binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WishListServiceSvc+Binding.h"; sourceTree = "<group>"; };
 		521B7AE91521D67E00DC0739 /* WishListServiceSvc+Binding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WishListServiceSvc+Binding.m"; sourceTree = "<group>"; };
 		521BB6C015207FF00045AC92 /* SCHISBNItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHISBNItem.h; path = Shared/SCHISBNItem.h; sourceTree = "<group>"; };
+		521DEF80170C745C00050224 /* NSString+FileSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+FileSize.h"; path = "Shared/NSString+FileSize.h"; sourceTree = "<group>"; };
+		521DEF81170C745C00050224 /* NSString+FileSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+FileSize.m"; path = "Shared/NSString+FileSize.m"; sourceTree = "<group>"; };
 		521F50D916143AC80002E83F /* SCHSyncDelay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncDelay.h; path = Shared/SCHSyncDelay.h; sourceTree = "<group>"; };
 		521F50DA16143AC80002E83F /* SCHSyncDelay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncDelay.m; path = Shared/SCHSyncDelay.m; sourceTree = "<group>"; };
 		521F50E0161452FF0002E83F /* SCHSyncDelayTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHSyncDelayTests.h; sourceTree = "<group>"; };
@@ -7775,6 +7780,8 @@
 				5251716415501FB5009C3B61 /* NSFileManager+Extensions.m */,
 				529645A115775FBA006F01D9 /* NSString+EmailValidation.h */,
 				529645A215775FBA006F01D9 /* NSString+EmailValidation.m */,
+				521DEF80170C745C00050224 /* NSString+FileSize.h */,
+				521DEF81170C745C00050224 /* NSString+FileSize.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -12388,6 +12395,7 @@
 				52324948164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 				520697F916525D1900CC80CA /* SCHAppBookFeatures.m in Sources */,
 				528C389916FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */,
+				521DEF82170C745C00050224 /* NSString+FileSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12844,6 +12852,7 @@
 				52F7C2E21654E90000041661 /* LibreAccessActivityLogSvc_tns1.m in Sources */,
 				52F7C2E31654E93400041661 /* SCHLibreAccessActivityLogConstants.m in Sources */,
 				528C389B16FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */,
+				521DEF84170C745C00050224 /* NSString+FileSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13286,6 +13295,7 @@
 				52324949164C10B000A64BF8 /* NSDate+LibreAccessEarliestDate.m in Sources */,
 				520697FA16525D1900CC80CA /* SCHAppBookFeatures.m in Sources */,
 				528C389A16FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */,
+				521DEF83170C745C00050224 /* NSString+FileSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

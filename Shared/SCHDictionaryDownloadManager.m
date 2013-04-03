@@ -24,6 +24,7 @@
 #import "SCHDictionaryOperation.h"
 #import "AppDelegate_Shared.h"
 #import "SCHDictionaryManifestEntry.h"
+#import "SCHUserDefaults.h"
 
 // Constants
 NSString * const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
@@ -2111,6 +2112,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     }
 
     [(AppDelegate_Shared *)[[UIApplication sharedApplication] delegate] resetDictionaryStore];
+
+    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:kSCHDictionaryTotalUncompressedFileSize];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 
     [self deleteDictionaryFiles:[self dictionaryDirectory] withCompletionBlock:^{
         self.currentDictionaryDownloadPercentage = 0;

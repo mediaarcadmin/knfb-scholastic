@@ -10,15 +10,10 @@
 
 #import "SCHAppDictionaryManifestEntry.h"
 #import "SCHDictionaryFileDownloadOperation.h"
+#import "NSString+FileSize.h"
 
 // Constants
 NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
-
-@interface SCHAppDictionaryState ()
-
-- (NSString *)fileSizeAsString:(NSInteger)sizeInBytes;
-
-@end
 
 @implementation SCHAppDictionaryState
 
@@ -55,7 +50,7 @@ NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
     NSString *ret = nil;
 
     if (self.remainingFileSize != nil) {
-        ret = [self fileSizeAsString:[self.remainingFileSize integerValue]];
+        ret = [NSString stringWithSizeInGBFromBytes:[self.remainingFileSize integerValue]];
     }
 
     return ret;
@@ -66,22 +61,7 @@ NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
     NSString *ret = nil;
 
     if (self.remainingFileSize != nil) {
-        ret = [self fileSizeAsString:[self freeSpaceInBytesRequiredToCompleteDownload]];
-    }
-
-    return ret;
-}
-
-#pragma - mark Private methods
-
-- (NSString *)fileSizeAsString:(NSInteger)sizeInBytes
-{
-    NSString *ret = nil;
-
-    if (sizeInBytes <= 0) {
-        ret = [NSString stringWithFormat:@"0GB"];
-    } else {
-        ret = [NSString stringWithFormat:@"%.1fGB", sizeInBytes / 1000000000.0];
+        ret = [NSString stringWithSizeInGBFromBytes:[self freeSpaceInBytesRequiredToCompleteDownload]];
     }
 
     return ret;

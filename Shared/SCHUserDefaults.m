@@ -19,3 +19,5 @@ NSString * const kSCHUserDefaultsDeviceID = @"lastDevice";
 NSString * const kSCHAuthenticationManagerUserKey = @"AuthenticationManager.UserKey";   // AKA spsID
 NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";
 NSString * const kSCHAuthenticationManagerUsername = @"AuthenticationManager.Username";
+
+NSString * const kSCHDictionaryTotalUncompressedFileSize = @"Dictionary.TotalUncompressedFileSize";
