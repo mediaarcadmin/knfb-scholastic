@@ -4,18 +4,6 @@
 [submodule "Shared/Libraries/Submodules/libKNFBReader"]
 	path = Shared/Libraries/Submodules/libKNFBReader
 	url = git@codebasehq.com:otherthings/koala/libknfbreader.git
-[submodule "Shared/Libraries/Submodules/KIF"]
-	path = Shared/Libraries/Submodules/KIF
-	url = https://github.com/square/KIF.git
-[submodule "UI Tests/tuneup"]
-	path = UI Tests/tuneup
-	url = git://github.com/alexvollmer/tuneup_js.git
-[submodule "Shared/Libraries/Submodules/bitmodalsheetcontroller"]
-	path = Shared/Libraries/Submodules/bitmodalsheetcontroller
-	url = git@codebasehq.com:bitwink/scholastic/bitmodalsheetcontroller.git
-[submodule "Shared/Libraries/Submodules/bitoperation"]
-	path = Shared/Libraries/Submodules/bitoperation
-	url = git@codebasehq.com:bitwink/scholastic/bitoperation.git
 [submodule "Shared/Libraries/Submodules/TTTAttributedLabel"]
 	path = Shared/Libraries/Submodules/TTTAttributedLabel
 	url = git://github.com/mattt/TTTAttributedLabel.git

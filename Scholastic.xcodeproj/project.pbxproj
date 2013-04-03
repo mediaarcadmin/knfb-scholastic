@@ -2117,6 +2117,15 @@
 		C95EB0A2170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = C95EB09B170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png */; };
 		C95EB0A3170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C95EB09C170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png */; };
 		C95EB0A4170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C95EB09C170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png */; };
+		C95EB0CF170CCD0D001E2D1E /* BITOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C95EB0CC170CCD0D001E2D1E /* BITOperation.m */; };
+		C95EB0D0170CCD0D001E2D1E /* BITOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C95EB0CC170CCD0D001E2D1E /* BITOperation.m */; };
+		C95EB0D1170CCD0D001E2D1E /* BITOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C95EB0CC170CCD0D001E2D1E /* BITOperation.m */; };
+		C95EB0D2170CCD0D001E2D1E /* BITOperationWithBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = C95EB0CE170CCD0D001E2D1E /* BITOperationWithBlocks.m */; };
+		C95EB0D3170CCD0D001E2D1E /* BITOperationWithBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = C95EB0CE170CCD0D001E2D1E /* BITOperationWithBlocks.m */; };
+		C95EB0D4170CCD0D001E2D1E /* BITOperationWithBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = C95EB0CE170CCD0D001E2D1E /* BITOperationWithBlocks.m */; };
+		C95EB0D7170CCD19001E2D1E /* BITModalSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = C95EB0D6170CCD19001E2D1E /* BITModalSheetController.m */; };
+		C95EB0D8170CCD19001E2D1E /* BITModalSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = C95EB0D6170CCD19001E2D1E /* BITModalSheetController.m */; };
+		C95EB0D9170CCD19001E2D1E /* BITModalSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = C95EB0D6170CCD19001E2D1E /* BITModalSheetController.m */; };
 		C95ECB4E133A77F000D88768 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB4C133A77A500D88768 /* AudioToolbox.framework */; };
 		C95ECB50133A77F800D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
 		C95ECB51133A77FA00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
@@ -2378,8 +2387,6 @@
 		C96C185715C7FF53002EBEBB /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
 		C96C185815C7FF53002EBEBB /* SCHISBNItemObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D37723156A52A600900844 /* SCHISBNItemObject.m */; };
 		C96C185915C7FF53002EBEBB /* SCHUnqueuedAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 280DA9D1145AB3C300583695 /* SCHUnqueuedAudioPlayer.m */; };
-		C96C185A15C8031B002EBEBB /* libBITModalSheetController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */; };
-		C96C185B15C8031B002EBEBB /* libBITOperation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C3FA3014B6FA5E00757038 /* libBITOperation.a */; };
 		C96C185C15C8031B002EBEBB /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D583133B9C0100FB4404 /* libcss.a */; };
 		C96C185D15C8031B002EBEBB /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D575133B9C0100FB4404 /* libEucalyptusBase.a */; };
 		C96C185E15C8031B002EBEBB /* libEucalyptusCSS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */; };
@@ -2658,8 +2665,6 @@
 		C9A6B400148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
 		C9A6B401148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
 		C9A6B402148B853C00B31277 /* SCHAppHelpState.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */; };
-		C9AC7DA414BDDE00009137BA /* libBITModalSheetController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */; };
-		C9AC7DA714BDDE0F009137BA /* libBITModalSheetController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */; };
 		C9AC854813ACE176000ECDAE /* old-lightning-bolt-0~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC854713ACE175000ECDAE /* old-lightning-bolt-0~ipad.png */; };
 		C9AC855213ACE6CB000ECDAE /* old-lightning-bolt-0~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC854A13ACE6CA000ECDAE /* old-lightning-bolt-0~iphone.png */; };
 		C9AC856313ACE76F000ECDAE /* old-lightning-bolt-0@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC856213ACE76F000ECDAE /* old-lightning-bolt-0@2x~iphone.png */; };
@@ -2798,8 +2803,6 @@
 		C9C3F9E914B5E87000757038 /* storia-startviewcontroller-static-landscape~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E614B5E87000757038 /* storia-startviewcontroller-static-landscape~ipad.jpg */; };
 		C9C3F9EA14B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E714B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg */; };
 		C9C3F9EB14B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9C3F9E714B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg */; };
-		C9C3FA3714B6FA7D00757038 /* libBITOperation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C3FA3014B6FA5E00757038 /* libBITOperation.a */; };
-		C9C3FA3814B6FA8400757038 /* libBITOperation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C3FA3014B6FA5E00757038 /* libBITOperation.a */; };
 		C9C3FABB14B85F4400757038 /* SCHStoriaWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C3FAB914B85F4200757038 /* SCHStoriaWelcomeViewController.m */; };
 		C9C3FABC14B85F4400757038 /* SCHStoriaWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C3FAB914B85F4200757038 /* SCHStoriaWelcomeViewController.m */; };
 		C9C5DEE515EB9FB30020BA9E /* BSB_Big.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9C5DEE315EB9FB30020BA9E /* BSB_Big.jpg */; };
@@ -3468,13 +3471,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		28D6D4C91451717E0094F144 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 526FEB41140FD83A00638712 /* KIF.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AAB07268139719AC008AF393;
-			remoteInfo = KIF;
-		};
 		7D3F30F2140698D800C6F445 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
@@ -3572,34 +3568,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = libEucalyptusIOSUI;
-		};
-		C952321B1622D56C00074D95 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 28DA329A1488E22300E1896D;
-			remoteInfo = BITOperation;
-		};
-		C952321D1622D57000074D95 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C9F5538014A5205300E24168;
-			remoteInfo = BITModalSheetController;
-		};
-		C952321F1622D6FD00074D95 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C9F5538014A5205300E24168;
-			remoteInfo = BITModalSheetController;
-		};
-		C95232211622D70200074D95 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 28DA329A1488E22300E1896D;
-			remoteInfo = BITOperation;
 		};
 		C95232231622D70D00074D95 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3789,34 +3757,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 7D229E0912F98AAF0037D93D;
 			remoteInfo = libminiunzip;
-		};
-		C9AC7D9E14BDDDE2009137BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C9F5538114A5205300E24168;
-			remoteInfo = BITModalSheetController;
-		};
-		C9AC7DA014BDDDE2009137BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C9F5539114A5205300E24168;
-			remoteInfo = BITModalSheetControllerTests;
-		};
-		C9C3FA2F14B6FA5E00757038 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 28DA329B1488E22300E1896D;
-			remoteInfo = BITOperation;
-		};
-		C9C3FA3114B6FA5E00757038 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 28DA32AB1488E22300E1896D;
-			remoteInfo = BITOperationTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -4355,7 +4295,6 @@
 		526760AF144D6A6A00F3FE56 /* NSURL+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURL+Extensions.m"; path = "Shared/NSURL+Extensions.m"; sourceTree = "<group>"; };
 		526A8A501385143000101A96 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		526A8A5E1385182100101A96 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		526FEB41140FD83A00638712 /* KIF.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KIF.xcodeproj; path = Shared/Libraries/Submodules/KIF/KIF.xcodeproj; sourceTree = "<group>"; };
 		5279E09015176481000D7D8D /* SCHAppRecommendationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppRecommendationItem.h; path = Shared/SCHAppRecommendationItem.h; sourceTree = "<group>"; };
 		5279E09115176481000D7D8D /* SCHAppRecommendationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppRecommendationItem.m; path = Shared/SCHAppRecommendationItem.m; sourceTree = "<group>"; };
 		527ABDF31607708600DE2893 /* SCHMakeNullNilTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHMakeNullNilTests.h; sourceTree = "<group>"; };
@@ -4446,12 +4385,6 @@
 		52A36A6915B444D200162753 /* SCHXPSKNFBMetadataFileParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSKNFBMetadataFileParser.m; path = Shared/SCHXPSKNFBMetadataFileParser.m; sourceTree = "<group>"; };
 		52A36A6F15B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHXPSKNFBMetadataFileParserTests.h; sourceTree = "<group>"; };
 		52A36A7015B458C900162753 /* SCHXPSKNFBMetadataFileParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHXPSKNFBMetadataFileParserTests.m; sourceTree = "<group>"; };
-		52A3EA98140FDE4F00D69935 /* SCHKIFTestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHKIFTestController.h; path = KIF/SCHKIFTestController.h; sourceTree = "<group>"; };
-		52A3EA99140FDE4F00D69935 /* SCHKIFTestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHKIFTestController.m; path = KIF/SCHKIFTestController.m; sourceTree = "<group>"; };
-		52A3EA9B140FDF7D00D69935 /* KIFTestScenario+EXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KIFTestScenario+EXAdditions.h"; path = "KIF/KIFTestScenario+EXAdditions.h"; sourceTree = "<group>"; };
-		52A3EA9C140FDF7D00D69935 /* KIFTestScenario+EXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KIFTestScenario+EXAdditions.m"; path = "KIF/KIFTestScenario+EXAdditions.m"; sourceTree = "<group>"; };
-		52A3EA9E140FE01D00D69935 /* KIFTestStep+EXAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KIFTestStep+EXAdditions.h"; path = "KIF/KIFTestStep+EXAdditions.h"; sourceTree = "<group>"; };
-		52A3EA9F140FE01D00D69935 /* KIFTestStep+EXAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KIFTestStep+EXAdditions.m"; path = "KIF/KIFTestStep+EXAdditions.m"; sourceTree = "<group>"; };
 		52A6762F13AF3744007A7FE6 /* UIColor+Scholastic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Scholastic.h"; path = "Shared/UIColor+Scholastic.h"; sourceTree = "<group>"; };
 		52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Scholastic.m"; path = "Shared/UIColor+Scholastic.m"; sourceTree = "<group>"; };
 		52A7BAC61626E316007E0E5B /* types_1_2_0.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = types_1_2_0.xsd; sourceTree = "<group>"; };
@@ -4963,11 +4896,6 @@
 		C923A27912F06FE60054426F /* MRGridViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDelegate.h; path = Shared/Libraries/MRGridView/MRGridViewDelegate.h; sourceTree = "<group>"; };
 		C924FF58162D65EA009F7F97 /* SCHReadingManagerCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingManagerCache.h; path = Shared/SCHReadingManagerCache.h; sourceTree = "<group>"; };
 		C924FF59162D65EA009F7F97 /* SCHReadingManagerCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingManagerCache.m; path = Shared/SCHReadingManagerCache.m; sourceTree = "<group>"; };
-		C9254E8D143DBCA100A92831 /* StartingScreenTests.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = StartingScreenTests.js; path = "UI Tests/StartingScreenTests.js"; sourceTree = SOURCE_ROOT; };
-		C9254E93143DDA6F00A92831 /* Scholastic.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Scholastic.js; path = "UI Tests/Scholastic.js"; sourceTree = SOURCE_ROOT; };
-		C9254ECF143DF89800A92831 /* LoginScreenTests.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LoginScreenTests.js; path = "UI Tests/LoginScreenTests.js"; sourceTree = SOURCE_ROOT; };
-		C9254ED2143DFD1200A92831 /* ProfileScreenTests.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = ProfileScreenTests.js; path = "UI Tests/ProfileScreenTests.js"; sourceTree = SOURCE_ROOT; };
-		C9254ED5143E05D600A92831 /* AllTests.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = AllTests.js; path = "UI Tests/AllTests.js"; sourceTree = SOURCE_ROOT; };
 		C9261FBD13970220009FF459 /* notes-count.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "notes-count.png"; path = "Resources/notes-count.png"; sourceTree = "<group>"; };
 		C9261FBE13970220009FF459 /* notes-count@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "notes-count@2x.png"; path = "Resources/notes-count@2x.png"; sourceTree = "<group>"; };
 		C9279739140FA4AC0091B8B5 /* icon-audio-younger-small-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-audio-younger-small-landscape.png"; path = "Resources/icon-audio-younger-small-landscape.png"; sourceTree = "<group>"; };
@@ -5120,6 +5048,12 @@
 		C95EB09A170C3FDB001E2D1E /* UIBlackCloseButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIBlackCloseButton@2x.png"; sourceTree = "<group>"; };
 		C95EB09B170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBlackCloseButtonPressed.png; sourceTree = "<group>"; };
 		C95EB09C170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIBlackCloseButtonPressed@2x.png"; sourceTree = "<group>"; };
+		C95EB0CB170CCD0D001E2D1E /* BITOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BITOperation.h; path = Shared/Libraries/BITOperation/BITOperation.h; sourceTree = "<group>"; };
+		C95EB0CC170CCD0D001E2D1E /* BITOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BITOperation.m; path = Shared/Libraries/BITOperation/BITOperation.m; sourceTree = "<group>"; };
+		C95EB0CD170CCD0D001E2D1E /* BITOperationWithBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BITOperationWithBlocks.h; path = Shared/Libraries/BITOperation/BITOperationWithBlocks.h; sourceTree = "<group>"; };
+		C95EB0CE170CCD0D001E2D1E /* BITOperationWithBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BITOperationWithBlocks.m; path = Shared/Libraries/BITOperation/BITOperationWithBlocks.m; sourceTree = "<group>"; };
+		C95EB0D5170CCD19001E2D1E /* BITModalSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BITModalSheetController.h; path = Shared/Libraries/BITModalSheetController/BITModalSheetController.h; sourceTree = "<group>"; };
+		C95EB0D6170CCD19001E2D1E /* BITModalSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BITModalSheetController.m; path = Shared/Libraries/BITModalSheetController/BITModalSheetController.m; sourceTree = "<group>"; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C95ECB48133A770B00D88768 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -5299,7 +5233,6 @@
 		C9A6B3FA148B7F0900B31277 /* SCHHelpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpManager.m; path = Shared/SCHHelpManager.m; sourceTree = "<group>"; };
 		C9A6B3FE148B853C00B31277 /* SCHAppHelpState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppHelpState.h; path = Shared/SCHAppHelpState.h; sourceTree = "<group>"; };
 		C9A6B3FF148B853C00B31277 /* SCHAppHelpState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppHelpState.m; path = Shared/SCHAppHelpState.m; sourceTree = "<group>"; };
-		C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BITModalSheetController.xcodeproj; path = Shared/Libraries/Submodules/bitmodalsheetcontroller/BITModalSheetController.xcodeproj; sourceTree = "<group>"; };
 		C9AC854713ACE175000ECDAE /* old-lightning-bolt-0~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-0~ipad.png"; sourceTree = "<group>"; };
 		C9AC854A13ACE6CA000ECDAE /* old-lightning-bolt-0~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-0~iphone.png"; sourceTree = "<group>"; };
 		C9AC856213ACE76F000ECDAE /* old-lightning-bolt-0@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "old-lightning-bolt-0@2x~iphone.png"; sourceTree = "<group>"; };
@@ -5453,7 +5386,6 @@
 		C9C3F9E614B5E87000757038 /* storia-startviewcontroller-static-landscape~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-startviewcontroller-static-landscape~ipad.jpg"; path = "Resources/UIAssets/storia-startviewcontroller-static-landscape~ipad.jpg"; sourceTree = "<group>"; };
 		C9C3F9E714B5E87000757038 /* storia-startviewcontroller-static-portrait~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "storia-startviewcontroller-static-portrait~ipad.jpg"; path = "Resources/UIAssets/storia-startviewcontroller-static-portrait~ipad.jpg"; sourceTree = "<group>"; };
 		C9C3F9EC14B5F4C300757038 /* SCHLoginHandlerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLoginHandlerDelegate.h; path = Shared/SCHLoginHandlerDelegate.h; sourceTree = "<group>"; };
-		C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BITOperation.xcodeproj; path = Shared/Libraries/Submodules/bitoperation/BITOperation.xcodeproj; sourceTree = "<group>"; };
 		C9C3FAB814B85F4100757038 /* SCHStoriaWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHStoriaWelcomeViewController.h; path = Shared/SCHStoriaWelcomeViewController.h; sourceTree = "<group>"; };
 		C9C3FAB914B85F4200757038 /* SCHStoriaWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHStoriaWelcomeViewController.m; path = Shared/SCHStoriaWelcomeViewController.m; sourceTree = "<group>"; };
 		C9C5DEE315EB9FB30020BA9E /* BSB_Big.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = BSB_Big.jpg; path = "Shared/Debug Books/BSB_Big.jpg"; sourceTree = "<group>"; };
@@ -5984,8 +5916,6 @@
 				C98BDF191549897B00E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F778150F66160093BB90 /* CoreVideo.framework in Frameworks */,
 				7D95F773150F66030093BB90 /* libots.a in Frameworks */,
-				C9AC7DA414BDDE00009137BA /* libBITModalSheetController.a in Frameworks */,
-				C9C3FA3814B6FA8400757038 /* libBITOperation.a in Frameworks */,
 				7D3F313C14069A5200C6F445 /* libEucalyptusIOSUI.a in Frameworks */,
 				7D3F313D14069A5200C6F445 /* libEucalyptusModel.a in Frameworks */,
 				7D3F313A14069A5200C6F445 /* libEucalyptusEPub.a in Frameworks */,
@@ -6029,8 +5959,6 @@
 				C96C199215C95CBB002EBEBB /* libOCMock.a in Frameworks */,
 				C96C188D15C80C40002EBEBB /* CoreVideo.framework in Frameworks */,
 				C96C188C15C80C38002EBEBB /* CoreMedia.framework in Frameworks */,
-				C96C185A15C8031B002EBEBB /* libBITModalSheetController.a in Frameworks */,
-				C96C185B15C8031B002EBEBB /* libBITOperation.a in Frameworks */,
 				C96C185C15C8031B002EBEBB /* libcss.a in Frameworks */,
 				C96C185D15C8031B002EBEBB /* libEucalyptusBase.a in Frameworks */,
 				C96C185E15C8031B002EBEBB /* libEucalyptusCSS.a in Frameworks */,
@@ -6074,8 +6002,6 @@
 				C98BDF1A1549898500E265B8 /* CoreMedia.framework in Frameworks */,
 				7D95F77A150F66260093BB90 /* libots.a in Frameworks */,
 				7D95F779150F66220093BB90 /* CoreVideo.framework in Frameworks */,
-				C9AC7DA714BDDE0F009137BA /* libBITModalSheetController.a in Frameworks */,
-				C9C3FA3714B6FA7D00757038 /* libBITOperation.a in Frameworks */,
 				52488BE01407990500DA9AFA /* libEucalyptusIOSUI.a in Frameworks */,
 				52488BE11407990500DA9AFA /* libEucalyptusModel.a in Frameworks */,
 				52488BE31407990500DA9AFA /* libEucalyptusEPub.a in Frameworks */,
@@ -6942,14 +6868,6 @@
 			name = "Letter Tiles";
 			sourceTree = "<group>";
 		};
-		28D6D4C61451717E0094F144 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				28D6D4CA1451717E0094F144 /* libKIF.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		28D81EE413E840E100A2B25F /* Picture Starter */ = {
 			isa = PBXGroup;
 			children = (
@@ -7074,8 +6992,6 @@
 				29B97317FDCFA39411CA2CEA /* iPad */,
 				28EEBF621118D79A00187D67 /* Shared */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
-				52A3EA97140FDDE700D69935 /* KIF */,
-				C9254E8C143DBC4200A92831 /* UI Tests */,
 				28A08CFF13952CB4006FD008 /* UnitTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -7440,6 +7356,8 @@
 		528A2CFE12CCFD050053A343 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				C95EB0C0170CC678001E2D1E /* BITOperation */,
+				C95EB0B2170CC64D001E2D1E /* BITModalSheetController */,
 				F849155314FFA54D000D064B /* RateView */,
 				2808E2191456BDC2004EA40E /* QHTTPOperation */,
 				C9CEF2F11339F77200FB5BE0 /* Submodules */,
@@ -7616,19 +7534,6 @@
 				521F50E1161452FF0002E83F /* SCHSyncDelayTests.m */,
 			);
 			name = "Sync Tests";
-			sourceTree = "<group>";
-		};
-		52A3EA97140FDDE700D69935 /* KIF */ = {
-			isa = PBXGroup;
-			children = (
-				52A3EA98140FDE4F00D69935 /* SCHKIFTestController.h */,
-				52A3EA99140FDE4F00D69935 /* SCHKIFTestController.m */,
-				52A3EA9B140FDF7D00D69935 /* KIFTestScenario+EXAdditions.h */,
-				52A3EA9C140FDF7D00D69935 /* KIFTestScenario+EXAdditions.m */,
-				52A3EA9E140FE01D00D69935 /* KIFTestStep+EXAdditions.h */,
-				52A3EA9F140FE01D00D69935 /* KIFTestStep+EXAdditions.m */,
-			);
-			name = KIF;
 			sourceTree = "<group>";
 		};
 		52ACF463133B547700B2E28C /* DRM */ = {
@@ -8202,19 +8107,6 @@
 			name = Bookshelves;
 			sourceTree = "<group>";
 		};
-		C9254E8C143DBC4200A92831 /* UI Tests */ = {
-			isa = PBXGroup;
-			children = (
-				C9254E93143DDA6F00A92831 /* Scholastic.js */,
-				C9254E8D143DBCA100A92831 /* StartingScreenTests.js */,
-				C9254ECF143DF89800A92831 /* LoginScreenTests.js */,
-				C9254ED2143DFD1200A92831 /* ProfileScreenTests.js */,
-				C9254ED5143E05D600A92831 /* AllTests.js */,
-			);
-			name = "UI Tests";
-			path = UnitTests;
-			sourceTree = "<group>";
-		};
 		C92FA7CA1355B688001BAA6B /* SmartZoom */ = {
 			isa = PBXGroup;
 			children = (
@@ -8339,6 +8231,26 @@
 				C9674AD0159C9A0400476987 /* PageLayoutTest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C95EB0B2170CC64D001E2D1E /* BITModalSheetController */ = {
+			isa = PBXGroup;
+			children = (
+				C95EB0D5170CCD19001E2D1E /* BITModalSheetController.h */,
+				C95EB0D6170CCD19001E2D1E /* BITModalSheetController.m */,
+			);
+			name = BITModalSheetController;
+			sourceTree = "<group>";
+		};
+		C95EB0C0170CC678001E2D1E /* BITOperation */ = {
+			isa = PBXGroup;
+			children = (
+				C95EB0CB170CCD0D001E2D1E /* BITOperation.h */,
+				C95EB0CC170CCD0D001E2D1E /* BITOperation.m */,
+				C95EB0CD170CCD0D001E2D1E /* BITOperationWithBlocks.h */,
+				C95EB0CE170CCD0D001E2D1E /* BITOperationWithBlocks.m */,
+			);
+			name = BITOperation;
 			sourceTree = "<group>";
 		};
 		C96C198415C95C7E002EBEBB /* Products */ = {
@@ -8586,15 +8498,6 @@
 			name = UIAssets;
 			sourceTree = "<group>";
 		};
-		C9AC7D9714BDDDE2009137BA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */,
-				C9AC7DA114BDDDE2009137BA /* BITModalSheetControllerTests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		C9B08A751344D34F001963D0 /* libKNFBReader */ = {
 			isa = PBXGroup;
 			children = (
@@ -8746,15 +8649,6 @@
 			name = "Branching Stories";
 			sourceTree = "<group>";
 		};
-		C9C3FA2814B6FA5E00757038 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C9C3FA3014B6FA5E00757038 /* libBITOperation.a */,
-				C9C3FA3214B6FA5E00757038 /* BITOperationTests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		C9C909681455A02100548DDE /* Sample Books Processing */ = {
 			isa = PBXGroup;
 			children = (
@@ -8773,10 +8667,7 @@
 				F8E2D3CE13B9CB55001E207B /* TTTAttributedLabel */,
 				C9B08A751344D34F001963D0 /* libKNFBReader */,
 				C96C198315C95C7E002EBEBB /* OCMock.xcodeproj */,
-				C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */,
-				C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */,
 				C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */,
-				526FEB41140FD83A00638712 /* KIF.xcodeproj */,
 			);
 			name = Submodules;
 			sourceTree = "<group>";
@@ -9634,8 +9525,6 @@
 				C9915D361622E1440041A114 /* PBXTargetDependency */,
 				C9915D381622E1440041A114 /* PBXTargetDependency */,
 				C9915D241622E1050041A114 /* PBXTargetDependency */,
-				C952321E1622D57000074D95 /* PBXTargetDependency */,
-				C952321C1622D56C00074D95 /* PBXTargetDependency */,
 				C952321A1622D56600074D95 /* PBXTargetDependency */,
 			);
 			name = Scholastic;
@@ -9685,8 +9574,6 @@
 				C9915D4C1622E1880041A114 /* PBXTargetDependency */,
 				C9915D4E1622E1880041A114 /* PBXTargetDependency */,
 				C95232241622D70D00074D95 /* PBXTargetDependency */,
-				C95232221622D70200074D95 /* PBXTargetDependency */,
-				C95232201622D6FD00074D95 /* PBXTargetDependency */,
 			);
 			name = "Local Samples Scholastic";
 			productName = Scholastic;
@@ -9717,18 +9604,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = C9AC7D9714BDDDE2009137BA /* Products */;
-					ProjectRef = C9AC7D9614BDDDE2009137BA /* BITModalSheetController.xcodeproj */;
-				},
-				{
-					ProductGroup = C9C3FA2814B6FA5E00757038 /* Products */;
-					ProjectRef = C9C3FA2714B6FA5E00757038 /* BITOperation.xcodeproj */;
-				},
-				{
-					ProductGroup = 28D6D4C61451717E0094F144 /* Products */;
-					ProjectRef = 526FEB41140FD83A00638712 /* KIF.xcodeproj */;
-				},
-				{
 					ProductGroup = C947D55E133B9C0000FB4404 /* Products */;
 					ProjectRef = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
 				},
@@ -9747,13 +9622,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		28D6D4CA1451717E0094F144 /* libKIF.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libKIF.a;
-			remoteRef = 28D6D4C91451717E0094F144 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		7D3F30F3140698D800C6F445 /* libEucalyptusModel.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -9871,34 +9739,6 @@
 			fileType = archive.ar;
 			path = libOCMock.a;
 			remoteRef = C96C199015C95C7E002EBEBB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C9AC7D9F14BDDDE2009137BA /* libBITModalSheetController.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBITModalSheetController.a;
-			remoteRef = C9AC7D9E14BDDDE2009137BA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C9AC7DA114BDDDE2009137BA /* BITModalSheetControllerTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = BITModalSheetControllerTests.octest;
-			remoteRef = C9AC7DA014BDDDE2009137BA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C9C3FA3014B6FA5E00757038 /* libBITOperation.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBITOperation.a;
-			remoteRef = C9C3FA2F14B6FA5E00757038 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C9C3FA3214B6FA5E00757038 /* BITOperationTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = BITOperationTests.octest;
-			remoteRef = C9C3FA3114B6FA5E00757038 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -12420,6 +12260,9 @@
 				520697F916525D1900CC80CA /* SCHAppBookFeatures.m in Sources */,
 				528C389916FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */,
 				521DEF82170C745C00050224 /* NSString+FileSize.m in Sources */,
+				C95EB0CF170CCD0D001E2D1E /* BITOperation.m in Sources */,
+				C95EB0D2170CCD0D001E2D1E /* BITOperationWithBlocks.m in Sources */,
+				C95EB0D7170CCD19001E2D1E /* BITModalSheetController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12877,6 +12720,9 @@
 				52F7C2E31654E93400041661 /* SCHLibreAccessActivityLogConstants.m in Sources */,
 				528C389B16FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */,
 				521DEF84170C745C00050224 /* NSString+FileSize.m in Sources */,
+				C95EB0D1170CCD0D001E2D1E /* BITOperation.m in Sources */,
+				C95EB0D4170CCD0D001E2D1E /* BITOperationWithBlocks.m in Sources */,
+				C95EB0D9170CCD19001E2D1E /* BITModalSheetController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13320,6 +13166,9 @@
 				520697FA16525D1900CC80CA /* SCHAppBookFeatures.m in Sources */,
 				528C389A16FCF3A200748771 /* SCHDictionaryManifestEntry.m in Sources */,
 				521DEF83170C745C00050224 /* NSString+FileSize.m in Sources */,
+				C95EB0D0170CCD0D001E2D1E /* BITOperation.m in Sources */,
+				C95EB0D3170CCD0D001E2D1E /* BITOperationWithBlocks.m in Sources */,
+				C95EB0D8170CCD19001E2D1E /* BITModalSheetController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13330,26 +13179,6 @@
 			isa = PBXTargetDependency;
 			name = libEucalyptusIOSUI;
 			targetProxy = C95232191622D56600074D95 /* PBXContainerItemProxy */;
-		};
-		C952321C1622D56C00074D95 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITOperation;
-			targetProxy = C952321B1622D56C00074D95 /* PBXContainerItemProxy */;
-		};
-		C952321E1622D57000074D95 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITModalSheetController;
-			targetProxy = C952321D1622D57000074D95 /* PBXContainerItemProxy */;
-		};
-		C95232201622D6FD00074D95 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITModalSheetController;
-			targetProxy = C952321F1622D6FD00074D95 /* PBXContainerItemProxy */;
-		};
-		C95232221622D70200074D95 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BITOperation;
-			targetProxy = C95232211622D70200074D95 /* PBXContainerItemProxy */;
 		};
 		C95232241622D70D00074D95 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
