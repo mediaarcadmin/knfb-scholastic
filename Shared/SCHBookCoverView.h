@@ -29,6 +29,7 @@ typedef enum {
 @property (nonatomic, assign) SCHBookCoverViewMode coverViewMode;
 @property (nonatomic, assign) BOOL disabledForInteractions;
 @property (nonatomic, assign) BOOL shouldWaitForExistingCachedThumbToLoad;
+@property (nonatomic, assign) CGRect coverImageFrame;
 
 - (void)beginUpdates;
 - (void)endUpdates;

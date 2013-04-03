@@ -13,4 +13,5 @@
 @optional
 -(void)gridView:(MRGridView *)gridView didSelectCellAtIndex:(NSInteger)index;
 -(void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index;
+-(BOOL)gridView:(MRGridView *)gridView canDeleteCellAtIndex:(NSInteger)index;
 @end

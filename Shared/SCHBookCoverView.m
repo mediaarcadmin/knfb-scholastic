@@ -72,6 +72,7 @@
 @synthesize featureTab;
 @synthesize shouldWaitForExistingCachedThumbToLoad;
 @synthesize hideElementsForRatings;
+@synthesize coverImageFrame;
 
 #pragma mark - Initialisation and dealloc
 
@@ -667,7 +668,8 @@
     CGRect progressViewFrame = CGRectMake(coverFrame.origin.x + 10, self.isNewBadge.frame.origin.y - 10, coverFrame.size.width - 20, self.progressView.frame.size.height);
     self.progressView.frame = progressViewFrame;
     
-    
+    self.coverImageFrame = CGRectOffset(coverFrame, 0, CGRectGetMinY(self.frame));
+        
 	[self setNeedsDisplay];
     
 	// book status

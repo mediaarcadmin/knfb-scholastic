@@ -944,6 +944,34 @@ NSUInteger const kSCHAppBookThumbnailMaxHeightPhone = 120;
     self.ForceProcess = [NSNumber numberWithBool:forceProcess];
 }
 
+- (BOOL)canDeleteBookPackageFile
+{
+    BOOL ret = NO;
+    
+	if ([self.State intValue] == SCHBookProcessingStateReadyToRead) {
+		ret = YES;
+	} else {
+        ret = NO;
+    }
+    
+    return ret;
+}
+
+- (void)deleteBookPackageFile
+{
+    NSAssert([NSThread isMainThread], @"deleteBookPackageFile must be called on main thread");
+    
+    if (!self.isProcessing) {
+        [self.ContentMetadataItem deleteBookPackageFile];
+        [self setState:[NSNumber numberWithInt:SCHBookProcessingStateReadyForBookFileDownload]];
+        
+        NSError *error = nil;
+        if (![self.managedObjectContext save:&error]) {
+            NSLog(@"failed to save after book deletion: %@", error);
+        }
+    }
+}
+
 #pragma mark - Errors
 
 - (NSError *)errorWithCode:(NSInteger)code

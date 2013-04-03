@@ -212,6 +212,8 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 
 - (void)menuAction:(SCHThemeButton *)sender
 {
+    [self.gridView setEditing:NO animated:NO];
+    
     SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuController" 
                                                                                                    bundle:nil 
                                                                                      managedObjectContext:self.managedObjectContext];

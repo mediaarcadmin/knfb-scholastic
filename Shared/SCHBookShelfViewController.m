@@ -27,6 +27,7 @@
 #import "SCHBookIdentifier.h"
 #import "SCHProfileSyncComponent.h"
 #import "LambdaAlert.h"
+#import "LambdaSheet.h"
 #import "SCHContentProfileItem.h"
 #import "SCHAppContentProfileItem.h"
 #import "SCHBookshelfSyncComponent.h"
@@ -39,6 +40,7 @@
 #import "SCHBookAnnotations.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHAnnotationSyncComponent.h"
+#import "SCHBookCoverView.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 118;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 118;
@@ -465,6 +467,7 @@ typedef enum
 - (void)presentMenu
 {
     NSLog(@"Presenting menu...");
+    [self.gridView setEditing:NO animated:NO];
     
     SCHBookShelfMenuController *menuTableController = [[SCHBookShelfMenuController alloc] initWithNibName:@"SCHBookShelfMenuController" 
                                                                                                    bundle:nil 
@@ -536,6 +539,8 @@ typedef enum
 
 - (IBAction)back
 {
+    [self.gridView setEditing:NO animated:NO];
+    
     self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:self.listTableView.hidden == NO];
     
     if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
@@ -562,8 +567,17 @@ typedef enum
 {
     [self.gridView setEditing:YES animated:YES];
     self.sortType = kSCHBookSortTypeUser;
-    
-    return NO;
+
+    return YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if (self.gridView.isEditing) {
+        return NO;
+    } else {        
+        return YES;
+    }
 }
 
 #pragma mark - Bookshelf Menu Delegate
@@ -1100,13 +1114,13 @@ typedef enum
         }                
 	}
 
-    [self.gridView setEditing:NO animated:YES];
+    [self.gridView setEditing:NO animated:NO];
 }
 
 - (void)gridView:(MRGridView *)gridView commitEditingStyle:(MRGridViewCellEditingStyle)editingStyle 
         forIndex:(NSInteger)index
 {
-    // nop
+    [self.gridView setEditing:NO animated:NO];
 }
 
 - (void)selectBookAtIndex:(NSInteger)index startBlock:(dispatch_block_t)startBlock endBlock:(void (^)(BOOL didOpen))endBlock
@@ -1203,18 +1217,22 @@ typedef enum
 
 - (void)gridView:(MRGridView *)aGridView didSelectCellAtIndex:(NSInteger)index 
 {
-    SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
-    
-    [self selectBookAtIndex:index 
-                 startBlock:^{
-                     [cell setLoading:YES];
-                 }
-                   endBlock:^(BOOL didOpen){
-                       [cell setLoading:NO];
-                   }];
+    if (aGridView.isEditing) {
+        [aGridView setEditing:NO animated:YES];
+    } else {
+        SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
+        
+        [self selectBookAtIndex:index
+                     startBlock:^{
+                         [cell setLoading:YES];
+                     }
+                       endBlock:^(BOOL didOpen){
+                           [cell setLoading:NO];
+                       }];
+    }
 }
 
-- (BOOL)canOpenBook:(SCHBookIdentifier *)identifier error:(NSError **)error 
+- (BOOL)canOpenBook:(SCHBookIdentifier *)identifier error:(NSError **)error
 {
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
     
@@ -1320,9 +1338,49 @@ typedef enum
     return([ret autorelease]);
 }
 
-- (void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
+- (void)gridView:(MRGridView *)aGridView confirmationForDeletionAtIndex:(NSInteger)index 
 {
-	// nop
+    
+    SCHBookIdentifier *identifier = [self.books objectAtIndex:index];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+
+    NSString *sheetTitle = nil;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        sheetTitle = [NSString stringWithFormat:NSLocalizedString(@"%@", @"Remove book title format string"), book.Title];
+    }
+    
+    LambdaSheet *actionSheet = [[LambdaSheet alloc] initWithTitle:sheetTitle];
+        
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"Remove from device", @"Remove from device") block:^{
+        [aGridView setEditing:NO animated:YES];
+        [book deleteBookPackageFile];
+        [aGridView reloadData];
+    }];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [actionSheet addCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel remove from device") block: nil];
+    }
+    
+    SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *)[aGridView cellAtGridIndex:index];
+    CGRect coverFrame = cell.bookCoverView.coverImageFrame;
+    
+    [actionSheet showFromRect:[aGridView convertRect:coverFrame fromView:cell] inView:aGridView animated:YES];
+    [actionSheet release];
+}
+
+- (BOOL)gridView:(MRGridView *)gridView canDeleteCellAtIndex:(NSInteger)index
+{
+    BOOL ret = YES;
+    
+    SCHBookIdentifier *identifier = [self.books objectAtIndex:index];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+    
+    if (book) {
+        ret = [book canDeleteBookPackageFile];
+    }
+    
+    return ret;
 }
 
 #pragma mark - Cell Size methods
@@ -1347,7 +1405,7 @@ typedef enum
                           message:NSLocalizedString(@"This function requires that you update Storia. Please visit the App Store to update your app.", @"")];
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
     [alert show];
-    [alert release];         
+    [alert release];
 }
 
 @end
