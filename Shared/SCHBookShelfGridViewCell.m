@@ -48,6 +48,8 @@
 {
 	if ((self = [super initWithFrame:frame reuseIdentifier:aReuseIdentifier])) {
         self.bookCoverView = [[[SCHBookCoverView alloc] initWithFrame:CGRectMake(0, 22, self.frame.size.width - 4, self.frame.size.height - 22)] autorelease];
+        
+        [self.bookCoverView addObserver:self forKeyPath:@"coverImageFrame" options:NULL context:nil];
 
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             self.bookCoverView.topInset = 0;
@@ -60,6 +62,10 @@
         self.bookCoverView.coverViewMode = SCHBookCoverViewModeGridView;
         
         [self.deleteButton setShowsTouchWhenHighlighted:NO]; // Needed to remove a "puff" visual glitch when pushing directly into the samples shelf
+        self.deleteButton.bounds = CGRectMake(0, 0, 29, 29);
+		[self.deleteButton setImage:[UIImage imageNamed:@"UIBlackCloseButton"] forState:UIControlStateNormal];
+        [self.deleteButton setImage:[UIImage imageNamed:@"UIBlackCloseButtonPressed"] forState:UIControlStateHighlighted];
+
         [self.contentView addSubview:self.bookCoverView];
         
         self.ratingContainerView = [[[UIView alloc] initWithFrame:CGRectMake(RATING_VIEW_WIDTH_PADDING, frame.size.height - RATING_VIEW_HEIGHT - 22, frame.size.width - (2 * RATING_VIEW_WIDTH_PADDING), RATING_VIEW_HEIGHT)] autorelease];
@@ -129,6 +135,8 @@
 
 - (void)dealloc 
 {
+    [bookCoverView removeObserver:self forKeyPath:@"coverImageFrame"];
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
@@ -234,5 +242,13 @@
     }
 }
 
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == self.bookCoverView && [keyPath isEqualToString:@"coverImageFrame"]) {
+        [self.deleteButton setCenter:CGPointMake(CGRectGetMinX(self.bookCoverView.coverImageFrame), CGRectGetMinY(self.bookCoverView.coverImageFrame))];
+    }
+}
 
 @end

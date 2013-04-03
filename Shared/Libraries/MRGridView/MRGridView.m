@@ -99,7 +99,14 @@ const CGFloat MRGridViewScrollOverlapHeight = 44.0;
 		MRGridViewCell * gridCell = [gridDataSource gridView:self cellForGridIndex:cellIndex];
 		[cellIndices setObject:gridCell forKey:[NSNumber numberWithInt:cellIndex]];
 		[gridCell.deleteButton addTarget:self action:@selector(deleteButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-		if (self.isEditing) gridCell.deleteButton.alpha = 1;
+		if (self.isEditing) {
+            BOOL deleteAble = YES;
+            if ([gridDelegate respondsToSelector:@selector(gridView:canDeleteCellAtIndex:)]) {
+                deleteAble = [gridDelegate gridView:self canDeleteCellAtIndex:cellIndex];
+            }
+            
+            gridCell.deleteButton.alpha = deleteAble;
+        }
 		else gridCell.deleteButton.alpha = 0;
 		[gridView addSubview:gridCell];
 		[gridView sendSubviewToBack:gridCell]; // we do this so that the cell will by default be "behind" a dragged cell.
@@ -534,10 +541,9 @@ const CGFloat MRGridViewScrollOverlapHeight = 44.0;
 	[self setScrollEnabled:YES];
 	[self invalidateEditTimer];
 	[self invalidateScrollTimer];
-    if (self.isEditing){
+    if (self.isEditing && currDraggedCell){
 		//if there is a cell being dragged and it is being moved to another location
 //		NSLog(@"currDraggedCell: %@", currDraggedCell);
-		if (currDraggedCell){
 			NSInteger maxIndex = [gridDataSource numberOfItemsInGridView:self];
 			if (moveStyle == MRGridViewMoveStyleDisplace) {
 				CGRect finalFrame = [self frameForCellAtGridIndex:currentHoveredIndex];
@@ -559,7 +565,7 @@ const CGFloat MRGridViewScrollOverlapHeight = 44.0;
 					[self animateCellPutdownForCell:currDraggedCell toLocation:currDraggedCellOriginalCenter];
 				}
 			}
-		}
+		
 	}
 	else if (theTouch.tapCount == 1) {
         CGPoint touchLoc = [theTouch locationInView:self];
@@ -605,7 +611,7 @@ const CGFloat MRGridViewScrollOverlapHeight = 44.0;
 }
 -(void) resetEditTimer {
 	if (editTimer && [editTimer isValid]) [editTimer invalidate];
-	editTimer = [NSTimer scheduledTimerWithTimeInterval:0.40f target:self selector:@selector(activateCellDragging:) userInfo:nil repeats:NO];	
+	editTimer = [NSTimer scheduledTimerWithTimeInterval:0.01f target:self selector:@selector(activateCellDragging:) userInfo:nil repeats:NO];
 }
 -(void) invalidateEditTimer {
 	if (editTimer) {
@@ -791,7 +797,21 @@ const CGFloat MRGridViewScrollOverlapHeight = 44.0;
 	NSArray * viewableCellIndexes = [self indexesForCellsInRect:[self bounds]];
 	for (NSNumber * key in viewableCellIndexes) {
 		MRGridViewCell * gridCell = [cellIndices objectForKey:key];
-		gridCell.deleteButton.alpha = targetAlphaValue;
+        BOOL deleteAble = YES;
+        
+        if (gridCell) {
+            if (editingVal) {
+                if ([gridDelegate respondsToSelector:@selector(gridView:canDeleteCellAtIndex:)]) {
+                    deleteAble = [gridDelegate gridView:self canDeleteCellAtIndex:[key intValue]];
+                }
+            } else {
+                deleteAble = NO;
+            }
+            
+            gridCell.deleteButton.alpha = deleteAble;
+        } else {
+            gridCell.deleteButton.alpha = 0;
+        }
 	}
 	if (animate) [UIView commitAnimations];
 }

@@ -11,4 +11,6 @@
 - (void) showFromToolbar: (UIToolbar*) view;
 - (void) showInView: (UIView*) view;
 
+- (void) showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated;
+
 @end

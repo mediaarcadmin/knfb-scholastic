@@ -2109,6 +2109,14 @@
 		C95D6EC61520C92D000C4168 /* UIImage+ScholasticAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6EC41520C92D000C4168 /* UIImage+ScholasticAdditions.m */; };
 		C95D6ECB1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6ECA1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m */; };
 		C95D6ECC1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C95D6ECA1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m */; };
+		C95EB09D170C3FDB001E2D1E /* UIBlackCloseButton.png in Resources */ = {isa = PBXBuildFile; fileRef = C95EB099170C3FDB001E2D1E /* UIBlackCloseButton.png */; };
+		C95EB09E170C3FDB001E2D1E /* UIBlackCloseButton.png in Resources */ = {isa = PBXBuildFile; fileRef = C95EB099170C3FDB001E2D1E /* UIBlackCloseButton.png */; };
+		C95EB09F170C3FDB001E2D1E /* UIBlackCloseButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C95EB09A170C3FDB001E2D1E /* UIBlackCloseButton@2x.png */; };
+		C95EB0A0170C3FDB001E2D1E /* UIBlackCloseButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C95EB09A170C3FDB001E2D1E /* UIBlackCloseButton@2x.png */; };
+		C95EB0A1170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = C95EB09B170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png */; };
+		C95EB0A2170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = C95EB09B170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png */; };
+		C95EB0A3170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C95EB09C170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png */; };
+		C95EB0A4170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C95EB09C170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png */; };
 		C95ECB4E133A77F000D88768 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB4C133A77A500D88768 /* AudioToolbox.framework */; };
 		C95ECB50133A77F800D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
 		C95ECB51133A77FA00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
@@ -5108,6 +5116,10 @@
 		C95D6EC41520C92D000C4168 /* UIImage+ScholasticAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ScholasticAdditions.m"; path = "Shared/UIImage+ScholasticAdditions.m"; sourceTree = "<group>"; };
 		C95D6EC91521FCA7000C4168 /* SCHRecommendationThumbnailOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRecommendationThumbnailOperation.h; path = Shared/SCHRecommendationThumbnailOperation.h; sourceTree = "<group>"; };
 		C95D6ECA1521FCA7000C4168 /* SCHRecommendationThumbnailOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRecommendationThumbnailOperation.m; path = Shared/SCHRecommendationThumbnailOperation.m; sourceTree = "<group>"; };
+		C95EB099170C3FDB001E2D1E /* UIBlackCloseButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBlackCloseButton.png; sourceTree = "<group>"; };
+		C95EB09A170C3FDB001E2D1E /* UIBlackCloseButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIBlackCloseButton@2x.png"; sourceTree = "<group>"; };
+		C95EB09B170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBlackCloseButtonPressed.png; sourceTree = "<group>"; };
+		C95EB09C170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIBlackCloseButtonPressed@2x.png"; sourceTree = "<group>"; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C95ECB48133A770B00D88768 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -8528,6 +8540,10 @@
 				F8F726861524722400250724 /* storiaStarHalfFull~ipad.png */,
 				F848F40A152B4F9C00048074 /* BookShelfListRatingBackground.png */,
 				F8F7267F15246D6000250724 /* BookShelfListRatingBackground~ipad.png */,
+				C95EB099170C3FDB001E2D1E /* UIBlackCloseButton.png */,
+				C95EB09A170C3FDB001E2D1E /* UIBlackCloseButton@2x.png */,
+				C95EB09B170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png */,
+				C95EB09C170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png */,
 				C9747CD513EAEAC5003ADC71 /* Splash */,
 				C9703A5213E9615C0003C4D8 /* Bookshelf */,
 				52DAE4FA13ABA3DD0003560E /* popoverTickLight.png */,
@@ -10813,6 +10829,10 @@
 				C9AE6355165681B80022249E /* BookSIAudioSampleTabHorizontal~ipad.png in Resources */,
 				520304E0165E289A00822733 /* SCHReadingManagerViewController~ipad.xib in Resources */,
 				520304E4165E4C9A00822733 /* SCHReadingManagerViewController~iphone.xib in Resources */,
+				C95EB09D170C3FDB001E2D1E /* UIBlackCloseButton.png in Resources */,
+				C95EB09F170C3FDB001E2D1E /* UIBlackCloseButton@2x.png in Resources */,
+				C95EB0A1170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png in Resources */,
+				C95EB0A3170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11920,6 +11940,10 @@
 				C9AE6356165681B80022249E /* BookSIAudioSampleTabHorizontal~ipad.png in Resources */,
 				520304E1165E289A00822733 /* SCHReadingManagerViewController~ipad.xib in Resources */,
 				520304E5165E4C9A00822733 /* SCHReadingManagerViewController~iphone.xib in Resources */,
+				C95EB09E170C3FDB001E2D1E /* UIBlackCloseButton.png in Resources */,
+				C95EB0A0170C3FDB001E2D1E /* UIBlackCloseButton@2x.png in Resources */,
+				C95EB0A2170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png in Resources */,
+				C95EB0A4170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

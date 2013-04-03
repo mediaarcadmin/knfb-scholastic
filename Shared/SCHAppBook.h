@@ -183,6 +183,8 @@ extern NSUInteger const kSCHAppBookThumbnailMaxHeightPhone;
 - (NSArray *)appRecommendationItemsForBook;
 
 - (void)setForcedProcessing:(BOOL)forceProcess;
+- (BOOL)canDeleteBookPackageFile;
+- (void)deleteBookPackageFile;
 
 // a list of all books purchased
 - (NSArray *)purchasedBooks;
