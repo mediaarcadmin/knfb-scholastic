@@ -1,0 +1,209 @@
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/177/trunk/Classes
+END
+USWriter.m
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/177/trunk/Classes/USWriter.m
+END
+USPort.h
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/177/trunk/Classes/USPort.h
+END
+USMessage.h
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/177/trunk/Classes/USMessage.h
+END
+USParserApplication.m
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/177/trunk/Classes/USParserApplication.m
+END
+USPort.m
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/177/trunk/Classes/USPort.m
+END
+USMessage.m
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/177/trunk/Classes/USMessage.m
+END
+USParser+PortTypes.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/177/trunk/Classes/USParser+PortTypes.h
+END
+USParser+PortTypes.m
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/14/trunk/Classes/USParser+PortTypes.m
+END
+USParser+Services.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/177/trunk/Classes/USParser+Services.h
+END
+USParser+Services.m
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/177/trunk/Classes/USParser+Services.m
+END
+USOperationInterface.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/177/trunk/Classes/USOperationInterface.h
+END
+USParser+Bindings.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/177/trunk/Classes/USParser+Bindings.h
+END
+USOperationInterface.m
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/177/trunk/Classes/USOperationInterface.m
+END
+USPortType.h
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/177/trunk/Classes/USPortType.h
+END
+USParser+Bindings.m
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/134/trunk/Classes/USParser+Bindings.m
+END
+USPortType.m
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/177/trunk/Classes/USPortType.m
+END
+USOperationFault.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/177/trunk/Classes/USOperationFault.h
+END
+USParser.h
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/177/trunk/Classes/USParser.h
+END
+USParser+Messages.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/177/trunk/Classes/USParser+Messages.h
+END
+USOperation.h
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/177/trunk/Classes/USOperation.h
+END
+USService.h
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/177/trunk/Classes/USService.h
+END
+USOperationFault.m
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/177/trunk/Classes/USOperationFault.m
+END
+USParser.m
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/177/trunk/Classes/USParser.m
+END
+USParser+Messages.m
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/134/trunk/Classes/USParser+Messages.m
+END
+USOperation.m
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/177/trunk/Classes/USOperation.m
+END
+USService.m
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/177/trunk/Classes/USService.m
+END
+USPart.h
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/177/trunk/Classes/USPart.h
+END
+USWSDL.h
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/177/trunk/Classes/USWSDL.h
+END
+USBinding.h
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/177/trunk/Classes/USBinding.h
+END
+USPart.m
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/177/trunk/Classes/USPart.m
+END
+USWriter.h
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/177/trunk/Classes/USWriter.h
+END
+USWSDL.m
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/177/trunk/Classes/USWSDL.m
+END
+USBinding.m
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/177/trunk/Classes/USBinding.m
+END
+USParserApplication.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/177/trunk/Classes/USParserApplication.h
+END

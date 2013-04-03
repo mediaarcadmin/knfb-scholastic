@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/177/trunk/Classes/Types
+END
+USParser+Types.m
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/177/trunk/Classes/Types/USParser+Types.m
+END
+USType.h
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/177/trunk/Classes/Types/USType.h
+END
+USSequenceElement.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/177/trunk/Classes/Types/USSequenceElement.h
+END
+USAttribute.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/177/trunk/Classes/Types/USAttribute.h
+END
+USSchema.m
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/177/trunk/Classes/Types/USSchema.m
+END
+USType.m
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/177/trunk/Classes/Types/USType.m
+END
+USSequenceElement.m
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/177/trunk/Classes/Types/USSequenceElement.m
+END
+USAttribute.m
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/177/trunk/Classes/Types/USAttribute.m
+END
+USElement.h
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/177/trunk/Classes/Types/USElement.h
+END
+USParser+Types.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/177/trunk/Classes/Types/USParser+Types.h
+END
+USElement.m
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/177/trunk/Classes/Types/USElement.m
+END
+USSchema.h
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/177/trunk/Classes/Types/USSchema.h
+END

@@ -1,0 +1,44 @@
+Out of the tin WSDL2ObjC works fine with the Scholastic web service. However this
+is not the case with the LibreAccess web service. Therefore we have made some 
+changes to:
+
+* make sure Scholastic remains functional;
+* make sure LibreAccess can be used; and
+* make life a little easier.
+
+The changes that have been made include:
+
+* fix for http escaping
+* fix for methods that do not have any parameters
+* added option: Remove parameter namespace, for LibreAccess the SOAP envelope does
+  not contain the namespace in the markup
+* added option: exclude SOAP 1.1/1.2, only generate code for SOAP 1.1/1.2
+* added option: exclude http/https, only generate code for http/https
+
+The final two options together fix a problem with LibreAccess where duplicate 
+bindings were being generated and causing 1k's of duplicate method errors.
+
+Please make sure you check the history of changes for further changes that have 
+been made.
+
+Here are the settings we've used:
+
+Scholastic Authenticate.wsdl / GetUserInfo.wsdl / WishList.wsdl
+
+☑ Add tag to service name (avoid name conflicts)
+Change namespace prefix: <empty>
+☐ Remove parameter namespace
+☐ exclude SOAP 1.1
+☑ exclude SOAP 1.2
+☐ exclude http://
+☑ exclude https://
+
+LibreAccess.wsdl / LibreAccessActivityLog.wsdl
+
+☑ Add tag to service name (avoid name conflicts)
+Change namespace prefix: LibreAccessService / LibreAccessActivityLog
+☑ Remove parameter namespace
+☐ exclude SOAP 1.1
+☑ exclude SOAP 1.2
+☐ exclude http://
+☑ exclude https://

@@ -1,0 +1,34 @@
+Steps to recreate the code for a WSDL in Storia:
+
+* Download the relevant WSDL file you would like to generate code for:
+  
+    http://laesb.uat.cld.libredigital.com/services/LibreAccessService?wsdl
+    https://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate?wsdl
+    https://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo?wsdl
+    https://esvcsqa.scholastic.com/SchWS/services/SPS/WishListService?wsdl
+
+* Compile and execute the WSDLParser project (https://bitwink.codebasehq.com/projects/scholastic/repositories/wsdl2objc-2/tree/master)
+* You should set the WSDL file, output location and various settings for each WSDL, as shown below:
+
+    **Scholastic Authenticate.wsdl / GetUserInfo.wsdl / WishList.wsdl**
+    ☑ Add tag to service name (avoid name conflicts)
+    ☐ Remove namespace
+    ☐ exclude SOAP 1.1
+    ☑ exclude SOAP 1.2
+    ☐ exclude http://
+    ☑ exclude https://
+
+    **LibreAccess.wsdl**
+    ☑ Add tag to service name (avoid name conflicts)
+    ☑ Remove namespace
+    ☐ exclude SOAP 1.1
+    ☑ exclude SOAP 1.2
+    ☐ exclude http:// 
+    ☑ exclude https://
+
+* Click 'Parse WSDL'
+* Copy all the generated files to Scholastic/Shared/Libraries/WSDL2ObjC - overwrite the existing files
+* Copy the original WSDL to Scholastic/Shared/Libraries/WSDL2ObjC - overwrite the existing file
+* Perform a clean build and execute Storia
+* As a sanity check you can diff the new files and review the changes - **it is highly recommended to use command line diff for LibreAccessServiceSvc.m**
+* Commit the changes

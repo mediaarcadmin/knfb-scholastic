@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/180/trunk/Templates
+END
+ComplexType_M.template
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/177/trunk/Templates/ComplexType_M.template
+END
+Binding_M.template
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/177/trunk/Templates/Binding_M.template
+END
+USGlobals_M.template
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/50/trunk/Templates/USGlobals_M.template
+END
+Schema_H.template
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/168/trunk/Templates/Schema_H.template
+END
+SimpleType_M.template
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/16/trunk/Templates/SimpleType_M.template
+END
+Service_H.template
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/64/trunk/Templates/Service_H.template
+END
+Schema_M.template
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/134/trunk/Templates/Schema_M.template
+END
+Service_M.template
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/64/trunk/Templates/Service_M.template
+END
+ComplexType_H.template
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/177/trunk/Templates/ComplexType_H.template
+END
+Binding_H.template
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/177/trunk/Templates/Binding_H.template
+END
+USGlobals_H.template
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/177/trunk/Templates/USGlobals_H.template
+END
+SimpleType_H.template
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/16/trunk/Templates/SimpleType_H.template
+END

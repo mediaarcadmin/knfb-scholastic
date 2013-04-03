@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/180/trunk/Templates/NSDate_ISO8601
+END
+NSDate+ISO8601Unparsing_M.template
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/155/trunk/Templates/NSDate_ISO8601/NSDate+ISO8601Unparsing_M.template
+END
+NSDate+ISO8601Parsing_H.template
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/179/trunk/Templates/NSDate_ISO8601/NSDate+ISO8601Parsing_H.template
+END
+NSDate+ISO8601Unparsing_H.template
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/154/trunk/Templates/NSDate_ISO8601/NSDate+ISO8601Unparsing_H.template
+END
+NSDate+ISO8601Parsing_M.template
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/180/trunk/Templates/NSDate_ISO8601/NSDate+ISO8601Parsing_M.template
+END
