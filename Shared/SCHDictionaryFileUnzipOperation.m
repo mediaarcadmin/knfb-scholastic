@@ -95,7 +95,9 @@
         NSLog(@"Successful unzip!");
     } else {
         NSLog(@"Unsuccessful unzip");
-        [dictManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUnZipFailureError];
+        if (self.isCancelled == NO) {
+            [dictManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUnZipFailureError];
+        }
         return;
     }
     
@@ -133,8 +135,9 @@
             [localFileManager moveItemAtPath:[currentLocation stringByAppendingPathComponent:@"WordFormTable.txt"]
                                       toPath:[newLocation stringByAppendingPathComponent:@"WordFormTable.txt"] error:nil];
         }
-        
-        [dictManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsParse];
+        if (self.isCancelled == NO) {
+            [dictManager threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsParse];
+        }
     }
 }
 
