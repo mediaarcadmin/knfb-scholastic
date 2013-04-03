@@ -37,6 +37,8 @@ extern NSString* const kSCHDictionaryOlderReader;
 // speak a word definition
 - (void)speakYoungerWordDefinition:(NSString *)dictionaryWord;
 
+- (BOOL)canSpeakYoungerWordDefinition:(NSString *)dictionaryWord;
+
 // stop all speaking
 - (void)stopAllSpeaking;
 

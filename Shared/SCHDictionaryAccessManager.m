@@ -599,6 +599,27 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     return ret;
 }
 
+- (BOOL)canSpeakYoungerWordDefinition:(NSString *)dictionaryWord
+{
+    if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryCategoryReady:kSCHDictionaryManifestOperationDictionaryAudio]) {
+        NSLog(@"Dictionary Audio is not ready yet!");
+        return NO;
+    } else {
+        SCHDictionaryEntry *entry = [self entryForWord:dictionaryWord category:kSCHDictionaryYoungReader];
+        
+        if (!entry) {
+            return NO;
+        }
+        
+        NSString *mp3Path = [NSString stringWithFormat:@"%@/ReadthroughAudio/fd_%@.mp3",
+                             [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], entry.baseWordID];
+        
+        return [[NSFileManager defaultManager] fileExistsAtPath:mp3Path];
+    }
+    
+    return YES;
+}
+
 - (void)speakYoungerWordDefinition:(NSString *)dictionaryWord
 {
     if (![[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryCategoryReady:kSCHDictionaryManifestOperationDictionaryAudio]) {

@@ -184,6 +184,12 @@
 {
     if (![[SCHDictionaryAccessManager sharedAccessManager] dictionaryContainsWord:self.word forCategory:self.categoryMode]) {
         self.audioButton.hidden = YES;
+    } else {
+        if (self.categoryMode == kSCHDictionaryYoungReader) {
+            self.audioButton.hidden = ![[SCHDictionaryAccessManager sharedAccessManager] canSpeakYoungerWordDefinition:self.word];
+        } else {
+            self.audioButton.hidden = ![[SCHDictionaryAccessManager sharedAccessManager] canSpeakWord:self.word category:self.categoryMode];
+        }
     }
     
     NSString *htmlString = [[SCHDictionaryAccessManager sharedAccessManager] HTMLForWord:self.word category:self.categoryMode];
