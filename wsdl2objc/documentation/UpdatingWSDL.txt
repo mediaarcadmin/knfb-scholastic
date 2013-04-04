@@ -12,15 +12,17 @@ Steps to recreate the code for a WSDL in Storia:
 
     **Scholastic Authenticate.wsdl / GetUserInfo.wsdl / WishList.wsdl**
     ☑ Add tag to service name (avoid name conflicts)
-    ☐ Remove namespace
+    Change namespace prefix: <empty>
+    ☐ Remove parameter namespace
     ☐ exclude SOAP 1.1
     ☑ exclude SOAP 1.2
     ☐ exclude http://
     ☑ exclude https://
 
-    **LibreAccess.wsdl**
+    **LibreAccess.wsdl / LibreAccessActivityLog.wsdl**
     ☑ Add tag to service name (avoid name conflicts)
-    ☑ Remove namespace
+    Change namespace prefix: LibreAccessService / LibreAccessActivityLog
+    ☑ Remove parameter namespace
     ☐ exclude SOAP 1.1
     ☑ exclude SOAP 1.2
     ☐ exclude http:// 
