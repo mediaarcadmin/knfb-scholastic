@@ -1,4 +1,4 @@
-// Version 1.7.5.0
+// Version 1.8.3.0
 
 #import "LibreAccessActivityLogSvc_tns1.h"
 #import <libxml/xmlstring.h>

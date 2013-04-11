@@ -181,6 +181,8 @@
 @class tns1_SaveProfileContentAnnotationsResponse;
 @class tns1_ListProfileContentAnnotationsRequest;
 @class tns1_ListProfileContentAnnotationsResponse;
+@class tns1_ListProfileRecentAnnotationsRequest;
+@class tns1_ListProfileRecentAnnotationsResponse;
 @class tns1_GetUserProfilesRequest;
 @class tns1_GetUserProfilesResponse;
 @class tns1_SaveUserProfilesRequest;
@@ -245,8 +247,6 @@
 @class tns1_RemoveDefaultBooksResponse;
 @class tns1_AssignBooksToAllUsersRequest;
 @class tns1_AssignBooksToAllUsersResponse;
-@class tns1_SetLoggingLevelRequest;
-@class tns1_SetLoggingLevelResponse;
 @class tns1_HealthCheckRequest;
 @class tns1_HealthCheckResponse;
 @class tns1_EndpointsList;
@@ -1058,6 +1058,7 @@ NSString * tns1_SaveActions_stringFromEnum(tns1_SaveActions enumValue);
 	USBoolean * DeregistrationConfirmed;
 	NSDate * lastmodified;
 	NSDate * lastactivated;
+	NSString * DRMScheme;
 /* attributes */
 }
 - (NSString *)nsPrefix;
@@ -1080,6 +1081,7 @@ NSString * tns1_SaveActions_stringFromEnum(tns1_SaveActions enumValue);
 @property (nonatomic, retain) USBoolean * DeregistrationConfirmed;
 @property (nonatomic, retain) NSDate * lastmodified;
 @property (nonatomic, retain) NSDate * lastactivated;
+@property (nonatomic, retain) NSString * DRMScheme;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -2024,6 +2026,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 	NSNumber * year;
 	NSString * guidedReadingLevel;
 	NSNumber * eBooksCompleted;
+	NSNumber * contentOpened;
 	NSNumber * readingDuration;
 	NSString * eBookLexileLevel;
 /* attributes */
@@ -2040,6 +2043,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 @property (nonatomic, retain) NSNumber * year;
 @property (nonatomic, retain) NSString * guidedReadingLevel;
 @property (nonatomic, retain) NSNumber * eBooksCompleted;
+@property (nonatomic, retain) NSNumber * contentOpened;
 @property (nonatomic, retain) NSNumber * readingDuration;
 @property (nonatomic, retain) NSString * eBookLexileLevel;
 /* attributes */
@@ -3013,6 +3017,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 	tns1_ContentIdentifierTypes contentIdentifierType;
 	tns1_drmqualifiers DRMQualifier;
 	NSString * Format;
+	USBoolean * vendable;
 /* attributes */
 }
 - (NSString *)nsPrefix;
@@ -3027,6 +3032,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 @property (nonatomic, assign) tns1_ContentIdentifierTypes contentIdentifierType;
 @property (nonatomic, assign) tns1_drmqualifiers DRMQualifier;
 @property (nonatomic, retain) NSString * Format;
+@property (nonatomic, retain) USBoolean * vendable;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -3561,6 +3567,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 @interface tns1_ListBooksAssignmentRequest : NSObject <NSCoding> {
 /* elements */
 	NSString * authToken;
+	tns1_ProfileIdList * profileIdList;
 /* attributes */
 }
 - (NSString *)nsPrefix;
@@ -3572,6 +3579,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 - (void)deserializeElementsFromNode:(xmlNodePtr)cur;
 /* elements */
 @property (nonatomic, retain) NSString * authToken;
+@property (nonatomic, retain) tns1_ProfileIdList * profileIdList;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -4140,6 +4148,50 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 /* attributes */
 - (NSDictionary *)attributes;
 @end
+@interface tns1_ListProfileRecentAnnotationsRequest : NSObject <NSCoding> {
+/* elements */
+	NSString * authToken;
+	NSDate * annotationsAfter;
+	tns1_ProfileIdList * profileIdList;
+	USBoolean * includeRemoved;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (tns1_ListProfileRecentAnnotationsRequest *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * authToken;
+@property (nonatomic, retain) NSDate * annotationsAfter;
+@property (nonatomic, retain) tns1_ProfileIdList * profileIdList;
+@property (nonatomic, retain) USBoolean * includeRemoved;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface tns1_ListProfileRecentAnnotationsResponse : NSObject <NSCoding> {
+/* elements */
+	tns1_StatusHolder * statusMessage;
+	tns1_AnnotationsList * annotationsList;
+	tns1_ItemsCount * itemsCount;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (tns1_ListProfileRecentAnnotationsResponse *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) tns1_StatusHolder * statusMessage;
+@property (nonatomic, retain) tns1_AnnotationsList * annotationsList;
+@property (nonatomic, retain) tns1_ItemsCount * itemsCount;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
 @interface tns1_GetUserProfilesRequest : NSObject <NSCoding> {
 /* elements */
 	NSString * authtoken;
@@ -4468,6 +4520,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 	NSString * DevicePlatform;
 	NSString * DeviceKey;
 	NSString * ClientId;
+	NSString * DRMScheme;
 /* attributes */
 }
 - (NSString *)nsPrefix;
@@ -4483,6 +4536,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 @property (nonatomic, retain) NSString * DevicePlatform;
 @property (nonatomic, retain) NSString * DeviceKey;
 @property (nonatomic, retain) NSString * ClientId;
+@property (nonatomic, retain) NSString * DRMScheme;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -5365,42 +5419,6 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 - (void)addAttributesToNode:(xmlNodePtr)node;
 - (void)addElementsToNode:(xmlNodePtr)node;
 + (tns1_AssignBooksToAllUsersResponse *)deserializeNode:(xmlNodePtr)cur;
-- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
-- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
-/* elements */
-@property (nonatomic, retain) tns1_StatusHolder * statusmessage;
-/* attributes */
-- (NSDictionary *)attributes;
-@end
-@interface tns1_SetLoggingLevelRequest : NSObject <NSCoding> {
-/* elements */
-	NSString * CSRtoken;
-	NSString * Level;
-/* attributes */
-}
-- (NSString *)nsPrefix;
-- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
-- (void)addAttributesToNode:(xmlNodePtr)node;
-- (void)addElementsToNode:(xmlNodePtr)node;
-+ (tns1_SetLoggingLevelRequest *)deserializeNode:(xmlNodePtr)cur;
-- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
-- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
-/* elements */
-@property (nonatomic, retain) NSString * CSRtoken;
-@property (nonatomic, retain) NSString * Level;
-/* attributes */
-- (NSDictionary *)attributes;
-@end
-@interface tns1_SetLoggingLevelResponse : NSObject <NSCoding> {
-/* elements */
-	tns1_StatusHolder * statusmessage;
-/* attributes */
-}
-- (NSString *)nsPrefix;
-- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
-- (void)addAttributesToNode:(xmlNodePtr)node;
-- (void)addElementsToNode:(xmlNodePtr)node;
-+ (tns1_SetLoggingLevelResponse *)deserializeNode:(xmlNodePtr)cur;
 - (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
 - (void)deserializeElementsFromNode:(xmlNodePtr)cur;
 /* elements */
