@@ -3,9 +3,9 @@
 #import <libxml/tree.h>
 #import "USGlobals.h"
 #import <objc/runtime.h>
+@class ax21_WishList;
 @class ax21_WishListProfileItem;
 @class ax21_WishListStatus;
-@class ax21_WishList;
 @class ax21_WishListProfile;
 @class ax21_WishListItem;
 @class ax21_InitiatedByEnum;
@@ -95,6 +95,26 @@
 /* attributes */
 - (NSDictionary *)attributes;
 @end
+@interface ax21_WishList : NSObject <NSCoding> {
+/* elements */
+	NSMutableArray *profileItemList;
+	NSNumber * spsID;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (ax21_WishList *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+- (void)addProfileItemList:(ax21_WishListProfileItem *)toAdd;
+@property (nonatomic, readonly) NSMutableArray * profileItemList;
+@property (nonatomic, retain) NSNumber * spsID;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
 @interface ax21_WishListError : NSObject <NSCoding> {
 /* elements */
 	NSNumber * errorCode;
@@ -174,26 +194,6 @@
 @property (nonatomic, readonly) NSMutableArray * profileStatusList;
 @property (nonatomic, retain) NSNumber * spsID;
 @property (nonatomic, retain) ax21_WishListError * wishListError;
-/* attributes */
-- (NSDictionary *)attributes;
-@end
-@interface ax21_WishList : NSObject <NSCoding> {
-/* elements */
-	NSMutableArray *profileItemList;
-	NSNumber * spsID;
-/* attributes */
-}
-- (NSString *)nsPrefix;
-- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
-- (void)addAttributesToNode:(xmlNodePtr)node;
-- (void)addElementsToNode:(xmlNodePtr)node;
-+ (ax21_WishList *)deserializeNode:(xmlNodePtr)cur;
-- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
-- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
-/* elements */
-- (void)addProfileItemList:(ax21_WishListProfileItem *)toAdd;
-@property (nonatomic, readonly) NSMutableArray * profileItemList;
-@property (nonatomic, retain) NSNumber * spsID;
 /* attributes */
 - (NSDictionary *)attributes;
 @end

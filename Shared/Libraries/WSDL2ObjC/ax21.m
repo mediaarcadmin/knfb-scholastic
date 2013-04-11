@@ -1,3 +1,5 @@
+// WishListService
+
 #import "ax21.h"
 #import <libxml/xmlstring.h>
 #if TARGET_OS_IPHONE
@@ -1119,6 +1121,240 @@
 	[pool drain];
 }
 @end
+@implementation ax21_WishList
+- (id)init
+{
+	if((self = [super init])) {
+		profileItemList = [[NSMutableArray alloc] init];
+		spsID = 0;
+	}
+	
+	return self;
+}
+- (void)dealloc
+{
+	if(profileItemList != nil) [profileItemList release];
+	if(spsID != nil) [spsID release];
+	
+	[super dealloc];
+}
+- (NSString *)nsPrefix
+{
+	return @"ax21";
+}
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix
+{
+	NSString *nodeName = nil;
+	if(elNSPrefix != nil && [elNSPrefix length] > 0)
+	{
+		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];
+	}
+	else
+	{
+		nodeName = [NSString stringWithFormat:@"%@:%@", @"ax21", elName];
+	}
+	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
+	
+	[self addAttributesToNode:node];
+	
+	[self addElementsToNode:node];
+	
+	return node;
+}
+- (void)addAttributesToNode:(xmlNodePtr)node
+{
+	
+}
+- (void)addElementsToNode:(xmlNodePtr)node
+{
+	
+	if(self.profileItemList != 0) {
+		for(ax21_WishListProfileItem * child in self.profileItemList) {
+			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileItemList" elementNSPrefix:@"ax21"]);
+		}
+	} else {
+		xmlNodePtr newnode;
+		if([@"ax21" length] > 0) {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:profileItemList" xmlString], NULL);        
+		} else {
+			newnode = xmlNewDocNode(node->doc, NULL, [@"profileItemList" xmlString], NULL);        
+		}
+        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
+        xmlAddChild(node, newnode);
+	}
+	if(self.spsID != 0) {
+		xmlAddChild(node, [self.spsID xmlNodeForDoc:node->doc elementName:@"spsID" elementNSPrefix:@"ax21"]);
+	}
+}
+/* elements */
+@synthesize profileItemList;
+- (void)addProfileItemList:(ax21_WishListProfileItem *)toAdd
+{
+	if(toAdd != nil) [profileItemList addObject:toAdd];
+}
+@synthesize spsID;
+/* attributes */
+- (NSDictionary *)attributes
+{
+	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+	
+	return attributes;
+}
++ (ax21_WishList *)deserializeNode:(xmlNodePtr)cur
+{
+	ax21_WishList *newObject = [[ax21_WishList new] autorelease];
+	
+	[newObject deserializeAttributesFromNode:cur];
+	[newObject deserializeElementsFromNode:cur];
+	
+	return newObject;
+}
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur
+{
+}
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur
+{
+	
+	
+	for( cur = cur->children ; cur != NULL ; cur = cur->next ) {
+		if(cur->type == XML_ELEMENT_NODE) {
+			xmlChar *elementText = xmlNodeListGetString(cur->doc, cur->children, 1);
+			NSString *elementString = nil;
+			
+			if(elementText != NULL) {
+				elementString = [NSString stringWithCString:(char*)elementText encoding:NSUTF8StringEncoding];
+				[elementString self]; // avoid compiler warning for unused var
+				xmlFree(elementText);
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "profileItemList")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {
+					Class elementClass = nil;
+					xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+					if(instanceType == NULL) {
+						elementClass = [ax21_WishListProfileItem class];
+					} else {
+						NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+						NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+						NSString *elementClassString = nil;
+						if([elementTypeArray count] > 1) {
+							NSString *prefix = [elementTypeArray objectAtIndex:0];
+							NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+							xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+							NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+							elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+						} else {
+							elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+						}
+					
+						elementClass = NSClassFromString(elementClassString);
+						xmlFree(instanceType);
+					}
+				
+					id newChild = [elementClass deserializeNode:cur];
+				
+					if(newChild != nil) [self.profileItemList addObject:newChild];
+				}
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "spsID")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {
+					Class elementClass = nil;
+					xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+					if(instanceType == NULL) {
+						elementClass = [NSNumber class];
+					} else {
+						NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+						NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+						NSString *elementClassString = nil;
+						if([elementTypeArray count] > 1) {
+							NSString *prefix = [elementTypeArray objectAtIndex:0];
+							NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+							xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+							NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+							elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+						} else {
+							elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+						}
+					
+						elementClass = NSClassFromString(elementClassString);
+						xmlFree(instanceType);
+					}
+				
+					id newChild = [elementClass deserializeNode:cur];
+				
+					self.spsID = newChild;
+				}
+			}
+		}
+	}
+}
+/* NSCoder functions taken from: 
+ * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
+	//	self = [(id)super initWithCoder:decoder];
+	//} else {
+		self = [super init];
+	//}
+	if (self == nil) { return nil; }
+ 
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for(int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [decoder decodeObjectForKey:key];
+		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
+		[self setValue:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+	return self;
+}
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	if ([super respondsToSelector:@selector(encodeWithCoder:)] && ![self isKindOfClass:[super class]]) {
+		[super performSelector:@selector(encodeWithCoder:) withObject:encoder];
+	}
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	unsigned int numIvars = 0;
+	Ivar * ivars = class_copyIvarList([self class], &numIvars);
+	for (int i = 0; i < numIvars; i++) {
+		Ivar thisIvar = ivars[i];
+		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
+		id val = [self valueForKey:key];
+		[encoder encodeObject:val forKey:key];
+	}
+	if (numIvars > 0) { free(ivars); }
+	[pool drain];
+}
+@end
 @implementation ax21_WishListError
 - (id)init
 {
@@ -2128,240 +2364,6 @@
 					id newChild = [elementClass deserializeNode:cur];
 				
 					self.wishListError = newChild;
-				}
-			}
-		}
-	}
-}
-/* NSCoder functions taken from: 
- * http://davedelong.com/blog/2009/04/13/aspect-oriented-programming-objective-c
- */
-- (id) initWithCoder:(NSCoder *)decoder {
-	//if ([super respondsToSelector:@selector(initWithCoder:)] && ![self isKindOfClass:[super class]]) {
-	//	self = [(id)super initWithCoder:decoder];
-	//} else {
-		self = [super init];
-	//}
-	if (self == nil) { return nil; }
- 
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	unsigned int numIvars = 0;
-	Ivar * ivars = class_copyIvarList([self class], &numIvars);
-	for(int i = 0; i < numIvars; i++) {
-		Ivar thisIvar = ivars[i];
-		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
-		id val = [decoder decodeObjectForKey:key];
-		if (val == nil) { val = [NSNumber numberWithFloat:0.0]; }
-		[self setValue:val forKey:key];
-	}
-	if (numIvars > 0) { free(ivars); }
-	[pool drain];
-	return self;
-}
-- (void) encodeWithCoder:(NSCoder *)encoder {
-	if ([super respondsToSelector:@selector(encodeWithCoder:)] && ![self isKindOfClass:[super class]]) {
-		[super performSelector:@selector(encodeWithCoder:) withObject:encoder];
-	}
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	unsigned int numIvars = 0;
-	Ivar * ivars = class_copyIvarList([self class], &numIvars);
-	for (int i = 0; i < numIvars; i++) {
-		Ivar thisIvar = ivars[i];
-		NSString * key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];
-		id val = [self valueForKey:key];
-		[encoder encodeObject:val forKey:key];
-	}
-	if (numIvars > 0) { free(ivars); }
-	[pool drain];
-}
-@end
-@implementation ax21_WishList
-- (id)init
-{
-	if((self = [super init])) {
-		profileItemList = [[NSMutableArray alloc] init];
-		spsID = 0;
-	}
-	
-	return self;
-}
-- (void)dealloc
-{
-	if(profileItemList != nil) [profileItemList release];
-	if(spsID != nil) [spsID release];
-	
-	[super dealloc];
-}
-- (NSString *)nsPrefix
-{
-	return @"ax21";
-}
-- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix
-{
-	NSString *nodeName = nil;
-	if(elNSPrefix != nil && [elNSPrefix length] > 0)
-	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];
-	}
-	else
-	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"ax21", elName];
-	}
-	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
-	
-	[self addAttributesToNode:node];
-	
-	[self addElementsToNode:node];
-	
-	return node;
-}
-- (void)addAttributesToNode:(xmlNodePtr)node
-{
-	
-}
-- (void)addElementsToNode:(xmlNodePtr)node
-{
-	
-	if(self.profileItemList != 0) {
-		for(ax21_WishListProfileItem * child in self.profileItemList) {
-			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"profileItemList" elementNSPrefix:@"ax21"]);
-		}
-	} else {
-		xmlNodePtr newnode;
-		if([@"ax21" length] > 0) {
-			newnode = xmlNewDocNode(node->doc, NULL, [@"ax21:profileItemList" xmlString], NULL);        
-		} else {
-			newnode = xmlNewDocNode(node->doc, NULL, [@"profileItemList" xmlString], NULL);        
-		}
-        xmlNewProp(newnode, (const xmlChar *)"xsi:nil", (const xmlChar *)"true");
-        xmlAddChild(node, newnode);
-	}
-	if(self.spsID != 0) {
-		xmlAddChild(node, [self.spsID xmlNodeForDoc:node->doc elementName:@"spsID" elementNSPrefix:@"ax21"]);
-	}
-}
-/* elements */
-@synthesize profileItemList;
-- (void)addProfileItemList:(ax21_WishListProfileItem *)toAdd
-{
-	if(toAdd != nil) [profileItemList addObject:toAdd];
-}
-@synthesize spsID;
-/* attributes */
-- (NSDictionary *)attributes
-{
-	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-	
-	return attributes;
-}
-+ (ax21_WishList *)deserializeNode:(xmlNodePtr)cur
-{
-	ax21_WishList *newObject = [[ax21_WishList new] autorelease];
-	
-	[newObject deserializeAttributesFromNode:cur];
-	[newObject deserializeElementsFromNode:cur];
-	
-	return newObject;
-}
-- (void)deserializeAttributesFromNode:(xmlNodePtr)cur
-{
-}
-- (void)deserializeElementsFromNode:(xmlNodePtr)cur
-{
-	
-	
-	for( cur = cur->children ; cur != NULL ; cur = cur->next ) {
-		if(cur->type == XML_ELEMENT_NODE) {
-			xmlChar *elementText = xmlNodeListGetString(cur->doc, cur->children, 1);
-			NSString *elementString = nil;
-			
-			if(elementText != NULL) {
-				elementString = [NSString stringWithCString:(char*)elementText encoding:NSUTF8StringEncoding];
-				[elementString self]; // avoid compiler warning for unused var
-				xmlFree(elementText);
-			}
-			if(xmlStrEqual(cur->name, (const xmlChar *) "profileItemList")) {
-				BOOL nilProperty = NO;
-                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
-                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
-                       attr->children &&
-                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
-                        nilProperty = YES;
-                        break;
-                }
-                if (nilProperty == NO) {
-					Class elementClass = nil;
-					xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
-					if(instanceType == NULL) {
-						elementClass = [ax21_WishListProfileItem class];
-					} else {
-						NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
-					
-						NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
-					
-						NSString *elementClassString = nil;
-						if([elementTypeArray count] > 1) {
-							NSString *prefix = [elementTypeArray objectAtIndex:0];
-							NSString *localName = [elementTypeArray objectAtIndex:1];
-						
-							xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
-						
-							NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
-						
-							elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
-						} else {
-							elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
-						}
-					
-						elementClass = NSClassFromString(elementClassString);
-						xmlFree(instanceType);
-					}
-				
-					id newChild = [elementClass deserializeNode:cur];
-				
-					if(newChild != nil) [self.profileItemList addObject:newChild];
-				}
-			}
-			if(xmlStrEqual(cur->name, (const xmlChar *) "spsID")) {
-				BOOL nilProperty = NO;
-                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
-                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
-                       attr->children &&
-                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
-                        nilProperty = YES;
-                        break;
-                }
-                if (nilProperty == NO) {
-					Class elementClass = nil;
-					xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
-					if(instanceType == NULL) {
-						elementClass = [NSNumber class];
-					} else {
-						NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
-					
-						NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
-					
-						NSString *elementClassString = nil;
-						if([elementTypeArray count] > 1) {
-							NSString *prefix = [elementTypeArray objectAtIndex:0];
-							NSString *localName = [elementTypeArray objectAtIndex:1];
-						
-							xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
-						
-							NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
-						
-							elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
-						} else {
-							elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
-						}
-					
-						elementClass = NSClassFromString(elementClassString);
-						xmlFree(instanceType);
-					}
-				
-					id newChild = [elementClass deserializeNode:cur];
-				
-					self.spsID = newChild;
 				}
 			}
 		}
