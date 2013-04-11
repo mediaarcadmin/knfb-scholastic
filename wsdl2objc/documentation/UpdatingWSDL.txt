@@ -2,10 +2,21 @@ Steps to recreate the code for a WSDL in Storia:
 
 * Download the relevant WSDL file you would like to generate code for:
   
-    http://laesb.uat.cld.libredigital.com/services/LibreAccessService?wsdl
+    http://laesb.uat.cld.libredigital.com/services/LibreAccessService_1_2_0?wsdl
+    http://laesb.qa.cld.libredigital.com/services/LibreAccessActivityLogV2?wsdl
     https://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate?wsdl
-    https://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo?wsdl
+    https://esvcsqa2.scholastic.com/SchWS/services/SPS/GetUserInfo?wsdl
     https://esvcsqa.scholastic.com/SchWS/services/SPS/WishListService?wsdl
+
+* Download latest type definition files:
+    http://laesb.uat.cld.libredigital.com/services/LibreAccessService_1_2_0?xsd=types_1_2_0.xsd
+    http://laesb.qa.cld.libredigital.com/services/LibreAccessActivityLogV2?xsd=types_1_3.xsd
+
+* Comment out unused types in types_1_3.xsd
+
+* Comment out unused methods in LibreAccessActivityLog WSDL (everything except SaveActivityLog*)
+
+* Edit Libre WSDLs so as to make local reference to respective type definition files
 
 * Compile and execute the WSDLParser project (https://bitwink.codebasehq.com/projects/scholastic/repositories/wsdl2objc-2/tree/master)
 * You should set the WSDL file, output location and various settings for each WSDL, as shown below:
@@ -19,7 +30,7 @@ Steps to recreate the code for a WSDL in Storia:
     ☐ exclude http://
     ☑ exclude https://
 
-    **LibreAccess.wsdl / LibreAccessActivityLog.wsdl**
+    **LibreAccessService_1_2_0.wsdl / LibreAccessActivityLogV2.wsdl**
     ☑ Add tag to service name (avoid name conflicts)
     Change namespace prefix: LibreAccessService / LibreAccessActivityLog
     ☑ Remove parameter namespace
@@ -31,6 +42,7 @@ Steps to recreate the code for a WSDL in Storia:
 * Click 'Parse WSDL'
 * Copy all the generated files to Scholastic/Shared/Libraries/WSDL2ObjC - overwrite the existing files
 * Copy the original WSDL to Scholastic/Shared/Libraries/WSDL2ObjC - overwrite the existing file
+* NOTE: Parse the LibreAccessActivityLog WSDL before the LibreAccessService WSDL.  After parsing the LibreAccessActivityLog WSDL, rename tns1.* to LibreAccessActivityLogSvc_tns1.*, change corresponding #import statements in LibreAccessActivityLogSvc.h and LibreAccessActivityLogSvc_tns1.m.  Also change tns1_StatusHolder to tns1_StatusHolder2 in LibreAccessActivityLogSvc_tns1.*.   
 * Perform a clean build and execute Storia
 * As a sanity check you can diff the new files and review the changes - **it is highly recommended to use command line diff for LibreAccessServiceSvc.m**
 * Commit the changes
