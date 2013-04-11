@@ -1,2013 +1,2257 @@
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://webservices.libredigital.com/LibreAccess/schema/types/v1.2.0" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://webservices.libredigital.com/LibreAccess/schema/types/v1.2.0">
-<xsd:simpleType name="statuscodes">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="SUCCESS"/>
-<xsd:enumeration value="FAIL"/>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:complexType name="DBSchemaErrorList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="errorItem" type="tns:DBSchemaErrorItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="StatusHolder">
-<xsd:sequence>
-<xsd:element name="status" type="tns:statuscodes"/>
-<xsd:element minOccurs="0" name="statuscode" type="xsd:long"/>
-<xsd:element minOccurs="0" name="statusmessage" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ItemsCount">
-<xsd:sequence>
-<xsd:element name="Returned" type="xsd:int"/>
-<xsd:element name="Found" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:simpleType name="ProfileTypes">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="PARENT"/>
-<xsd:enumeration value="CHILD"/>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:simpleType name="BookshelfStyle">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="YOUNG_CHILD"/>
-<xsd:enumeration value="OLDER_CHILD"/>
-<xsd:enumeration value="ADULT"/>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:complexType name="UserContentItem">
-<xsd:sequence>
-<xsd:element name="ContentIdentifier" type="xsd:string"/>
-<xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
-<xsd:element name="Format" type="xsd:string"/>
-<xsd:element name="Version" type="xsd:string"/>
-<xsd:element name="AverageRating" type="xsd:decimal"/>
-<xsd:element name="numVotes" type="xsd:long"/>
-<xsd:element minOccurs="0" name="ContentProfileList" type="tns:ContentProfileList"/>
-<xsd:element minOccurs="0" name="OrderList" type="tns:OrderList"/>
-<xsd:element name="lastmodified" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="DefaultAssignment" type="xsd:boolean"/>
-<xsd:element name="FreeBook" type="xsd:boolean"/>
-<xsd:element name="LastVersion" type="xsd:string"/>
-<xsd:element minOccurs="0" name="Quantity" type="xsd:int"/>
-<xsd:element minOccurs="0" name="QuantityInit" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:simpleType name="drmqualifiers">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="FULL_WITH_DRM"/>
-<xsd:enumeration value="FULL_NO_DRM"/>
-<xsd:enumeration value="SAMPLE"/>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:simpleType name="TopFavoritesTypes">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="EREADER_CATEGORY"/>
-<xsd:enumeration value="EREADER_CATEGORY_CLASS"/>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:complexType name="isbnItem">
-<xsd:sequence>
-<xsd:element name="ISBN" type="xsd:string"/>
-<xsd:element minOccurs="0" name="Format" type="xsd:string"/>
-<xsd:element minOccurs="0" name="IdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element minOccurs="0" name="Qualifier" type="tns:drmqualifiers"/>
-<xsd:element minOccurs="0" name="version" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ContentMetadataItem">
-<xsd:sequence>
-<xsd:element minOccurs="0" name="ContentIdentifier" type="xsd:string"/>
-<xsd:element minOccurs="0" name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="AverageRating" type="xsd:decimal"/>
-<xsd:element name="numVotes" type="xsd:long"/>
-<xsd:element minOccurs="0" name="Title" type="xsd:string"/>
-<xsd:element minOccurs="0" name="Author" type="xsd:string"/>
-<xsd:element minOccurs="0" name="Description" type="xsd:string"/>
-<xsd:element minOccurs="0" name="Version" type="xsd:string"/>
-<xsd:element minOccurs="0" name="PageNumber" type="xsd:int"/>
-<xsd:element minOccurs="0" name="FileSize" type="xsd:int"/>
-<xsd:element minOccurs="0" name="DRMQualifier" type="tns:drmqualifiers"/>
-<xsd:element minOccurs="0" name="CoverURL" type="xsd:anyURI"/>
-<xsd:element minOccurs="0" name="ContentURL" type="xsd:anyURI"/>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="EreaderCategories" type="xsd:string"/>
-<xsd:element minOccurs="0" name="Enhanced" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="ThumbnailURL" type="xsd:anyURI"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:simpleType name="ContentIdentifierTypes">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="ISBN13"/>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:simpleType name="SaveActions">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="CREATE"/>
-<xsd:enumeration value="UPDATE"/>
-<xsd:enumeration value="REMOVE"/>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:complexType name="ContentProfileAssignmentList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="ContentProfileAssignmentItem" type="tns:ContentProfileAssignmentItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ContentProfileAssignmentItem">
-<xsd:sequence>
-<xsd:element name="contentIdentifier" type="xsd:string"/>
-<xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
-<xsd:element name="format" type="xsd:string"/>
-<xsd:element name="AssignedProfileList" type="tns:AssignedProfileList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="TopRatingsRequestList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="TopRatingsRequestItem" type="tns:TopRatingsRequestItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="TopRatingsRequestItem">
-<xsd:sequence>
-<xsd:element name="TopRatingsType" type="tns:TopFavoritesTypes"/>
-<xsd:element name="TopRatingsTypeValue" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="TopRatingsResponseList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="TopRatingsResponseItem" type="tns:TopRatingsResponseItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="TopRatingsResponseItem">
-<xsd:sequence>
-<xsd:element minOccurs="0" name="TopRatingsType" type="tns:TopFavoritesTypes"/>
-<xsd:element name="TopRatingsTypeValue" type="xsd:string"/>
-<xsd:element minOccurs="0" name="TopRatingsContentItems" type="tns:TopRatingsContentItems"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="TopRatingsContentItems">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="TopRatingsContentItem" type="tns:TopRatingsContentItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="TopRatingsContentItem">
-<xsd:sequence>
-<xsd:element name="ContentIdentifier" type="xsd:string"/>
-<xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="AverageRating" type="xsd:decimal"/>
-<xsd:element name="numVotes" type="xsd:long"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AssignedProfileList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="AssignedProfileItem" type="tns:AssignedProfileItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AssignedProfileItem">
-<xsd:sequence>
-<xsd:element name="profileID" type="xsd:int"/>
-<xsd:element name="action" type="tns:SaveActions"/>
-<xsd:element name="lastmodified" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ContentProfileList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="contentProfileItem" type="tns:ContentProfileItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ContentProfileItem">
-<xsd:sequence>
-<xsd:element name="profileID" type="xsd:int"/>
-<xsd:element name="isFavorite" type="xsd:boolean"/>
-<xsd:element name="rating" type="xsd:int"/>
-<xsd:element name="lastPageLocation" type="xsd:int"/>
-<xsd:element name="lastmodified" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="OrderList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="OrderItem" type="tns:OrderItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="OrderItem">
-<xsd:sequence>
-<xsd:element name="corpInfo" type="tns:CorpInfo"/>
-<xsd:element minOccurs="0" name="orderSourceInfo" type="tns:OrderSourceInfo"/>
-<xsd:element minOccurs="0" name="orderIdSourceField" type="xsd:string"/>
-<xsd:element minOccurs="0" name="orderId" type="xsd:string"/>
-<xsd:element name="orderDate" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="contentGroup" type="xsd:string"/>
-<xsd:element minOccurs="0" name="childId" type="xsd:string"/>
-<xsd:element minOccurs="0" name="teacherId" type="xsd:string"/>
-<xsd:element minOccurs="0" name="refId3" type="xsd:string"/>
-<xsd:element minOccurs="0" name="refId4" type="xsd:string"/>
-<xsd:element minOccurs="0" name="refId5" type="xsd:string"/>
-<xsd:element name="transactionDate" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="UCN" type="xsd:string"/>
-<xsd:element name="quantity" type="xsd:int"/>
-<xsd:element minOccurs="0" name="quantityInit" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="OrderSourceInfo">
-<xsd:sequence>
-<xsd:element minOccurs="0" name="srcSystem" type="xsd:string"/>
-<xsd:element minOccurs="0" name="srcFile" type="xsd:string"/>
-<xsd:element minOccurs="0" name="srcKey" type="xsd:long"/>
-<xsd:element minOccurs="0" name="srcUserId" type="xsd:long"/>
-<xsd:element minOccurs="0" name="srcHost" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="CorpInfo">
-<xsd:sequence>
-<xsd:element minOccurs="0" name="transactionIdSourceField" type="xsd:string"/>
-<xsd:element minOccurs="0" name="transactionId" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="SaveProfileList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="SaveProfileItem" type="tns:SaveProfileItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="SaveProfileItem">
-<xsd:sequence>
-<xsd:element minOccurs="0" name="AutoAssignContentToProfiles" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="ProfilePasswordRequired" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="Firstname" type="xsd:string"/>
-<xsd:element minOccurs="0" name="Lastname" type="xsd:string"/>
-<xsd:element minOccurs="0" name="BirthDay" type="xsd:dateTime"/>
-<xsd:element name="LastModified" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="screenname" type="xsd:string"/>
-<xsd:element minOccurs="0" name="password" type="xsd:string"/>
-<xsd:element minOccurs="0" name="userkey" type="xsd:string"/>
-<xsd:element minOccurs="0" name="type" type="tns:ProfileTypes"/>
-<xsd:element name="id" type="xsd:int"/>
-<xsd:element name="action" type="tns:SaveActions"/>
-<xsd:element minOccurs="0" name="BookshelfStyle" type="tns:BookshelfStyle"/>
-<xsd:element minOccurs="0" name="storyInteractionEnabled" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="recommendationsOn" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="allowReadThrough" type="xsd:boolean"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ProfileList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="ProfileItem" type="tns:ProfileItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ProfileItem">
-<xsd:sequence>
-<xsd:element name="AutoAssignContentToProfiles" type="xsd:boolean"/>
-<xsd:element name="ProfilePasswordRequired" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="Firstname" type="xsd:string"/>
-<xsd:element minOccurs="0" name="Lastname" type="xsd:string"/>
-<xsd:element minOccurs="0" name="BirthDay" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="screenname" type="xsd:string"/>
-<xsd:element minOccurs="0" name="password" type="xsd:string"/>
-<xsd:element minOccurs="0" name="userkey" type="xsd:string"/>
-<xsd:element name="type" type="tns:ProfileTypes"/>
-<xsd:element name="id" type="xsd:int"/>
-<xsd:element minOccurs="0" name="BookshelfStyle" type="tns:BookshelfStyle"/>
-<xsd:element name="LastModified" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="LastScreenNameModified" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="LastPasswordModified" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="storyInteractionEnabled" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="recommendationsOn" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="allowReadThrough" type="xsd:boolean"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ProfileStatusList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="ProfileStatusItem" type="tns:ProfileStatusItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ProfileStatusItem">
-<xsd:sequence>
-<xsd:element name="id" type="xsd:int"/>
-<xsd:element name="action" type="tns:SaveActions"/>
-<xsd:element name="status" type="tns:statuscodes"/>
-<xsd:element minOccurs="0" name="screenname" type="xsd:string"/>
-<xsd:element minOccurs="0" name="statuscode" type="xsd:int"/>
-<xsd:element minOccurs="0" name="statusmessage" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="DeviceItem">
-<xsd:sequence>
-<xsd:element name="DeviceKey" type="xsd:string"/>
-<xsd:element minOccurs="0" name="DeviceId" type="xsd:integer"/>
-<xsd:element minOccurs="0" name="AutoloadContent" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="DevicePlatform" type="xsd:string"/>
-<xsd:element minOccurs="0" name="DeviceNickname" type="xsd:string"/>
-<xsd:element minOccurs="0" name="Active" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="RemoveReason" type="xsd:string"/>
-<xsd:element minOccurs="0" name="BadLoginAttempts" type="xsd:long"/>
-<xsd:element minOccurs="0" name="BadLoginDatetimeUTC" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="DeregistrationConfirmed" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="lastmodified" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="lastactivated" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="DeviceList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="DeviceItem" type="tns:DeviceItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationsRequestList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="AnnotationsRequestItem" type="tns:AnnotationsRequestItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationsRequestItem">
-<xsd:sequence>
-<xsd:element name="AnnotationsRequestContentList" type="tns:AnnotationsRequestContentList"/>
-<xsd:element name="profileID" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationsRequestContentList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="AnnotationsRequestContentItem" type="tns:AnnotationsRequestContentItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationsRequestContentItem">
-<xsd:sequence>
-<xsd:element name="contentIdentifier" type="xsd:string"/>
-<xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
-<xsd:element name="format" type="xsd:string"/>
-<xsd:element name="PrivateAnnotationsRequest" type="tns:PrivateAnnotationsRequest"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="PrivateAnnotationsRequest">
-<xsd:sequence>
-<xsd:element name="version" type="xsd:int"/>
-<xsd:element name="HighlightsAfter" type="xsd:dateTime"/>
-<xsd:element name="NotesAfter" type="xsd:dateTime"/>
-<xsd:element name="BookmarksAfter" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationsList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="AnnotationsItem" type="tns:AnnotationsItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationsItem">
-<xsd:sequence>
-<xsd:element name="AnnotationsContentList" type="tns:AnnotationsContentList"/>
-<xsd:element name="profileID" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationsContentList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="AnnotationsContentItem" type="tns:AnnotationsContentItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationsContentItem">
-<xsd:sequence>
-<xsd:element name="contentIdentifier" type="xsd:string"/>
-<xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
-<xsd:element name="format" type="xsd:string"/>
-<xsd:element name="PrivateAnnotations" type="tns:PrivateAnnotations"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="PrivateAnnotations">
-<xsd:sequence>
-<xsd:element name="Highlights" type="tns:Highlights"/>
-<xsd:element name="Notes" type="tns:Notes"/>
-<xsd:element name="Bookmarks" type="tns:Bookmarks"/>
-<xsd:element minOccurs="0" name="LastPage" type="tns:LastPage"/>
-<xsd:element minOccurs="0" name="Rating" type="tns:Rating"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="Highlights">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="Highlight" type="tns:Highlight"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="Highlight">
-<xsd:sequence>
-<xsd:element minOccurs="0" name="id" type="xsd:integer"/>
-<xsd:element minOccurs="0" name="action" type="tns:SaveActions"/>
-<xsd:element minOccurs="0" name="color" type="xsd:string"/>
-<xsd:element minOccurs="0" name="location" type="tns:LocationText"/>
-<xsd:element minOccurs="0" name="endPage" type="xsd:integer"/>
-<xsd:element name="version" type="xsd:int"/>
-<xsd:element name="lastmodified" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LocationText">
-<xsd:sequence>
-<xsd:element name="page" type="xsd:int"/>
-<xsd:element name="wordindex" type="tns:WordIndex"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="WordIndex">
-<xsd:sequence>
-<xsd:element name="start" type="xsd:int"/>
-<xsd:element name="end" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="Notes">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="Note" type="tns:Note"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="Note">
-<xsd:sequence>
-<xsd:element minOccurs="0" name="id" type="xsd:integer"/>
-<xsd:element minOccurs="0" name="action" type="tns:SaveActions"/>
-<xsd:element minOccurs="0" name="location" type="tns:LocationGraphics"/>
-<xsd:element minOccurs="0" name="color" type="xsd:string"/>
-<xsd:element minOccurs="0" name="value" type="xsd:string"/>
-<xsd:element name="version" type="xsd:int"/>
-<xsd:element name="lastmodified" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LocationGraphics">
-<xsd:sequence>
-<xsd:element name="page" type="xsd:int"/>
-<xsd:element name="coords" type="tns:Coords"/>
-<xsd:element minOccurs="0" name="wordindex" type="xsd:integer"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="Coords">
-<xsd:sequence>
-<xsd:element name="x" type="xsd:int"/>
-<xsd:element name="y" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="Bookmarks">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="Bookmark" type="tns:Bookmark"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="Bookmark">
-<xsd:sequence>
-<xsd:element minOccurs="0" name="id" type="xsd:integer"/>
-<xsd:element minOccurs="0" name="action" type="tns:SaveActions"/>
-<xsd:element minOccurs="0" name="text" type="xsd:string"/>
-<xsd:element minOccurs="0" name="disabled" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="location" type="tns:LocationBookmark"/>
-<xsd:element name="version" type="xsd:int"/>
-<xsd:element name="lastmodified" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LocationBookmark">
-<xsd:sequence>
-<xsd:element name="page" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="Favorite">
-<xsd:sequence>
-<xsd:element name="isFavorite" type="xsd:boolean"/>
-<xsd:element name="lastmodified" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="Rating">
-<xsd:sequence>
-<xsd:element name="rating" type="xsd:int"/>
-<xsd:element name="lastmodified" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="averageRating" type="xsd:decimal"/>
-<xsd:element minOccurs="0" name="numVotes" type="xsd:long"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastPage">
-<xsd:sequence>
-<xsd:element name="lastPageLocation" type="xsd:int"/>
-<xsd:element minOccurs="0" name="percentage" type="xsd:float"/>
-<xsd:element minOccurs="0" name="component" type="xsd:string"/>
-<xsd:element name="lastmodified" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationStatusList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="AnnotationStatusItem" type="tns:AnnotationStatusItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationStatusItem">
-<xsd:sequence>
-<xsd:element name="profileId" type="xsd:int"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="AnnotationStatusContentList" type="tns:AnnotationStatusContentList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationStatusContentList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="AnnotationStatusContentItem" type="tns:AnnotationStatusContentItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationStatusContentItem">
-<xsd:sequence>
-<xsd:element name="contentIdentifier" type="xsd:string"/>
-<xsd:element name="AverageRating" type="xsd:decimal"/>
-<xsd:element name="numVotes" type="xsd:long"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="PrivateAnnotationsStatus" type="tns:PrivateAnnotationsStatus"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="PrivateAnnotationsStatus">
-<xsd:sequence>
-<xsd:element name="HighlightsStatusList" type="tns:AnnotationTypeStatusList"/>
-<xsd:element name="NotesStatusList" type="tns:AnnotationTypeStatusList"/>
-<xsd:element name="BookmarksStatusList" type="tns:AnnotationTypeStatusList"/>
-<xsd:element minOccurs="0" name="FavoriteStatus" type="tns:AnnotationTypeStatusItem"/>
-<xsd:element minOccurs="0" name="LastPageStatus" type="tns:AnnotationTypeStatusItem"/>
-<xsd:element minOccurs="0" name="RatingStatus" type="tns:AnnotationTypeStatusItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationTypeStatusList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="AnnotationTypeStatusItem" type="tns:AnnotationTypeStatusItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AnnotationTypeStatusItem">
-<xsd:sequence>
-<xsd:element minOccurs="0" name="id" type="xsd:int"/>
-<xsd:element minOccurs="0" name="action" type="tns:SaveActions"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:simpleType name="aggregationPeriod">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="ALL"/>
-<xsd:enumeration value="WEEK"/>
-<xsd:enumeration value="MONTH"/>
-<xsd:enumeration value="COMBINED"/>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:complexType name="ReadingStatsAggregateList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="ReadingStatsAggregateItem" type="tns:ReadingStatsAggregateItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ReadingStatsAggregateItem">
-<xsd:sequence>
-<xsd:element name="pagesRead" type="xsd:int"/>
-<xsd:element name="storyInteractions" type="xsd:int"/>
-<xsd:element name="contentOpened" type="xsd:int"/>
-<xsd:element name="dictionaryLookups" type="xsd:int"/>
-<xsd:element name="readEvents" type="xsd:int"/>
-<xsd:element name="readingDuration" type="xsd:int"/>
-<xsd:element name="profileID" type="xsd:int"/>
-<xsd:element minOccurs="0" name="period" type="tns:aggregationPeriod"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ReadingStatsDetailList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="ReadingStatsDetailItem" type="tns:ReadingStatsDetailItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ReadingStatsDetailItem">
-<xsd:sequence>
-<xsd:element minOccurs="0" name="ReadingStatsContentList" type="tns:ReadingStatsContentList"/>
-<xsd:element minOccurs="0" name="profileID" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ReadingStatsContentList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="ReadingStatsContentItem" type="tns:ReadingStatsContentItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ReadingStatsContentItem">
-<xsd:sequence>
-<xsd:element minOccurs="0" name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element minOccurs="0" name="contentIdentifier" type="xsd:string"/>
-<xsd:element minOccurs="0" name="drmqualifier" type="tns:drmqualifiers"/>
-<xsd:element minOccurs="0" name="format" type="xsd:string"/>
-<xsd:element minOccurs="0" name="ReadingStatsEntryList" type="tns:ReadingStatsEntryList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ReadingStatsEntryList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="ReadingStatsEntryItem" type="tns:ReadingStatsEntryItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ReadingStatsEntryItem">
-<xsd:sequence>
-<xsd:element name="readingDuration" type="xsd:int"/>
-<xsd:element name="pagesRead" type="xsd:int"/>
-<xsd:element name="storyInteractions" type="xsd:int"/>
-<xsd:element minOccurs="0" name="dictionaryLookups" type="xsd:int"/>
-<xsd:element minOccurs="0" name="deviceKey" type="xsd:string"/>
-<xsd:element name="timestamp" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="DictionaryLookupsList" type="tns:DictionaryLookupsList"/>
-<xsd:element minOccurs="0" name="quizResults" type="tns:QuizTrialsList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="QuizTrialsList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="quizTrialsItem" type="tns:QuizTrialsItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="QuizTrialsItem">
-<xsd:sequence>
-<xsd:element name="quizScore" type="xsd:int"/>
-<xsd:element name="quizTotal" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="DictionaryLookupsList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="dictionaryLookupsItem" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LookupWordList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="lookupWordItem" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="MonthlyAverageProfileList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="monthlyAverageProfileItem" type="tns:MonthlyAverageProfileItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="MonthlyAverageProfileItem">
-<xsd:sequence>
-<xsd:element name="profileID" type="xsd:int"/>
-<xsd:element name="monthlyAverageList" type="tns:MonthlyAverageList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="MonthlyAverageList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="monthlyAverageItem" type="tns:MonthlyAverageItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="MonthlyAverageItem">
-<xsd:sequence>
-<xsd:element name="month" type="xsd:int"/>
-<xsd:element name="year" type="xsd:int"/>
-<xsd:element minOccurs="0" name="guidedReadingLevel" type="xsd:string"/>
-<xsd:element name="eBooksCompleted" type="xsd:long"/>
-<xsd:element name="readingDuration" type="xsd:int"/>
-<xsd:element minOccurs="0" name="eBookLexileLevel" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AggregateByTitleProfileList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="aggregateByTitleProfileItem" type="tns:AggregateByTitleProfileItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AggregateByTitleProfileItem">
-<xsd:sequence>
-<xsd:element name="profileID" type="xsd:int"/>
-<xsd:element name="aggregateByTitleList" type="tns:AggregateByTitleList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AggregateByTitleList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="aggregateByTitleItem" type="tns:AggregateByTitleItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AggregateByTitleItem">
-<xsd:sequence>
-<xsd:element name="bookIdentifier" type="tns:BookIdentifier"/>
-<xsd:element name="readingDuration" type="xsd:int"/>
-<xsd:element name="lastReadTimestamp" type="xsd:dateTime"/>
-<xsd:element name="pagesRead" type="xsd:int"/>
-<xsd:element name="quizItem" type="tns:QuizItem"/>
-<xsd:element name="lookupWordList" type="tns:LookupWordList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="DailyAggregateByTitleProfileList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="dailyAggregateByTitleProfileItem" type="tns:DailyAggregateByTitleProfileItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="DailyAggregateByTitleProfileItem">
-<xsd:sequence>
-<xsd:element name="profileID" type="xsd:int"/>
-<xsd:element name="dailyAggregateByTitleList" type="tns:DailyAggregateByTitleList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="DailyAggregateByTitleList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="dailyAggregateByTitleItem" type="tns:DailyAggregateByTitleItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="DailyAggregateByTitleItem">
-<xsd:sequence>
-<xsd:element name="date" type="xsd:date"/>
-<xsd:element name="bookIdentifier" type="tns:BookIdentifier"/>
-<xsd:element name="readingDuration" type="xsd:int"/>
-<xsd:element name="pagesRead" type="xsd:int"/>
-<xsd:element name="timesRead" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="QuizItem">
-<xsd:sequence>
-<xsd:element name="firstScore" type="xsd:int"/>
-<xsd:element name="bestScore" type="xsd:int"/>
-<xsd:element name="total" type="xsd:int"/>
-<xsd:element name="lastTimestamp" type="xsd:dateTime"/>
-<xsd:element name="numberOfTrials" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="BookIdentifierList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="bookIdentifier" type="tns:BookIdentifier"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="BookIdentifier">
-<xsd:sequence>
-<xsd:element name="contentIdentifier" type="xsd:string"/>
-<xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="BookshelfEntryList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="BookShelfEntryItem" type="tns:BookShelfEntryItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="BookShelfEntryItem">
-<xsd:sequence>
-<xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="contentidentifier" type="xsd:string"/>
-<xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
-<xsd:element name="format" type="xsd:string"/>
-<xsd:element minOccurs="0" name="quantity" type="xsd:int"/>
-<xsd:element minOccurs="0" name="notes" type="xsd:string"/>
-<xsd:element minOccurs="0" name="profileIdList" type="tns:ProfileIdList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ProfileIdList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="profileId" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ProfileBookshelfEntryList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="ProfileBookshelfEntryItem" type="tns:ProfileBookshelfEntryItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ProfileBookshelfEntryItem">
-<xsd:sequence>
-<xsd:element name="profileId" type="xsd:int"/>
-<xsd:element name="BookshelfEntryLastPageList" type="tns:BookshelfEntryLastPageList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="BookshelfEntryLastPageList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="BookShelfEntryLastPageItem" type="tns:BookShelfEntryLastPageItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="BookShelfEntryLastPageItem">
-<xsd:sequence>
-<xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="contentidentifier" type="xsd:string"/>
-<xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
-<xsd:element name="format" type="xsd:string"/>
-<xsd:element name="LastPage" type="tns:LastPage"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="FavoriteTypesList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="FavoriteTypesItem" type="tns:FavoriteTypesItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="FavoriteTypesItem">
-<xsd:sequence>
-<xsd:element name="FavoriteType" type="tns:TopFavoritesTypes"/>
-<xsd:element name="FavoriteTypeValuesList" type="tns:FavoriteTypeValuesList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="FavoriteTypeValuesList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="FavoriteTypesValuesItem" type="tns:FavoriteTypesValuesItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="FavoriteTypesValuesItem">
-<xsd:sequence>
-<xsd:element name="Value" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="SettingsList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="settingItem" type="tns:SettingItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="SettingItem">
-<xsd:sequence>
-<xsd:element name="settingName" type="xsd:string"/>
-<xsd:element name="settingValue" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="SettingStatusList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="settingStatusItem" type="tns:SettingStatusItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="SettingStatusItem">
-<xsd:sequence>
-<xsd:element name="settingName" type="xsd:string"/>
-<xsd:element name="statusMessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AutoAssignProfilesList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="AutoAssignProfilesItem" type="tns:AutoAssignProfilesItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AutoAssignProfilesItem">
-<xsd:sequence>
-<xsd:element name="profileId" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ReadBooksList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="ReadBooksItem" type="tns:ReadBooksItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ReadBooksItem">
-<xsd:sequence>
-<xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="contentIdentifier" type="xsd:string"/>
-<xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
-<xsd:element name="format" type="xsd:string"/>
-<xsd:element name="version" type="xsd:int"/>
-<xsd:element name="ReadBooksProfilesList" type="tns:ReadBooksProfilesList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ReadBooksProfilesList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="ReadBooksProfilesItem" type="tns:ReadBooksProfilesItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ReadBooksProfilesItem">
-<xsd:sequence>
-<xsd:element name="profileId" type="xsd:int"/>
-<xsd:element name="lastReadEvent" type="xsd:dateTime"/>
-<xsd:element name="lastReadDuration" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNRequestReadBooksProfilesList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="LastNRequestReadBooksProfilesItem" type="tns:LastNRequestReadBooksProfilesItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNRequestReadBooksProfilesItem">
-<xsd:sequence>
-<xsd:element name="profileId" type="xsd:int"/>
-<xsd:element minOccurs="0" name="bookIdentifierList" type="tns:BookIdentifierList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNResponseReadBooksProfilesList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="LastNResponseReadBooksProfilesItem" type="tns:LastNResponseReadBooksProfilesItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNResponseReadBooksProfilesItem">
-<xsd:sequence>
-<xsd:element name="profileId" type="xsd:int"/>
-<xsd:element name="LastNReadBooksList" type="tns:LastNReadBooksList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNReadBooksList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="LastNReadBooksItem" type="tns:LastNReadBooksItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNReadBooksItem">
-<xsd:sequence>
-<xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="contentIdentifier" type="xsd:string"/>
-<xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
-<xsd:element name="format" type="xsd:string"/>
-<xsd:element name="version" type="xsd:int"/>
-<xsd:element name="lastReadEvent" type="xsd:dateTime"/>
-<xsd:element name="lastReadDuration" type="xsd:int"/>
-<xsd:element name="lastReadPages" type="xsd:int"/>
-<xsd:element name="lastPageLocation" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNRequestWordsList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="LastNRequestWordsItem" type="tns:LastNRequestWordsItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNRequestWordsItem">
-<xsd:sequence>
-<xsd:element name="profileId" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNResponseWordsList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="LastNResponseWordsItem" type="tns:LastNResponseWordsItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNResponseWordsItem">
-<xsd:sequence>
-<xsd:element name="profileId" type="xsd:int"/>
-<xsd:element name="LastNLookedUpWordsList" type="tns:LastNLookedUpWordsList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNLookedUpWordsList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="LastNLookedUpWordsItem" type="tns:LastNLookedUpWordsItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="LastNLookedUpWordsItem">
-<xsd:sequence>
-<xsd:element name="lookupWord" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="NotesList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="noteItem" type="tns:NoteItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="NoteItem">
-<xsd:sequence>
-<xsd:element name="actor" type="xsd:string"/>
-<xsd:element name="noteText" type="xsd:string"/>
-<xsd:element minOccurs="0" name="csrUserName" type="xsd:string"/>
-<xsd:element name="timestamp" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="DefaultBooksList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="DefaultBooksItem" type="tns:DefaultBooksItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="DefaultBooksItem">
-<xsd:sequence>
-<xsd:element name="contentidentifier" type="xsd:string"/>
-<xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
-<xsd:element name="Format" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AssignBooksToAllUsersList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="AssignBooksToAllUsersItem" type="tns:AssignBooksToAllUsersItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AssignBooksToAllUsersItem">
-<xsd:sequence>
-<xsd:element name="userKey" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AssignBooksToAllUsersBooksList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="AssignBooksToAllUsersBooksItem" type="tns:AssignBooksToAllUsersBooksItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="AssignBooksToAllUsersBooksItem">
-<xsd:sequence>
-<xsd:element name="contentidentifier" type="xsd:string"/>
-<xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
-<xsd:element name="Format" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ListRatingsRequestList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="listRatingsItem" type="tns:ListRatingsItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ListRatingsItem">
-<xsd:sequence>
-<xsd:element name="listRatingsContentList" type="tns:ListRatingsContentList"/>
-<xsd:element name="profileId" type="xsd:long"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ListRatingsContentList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="listRatingsContentItem" type="tns:ListRatingsContentItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ListRatingsContentItem">
-<xsd:sequence>
-<xsd:element name="contentIdentifier" type="xsd:string"/>
-<xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="RatingsStatusList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="ratingsStatusItem" type="tns:RatingsStatusItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="RatingsStatusItem">
-<xsd:sequence>
-<xsd:element name="profileId" type="xsd:long"/>
-<xsd:element name="statusMessage" type="tns:StatusHolder"/>
-<xsd:element name="profileRatingsStatusList" type="tns:ProfileRatingsStatusList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ProfileRatingsStatusList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="profileRatingsStatusItem" type="tns:ProfileRatingsStatusItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ProfileRatingsStatusItem">
-<xsd:sequence>
-<xsd:element name="contentIdentifier" type="xsd:string"/>
-<xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="rating" type="tns:Rating"/>
-<xsd:element name="statusMessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="RatingsList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="ratingsItem" type="tns:RatingsItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="RatingsItem">
-<xsd:sequence>
-<xsd:element name="profileRatingsList" type="tns:ProfileRatingsList"/>
-<xsd:element name="profileId" type="xsd:long"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ProfileRatingsList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" name="profileRatingsItem" type="tns:ProfileRatingsItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="ProfileRatingsItem">
-<xsd:sequence>
-<xsd:element name="contentIdentifier" type="xsd:string"/>
-<xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="rating" type="tns:Rating"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:element name="TokenExchange">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="ptoken" type="xsd:string"/>
-<xsd:element name="vaid" type="xsd:int"/>
-<xsd:element minOccurs="0" name="deviceKey" type="xsd:string"/>
-<xsd:element minOccurs="0" name="impersonationkey" type="xsd:string"/>
-<xsd:element minOccurs="0" name="UserName" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="TokenExchangeResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element minOccurs="0" name="authtoken" type="xsd:string"/>
-<xsd:element minOccurs="0" name="expiresIn" type="xsd:int"/>
-<xsd:element minOccurs="0" name="userKey" type="xsd:string"/>
-<xsd:element minOccurs="0" name="userType" type="xsd:int"/>
-<xsd:element minOccurs="0" name="deviceIsDeregistered" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="isNewUser" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="isCoppa" type="xsd:boolean"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SharedTokenExchangeRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="ptoken" type="xsd:string"/>
-<xsd:element name="vaid" type="xsd:int"/>
-<xsd:element minOccurs="0" name="deviceKey" type="xsd:string"/>
-<xsd:element minOccurs="0" name="impersonationkey" type="xsd:string"/>
-<xsd:element minOccurs="0" name="UserName" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SharedTokenExchangeResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="expires" type="xsd:long"/>
-<xsd:element name="expiresIn" type="xsd:int"/>
-<xsd:element minOccurs="0" name="ip" type="xsd:string"/>
-<xsd:element minOccurs="0" name="userKey" type="xsd:string"/>
-<xsd:element minOccurs="0" name="userhash" type="xsd:string"/>
-<xsd:element name="userType" type="xsd:int"/>
-<xsd:element minOccurs="0" name="deviceIsDeregistered" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="isNewUser" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="isCoppa" type="xsd:boolean"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="AuthenticateDeviceRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="vaid" type="xsd:int"/>
-<xsd:element name="deviceKey" type="xsd:string"/>
-<xsd:element minOccurs="0" name="userKey" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="AuthenticateDeviceResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="expiresIn" type="xsd:int"/>
-<xsd:element minOccurs="0" name="deviceIsDeregistered" type="xsd:boolean"/>
-<xsd:element minOccurs="0" name="userKey" type="xsd:string"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="RenewTokenRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="RenewTokenResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="expiresIn" type="xsd:int"/>
-<xsd:element minOccurs="0" name="userKey" type="xsd:string"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListBooksAssignmentRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authToken" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListBooksAssignmentResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusMessage" type="tns:StatusHolder"/>
-<xsd:element name="booksAssignmentList">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="booksAssignment" type="tns:BooksAssignment"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:complexType name="BooksAssignment">
-<xsd:sequence>
-<xsd:element name="ContentIdentifier" type="xsd:string"/>
-<xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
-<xsd:element name="Format" type="xsd:string"/>
-<xsd:element name="version" type="xsd:int"/>
-<xsd:element name="averageRating" type="xsd:decimal"/>
-<xsd:element name="numVotes" type="xsd:long"/>
-<xsd:element name="lastOrderDate" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="defaultAssignment" type="xsd:boolean"/>
-<xsd:element name="freeBook" type="xsd:boolean"/>
-<xsd:element name="lastVersion" type="xsd:int"/>
-<xsd:element minOccurs="0" name="quantity" type="xsd:int"/>
-<xsd:element minOccurs="0" name="quantityInit" type="xsd:int"/>
-<xsd:element minOccurs="0" name="contentProfileList" type="tns:ContentProfileList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:element name="ListUserContent">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListUserContentResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="userContentList" type="tns:UserContentList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:complexType name="UserContentList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="userContentItem" type="tns:UserContentItem"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:element name="ListContentMetadata">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="includeurls" type="xsd:boolean"/>
-<xsd:element default="false" minOccurs="0" name="coverURLOnly" type="xsd:boolean"/>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="isbn13s" type="tns:isbnItem"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListContentMetadataResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="ContentMetadataList">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="ContentMetadataItem" type="tns:ContentMetadataItem"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="IsEntitledToLicenseResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="isEntitled" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="EntitledToLicenseRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="contentidentifier" type="xsd:string"/>
-<xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveReadingStatisticsDetailedRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element minOccurs="0" name="ReadingStatsDetailList" type="tns:ReadingStatsDetailList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveReadingStatisticsDetailedResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadingStatisticsAggregateRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element minOccurs="0" name="profileId" type="xsd:integer"/>
-<xsd:element name="aggregationPeriod" type="tns:aggregationPeriod"/>
-<xsd:element name="countDeletedBooks" type="xsd:boolean"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadingStatisticsAggregateResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element minOccurs="0" name="ReadingStatsAggregateList" type="tns:ReadingStatsAggregateList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadingStatisticsDetailedRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="profileId" type="xsd:int"/>
-<xsd:element name="begindate" type="xsd:dateTime"/>
-<xsd:element name="enddate" type="xsd:dateTime"/>
-<xsd:element name="countDeletedBooks" type="xsd:boolean"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadingStatisticsDetailedResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element minOccurs="0" name="ReadingStatsDetailList" type="tns:ReadingStatsDetailList"/>
-<xsd:element name="ItemsCount" type="tns:ItemsCount"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadingStatisticsMonthlyAverageRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element minOccurs="0" name="profileIdList" type="tns:ProfileIdList"/>
-<xsd:element name="numberOfMonths" type="xsd:int"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadingStatisticsMonthlyAverageResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="monthlyAverageProfileList" type="tns:MonthlyAverageProfileList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadingStatisticsAggregateByTitleRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element minOccurs="0" name="profileIdList" type="tns:ProfileIdList"/>
-<xsd:element minOccurs="0" name="bookIdentifierList" type="tns:BookIdentifierList"/>
-<xsd:element minOccurs="0" name="maxWordCount" type="xsd:int"/>
-<xsd:element minOccurs="0" name="lastReadDate" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadingStatisticsAggregateByTitleResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="aggregateByTitleProfileList" type="tns:AggregateByTitleProfileList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadingStatisticsDailyAggregateByTitleRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element minOccurs="0" name="profileIdList" type="tns:ProfileIdList"/>
-<xsd:element name="numberOfDays" type="xsd:int"/>
-<xsd:element minOccurs="0" name="bookIdentifierList" type="tns:BookIdentifierList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadingStatisticsDailyAggregateByTitleResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="dailyAggregateByTitleProfileList" type="tns:DailyAggregateByTitleProfileList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveProfileContentAnnotationsRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="AnnotationsList" type="tns:AnnotationsList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveProfileContentAnnotationsResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="AnnotationStatusList" type="tns:AnnotationStatusList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListProfileContentAnnotationsRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="AnnotationsRequestList" type="tns:AnnotationsRequestList"/>
-<xsd:element minOccurs="0" name="includeRemoved" type="xsd:boolean"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListProfileContentAnnotationsResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="AnnotationsList" type="tns:AnnotationsList"/>
-<xsd:element name="ItemsCount" type="tns:ItemsCount"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="GetUserProfilesRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="GetUserProfilesResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="ProfileList" type="tns:ProfileList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveUserProfilesRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="SaveProfileList" type="tns:SaveProfileList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveUserProfilesResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element minOccurs="0" name="ProfileStatusList" type="tns:ProfileStatusList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListApplicationSettingsRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListApplicationSettingsResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="settingsList" type="tns:SettingsList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveContentProfileAssignmentRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="ContentProfileAssignmentList" type="tns:ContentProfileAssignmentList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveContentProfileAssignmentResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="GetDeviceInfoRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="GetDeviceInfoResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="DeviceInfoList" type="tns:DeviceList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveDeviceInfoRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="SaveDeviceList" type="tns:DeviceList"/>
-<xsd:element name="action" type="tns:SaveActions"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveDeviceInfoResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveNewDomainResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveNewDomainRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authToken" type="xsd:string"/>
-<xsd:element name="AccountId" type="xsd:string"/>
-<xsd:element name="Revision" type="xsd:long"/>
-<xsd:element name="DomainKeyPair" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="DeviceLeftDomainResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="DeviceLeftDomainRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="Authtoken" type="xsd:string"/>
-<xsd:element name="DeviceKey" type="xsd:string"/>
-<xsd:element name="ClientId" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="DeviceCanJoinDomainResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element minOccurs="0" name="AccountId" type="xsd:string"/>
-<xsd:element minOccurs="0" name="DomainKeyPair" type="xsd:string"/>
-<xsd:element minOccurs="0" name="Revision" type="xsd:long"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="DeviceCanJoinDomainRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authToken" type="xsd:string"/>
-<xsd:element minOccurs="0" name="DeviceNickname" type="xsd:string"/>
-<xsd:element name="DevicePlatform" type="xsd:string"/>
-<xsd:element name="DeviceKey" type="xsd:string"/>
-<xsd:element name="ClientId" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="GetLicensableStatusResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element minOccurs="0" name="AccountId" type="xsd:string"/>
-<xsd:element minOccurs="0" name="Revision" type="xsd:long"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="GetLicensableStatusRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authToken" type="xsd:string"/>
-<xsd:element name="KeyId" type="xsd:string"/>
-<xsd:element name="suppliedIdentifier" type="xsd:string"/>
-<xsd:element name="suppliedIdentifierType" type="xsd:string"/>
-<xsd:element name="TransactionId" type="xsd:string"/>
-<xsd:element name="ClientId" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="AcknowledgeLicenseResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="AcknowledgeLicenseRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="TransactionId" type="xsd:string"/>
-<xsd:element name="ClientId" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ValidateScreenNameRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="screenName" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ValidateScreenNameResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element minOccurs="0" name="result" type="xsd:boolean"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ValidateUserKeyRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="userKey" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ValidateUserKeyResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element minOccurs="0" name="result" type="xsd:boolean"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="DeleteBookShelfEntryRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="BookShelfEntryList" type="tns:BookshelfEntryList"/>
-<xsd:element name="cascade" type="xsd:boolean"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="DeleteBookShelfEntryResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="GetLastPageLocationRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="GetLastPageLocationResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element minOccurs="0" name="ProfileBookshelfEntryList" type="tns:ProfileBookshelfEntryList"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveLastPageLocationRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="ProfileBookshelfEntryList" type="tns:ProfileBookshelfEntryList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveLastPageLocationResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListFavoriteTypesRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListFavoriteTypesResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="FavoriteTypesList" type="tns:FavoriteTypesList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveUserSettingsRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="settingsList" type="tns:SettingsList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveUserSettingsResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="settingStatusList" type="tns:SettingStatusList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListUserSettingsRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListUserSettingsResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="settingsList" type="tns:SettingsList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SetAccountAutoAssignRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="AutoAssignProfilesList" type="tns:AutoAssignProfilesList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SetAccountAutoAssignResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SetAccountPasswordRequiredRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="passwordRequired" type="xsd:boolean"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SetAccountPasswordRequiredResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadBooksRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListReadBooksResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="ReadBooksList" type="tns:ReadBooksList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListLastNProfileReadBooksRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="lastBooksCount" type="xsd:int"/>
-<xsd:element default="false" name="uniqueBooks" type="xsd:boolean"/>
-<xsd:element name="LastNRequestReadBooksProfilesList" type="tns:LastNRequestReadBooksProfilesList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListLastNProfileReadBooksResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="LastNResponseReadBooksProfilesList" type="tns:LastNResponseReadBooksProfilesList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListLastNWordsRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="lastWordsCount" type="xsd:int"/>
-<xsd:element minOccurs="0" name="startDate" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="endDate" type="xsd:dateTime"/>
-<xsd:element name="LastNRequestWordsList" type="tns:LastNRequestWordsList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListLastNWordsResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="LastNResponseWordsList" type="tns:LastNResponseWordsList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="RemoveOrderRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authtoken" type="xsd:string"/>
-<xsd:element name="userKey" type="xsd:string"/>
-<xsd:element name="orderID" type="xsd:string"/>
-<xsd:element name="contentidentifier" type="xsd:string"/>
-<xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
-<xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
-<xsd:element name="Format" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="RemoveOrderResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveUserCSRNotesRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="CSRtoken" type="xsd:string"/>
-<xsd:element name="userKey" type="xsd:string"/>
-<xsd:element name="noteText" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveUserCSRNotesResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListUserCSRNotesRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="CSRtoken" type="xsd:string"/>
-<xsd:element name="userKey" type="xsd:string"/>
-<xsd:element minOccurs="0" name="lastNNotes" type="xsd:int"/>
-<xsd:element minOccurs="0" name="startDate" type="xsd:dateTime"/>
-<xsd:element minOccurs="0" name="endDate" type="xsd:dateTime"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListUserCSRNotesResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element minOccurs="0" name="notesList" type="tns:NotesList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="GetKeyIdRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="contentidentifier" type="xsd:string"/>
-<xsd:element minOccurs="0" name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="GetKeyIdResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="guid" type="xsd:string"/>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveDefaultBooksRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="CSRtoken" type="xsd:string"/>
-<xsd:element name="BooksList" type="tns:DefaultBooksList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveDefaultBooksResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListDefaultBooksRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authToken" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListDefaultBooksResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-<xsd:element name="BooksList" type="tns:DefaultBooksList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="RemoveDefaultBooksRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="CSRtoken" type="xsd:string"/>
-<xsd:element name="BooksList" type="tns:DefaultBooksList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="RemoveDefaultBooksResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="AssignBooksToAllUsersRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="CSRtoken" type="xsd:string"/>
-<xsd:element name="UsersList" type="tns:AssignBooksToAllUsersList"/>
-<xsd:element name="BooksList" type="tns:AssignBooksToAllUsersBooksList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="AssignBooksToAllUsersResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SetLoggingLevelRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="CSRtoken" type="xsd:string"/>
-<xsd:element name="Level" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SetLoggingLevelResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusmessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="HealthCheckRequest">
-<xsd:complexType/>
-</xsd:element>
-<xsd:element name="HealthCheckResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusCode" type="xsd:int"/>
-<xsd:element name="datapipe" type="xsd:string"/>
-<xsd:element name="gatewayDatabase" type="xsd:string"/>
-<xsd:element name="activityLogDatabase" type="xsd:string"/>
-<xsd:element name="endpoints" type="tns:EndpointsList"/>
-<xsd:element name="currentDBVersion" type="xsd:string"/>
-<xsd:element name="LA-version" type="xsd:string"/>
-<xsd:element minOccurs="0" name="DBSchemaErrors" type="tns:DBSchemaError"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:complexType name="DBSchemaError">
-<xsd:sequence>
-<xsd:element name="lastDBModify" type="xsd:dateTime"/>
-<xsd:element name="errorList" type="tns:DBSchemaErrorList"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:complexType name="DBSchemaErrorItem">
-<xsd:sequence>
-<xsd:element name="errorCode" type="xsd:string"/>
-<xsd:element name="error" type="xsd:string"/>
-<xsd:element name="type" type="tns:ErrorType"/>
-<xsd:element minOccurs="0" name="description" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:simpleType name="ErrorType">
-<xsd:restriction base="xsd:string">
-<xsd:enumeration value="WARNING"/>
-<xsd:enumeration value="ERROR"/>
-</xsd:restriction>
-</xsd:simpleType>
-<xsd:complexType name="EndpointsList">
-<xsd:sequence>
-<xsd:element maxOccurs="unbounded" minOccurs="0" name="Endpoint" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-<xsd:element name="GetVersionRequest">
-<xsd:complexType/>
-</xsd:element>
-<xsd:element name="GetVersionResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="version" type="xsd:string"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListTopRatingsRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authToken" type="xsd:string"/>
-<xsd:element name="count" type="xsd:int"/>
-<xsd:element name="topRatingsRequestList" type="tns:TopRatingsRequestList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListTopRatingsResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusMessage" type="tns:StatusHolder"/>
-<xsd:element minOccurs="0" name="topRatingsResponseList" type="tns:TopRatingsResponseList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveRatingsRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authToken" type="xsd:string"/>
-<xsd:element name="ratingsList" type="tns:RatingsList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="SaveRatingsResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusMessage" type="tns:StatusHolder"/>
-<xsd:element name="ratingsList" type="tns:RatingsStatusList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListRatingsRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authToken" type="xsd:string"/>
-<xsd:element name="ratingsList" type="tns:ListRatingsRequestList"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="ListRatingsResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusMessage" type="tns:StatusHolder"/>
-<xsd:element name="ratingsList" type="tns:RatingsStatusList"/>
-<xsd:element name="itemsCount" type="tns:ItemsCount"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="DeregisterAllDevicesRequest">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="authToken" type="xsd:string"/>
-<xsd:element minOccurs="0" name="deregistrationConfirmed" type="xsd:boolean"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
-<xsd:element name="DeregisterAllDevicesResponse">
-<xsd:complexType>
-<xsd:sequence>
-<xsd:element name="statusMessage" type="tns:StatusHolder"/>
-</xsd:sequence>
-</xsd:complexType>
-</xsd:element>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://webservices.libredigital.com/LibreAccess/schema/types/v1.2.0"
+            attributeFormDefault="unqualified"
+            elementFormDefault="unqualified"
+            targetNamespace="http://webservices.libredigital.com/LibreAccess/schema/types/v1.2.0"
+            version="1.8.2.0">
+   <xsd:simpleType name="statuscodes">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="SUCCESS"/>
+         <xsd:enumeration value="FAIL"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="DBSchemaErrorList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded" name="errorItem" type="tns:DBSchemaErrorItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="StatusHolder">
+      <xsd:sequence>
+         <xsd:element name="status" type="tns:statuscodes"/>
+         <xsd:element minOccurs="0" name="statuscode" type="xsd:long"/>
+         <xsd:element minOccurs="0" name="statusmessage" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ItemsCount">
+      <xsd:sequence>
+         <xsd:element name="Returned" type="xsd:int"/>
+         <xsd:element name="Found" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:simpleType name="ProfileTypes">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="PARENT"/>
+         <xsd:enumeration value="CHILD"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="BookshelfStyle">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="YOUNG_CHILD"/>
+         <xsd:enumeration value="OLDER_CHILD"/>
+         <xsd:enumeration value="ADULT"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="UserContentItem">
+      <xsd:sequence>
+         <xsd:element name="ContentIdentifier" type="xsd:string"/>
+         <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
+         <xsd:element name="Format" type="xsd:string"/>
+         <xsd:element name="Version" type="xsd:string"/>
+         <xsd:element name="AverageRating" type="xsd:decimal"/>
+         <xsd:element name="numVotes" type="xsd:long"/>
+         <xsd:element minOccurs="0"
+                      name="ContentProfileList"
+                      type="tns:ContentProfileList"/>
+         <xsd:element minOccurs="0" name="OrderList" type="tns:OrderList"/>
+         <xsd:element name="lastmodified" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="DefaultAssignment" type="xsd:boolean"/>
+         <xsd:element name="FreeBook" type="xsd:boolean"/>
+         <xsd:element name="LastVersion" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="Quantity" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="QuantityInit" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:simpleType name="drmqualifiers">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="FULL_WITH_DRM"/>
+         <xsd:enumeration value="FULL_NO_DRM"/>
+         <xsd:enumeration value="SAMPLE"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="TopFavoritesTypes">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="EREADER_CATEGORY"/>
+         <xsd:enumeration value="EREADER_CATEGORY_CLASS"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="isbnItem">
+      <xsd:sequence>
+         <xsd:element name="ISBN" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="Format" type="xsd:string"/>
+         <xsd:element minOccurs="0"
+                      name="IdentifierType"
+                      type="tns:ContentIdentifierTypes"/>
+         <xsd:element minOccurs="0" name="Qualifier" type="tns:drmqualifiers"/>
+         <xsd:element minOccurs="0" name="version" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ContentMetadataItem">
+      <xsd:sequence>
+         <xsd:element minOccurs="0" name="ContentIdentifier" type="xsd:string"/>
+         <xsd:element minOccurs="0"
+                      name="ContentIdentifierType"
+                      type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="AverageRating" type="xsd:decimal"/>
+         <xsd:element name="numVotes" type="xsd:long"/>
+         <xsd:element minOccurs="0" name="Title" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="Author" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="Description" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="Version" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="PageNumber" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="FileSize" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="DRMQualifier" type="tns:drmqualifiers"/>
+         <xsd:element minOccurs="0" name="CoverURL" type="xsd:anyURI"/>
+         <xsd:element minOccurs="0" name="ContentURL" type="xsd:anyURI"/>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="EreaderCategories"
+                      type="xsd:string"/>
+         <xsd:element minOccurs="0" name="Enhanced" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="ThumbnailURL" type="xsd:anyURI"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:simpleType name="ContentIdentifierTypes">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="ISBN13"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="SaveActions">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="CREATE"/>
+         <xsd:enumeration value="UPDATE"/>
+         <xsd:enumeration value="REMOVE"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="ContentProfileAssignmentList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="ContentProfileAssignmentItem"
+                      type="tns:ContentProfileAssignmentItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ContentProfileAssignmentItem">
+      <xsd:sequence>
+         <xsd:element name="contentIdentifier" type="xsd:string"/>
+         <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
+         <xsd:element name="format" type="xsd:string"/>
+         <xsd:element name="AssignedProfileList" type="tns:AssignedProfileList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="TopRatingsRequestList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="TopRatingsRequestItem"
+                      type="tns:TopRatingsRequestItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="TopRatingsRequestItem">
+      <xsd:sequence>
+         <xsd:element name="TopRatingsType" type="tns:TopFavoritesTypes"/>
+         <xsd:element name="TopRatingsTypeValue" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="TopRatingsResponseList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="TopRatingsResponseItem"
+                      type="tns:TopRatingsResponseItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="TopRatingsResponseItem">
+      <xsd:sequence>
+         <xsd:element minOccurs="0" name="TopRatingsType" type="tns:TopFavoritesTypes"/>
+         <xsd:element name="TopRatingsTypeValue" type="xsd:string"/>
+         <xsd:element minOccurs="0"
+                      name="TopRatingsContentItems"
+                      type="tns:TopRatingsContentItems"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="TopRatingsContentItems">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="TopRatingsContentItem"
+                      type="tns:TopRatingsContentItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="TopRatingsContentItem">
+      <xsd:sequence>
+         <xsd:element name="ContentIdentifier" type="xsd:string"/>
+         <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="AverageRating" type="xsd:decimal"/>
+         <xsd:element name="numVotes" type="xsd:long"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AssignedProfileList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="AssignedProfileItem"
+                      type="tns:AssignedProfileItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AssignedProfileItem">
+      <xsd:sequence>
+         <xsd:element name="profileID" type="xsd:int"/>
+         <xsd:element name="action" type="tns:SaveActions"/>
+         <xsd:element name="lastmodified" type="xsd:dateTime"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ContentProfileList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="contentProfileItem"
+                      type="tns:ContentProfileItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ContentProfileItem">
+      <xsd:sequence>
+         <xsd:element name="profileID" type="xsd:int"/>
+         <xsd:element name="isFavorite" type="xsd:boolean"/>
+         <xsd:element name="rating" type="xsd:int"/>
+         <xsd:element name="lastPageLocation" type="xsd:int"/>
+         <xsd:element name="lastmodified" type="xsd:dateTime"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="OrderList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="OrderItem"
+                      type="tns:OrderItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="OrderItem">
+      <xsd:sequence>
+         <xsd:element name="corpInfo" type="tns:CorpInfo"/>
+         <xsd:element minOccurs="0" name="orderSourceInfo" type="tns:OrderSourceInfo"/>
+         <xsd:element minOccurs="0" name="orderIdSourceField" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="orderId" type="xsd:string"/>
+         <xsd:element name="orderDate" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="contentGroup" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="childId" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="teacherId" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="refId3" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="refId4" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="refId5" type="xsd:string"/>
+         <xsd:element name="transactionDate" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="UCN" type="xsd:string"/>
+         <xsd:element name="quantity" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="quantityInit" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="OrderSourceInfo">
+      <xsd:sequence>
+         <xsd:element minOccurs="0" name="srcSystem" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="srcFile" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="srcKey" type="xsd:long"/>
+         <xsd:element minOccurs="0" name="srcUserId" type="xsd:long"/>
+         <xsd:element minOccurs="0" name="srcHost" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="CorpInfo">
+      <xsd:sequence>
+         <xsd:element minOccurs="0" name="transactionIdSourceField" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="transactionId" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SaveProfileList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="SaveProfileItem"
+                      type="tns:SaveProfileItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SaveProfileItem">
+      <xsd:sequence>
+         <xsd:element minOccurs="0" name="AutoAssignContentToProfiles" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="ProfilePasswordRequired" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="Firstname" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="Lastname" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="BirthDay" type="xsd:dateTime"/>
+         <xsd:element name="LastModified" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="screenname" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="password" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="userkey" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="type" type="tns:ProfileTypes"/>
+         <xsd:element name="id" type="xsd:int"/>
+         <xsd:element name="action" type="tns:SaveActions"/>
+         <xsd:element minOccurs="0" name="BookshelfStyle" type="tns:BookshelfStyle"/>
+         <xsd:element minOccurs="0" name="storyInteractionEnabled" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="recommendationsOn" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="allowReadThrough" type="xsd:boolean"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProfileList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="ProfileItem"
+                      type="tns:ProfileItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProfileItem">
+      <xsd:sequence>
+         <xsd:element name="AutoAssignContentToProfiles" type="xsd:boolean"/>
+         <xsd:element name="ProfilePasswordRequired" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="Firstname" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="Lastname" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="BirthDay" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="screenname" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="password" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="userkey" type="xsd:string"/>
+         <xsd:element name="type" type="tns:ProfileTypes"/>
+         <xsd:element name="id" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="BookshelfStyle" type="tns:BookshelfStyle"/>
+         <xsd:element name="LastModified" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="LastScreenNameModified" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="LastPasswordModified" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="storyInteractionEnabled" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="recommendationsOn" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="allowReadThrough" type="xsd:boolean"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProfileStatusList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="ProfileStatusItem"
+                      type="tns:ProfileStatusItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProfileStatusItem">
+      <xsd:sequence>
+         <xsd:element name="id" type="xsd:int"/>
+         <xsd:element name="action" type="tns:SaveActions"/>
+         <xsd:element name="status" type="tns:statuscodes"/>
+         <xsd:element minOccurs="0" name="screenname" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="statuscode" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="statusmessage" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="DeviceItem">
+      <xsd:sequence>
+         <xsd:element name="DeviceKey" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="DeviceId" type="xsd:integer"/>
+         <xsd:element minOccurs="0" name="AutoloadContent" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="DevicePlatform" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="DeviceNickname" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="Active" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="RemoveReason" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="BadLoginAttempts" type="xsd:long"/>
+         <xsd:element minOccurs="0" name="BadLoginDatetimeUTC" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="DeregistrationConfirmed" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="lastmodified" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="lastactivated" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="DRMScheme" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="DeviceList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="DeviceItem"
+                      type="tns:DeviceItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationsRequestList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="AnnotationsRequestItem"
+                      type="tns:AnnotationsRequestItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationsRequestItem">
+      <xsd:sequence>
+         <xsd:element name="AnnotationsRequestContentList"
+                      type="tns:AnnotationsRequestContentList"/>
+         <xsd:element name="profileID" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationsRequestContentList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="AnnotationsRequestContentItem"
+                      type="tns:AnnotationsRequestContentItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationsRequestContentItem">
+      <xsd:sequence>
+         <xsd:element name="contentIdentifier" type="xsd:string"/>
+         <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
+         <xsd:element name="format" type="xsd:string"/>
+         <xsd:element name="PrivateAnnotationsRequest" type="tns:PrivateAnnotationsRequest"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="PrivateAnnotationsRequest">
+      <xsd:sequence>
+         <xsd:element name="version" type="xsd:int"/>
+         <xsd:element name="HighlightsAfter" type="xsd:dateTime"/>
+         <xsd:element name="NotesAfter" type="xsd:dateTime"/>
+         <xsd:element name="BookmarksAfter" type="xsd:dateTime"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationsList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="AnnotationsItem"
+                      type="tns:AnnotationsItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationsItem">
+      <xsd:sequence>
+         <xsd:element name="AnnotationsContentList" type="tns:AnnotationsContentList"/>
+         <xsd:element name="profileID" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationsContentList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="AnnotationsContentItem"
+                      type="tns:AnnotationsContentItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationsContentItem">
+      <xsd:sequence>
+         <xsd:element name="contentIdentifier" type="xsd:string"/>
+         <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
+         <xsd:element name="format" type="xsd:string"/>
+         <xsd:element name="PrivateAnnotations" type="tns:PrivateAnnotations"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="PrivateAnnotations">
+      <xsd:sequence>
+         <xsd:element name="Highlights" type="tns:Highlights"/>
+         <xsd:element name="Notes" type="tns:Notes"/>
+         <xsd:element name="Bookmarks" type="tns:Bookmarks"/>
+         <xsd:element minOccurs="0" name="LastPage" type="tns:LastPage"/>
+         <xsd:element minOccurs="0" name="Rating" type="tns:Rating"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="Highlights">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="Highlight"
+                      type="tns:Highlight"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="Highlight">
+      <xsd:sequence>
+         <xsd:element minOccurs="0" name="id" type="xsd:integer"/>
+         <xsd:element minOccurs="0" name="action" type="tns:SaveActions"/>
+         <xsd:element minOccurs="0" name="color" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="location" type="tns:LocationText"/>
+         <xsd:element minOccurs="0" name="endPage" type="xsd:integer"/>
+         <xsd:element name="version" type="xsd:int"/>
+         <xsd:element name="lastmodified" type="xsd:dateTime"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LocationText">
+      <xsd:sequence>
+         <xsd:element name="page" type="xsd:int"/>
+         <xsd:element name="wordindex" type="tns:WordIndex"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="WordIndex">
+      <xsd:sequence>
+         <xsd:element name="start" type="xsd:int"/>
+         <xsd:element name="end" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="Notes">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded" minOccurs="0" name="Note" type="tns:Note"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="Note">
+      <xsd:sequence>
+         <xsd:element minOccurs="0" name="id" type="xsd:integer"/>
+         <xsd:element minOccurs="0" name="action" type="tns:SaveActions"/>
+         <xsd:element minOccurs="0" name="location" type="tns:LocationGraphics"/>
+         <xsd:element minOccurs="0" name="color" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="value" type="xsd:string"/>
+         <xsd:element name="version" type="xsd:int"/>
+         <xsd:element name="lastmodified" type="xsd:dateTime"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LocationGraphics">
+      <xsd:sequence>
+         <xsd:element name="page" type="xsd:int"/>
+         <xsd:element name="coords" type="tns:Coords"/>
+         <xsd:element minOccurs="0" name="wordindex" type="xsd:integer"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="Coords">
+      <xsd:sequence>
+         <xsd:element name="x" type="xsd:int"/>
+         <xsd:element name="y" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="Bookmarks">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="Bookmark"
+                      type="tns:Bookmark"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="Bookmark">
+      <xsd:sequence>
+         <xsd:element minOccurs="0" name="id" type="xsd:integer"/>
+         <xsd:element minOccurs="0" name="action" type="tns:SaveActions"/>
+         <xsd:element minOccurs="0" name="text" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="disabled" type="xsd:boolean"/>
+         <xsd:element minOccurs="0" name="location" type="tns:LocationBookmark"/>
+         <xsd:element name="version" type="xsd:int"/>
+         <xsd:element name="lastmodified" type="xsd:dateTime"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LocationBookmark">
+      <xsd:sequence>
+         <xsd:element name="page" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="Favorite">
+      <xsd:sequence>
+         <xsd:element name="isFavorite" type="xsd:boolean"/>
+         <xsd:element name="lastmodified" type="xsd:dateTime"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="Rating">
+      <xsd:sequence>
+         <xsd:element name="rating" type="xsd:int"/>
+         <xsd:element name="lastmodified" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="averageRating" type="xsd:decimal"/>
+         <xsd:element minOccurs="0" name="numVotes" type="xsd:long"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastPage">
+      <xsd:sequence>
+         <xsd:element name="lastPageLocation" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="percentage" type="xsd:float"/>
+         <xsd:element minOccurs="0" name="component" type="xsd:string"/>
+         <xsd:element name="lastmodified" type="xsd:dateTime"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationStatusList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="AnnotationStatusItem"
+                      type="tns:AnnotationStatusItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationStatusItem">
+      <xsd:sequence>
+         <xsd:element name="profileId" type="xsd:int"/>
+         <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         <xsd:element name="AnnotationStatusContentList"
+                      type="tns:AnnotationStatusContentList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationStatusContentList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="AnnotationStatusContentItem"
+                      type="tns:AnnotationStatusContentItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationStatusContentItem">
+      <xsd:sequence>
+         <xsd:element name="contentIdentifier" type="xsd:string"/>
+         <xsd:element name="AverageRating" type="xsd:decimal"/>
+         <xsd:element name="numVotes" type="xsd:long"/>
+         <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         <xsd:element name="PrivateAnnotationsStatus" type="tns:PrivateAnnotationsStatus"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="PrivateAnnotationsStatus">
+      <xsd:sequence>
+         <xsd:element name="HighlightsStatusList" type="tns:AnnotationTypeStatusList"/>
+         <xsd:element name="NotesStatusList" type="tns:AnnotationTypeStatusList"/>
+         <xsd:element name="BookmarksStatusList" type="tns:AnnotationTypeStatusList"/>
+         <xsd:element minOccurs="0"
+                      name="FavoriteStatus"
+                      type="tns:AnnotationTypeStatusItem"/>
+         <xsd:element minOccurs="0"
+                      name="LastPageStatus"
+                      type="tns:AnnotationTypeStatusItem"/>
+         <xsd:element minOccurs="0"
+                      name="RatingStatus"
+                      type="tns:AnnotationTypeStatusItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationTypeStatusList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="AnnotationTypeStatusItem"
+                      type="tns:AnnotationTypeStatusItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AnnotationTypeStatusItem">
+      <xsd:sequence>
+         <xsd:element minOccurs="0" name="id" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="action" type="tns:SaveActions"/>
+         <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:simpleType name="aggregationPeriod">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="ALL"/>
+         <xsd:enumeration value="WEEK"/>
+         <xsd:enumeration value="MONTH"/>
+         <xsd:enumeration value="COMBINED"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="ReadingStatsAggregateList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="ReadingStatsAggregateItem"
+                      type="tns:ReadingStatsAggregateItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ReadingStatsAggregateItem">
+      <xsd:sequence>
+         <xsd:element name="pagesRead" type="xsd:int"/>
+         <xsd:element name="storyInteractions" type="xsd:int"/>
+         <xsd:element name="contentOpened" type="xsd:int"/>
+         <xsd:element name="dictionaryLookups" type="xsd:int"/>
+         <xsd:element name="readEvents" type="xsd:int"/>
+         <xsd:element name="readingDuration" type="xsd:int"/>
+         <xsd:element name="profileID" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="period" type="tns:aggregationPeriod"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ReadingStatsDetailList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="ReadingStatsDetailItem"
+                      type="tns:ReadingStatsDetailItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ReadingStatsDetailItem">
+      <xsd:sequence>
+         <xsd:element minOccurs="0"
+                      name="ReadingStatsContentList"
+                      type="tns:ReadingStatsContentList"/>
+         <xsd:element minOccurs="0" name="profileID" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ReadingStatsContentList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="ReadingStatsContentItem"
+                      type="tns:ReadingStatsContentItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ReadingStatsContentItem">
+      <xsd:sequence>
+         <xsd:element minOccurs="0"
+                      name="ContentIdentifierType"
+                      type="tns:ContentIdentifierTypes"/>
+         <xsd:element minOccurs="0" name="contentIdentifier" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="drmqualifier" type="tns:drmqualifiers"/>
+         <xsd:element minOccurs="0" name="format" type="xsd:string"/>
+         <xsd:element minOccurs="0"
+                      name="ReadingStatsEntryList"
+                      type="tns:ReadingStatsEntryList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ReadingStatsEntryList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="ReadingStatsEntryItem"
+                      type="tns:ReadingStatsEntryItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ReadingStatsEntryItem">
+      <xsd:sequence>
+         <xsd:element name="readingDuration" type="xsd:int"/>
+         <xsd:element name="pagesRead" type="xsd:int"/>
+         <xsd:element name="storyInteractions" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="dictionaryLookups" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="deviceKey" type="xsd:string"/>
+         <xsd:element name="timestamp" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0"
+                      name="DictionaryLookupsList"
+                      type="tns:DictionaryLookupsList"/>
+         <xsd:element minOccurs="0" name="quizResults" type="tns:QuizTrialsList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="QuizTrialsList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="quizTrialsItem"
+                      type="tns:QuizTrialsItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="QuizTrialsItem">
+      <xsd:sequence>
+         <xsd:element name="quizScore" type="xsd:int"/>
+         <xsd:element name="quizTotal" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="DictionaryLookupsList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="dictionaryLookupsItem"
+                      type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LookupWordList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="lookupWordItem"
+                      type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="MonthlyAverageProfileList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="monthlyAverageProfileItem"
+                      type="tns:MonthlyAverageProfileItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="MonthlyAverageProfileItem">
+      <xsd:sequence>
+         <xsd:element name="profileID" type="xsd:int"/>
+         <xsd:element name="monthlyAverageList" type="tns:MonthlyAverageList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="MonthlyAverageList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="monthlyAverageItem"
+                      type="tns:MonthlyAverageItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="MonthlyAverageItem">
+      <xsd:sequence>
+         <xsd:element name="month" type="xsd:int"/>
+         <xsd:element name="year" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="guidedReadingLevel" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="eBooksCompleted" type="xsd:long"/>
+         <xsd:element name="contentOpened" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="readingDuration" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="eBookLexileLevel" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AggregateByTitleProfileList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="aggregateByTitleProfileItem"
+                      type="tns:AggregateByTitleProfileItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AggregateByTitleProfileItem">
+      <xsd:sequence>
+         <xsd:element name="profileID" type="xsd:int"/>
+         <xsd:element name="aggregateByTitleList" type="tns:AggregateByTitleList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AggregateByTitleList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="aggregateByTitleItem"
+                      type="tns:AggregateByTitleItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AggregateByTitleItem">
+      <xsd:sequence>
+         <xsd:element name="bookIdentifier" type="tns:BookIdentifier"/>
+         <xsd:element name="readingDuration" type="xsd:int"/>
+         <xsd:element name="lastReadTimestamp" type="xsd:dateTime"/>
+         <xsd:element name="pagesRead" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="quizItem" type="tns:QuizItem"/>
+         <xsd:element name="lookupWordList" type="tns:LookupWordList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="DailyAggregateByTitleProfileList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="dailyAggregateByTitleProfileItem"
+                      type="tns:DailyAggregateByTitleProfileItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="DailyAggregateByTitleProfileItem">
+      <xsd:sequence>
+         <xsd:element name="profileID" type="xsd:int"/>
+         <xsd:element name="dailyAggregateByTitleList" type="tns:DailyAggregateByTitleList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="DailyAggregateByTitleList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="dailyAggregateByTitleItem"
+                      type="tns:DailyAggregateByTitleItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="DailyAggregateByTitleItem">
+      <xsd:sequence>
+         <xsd:element name="date" type="xsd:date"/>
+         <xsd:element name="bookIdentifier" type="tns:BookIdentifier"/>
+         <xsd:element name="readingDuration" type="xsd:int"/>
+         <xsd:element name="pagesRead" type="xsd:int"/>
+         <xsd:element name="timesRead" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="QuizItem">
+      <xsd:sequence>
+         <xsd:element name="firstScore" type="xsd:int"/>
+         <xsd:element name="bestScore" type="xsd:int"/>
+         <xsd:element name="total" type="xsd:int"/>
+         <xsd:element name="lastTimestamp" type="xsd:dateTime"/>
+         <xsd:element name="numberOfTrials" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="BookIdentifierList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="bookIdentifier"
+                      type="tns:BookIdentifier"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="BookIdentifier">
+      <xsd:sequence>
+         <xsd:element name="contentIdentifier" type="xsd:string"/>
+         <xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="BookshelfEntryList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="BookShelfEntryItem"
+                      type="tns:BookShelfEntryItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="BookShelfEntryItem">
+      <xsd:sequence>
+         <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="contentidentifier" type="xsd:string"/>
+         <xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
+         <xsd:element name="format" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="quantity" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="notes" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="profileIdList" type="tns:ProfileIdList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProfileIdList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded" name="profileId" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProfileBookshelfEntryList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="ProfileBookshelfEntryItem"
+                      type="tns:ProfileBookshelfEntryItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProfileBookshelfEntryItem">
+      <xsd:sequence>
+         <xsd:element name="profileId" type="xsd:int"/>
+         <xsd:element name="BookshelfEntryLastPageList" type="tns:BookshelfEntryLastPageList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="BookshelfEntryLastPageList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="BookShelfEntryLastPageItem"
+                      type="tns:BookShelfEntryLastPageItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="BookShelfEntryLastPageItem">
+      <xsd:sequence>
+         <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="contentidentifier" type="xsd:string"/>
+         <xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
+         <xsd:element name="format" type="xsd:string"/>
+         <xsd:element name="LastPage" type="tns:LastPage"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="FavoriteTypesList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="FavoriteTypesItem"
+                      type="tns:FavoriteTypesItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="FavoriteTypesItem">
+      <xsd:sequence>
+         <xsd:element name="FavoriteType" type="tns:TopFavoritesTypes"/>
+         <xsd:element name="FavoriteTypeValuesList" type="tns:FavoriteTypeValuesList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="FavoriteTypeValuesList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="FavoriteTypesValuesItem"
+                      type="tns:FavoriteTypesValuesItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="FavoriteTypesValuesItem">
+      <xsd:sequence>
+         <xsd:element name="Value" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SettingsList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="settingItem"
+                      type="tns:SettingItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SettingItem">
+      <xsd:sequence>
+         <xsd:element name="settingName" type="xsd:string"/>
+         <xsd:element name="settingValue" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SettingStatusList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="settingStatusItem"
+                      type="tns:SettingStatusItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SettingStatusItem">
+      <xsd:sequence>
+         <xsd:element name="settingName" type="xsd:string"/>
+         <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AutoAssignProfilesList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="AutoAssignProfilesItem"
+                      type="tns:AutoAssignProfilesItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AutoAssignProfilesItem">
+      <xsd:sequence>
+         <xsd:element name="profileId" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ReadBooksList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="ReadBooksItem"
+                      type="tns:ReadBooksItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ReadBooksItem">
+      <xsd:sequence>
+         <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="contentIdentifier" type="xsd:string"/>
+         <xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
+         <xsd:element name="format" type="xsd:string"/>
+         <xsd:element name="version" type="xsd:int"/>
+         <xsd:element name="ReadBooksProfilesList" type="tns:ReadBooksProfilesList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ReadBooksProfilesList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="ReadBooksProfilesItem"
+                      type="tns:ReadBooksProfilesItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ReadBooksProfilesItem">
+      <xsd:sequence>
+         <xsd:element name="profileId" type="xsd:int"/>
+         <xsd:element name="lastReadEvent" type="xsd:dateTime"/>
+         <xsd:element name="lastReadDuration" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNRequestReadBooksProfilesList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="LastNRequestReadBooksProfilesItem"
+                      type="tns:LastNRequestReadBooksProfilesItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNRequestReadBooksProfilesItem">
+      <xsd:sequence>
+         <xsd:element name="profileId" type="xsd:int"/>
+         <xsd:element minOccurs="0"
+                      name="bookIdentifierList"
+                      type="tns:BookIdentifierList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNResponseReadBooksProfilesList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="LastNResponseReadBooksProfilesItem"
+                      type="tns:LastNResponseReadBooksProfilesItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNResponseReadBooksProfilesItem">
+      <xsd:sequence>
+         <xsd:element name="profileId" type="xsd:int"/>
+         <xsd:element name="LastNReadBooksList" type="tns:LastNReadBooksList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNReadBooksList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="LastNReadBooksItem"
+                      type="tns:LastNReadBooksItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNReadBooksItem">
+      <xsd:sequence>
+         <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="contentIdentifier" type="xsd:string"/>
+         <xsd:element name="drmqualifier" type="tns:drmqualifiers"/>
+         <xsd:element name="format" type="xsd:string"/>
+         <xsd:element name="version" type="xsd:int"/>
+         <xsd:element name="lastReadEvent" type="xsd:dateTime"/>
+         <xsd:element name="lastReadDuration" type="xsd:int"/>
+         <xsd:element name="lastReadPages" type="xsd:int"/>
+         <xsd:element name="lastPageLocation" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNRequestWordsList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="LastNRequestWordsItem"
+                      type="tns:LastNRequestWordsItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNRequestWordsItem">
+      <xsd:sequence>
+         <xsd:element name="profileId" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNResponseWordsList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="LastNResponseWordsItem"
+                      type="tns:LastNResponseWordsItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNResponseWordsItem">
+      <xsd:sequence>
+         <xsd:element name="profileId" type="xsd:int"/>
+         <xsd:element name="LastNLookedUpWordsList" type="tns:LastNLookedUpWordsList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNLookedUpWordsList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="LastNLookedUpWordsItem"
+                      type="tns:LastNLookedUpWordsItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="LastNLookedUpWordsItem">
+      <xsd:sequence>
+         <xsd:element name="lookupWord" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="NotesList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="noteItem"
+                      type="tns:NoteItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="NoteItem">
+      <xsd:sequence>
+         <xsd:element name="actor" type="xsd:string"/>
+         <xsd:element name="noteText" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="csrUserName" type="xsd:string"/>
+         <xsd:element name="timestamp" type="xsd:dateTime"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="DefaultBooksList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="DefaultBooksItem"
+                      type="tns:DefaultBooksItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="DefaultBooksItem">
+      <xsd:sequence>
+         <xsd:element name="contentidentifier" type="xsd:string"/>
+         <xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
+         <xsd:element name="Format" type="xsd:string"/>
+         <xsd:element minOccurs="0" name="vendable" type="xsd:boolean"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AssignBooksToAllUsersList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="AssignBooksToAllUsersItem"
+                      type="tns:AssignBooksToAllUsersItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AssignBooksToAllUsersItem">
+      <xsd:sequence>
+         <xsd:element name="userKey" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AssignBooksToAllUsersBooksList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="AssignBooksToAllUsersBooksItem"
+                      type="tns:AssignBooksToAllUsersBooksItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AssignBooksToAllUsersBooksItem">
+      <xsd:sequence>
+         <xsd:element name="contentidentifier" type="xsd:string"/>
+         <xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
+         <xsd:element name="Format" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ListRatingsRequestList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="listRatingsItem"
+                      type="tns:ListRatingsItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ListRatingsItem">
+      <xsd:sequence>
+         <xsd:element name="listRatingsContentList" type="tns:ListRatingsContentList"/>
+         <xsd:element name="profileId" type="xsd:long"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ListRatingsContentList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="listRatingsContentItem"
+                      type="tns:ListRatingsContentItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ListRatingsContentItem">
+      <xsd:sequence>
+         <xsd:element name="contentIdentifier" type="xsd:string"/>
+         <xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="RatingsStatusList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="ratingsStatusItem"
+                      type="tns:RatingsStatusItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="RatingsStatusItem">
+      <xsd:sequence>
+         <xsd:element name="profileId" type="xsd:long"/>
+         <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+         <xsd:element name="profileRatingsStatusList" type="tns:ProfileRatingsStatusList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProfileRatingsStatusList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="profileRatingsStatusItem"
+                      type="tns:ProfileRatingsStatusItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProfileRatingsStatusItem">
+      <xsd:sequence>
+         <xsd:element name="contentIdentifier" type="xsd:string"/>
+         <xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="rating" type="tns:Rating"/>
+         <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="RatingsList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded" name="ratingsItem" type="tns:RatingsItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="RatingsItem">
+      <xsd:sequence>
+         <xsd:element name="profileRatingsList" type="tns:ProfileRatingsList"/>
+         <xsd:element name="profileId" type="xsd:long"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProfileRatingsList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      name="profileRatingsItem"
+                      type="tns:ProfileRatingsItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProfileRatingsItem">
+      <xsd:sequence>
+         <xsd:element name="contentIdentifier" type="xsd:string"/>
+         <xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="rating" type="tns:Rating"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="TokenExchange">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="ptoken" type="xsd:string"/>
+            <xsd:element name="vaid" type="xsd:int"/>
+            <xsd:element minOccurs="0" name="deviceKey" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="impersonationkey" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="UserName" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="TokenExchangeResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element minOccurs="0" name="authtoken" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="expiresIn" type="xsd:int"/>
+            <xsd:element minOccurs="0" name="userKey" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="userType" type="xsd:int"/>
+            <xsd:element minOccurs="0" name="deviceIsDeregistered" type="xsd:boolean"/>
+            <xsd:element minOccurs="0" name="isNewUser" type="xsd:boolean"/>
+            <xsd:element minOccurs="0" name="isCoppa" type="xsd:boolean"/>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SharedTokenExchangeRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="ptoken" type="xsd:string"/>
+            <xsd:element name="vaid" type="xsd:int"/>
+            <xsd:element minOccurs="0" name="deviceKey" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="impersonationkey" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="UserName" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SharedTokenExchangeResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="expires" type="xsd:long"/>
+            <xsd:element name="expiresIn" type="xsd:int"/>
+            <xsd:element minOccurs="0" name="ip" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="userKey" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="userhash" type="xsd:string"/>
+            <xsd:element name="userType" type="xsd:int"/>
+            <xsd:element minOccurs="0" name="deviceIsDeregistered" type="xsd:boolean"/>
+            <xsd:element minOccurs="0" name="isNewUser" type="xsd:boolean"/>
+            <xsd:element minOccurs="0" name="isCoppa" type="xsd:boolean"/>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="AuthenticateDeviceRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="vaid" type="xsd:int"/>
+            <xsd:element name="deviceKey" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="userKey" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="AuthenticateDeviceResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="expiresIn" type="xsd:int"/>
+            <xsd:element minOccurs="0" name="deviceIsDeregistered" type="xsd:boolean"/>
+            <xsd:element minOccurs="0" name="userKey" type="xsd:string"/>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="RenewTokenRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="RenewTokenResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="expiresIn" type="xsd:int"/>
+            <xsd:element minOccurs="0" name="userKey" type="xsd:string"/>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListBooksAssignmentRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authToken" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="profileIdList" type="tns:ProfileIdList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListBooksAssignmentResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+            <xsd:element name="booksAssignmentList">
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element maxOccurs="unbounded"
+                                  minOccurs="0"
+                                  name="booksAssignment"
+                                  type="tns:BooksAssignment"/>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:complexType name="BooksAssignment">
+      <xsd:sequence>
+         <xsd:element name="ContentIdentifier" type="xsd:string"/>
+         <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         <xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
+         <xsd:element name="Format" type="xsd:string"/>
+         <xsd:element name="version" type="xsd:int"/>
+         <xsd:element name="averageRating" type="xsd:decimal"/>
+         <xsd:element name="numVotes" type="xsd:long"/>
+         <xsd:element name="lastOrderDate" type="xsd:dateTime"/>
+         <xsd:element minOccurs="0" name="defaultAssignment" type="xsd:boolean"/>
+         <xsd:element name="freeBook" type="xsd:boolean"/>
+         <xsd:element name="lastVersion" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="quantity" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="quantityInit" type="xsd:int"/>
+         <xsd:element minOccurs="0"
+                      name="contentProfileList"
+                      type="tns:ContentProfileList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="ListUserContent">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListUserContentResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="userContentList" type="tns:UserContentList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:complexType name="UserContentList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="userContentItem"
+                      type="tns:UserContentItem"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="ListContentMetadata">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="includeurls" type="xsd:boolean"/>
+            <xsd:element default="false"
+                         minOccurs="0"
+                         name="coverURLOnly"
+                         type="xsd:boolean"/>
+            <xsd:element maxOccurs="unbounded"
+                         minOccurs="0"
+                         name="isbn13s"
+                         type="tns:isbnItem"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListContentMetadataResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="ContentMetadataList">
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element maxOccurs="unbounded"
+                                  minOccurs="0"
+                                  name="ContentMetadataItem"
+                                  type="tns:ContentMetadataItem"/>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="IsEntitledToLicenseResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="isEntitled" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="EntitledToLicenseRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="contentidentifier" type="xsd:string"/>
+            <xsd:element name="ContentIdentifierType" type="tns:ContentIdentifierTypes"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveReadingStatisticsDetailedRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element minOccurs="0"
+                         name="ReadingStatsDetailList"
+                         type="tns:ReadingStatsDetailList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveReadingStatisticsDetailedResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadingStatisticsAggregateRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="profileId" type="xsd:integer"/>
+            <xsd:element name="aggregationPeriod" type="tns:aggregationPeriod"/>
+            <xsd:element name="countDeletedBooks" type="xsd:boolean"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadingStatisticsAggregateResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element minOccurs="0"
+                         name="ReadingStatsAggregateList"
+                         type="tns:ReadingStatsAggregateList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadingStatisticsDetailedRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="profileId" type="xsd:int"/>
+            <xsd:element name="begindate" type="xsd:dateTime"/>
+            <xsd:element name="enddate" type="xsd:dateTime"/>
+            <xsd:element name="countDeletedBooks" type="xsd:boolean"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadingStatisticsDetailedResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element minOccurs="0"
+                         name="ReadingStatsDetailList"
+                         type="tns:ReadingStatsDetailList"/>
+            <xsd:element name="ItemsCount" type="tns:ItemsCount"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadingStatisticsMonthlyAverageRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="profileIdList" type="tns:ProfileIdList"/>
+            <xsd:element name="numberOfMonths" type="xsd:int"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadingStatisticsMonthlyAverageResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="monthlyAverageProfileList" type="tns:MonthlyAverageProfileList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadingStatisticsAggregateByTitleRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="profileIdList" type="tns:ProfileIdList"/>
+            <xsd:element minOccurs="0"
+                         name="bookIdentifierList"
+                         type="tns:BookIdentifierList"/>
+            <xsd:element minOccurs="0" name="maxWordCount" type="xsd:int"/>
+            <xsd:element minOccurs="0" name="lastReadDate" type="xsd:dateTime"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadingStatisticsAggregateByTitleResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="aggregateByTitleProfileList"
+                         type="tns:AggregateByTitleProfileList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadingStatisticsDailyAggregateByTitleRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="profileIdList" type="tns:ProfileIdList"/>
+            <xsd:element name="numberOfDays" type="xsd:int"/>
+            <xsd:element minOccurs="0"
+                         name="bookIdentifierList"
+                         type="tns:BookIdentifierList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadingStatisticsDailyAggregateByTitleResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="dailyAggregateByTitleProfileList"
+                         type="tns:DailyAggregateByTitleProfileList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveProfileContentAnnotationsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="AnnotationsList" type="tns:AnnotationsList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveProfileContentAnnotationsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="AnnotationStatusList" type="tns:AnnotationStatusList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListProfileContentAnnotationsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="AnnotationsRequestList" type="tns:AnnotationsRequestList"/>
+            <xsd:element minOccurs="0" name="includeRemoved" type="xsd:boolean"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListProfileContentAnnotationsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="AnnotationsList" type="tns:AnnotationsList"/>
+            <xsd:element name="ItemsCount" type="tns:ItemsCount"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListProfileRecentAnnotationsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authToken" type="xsd:string"/>
+            <xsd:element name="annotationsAfter" type="xsd:dateTime"/>
+            <xsd:element minOccurs="0" name="profileIdList" type="tns:ProfileIdList"/>
+            <xsd:element minOccurs="0" name="includeRemoved" type="xsd:boolean"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListProfileRecentAnnotationsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+            <xsd:element name="annotationsList" type="tns:AnnotationsList"/>
+            <xsd:element name="itemsCount" type="tns:ItemsCount"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetUserProfilesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetUserProfilesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="ProfileList" type="tns:ProfileList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveUserProfilesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="SaveProfileList" type="tns:SaveProfileList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveUserProfilesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element minOccurs="0" name="ProfileStatusList" type="tns:ProfileStatusList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListApplicationSettingsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListApplicationSettingsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="settingsList" type="tns:SettingsList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveContentProfileAssignmentRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="ContentProfileAssignmentList"
+                         type="tns:ContentProfileAssignmentList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveContentProfileAssignmentResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetDeviceInfoRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetDeviceInfoResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="DeviceInfoList" type="tns:DeviceList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveDeviceInfoRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="SaveDeviceList" type="tns:DeviceList"/>
+            <xsd:element name="action" type="tns:SaveActions"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveDeviceInfoResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveNewDomainResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveNewDomainRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authToken" type="xsd:string"/>
+            <xsd:element name="AccountId" type="xsd:string"/>
+            <xsd:element name="Revision" type="xsd:long"/>
+            <xsd:element name="DomainKeyPair" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeviceLeftDomainResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeviceLeftDomainRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Authtoken" type="xsd:string"/>
+            <xsd:element name="DeviceKey" type="xsd:string"/>
+            <xsd:element name="ClientId" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeviceCanJoinDomainResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element minOccurs="0" name="AccountId" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="DomainKeyPair" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="Revision" type="xsd:long"/>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeviceCanJoinDomainRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authToken" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="DeviceNickname" type="xsd:string"/>
+            <xsd:element name="DevicePlatform" type="xsd:string"/>
+            <xsd:element name="DeviceKey" type="xsd:string"/>
+            <xsd:element name="ClientId" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="DRMScheme" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetLicensableStatusResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element minOccurs="0" name="AccountId" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="Revision" type="xsd:long"/>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetLicensableStatusRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authToken" type="xsd:string"/>
+            <xsd:element name="KeyId" type="xsd:string"/>
+            <xsd:element name="suppliedIdentifier" type="xsd:string"/>
+            <xsd:element name="suppliedIdentifierType" type="xsd:string"/>
+            <xsd:element name="TransactionId" type="xsd:string"/>
+            <xsd:element name="ClientId" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="AcknowledgeLicenseResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="AcknowledgeLicenseRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="TransactionId" type="xsd:string"/>
+            <xsd:element name="ClientId" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ValidateScreenNameRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="screenName" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ValidateScreenNameResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element minOccurs="0" name="result" type="xsd:boolean"/>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ValidateUserKeyRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="userKey" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ValidateUserKeyResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element minOccurs="0" name="result" type="xsd:boolean"/>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeleteBookShelfEntryRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="BookShelfEntryList" type="tns:BookshelfEntryList"/>
+            <xsd:element name="cascade" type="xsd:boolean"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeleteBookShelfEntryResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetLastPageLocationRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetLastPageLocationResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element minOccurs="0"
+                         name="ProfileBookshelfEntryList"
+                         type="tns:ProfileBookshelfEntryList"/>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveLastPageLocationRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="ProfileBookshelfEntryList" type="tns:ProfileBookshelfEntryList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveLastPageLocationResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListFavoriteTypesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListFavoriteTypesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="FavoriteTypesList" type="tns:FavoriteTypesList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveUserSettingsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="settingsList" type="tns:SettingsList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveUserSettingsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="settingStatusList" type="tns:SettingStatusList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListUserSettingsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListUserSettingsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="settingsList" type="tns:SettingsList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SetAccountAutoAssignRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="AutoAssignProfilesList" type="tns:AutoAssignProfilesList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SetAccountAutoAssignResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SetAccountPasswordRequiredRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="passwordRequired" type="xsd:boolean"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SetAccountPasswordRequiredResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadBooksRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListReadBooksResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="ReadBooksList" type="tns:ReadBooksList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListLastNProfileReadBooksRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="lastBooksCount" type="xsd:int"/>
+            <xsd:element default="false" name="uniqueBooks" type="xsd:boolean"/>
+            <xsd:element name="LastNRequestReadBooksProfilesList"
+                         type="tns:LastNRequestReadBooksProfilesList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListLastNProfileReadBooksResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="LastNResponseReadBooksProfilesList"
+                         type="tns:LastNResponseReadBooksProfilesList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListLastNWordsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="lastWordsCount" type="xsd:int"/>
+            <xsd:element minOccurs="0" name="startDate" type="xsd:dateTime"/>
+            <xsd:element minOccurs="0" name="endDate" type="xsd:dateTime"/>
+            <xsd:element name="LastNRequestWordsList" type="tns:LastNRequestWordsList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListLastNWordsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="LastNResponseWordsList" type="tns:LastNResponseWordsList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="RemoveOrderRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authtoken" type="xsd:string"/>
+            <xsd:element name="userKey" type="xsd:string"/>
+            <xsd:element name="orderID" type="xsd:string"/>
+            <xsd:element name="contentidentifier" type="xsd:string"/>
+            <xsd:element name="contentIdentifierType" type="tns:ContentIdentifierTypes"/>
+            <xsd:element name="DRMQualifier" type="tns:drmqualifiers"/>
+            <xsd:element name="Format" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="RemoveOrderResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveUserCSRNotesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="CSRtoken" type="xsd:string"/>
+            <xsd:element name="userKey" type="xsd:string"/>
+            <xsd:element name="noteText" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveUserCSRNotesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListUserCSRNotesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="CSRtoken" type="xsd:string"/>
+            <xsd:element name="userKey" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="lastNNotes" type="xsd:int"/>
+            <xsd:element minOccurs="0" name="startDate" type="xsd:dateTime"/>
+            <xsd:element minOccurs="0" name="endDate" type="xsd:dateTime"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListUserCSRNotesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element minOccurs="0" name="notesList" type="tns:NotesList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetKeyIdRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="contentidentifier" type="xsd:string"/>
+            <xsd:element minOccurs="0"
+                         name="contentIdentifierType"
+                         type="tns:ContentIdentifierTypes"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GetKeyIdResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="guid" type="xsd:string"/>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveDefaultBooksRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="CSRtoken" type="xsd:string"/>
+            <xsd:element name="BooksList" type="tns:DefaultBooksList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveDefaultBooksResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListDefaultBooksRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authToken" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListDefaultBooksResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+            <xsd:element name="BooksList" type="tns:DefaultBooksList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="RemoveDefaultBooksRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="CSRtoken" type="xsd:string"/>
+            <xsd:element name="BooksList" type="tns:DefaultBooksList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="RemoveDefaultBooksResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="AssignBooksToAllUsersRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="CSRtoken" type="xsd:string"/>
+            <xsd:element name="UsersList" type="tns:AssignBooksToAllUsersList"/>
+            <xsd:element name="BooksList" type="tns:AssignBooksToAllUsersBooksList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="AssignBooksToAllUsersResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusmessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="HealthCheckRequest">
+      <xsd:complexType/>
+   </xsd:element>
+   <xsd:element name="HealthCheckResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusCode" type="xsd:int"/>
+            <xsd:element name="datapipe" type="xsd:string"/>
+            <xsd:element name="gatewayDatabase" type="xsd:string"/>
+            <xsd:element name="activityLogDatabase" type="xsd:string"/>
+            <xsd:element name="endpoints" type="tns:EndpointsList"/>
+            <xsd:element name="currentDBVersion" type="xsd:string"/>
+            <xsd:element name="LA-version" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="DBSchemaErrors" type="tns:DBSchemaError"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:complexType name="DBSchemaError">
+      <xsd:sequence>
+         <xsd:element name="lastDBModify" type="xsd:dateTime"/>
+         <xsd:element name="errorList" type="tns:DBSchemaErrorList"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="DBSchemaErrorItem">
+      <xsd:sequence>
+         <xsd:element name="errorCode" type="xsd:string"/>
+         <xsd:element name="error" type="xsd:string"/>
+         <xsd:element name="type" type="tns:ErrorType"/>
+         <xsd:element minOccurs="0" name="description" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:simpleType name="ErrorType">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="WARNING"/>
+         <xsd:enumeration value="ERROR"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="EndpointsList">
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded"
+                      minOccurs="0"
+                      name="Endpoint"
+                      type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="GetVersionRequest">
+      <xsd:complexType/>
+   </xsd:element>
+   <xsd:element name="GetVersionResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="version" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListTopRatingsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authToken" type="xsd:string"/>
+            <xsd:element name="count" type="xsd:int"/>
+            <xsd:element name="topRatingsRequestList" type="tns:TopRatingsRequestList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListTopRatingsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+            <xsd:element minOccurs="0"
+                         name="topRatingsResponseList"
+                         type="tns:TopRatingsResponseList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveRatingsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authToken" type="xsd:string"/>
+            <xsd:element name="ratingsList" type="tns:RatingsList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SaveRatingsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+            <xsd:element name="ratingsList" type="tns:RatingsStatusList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListRatingsRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authToken" type="xsd:string"/>
+            <xsd:element name="ratingsList" type="tns:ListRatingsRequestList"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ListRatingsResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+            <xsd:element name="ratingsList" type="tns:RatingsStatusList"/>
+            <xsd:element name="itemsCount" type="tns:ItemsCount"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeregisterAllDevicesRequest">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="authToken" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="deregistrationConfirmed" type="xsd:boolean"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DeregisterAllDevicesResponse">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="statusMessage" type="tns:StatusHolder"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
 </xsd:schema>

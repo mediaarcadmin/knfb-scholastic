@@ -3,97 +3,15 @@
 #import <libxml/tree.h>
 #import "USGlobals.h"
 #import <objc/runtime.h>
-@class WishListServiceSvc_DeleteWishListItems;
-@class WishListServiceSvc_DeleteWishListItemsResponse;
-@class WishListServiceSvc_AddItemsToWishList;
-@class WishListServiceSvc_AddItemsToWishListResponse;
 @class WishListServiceSvc_GetWishListItems;
 @class WishListServiceSvc_GetWishListItemsResponse;
+@class WishListServiceSvc_DeleteWishListItems;
+@class WishListServiceSvc_DeleteWishListItemsResponse;
 @class WishListServiceSvc_DeleteWishList;
 @class WishListServiceSvc_DeleteWishListResponse;
+@class WishListServiceSvc_AddItemsToWishList;
+@class WishListServiceSvc_AddItemsToWishListResponse;
 #import "ax21.h"
-@interface WishListServiceSvc_DeleteWishListItems : NSObject <NSCoding> {
-/* elements */
-	NSString * clientID;
-	NSString * token;
-	NSString * spsIdParam;
-	NSMutableArray *profileItemList;
-/* attributes */
-}
-- (NSString *)nsPrefix;
-- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
-- (void)addAttributesToNode:(xmlNodePtr)node;
-- (void)addElementsToNode:(xmlNodePtr)node;
-+ (WishListServiceSvc_DeleteWishListItems *)deserializeNode:(xmlNodePtr)cur;
-- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
-- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
-/* elements */
-@property (nonatomic, retain) NSString * clientID;
-@property (nonatomic, retain) NSString * token;
-@property (nonatomic, retain) NSString * spsIdParam;
-- (void)addProfileItemList:(ax21_WishListProfileItem *)toAdd;
-@property (nonatomic, readonly) NSMutableArray * profileItemList;
-/* attributes */
-- (NSDictionary *)attributes;
-@end
-@interface WishListServiceSvc_DeleteWishListItemsResponse : NSObject <NSCoding> {
-/* elements */
-	ax21_WishListStatus * return_;
-/* attributes */
-}
-- (NSString *)nsPrefix;
-- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
-- (void)addAttributesToNode:(xmlNodePtr)node;
-- (void)addElementsToNode:(xmlNodePtr)node;
-+ (WishListServiceSvc_DeleteWishListItemsResponse *)deserializeNode:(xmlNodePtr)cur;
-- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
-- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
-/* elements */
-@property (nonatomic, retain) ax21_WishListStatus * return_;
-/* attributes */
-- (NSDictionary *)attributes;
-@end
-@interface WishListServiceSvc_AddItemsToWishList : NSObject <NSCoding> {
-/* elements */
-	NSString * clientID;
-	NSString * token;
-	NSString * spsIdParam;
-	NSMutableArray *profileItemList;
-/* attributes */
-}
-- (NSString *)nsPrefix;
-- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
-- (void)addAttributesToNode:(xmlNodePtr)node;
-- (void)addElementsToNode:(xmlNodePtr)node;
-+ (WishListServiceSvc_AddItemsToWishList *)deserializeNode:(xmlNodePtr)cur;
-- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
-- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
-/* elements */
-@property (nonatomic, retain) NSString * clientID;
-@property (nonatomic, retain) NSString * token;
-@property (nonatomic, retain) NSString * spsIdParam;
-- (void)addProfileItemList:(ax21_WishListProfileItem *)toAdd;
-@property (nonatomic, readonly) NSMutableArray * profileItemList;
-/* attributes */
-- (NSDictionary *)attributes;
-@end
-@interface WishListServiceSvc_AddItemsToWishListResponse : NSObject <NSCoding> {
-/* elements */
-	ax21_WishListStatus * return_;
-/* attributes */
-}
-- (NSString *)nsPrefix;
-- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
-- (void)addAttributesToNode:(xmlNodePtr)node;
-- (void)addElementsToNode:(xmlNodePtr)node;
-+ (WishListServiceSvc_AddItemsToWishListResponse *)deserializeNode:(xmlNodePtr)cur;
-- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
-- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
-/* elements */
-@property (nonatomic, retain) ax21_WishListStatus * return_;
-/* attributes */
-- (NSDictionary *)attributes;
-@end
 @interface WishListServiceSvc_GetWishListItems : NSObject <NSCoding> {
 /* elements */
 	NSString * clientID;
@@ -135,6 +53,47 @@
 /* attributes */
 - (NSDictionary *)attributes;
 @end
+@interface WishListServiceSvc_DeleteWishListItems : NSObject <NSCoding> {
+/* elements */
+	NSString * clientID;
+	NSString * token;
+	NSString * spsIdParam;
+	NSMutableArray *profileItemList;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (WishListServiceSvc_DeleteWishListItems *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * clientID;
+@property (nonatomic, retain) NSString * token;
+@property (nonatomic, retain) NSString * spsIdParam;
+- (void)addProfileItemList:(ax21_WishListProfileItem *)toAdd;
+@property (nonatomic, readonly) NSMutableArray * profileItemList;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface WishListServiceSvc_DeleteWishListItemsResponse : NSObject <NSCoding> {
+/* elements */
+	ax21_WishListStatus * return_;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (WishListServiceSvc_DeleteWishListItemsResponse *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) ax21_WishListStatus * return_;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
 @interface WishListServiceSvc_DeleteWishList : NSObject <NSCoding> {
 /* elements */
 	NSString * clientID;
@@ -169,6 +128,47 @@
 - (void)addAttributesToNode:(xmlNodePtr)node;
 - (void)addElementsToNode:(xmlNodePtr)node;
 + (WishListServiceSvc_DeleteWishListResponse *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) ax21_WishListStatus * return_;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface WishListServiceSvc_AddItemsToWishList : NSObject <NSCoding> {
+/* elements */
+	NSString * clientID;
+	NSString * token;
+	NSString * spsIdParam;
+	NSMutableArray *profileItemList;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (WishListServiceSvc_AddItemsToWishList *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * clientID;
+@property (nonatomic, retain) NSString * token;
+@property (nonatomic, retain) NSString * spsIdParam;
+- (void)addProfileItemList:(ax21_WishListProfileItem *)toAdd;
+@property (nonatomic, readonly) NSMutableArray * profileItemList;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface WishListServiceSvc_AddItemsToWishListResponse : NSObject <NSCoding> {
+/* elements */
+	ax21_WishListStatus * return_;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (WishListServiceSvc_AddItemsToWishListResponse *)deserializeNode:(xmlNodePtr)cur;
 - (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
 - (void)deserializeElementsFromNode:(xmlNodePtr)cur;
 /* elements */

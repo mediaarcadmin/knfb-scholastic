@@ -1,4 +1,4 @@
-// Version 1.7.5.0
+// Version 1.8.3.0
 
 #import "LibreAccessActivityLogSvc.h"
 #import <libxml/xmlstring.h>
@@ -14,7 +14,7 @@
 }
 + (LibreAccessActivityLogV2Soap11Binding *)LibreAccessActivityLogV2Soap11Binding
 {
-	return [[[LibreAccessActivityLogV2Soap11Binding alloc] initWithAddress:@"http://laesb.dev.cld.libredigital.com/services/LibreAccessActivityLogV2.LibreAccessActivityLogV2HttpSoap11Endpoint"] autorelease];
+	return [[[LibreAccessActivityLogV2Soap11Binding alloc] initWithAddress:@"http://laesb.uat.cld.libredigital.com:80/services/LibreAccessActivityLogV2.LibreAccessActivityLogV2HttpSoap11Endpoint"] autorelease];
 }
 @end
 @implementation LibreAccessActivityLogV2Soap11Binding
