@@ -11,6 +11,7 @@
 #import "SCHStoryInteractionControllerDelegate.h"
 #import "SCHStarView.h"
 #import "SCHHotSpotCoordinates.h"
+#import "SCHXPSProvider.h"
 
 #define kNumberOfStars 20
 #define debug_show_answer_path_and_hotspot_rect 0
@@ -154,18 +155,40 @@
     }];
 }
 
+
+- (void)enqueueAudioWithPath:(NSString *)path
+                  fromBundle:(BOOL)fromBundle
+                  startDelay:(NSTimeInterval)startDelay
+      synchronizedStartBlock:(dispatch_block_t)startBlock
+        synchronizedEndBlock:(dispatch_block_t)endBlock
+{
+    [self enqueueAudioWithPath:path
+                    fromBundle:fromBundle
+                    startDelay:startDelay
+        synchronizedStartBlock:^{
+            self.controllerState =
+             SCHStoryInteractionControllerStateInteractionInProgress; 
+            }
+          synchronizedEndBlock:endBlock
+            requiresEmptyQueue:NO];
+}
+ 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
-{    
+{
     // play intro audio on first question only
-    if ([self.delegate currentQuestionForStoryInteraction] == 0 &&
+    NSString* introductionFilename = [(SCHStoryInteractionHotSpot *)self.storyInteraction audioPathForIntroduction];
+    if ([self.xpsProvider componentExistsAtPath:introductionFilename] &&
+        [self.delegate currentQuestionForStoryInteraction] == 0 &&
         [self.delegate storyInteractionFinished] == NO) {
         [self setTitle:[(SCHStoryInteractionHotSpot *)self.storyInteraction introduction]];
-        [self enqueueAudioWithPath:[(SCHStoryInteractionHotSpot *)self.storyInteraction audioPathForIntroduction]
+        [super enqueueAudioWithPath:introductionFilename
                         fromBundle:NO
                         startDelay:0.0
-            synchronizedStartBlock:nil
+              synchronizedStartBlock:^{
+                  self.controllerState = SCHStoryInteractionControllerStateIntroductionInProgress;
+              }
               synchronizedEndBlock:^{
-                  [self setupMainView];
+                    [self setupMainView];
               }];
     } else {
         [self setupMainView];

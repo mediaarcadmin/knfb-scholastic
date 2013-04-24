@@ -27,6 +27,7 @@
 typedef enum
 {
     SCHStoryInteractionControllerStateInitialised,                          // the default initialised state
+    SCHStoryInteractionControllerStateIntroductionInProgress,               // introductory audio is playing
     SCHStoryInteractionControllerStateAskingOpeningQuestion,                // during the initial question audio
     SCHStoryInteractionControllerStateInteractionInProgress,                // user interaction is happening normally
     SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause,    // user interaction is paused while an answer is read out

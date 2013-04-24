@@ -179,6 +179,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             self.readAloudButton.enabled = NO;
             break;
         }
+        case SCHStoryInteractionControllerStateIntroductionInProgress:
         case SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause:
         {
             self.readAloudButton.enabled = NO;
@@ -190,7 +191,7 @@ static Class controllerClassForStoryInteraction(SCHStoryInteraction *storyIntera
             self.readAloudButton.enabled = NO;
             [self storyInteractionDisableUserInteraction];
             break;
-        }   
+        }
         case SCHStoryInteractionControllerStateInteractionInProgress:
         {
             self.readAloudButton.enabled = YES;
