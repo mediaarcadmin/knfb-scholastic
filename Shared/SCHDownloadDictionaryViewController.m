@@ -181,8 +181,18 @@
 
 - (IBAction)removeDictionary:(id)sender
 {
-    [self startDictionaryDeletion];
-    [self.appController presentSettingsWithExpandedNavigation];
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateNeedsParse) {
+        [self startDictionaryDeletion];
+        [self.appController presentSettingsWithExpandedNavigation];
+    }
+    else {
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Removal Failed", @"")
+                              message:NSLocalizedString(@"The dictionary can't be removed at this time.  Try again shortly.", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:nil];
+        [alert show];
+        [alert release];
+    }
 }
 
 - (IBAction)close:(id)sender

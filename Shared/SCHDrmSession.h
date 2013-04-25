@@ -42,6 +42,7 @@ struct SCHDrmIVars;
 - (NSError*)drmError:(NSInteger)errCode message:(NSString*)message;
 
 + (void)resetDRMKeychainItems;
++ (BOOL)existsDRMKeychainDeviceKeyItem;
 
 @end
 

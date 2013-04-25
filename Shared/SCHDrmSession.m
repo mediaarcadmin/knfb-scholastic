@@ -143,6 +143,13 @@ ErrorExit:
     [devKeySignItem resetKeychainItem];
 }
 
+
++ (BOOL)existsDRMKeychainDeviceKeyItem
+{
+    NSData* keydata = (NSData*)[[[DrmGlobals getDrmGlobals] devKeySignItem] objectForKey:(id)kSecValueData];
+    return (keydata != nil);
+}
+
 - (NSError*)drmError:(NSInteger)errCode message:(NSString*)message {
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:message
 														 forKey:NSLocalizedDescriptionKey];

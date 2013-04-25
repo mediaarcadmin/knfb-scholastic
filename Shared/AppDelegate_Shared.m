@@ -28,6 +28,7 @@
 #import "NSFileManager+DoNotBackupExtendedAttribute.h"
 #import "NSFileManager+Extensions.h"
 #import "BITNetworkActivityManager.h"
+#import "DrmGlobals.h"
 
 #if RUN_KIF_TESTS
 #import "SCHKIFTestController.h"
@@ -126,7 +127,8 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
         [[SCHVersionDownloadManager sharedVersionManager] saveAppVersionToPreferences];
         
         if (lastVersion && (![bundleVersion isEqualToString:lastVersion])) {
-            [self upgradeApp];
+            if (![SCHDrmSession existsDRMKeychainDeviceKeyItem])
+                [self upgradeApp];
         } else {
             [self ensureCorrectCertsAvailable];
         }
@@ -342,15 +344,15 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [SCHAppBook moveBooksDirectoryToTmp];
-
+        
         [[SCHAuthenticationManager sharedAuthenticationManager] forceDeregistrationWithCompletionBlock:^{
-            [self resetDRMState];
-            [self ensureCorrectCertsAvailable];
-            [self.coreDataHelper resetMainStore];
-            [SCHAppBook restoreBooksDirectoryFromTmp];
-            [[SCHSyncManager sharedSyncManager] setSuspended:NO];
-            [upgradeAlert dismissAnimated:YES];
-        }];
+                [self resetDRMState];
+                [self ensureCorrectCertsAvailable];
+                [self.coreDataHelper resetMainStore];
+                [SCHAppBook restoreBooksDirectoryFromTmp];
+                [[SCHSyncManager sharedSyncManager] setSuspended:NO];
+                [upgradeAlert dismissAnimated:YES];
+            }];
     } else {
         
         if ([[SCHAppStateManager sharedAppStateManager] isSampleStore]) {
