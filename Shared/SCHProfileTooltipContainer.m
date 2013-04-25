@@ -38,7 +38,7 @@
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame numberOfBookshelves:(NSUInteger)numberOfBookshelves
+- (id)initWithFrame:(CGRect)frame numberOfBookshelves:(NSUInteger)numberOfBookshelves showReadingManagerOnly:(BOOL)showReadingManagerOnly
 {
     CGFloat xOffset = 0;
     
@@ -79,30 +79,34 @@
                 xOffset = 133;
             }
             
-            self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(584, 192, 315, 119) edgeInsets:UIEdgeInsetsMake(-5, 20, 0, 0)] autorelease];
-            [self.topTooltip setTitle:@"Reading Manager"
-                             bodyText:@"Go here to assign new eBooks and monitor reading progress. This area is password protected and only accessible to grown-ups."];
-            self.topTooltip.usesCloseButton = YES;
+            if ( showReadingManagerOnly ) {
+                self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(364, 252, 315, 119) edgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)] autorelease];  
+                self.topTooltip.usesCloseButton = NO;
+                self.topTooltip.backgroundImage = [UIImage imageNamed:@"TooltipReadingManagerBackground"]; 
+            }
+            else {
+                self.topTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(599, 192, 315, 119) edgeInsets:UIEdgeInsetsMake(-5, 20, 0, 0)] autorelease];
+                [self.topTooltip setTitle:@"Reading Manager"
+                                 bodyText:@"Go here to assign new eBooks and monitor reading progress. This area is password protected and only accessible to grown-ups."];
+                self.topTooltip.usesCloseButton = YES;
+                self.topTooltip.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+                self.topTooltip.backgroundImage = [UIImage imageNamed:@"TooltipTopBackground"];
+                
+                self.bottomTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(102 + xOffset, 388, 301, 132)
+                                                                    edgeInsets:UIEdgeInsetsMake(20, 0, 0, 0)] autorelease];
+                [self.bottomTooltip setTitle:@"Child's Bookshelf"
+                                    bodyText:@"Your child can start reading by selecting their name. The eBooks you have assigned are waiting for them!"];
+                self.bottomTooltip.usesCloseButton = NO;
+                self.bottomTooltip.backgroundImage = [UIImage imageNamed:@"TooltipBottomBackground"];
+                self.bottomTooltip.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+                [self addSubview:self.bottomTooltip];
+                [self addHighlightAtLocation:CGPointMake(248 + xOffset, 358)];
+            }
             self.topTooltip.delegate = self;
-            self.topTooltip.backgroundImage = [UIImage imageNamed:@"TooltipTopBackground"];
-            self.topTooltip.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
             [self addSubview:self.topTooltip];
-            
-            
-            self.bottomTooltip = [[[SCHProfileTooltip alloc] initWithFrame:CGRectMake(102 + xOffset, 388, 301, 132)
-                                   edgeInsets:UIEdgeInsetsMake(20, 0, 0, 0)] autorelease];
-            [self.bottomTooltip setTitle:@"Child's Bookshelf"
-                             bodyText:@"Your child can start reading by selecting their name. The eBooks you have assigned are waiting for them!"];
-            self.bottomTooltip.usesCloseButton = NO;
-            self.bottomTooltip.backgroundImage = [UIImage imageNamed:@"TooltipBottomBackground"];
-            self.bottomTooltip.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-            [self addSubview:self.bottomTooltip];
             
             // reading manager highlight
             [self addHighlightAtLocation:CGPointMake(514, 250)];
-            
-            // bookshelf highlight
-            [self addHighlightAtLocation:CGPointMake(248 + xOffset, 358)];
         }
     }
     return self;

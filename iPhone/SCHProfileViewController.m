@@ -96,6 +96,7 @@ static const NSUInteger kSCHProfileViewControllerPasswordMaximumLength = 30;
 @synthesize tooltipContainer;
 @synthesize shouldShowDictionaryDownloadChoice;
 @synthesize shouldShowTooltips;
+@synthesize shouldShowReadingManagerOnly;
 
 #pragma mark - Object lifecycle
 
@@ -414,7 +415,8 @@ didSelectButtonAnimated:(BOOL)animated
     
     NSInteger numberOfResultsInPage = [self numberOfResultsInPage:self.pageControl.currentPage];
     self.tooltipContainer = [[[SCHProfileTooltipContainer alloc] initWithFrame:self.view.frame
-                                                           numberOfBookshelves:numberOfResultsInPage] autorelease];
+                                                           numberOfBookshelves:numberOfResultsInPage
+                                                        showReadingManagerOnly:self.shouldShowReadingManagerOnly] autorelease];
     self.tooltipContainer.delegate = self;
     self.tooltipContainer.alpha = 0;
     
@@ -940,8 +942,10 @@ didSelectButtonAnimated:(BOOL)animated
     self.scrollView.contentSize = CGSizeMake(numPages * self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     [self setupScrollViewForIndex:self.currentIndex];
     
-    NSString *screenName = [[SCHAppStateManager sharedAppStateManager] accountScreenName];
-    if ([screenName length]) {
+    // Pre 2.2:
+    //NSString *screenName = [[SCHAppStateManager sharedAppStateManager] accountScreenName];
+    //if ([screenName length]) {
+    NSString *screenName = @"Reading Manager";
         CGPoint currentCenter = self.parentButton.center;
         [self.parentButton setTitle:[screenName uppercaseString] forState:UIControlStateNormal];
         [self.parentButton sizeToFit];
@@ -957,7 +961,7 @@ didSelectButtonAnimated:(BOOL)animated
         }
         newBounds.size.width = MAX(MIN(newBounds.size.width, maxWidth), kSCHProfileViewControllerParentButtonMinWidth);
         self.parentButton.bounds = newBounds;
-    }
+    //}
 }
 
 - (void)setupScrollViewForIndex:(NSInteger)index

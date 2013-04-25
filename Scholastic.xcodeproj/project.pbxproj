@@ -1766,6 +1766,10 @@
 		7D95F778150F66160093BB90 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D95F777150F66160093BB90 /* CoreVideo.framework */; };
 		7D95F779150F66220093BB90 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D95F777150F66160093BB90 /* CoreVideo.framework */; };
 		7D95F77A150F66260093BB90 /* libots.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C937E7E4150F5335001882AC /* libots.a */; };
+		87833FD517203B21005AE36E /* TooltipReadingManagerBackground@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 87833FD317203B21005AE36E /* TooltipReadingManagerBackground@2x~ipad.png */; };
+		87833FD617203B21005AE36E /* TooltipReadingManagerBackground@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 87833FD317203B21005AE36E /* TooltipReadingManagerBackground@2x~ipad.png */; };
+		87833FD717203B21005AE36E /* TooltipReadingManagerBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 87833FD417203B21005AE36E /* TooltipReadingManagerBackground~ipad.png */; };
+		87833FD817203B21005AE36E /* TooltipReadingManagerBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 87833FD417203B21005AE36E /* TooltipReadingManagerBackground~ipad.png */; };
 		A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A35F45D5138D3A9000055D60 /* DRM in Resources */ = {isa = PBXBuildFile; fileRef = A35F45D4138D3A9000055D60 /* DRM */; };
 		A382C4131593639B00FDE3E3 /* 9780545324328.1103.MixedUpAlphabet.xps in Resources */ = {isa = PBXBuildFile; fileRef = C935BC7714698D5B00244A38 /* 9780545324328.1103.MixedUpAlphabet.xps */; };
@@ -4570,6 +4574,8 @@
 		52F7C35B1656777F00041661 /* SIAudioSampleIcon~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIAudioSampleIcon~iphone.png"; path = "Resources/UIAssets/SIAudioSampleIcon~iphone.png"; sourceTree = "<group>"; };
 		52FCCF4014C6FE71008C2626 /* storia-preview-two.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storia-preview-two.png"; path = "Resources/UIAssets/storia-preview-two.png"; sourceTree = "<group>"; };
 		7D95F777150F66160093BB90 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		87833FD317203B21005AE36E /* TooltipReadingManagerBackground@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipReadingManagerBackground@2x~ipad.png"; path = "Resources/UIAssets/TooltipReadingManagerBackground@2x~ipad.png"; sourceTree = "<group>"; };
+		87833FD417203B21005AE36E /* TooltipReadingManagerBackground~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TooltipReadingManagerBackground~ipad.png"; path = "Resources/UIAssets/TooltipReadingManagerBackground~ipad.png"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545287012_r1.HalloweenParade.xps; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.xps"; sourceTree = "<group>"; };
 		A33477FC13DF206000768DC6 /* 9780545289726_r1.OlliesNewTricks.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545289726_r1.OlliesNewTricks.xps; path = "Shared/Debug Books/9780545289726_r1.OlliesNewTricks.xps"; sourceTree = "<group>"; };
@@ -8001,6 +8007,8 @@
 		C920DDED138A69B400F1583D /* Profile and Admin Views */ = {
 			isa = PBXGroup;
 			children = (
+				87833FD317203B21005AE36E /* TooltipReadingManagerBackground@2x~ipad.png */,
+				87833FD417203B21005AE36E /* TooltipReadingManagerBackground~ipad.png */,
 				C9915D65162369070041A114 /* sm_bttn_red_UNselected_3part.png */,
 				C9915D66162369070041A114 /* sm_bttn_red_UNselected_3part@2x.png */,
 				C9915D5F162365ED0041A114 /* sm_bttn_blue_UNselected_3part.png */,
@@ -10673,6 +10681,8 @@
 				C95EB09F170C3FDB001E2D1E /* UIBlackCloseButton@2x.png in Resources */,
 				C95EB0A1170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png in Resources */,
 				C95EB0A3170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png in Resources */,
+				87833FD517203B21005AE36E /* TooltipReadingManagerBackground@2x~ipad.png in Resources */,
+				87833FD717203B21005AE36E /* TooltipReadingManagerBackground~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11784,6 +11794,8 @@
 				C95EB0A0170C3FDB001E2D1E /* UIBlackCloseButton@2x.png in Resources */,
 				C95EB0A2170C3FDB001E2D1E /* UIBlackCloseButtonPressed.png in Resources */,
 				C95EB0A4170C3FDB001E2D1E /* UIBlackCloseButtonPressed@2x.png in Resources */,
+				87833FD617203B21005AE36E /* TooltipReadingManagerBackground@2x~ipad.png in Resources */,
+				87833FD817203B21005AE36E /* TooltipReadingManagerBackground~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13312,16 +13324,24 @@
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Arnold Chien (4XCU87FX68)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Arnold Chien (4XCU87FX68)";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				VALID_ARCHS = armv7;
+				PROVISIONING_PROFILE = "63060BD2-5CC7-4CC6-BF7C-87EBBAFEC4FC";
+				"PROVISIONING_PROFILE[sdk=*]" = "63060BD2-5CC7-4CC6-BF7C-87EBBAFEC4FC";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: K-NFB Reading Technology Inc.";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: K-NFB Reading Technology Inc.";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				VALID_ARCHS = armv7;
+				PROVISIONING_PROFILE = "254516A6-9693-425F-A09F-8D32FF4914FD";
+				"PROVISIONING_PROFILE[sdk=*]" = "254516A6-9693-425F-A09F-8D32FF4914FD";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -13505,7 +13525,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PROVISIONING_PROFILE = "2E59CAE6-A1A5-42B1-B1FC-F87A932B37F4";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2E59CAE6-A1A5-42B1-B1FC-F87A932B37F4";
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = "Ad Hoc";
 		};

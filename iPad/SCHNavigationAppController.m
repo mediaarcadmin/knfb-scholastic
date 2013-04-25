@@ -606,8 +606,15 @@
     if ([[self.profileViewController profileItems] count]) {
         self.profileViewController.shouldShowDictionaryDownloadChoice = showDictionary;
         self.profileViewController.shouldShowTooltips = showTooltips;
+        self.profileViewController.shouldShowReadingManagerOnly = NO;
         [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, nil] animated:animated];
     } else {
+        self.profileViewController.shouldShowDictionaryDownloadChoice = NO;
+        self.profileViewController.shouldShowTooltips = YES;
+        self.profileViewController.shouldShowReadingManagerOnly = YES;  
+        [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, nil] animated:animated];
+
+/*      Replaced in 2.2:
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Setup Bookshelves", @"")
                               message:NSLocalizedString(@"Please set up some bookshelves.", @"")];
@@ -617,7 +624,9 @@
         
         [alert show];
         [alert release];
+ */
     }
+
 }
 
 - (void)pushSamplesAnimated:(BOOL)animated

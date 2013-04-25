@@ -386,7 +386,10 @@ typedef enum {
                 [self.appController presentSettings];
                 break;
             default:
-                [self.appController presentProfilesSetup];
+                // Pre-2.2, go to the Reading Manager:
+                //[self.appController presentProfilesSetup];
+                // Now we present a minimal profiles page that just points to Reading Manager.
+                [self.appController presentProfiles];
         }
     } else {
         switch (currentSyncState) {
