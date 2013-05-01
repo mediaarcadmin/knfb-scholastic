@@ -83,6 +83,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize selectedPanel;
 @synthesize additionalSettingsVisible;
 @synthesize dictionaryDownloadLabel;
+@synthesize bookshelvesNeedSetup;
 
 #pragma mark - Object lifecycle
 
@@ -1196,7 +1197,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         switch (panel) {
             case kSCHSettingsPanelReadingManager: {
-                SCHReadingManagerAuthorisationViewController *controller = [[[SCHReadingManagerAuthorisationViewController alloc] init] autorelease];
+                SCHReadingManagerAuthorisationViewController *controller =
+                [[[SCHReadingManagerAuthorisationViewController alloc] initWithNoBookShelves:self.bookshelvesNeedSetup] autorelease];
                 controller.appController = self.appController;
                 self.contentViewController = controller;
             } break;

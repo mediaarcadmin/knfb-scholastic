@@ -12,6 +12,7 @@
 @interface SCHReadingManagerAuthorisationViewController : UIViewController {}
 
 @property (nonatomic, assign) id <SCHAppController> appController;
+@property (nonatomic, assign) BOOL showNoBookShelvesText;
 @property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UILabel *info1Label;
 @property (nonatomic, retain) IBOutlet UILabel *info2Label;
@@ -22,5 +23,6 @@
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 
 - (IBAction)validate:(id)sender;
+- (id)initWithNoBookShelves:(BOOL)noBookShelves;
 
 @end

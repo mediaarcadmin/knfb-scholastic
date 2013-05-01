@@ -541,7 +541,10 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
 
 - (BOOL)validatePasswordWith:(NSString *)withPassword
 {
-	if ([self hasPassword] == NO || [self.Password compare:[self SHA1:withPassword]] != NSOrderedSame) {
+	if ([self hasPassword] == NO ||
+        [[self.Password stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]]
+        compare:[[self SHA1:withPassword] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]]]
+        != NSOrderedSame) {
 		return(NO);
 	} else {
 		return(YES);

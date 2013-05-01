@@ -40,6 +40,7 @@ typedef enum {
 
 @property (nonatomic, assign) NSUInteger settingsDisplayMask; // defaults to kSCHSettingsPanelAll
 @property (nonatomic, assign) BOOL backButtonHidden; // defaults to NO
+@property (nonatomic, assign) BOOL bookshelvesNeedSetup;
 
 - (void)displaySettingsPanel:(SCHSettingsPanel)panel;
 - (void)displaySettingsPanel:(SCHSettingsPanel)panel changeLeftNavigation:(BOOL)changeNavigation;

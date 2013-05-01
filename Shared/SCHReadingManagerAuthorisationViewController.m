@@ -19,6 +19,8 @@
 #import "SFHFKeychainUtils.h"
 #import "SCHAuthenticationManager.h"
 
+NSString * const kSCHFirstTimeReadingManagerSignInText = @"Before you start reading, use the Reading Manager to create bookshelves and assign your eBooks to these bookshelves.";
+
 typedef enum  {
     SCHReadingManagerAlertNone,
     SCHReadingManagerAlertMalformedEmail,
@@ -39,6 +41,7 @@ typedef enum  {
 @implementation SCHReadingManagerAuthorisationViewController
 
 @synthesize appController;
+@synthesize showNoBookShelvesText;
 @synthesize accountVerifier;
 @synthesize promptLabel;
 @synthesize info1Label;
@@ -69,9 +72,22 @@ typedef enum  {
     [super dealloc];
 }
 
+- (id)initWithNoBookShelves:(BOOL)noBookShelves;
+{
+    if ((self = [super init])) {
+        if (noBookShelves)
+            self.showNoBookShelvesText = YES;
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (self.showNoBookShelvesText)
+        self.info1Label.text = kSCHFirstTimeReadingManagerSignInText;
     
     UIImage *stretchedFieldImage = [[UIImage imageNamed:@"textfield_wht_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
     [self.usernameField setBackground:stretchedFieldImage];

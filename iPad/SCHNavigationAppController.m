@@ -560,10 +560,11 @@
 {
     if ([[self.profileViewController profileItems] count]) {
         [self.settingsViewController setBackButtonHidden:NO];
+        [self.settingsViewController setBookshelvesNeedSetup:NO];
     } else {
         [self.settingsViewController setBackButtonHidden:YES];
+        [self.settingsViewController setBookshelvesNeedSetup:YES];
     }
-    
     if (expandedNavigation) {
         [self.settingsViewController displaySettingsPanel:kSCHSettingsPanelReadingManager changeLeftNavigation:NO];
         [self.settingsViewController displaySettingsPanel:kSCHSettingsPanelAdditionalSettings changeLeftNavigation:NO];
