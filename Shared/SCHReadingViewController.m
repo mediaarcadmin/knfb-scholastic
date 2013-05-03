@@ -1364,12 +1364,13 @@ static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0
                                             if (wordsStartOnLayoutPage != layoutPage) {
                                                 if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
                                                     self.pauseAudioOnNextPageTurn = NO;
+                                                    __block SCHReadingViewController *weakSelf = self;
                                                     [self.readingView jumpToPageAtIndex:wordsStartOnLayoutPage - 1 animated:YES withCompletionHandler:^{
-                                                        self.pauseAudioOnNextPageTurn = YES;
+                                                        weakSelf.pauseAudioOnNextPageTurn = YES;
                                                         if (startPlayingAudioBlock() == YES) {
-                                                            [self bookAudioPlayerStartedPlaying];
+                                                            [weakSelf bookAudioPlayerStartedPlaying];
                                                         } else {
-                                                            [self bookAudioPlayerFailed];
+                                                            [weakSelf bookAudioPlayerFailed];
                                                         }
                                                     }];
                                                 }
@@ -1873,9 +1874,10 @@ static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0
         self.storyInteractionController.pageAssociation = (pageIndices.location & 1) ? SCHStoryInteractionQuestionOnLeftPage : SCHStoryInteractionQuestionOnRightPage;
     }
     
-    void (^presentStoryInteractionBlock)(void) = ^{        
-        [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO completion:nil];
-        [self pushStoryInteractionController:self.storyInteractionController];
+    __block SCHReadingViewController *weakSelf = self;
+    void (^presentStoryInteractionBlock)(void) = ^{
+        [weakSelf setStoryInteractionButtonVisible:NO animated:YES withSound:NO completion:nil];
+        [weakSelf pushStoryInteractionController:self.storyInteractionController];
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
     };
     
@@ -1908,10 +1910,11 @@ static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0
     //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
     self.pauseAudioOnNextPageTurn = NO;
 
+    __block SCHReadingViewController *weakSelf = self;
     [self.readingView followAlongHighlightWordForLayoutPage:layoutPage
                                              pageWordOffset:pageWordOffset
                                       withCompletionHandler:^{
-                                          self.pauseAudioOnNextPageTurn = YES;
+                                          weakSelf.pauseAudioOnNextPageTurn = YES;
                                       }];
 }
 
@@ -1928,9 +1931,10 @@ static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0
     bookPoint.blockOffset = audioBlockID;
     bookPoint.wordOffset = audioWordID;
 
+    __block SCHReadingViewController *weakSelf = self;
     [self.readingView followAlongHighlightWordAtPoint:bookPoint
                                 withCompletionHandler:^{
-                                    self.pauseAudioOnNextPageTurn = YES;
+                                    weakSelf.pauseAudioOnNextPageTurn = YES;
                                 }];
 }
 
@@ -1940,8 +1944,9 @@ static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0
     //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         self.pauseAudioOnNextPageTurn = NO;
+        __block SCHReadingViewController *weakSelf = self;
         [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES withCompletionHandler:^{
-            self.pauseAudioOnNextPageTurn = YES;
+            weakSelf.pauseAudioOnNextPageTurn = YES;
         }];
     }
 }
@@ -3269,9 +3274,10 @@ static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0
                                                         pageWordOffset:0
                                                   includingFolioBlocks:YES];
     
+    __block SCHReadingViewController *weakSelf = self;
     void (^presentStoryInteractionAfterDelay)(NSTimeInterval) = ^(NSTimeInterval delay) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * delay), dispatch_get_main_queue(), ^{
-            [self presentStoryInteraction:storyInteraction];
+            [weakSelf presentStoryInteraction:storyInteraction];
             [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         });
     };
