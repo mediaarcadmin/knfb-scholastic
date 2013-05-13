@@ -271,8 +271,8 @@
     
     if (score > self.bestScore) {
         self.bestScore = score;
-        [self.delegate addQuizScore:score total:[[(SCHStoryInteractionReadingChallenge *)self.storyInteraction questions] count]];
     }
+    [self.delegate addQuizScore:score total:[[(SCHStoryInteractionReadingChallenge *)self.storyInteraction questions] count]];
 
     [self playSummaryAudio];
     [self setupScoreAnswers];
