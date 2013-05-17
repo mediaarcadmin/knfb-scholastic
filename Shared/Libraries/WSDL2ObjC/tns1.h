@@ -552,6 +552,7 @@ NSString * tns1_drmqualifiers_stringFromEnum(tns1_drmqualifiers enumValue);
 	NSString * LastVersion;
 	NSNumber * Quantity;
 	NSNumber * QuantityInit;
+	USBoolean * Subscription;
 /* attributes */
 }
 - (NSString *)nsPrefix;
@@ -577,6 +578,7 @@ NSString * tns1_drmqualifiers_stringFromEnum(tns1_drmqualifiers enumValue);
 @property (nonatomic, retain) NSString * LastVersion;
 @property (nonatomic, retain) NSNumber * Quantity;
 @property (nonatomic, retain) NSNumber * QuantityInit;
+@property (nonatomic, retain) USBoolean * Subscription;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -3598,6 +3600,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 	NSNumber * lastVersion;
 	NSNumber * quantity;
 	NSNumber * quantityInit;
+	USBoolean * subscription;
 	tns1_ContentProfileList * contentProfileList;
 /* attributes */
 }
@@ -3622,6 +3625,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 @property (nonatomic, retain) NSNumber * lastVersion;
 @property (nonatomic, retain) NSNumber * quantity;
 @property (nonatomic, retain) NSNumber * quantityInit;
+@property (nonatomic, retain) USBoolean * subscription;
 @property (nonatomic, retain) tns1_ContentProfileList * contentProfileList;
 /* attributes */
 - (NSDictionary *)attributes;

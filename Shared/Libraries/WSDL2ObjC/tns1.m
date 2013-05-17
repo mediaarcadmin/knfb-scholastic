@@ -3218,6 +3218,7 @@ NSString * tns1_drmqualifiers_stringFromEnum(tns1_drmqualifiers enumValue)
 		LastVersion = 0;
 		Quantity = 0;
 		QuantityInit = 0;
+		Subscription = 0;
 	}
 	
 	return self;
@@ -3237,6 +3238,7 @@ NSString * tns1_drmqualifiers_stringFromEnum(tns1_drmqualifiers enumValue)
 	if(LastVersion != nil) [LastVersion release];
 	if(Quantity != nil) [Quantity release];
 	if(QuantityInit != nil) [QuantityInit release];
+	if(Subscription != nil) [Subscription release];
 	
 	[super dealloc];
 }
@@ -3315,6 +3317,9 @@ NSString * tns1_drmqualifiers_stringFromEnum(tns1_drmqualifiers enumValue)
 	if(self.QuantityInit != 0) {
 		xmlAddChild(node, [self.QuantityInit xmlNodeForDoc:node->doc elementName:@"QuantityInit" elementNSPrefix:nil]);
 	}
+	if(self.Subscription != 0) {
+		xmlAddChild(node, [self.Subscription xmlNodeForDoc:node->doc elementName:@"Subscription" elementNSPrefix:nil]);
+	}
 }
 /* elements */
 @synthesize ContentIdentifier;
@@ -3332,6 +3337,7 @@ NSString * tns1_drmqualifiers_stringFromEnum(tns1_drmqualifiers enumValue)
 @synthesize LastVersion;
 @synthesize Quantity;
 @synthesize QuantityInit;
+@synthesize Subscription;
 /* attributes */
 - (NSDictionary *)attributes
 {
@@ -3919,6 +3925,48 @@ NSString * tns1_drmqualifiers_stringFromEnum(tns1_drmqualifiers enumValue)
                     id newChild = [elementClass deserializeNode:cur];
 				
                     self.QuantityInit = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "Subscription")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [USBoolean class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.Subscription = newChild;
                 }
 			}
 		}
@@ -39581,6 +39629,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 		lastVersion = 0;
 		quantity = 0;
 		quantityInit = 0;
+		subscription = 0;
 		contentProfileList = 0;
 	}
 	
@@ -39599,6 +39648,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 	if(lastVersion != nil) [lastVersion release];
 	if(quantity != nil) [quantity release];
 	if(quantityInit != nil) [quantityInit release];
+	if(subscription != nil) [subscription release];
 	if(contentProfileList != nil) [contentProfileList release];
 	
 	[super dealloc];
@@ -39672,6 +39722,9 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 	if(self.quantityInit != 0) {
 		xmlAddChild(node, [self.quantityInit xmlNodeForDoc:node->doc elementName:@"quantityInit" elementNSPrefix:nil]);
 	}
+	if(self.subscription != 0) {
+		xmlAddChild(node, [self.subscription xmlNodeForDoc:node->doc elementName:@"subscription" elementNSPrefix:nil]);
+	}
 	if(self.contentProfileList != 0) {
 		xmlAddChild(node, [self.contentProfileList xmlNodeForDoc:node->doc elementName:@"contentProfileList" elementNSPrefix:nil]);
 	}
@@ -39690,6 +39743,7 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
 @synthesize lastVersion;
 @synthesize quantity;
 @synthesize quantityInit;
+@synthesize subscription;
 @synthesize contentProfileList;
 /* attributes */
 - (NSDictionary *)attributes
@@ -40194,6 +40248,48 @@ NSString * tns1_aggregationPeriod_stringFromEnum(tns1_aggregationPeriod enumValu
                     id newChild = [elementClass deserializeNode:cur];
 				
                     self.quantityInit = newChild;
+                }
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "subscription")) {
+				BOOL nilProperty = NO;
+                for(xmlAttrPtr attr = cur->properties; attr != NULL; attr = attr->next) {
+                    if(xmlStrEqual(attr->name, (const xmlChar *) "nil") &&
+                       attr->children &&
+                       xmlStrEqual(attr->children->content, (const xmlChar *) "true"))
+                        nilProperty = YES;
+                        break;
+                }
+                if (nilProperty == NO) {				
+                    Class elementClass = nil;
+                    xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+                    if(instanceType == NULL) {
+                        elementClass = [USBoolean class];
+                    } else {
+                        NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+                        NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+                        NSString *elementClassString = nil;
+                        if([elementTypeArray count] > 1) {
+                            NSString *prefix = [elementTypeArray objectAtIndex:0];
+                            NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+                            xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+                            NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+                            elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+                        } else {
+                            elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+                        }
+					
+                        elementClass = NSClassFromString(elementClassString);
+                        xmlFree(instanceType);
+                    }
+				
+                    id newChild = [elementClass deserializeNode:cur];
+				
+                    self.subscription = newChild;
                 }
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "contentProfileList")) {

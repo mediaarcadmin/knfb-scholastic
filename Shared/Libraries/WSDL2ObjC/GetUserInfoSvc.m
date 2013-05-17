@@ -848,7 +848,7 @@
 }
 + (GetUserInfoSoap11Binding *)GetUserInfoSoap11Binding
 {
-	return [[[GetUserInfoSoap11Binding alloc] initWithAddress:@"http://esvcsqa2.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpSoap11Endpoint/"] autorelease];
+	return [[[GetUserInfoSoap11Binding alloc] initWithAddress:@"http://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpSoap11Endpoint/"] autorelease];
 }
 @end
 @implementation GetUserInfoSoap11Binding
