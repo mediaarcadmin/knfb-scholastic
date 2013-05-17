@@ -3,14 +3,14 @@ Steps to recreate the code for a WSDL in Storia:
 * Download the relevant WSDL file you would like to generate code for:
   
     http://laesb.uat.cld.libredigital.com/services/LibreAccessService_1_2_0?wsdl
-    http://laesb.qa.cld.libredigital.com/services/LibreAccessActivityLogV2?wsdl
+    http://laesb.uat.cld.libredigital.com/services/LibreAccessActivityLogV2?wsdl
     https://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate?wsdl
-    https://esvcsqa2.scholastic.com/SchWS/services/SPS/GetUserInfo?wsdl
+    https://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo?wsdl
     https://esvcsqa.scholastic.com/SchWS/services/SPS/WishListService?wsdl
 
 * Download latest type definition files:
     http://laesb.uat.cld.libredigital.com/services/LibreAccessService_1_2_0?xsd=types_1_2_0.xsd
-    http://laesb.qa.cld.libredigital.com/services/LibreAccessActivityLogV2?xsd=types_1_3.xsd
+    http://laesb.uat.cld.libredigital.com/services/LibreAccessActivityLogV2?xsd=types_1_3.xsd
 
 * Comment out unused types in types_1_3.xsd
 

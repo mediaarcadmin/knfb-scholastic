@@ -3,7 +3,7 @@
             attributeFormDefault="unqualified"
             elementFormDefault="unqualified"
             targetNamespace="http://webservices.libredigital.com/LibreAccess/schema/types/v1.2.0"
-            version="1.8.2.0">
+            version="1.9.0.0">
    <xsd:simpleType name="statuscodes">
       <xsd:restriction base="xsd:string">
          <xsd:enumeration value="SUCCESS"/>
@@ -60,6 +60,7 @@
          <xsd:element name="LastVersion" type="xsd:string"/>
          <xsd:element minOccurs="0" name="Quantity" type="xsd:int"/>
          <xsd:element minOccurs="0" name="QuantityInit" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="Subscription" type="xsd:boolean"/>
       </xsd:sequence>
    </xsd:complexType>
    <xsd:simpleType name="drmqualifiers">
@@ -1354,6 +1355,7 @@
          <xsd:element name="lastVersion" type="xsd:int"/>
          <xsd:element minOccurs="0" name="quantity" type="xsd:int"/>
          <xsd:element minOccurs="0" name="quantityInit" type="xsd:int"/>
+         <xsd:element minOccurs="0" name="subscription" type="xsd:boolean"/>
          <xsd:element minOccurs="0"
                       name="contentProfileList"
                       type="tns:ContentProfileList"/>

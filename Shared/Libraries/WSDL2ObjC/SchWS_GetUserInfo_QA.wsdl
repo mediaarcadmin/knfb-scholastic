@@ -138,22 +138,22 @@
     </wsdl:binding>
     <wsdl:service name="GetUserInfo">
         <wsdl:port name="GetUserInfoHttpsSoap11Endpoint" binding="ns:GetUserInfoSoap11Binding">
-            <soap:address location="https://esvcsqa2.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpsSoap11Endpoint/"/>
+            <soap:address location="https://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpsSoap11Endpoint/"/>
         </wsdl:port>
         <wsdl:port name="GetUserInfoHttpSoap11Endpoint" binding="ns:GetUserInfoSoap11Binding">
-            <soap:address location="http://esvcsqa2.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpSoap11Endpoint/"/>
+            <soap:address location="http://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpSoap11Endpoint/"/>
         </wsdl:port>
         <wsdl:port name="GetUserInfoHttpSoap12Endpoint" binding="ns:GetUserInfoSoap12Binding">
-            <soap12:address location="http://esvcsqa2.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpSoap12Endpoint/"/>
+            <soap12:address location="http://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpSoap12Endpoint/"/>
         </wsdl:port>
         <wsdl:port name="GetUserInfoHttpsSoap12Endpoint" binding="ns:GetUserInfoSoap12Binding">
-            <soap12:address location="https://esvcsqa2.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpsSoap12Endpoint/"/>
+            <soap12:address location="https://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpsSoap12Endpoint/"/>
         </wsdl:port>
         <wsdl:port name="GetUserInfoHttpsEndpoint" binding="ns:GetUserInfoHttpBinding">
-            <http:address location="https://esvcsqa2.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpsEndpoint/"/>
+            <http:address location="https://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpsEndpoint/"/>
         </wsdl:port>
         <wsdl:port name="GetUserInfoHttpEndpoint" binding="ns:GetUserInfoHttpBinding">
-            <http:address location="http://esvcsqa2.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpEndpoint/"/>
+            <http:address location="http://esvcsqa.scholastic.com/SchWS/services/SPS/GetUserInfo.GetUserInfoHttpEndpoint/"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
