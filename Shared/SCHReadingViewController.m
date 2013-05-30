@@ -156,6 +156,7 @@ static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0
 
 - (void)bookAudioPlayerStartedPlaying;
 - (void)bookAudioPlayerFailed;
+- (void)reportNoAudioForLastPage;
 
 - (void)toolbarButtonPressed;
 - (void)toggleToolbarVisibility;
@@ -672,8 +673,12 @@ static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0
     // has problems with the limited space so reduce to 3 recommendations
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         if (CGRectGetHeight([self.readingView pageRect]) <= kReadingViewMinimumBookHeightForFourRecommendations) {
-            ((SCHRecommendationContainerView *)self.recommendationView).maxRecommendations = 3;
-            [self updateRecommendations];
+            // MQC 8162: without the class check, a SCHRecommendationSampleView causes
+            // a crash because it has no maxRecommendations
+            if ([((SCHRecommendationContainerView *)self.recommendationView) isKindOfClass:[SCHRecommendationContainerView class]]) {
+                ((SCHRecommendationContainerView *)self.recommendationView).maxRecommendations = 3;
+                [self updateRecommendations];
+            }
         }
     }
     
@@ -779,6 +784,9 @@ static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0
     [self save];
     
     self.bookStatisticsReadingStartTime = [NSDate serverDate];
+    // MQC 8656: count the page we open to as having been read, so it shows up in
+    // reading statistics even if the user doesn't flip any pages.
+    [self.bookStatistics increasePagesReadBy:1];
     
     [self setupOptionsViewForMode:self.layoutType];
     self.optionsPhoneTopBackground.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"OptionsViewTopBackground"]];
@@ -1346,61 +1354,66 @@ static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0
     NSUInteger pageWordOffset = 0;
     [self.readingView currentLayoutPage:&layoutPage pageWordOffset:&pageWordOffset];
     
-    if (self.audioBookPlayer == nil) {            
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-        NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
-        NSError *error = nil;
+    if (layoutPage <= [self.readingView pageCount]) {
+        if (self.audioBookPlayer == nil) {            
+            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
+            NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
+            NSError *error = nil;
         
-        if(audioBookReferences != nil && [audioBookReferences count] > 0) {        
-            self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
-            self.audioBookPlayer.xpsProvider = (SCHXPSProvider *)self.bookPackageProvider;
-            BOOL success = [self.audioBookPlayer prepareAudio:audioBookReferences error:&error];
-            if (success) {
-                self.audioBookPlayer.delegate = self;
+            if(audioBookReferences != nil && [audioBookReferences count] > 0) {        
+                self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
+                self.audioBookPlayer.xpsProvider = (SCHXPSProvider *)self.bookPackageProvider;
+                BOOL success = [self.audioBookPlayer prepareAudio:audioBookReferences error:&error];
+                if (success) {
+                    self.audioBookPlayer.delegate = self;
                 
-                success = [self.audioBookPlayer playAtLayoutPage:layoutPage
-                                                  pageWordOffset:pageWordOffset
-                                        priorToPlayingAudioBlock:^(NSUInteger wordsStartOnLayoutPage, SCHAudioBookPlayerStartPlayingAudioBlock startPlayingAudioBlock){
-                                            if (wordsStartOnLayoutPage != layoutPage) {
-                                                if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
-                                                    self.pauseAudioOnNextPageTurn = NO;
-                                                    __block SCHReadingViewController *weakSelf = self;
-                                                    [self.readingView jumpToPageAtIndex:wordsStartOnLayoutPage - 1 animated:YES withCompletionHandler:^{
-                                                        weakSelf.pauseAudioOnNextPageTurn = YES;
-                                                        if (startPlayingAudioBlock() == YES) {
-                                                            [weakSelf bookAudioPlayerStartedPlaying];
-                                                        } else {
-                                                            [weakSelf bookAudioPlayerFailed];
-                                                        }
-                                                    }];
-                                                }
-                                            } else {
-                                                if (startPlayingAudioBlock() == YES) {
-                                                    [self bookAudioPlayerStartedPlaying];
+                    success = [self.audioBookPlayer playAtLayoutPage:layoutPage
+                                                      pageWordOffset:pageWordOffset
+                                            priorToPlayingAudioBlock:^(NSUInteger wordsStartOnLayoutPage, SCHAudioBookPlayerStartPlayingAudioBlock startPlayingAudioBlock){
+                                                if (wordsStartOnLayoutPage != layoutPage) {
+                                                    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+                                                        self.pauseAudioOnNextPageTurn = NO;
+                                                        __block SCHReadingViewController *weakSelf = self;
+                                                        [self.readingView jumpToPageAtIndex:wordsStartOnLayoutPage - 1 animated:YES withCompletionHandler:^{
+                                                            weakSelf.pauseAudioOnNextPageTurn = YES;
+                                                            if (startPlayingAudioBlock() == YES) {
+                                                                [weakSelf bookAudioPlayerStartedPlaying];
+                                                            } else {
+                                                                [weakSelf bookAudioPlayerFailed];
+                                                            }
+                                                        }];
+                                                    }
                                                 } else {
-                                                    [self bookAudioPlayerFailed];
+                                                    if (startPlayingAudioBlock() == YES) {
+                                                        [self bookAudioPlayerStartedPlaying];
+                                                    } else {
+                                                        [self bookAudioPlayerFailed];
+                                                    }
                                                 }
-                                            }
-                                        }];
-            }
+                                            }];
+                }
 
-            if (success == NO) {
-                [self bookAudioPlayerFailed];
+                if (success == NO) {
+                    [self bookAudioPlayerFailed];
+                }
             }
+        } else if(self.audioBookPlayer.isPlaying == NO) {
+            [self.audioBookPlayer playAtLayoutPage:layoutPage
+                                    pageWordOffset:pageWordOffset
+                          priorToPlayingAudioBlock:^(NSUInteger wordsStartOnLayoutPage, SCHAudioBookPlayerStartPlayingAudioBlock startPlayingAudioBlock){
+                              if (startPlayingAudioBlock() == YES) {
+                                  [self bookAudioPlayerStartedPlaying];
+                              } else {
+                                  [self bookAudioPlayerFailed];
+                              }
+                          }];
+        } else {
+            [self.readingView dismissFollowAlongHighlighter];  
+            [self pauseAudioPlayback];
         }
-    } else if(self.audioBookPlayer.isPlaying == NO) {
-        [self.audioBookPlayer playAtLayoutPage:layoutPage
-                                pageWordOffset:pageWordOffset
-                      priorToPlayingAudioBlock:^(NSUInteger wordsStartOnLayoutPage, SCHAudioBookPlayerStartPlayingAudioBlock startPlayingAudioBlock){
-                          if (startPlayingAudioBlock() == YES) {
-                              [self bookAudioPlayerStartedPlaying];
-                          } else {
-                              [self bookAudioPlayerFailed];
-                          }
-                      }];
-    } else {
-        [self.readingView dismissFollowAlongHighlighter];  
-        [self pauseAudioPlayback];
+    }
+    else {
+        [self reportNoAudioForLastPage];
     }
     
     if (self.optionsView.superview) {
@@ -1408,6 +1421,18 @@ static const CGFloat kReadingViewMinimumBookHeightForFourRecommendations = 280.0
     }    
     
     [self checkCornerAudioButtonVisibilityWithAnimation:YES];
+}
+
+- (void)reportNoAudioForLastPage
+{
+    self.audioBookPlayer = nil;
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
+                                                         message:NSLocalizedString(@"You have reached the end of this book.  Please return to an earlier place and tap the icon again.", @"")
+                                                        delegate:nil
+                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                               otherButtonTitles:nil];
+    [errorAlert show];
+    [errorAlert release];
 }
 
 - (void)bookAudioPlayerStartedPlaying
