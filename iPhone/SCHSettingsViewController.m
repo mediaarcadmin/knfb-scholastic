@@ -797,7 +797,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
     switch (panel) {
         case kSCHSettingsPanelReadingManager:
-            cell.textLabel.text = @"SIGN IN TO\nREADING MANAGER";
+            cell.textLabel.text = @"GO TO\nREADING MANAGER";
             cell.textLabel.font = [UIFont boldSystemFontOfSize:13];
             cell.textLabel.textColor = blueText;
             cell.textLabel.numberOfLines = 2;

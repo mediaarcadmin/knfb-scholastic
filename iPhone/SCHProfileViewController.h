@@ -35,6 +35,7 @@
 @property (nonatomic, assign) BOOL shouldShowDictionaryDownloadChoice;
 @property (nonatomic, assign) BOOL shouldShowTooltips;
 @property (nonatomic, assign) BOOL shouldShowReadingManagerOnly;
+@property (nonatomic, assign) NSInteger prevProfileCount;
 
 - (NSArray *)profileItems;
 - (NSArray *)viewControllersForProfileItem:(SCHProfileItem *)profileItem showWelcome:(BOOL)welcome;

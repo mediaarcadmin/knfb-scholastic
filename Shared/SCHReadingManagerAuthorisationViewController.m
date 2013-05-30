@@ -19,8 +19,6 @@
 #import "SFHFKeychainUtils.h"
 #import "SCHAuthenticationManager.h"
 
-NSString * const kSCHFirstTimeReadingManagerSignInText = @"Before you start reading, use the Reading Manager to create bookshelves and assign your eBooks to these bookshelves.";
-
 typedef enum  {
     SCHReadingManagerAlertNone,
     SCHReadingManagerAlertMalformedEmail,
@@ -47,7 +45,7 @@ typedef enum  {
 @synthesize info1Label;
 @synthesize info2Label;
 @synthesize textFieldContainer;
-@synthesize usernameField;
+//@synthesize usernameField;
 @synthesize passwordField;
 @synthesize validateButton;
 @synthesize spinner;
@@ -58,7 +56,7 @@ typedef enum  {
     [info1Label release], info1Label = nil;
     [info2Label release], info2Label = nil;
     [textFieldContainer release], textFieldContainer = nil;
-    [usernameField release], usernameField = nil;
+    //[usernameField release], usernameField = nil;
     [passwordField release], passwordField = nil;
     [validateButton release], validateButton = nil;
     [spinner release], spinner = nil;    
@@ -76,7 +74,7 @@ typedef enum  {
 {
     if ((self = [super init])) {
         if (noBookShelves)
-            self.showNoBookShelvesText = YES;
+            self.showNoBookShelvesText = YES;  // currently unused.
     }
     
     return self;
@@ -86,11 +84,8 @@ typedef enum  {
 {
     [super viewDidLoad];
     
-    if (self.showNoBookShelvesText)
-        self.info1Label.text = kSCHFirstTimeReadingManagerSignInText;
-    
     UIImage *stretchedFieldImage = [[UIImage imageNamed:@"textfield_wht_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
-    [self.usernameField setBackground:stretchedFieldImage];
+//    [self.usernameField setBackground:stretchedFieldImage];
     [self.passwordField setBackground:stretchedFieldImage];
     
     UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
@@ -98,11 +93,12 @@ typedef enum  {
     
     [self setAlert:SCHReadingManagerAlertNone];
     
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
+    /*NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
     
     if (username) {
         self.usernameField.text = username;
     }
+     */
 }
 
 - (void)viewDidUnload
@@ -132,7 +128,7 @@ typedef enum  {
             self.promptLabel.text = NSLocalizedString(@"Please enter a valid e-mail address.", nil);
             break;
         case SCHReadingManagerAlertAuthenticationFailure:
-            self.promptLabel.text = NSLocalizedString(@"Your e-mail address or password was not recognized. Please try again, or contact Scholastic customer service at storia@scholastic.com.", nil);
+            self.promptLabel.text = [NSString stringWithFormat:@"The password you entered is not correct for account %@. Please try again or contact Scholastic customer service at storia@scholastic.com.",[[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername]];
             break;
         case SCHReadingManagerAlertWrongUser:
             self.promptLabel.text = NSLocalizedString(@"This e-mail address does not match your account. Please try again, or contact Scholastic customer service at storia@scholastic.com.", nil);
@@ -183,13 +179,15 @@ typedef enum  {
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else {
+        /*
         if ([[self.usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
             [self setAlert:SCHReadingManagerAlertMalformedEmail];
             self.passwordField.text = @"";
         } else if ([self.usernameField.text isValidEmailAddress] == NO) {
             [self setAlert:SCHReadingManagerAlertMalformedEmail];
             self.passwordField.text = @"";
-        } else if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+        } else */
+        if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
             [self setAlert:SCHReadingManagerAlertAuthenticationFailure];
             self.passwordField.text = @"";
         } else if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
@@ -203,7 +201,8 @@ typedef enum  {
             [self.spinner startAnimating];
             [self.validateButton setEnabled:NO];
             
-            NSString *username = self.usernameField.text;
+            //NSString *username = self.usernameField.text;
+            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
             
             BOOL canValidate = [[SCHAuthenticationManager sharedAuthenticationManager] validateWithUserName:username
                                                 withPassword:passwordField.text

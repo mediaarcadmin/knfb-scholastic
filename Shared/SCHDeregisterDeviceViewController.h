@@ -18,7 +18,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UILabel *info1Label;
 @property (nonatomic, retain) IBOutlet UILabel *info2Label;
-@property (nonatomic, retain) IBOutlet UITextField *usernameField;
+//@property (nonatomic, retain) IBOutlet UITextField *usernameField;
 @property (nonatomic, retain) IBOutlet UITextField *passwordField;
 @property (nonatomic, retain) IBOutlet UIButton *deregisterButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;

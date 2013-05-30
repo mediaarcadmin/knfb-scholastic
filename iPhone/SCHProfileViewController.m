@@ -97,6 +97,7 @@ static const NSUInteger kSCHProfileViewControllerPasswordMaximumLength = 30;
 @synthesize shouldShowDictionaryDownloadChoice;
 @synthesize shouldShowTooltips;
 @synthesize shouldShowReadingManagerOnly;
+@synthesize prevProfileCount;
 
 #pragma mark - Object lifecycle
 
@@ -118,6 +119,7 @@ static const NSUInteger kSCHProfileViewControllerPasswordMaximumLength = 30;
                                                  selector:@selector(profileSyncDidComplete:)
                                                      name:SCHProfileSyncComponentDidCompleteNotification
                                                    object:nil];
+        self.prevProfileCount = -1;
     }
     return(self);
 }

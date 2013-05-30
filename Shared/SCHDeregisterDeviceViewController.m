@@ -50,7 +50,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize promptLabel;
 @synthesize info1Label;
 @synthesize info2Label;
-@synthesize usernameField;
+//@synthesize usernameField;
 @synthesize passwordField;
 @synthesize deregisterButton;
 @synthesize spinner;
@@ -67,7 +67,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [promptLabel release], promptLabel = nil;
     [info1Label release], info1Label = nil;
     [info2Label release], info2Label = nil;
-    [usernameField release], usernameField = nil;
+//    [usernameField release], usernameField = nil;
     [passwordField release], passwordField = nil;
     [deregisterButton release], deregisterButton = nil;
     [spinner release], spinner = nil;
@@ -93,7 +93,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     [self setAlert:SCHDeregistrationAlertNone];
     
     UIImage *stretchedFieldImage = [[UIImage imageNamed:@"textfield_wht_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
-    [self.usernameField setBackground:stretchedFieldImage];
+//    [self.usernameField setBackground:stretchedFieldImage];
     [self.passwordField setBackground:stretchedFieldImage];
     
     UIImage *stretchedButtonImage = [[UIImage imageNamed:@"lg_bttn_gray_UNselected_3part"] stretchableImageWithLeftCapWidth:7 topCapHeight:0];
@@ -109,11 +109,11 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     self.containerView.layer.masksToBounds = YES;
     self.containerView.layer.cornerRadius = 10.0f;
     
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
+    //NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
 
-    if (username) {
-        self.usernameField.text = username;
-    }
+//    if (username) {
+//        self.usernameField.text = username;
+//    }
 }
 
 - (void)viewDidUnload
@@ -141,12 +141,15 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     if ([[SCHVersionDownloadManager sharedVersionManager] isAppVersionOutdated] == YES) {
         [self showAppVersionOutdatedAlert];
     } else {        
-        NSString *username = [self.usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+//        NSString *username = [self.usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
         
-        if ([[self.usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+//        if ([[self.usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+        if ([[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
             [self setAlert:SCHDeregistrationAlertMalformedEmail];
             self.passwordField.text = @"";
-        } else if ([self.usernameField.text isValidEmailAddress] == NO) {
+//        } else if ([self.usernameField.text isValidEmailAddress] == NO) {
+        } else if ([username isValidEmailAddress] == NO) {
             [self setAlert:SCHDeregistrationAlertMalformedEmail];
             self.passwordField.text = @"";
         } else if ([[self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
@@ -376,7 +379,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
-        
     switch (alert) {
         case SCHDeregistrationAlertNone:
             break;
@@ -384,7 +386,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
             self.promptLabel.text = NSLocalizedString(@"Please enter a valid e-mail address.", nil);
             break;
         case SCHDeregistrationAlertAuthenticationFailure:
-            self.promptLabel.text = NSLocalizedString(@"Your e-mail address or password was not recognized. Please try again, or contact Scholastic customer service at storia@scholastic.com.", nil);
+            self.promptLabel.text = [NSString stringWithFormat:@"The password you entered is not correct for account %@. Please try again or contact Scholastic customer service at storia@scholastic.com.",[[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername]];
             break;
         case SCHDeregistrationAlertWrongUser:
             self.promptLabel.text = NSLocalizedString(@"This e-mail address does not match your account. Please try again, or contact Scholastic customer service at storia@scholastic.com.", nil);

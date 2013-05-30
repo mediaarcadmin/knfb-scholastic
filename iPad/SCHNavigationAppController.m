@@ -606,7 +606,10 @@
 {
     if ([[self.profileViewController profileItems] count]) {
         self.profileViewController.shouldShowDictionaryDownloadChoice = showDictionary;
-        self.profileViewController.shouldShowTooltips = showTooltips;
+        if (self.profileViewController.prevProfileCount == 0)
+            self.profileViewController.shouldShowTooltips = YES;
+        else
+            self.profileViewController.shouldShowTooltips = showTooltips;
         self.profileViewController.shouldShowReadingManagerOnly = NO;
         [self setViewControllers:[NSArray arrayWithObjects:self.loginViewController, self.profileViewController, nil] animated:animated];
     } else {
@@ -627,6 +630,7 @@
         [alert release];
  */
     }
+    self.profileViewController.prevProfileCount = [[self.profileViewController profileItems] count];
 
 }
 
