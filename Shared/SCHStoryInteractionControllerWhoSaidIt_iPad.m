@@ -288,9 +288,24 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
         CGPoint targetCenter = [target.superview convertPoint:pointWithOffset(target.center, self.targetCenterOffset) toView:self.contentsView];
         if (SCHCGPointDistanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
-            [[self nameViewOnTarget:target] moveToHomePosition];
-            source.attachedTarget = target;
-            break;
+            // MQC 8497: do not supplant the current occupant if it has been marked correct
+            BOOL targetMarkedCorrect = NO;
+            for (SCHStoryInteractionWhoSaidItNameView *source in self.sources) {
+                if (source.attachedTarget == target)
+                    if (source.attachedToCorrectTarget) {
+                        UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
+                        if (imageView.highlighted) {
+                            // Must be green because a red one would have been moved out automatically.
+                            targetMarkedCorrect = YES;
+                            break;
+                        }
+                    }
+            }
+            if (!targetMarkedCorrect) {
+                [[self nameViewOnTarget:target] moveToHomePosition];
+                source.attachedTarget = target;
+                break;
+            }
         }
     }
 
