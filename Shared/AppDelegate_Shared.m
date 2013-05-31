@@ -127,6 +127,7 @@ NSInteger const kSCHSamplesUnspecifiedError = 1000;
         [[SCHVersionDownloadManager sharedVersionManager] saveAppVersionToPreferences];
         
         if (lastVersion && (![bundleVersion isEqualToString:lastVersion])) {
+            // Comment out the below condition for provisional build to submit to the App Store in case not resetting the DRM causes a crash when upgrading App Store versions. 
             if (![SCHDrmSession existsDRMKeychainDeviceKeyItem])
                 [self upgradeApp];
         } else {
