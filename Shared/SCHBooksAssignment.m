@@ -47,9 +47,20 @@ NSString * const kSCHBooksAssignment = @"SCHBooksAssignment";
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
 
-    NSAssert([result count] <= 1, @"There should never be more than one SCHContentMetadataItem for a SCHBooksAssignment");
-
-    return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
+    // It is no longer the case that isbn and DRM qualifier uniquely identify a book, given that there
+    // can now be both a regular and a subscription version of a DRMed book.  So the below assertion is
+    // no longer valid.  But if there is more than one version of the book, we only recognize one of them
+    // for display purposes and arbitrarily take the first.
+    
+    //NSAssert([result count] <= 1, @"There should never be more than one SCHContentMetadataItem for a SCHBooksAssignment");
+    //return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
+    
+    if (result == nil)
+        return [NSSet set];
+    else if ([result count] == 0)
+        return [NSSet setWithArray:result];
+    else
+        return [NSSet setWithArray:[NSArray arrayWithObject:[result objectAtIndex:0]]];
 }
 
 //- (NSSet *)AssignedProfileList

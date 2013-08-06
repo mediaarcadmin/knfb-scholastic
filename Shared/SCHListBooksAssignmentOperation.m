@@ -247,38 +247,43 @@
 	SCHBooksAssignment *newBooksAssignment = nil;
 	SCHBookIdentifier *webBookIdentifier = [[SCHBookIdentifier alloc] initWithObject:webBooksAssignment];
     
-    if (webBooksAssignment != nil && webBookIdentifier != nil) {
-        newBooksAssignment = [NSEntityDescription insertNewObjectForEntityForName:kSCHBooksAssignment
-                                                           inManagedObjectContext:aManagedObjectContext];
+    // A book assignment shouldn't have zero quantity, but sometimes does.  Until LD fixes this, we need to check.
+    NSNumber* quantity = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceQuantity]);
+    if (quantity.intValue > 0) {
+        if (webBooksAssignment != nil && webBookIdentifier != nil) {
+            newBooksAssignment = [NSEntityDescription insertNewObjectForEntityForName:kSCHBooksAssignment
+                                                               inManagedObjectContext:aManagedObjectContext];
         
-        newBooksAssignment.DRMQualifier = webBookIdentifier.DRMQualifier;
-        newBooksAssignment.version = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceVersion]);
-        newBooksAssignment.ContentIdentifier = webBookIdentifier.isbn;
-        newBooksAssignment.format = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceFormat]);
-        newBooksAssignment.defaultAssignment = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]);
-        newBooksAssignment.ContentIdentifierType = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]);
+            newBooksAssignment.DRMQualifier = webBookIdentifier.DRMQualifier;
+            newBooksAssignment.version = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceVersion]);
         
-        newBooksAssignment.lastVersion = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceLastVersion]);
-        newBooksAssignment.freeBook = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceFreeBook]);
-        newBooksAssignment.averageRating = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceAverageRating]);
-        newBooksAssignment.numVotes = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceNumVotes]);
-        newBooksAssignment.quantity = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceQuantity]);
-        newBooksAssignment.quantityInit = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceQuantityInit]);
+            newBooksAssignment.ContentIdentifier = webBookIdentifier.isbn;
+            newBooksAssignment.format = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceFormat]);
+            newBooksAssignment.defaultAssignment = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]);
+            newBooksAssignment.ContentIdentifierType = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]);
         
-        NSArray *profileList = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceProfileList]);
-        for (NSDictionary *profileItem in profileList) {     
-            SCHContentProfileItem *contentProfileItem = [self addContentProfileItem:profileItem
-                                                                            forBook:newBooksAssignment.bookIdentifier
-                                                               managedObjectContext:aManagedObjectContext];
-            if (contentProfileItem != nil) {
-                [newBooksAssignment addProfileListObject:contentProfileItem];
-                [self addAnnotationStructure:newBooksAssignment 
-                                  forProfile:contentProfileItem
-                        managedObjectContext:aManagedObjectContext];
+            newBooksAssignment.lastVersion = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceLastVersion]);
+            newBooksAssignment.freeBook = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceFreeBook]);
+            newBooksAssignment.averageRating = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceAverageRating]);
+            newBooksAssignment.numVotes = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceNumVotes]);
+            newBooksAssignment.quantity = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceQuantity]);
+            newBooksAssignment.quantityInit = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceQuantityInit]);
+        
+            NSArray *profileList = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceProfileList]);
+            for (NSDictionary *profileItem in profileList) {     
+                SCHContentProfileItem *contentProfileItem = [self addContentProfileItem:profileItem
+                                                                                forBook:newBooksAssignment.bookIdentifier
+                                                                   managedObjectContext:aManagedObjectContext];
+                if (contentProfileItem != nil) {
+                    [newBooksAssignment addProfileListObject:contentProfileItem];
+                    [self addAnnotationStructure:newBooksAssignment 
+                                      forProfile:contentProfileItem
+                            managedObjectContext:aManagedObjectContext];
+                }
             }
-        }
     	
-        newBooksAssignment.lastOrderDate = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceLastOrderDate]);
+            newBooksAssignment.lastOrderDate = makeNullNil([webBooksAssignment objectForKey:kSCHLibreAccessWebServiceLastOrderDate]);
+        }
     }
     [webBookIdentifier release], webBookIdentifier = nil;
     

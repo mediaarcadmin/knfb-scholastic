@@ -342,10 +342,19 @@ static NSString * const kSCHProfileItemCategoryYoungAdults = @"Young Adults";
     }
     
     // build the ISBN list
+    NSMutableSet* addedIdentifiers = [NSMutableSet setWithCapacity:20];
     for (SCHContentMetadataItem *item in bookObjects) {
         SCHBookIdentifier *identifier = [item bookIdentifier];
         if (identifier != nil) {
-            [books addObject:identifier];
+            // An SCHBookIdentifier is no longer guaranteed to uniquely identify a book,
+            // now that there may be both a regular version and a subscription version
+            // of a DRMed book.  Proper fix is to add subscription status to SCHBookIdentifier,
+            // but in the meantime we just ensure that we don't add a book with a given
+            // identifier more than once.
+            if (![addedIdentifiers containsObject:identifier]) { 
+                [books addObject:identifier];
+                [addedIdentifiers addObject:identifier]; 
+            }
         }
     }
     

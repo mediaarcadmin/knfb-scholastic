@@ -102,7 +102,8 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
 
-    NSAssert([result count] <= 1, @"There should never be more than one SCHBooksAssignment for a SCHContentMetadataItem");
+    // It is no longer the case that isbn and DRM qualifier uniquely identify a book, given that there can now be both a regular and a subscription version of a DRMed book.  So the below assertion is no longer valid.
+    //NSAssert([result count] <= 1, @"There should never be more than one SCHBooksAssignment for a SCHContentMetadataItem");
 
     if ([result count] > 0) {
         ret = [result objectAtIndex:0];
